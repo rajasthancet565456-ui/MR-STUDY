@@ -1,0 +1,2 @@
+# MR-STUDY
+file:///C:/Users/my780/Documents/Codex/2026-09-18/add-in-a-single-webpages-website/outputs/cosmic-quiz-master.html
