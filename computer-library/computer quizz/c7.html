@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Quiz: Data Communication & Networking (100 Questions)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+<style id="cosmic-readable-quiz-theme">
+:root{--space:#e8dcff;--panel:#f3eaff;--panel2:#dcc6ff;--edge:#6a45bf;--glow:#d28b28;--accent:#d15f9f;--ink:#2c1b4d;--muted:#66547c;--mist:rgba(106,69,191,.2)}html{background:var(--space)}body{background:radial-gradient(ellipse 62% 45% at 90% -5%,rgba(209,95,159,.28),transparent 62%),radial-gradient(ellipse 55% 40% at 8% 100%,rgba(65,164,207,.26),transparent 64%),var(--space)!important;color:var(--ink)!important;min-height:100vh}body:before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.78;background-image:radial-gradient(circle at 9% 18%,var(--glow) 0 1px,transparent 1.7px),radial-gradient(circle at 26% 69%,var(--edge) 0 .8px,transparent 1.5px),radial-gradient(circle at 68% 24%,var(--accent) 0 1px,transparent 1.8px),radial-gradient(circle at 88% 73%,#47a8d3 0 .8px,transparent 1.5px);background-size:220px 190px,300px 270px,260px 230px,340px 310px;z-index:-1}header{background:linear-gradient(105deg,var(--panel),var(--panel2))!important;border-color:rgba(106,69,191,.25)!important;box-shadow:0 7px 24px rgba(84,48,142,.14)!important}header h1{color:var(--edge)!important;text-shadow:none!important}header p,header .text-slate-400,header .text-indigo-200,header .text-indigo-300{color:var(--muted)!important}main>div,#quiz-card,.bg-slate-800,.bg-slate-900,.bg-indigo-900,.bg-indigo-950{background:linear-gradient(145deg,#f8f0ff,var(--panel))!important;border-color:rgba(106,69,191,.22)!important;color:var(--ink)!important;box-shadow:0 14px 35px rgba(84,48,142,.12)!important}.bg-slate-700,.bg-slate-100,.bg-slate-50{background:#eadffd!important;color:var(--ink)!important}.text-slate-100,.text-slate-200,.text-slate-300,.text-slate-400,.text-white,.text-slate-800,.text-slate-700,.text-slate-600{color:var(--ink)!important}.text-indigo-400,.text-indigo-300,.text-emerald-400,.text-yellow-300{color:var(--edge)!important}.border-slate-700,.border-slate-700\/60,.border-indigo-700,.border-slate-200{border-color:rgba(106,69,191,.25)!important}button:not(.bg-green-600):not(.bg-red-600){background:#f9f2ff!important;color:var(--ink)!important;border:1px solid rgba(106,69,191,.25)!important;box-shadow:0 3px 10px rgba(84,48,142,.09)!important}button.bg-indigo-600,button.bg-slate-800,button.bg-slate-900,button.bg-indigo-900{background:linear-gradient(120deg,var(--edge),var(--accent))!important;color:#fff!important;border:0!important}button.bg-indigo-600 *,button.bg-slate-800 *,button.bg-slate-900 *,button.bg-indigo-900 *{color:#fff!important}button:hover{filter:brightness(1.04);transform:translateY(-1px)}input,select,textarea{background:#f9f2ff!important;border-color:rgba(106,69,191,.35)!important;color:var(--ink)!important}input:focus,select:focus,textarea:focus{outline:none!important;border-color:var(--edge)!important;box-shadow:0 0 0 3px var(--mist)!important}.bg-indigo-500,#progress-bar{background:linear-gradient(90deg,var(--edge),var(--accent),var(--glow))!important}.rounded-2xl{border-radius:1.25rem!important}
+</style></head>
+<body class="bg-slate-900 text-slate-100 min-h-screen font-sans flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-slate-800 border-b border-slate-700 sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-4">
+            <div>
+                <h1 class="text-xl font-bold text-teal-400">Computer Awareness PYQ Practice</h1>
+                <p class="text-xs text-slate-400">Topics: Data Communication & Networking Topologies (100 Medium-Advanced MCQs)</p>
+            </div>
+            <div class="flex items-center gap-6 text-sm">
+                <div class="bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-700">
+                    <span class="text-slate-400">Score: </span>
+                    <span id="live-score" class="font-bold text-teal-400">0</span> / <span id="total-answered">0</span>
+                </div>
+                <div class="bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-700">
+                    <span class="text-slate-400">Accuracy: </span>
+                    <span id="accuracy" class="font-bold text-amber-400">0%</span>
+                </div>
+            </div>
+        </div>
+        <!-- Progress Bar -->
+        <div class="w-full bg-slate-700 h-1.5">
+            <div id="progress-bar" class="bg-teal-500 h-1.5 transition-all duration-300" style="width: 0%;"></div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 grid grid-cols-1 lg:grid-cols-4 gap-6">
+
+        <!-- Question Navigation Drawer / Grid (Sidebar on Desktop) -->
+        <aside class="lg:col-span-1 bg-slate-800 border border-slate-700 rounded-xl p-4 flex flex-col h-[500px] lg:h-auto">
+            <h2 class="text-base font-semibold text-slate-200 mb-3 flex justify-between items-center">
+                <span>Question Palette</span>
+                <span class="text-xs font-normal text-slate-400">100 Unique Items</span>
+            </h2>
+            <div id="palette-grid" class="grid grid-cols-5 gap-2 overflow-y-auto custom-scrollbar flex-1 pr-1">
+                <!-- Dynamically populated buttons -->
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-700 text-xs flex flex-wrap gap-2 text-slate-400">
+                <div class="flex items-center gap-1"><span class="w-3 h-3 bg-slate-700 rounded"></span> Unattempted</div>
+                <div class="flex items-center gap-1"><span class="w-3 h-3 bg-emerald-600 rounded"></span> Correct</div>
+                <div class="flex items-center gap-1"><span class="w-3 h-3 bg-rose-600 rounded"></span> Incorrect</div>
+            </div>
+        </aside>
+
+        <!-- Main Question Area -->
+        <section class="lg:col-span-3 bg-slate-800 border border-slate-700 rounded-xl p-6 flex flex-col justify-between">
+            <div>
+                <!-- Question Header -->
+                <div class="flex justify-between items-start gap-4 mb-4 pb-3 border-b border-slate-700">
+                    <span id="q-number" class="bg-teal-500/10 text-teal-400 text-xs font-semibold px-2.5 py-1 rounded border border-teal-500/20">
+                        Question 1 of 100
+                    </span>
+                    <span id="q-topic" class="text-xs text-slate-400 bg-slate-900 px-2.5 py-1 rounded">
+                        Topic Loading...
+                    </span>
+                </div>
+
+                <!-- Question Text -->
+                <div id="q-text" class="text-slate-100 text-lg font-medium mb-6 leading-relaxed">
+                    Loading question...
+                </div>
+
+                <!-- Options Grid -->
+                <div id="options-container" class="space-y-3 mb-6">
+                    <!-- Dynamic Options -->
+                </div>
+
+                <!-- Hint Section -->
+                <div class="mb-4">
+                    <button id="hint-btn" onclick="toggleHint()" class="text-xs text-amber-400 hover:text-amber-300 flex items-center gap-1 font-medium focus:outline-none">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        Need a Hint?
+                    </button>
+                    <div id="hint-box" class="hidden mt-2 p-3 bg-amber-500/10 border border-amber-500/20 text-amber-200 text-sm rounded-lg">
+                        <!-- Dynamic Hint -->
+                    </div>
+                </div>
+
+                <!-- Explanation Box -->
+                <div id="explanation-box" class="hidden p-4 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 leading-relaxed mb-4">
+                    <div class="font-semibold text-teal-400 mb-1 flex items-center gap-1">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        Detailed Rationale / PYQ Context:
+                    </div>
+                    <div id="explanation-text"></div>
+                </div>
+            </div>
+
+            <!-- Controls Footer -->
+            <div class="pt-4 border-t border-slate-700 flex flex-wrap justify-between items-center gap-4">
+                <div class="flex items-center gap-2">
+                    <button onclick="prevQuestion()" id="prev-btn" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 disabled:opacity-40 disabled:cursor-not-allowed rounded-lg text-sm font-medium transition-colors">
+                        Previous
+                    </button>
+                    <button onclick="nextQuestion()" id="next-btn" class="px-4 py-2 bg-teal-600 hover:bg-teal-500 disabled:opacity-40 disabled:cursor-not-allowed rounded-lg text-sm font-medium transition-colors">
+                        Next
+                    </button>
+                </div>
+
+                <div class="flex items-center gap-2 text-sm text-slate-400">
+                    <span>Jump to:</span>
+                    <input type="number" id="jump-input" min="1" max="100" class="w-16 bg-slate-900 border border-slate-700 rounded px-2 py-1 text-center text-slate-100 focus:outline-none focus:border-teal-500">
+                    <button onclick="jumpToQuestion()" class="px-3 py-1 bg-slate-700 hover:bg-slate-600 rounded text-xs font-medium">Go</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Quiz Engine Script -->
+    <script>
+        // Data Bank containing 100 Unique Questions (PYQ standard: SSC CGL/CHSL, RRB NTPC, State PCS, CS Exam Levels)
+        const rawQuestions = [
+            // Data Communication: Analog & Digital Signal (1-10)
+            {
+                topic: "Data Communication - Analog & Digital Signal",
+                question: "Which theorem specifies that an analog signal can be perfectly reconstructed from its samples if the sampling frequency is at least twice the maximum frequency component of the signal?",
+                options: ["Nyquist-Shannon Sampling Theorem", "Fourier Transform Theorem", "Shannon-Hartley Capacity Theorem", "Maxwell Electromagnetic Theorem"],
+                correct: "Nyquist-Shannon Sampling Theorem",
+                hint: "It relates maximum signal frequency component to minimum required sampling rate.",
+                explanation: "The Nyquist-Shannon sampling theorem states that to sample a bandlimited signal without aliasing, the sampling rate (Fs) must be at least twice the highest frequency component (2 * Fmax)."
+            },
+            {
+                topic: "Data Communication - Analog & Digital Signal",
+                question: "In data transmission, what is 'attenuation' best defined as?",
+                options: ["Loss of signal energy as it propagates through a transmission medium", "Distortion caused by overlapping signal frequencies", "Addition of unwanted thermal noise from external electrical lines", "Delay variation between packets arriving at the destination"],
+                correct: "Loss of signal energy as it propagates through a transmission medium",
+                hint: "Think about why a signal gets weaker over longer distances.",
+                explanation: "Attenuation refers to the gradual reduction in signal strength (amplitude) as it travels through a conductor or channel, usually measured in decibels (dB)."
+            },
+            {
+                topic: "Data Communication - Analog & Digital Signal",
+                question: "Consider the following statements regarding Digital Signals:\n1. They are continuous wave signals represented by sine waves.\n2. They are discrete in nature and represented by binary states (0s and 1s).\nWhich of the statements given above is/are CORRECT?",
+                options: ["2 only", "1 only", "Both 1 and 2", "Neither 1 nor 2"],
+                correct: "2 only",
+                hint: "Analog signals are continuous sine waves; digital signals are discrete square waves.",
+                explanation: "Statement 1 describes analog signals (continuous). Statement 2 correctly describes digital signals, which use discrete voltage levels to denote binary 0s and 1s."
+            },
+            {
+                topic: "Data Communication - Analog & Digital Signal",
+                question: "Which device is primarily used at the Physical layer to convert digital data from a computer into analog signals suitable for telephone line transmission, and vice versa?",
+                options: ["Modem", "Switch", "Router", "Hub"],
+                correct: "Modem",
+                hint: "Its name stands for MOdulator-DEModulator.",
+                explanation: "A Modem (Modulator-Demodulator) converts digital signals into analog signals (modulation) for phone lines and back to digital (demodulation) for computers."
+            },
+            {
+                topic: "Data Communication - Analog & Digital Signal",
+                question: "What term describes the unwanted variation in the timing of arriving signal pulses, which can degrade digital signal reception quality?",
+                options: ["Jitter", "Aliasing", "Crosstalk", "Cross-modulation"],
+                correct: "Jitter",
+                hint: "It causes packet arrival times to fluctuate inconsistently.",
+                explanation: "Jitter is the deviation or variation in packet arrival time, signal phase, or timing synchronization, which degrades real-time data streams like VoIP or video."
+            },
+            {
+                topic: "Data Communication - Analog & Digital Signal",
+                question: "Match List-I (Signal Impairment) with List-II (Description):\nA. Attenuation - 1. Unwanted coupling between adjacent wire pairs\nB. Distortion - 2. Loss of signal strength over distance\nC. Noise - 3. Change in signal shape due to differing propagation speeds of frequencies\nD. Crosstalk - 4. External electromagnetic signals interfering with the channel\nSelect the correct matching order:",
+                options: ["A-2, B-3, C-4, D-1", "A-1, B-2, C-3, D-4", "A-2, B-4, C-3, D-1", "A-3, B-2, C-1, D-4"],
+                correct: "A-2, B-3, C-4, D-1",
+                hint: "Match Crosstalk with adjacent wire coupling and Attenuation with loss of strength.",
+                explanation: "Attenuation is energy loss (A-2). Distortion occurs when frequency components travel at different speeds (B-3). Noise is external signal interference (C-4). Crosstalk is unwanted coupling between adjacent paths (D-1)."
+            },
+            {
+                topic: "Data Communication - Analog & Digital Signal",
+                question: "Which pulse modulation technique converts an analog signal into a binary digital signal by measuring amplitudes at discrete time intervals and quantizing them?",
+                options: ["Pulse Code Modulation (PCM)", "Pulse Amplitude Modulation (PAM) only", "Frequency Shift Keying (FSK)", "Phase Shift Keying (PSK)"],
+                correct: "Pulse Code Modulation (PCM)",
+                hint: "It involves sampling, quantizing, and binary encoding.",
+                explanation: "PCM (Pulse Code Modulation) is the standard method to digitally represent analog signals through sampling, quantization, and encoding into n-bit binary sequences."
+            },
+            {
+                topic: "Data Communication - Analog & Digital Signal",
+                question: "What is the maximum achievable data rate of a noiseless channel with a bandwidth of 3 kHz carrying a signal with 4 signal levels, according to Nyquist's Bit Rate formula?",
+                options: ["12,000 bps", "6,000 bps", "24,000 bps", "3,000 bps"],
+                correct: "12,000 bps",
+                hint: "Nyquist Bit Rate = 2 * Bandwidth * log2(L).",
+                explanation: "Bit Rate = 2 * B * log2(L) = 2 * 3000 * log2(4) = 6000 * 2 = 12,000 bps (or 12 kbps)."
+            },
+            {
+                topic: "Data Communication - Analog & Digital Signal",
+                question: "Which mathematical formula calculates the theoretical maximum data rate of a noisy channel?",
+                options: ["Shannon-Hartley Theorem", "Nyquist Bit Rate Formula", "Little's Law", "Metcalfe's Law"],
+                correct: "Shannon-Hartley Theorem",
+                hint: "It includes the Signal-to-Noise Ratio (SNR) in its equation.",
+                explanation: "Shannon Capacity = C = Bandwidth * log2(1 + SNR). It dictates the theoretical maximum limit for data rates over channels with noise."
+            },
+            {
+                topic: "Data Communication - Analog & Digital Signal",
+                question: "Quantization error in digital communication occurs during which stage of digital signal encoding?",
+                options: ["Converting continuous sample amplitudes into discrete voltage levels", "Filtering noise out of the physical copper wire", "Modulating carrier waves over radio frequency channels", "Demultiplexing multiplexed channels at the receiver end"],
+                correct: "Converting continuous sample amplitudes into discrete voltage levels",
+                hint: "It happens when rounding continuous values to the nearest discrete step.",
+                explanation: "Quantization error is the difference between the actual continuous analog sample value and the nearest discrete level assigned to it during PCM encoding."
+            },
+
+            // Data Communication: Bandwidth (11-20)
+            {
+                topic: "Data Communication - Bandwidth",
+                question: "In data communications, how is 'Bandwidth' defined in the context of an analog channel versus a digital channel?",
+                options: ["Analog: Difference between highest and lowest frequencies (Hz); Digital: Maximum data transmission rate (bps)", "Analog: Transmission speed in bps; Digital: Range of light wavelengths (nm)", "Analog: Total power of the carrier wave; Digital: Cable distance in meters", "Analog: Number of voltage pulses per second; Digital: Total available IP addresses"],
+                correct: "Analog: Difference between highest and lowest frequencies (Hz); Digital: Maximum data transmission rate (bps)",
+                hint: "Analog uses Hertz (Hz), whereas Digital uses bits per second (bps).",
+                explanation: "In analog systems, bandwidth is the range of signal frequencies measured in Hertz (Hz). In digital systems, it represents the maximum data transfer capacity measured in bits per second (bps)."
+            },
+            {
+                topic: "Data Communication - Bandwidth",
+                question: "If a channel operates across frequencies ranging from 15 kHz to 45 kHz, what is the bandwidth of this channel?",
+                options: ["30 kHz", "60 kHz", "45 kHz", "15 kHz"],
+                correct: "30 kHz",
+                hint: "Bandwidth = Highest Frequency - Lowest Frequency.",
+                explanation: "Bandwidth = f_high - f_low = 45 kHz - 15 kHz = 30 kHz."
+            },
+            {
+                topic: "Data Communication - Bandwidth",
+                question: "Which term refers to the actual rate of successful data transfer delivered over a communication channel under real-world conditions (excluding protocol overhead)?",
+                options: ["Throughput", "Bandwidth", "Latency", "Frequency"],
+                correct: "Throughput",
+                hint: "It measures real output speed rather than theoretical maximum capacity.",
+                explanation: "Throughput is the actual speed at which data is successfully transmitted over a network in practice, always less than or equal to theoretical bandwidth."
+            },
+            {
+                topic: "Data Communication - Bandwidth",
+                question: "What is the relationship between Bandwidth and Data Transmission Capacity according to fundamental communication theory?",
+                options: ["Data capacity increases proportionally with higher bandwidth", "Data capacity decreases when bandwidth increases", "Bandwidth has no theoretical relationship with data capacity", "Data capacity is inversely proportional to the square of bandwidth"],
+                correct: "Data capacity increases proportionally with higher bandwidth",
+                hint: "More frequency range allows more data bits to pass per second.",
+                explanation: "Both Nyquist and Shannon formulas show that maximum channel capacity is directly proportional to channel bandwidth."
+            },
+            {
+                topic: "Data Communication - Bandwidth",
+                question: "Which metric measures the total time delay required for a data packet to travel from its source to its destination across a network?",
+                options: ["Latency", "Throughput", "Goodput", "Bandwidth"],
+                correct: "Latency",
+                hint: "It is often measured as round-trip time (RTT) in milliseconds.",
+                explanation: "Latency is the total time delay experienced in transmitting a data packet from sender to receiver."
+            },
+            {
+                topic: "Data Communication - Bandwidth",
+                question: "What does the term 'Baseband Transmission' imply regarding bandwidth usage?",
+                options: ["The entire bandwidth of the cable is used to transmit a single digital signal channel", "The bandwidth is divided into multiple frequency channels simultaneously", "Data is modulated using high-frequency analog signals over optical fiber", "Signals are routed exclusively through wireless satellite links"],
+                correct: "The entire bandwidth of the cable is used to transmit a single digital signal channel",
+                hint: "Standard LAN Ethernet cables use Baseband transmission.",
+                explanation: "Baseband transmission sends digital signals using the full bandwidth of the physical medium for a single channel at a time."
+            },
+            {
+                topic: "Data Communication - Bandwidth",
+                question: "In Broadband transmission, how is the transmission media bandwidth utilized?",
+                options: ["Divided into multiple distinct frequency bands to carry multiple channels simultaneously", "Dedicated to a single unmodulated digital signal stream at high speed", "Restricted strictly to voice signals under 4 kHz", "Suppressed to reduce electromagnetic interference across twisted pair cables"],
+                correct: "Divided into multiple distinct frequency bands to carry multiple channels simultaneously",
+                hint: "Think of cable TV carrying hundreds of channels on one coaxial wire.",
+                explanation: "Broadband transmission divides the available medium bandwidth into multiple frequency channels using analog modulation, enabling simultaneous data streams."
+            },
+            {
+                topic: "Data Communication - Bandwidth",
+                question: "Which metric measures the effective application-level data throughput, excluding all protocol headers and retransmissions?",
+                options: ["Goodput", "Bandwidth", "Baud rate", "Bit rate"],
+                correct: "Goodput",
+                hint: "It reflects useful payload delivered to the destination app.",
+                explanation: "Goodput is the rate of useful application payload bits delivered to the recipient, excluding transport/network headers and retransmitted frames."
+            },
+            {
+                topic: "Data Communication - Bandwidth",
+                question: "What is the unit of measurement for Baud Rate?",
+                options: ["Signal changes (symbols) per second", "Bits per second", "Bytes per minute", "Cycles per Hertz"],
+                correct: "Signal changes (symbols) per second",
+                hint: "Baud measures symbol rate, not bit rate.",
+                explanation: "Baud rate measures the number of signal element changes (symbols) per second. Bit rate can be higher if each symbol represents multiple bits."
+            },
+            {
+                topic: "Data Communication - Bandwidth",
+                question: "If a modulation technique transmits 3 bits per signal symbol (e.g., 8-PSK) and the baud rate is 2400 Baud, what is the bit rate?",
+                options: ["7200 bps", "2400 bps", "800 bps", "4800 bps"],
+                correct: "7200 bps",
+                hint: "Bit Rate = Baud Rate * Number of bits per symbol.",
+                explanation: "Bit rate = Baud rate × bits/symbol = 2400 × 3 = 7200 bits per second (bps)."
+            },
+
+            // Data Communication: Transmission Modes (21-30)
+            {
+                topic: "Data Communication - Transmission Modes",
+                question: "In which transmission mode can data flow in only ONE direction permanently, where one device only transmits and the other only receives?",
+                options: ["Simplex", "Half-Duplex", "Full-Duplex", "Multiplex"],
+                correct: "Simplex",
+                hint: "Examples include traditional television broadcasting or a standard keyboard connection.",
+                explanation: "In Simplex mode, communication is unidirectional. One end acts strictly as a transmitter, and the other end acts strictly as a receiver."
+            },
+            {
+                topic: "Data Communication - Transmission Modes",
+                question: "A Walkie-Talkie system where both parties can talk and listen, but ONLY ONE person can speak at a given time, is an example of:",
+                options: ["Half-Duplex transmission", "Simplex transmission", "Full-Duplex transmission", "Asynchronous Simplex"],
+                correct: "Half-Duplex transmission",
+                hint: "Both can transmit, but not simultaneously.",
+                explanation: "In Half-Duplex mode, both endpoints can transmit and receive data, but only one direction can transmit at any given time."
+            },
+            {
+                topic: "Data Communication - Transmission Modes",
+                question: "A standard modern landline or mobile phone conversation allows both parties to speak and listen simultaneously. Which transmission mode is used?",
+                options: ["Full-Duplex", "Half-Duplex", "Simplex", "Quasi-Simplex"],
+                correct: "Full-Duplex",
+                hint: "Simultaneous bidirectional flow.",
+                explanation: "In Full-Duplex mode, data can travel in both directions simultaneously over the same communication link."
+            },
+            {
+                topic: "Data Communication - Transmission Modes",
+                question: "In Serial Data Transmission, how are bits transferred across the physical medium?",
+                options: ["Bits are sent sequentially, one bit at a time, over a single channel/wire", "Multiple bits are sent simultaneously over parallel physical wires", "Data is sent in random order using packet switching", "Data is transmitted in blocks of 1024 bytes synchronously"],
+                correct: "Bits are sent sequentially, one bit at a time, over a single channel/wire",
+                hint: "Serial = step-by-step single queue.",
+                explanation: "Serial transmission sends bits sequentially, one after another, over a single communication channel or conductor."
+            },
+            {
+                topic: "Data Communication - Transmission Modes",
+                question: "Which of the following is a major advantage of Parallel Transmission over Serial Transmission over short distances?",
+                options: ["Faster data transfer speeds because multiple bits are sent simultaneously", "Lower physical cable cost due to fewer conductors", "Complete immunity to timing skew over long distances", "Lower power consumption and zero cross-talk noise"],
+                correct: "Faster data transfer speeds because multiple bits are sent simultaneously",
+                hint: "Sending 8 bits at once on 8 wires vs 1 bit on 1 wire.",
+                explanation: "Parallel transmission transmits multiple bits (e.g., a full byte) concurrently over multiple lines, providing higher speed over short distance internal buses."
+            },
+            {
+                topic: "Data Communication - Transmission Modes",
+                question: "Why is Serial Transmission preferred over Parallel Transmission for long-distance data communications?",
+                options: ["Parallel transmission suffers from 'clock skew' and high crosstalk over long cable lengths", "Serial cables are far thicker and heavier than parallel cables", "Parallel transmission cannot handle high-frequency electrical signals", "Serial transmission requires no synchronization mechanism"],
+                correct: "Parallel transmission suffers from 'clock skew' and high crosstalk over long cable lengths",
+                hint: "Bits arriving out of sync across parallel wires at long range cause errors.",
+                explanation: "At longer distances, timing skew (bits on different wires arriving at slightly different times) and cable crosstalk make parallel transmission unreliable."
+            },
+            {
+                topic: "Data Communication - Transmission Modes",
+                question: "In Asynchronous Serial Transmission, what mechanisms are used to delineate the beginning and end of a character frame?",
+                options: ["Start bits and Stop bits", "Preamble headers and FCS trailers", "Clock signal line and parity bus", "SYN synchronization characters"],
+                correct: "Start bits and Stop bits",
+                hint: "Framing bits placed around a 7 or 8-bit ASCII character.",
+                explanation: "Asynchronous transmission frames each byte/character with a Start bit (0) at the beginning and one or more Stop bits (1) at the end."
+            },
+            {
+                topic: "Data Communication - Transmission Modes",
+                question: "Which characteristic best describes Synchronous Transmission?",
+                options: ["Data is transmitted in continuous blocks synchronized by a common clock pulse", "Data is sent character by character with idle time between characters", "Each character is enclosed in start and stop bits without clock signals", "Communication occurs strictly in one direction using analog carriers"],
+                correct: "Data is transmitted in continuous blocks synchronized by a common clock pulse",
+                hint: "Sender and receiver share a shared clock line or clock embedding.",
+                explanation: "Synchronous transmission sends data frames in continuous streams where sender and receiver clocks are synchronized without start/stop framing bits."
+            },
+            {
+                topic: "Data Communication - Transmission Modes",
+                question: "Which transmission direction mode is used by a traditional computer keyboard sending keystrokes to the CPU unit?",
+                options: ["Simplex", "Half-Duplex", "Full-Duplex", "Multiplexed Full-Duplex"],
+                correct: "Simplex",
+                hint: "Keyboards only send data into the PC; they never receive keystroke data back.",
+                explanation: "A keyboard sending keystroke data to a CPU is a classic example of Simplex transmission (unidirectional)."
+            },
+            {
+                topic: "Data Communication - Transmission Modes",
+                question: "Assertion (A): Synchronous transmission has higher data transfer efficiency than Asynchronous transmission.\nReason (R): Synchronous transmission does not require start and stop bits for every byte.",
+                options: ["Both (A) and (R) are true and (R) is the correct explanation of (A)", "Both (A) and (R) are true but (R) is NOT the correct explanation of (A)", "(A) is true but (R) is false", "(A) is false but (R) is true"],
+                correct: "Both (A) and (R) are true and (R) is the correct explanation of (A)",
+                hint: "Start/stop bits add ~20-25% overhead in asynchronous mode.",
+                explanation: "Asynchronous mode adds start/stop framing overhead (~20-25%). Eliminating these bits in synchronous block transfers increases efficiency."
+            },
+
+            // Data Communication: Modulation (31-40)
+            {
+                topic: "Data Communication - Modulation",
+                question: "What is the fundamental purpose of 'Modulation' in electronic communication?",
+                options: ["To modify a high-frequency carrier wave to encode information contained in a lower-frequency baseband signal", "To convert digital router addresses into physical MAC addresses", "To amplify DC current levels to reduce power loss across telephone lines", "To split a physical fiber cable into multiple glass strands"],
+                correct: "To modify a high-frequency carrier wave to encode information contained in a lower-frequency baseband signal",
+                hint: "Carrier wave characteristics (amplitude, frequency, phase) are modified.",
+                explanation: "Modulation superimposes a low-frequency data (baseband) signal onto a high-frequency carrier wave for efficient wireless or wired transmission."
+            },
+            {
+                topic: "Data Communication - Modulation",
+                question: "In Amplitude Modulation (AM), which characteristic of the carrier wave is varied in accordance with the modulating signal?",
+                options: ["Amplitude", "Frequency", "Phase angle", "Wavelength"],
+                correct: "Amplitude",
+                hint: "The height/peak voltage of the carrier wave changes.",
+                explanation: "In Amplitude Modulation (AM), the maximum amplitude (height) of the carrier signal is modified proportional to the baseband signal strength while frequency remains constant."
+            },
+            {
+                topic: "Data Communication - Modulation",
+                question: "Which digital modulation scheme shifts the phase of the carrier sine wave to represent binary 0s and 1s?",
+                options: ["Phase Shift Keying (PSK)", "Amplitude Shift Keying (ASK)", "Frequency Shift Keying (FSK)", "Pulse Width Modulation (PWM)"],
+                correct: "Phase Shift Keying (PSK)",
+                hint: "Phase angle (e.g., 0 degrees vs 180 degrees) changes.",
+                explanation: "PSK changes the phase of the carrier frequency signal to represent digital bit values."
+            },
+            {
+                topic: "Data Communication - Modulation",
+                question: "Frequency Shift Keying (FSK) represents binary 0 and binary 1 using:",
+                options: ["Two distinct discrete frequencies", "Two distinct discrete voltage amplitudes", "Two phase shifts (0° and 180°)", "Varying pulse widths"],
+                correct: "Two distinct discrete frequencies",
+                hint: "It switches between frequency f1 and frequency f2.",
+                explanation: "FSK assigns two different high-frequency carrier tones (e.g., f1 for binary 1 and f2 for binary 0)."
+            },
+            {
+                topic: "Data Communication - Modulation",
+                question: "Which advanced modulation scheme combines BOTH Amplitude Modulation (AM) and Phase Modulation (PM) to transmit multiple bits per symbol (used in modern Wi-Fi and high-speed modems)?",
+                options: ["Quadrature Amplitude Modulation (QAM)", "Binary Phase Shift Keying (BPSK)", "Frequency Modulation (FM)", "Pulse Amplitude Modulation (PAM)"],
+                correct: "Quadrature Amplitude Modulation (QAM)",
+                hint: "Constellation diagrams (e.g., 16-QAM, 64-QAM, 256-QAM) plot these symbols.",
+                explanation: "QAM varies both the amplitude and phase of two carrier waves (in quadrature) to transmit multiple bits per symbol, yielding high data efficiency."
+            },
+            {
+                topic: "Data Communication - Modulation",
+                question: "Compared to Amplitude Modulation (AM), Frequency Modulation (FM) offers what major advantage?",
+                options: ["Better immunity to electrical noise and interference", "Lower required frequency bandwidth", "Simpler transmitter circuit design", "Slower attenuation over extreme distance"],
+                correct: "Better immunity to electrical noise and interference",
+                hint: "Noise usually affects signal amplitude (voltage spikes), not frequency.",
+                explanation: "Most environmental noise alters signal amplitude. Because FM decodes information from frequency changes, it is far less susceptible to amplitude-based noise."
+            },
+            {
+                topic: "Data Communication - Modulation",
+                question: "In standard FM broadcasting, if the carrier frequency is 100 MHz and the modulating signal alters it between 99.92 MHz and 100.08 MHz, what is the maximum Frequency Deviation?",
+                options: ["80 kHz (0.08 MHz)", "160 kHz", "100 MHz", "200 kHz"],
+                correct: "80 kHz (0.08 MHz)",
+                hint: "Deviation = |f_peak - f_carrier|.",
+                explanation: "Frequency deviation is the shift from the center carrier frequency: 100.08 - 100 = 0.08 MHz or 80 kHz."
+            },
+            {
+                topic: "Data Communication - Modulation",
+                question: "Which scheme is considered an analog pulse modulation technique where the duration of each pulse is varied proportional to the amplitude of the analog signal?",
+                options: ["Pulse Width Modulation (PWM)", "Pulse Code Modulation (PCM)", "Amplitude Shift Keying (ASK)", "Frequency Shift Keying (FSK)"],
+                correct: "Pulse Width Modulation (PWM)",
+                hint: "Also known as Pulse Duration Modulation (PDM).",
+                explanation: "In PWM (Pulse Width Modulation), the pulse width or duty cycle changes according to the instantaneous voltage of the modulating signal."
+            },
+            {
+                topic: "Data Communication - Modulation",
+                question: "In Delta Modulation (DM), how many bits are used per sample step to represent the signal transition?",
+                options: ["1 bit", "8 bits", "16 bits", "4 bits"],
+                correct: "1 bit",
+                hint: "It only records whether the current sample is higher (+1) or lower (-1) than the previous.",
+                explanation: "Delta Modulation (DM) is a simplified form of PCM where a single bit (1 or 0) is transmitted indicating an increase or decrease in signal step relative to the previous sample."
+            },
+            {
+                topic: "Data Communication - Modulation",
+                question: "What signal distortion occurs in Delta Modulation when the analog input signal changes too rapidly for the staircase step size to keep up?",
+                options: ["Slope Overload Distortion", "Granular Noise", "Cross-talk", "Quantization Aliasing"],
+                correct: "Slope Overload Distortion",
+                hint: "The slope of the analog signal exceeds the maximum staircase rate.",
+                explanation: "Slope overload distortion occurs when the input signal changes faster than the Delta Modulator's staircase step rate can track."
+            },
+
+            // Data Communication: Multiplexing (41-50)
+            {
+                topic: "Data Communication - Multiplexing",
+                question: "What is the primary function of a Multiplexer (MUX)?",
+                options: ["To combine multiple input signal channels into a single high-speed transmission link", "To split a single incoming stream into multiple destination outputs", "To re-transmit degraded signals at higher power levels", "To route network packets based on IP destination addresses"],
+                correct: "To combine multiple input signal channels into a single high-speed transmission link",
+                hint: "Many-to-one function.",
+                explanation: "A Multiplexer (MUX) combines data signals from multiple separate sources into a single shared physical channel to maximize medium utilization."
+            },
+            {
+                topic: "Data Communication - Multiplexing",
+                question: "Which multiplexing technique divides the available channel bandwidth into distinct frequency slots separated by guard bands (commonly used in analog TV and FM radio)?",
+                options: ["Frequency Division Multiplexing (FDM)", "Time Division Multiplexing (TDM)", "Wavelength Division Multiplexing (WDM)", "Code Division Multiplexing (CDM)"],
+                correct: "Frequency Division Multiplexing (FDM)",
+                hint: "Analog channels assigned to different frequency ranges.",
+                explanation: "FDM assigns distinct frequency sub-bands to individual signal channels over a shared physical channel."
+            },
+            {
+                topic: "Data Communication - Multiplexing",
+                question: "In Synchronous Time Division Multiplexing (TDM), what happens if a connected input device has no data to send during its assigned time slot?",
+                options: ["The assigned time slot remains empty/idle, resulting in wasted bandwidth", "The slot is dynamically reallocated to the next active device", "The multiplexer halts transmission until data becomes available", "The time slot is converted into an analog carrier wave"],
+                correct: "The assigned time slot remains empty/idle, resulting in wasted bandwidth",
+                hint: "Time slots are statically fixed per device regardless of activity.",
+                explanation: "In Synchronous TDM, time slots are strictly allocated beforehand. If an input line is idle, its assigned time slot goes unused."
+            },
+            {
+                topic: "Data Communication - Multiplexing",
+                question: "Which multiplexing method allocates time slots dynamically on-demand only to active input sources, thereby maximizing link efficiency?",
+                options: ["Asynchronous (Statistical) TDM", "Synchronous TDM", "Frequency Division Multiplexing (FDM)", "Dense Wavelength Division Multiplexing (DWDM)"],
+                correct: "Asynchronous (Statistical) TDM",
+                hint: "It uses statistical allocation based on traffic demand.",
+                explanation: "Asynchronous or Statistical TDM allocates time slots dynamically to devices that currently have data ready to transmit, avoiding wasted idle slots."
+            },
+            {
+                topic: "Data Communication - Multiplexing",
+                question: "Which multiplexing technique is specifically designed for optical fiber channels, combining light signals of different wavelengths (colors)?",
+                options: ["Wavelength Division Multiplexing (WDM)", "Frequency Division Multiplexing (FDM)", "Code Division Multiple Access (CDMA)", "Time Division Multiplexing (TDM)"],
+                correct: "Wavelength Division Multiplexing (WDM)",
+                hint: "Optics and light spectrum.",
+                explanation: "WDM (Wavelength Division Multiplexing) combines multiple laser or LED light beams of varying wavelengths onto a single optical fiber strand."
+            },
+            {
+                topic: "Data Communication - Multiplexing",
+                question: "What is the purpose of 'Guard Bands' in Frequency Division Multiplexing (FDM)?",
+                options: ["To prevent signal overlap and cross-channel interference between adjacent frequency channels", "To act as digital error-checking codes between data bytes", "To synchronize the internal clock frequencies of sender and receiver", "To supply DC power along the copper conductor"],
+                correct: "To prevent signal overlap and cross-channel interference between adjacent frequency channels",
+                hint: "Unused frequency buffer strips between active channels.",
+                explanation: "Guard bands are narrow, unused frequency bands left between adjacent channels in FDM to prevent crosstalk/interfering overlaps."
+            },
+            {
+                topic: "Data Communication - Multiplexing",
+                question: "Which multiplexing technology assigns a unique binary orthogonal code sequence (pseudo-random noise code) to each user, allowing all users to share the exact same frequency band simultaneously?",
+                options: ["Code Division Multiplexing (CDM / CDMA)", "Time Division Multiplexing (TDM)", "Frequency Division Multiplexing (FDM)", "Spatial Division Multiplexing (SDM)"],
+                correct: "Code Division Multiplexing (CDM / CDMA)",
+                hint: "Used in 3G mobile cellular systems.",
+                explanation: "CDM/CDMA assigns distinct orthogonal coding sequences to users, enabling simultaneous transmission over the same frequency band without mutual interference."
+            },
+            {
+                topic: "Data Communication - Multiplexing",
+                question: "Dense Wavelength Division Multiplexing (DWDM) differs from Coarse Wavelength Division Multiplexing (CWDM) primarily in that DWDM:",
+                options: ["Packs wavelengths much more tightly with narrower channel spacing, supporting far more channels", "Uses electrical copper cables instead of optical fibers", "Operates exclusively over short distance Local Area Networks", "Does not require optical amplifiers"],
+                correct: "Packs wavelengths much more tightly with narrower channel spacing, supporting far more channels",
+                hint: "DWDM allows up to 80+ channels on a single fiber core.",
+                explanation: "DWDM features much tighter wavelength spacing (less than 1 nm apart), allowing significantly more channels to be multiplexed over long-haul fiber optic cables."
+            },
+            {
+                topic: "Data Communication - Multiplexing",
+                question: "In T-1 carrier telephone systems (used in Digital TDM hierarchy), how many voice channels are multiplexed together?",
+                options: ["24 channels", "12 channels", "30 channels", "64 channels"],
+                correct: "24 channels",
+                hint: "T-1 line provides 1.544 Mbps total bandwidth.",
+                explanation: "A standard North American T-1 trunk line uses TDM to multiplex 24 voice channels (each 64 kbps), operating at a combined rate of 1.544 Mbps."
+            },
+            {
+                topic: "Data Communication - Multiplexing",
+                question: "In an E-1 carrier telephone system (European standard digital hierarchy), how many channels are multiplexed and what is the total bit rate?",
+                options: ["32 channels (30 voice/data + 2 framing/signaling), operating at 2.048 Mbps", "24 channels, operating at 1.544 Mbps", "64 channels, operating at 4.096 Mbps", "16 channels, operating at 1.024 Mbps"],
+                correct: "32 channels (30 voice/data + 2 framing/signaling), operating at 2.048 Mbps",
+                hint: "E-1 uses 30 channels for user traffic plus 2 control channels.",
+                explanation: "The European E-1 standard multiplexes 32 channels of 64 kbps each (30 payload channels + 2 control/sync channels) yielding a aggregate throughput of 2.048 Mbps."
+            },
+
+            // Networking: Networks Overview & Types (LAN, MAN, WAN, PAN, VPN, Intranet, Extranet) (51-70)
+            {
+                topic: "Networking - Network Types",
+                question: "Which type of network connects devices over a very small personal space, typically within a range of 10 meters (33 feet) using technologies like Bluetooth or Zigbee?",
+                options: ["PAN (Personal Area Network)", "LAN (Local Area Network)", "MAN (Metropolitan Area Network)", "WAN (Wide Area Network)"],
+                correct: "PAN (Personal Area Network)",
+                hint: "Connecting your wireless earbuds to your smartphone.",
+                explanation: "A PAN (Personal Area Network) covers an individual's immediate workspace, typically up to 10 meters, commonly utilizing Bluetooth or ultra-wideband."
+            },
+            {
+                topic: "Networking - Network Types",
+                question: "A network connecting computer systems within a single room, office suite, or school building is classified as a:",
+                options: ["LAN (Local Area Network)", "WAN (Wide Area Network)", "MAN (Metropolitan Area Network)", "PAN (Personal Area Network)"],
+                correct: "LAN (Local Area Network)",
+                hint: "High speed, geographically restricted to a single building/campus.",
+                explanation: "A LAN (Local Area Network) spans a restricted geographic area like an office building, offering high data rates and low latency."
+            },
+            {
+                topic: "Networking - Network Types",
+                question: "Which network category spans an entire city or large municipal region, often connecting multiple branch offices using cable TV networks or fiber lines?",
+                options: ["MAN (Metropolitan Area Network)", "LAN (Local Area Network)", "PAN (Personal Area Network)", "SAN (Storage Area Network)"],
+                correct: "MAN (Metropolitan Area Network)",
+                hint: "Covers a municipal area / citywide scale.",
+                explanation: "A MAN (Metropolitan Area Network) covers a larger geographic zone than a LAN but smaller than a WAN, typically spanning a town or city (e.g., municipal cable systems)."
+            },
+            {
+                topic: "Networking - Network Types",
+                question: "The Internet is the world's largest implementation of which network type?",
+                options: ["WAN (Wide Area Network)", "LAN (Local Area Network)", "MAN (Metropolitan Area Network)", "PAN (Personal Area Network)"],
+                correct: "WAN (Wide Area Network)",
+                hint: "Spans global countries and continents.",
+                explanation: "A WAN (Wide Area Network) covers vast geographic distances crossing country and continental boundaries. The global Internet is the ultimate example of a WAN."
+            },
+            {
+                topic: "Networking - Network Types",
+                question: "What is a Virtual Private Network (VPN) primarily used for?",
+                options: ["Establishing a secure, encrypted tunnel over a public network (like the Internet) for data privacy", "Connecting local devices physically without network interface cards", "Increasing wireless physical signal frequency from 2.4 GHz to 5 GHz", "Converting fiber optical signals into coaxial cable TV signals"],
+                correct: "Establishing a secure, encrypted tunnel over a public network (like the Internet) for data privacy",
+                hint: "It creates a private encrypted tunnel across untrusted networks.",
+                explanation: "A VPN (Virtual Private Network) constructs an encrypted communication tunnel over public infrastructures (such as the Internet) to securely transmit sensitive corporate or private traffic."
+            },
+            {
+                topic: "Networking - Network Types",
+                question: "Which network infrastructure is private to an organization and accessible ONLY by its internal authorized employees?",
+                options: ["Intranet", "Extranet", "Internet", "Public Ethernet"],
+                correct: "Intranet",
+                hint: "Internal corporate portal restricted strictly to employees inside the firewall.",
+                explanation: "An Intranet is a private internal network built on TCP/IP protocols accessible exclusively by authorized personnel within an enterprise."
+            },
+            {
+                topic: "Networking - Network Types",
+                question: "An organization allows external vendors, trusted partners, and clients controlled access to specific portions of its private internal network. This setup is called an:",
+                options: ["Extranet", "Intranet", "Ethernet", "Darknet"],
+                correct: "Extranet",
+                hint: "It extends internal intranet access selectively to trusted external partners.",
+                explanation: "An Extranet is a controlled private network that allows trusted external entities (like suppliers, vendors, or partners) limited access to an enterprise intranet."
+            },
+            {
+                topic: "Networking - Network Types",
+                question: "Which protocol is fundamental for creating secure, encrypted VPN tunnels at the Network layer of the OSI model?",
+                options: ["IPsec (Internet Protocol Security)", "HTTP", "FTP", "SMTP"],
+                correct: "IPsec (Internet Protocol Security)",
+                hint: "Operates at Layer 3 to provide encryption and authentication for IP packets.",
+                explanation: "IPsec operates at the Network Layer (Layer 3) to authenticate and encrypt IP data packets, forming a primary foundation for network-to-network VPNs."
+            },
+            {
+                topic: "Networking - Network Types",
+                question: "Which network architecture type designates dedicated high-speed storage devices connected to servers via fiber channels, separate from the primary LAN traffic?",
+                options: ["SAN (Storage Area Network)", "MAN (Metropolitan Area Network)", "PAN (Personal Area Network)", "WLAN (Wireless LAN)"],
+                correct: "SAN (Storage Area Network)",
+                hint: "Designed specifically for block-level data storage access.",
+                explanation: "A SAN (Storage Area Network) is a specialized high-speed network that provides block-level network access to consolidated data storage systems."
+            },
+            {
+                topic: "Networking - Network Types",
+                question: "Consider the following statement matching:\n1. PAN - Bluetooth connection to smart watch\n2. LAN - Computers connected within a bank branch\n3. WAN - ATMs connected across the whole country\nWhich of the above matches are CORRECT?",
+                options: ["1, 2, and 3", "1 and 2 only", "2 and 3 only", "1 and 3 only"],
+                correct: "1, 2, and 3",
+                hint: "All three reflect accurate real-world scale classifications.",
+                explanation: "All three pairs correctly illustrate the relative geographic scale: PAN (personal device), LAN (single building/branch), and WAN (nationwide network)."
+            },
+            {
+                topic: "Networking - Network Types",
+                question: "Which standard defines Wireless Local Area Networks (WLAN / Wi-Fi)?",
+                options: ["IEEE 802.11", "IEEE 802.3", "IEEE 802.15", "IEEE 802.1"],
+                correct: "IEEE 802.11",
+                hint: "Ethernet is 802.3; Wi-Fi is 802.11.",
+                explanation: "The IEEE 802.11 standard family specifies media access control and physical layer specifications for implementing Wireless LAN (Wi-Fi) communications."
+            },
+            {
+                topic: "Networking - Network Types",
+                question: "Which standard defines traditional wired Ethernet LANs?",
+                options: ["IEEE 802.3", "IEEE 802.11", "IEEE 802.15.1", "IEEE 802.16"],
+                correct: "IEEE 802.3",
+                hint: "The standard for copper/fiber wired Ethernet networks.",
+                explanation: "IEEE 802.3 is the working group standard that defines physical layer and data link layer media access control for wired Ethernet."
+            },
+            {
+                topic: "Networking - Network Types",
+                question: "Which technology allows a VPN client to encapsulate an IP packet within another IP packet to safely traverse public networks?",
+                options: ["Tunneling", "Multiplexing", "Subnetting", "Frequency Hopping"],
+                correct: "Tunneling",
+                hint: "Encapsulating one network protocol payload inside another.",
+                explanation: "Tunneling wraps a data packet inside another carrier packet structure to securely transmit it across a public or incompatible network."
+            },
+            {
+                topic: "Networking - Network Types",
+                question: "What is the primary difference between the Internet and an Intranet?",
+                options: ["Internet is public and global; Intranet is private and restricted to an organization", "Internet uses TCP/IP while Intranet uses OSI protocols", "Internet uses fiber optics while Intranet uses coaxial cable only", "Internet cannot carry voice traffic while Intranet can"],
+                correct: "Internet is public and global; Intranet is private and restricted to an organization",
+                hint: "Think about public access vs private enterprise access.",
+                explanation: "The Internet is globally accessible to anyone, whereas an Intranet uses identical Web/TCP-IP technology but is restricted to authorized internal corporate members."
+            },
+            {
+                topic: "Networking - Network Types",
+                question: "Which VPN protocol operates at the Transport Layer using SSL/TLS to allow web-browser based access without requiring dedicated client software installation?",
+                options: ["SSL/TLS VPN", "L2TP", "PPTP", "IPsec"],
+                correct: "SSL/TLS VPN",
+                hint: "Uses browser security mechanisms (HTTPS).",
+                explanation: "SSL/TLS VPNs operate through standard web browsers (using HTTPS), granting user access to web apps and network portals without dedicated software clients."
+            },
+            {
+                topic: "Networking - Network Types",
+                question: "Which category of Wireless Personal Area Network (WPAN) is defined by IEEE standard 802.15.1?",
+                options: ["Bluetooth", "Wi-Fi", "WiMAX", "Ethernet"],
+                correct: "Bluetooth",
+                hint: "Short-range WPAN technology.",
+                explanation: "IEEE 802.15.1 standardizes short-range wireless communication specifications originally based on Bluetooth technology."
+            },
+            {
+                topic: "Networking - Network Types",
+                question: "A Campus Area Network (CAN) is best described as:",
+                options: ["An interconnection of multiple LANs within a defined geographic educational or corporate campus", "A single network connecting multiple continents via submarine cables", "A wireless PAN connecting wearable devices", "An isolated storage network for database backups"],
+                correct: "An interconnection of multiple LANs within a defined geographic educational or corporate campus",
+                hint: "Connects separate university or office buildings in close proximity.",
+                explanation: "A CAN (Campus Area Network) bridges separate local area networks across contiguous enterprise or university buildings within a localized geographic campus."
+            },
+            {
+                topic: "Networking - Network Types",
+                question: "Which network access control technology requires remote users to authenticate via multi-factor credentials before establishing an encrypted SSL/IPsec connection?",
+                options: ["Remote Access VPN", "Site-to-Site VPN", "Baseband Switching", "Passive Hub Routing"],
+                correct: "Remote Access VPN",
+                hint: "Used by telecommuters/remote employees to log into office networks.",
+                explanation: "Remote Access VPN allows individual remote workers to authenticate securely and connect into their corporate network perimeter from off-site."
+            },
+            {
+                topic: "Networking - Network Types",
+                question: "Which connection model connects two fixed corporate office networks permanently across the Internet using secure hardware VPN gateways?",
+                options: ["Site-to-Site VPN", "Remote Access VPN", "Ad-hoc Peer-to-Peer Network", "Simplex WAN"],
+                correct: "Site-to-Site VPN",
+                hint: "Branch office network connected to Headquarter network permanently.",
+                explanation: "Site-to-Site VPN links whole networks together (e.g., a branch office network to headquarters) transparently via dedicated VPN routers/gateways."
+            },
+            {
+                topic: "Networking - Network Types",
+                question: "Which statement regarding Extranet security is correct?",
+                options: ["Extranets typically utilize firewalls, user authentication, and VPNs to control access", "Extranets are completely unencrypted because external clients lack certificates", "Extranets replace internal LAN switches with passive hubs", "Extranets run exclusively on analog dial-up modems"],
+                correct: "Extranets typically utilize firewalls, user authentication, and VPNs to control access",
+                hint: "Allowing external partners in requires tight perimeter defense.",
+                explanation: "Because Extranets grant access to outside partners, strict security infrastructure (firewalls, DMZs, authentication, and encrypted VPNs) is required."
+            },
+
+            // Networking: Topologies (Bus, Star, Ring, Mesh, Tree) (71-100)
+            {
+                topic: "Networking - Topologies",
+                question: "In a physical Bus Topology, what device must be attached to both physical ends of the backbone central coaxial cable to prevent signal reflection?",
+                options: ["Terminator", "Repeater", "Switch", "Attenuator"],
+                correct: "Terminator",
+                hint: "It absorbs leftover electrical signals at the end of the line.",
+                explanation: "Terminators are installed at both ends of a bus line to absorb signal waves, preventing signal bounce/reflection that degrades communication."
+            },
+            {
+                topic: "Networking - Topologies",
+                question: "What is the primary vulnerability of a Bus Topology?",
+                options: ["A break or fault in the main central cable collapses the entire network", "Failure of an individual workstation brings down the whole bus", "It requires excessive cabling compared to Mesh topology", "It requires expensive central intelligent switches"],
+                correct: "A break or fault in the main central cable collapses the entire network",
+                hint: "Single Point of Failure lies in the backbone wire.",
+                explanation: "If the central backbone cable in a bus topology snaps or fails, the whole network segment is severed and stops functioning."
+            },
+            {
+                topic: "Networking - Topologies",
+                question: "In a Star Topology, all end nodes are directly connected to a central device. What is this central device usually?",
+                options: ["Switch or Hub", "Terminator", "Modem", "Network Interface Card"],
+                correct: "Switch or Hub",
+                hint: "Central aggregating hardware unit.",
+                explanation: "In Star topology, every network computer connects directly via point-to-point links to a central central hub or switch."
+            },
+            {
+                topic: "Networking - Topologies",
+                question: "If a single network cable connected to a workstation breaks in a Star Topology network, what is the impact on the rest of the network?",
+                options: ["Only that specific workstation loses connectivity; the rest of the network operates normally", "The entire network crashes immediately", "The central switch shuts down automatically", "Data packets start looping endlessly across remaining nodes"],
+                correct: "Only that specific workstation loses connectivity; the rest of the network operates normally",
+                hint: "Dedicated point-to-point drop cables isolate individual node failures.",
+                explanation: "Star topology isolates nodes with individual cables to the central switch. A single drop cable failure only affects that individual attached node."
+            },
+            {
+                topic: "Networking - Topologies",
+                question: "In a Fully Connected Mesh Topology with 'N' nodes, what is the exact formula to calculate the total number of physical duplex link cables required?",
+                options: ["N(N - 1) / 2", "N - 1", "N(N + 1) / 2", "2N - 1"],
+                correct: "N(N - 1) / 2",
+                hint: "Combinations of N nodes taken 2 at a time: nC2.",
+                explanation: "For N devices, each connects to (N-1) other devices. Dividining by 2 for duplex lines yields Total Links = N(N - 1) / 2."
+            },
+            {
+                topic: "Networking - Topologies",
+                question: "How many physical point-to-point links (duplex cable lines) are needed to construct a Fully Connected Mesh Network consisting of 10 computers?",
+                options: ["45", "90", "10", "20"],
+                correct: "45",
+                hint: "Apply formula: N(N - 1) / 2 where N = 10.",
+                explanation: "Number of links = 10 * (10 - 1) / 2 = 10 * 9 / 2 = 45 cables."
+            },
+            {
+                topic: "Networking - Topologies",
+                question: "How many physical I/O ports must each individual host machine possess in a Fully Connected Mesh network of 'N' devices?",
+                options: ["N - 1", "N", "N / 2", "N(N - 1)"],
+                correct: "N - 1",
+                hint: "Each host must connect to every other host in the network.",
+                explanation: "In a full mesh network, every device connects directly to every other device except itself, requiring (N - 1) ports per node."
+            },
+            {
+                topic: "Networking - Topologies",
+                question: "In a Ring Topology, how does data typically travel between intermediate nodes?",
+                options: ["In one direction (unidirectional) pass-through from node to node using repeaters", "Broadcasted randomly across all physical links simultaneously", "Routed strictly through a central intelligent switch core", "Transmitted via wireless radio frequency signals"],
+                correct: "In one direction (unidirectional) pass-through from node to node using repeaters",
+                hint: "Token Ring circulates data in a circular loop.",
+                explanation: "In Ring topology, data packets travel around the closed circular loop in one direction (or dual ring for redundancy), with each node acting as a repeater."
+            },
+            {
+                topic: "Networking - Topologies",
+                question: "Which media access mechanism is traditionally used in a Ring Topology (IEEE 802.5) to prevent packet collisions?",
+                options: ["Token Passing", "CSMA/CD", "CSMA/CA", "Slotted ALOHA"],
+                correct: "Token Passing",
+                hint: "Nodes must acquire a small frame called a 'token' before transmitting.",
+                explanation: "Token Ring uses a special bit pattern (token) circulating around the ring. Only the node holding the token is permitted to transmit data, eliminating collisions."
+            },
+            {
+                topic: "Networking - Topologies",
+                question: "Tree Topology is a hierarchical combination/hybrid of which two basic physical topologies?",
+                options: ["Star Topology and Bus Topology", "Ring Topology and Mesh Topology", "Bus Topology and Ring Topology", "Mesh Topology and Star Topology"],
+                correct: "Star Topology and Bus Topology",
+                hint: "Multiple star networks connected along a central backbone bus cable.",
+                explanation: "Tree topology connects multiple Star-configured subnets together along a central Bus backbone cable structure."
+            },
+            {
+                topic: "Networking - Topologies",
+                question: "Which topology offers the absolute HIGHEST level of fault tolerance and redundancy at the cost of maximum cable complexity and expense?",
+                options: ["Full Mesh Topology", "Bus Topology", "Star Topology", "Ring Topology"],
+                correct: "Full Mesh Topology",
+                hint: "Every node has dedicated direct redundant links to all other nodes.",
+                explanation: "Full Mesh topology provides optimal fault tolerance because dedicated alternate links exist between all nodes. If one link fails, traffic reroutes seamlessly."
+            },
+            {
+                topic: "Networking - Topologies",
+                question: "What major bottleneck occurs if the central switch unit in a Star Topology fails completely?",
+                options: ["All connected devices lose network connectivity entirely (Single Point of Failure)", "The network automatically switches into a Ring topology", "Only the host connected to Port 1 stops functioning", "Data transmission speed drops by 50%"],
+                correct: "All connected devices lose network connectivity entirely (Single Point of Failure)",
+                hint: "The central hub/switch is the single point of failure.",
+                explanation: "In Star topology, if the central hub or switch fails, the whole network segment relying on that switch crashes."
+            },
+            {
+                topic: "Networking - Topologies",
+                question: "Dual-Ring Topology (such as FDDI - Fiber Distributed Data Interface) provides fault tolerance by:",
+                options: ["Using a secondary counter-rotating ring that takes over if the primary ring breaks", "Converting the ring into a full mesh network during link failures", "Doubling the bandwidth of a bus backbone cable", "Using wireless backup signals between adjacent hosts"],
+                correct: "Using a secondary counter-rotating ring that takes over if the primary ring breaks",
+                hint: "Two concentric rings carrying data in opposite directions.",
+                explanation: "FDDI uses two concentric rings (primary and secondary) rotating in opposite directions. If a cable breaks, the rings wrap back to form a single functioning loop."
+            },
+            {
+                topic: "Networking - Topologies",
+                question: "Which collision detection protocol was historically used in Bus networks (Ethernet IEEE 802.3) to handle simultaneous transmissions?",
+                options: ["CSMA/CD (Carrier Sense Multiple Access with Collision Detection)", "CSMA/CA (Carrier Sense Multiple Access with Collision Avoidance)", "Token Passing", "Polled Multiplexing"],
+                correct: "CSMA/CD (Carrier Sense Multiple Access with Collision Detection)",
+                hint: "Devices listen before talking and detect voltage spikes if collisions occur.",
+                explanation: "Wired Ethernet on shared bus links uses CSMA/CD: nodes listen to the channel before transmitting and detect electrical collisions to trigger backoff retransmissions."
+            },
+            {
+                topic: "Networking - Topologies",
+                question: "Which physical network layout requires the MINIMUM total cable length when connecting scattered computers in a simple linear order?",
+                options: ["Bus Topology", "Full Mesh Topology", "Star Topology", "Tree Topology"],
+                correct: "Bus Topology",
+                hint: "A single short line wire connecting nodes sequentially.",
+                explanation: "Bus topology uses a single backbone cable to drop short lines to nodes, making it cable-efficient for basic simple linear connections."
+            },
+            {
+                topic: "Networking - Topologies",
+                question: "Match List-I (Topology) with List-II (Key Feature):\nA. Star - 1. Central Hub/Switch node\nB. Mesh - 2. High redundancy & dedicated links\nC. Bus - 3. Single linear cable with terminators\nD. Ring - 4. Token passing circulation\nSelect the correct option:",
+                options: ["A-1, B-2, C-3, D-4", "A-2, B-1, C-4, D-3", "A-1, B-3, C-2, D-4", "A-3, B-2, C-1, D-4"],
+                correct: "A-1, B-2, C-3, D-4",
+                hint: "Star = Central hub; Mesh = Redundancy; Bus = Linear line; Ring = Token passing.",
+                explanation: "Star matches central hub (A-1). Mesh offers maximum link redundancy (B-2). Bus relies on linear backbone with terminators (C-3). Ring uses token passing (D-4)."
+            },
+            {
+                topic: "Networking - Topologies",
+                question: "In a Hybrid Topology, what is the network structure composed of?",
+                options: ["A combination of two or more different fundamental network topologies", "A mix of wireless Bluetooth and satellite links only", "A network with both Linux and Windows operating systems", "A setup using both IPv4 and IPv6 addresses"],
+                correct: "A combination of two or more different fundamental network topologies",
+                hint: "Integrating distinct physical structures (e.g., Star-Ring or Star-Bus).",
+                explanation: "A Hybrid topology combines two or more different physical topologies (e.g., Star-Bus or Star-Ring) to suit specific organizational layouts."
+            },
+            {
+                topic: "Networking - Topologies",
+                question: "Why is troubleshooting cable faults in a physical Bus Topology usually more difficult than in a Star Topology?",
+                options: ["A fault anywhere on the central bus disrupts the signal across the entire segment, making isolation harder", "Bus topology cables carry digital signals embedded inside high-voltage AC current", "Star topology switches do not log port errors", "Bus networks hide physical MAC addresses"],
+                correct: "A fault anywhere on the central bus disrupts the signal across the entire segment, making isolation harder",
+                hint: "Because a single cable fault affects every node, locating the exact break requires testing line segments.",
+                explanation: "In a Bus network, a break degrades or drops the entire shared channel, making pinpointing the exact physical cut location tricky without specialized diagnostic tools (like TDRs)."
+            },
+            {
+                topic: "Networking - Topologies",
+                question: "In a Tree Topology, what happens if a leaf node (end user PC) fails versus if a root/parent hub node fails?",
+                options: ["Leaf node failure affects only itself; Parent hub failure disables its entire dependent sub-tree branch", "Leaf node failure crashes the network; Parent hub failure affects nothing", "Both failures cause the exact same total network blackout", "Parent hub failure automatically converts the branch into a Ring"],
+                correct: "Leaf node failure affects only itself; Parent hub failure disables its entire dependent sub-tree branch",
+                hint: "Think of a hierarchical organization chart tree structure.",
+                explanation: "In hierarchical tree topologies, a leaf failure only isolates that endpoint, whereas a parent/branch node failure disconnects the whole subtree attached beneath it."
+            },
+            {
+                topic: "Networking - Topologies",
+                question: "Which of the following statements about Mesh Topology is INCORRECT?",
+                options: ["It is very cheap and easy to install in large office buildings", "It provides dedicated point-to-point links eliminating traffic congestion", "It is highly secure because messages travel along dedicated paths", "It provides high fault tolerance due to redundant pathing"],
+                correct: "It is very cheap and easy to install in large office buildings",
+                hint: "Look for the FALSE statement regarding Mesh topology cost.",
+                explanation: "Mesh topology is extremely expensive and complex to install due to the vast amount of cabling and large port requirements."
+            },
+            {
+                topic: "Networking - Topologies",
+                question: "In a Daisy Chain topology, how are devices linked together?",
+                options: ["Devices are connected serially in a linear chain sequence from one to the next", "Devices connect directly to a single central server", "Devices broadcast wirelessly without physical cables", "Devices are arranged in concentric circular rings"],
+                correct: "Devices are connected serially in a linear chain sequence from one to the next",
+                hint: "Node A connects to Node B, Node B connects to Node C, and so on.",
+                explanation: "Daisy-chaining connects network devices sequentially in series. If the ends are joined together, it forms a Ring topology."
+            },
+            {
+                topic: "Networking - Topologies",
+                question: "Which topology is most commonly deployed in modern Ethernet LANs (using Category 6 twisted pair copper cabling and switches)?",
+                options: ["Star Topology", "Bus Topology", "Ring Topology", "Full Mesh Topology"],
+                correct: "Star Topology",
+                hint: "Modern RJ45 patch cables plug from PCs into a central network switch.",
+                explanation: "Modern twisted-pair Ethernet LANs almost universally use Star topology centered on active switches."
+            },
+            {
+                topic: "Networking - Topologies",
+                question: "Consider a network of 5 computers. Calculate the difference in total number of cables required to build a Full Mesh network versus a Star network (assuming 1 central switch for Star).",
+                options: ["Full Mesh requires 10 cables; Star requires 5 cables; Difference = 5 cables", "Full Mesh requires 20 cables; Star requires 5 cables; Difference = 15 cables", "Full Mesh requires 10 cables; Star requires 4 cables; Difference = 6 cables", "Full Mesh requires 25 cables; Star requires 5 cables; Difference = 20 cables"],
+                correct: "Full Mesh requires 10 cables; Star requires 5 cables; Difference = 5 cables",
+                hint: "Mesh cables = 5*(5-1)/2 = 10; Star cables = 5 drop cables.",
+                explanation: "Mesh cable count = N(N-1)/2 = 5(4)/2 = 10 cables. Star cable count = N = 5 drop cables. The difference is 10 - 5 = 5 cables."
+            },
+            {
+                topic: "Networking - Topologies",
+                question: "Which topology is most suitable for critical military or banking core backbones where link failure CANNOT be tolerated under any circumstances?",
+                options: ["Full Mesh Topology", "Single Bus Topology", "Unidirectional Ring Topology", "Simple Tree Topology"],
+                correct: "Full Mesh Topology",
+                hint: "Maximum redundancy is vital.",
+                explanation: "Full Mesh provides total redundancy and multiple distinct alternate physical paths, making it ideal for mission-critical core backbones."
+            },
+            {
+                topic: "Networking - Topologies",
+                question: "What happens in a Token Ring network if a computer holding the token suddenly crashes before releasing it back onto the ring?",
+                options: ["A designated Monitor Station detects token loss and generates a new token", "The entire network permanently stops functioning", "The ring automatically converts into a bus network", "All remaining nodes duplicate their data buffers"],
+                correct: "A designated Monitor Station detects token loss and generates a new token",
+                hint: "Active Monitor station oversees token management.",
+                explanation: "In Token Ring, an Active Monitor node monitors timer thresholds. If a token is lost or corrupted, it clears the ring and issues a fresh token."
+            },
+            {
+                topic: "Networking - Topologies",
+                question: "Which network parameter grows quadratically (O(N²)) in a Full Mesh Topology as the number of nodes 'N' increases?",
+                options: ["Total number of physical communication links", "Data propagation speed", "Bandwidth frequency of each cable", "IP address subnet size"],
+                correct: "Total number of physical communication links",
+                hint: "Formula N(N-1)/2 evaluates to ~ (N^2)/2.",
+                explanation: "Because links = N(N-1)/2, link expansion grows at O(N²) quadratic scale, making full mesh impractical for massive node counts."
+            },
+            {
+                topic: "Networking - Topologies",
+                question: "Which topology uses a central active hub that acts as a multi-port repeater to retransmit received signals to all connected drop cables?",
+                options: ["Star Topology (with Hub)", "Bus Topology", "Ring Topology", "Peer-to-Peer Mesh"],
+                correct: "Star Topology (with Hub)",
+                hint: "A passive/active central hub broadcasts incoming traffic to all ports in a Star setup.",
+                explanation: "In a Star network using a physical Hub (Layer 1), data arriving on one port is broadcast out to all other connected ports."
+            },
+            {
+                topic: "Networking - Topologies",
+                question: "What is a key advantage of Star topology over Bus topology regarding network expansion?",
+                options: ["Adding or removing host devices can be done easily without disrupting the rest of the running network", "It requires fewer cables and zero power source", "It completely removes the need for IP addressing", "It doubles the wireless bandwidth automatically"],
+                correct: "Adding or removing host devices can be done easily without disrupting the rest of the running network",
+                hint: "Plugging/unplugging an Ethernet cable into a switch does not bring down other users.",
+                explanation: "In Star topology, each device has its own isolated connection to the switch. Devices can be attached or unplugged without disrupting overall network uptime."
+            },
+            {
+                topic: "Networking - Topologies",
+                question: "In a point-to-point connection topology:",
+                options: ["A dedicated physical link is provided between exactly two devices", "Multiple devices share a single common channel line continuously", "Signals are broadcast across an entire municipal region", "Nodes communicate via token pass signals"],
+                correct: "A dedicated physical link is provided between exactly two devices",
+                hint: "Strictly two devices sharing a single link capacity.",
+                explanation: "Point-to-point topology provides a dedicated physical link strictly between two nodes, reserving the channel capacity solely for their mutual communication."
+            },
+            {
+                topic: "Networking - Topologies",
+                question: "In a multipoint (or multidrop) connection topology:",
+                options: ["More than two specific devices share a single physical channel capacity", "A single device is linked to a central server via two parallel cables", "Data flows exclusively in one direction between two end points", "Nodes communicate strictly through optical laser beams"],
+                correct: "More than two specific devices share a single physical channel capacity",
+                hint: "Shared cable medium accessed by multiple hosts (e.g. Traditional Bus).",
+                explanation: "In a multipoint (multidrop) configuration, three or more devices share the capacity of a single underlying physical transmission link."
+            }
+        ];
+
+        // Global State Variables
+        let questions = [];
+        let currentIndex = 0;
+        let userAnswers = {}; // { qIndex: { chosen: text, correct: boolean } }
+
+        // Initialize and Shuffle Options per question
+        function initQuestions() {
+            questions = rawQuestions.map((q, idx) => {
+                // Fisher-Yates Shuffle for options
+                let opts = [...q.options];
+                for (let i = opts.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [opts[i], opts[j]] = [opts[j], opts[i]];
+                }
+                return {
+                    id: idx + 1,
+                    topic: q.topic,
+                    question: q.question,
+                    options: opts,
+                    correct: q.correct,
+                    hint: q.hint,
+                    explanation: q.explanation
+                };
+            });
+        }
+
+        // Render Question Palette Grid
+        function renderPalette() {
+            const grid = document.getElementById('palette-grid');
+            grid.innerHTML = '';
+            
+            questions.forEach((q, idx) => {
+                const btn = document.createElement('button');
+                btn.innerText = idx + 1;
+                btn.className = `p-2 text-xs font-semibold rounded transition-colors ${getPaletteBtnStyle(idx)}`;
+                btn.onclick = () => {
+                    currentIndex = idx;
+                    loadQuestion();
+                };
+                grid.appendChild(btn);
+            });
+        }
+
+        function getPaletteBtnStyle(idx) {
+            if (idx === currentIndex) {
+                return 'ring-2 ring-teal-400 bg-slate-700 text-white';
+            }
+            if (userAnswers[idx] !== undefined) {
+                return userAnswers[idx].isCorrect 
+                    ? 'bg-emerald-600/80 text-white' 
+                    : 'bg-rose-600/80 text-white';
+            }
+            return 'bg-slate-700/60 text-slate-300 hover:bg-slate-700';
+        }
+
+        // Load Active Question into View
+        function loadQuestion() {
+            const currentQ = questions[currentIndex];
+
+            // Update Headers
+            document.getElementById('q-number').innerText = `Question ${currentIndex + 1} of ${questions.length}`;
+            document.getElementById('q-topic').innerText = currentQ.topic;
+            document.getElementById('q-text').innerText = currentQ.question;
+
+            // Update Options
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+
+            const answered = userAnswers[currentIndex] !== undefined;
+
+            currentQ.options.forEach((optText) => {
+                const optBtn = document.createElement('button');
+                optBtn.className = `w-full text-left p-3.5 rounded-lg border text-sm font-medium transition-all flex items-start gap-3 ${getOptionStyle(currentIndex, optText)}`;
+                
+                if (answered) {
+                    optBtn.disabled = true;
+                } else {
+                    optBtn.onclick = () => selectOption(optText);
+                }
+
+                // Bullet letter
+                const letter = String.fromCharCode(65 + currentQ.options.indexOf(optText));
+                optBtn.innerHTML = `
+                    <span class="w-6 h-6 rounded-full bg-slate-700 border border-slate-600 flex items-center justify-center text-xs text-slate-300 shrink-0 font-bold">${letter}</span>
+                    <span class="flex-1 mt-0.5">${optText}</span>
+                `;
+                container.appendChild(optBtn);
+            });
+
+            // Reset/Set Hint Box
+            document.getElementById('hint-box').classList.add('hidden');
+            document.getElementById('hint-box').innerText = currentQ.hint;
+
+            // Handle Explanation Box Display
+            const expBox = document.getElementById('explanation-box');
+            const expText = document.getElementById('explanation-text');
+            if (answered) {
+                expText.innerText = currentQ.explanation;
+                expBox.classList.remove('hidden');
+            } else {
+                expBox.classList.add('hidden');
+            }
+
+            // Update Control Buttons state
+            document.getElementById('prev-btn').disabled = currentIndex === 0;
+            document.getElementById('next-btn').disabled = currentIndex === questions.length - 1;
+
+            // Sync Palette Highlighting
+            renderPalette();
+            updateStats();
+        }
+
+        function getOptionStyle(qIdx, optText) {
+            const ans = userAnswers[qIdx];
+            const currentQ = questions[qIdx];
+
+            if (!ans) {
+                return 'bg-slate-900/60 border-slate-700 hover:bg-slate-700/50 hover:border-slate-500 text-slate-200';
+            }
+
+            if (optText === currentQ.correct) {
+                return 'bg-emerald-950/60 border-emerald-500/80 text-emerald-200 font-semibold';
+            }
+
+            if (ans.chosen === optText && !ans.isCorrect) {
+                return 'bg-rose-950/60 border-rose-500/80 text-rose-200 font-semibold';
+            }
+
+            return 'bg-slate-900/30 border-slate-800 text-slate-500 opacity-60';
+        }
+
+        // Option Selection Handler
+        function selectOption(optText) {
+            const currentQ = questions[currentIndex];
+            const isCorrect = (optText === currentQ.correct);
+
+            userAnswers[currentIndex] = {
+                chosen: optText,
+                isCorrect: isCorrect
+            };
+
+            loadQuestion();
+        }
+
+        // Toggle Hint Box
+        function toggleHint() {
+            const box = document.getElementById('hint-box');
+            box.classList.toggle('hidden');
+        }
+
+        // Navigation Handlers
+        function prevQuestion() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                loadQuestion();
+            }
+        }
+
+        function nextQuestion() {
+            if (currentIndex < questions.length - 1) {
+                currentIndex++;
+                loadQuestion();
+            }
+        }
+
+        function jumpToQuestion() {
+            const input = document.getElementById('jump-input');
+            const val = parseInt(input.value);
+            if (val >= 1 && val <= questions.length) {
+                currentIndex = val - 1;
+                loadQuestion();
+                input.value = '';
+            }
+        }
+
+        // Update Live Header Statistics
+        function updateStats() {
+            const answeredCount = Object.keys(userAnswers).length;
+            let correctCount = 0;
+
+            Object.values(userAnswers).forEach(ans => {
+                if (ans.isCorrect) correctCount++;
+            });
+
+            document.getElementById('live-score').innerText = correctCount;
+            document.getElementById('total-answered').innerText = answeredCount;
+
+            const accuracy = answeredCount > 0 ? Math.round((correctCount / answeredCount) * 100) : 0;
+            document.getElementById('accuracy').innerText = `${accuracy}%`;
+
+            const progressPct = ((currentIndex + 1) / questions.length) * 100;
+            document.getElementById('progress-bar').style.width = `${progressPct}%`;
+        }
+
+        // Initialize App on DOM Load
+        window.addEventListener('DOMContentLoaded', () => {
+            initQuestions();
+            loadQuestion();
+        });
+    </script>
+<script src="../../quiz-question-controls.js"></script>
+<script src="../../quiz-app-ui-v2.js"></script></body>
+</html>

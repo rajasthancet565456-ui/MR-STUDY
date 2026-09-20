@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate English Vocabulary Mastery Quiz | Blackbook OWS</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        lavenderBg: '#F0E6FF',
+                        headerBg: '#E5D5FA',
+                        cardBg: '#FBF7FF',
+                        primaryPurple: '#6542C8',
+                        darkPurple: '#30205D',
+                        secondaryPurple: '#7352C9',
+                        lightPurple: '#E9DDF8',
+                        borderPurple: '#DCCBF2',
+                        progressTrack: '#DDD9E8',
+                        hoverPurple: '#F0E5FF',
+                        mutedText: '#716782',
+                        accentYellow: '#F3A62A',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom smooth transitions and focus rings */
+        * {
+            transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
+        }
+        input:focus, button:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(101, 66, 200, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-lavenderBg min-h-screen text-darkPurple flex flex-col font-sans antialiased selection:bg-lightPurple selection:text-darkPurple">
+
+    <!-- Sticky Header -->
+    <header class="sticky top-0 z-30 bg-headerBg/90 backdrop-blur-md border-b border-borderPurple shadow-sm px-4 py-3 sm:px-8">
+        <div class="max-w-4xl mx-auto flex flex-wrap items-center justify-between gap-4">
+            <div>
+                <h1 class="text-xl sm:text-2xl font-bold text-darkPurple tracking-tight">Vocabulary Master: OWS & Etymology</h1>
+                <p class="text-xs sm:text-sm text-mutedText">Comprehensive 100-Question Exam Trainer (SSC / RRB Level)</p>
+            </div>
+            <div class="flex items-center gap-3">
+                <div class="bg-cardBg px-3 py-1.5 rounded-full border border-borderPurple text-xs sm:text-sm font-semibold shadow-inner flex items-center gap-2">
+                    <span>Score:</span>
+                    <span id="score-display" class="text-primaryPurple font-bold">0 / 100</span>
+                </div>
+                <div class="bg-cardBg px-3 py-1.5 rounded-full border border-borderPurple text-xs sm:text-sm font-semibold shadow-inner flex items-center gap-2">
+                    <span>Progress:</span>
+                    <span id="progress-percent" class="text-primaryPurple font-bold">0%</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow flex items-center justify-center p-4 sm:p-6">
+        <div class="w-full max-w-3xl bg-cardBg rounded-3xl shadow-xl border border-borderPurple p-6 sm:p-10 relative">
+
+            <!-- Question Header / Metadata -->
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+                <div class="flex items-center gap-2">
+                    <span id="question-badge" class="bg-lightPurple text-darkPurple text-xs font-bold px-3 py-1 rounded-full border border-borderPurple">Question 1 of 100</span>
+                    <span id="subtopic-badge" class="bg-amber-100 text-amber-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">One Word Substitution</span>
+                </div>
+                <div id="status-pill" class="text-xs font-medium text-mutedText">Unanswered</div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="w-full bg-progressTrack h-2.5 rounded-full overflow-hidden mb-6">
+                <div id="progress-bar" class="bg-primaryPurple h-full rounded-full transition-all duration-300" style="width: 1%"></div>
+            </div>
+
+            <!-- Question Display -->
+            <div class="mb-6">
+                <h2 id="question-text" class="text-lg sm:text-2xl font-bold text-darkPurple leading-relaxed">
+                    Loading question...
+                </h2>
+            </div>
+
+            <!-- Answer Options Container -->
+            <div id="options-container" class="space-y-3 mb-6">
+                <!-- Dynamically injected option buttons -->
+            </div>
+
+            <!-- Hint Section -->
+            <div class="mb-6">
+                <button id="hint-toggle" onclick="toggleHint()" class="text-xs sm:text-sm font-semibold text-secondaryPurple hover:text-primaryPurple flex items-center gap-1.5 bg-lightPurple/50 hover:bg-lightPurple px-3.5 py-2 rounded-xl border border-borderPurple transition-all">
+                    <span>💡 Show Hint</span>
+                </button>
+                <div id="hint-box" class="hidden mt-2 p-3.5 bg-amber-50 border border-amber-200 text-amber-900 text-xs sm:text-sm rounded-xl">
+                    <span id="hint-text">No hint available for this question.</span>
+                </div>
+            </div>
+
+            <!-- Explanation Box (Revealed on Answer Selection) -->
+            <div id="explanation-box" class="hidden mb-6 p-4 rounded-2xl border transition-all">
+                <div class="flex items-center gap-2 font-bold mb-1 text-sm sm:text-base" id="explanation-title">
+                    <!-- Correct / Incorrect Header -->
+                </div>
+                <p id="explanation-text" class="text-xs sm:text-sm text-darkPurple/90 leading-relaxed"></p>
+            </div>
+
+            <!-- In-card Navigation Buttons -->
+            <div class="flex items-center justify-between pt-4 border-t border-borderPurple">
+                <button onclick="prevQuestion()" id="prev-btn" class="px-4 py-2 rounded-xl border border-borderPurple bg-white text-darkPurple font-medium text-sm hover:bg-hoverPurple disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1.5 shadow-sm">
+                    ← Previous
+                </button>
+                <div class="text-xs text-mutedText hidden sm:block">Use Arrow Keys ← → to navigate</div>
+                <button onclick="nextQuestion()" id="next-btn" class="px-5 py-2 rounded-xl bg-primaryPurple text-white font-medium text-sm hover:bg-secondaryPurple disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1.5 shadow-md">
+                    Next →
+                </button>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Sticky Bottom Navigation Panel -->
+    <nav class="sticky bottom-0 z-30 bg-white/95 backdrop-blur-md border-t border-borderPurple shadow-lg px-4 py-3">
+        <div class="max-w-4xl mx-auto flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-2">
+                <button onclick="prevQuestion()" class="px-3 py-1.5 rounded-lg border border-borderPurple text-xs font-semibold text-darkPurple hover:bg-hoverPurple">← Prev</button>
+                <button onclick="nextQuestion()" class="px-3 py-1.5 rounded-lg border border-borderPurple text-xs font-semibold text-darkPurple hover:bg-hoverPurple">Next →</button>
+            </div>
+            
+            <!-- Jump to Question -->
+            <div class="flex items-center gap-2">
+                <label for="jump-input" class="text-xs font-semibold text-mutedText">Jump to Q:</label>
+                <input type="number" id="jump-input" min="1" max="100" class="w-16 px-2 py-1 text-xs text-center border border-borderPurple rounded-lg bg-lavenderBg/50 font-semibold" placeholder="1-100">
+                <button onclick="jumpToQuestion()" class="px-3 py-1 bg-primaryPurple text-white text-xs font-semibold rounded-lg hover:bg-secondaryPurple shadow-sm">Go</button>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <button onclick="confirmReset()" class="px-3 py-1.5 rounded-lg border border-red-200 bg-red-50 text-red-600 text-xs font-semibold hover:bg-red-100 transition-all">Reset</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // 100 Comprehensive Exam-Level Questions covering all 25 words (4 questions per word)
+        const quizData = [
+            // --- BENEFACTOR (Q1 - Q4) ---
+            {
+                id: 1,
+                word: "Benefactor",
+                subtopic: "One Word Substitution",
+                question: "Choose the correct one-word substitution for: 'One who helps people by giving them money or other aid.'",
+                options: ["Beneficiary", "Benefactor", "Bereft", "Bigot"],
+                correct: 1,
+                hint: "Root word 'bene-' means good or well. This person actively gives aid.",
+                explanation: "Correct Answer: Benefactor (N.). A benefactor is someone who gives financial or other aid. Synonyms: Patron, donor, sponsor. Contrast with 'Beneficiary', who receives the aid."
+            },
+            {
+                id: 2,
+                word: "Benefactor",
+                subtopic: "Synonym & Antonym Analysis",
+                question: "Which of the following is an accurate SYNONYM for the word 'Benefactor'?",
+                options: ["Opposer", "Patron", "Parasite", "Debtor"],
+                correct: 1,
+                hint: "Think of someone who supports an institution or person financially.",
+                explanation: "Correct Answer: Patron. A patron or donor acts as a benefactor by supporting artists, students, or charities with money."
+            },
+            {
+                id: 3,
+                word: "Benefactor",
+                subtopic: "Statement / Exam Application",
+                question: "Identify the INCORRECT statement regarding the word 'Benefactor':",
+                options: [
+                    "It functions as a Noun in English grammar.",
+                    "Its etymology derives from Latin root 'bene' (well) + 'facere' (to do).",
+                    "It refers specifically to someone who receives a monthly pension.",
+                    "Synonyms include sponsor, donor, and philanthropist."
+                ],
+                correct: 2,
+                hint: "Check whether a benefactor gives or receives aid.",
+                explanation: "Correct Answer: It refers specifically to someone who receives a monthly pension. (False: A benefactor gives aid; a recipient or pensioner receives it)."
+            },
+            {
+                id: 4,
+                word: "Benefactor",
+                subtopic: "Contextual Fill-in-the-Blank",
+                question: "Fill in the blank: 'The university received a massive endowment from an anonymous ________ who wished to fund science research.'",
+                options: ["Beneficiary", "Benefactor", "Bohemian", "Bigot"],
+                correct: 1,
+                hint: "The person is providing the endowment (giving money).",
+                explanation: "Correct Answer: Benefactor. The anonymous donor giving the endowment is the benefactor."
+            },
+
+            // --- BENEFICIARY (Q5 - Q8) ---
+            {
+                id: 5,
+                word: "Beneficiary",
+                subtopic: "One Word Substitution",
+                question: "Choose the correct one-word substitution for: 'A person who gains as a result of something, such as an inheritance or insurance policy.'",
+                options: ["Benefactor", "Beneficiary", "Biologist", "Bibliophile"],
+                correct: 1,
+                hint: "The receiver of benefits or funds.",
+                explanation: "Correct Answer: Beneficiary (N.). A beneficiary is the recipient of funds, property, or advantages. Synonyms: Recipient, heir, legatee."
+            },
+            {
+                id: 6,
+                word: "Beneficiary",
+                subtopic: "Synonym & Antonym Analysis",
+                question: "What is the closest antonym or contrasting role to a 'Beneficiary' in a financial trust?",
+                options: ["Heir", "Trustor / Grantor", "Recipient", "Legatee"],
+                correct: 1,
+                hint: "Who sets up or gives the trust rather than receiving it?",
+                explanation: "Correct Answer: Trustor / Grantor (or Benefactor). While heirs and legatees are synonyms for beneficiaries, the grantor creates and funds the trust."
+            },
+            {
+                id: 7,
+                word: "Beneficiary",
+                subtopic: "Exam Statement Analysis",
+                question: "Which statement best clarifies the distinction between 'Benefactor' and 'Beneficiary'?",
+                options: [
+                    "A benefactor is the giver of aid, whereas a beneficiary is the receiver.",
+                    "Both terms mean exactly the same thing in legal terminology.",
+                    "A beneficiary always writes biographies for living organisms.",
+                    "A benefactor is an adjective while a beneficiary is a verb."
+                ],
+                correct: 0,
+                hint: "Focus on giver vs receiver.",
+                explanation: "Correct Answer: A benefactor is the giver of aid, whereas a beneficiary is the receiver."
+            },
+            {
+                id: 8,
+                word: "Beneficiary",
+                subtopic: "Contextual Vocabulary",
+                question: "Select the most appropriate word for: 'When the old man passed away without a direct child, his favorite charity became the sole ________ of his estate.'",
+                options: ["Benefactor", "Bohemian", "Beneficiary", "Bigot"],
+                correct: 2,
+                hint: "The charity gains from the estate.",
+                explanation: "Correct Answer: Beneficiary. The entity gaining from the will is the beneficiary."
+            },
+
+            // --- BEREFT (Q9 - Q12) ---
+            {
+                id: 9,
+                word: "Bereft",
+                subtopic: "One Word Substitution",
+                question: "Choose the correct one-word substitution for: 'Deprived of or lacking something, especially a non-material asset or loved one.'",
+                options: ["Bereft", "Bombastic", "Bizarre", "Bilingual"],
+                correct: 0,
+                hint: "Often used in phrases like 'bereft of hope' or 'bereft of reason'.",
+                explanation: "Correct Answer: Bereft (Adj.). Meaning deprived of, robbed of, or lacking something. Synonyms: Devoid, destitute, stripped."
+            },
+            {
+                id: 10,
+                word: "Bereft",
+                subtopic: "Synonym & Antonym Analysis",
+                question: "Which of the following is an ANTONYM for 'Bereft'?",
+                options: ["Destitute", "Devoid", "Endowed / Full", "Stripped"],
+                correct: 2,
+                hint: "Opposite of lacking or deprived is having plenty or being equipped.",
+                explanation: "Correct Answer: Endowed / Full. 'Bereft' means lacking; 'endowed' or 'full' means possessing abundantly."
+            },
+            {
+                id: 11,
+                word: "Bereft",
+                subtopic: "Exam Statement Analysis",
+                question: "Identify the correct usage of 'Bereft' in a sentence.",
+                options: [
+                    "After losing all his investments, he was completely bereft of hope.",
+                    "The beverage was bereft with ice cubes and lemon.",
+                    "She was a certified bereft who loved collecting ancient books.",
+                    "The library was bereft into two equal halves."
+                ],
+                correct: 0,
+                hint: "Bereft means lacking or deprived of something.",
+                explanation: "Correct Answer: After losing all his investments, he was completely bereft of hope. (Correct usage showing deprivation)."
+            },
+            {
+                id: 12,
+                word: "Bereft",
+                subtopic: "Root & Word Family",
+                question: "From which historical verb stem does 'Bereft' originate?",
+                options: ["To bereave (to deprive by death or loss)", "To embellish", "To speak two languages", "To ferment fruit"],
+                correct: 0,
+                hint: "Think of bereavement.",
+                explanation: "Correct Answer: To bereave. 'Bereft' is the past participle/adjective form of 'bereave'."
+            },
+
+            // --- BEVERAGE (Q13 - Q16) ---
+            {
+                id: 13,
+                word: "Beverage",
+                subtopic: "One Word Substitution",
+                question: "Choose the correct one-word substitution for: 'Any soft drink or potable liquid except water.'",
+                options: ["Bibliography", "Beverage", "Biopsy", "Bonfire"],
+                correct: 1,
+                hint: "Something refreshing you drink.",
+                explanation: "Correct Answer: Beverage (N.). Refers to drinks like juice, soda, tea, etc."
+            },
+            {
+                id: 14,
+                word: "Beverage",
+                subtopic: "Synonym & Antonym Analysis",
+                question: "Which is a close SYNONYM for 'Beverage'?",
+                options: ["Solid food", "Refreshment / Drink", "Tissue sample", "Scripture"],
+                correct: 1,
+                hint: "Something consumed orally for thirst.",
+                explanation: "Correct Answer: Refreshment / Drink."
+            },
+            {
+                id: 15,
+                word: "Beverage",
+                subtopic: "Grammar & Part of Speech",
+                question: "What part of speech is 'Beverage'?",
+                options: ["Verb", "Adjective", "Noun", "Adverb"],
+                correct: 2,
+                hint: "It names a thing.",
+                explanation: "Correct Answer: Noun (N.)."
+            },
+            {
+                id: 16,
+                word: "Beverage",
+                subtopic: "Contextual MCQ",
+                question: "Complete the sentence: 'The cafe served a complimentary hot ________ upon arrival during the cold winter evening.'",
+                options: ["Bonfire", "Beverage", "Biopsy", "Bigot"],
+                correct: 1,
+                hint: "Hot tea or coffee is a type of...",
+                explanation: "Correct Answer: Beverage."
+            },
+
+            // --- BEVY (Q17 - Q20) ---
+            {
+                id: 17,
+                word: "Bevy",
+                subtopic: "One Word Substitution",
+                question: "Choose the correct one-word substitution for: 'A large group of girls, young women, or specific birds (like larks or quail) gathered together.'",
+                options: ["Bevy", "Bibliography", "Boer", "Bombard"],
+                correct: 0,
+                hint: "A collective noun often used for women or certain birds.",
+                explanation: "Correct Answer: Bevy (N.). A collective noun for girls, ladies, or specific birds. Synonyms: Cluster, assembly, flock."
+            },
+            {
+                id: 18,
+                word: "Bevy",
+                subtopic: "Synonym & Antonym Analysis",
+                question: "Which term is a valid collective noun synonymous with 'Bevy' in certain contexts?",
+                options: ["Solitary individual", "Flock / Assembly", "Tissue sample", "Book list"],
+                correct: 1,
+                hint: "A gathering of individuals.",
+                explanation: "Correct Answer: Flock / Assembly."
+            },
+            {
+                id: 19,
+                word: "Bevy",
+                subtopic: "Exam Application",
+                question: "In standard English usage, a 'bevy' is most traditionally associated with a group of:",
+                options: ["Lions or tigers", "Girls, larks, or quail", "Books in a library", "Languages spoken in a country"],
+                correct: 1,
+                hint: "Check OWS definitions: a group of girls/boys/birds etc.",
+                explanation: "Correct Answer: Girls, larks, or quail."
+            },
+            {
+                id: 20,
+                word: "Bevy",
+                subtopic: "Sentence Improvement",
+                question: "Identify the error if any: 'A bevy of excited fans waited outside the hotel lobby for the actor.'",
+                options: [
+                    "Bevy is incorrectly used as a collective noun here.",
+                    "The sentence is grammatically correct and idiomatic.",
+                    "Bevy can only be used for inanimate objects.",
+                    "Bevy must be replaced by bonfire."
+                ],
+                correct: 1,
+                hint: "Can 'bevy' describe a group of fans/people?",
+                explanation: "Correct Answer: The sentence is grammatically correct and idiomatic."
+            },
+
+            // --- BIBLIOGRAPHY (Q21 - Q24) ---
+            {
+                id: 21,
+                word: "Bibliography",
+                subtopic: "One Word Substitution",
+                question: "Choose the correct one-word substitution for: 'A list of the books and sources referred to in a scholarly work or research paper.'",
+                options: ["Bibliomania", "Bibliophile", "Bibliography", "Biography"],
+                correct: 2,
+                hint: "Root 'biblio-' (book) + '-graphy' (writing/list).",
+                explanation: "Correct Answer: Bibliography (N.). Reference list or works cited at the end of a book or thesis."
+            },
+            {
+                id: 22,
+                word: "Bibliography",
+                subtopic: "Etymology & Roots",
+                question: "What does the Greek root 'biblio' mean?",
+                options: ["Book", "Life", "Two", "Strange"],
+                correct: 0,
+                hint: "Found in Bible, bibliophile, etc.",
+                explanation: "Correct Answer: Book."
+            },
+            {
+                id: 23,
+                word: "Bibliography",
+                subtopic: "Synonym Analysis",
+                question: "Which of the following is a direct synonym for 'Bibliography'?",
+                options: ["List of works cited / References", "Life story", "Tissue sample", "Religious blasphemy"],
+                correct: 0,
+                hint: "Sources consulted in academic writing.",
+                explanation: "Correct Answer: List of works cited / References."
+            },
+            {
+                id: 24,
+                word: "Bibliography",
+                subtopic: "Exam Statement",
+                question: "Which exam statement is correct regarding 'Bibliography'?",
+                options: [
+                    "It is placed at the beginning of a book to list chapter headings only.",
+                    "It is a comprehensive list of source materials and books consulted during research.",
+                    "It refers to an obsessive mental disorder regarding book collection.",
+                    "It is a medical test of living tissue."
+                ],
+                correct: 1,
+                hint: "Think of research thesis appendices.",
+                explanation: "Correct Answer: It is a comprehensive list of source materials and books consulted during research."
+            },
+
+            // --- BIBLIOMANIA (Q25 - Q28) ---
+            {
+                id: 25,
+                word: "Bibliomania",
+                subtopic: "One Word Substitution",
+                question: "Choose the correct one-word substitution for: 'Preoccupation or obsessive disorder with the acquisition and possession of books.'",
+                options: ["Bibliophile", "Bibliomania", "Biography", "Bigot"],
+                correct: 1,
+                hint: "Suffix '-mania' denotes madness or obsession.",
+                explanation: "Correct Answer: Bibliomania (N.). An obsessive compulsion with collecting books to an abnormal degree."
+            },
+            {
+                id: 26,
+                word: "Bibliomania",
+                subtopic: "Synonym & Antonym",
+                question: "Which term is synonymous with 'Bibliomania'?",
+                options: ["Book madness / Obsessive book collecting", "Healthy reading habit", "Fear of books", "Bilingual proficiency"],
+                correct: 0,
+                hint: "Mania means obsession.",
+                explanation: "Correct Answer: Book madness / Obsessive book collecting."
+            },
+            {
+                id: 27,
+                word: "Bibliomania",
+                subtopic: "Suffix Analysis",
+                question: "What does the suffix '-mania' signify in English vocabulary?",
+                options: ["Love and affection", "Mental obsession, craze, or madness", "Scientific study of", "Destruction by bacteria"],
+                correct: 1,
+                hint: "Like kleptomania or pyromania.",
+                explanation: "Correct Answer: Mental obsession, craze, or madness."
+            },
+            {
+                id: 28,
+                word: "Bibliomania",
+                subtopic: "Contextual MCQ",
+                question: "Complete the sentence: 'His apartment was so choked with stacked volumes that fire marshals warned his ________ had reached dangerous levels.'",
+                options: ["Bibliography", "Bibliomania", "Biodegradability", "Blasphemy"],
+                correct: 1,
+                hint: "Extreme hoarding of books.",
+                explanation: "Correct Answer: Bibliomania."
+            },
+
+            // --- BIBLIOPHILE (Q29 - Q32) ---
+            {
+                id: 29,
+                word: "Bibliophile",
+                subtopic: "One Word Substitution",
+                question: "Choose the correct one-word substitution for: 'A person who loves, admires, or collects books.'",
+                options: ["Bibliophile", "Bibliomaniac", "Biologist", "Boer"],
+                correct: 0,
+                hint: "Root 'biblio' (book) + 'phile' (lover).",
+                explanation: "Correct Answer: Bibliophile (N.). A book lover. Contrast with bibliomania (the disorder) and bibliophobia (fear of books)."
+            },
+            {
+                id: 30,
+                word: "Bibliophile",
+                subtopic: "Synonym & Antonym",
+                question: "What is an ANTONYM for 'Bibliophile'?",
+                options: ["Bookworm", "Bibliophobe (one who fears or dislikes books)", "Collector", "Scholar"],
+                correct: 1,
+                hint: "Prefix 'phobe-' means fear or aversion.",
+                explanation: "Correct Answer: Bibliophobe."
+            },
+            {
+                id: 31,
+                word: "Bibliophile",
+                subtopic: "Root Word Breakdown",
+                question: "What does the suffix '-phile' mean in words like 'bibliophile' or 'francophile'?",
+                options: ["Hater of", "Lover or enthusiast of", "Expert in medicine", "Speaker of languages"],
+                correct: 1,
+                hint: "Opposite of '-phobe'.",
+                explanation: "Correct Answer: Lover or enthusiast of."
+            },
+            {
+                id: 32,
+                word: "Bibliophile",
+                subtopic: "Exam Statement",
+                question: "Which of the following describes a 'Bibliophile' accurately?",
+                options: ["Someone who burns books for warmth.", "Someone who has a deep affection for books and reading.", "Someone who writes biographies of politicians.", "Someone who translates books into two languages."],
+                correct: 1,
+                hint: "Lover of books.",
+                explanation: "Correct Answer: Someone who has a deep affection for books and reading."
+            },
+
+            // --- BICENTENNIAL (Q33 - Q36) ---
+            {
+                id: 33,
+                word: "Bicentennial",
+                subtopic: "One Word Substitution",
+                question: "Choose the correct one-word substitution for: 'The 200th anniversary of a significant event.'",
+                options: ["Biennial", "Bicentennial", "Bimonthly", "Centennial"],
+                correct: 1,
+                hint: "Prefix 'bi-' (two) + 'centennial' (hundredth anniversary). 2 * 100 = 200.",
+                explanation: "Correct Answer: Bicentennial (N./Adj.). Celebrating 200 years. (Centennial is 100th, sesquicentennial is 150th)."
+            },
+            {
+                id: 34,
+                word: "Bicentennial",
+                subtopic: "Numerical Analysis",
+                question: "How many years are commemorated in a 'Bicentennial' celebration?",
+                options: ["50 years", "100 years", "200 years", "500 years"],
+                correct: 2,
+                hint: "Bi = 2, cent = 100.",
+                explanation: "Correct Answer: 200 years."
+            },
+            {
+                id: 35,
+                word: "Bicentennial",
+                subtopic: "Distinction Check",
+                question: "What is the key difference between 'Biennial' and 'Bicentennial'?",
+                options: ["Biennial happens every 2 years; Bicentennial marks a 200-year anniversary.", "They mean the exact same thing.", "Biennial means twice a year.", "Bicentennial happens every two months."],
+                correct: 0,
+                hint: "Biennial = every 2 years; Bicentennial = 200 years.",
+                explanation: "Correct Answer: Biennial happens every 2 years; Bicentennial marks a 200-year anniversary."
+            },
+            {
+                id: 36,
+                word: "Bicentennial",
+                subtopic: "Contextual MCQ",
+                question: "Fill in the blank: 'The city held grand parades to celebrate the ________ of its founding in 1826.'",
+                options: ["Biennial", "Bicentennial", "Bimonthly", "Biopsy"],
+                correct: 1,
+                hint: "1826 to 2026 is 200 years.",
+                explanation: "Correct Answer: Bicentennial."
+            },
+
+            // --- BIENNIAL (Q37 - Q40) ---
+            {
+                id: 37,
+                word: "Biennial",
+                subtopic: "One Word Substitution",
+                question: "Choose the correct one-word substitution for: 'An event that happens every two years.'",
+                options: ["Biannual", "Biennial", "Bicentennial", "Bimonthly"],
+                correct: 1,
+                hint: "Biennial = once every two years. Biannual = twice a year.",
+                explanation: "Correct Answer: Biennial (Adj.). Occurring every two years. (Note: Do not confuse with 'biannual' which means twice a year)."
+            },
+            {
+                id: 38,
+                word: "Biennial",
+                subtopic: "Exam Confusion Check",
+                question: "What distinguishes 'Biennial' from 'Biannual'?",
+                options: ["Biennial = every two years; Biannual = twice a year.", "Biennial = twice a year; Biannual = every two years.", "Both mean once a month.", "Neither relates to time."],
+                correct: 0,
+                hint: "Very common trap in SSC/RRB exams!",
+                explanation: "Correct Answer: Biennial = every two years; Biannual = twice a year."
+            },
+            {
+                id: 39,
+                word: "Biennial",
+                subtopic: "Synonym Analysis",
+                question: "Which of the following is a synonym for 'Biennial' when describing an event?",
+                options: ["Occurring every two years", "Occurring twice daily", "Lasting for 200 years", "Happening every two months"],
+                correct: 0,
+                hint: "Every 2 years.",
+                explanation: "Correct Answer: Occurring every two years."
+            },
+            {
+                id: 40,
+                word: "Biennial",
+                subtopic: "Contextual Usage",
+                question: "Complete the sentence: 'The art festival is a ________ event, taking place in even-numbered years.'",
+                options: ["Bicentennial", "Biennial", "Bombastic", "Bereft"],
+                correct: 1,
+                hint: "Every two years.",
+                explanation: "Correct Answer: Biennial."
+            },
+
+            // --- BIGOT (Q41 - Q44) ---
+            {
+                id: 41,
+                word: "Bigot",
+                subtopic: "One Word Substitution",
+                question: "Choose the correct one-word substitution for: 'A person who is intolerant towards those holding different opinions, race, or religious views.'",
+                options: ["Bohemian", "Bigot", "Benefactor", "Bibliophile"],
+                correct: 1,
+                hint: "Someone narrow-minded and prejudiced.",
+                explanation: "Correct Answer: Bigot (N.). A person stubbornly intolerant of any creed, race, or opinion differing from their own."
+            },
+            {
+                id: 42,
+                word: "Bigot",
+                subtopic: "Synonym & Antonym Analysis",
+                question: "Which of the following is an ANTONYM for 'Bigot'?",
+                options: ["Dogmatist", "Tolerant / Open-minded person", "Fanatic", "Sectarian"],
+                correct: 1,
+                hint: "Opposite of narrow-minded and prejudiced.",
+                explanation: "Correct Answer: Tolerant / Open-minded person."
+            },
+            {
+                id: 43,
+                word: "Bigot",
+                subtopic: "Exam Statement Analysis",
+                question: "Which term is closely synonymous with 'Bigot' in political or social contexts?",
+                options: ["Philanthropist", "Fanatic / Dogmatist", "Biologist", "Beneficiary"],
+                correct: 1,
+                hint: "Someone blinded by prejudice.",
+                explanation: "Correct Answer: Fanatic / Dogmatist."
+            },
+            {
+                id: 44,
+                word: "Bigot",
+                subtopic: "Contextual Fill-in",
+                question: "Fill in the blank: 'True education works to eliminate prejudice and ensures that people do not act like stubborn ________.'",
+                options: ["Bigots", "Benefactors", "Bilinguals", "Bohemians"],
+                correct: 0,
+                hint: "Intolerant prejudiced people.",
+                explanation: "Correct Answer: Bigots."
+            },
+
+            // --- BILINGUAL (Q45 - Q48) ---
+            {
+                id: 45,
+                word: "Bilingual",
+                subtopic: "One Word Substitution",
+                question: "Choose the correct one-word substitution for: 'A person who can speak two languages fluently.'",
+                options: ["Multilingual", "Bilingual", "Bigot", "Biologist"],
+                correct: 1,
+                hint: "Prefix 'bi-' means two.",
+                explanation: "Correct Answer: Bilingual (Adj./N.). Able to speak two languages with equal fluency."
+            },
+            {
+                id: 46,
+                word: "Bilingual",
+                subtopic: "Prefix Analysis",
+                question: "What does the prefix 'bi-' signify in words like 'bilingual' and 'biennial'?",
+                options: ["Three", "Two / Twice", "Many", "None"],
+                correct: 1,
+                hint: "Bicycle has two wheels.",
+                explanation: "Correct Answer: Two / Twice."
+            },
+            {
+                id: 47,
+                word: "Bilingual",
+                subtopic: "Synonym & Comparison",
+                question: "What is the term for someone who speaks *many* languages, as opposed to just two?",
+                options: ["Bilingual", "Multilingual / Polyglot", "Monolingual", "Bibliophile"],
+                correct: 1,
+                hint: "Poly- or multi- means many.",
+                explanation: "Correct Answer: Multilingual / Polyglot."
+            },
+            {
+                id: 48,
+                word: "Bilingual",
+                subtopic: "Contextual MCQ",
+                question: "Complete the sentence: 'Living in Canada, many citizens are ________, speaking both English and French fluently.'",
+                options: ["Bilingual", "Bereft", "Bombastic", "Bizarre"],
+                correct: 0,
+                hint: "Speaking two languages.",
+                explanation: "Correct Answer: Bilingual."
+            },
+
+            // --- BIMONTHLY (Q49 - Q52) ---
+            {
+                id: 49,
+                word: "Bimonthly",
+                subtopic: "One Word Substitution",
+                question: "Choose the correct one-word substitution for: 'Occurring twice a month (or every two months depending on context).'",
+                options: ["Biennial", "Bimonthly", "Bicentennial", "Biannual"],
+                correct: 1,
+                hint: "Bi + monthly.",
+                explanation: "Correct Answer: Bimonthly (Adj./Adv.). Can mean twice a month or every two months."
+            },
+            {
+                id: 50,
+                word: "Bimonthly",
+                subtopic: "Exam Ambiguity Note",
+                question: "In English lexicon exams (like SSC), 'Bimonthly' primarily represents which frequency?",
+                options: ["Twice a month (semimonthly) or every two months", "Twice a year", "Every two years", "Every two days"],
+                correct: 0,
+                hint: "It has dual meanings in standard English.",
+                explanation: "Correct Answer: Twice a month (semimonthly) or every two months."
+            },
+            {
+                id: 51,
+                word: "Bimonthly",
+                subtopic: "Synonym Analysis",
+                question: "Which term is a precise synonym when bimonthly means 'twice a month'?",
+                options: ["Semimonthly", "Biennial", "Bicentennial", "Annual"],
+                correct: 0,
+                hint: "Semi = half / twice a month.",
+                explanation: "Correct Answer: Semimonthly."
+            },
+            {
+                id: 52,
+                word: "Bimonthly",
+                subtopic: "Contextual Usage",
+                question: "Complete the sentence: 'The magazine is published ________, releasing a new issue on the 1st and 15th of every month.'",
+                options: ["Bimonthly", "Biennial", "Bicentennial", "Biweekly"],
+                correct: 0,
+                hint: "Twice a month publishing schedule.",
+                explanation: "Correct Answer: Bimonthly."
+            },
+
+            // --- BIODEGRADABLE (Q53 - Q56) ---
+            {
+                id: 53,
+                word: "Biodegradable",
+                subtopic: "One Word Substitution",
+                question: "Choose the correct one-word substitution for: 'Capable of being decomposed by biological agents, especially bacteria.'",
+                options: ["Synthetic", "Biodegradable", "Bombastic", "Bizarre"],
+                correct: 1,
+                hint: "Eco-friendly material that rots naturally.",
+                explanation: "Correct Answer: Biodegradable (Adj.). Able to be broken down by bacteria or other living organisms."
+            },
+            {
+                id: 54,
+                word: "Biodegradable",
+                subtopic: "Synonym & Antonym Analysis",
+                question: "What is an ANTONYM for 'Biodegradable'?",
+                options: ["Organic", "Decomposable", "Non-biodegradable / Synthetic", "Natural"],
+                correct: 2,
+                hint: "Plastics that persist in landfills for centuries.",
+                explanation: "Correct Answer: Non-biodegradable / Synthetic."
+            },
+            {
+                id: 55,
+                word: "Biodegradable",
+                subtopic: "Exam Statement",
+                question: "Which statement is true regarding biodegradable packaging?",
+                options: [
+                    "It pollutes oceans permanently without breaking down.",
+                    "It breaks down naturally through the action of microorganisms and bacteria.",
+                    "It is made entirely of heavy metals and toxic chemicals.",
+                    "It cannot be used for food products."
+                ],
+                correct: 1,
+                hint: "Bacteria action.",
+                explanation: "Correct Answer: It breaks down naturally through the action of microorganisms and bacteria."
+            },
+            {
+                id: 56,
+                word: "Biodegradable",
+                subtopic: "Contextual Fill-in",
+                question: "Fill in the blank: 'Supermarkets are switching to ________ carrier bags to reduce plastic waste in landfills.'",
+                options: ["Biodegradable", "Bombastic", "Bizarre", "Bereft"],
+                correct: 0,
+                hint: "Eco-friendly bags.",
+                explanation: "Correct Answer: Biodegradable."
+            },
+
+            // --- BIOGRAPHY (Q57 - Q60) ---
+            {
+                id: 57,
+                word: "Biography",
+                subtopic: "One Word Substitution",
+                question: "Choose the correct one-word substitution for: 'The story of a person's life written by somebody else.'",
+                options: ["Autobiography", "Biography", "Bibliography", "Biology"],
+                correct: 1,
+                hint: "'Bio' (life) + 'graphy' (writing). Written by another person.",
+                explanation: "Correct Answer: Biography (N.). Life story written by another. (Autobiography is written by oneself)."
+            },
+            {
+                id: 58,
+                word: "Biography",
+                subtopic: "Distinction Check",
+                question: "What distinguishes an 'Autobiography' from a 'Biography'?",
+                options: ["An autobiography is written by the subject themselves; a biography is written by someone else.",
+                          "An autobiography is about animals; a biography is about humans.",
+                          "An autobiography is fiction; a biography is poetry.",
+                          "There is no difference."],
+                correct: 0,
+                hint: "Prefix 'auto-' means self.",
+                explanation: "Correct Answer: An autobiography is written by the subject themselves; a biography is written by someone else."
+            },
+            {
+                id: 59,
+                word: "Biography",
+                subtopic: "Synonym Analysis",
+                question: "Which of the following is a close synonym for a detailed life account?",
+                options: ["Life story / Memoir", "Bibliography", "Biopsy", "Bonfire"],
+                correct: 0,
+                hint: "Account of a life.",
+                explanation: "Correct Answer: Life story / Memoir."
+            },
+            {
+                id: 60,
+                word: "Biography",
+                subtopic: "Contextual Usage",
+                question: "Complete the sentence: 'Historian Walter Isaacson wrote a best-selling ________ of Steve Jobs.'",
+                options: ["Biography", "Bibliomania", "Beverage", "Bevy"],
+                correct: 0,
+                hint: "Written by someone else about Steve Jobs.",
+                explanation: "Correct Answer: Biography."
+            },
+
+            // --- BIOLOGY (Q61 - Q64) ---
+            {
+                id: 61,
+                word: "Biology",
+                subtopic: "One Word Substitution",
+                question: "Choose the correct one-word substitution for: 'The scientific study of living organisms and life processes.'",
+                options: ["Biopsy", "Biology", "Bibliography", "Blasphemy"],
+                correct: 1,
+                hint: "Study of life.",
+                explanation: "Correct Answer: Biology (N.). Natural science studying life and living organisms."
+            },
+            {
+                id: 62,
+                word: "Biology",
+                subtopic: "Root Analysis",
+                question: "What does the root 'bio' mean in Greek?",
+                options: ["Earth", "Life", "Book", "Two"],
+                correct: 1,
+                hint: "As in biography, bionic, biology.",
+                explanation: "Correct Answer: Life."
+            },
+            {
+                id: 63,
+                word: "Biology",
+                subtopic: "Synonym & Scope",
+                question: "Which branch of science falls under the umbrella of 'Biology'?",
+                options: ["Zoology and Botany", "Astronomy", "Geology", "Astrophysics"],
+                correct: 0,
+                hint: "Study of animals and plants.",
+                explanation: "Correct Answer: Zoology and Botany."
+            },
+            {
+                id: 64,
+                word: "Biology",
+                subtopic: "Contextual MCQ",
+                question: "Complete the sentence: 'Students in the seventh semester examined plant cells under the microscope during their ________ lab.'",
+                options: ["Biology", "Bibliomania", "Bombard", "Boer"],
+                correct: 0,
+                hint: "Study of living organisms.",
+                explanation: "Correct Answer: Biology."
+            },
+
+            // --- BIOPSY (Q65 - Q68) ---
+            {
+                id: 65,
+                word: "Biopsy",
+                subtopic: "One Word Substitution",
+                question: "Choose the correct one-word substitution for: 'The removal of tissue from a living body for examination to discover the presence, cause, or extent of a disease.'",
+                options: ["Autopsy", "Biopsy", "Biology", "Bibliography"],
+                correct: 1,
+                hint: "'Bio' (life) + 'opsis' (sight/examination of living tissue).",
+                explanation: "Correct Answer: Biopsy (N.). Medical examination of tissue from a living patient. (Contrast with autopsy, examination of a dead body)."
+            },
+            {
+                id: 66,
+                word: "Biopsy",
+                subtopic: "Distinction Check",
+                question: "What is the key difference between a 'Biopsy' and an 'Autopsy'?",
+                options: [
+                    "A biopsy is performed on living tissue; an autopsy is performed on a deceased body.",
+                    "A biopsy is about books; an autopsy is about languages.",
+                    "There is no medical distinction.",
+                    "An autopsy is a soft drink."
+                ],
+                correct: 0,
+                hint: "Living vs deceased.",
+                explanation: "Correct Answer: A biopsy is performed on living tissue; an autopsy is performed on a deceased body."
+            },
+            {
+                id: 67,
+                word: "Biopsy",
+                subtopic: "Synonym & Medical Term",
+                question: "Which of the following describes the medical purpose of a biopsy?",
+                options: ["To analyze tissue samples for cancerous or pathological conditions", "To write a biography of a doctor", "To test soil biodegradability", "To list library references"],
+                correct: 0,
+                hint: "Checking for disease in tissue.",
+                explanation: "Correct Answer: To analyze tissue samples for cancerous or pathological conditions."
+            },
+            {
+                id: 68,
+                word: "Biopsy",
+                subtopic: "Contextual Fill-in",
+                question: "Fill in the blank: 'The surgeon recommended a ________ to determine whether the tumor was benign or malignant.'",
+                options: ["Biopsy", "Bibliophile", "Bonfire", "Beverage"],
+                correct: 0,
+                hint: "Tissue testing.",
+                explanation: "Correct Answer: Biopsy."
+            },
+
+            // --- BIZARRE (Q69 - Q72) ---
+            {
+                id: 69,
+                word: "Bizarre",
+                subtopic: "One Word Substitution",
+                question: "Choose the correct one-word substitution for: 'Very strange, eccentric, or unusual in appearance or style.'",
+                options: ["Conventional", "Bizarre", "Bombastic", "Bilingual"],
+                correct: 1,
+                hint: "Outlandish, weird, or surreal.",
+                explanation: "Correct Answer: Bizarre (Adj.). Strikingly unconventional or eccentric. Synonyms: Peculiar, weird, outlandish, grotesque."
+            },
+            {
+                id: 70,
+                word: "Bizarre",
+                subtopic: "Synonym & Antonym Analysis",
+                question: "Which of the following is an ANTONYM for 'Bizarre'?",
+                options: ["Peculiar", "Ordinary / Normal / Conventional", "Grotesque", "Eccentric"],
+                correct: 1,
+                hint: "Opposite of strange is normal.",
+                explanation: "Correct Answer: Ordinary / Normal / Conventional."
+            },
+            {
+                id: 71,
+                word: "Bizarre",
+                subtopic: "Synonym Matching",
+                question: "Select the best SYNONYM for 'Bizarre':",
+                options: ["Peculiar / Weird", "Common", "Standard", "Plain"],
+                correct: 0,
+                hint: "Unusual or odd.",
+                explanation: "Correct Answer: Peculiar / Weird."
+            },
+            {
+                id: 72,
+                word: "Bizarre",
+                subtopic: "Contextual Usage",
+                question: "Complete the sentence: 'The surrealist painting featured a ________ landscape with melting clocks and floating elephants.'",
+                options: ["Bizarre", "Biodegradable", "Bimonthly", "Beneficial"],
+                correct: 0,
+                hint: "Strange and unusual.",
+                explanation: "Correct Answer: Bizarre."
+            },
+
+            // --- BLASPHEMY (Q73 - Q76) ---
+            {
+                id: 73,
+                word: "Blasphemy",
+                subtopic: "One Word Substitution",
+                question: "Choose the correct one-word substitution for: 'Words uttered impiously about God; the act of speaking irreverently about sacred things.'",
+                options: ["Blasphemy", "Biography", "Bibliography", "Bevy"],
+                correct: 0,
+                hint: "Insulting sacred or religious entities.",
+                explanation: "Correct Answer: Blasphemy (N.). Impious or irreverent speech concerning God or sacred items. Synonyms: Profanity, sacrilege, impiety."
+            },
+            {
+                id: 74,
+                word: "Blasphemy",
+                subtopic: "Synonym & Antonym Analysis",
+                question: "Which of the following is an ANTONYM for 'Blasphemy'?",
+                options: ["Sacrilege", "Profanity", "Reverence / Piety / Worship", "Impiety"],
+                correct: 2,
+                hint: "Opposite of irreverence towards God is deep respect and worship.",
+                explanation: "Correct Answer: Reverence / Piety / Worship."
+            },
+            {
+                id: 75,
+                word: "Blasphemy",
+                subtopic: "Exam Statement",
+                question: "Which term is most directly synonymous with 'Blasphemy' in religious legal codes?",
+                options: ["Sacrilege / Profanity", "Philanthropy", "Bibliomania", "Biodegradation"],
+                correct: 0,
+                hint: "Violation of sacred respect.",
+                explanation: "Correct Answer: Sacrilege / Profanity."
+            },
+            {
+                id: 76,
+                word: "Blasphemy",
+                subtopic: "Contextual MCQ",
+                question: "Complete the sentence: 'Ancient laws severely punished anyone accused of committing ________ against the temple deities.'",
+                options: ["Blasphemy", "Beverage", "Biopsy", "Bicentennial"],
+                correct: 0,
+                hint: "Speaking disrespectfully about sacred things.",
+                explanation: "Correct Answer: Blasphemy."
+            },
+
+            // --- BLEAT (Q77 - Q80) ---
+            {
+                id: 77,
+                word: "Bleat",
+                subtopic: "One Word Substitution",
+                question: "Choose the correct one-word substitution for: 'The characteristic crying sound made by sheep, goats, or calves.'",
+                options: ["Bleat", "Bombard", "Boer", "Bizarre"],
+                correct: 0,
+                hint: "Baa sound made by a sheep.",
+                explanation: "Correct Answer: Bleat (V./N.). The cry of sheep or goats. Synonyms: Baa, whimper, cry."
+            },
+            {
+                id: 78,
+                word: "Bleat",
+                subtopic: "Animal Sound Association",
+                question: "Which animal is specifically associated with the sound 'Bleat'?",
+                options: ["Lion", "Sheep or goat", "Elephant", "Snake"],
+                correct: 1,
+                hint: "Farm animal with wool.",
+                explanation: "Correct Answer: Sheep or goat."
+            },
+            {
+                id: 79,
+                word: "Bleat",
+                subtopic: "Grammar & Part of Speech",
+                question: "Can 'Bleat' function as both a verb and a noun in English?",
+                options: ["Yes, it can describe the action (verb) or the sound itself (noun).", "No, it is strictly an adjective.", "No, it is only ever used as an adverb.", "It is a mathematical term."],
+                correct: 0,
+                hint: "To bleat (verb) / a sharp bleat (noun).",
+                explanation: "Yes, it can describe the action (verb) or the sound itself (noun)."
+            },
+            {
+                id: 80,
+                word: "Bleat",
+                subtopic: "Contextual Usage",
+                question: "Complete the sentence: 'The lost lamb began to ________ plaintively on the hillside until its mother answered.'",
+                options: ["Bleat", "Bombard", "Biopsy", "Bilingual"],
+                correct: 0,
+                hint: "Sheep sound.",
+                explanation: "Correct Answer: Bleat."
+            },
+
+            // --- BOER (Q81 - Q84) ---
+            {
+                id: 81,
+                word: "Boer",
+                subtopic: "One Word Substitution",
+                question: "Choose the correct one-word substitution for: 'A person of South African Dutch descent.'",
+                options: ["Boer", "Bohemian", "Bigot", "Benefactor"],
+                correct: 0,
+                hint: "Historical settlers of Dutch origin in South Africa.",
+                explanation: "Correct Answer: Boer (N.). Dutch or Huguenot settler in South Africa (Afrikaner)."
+            },
+            {
+                id: 82,
+                word: "Boer",
+                subtopic: "Historical Context",
+                question: "In South African history, what does the term 'Boer' literally translate to in Dutch/Afrikaans?",
+                options: ["Farmer", "Warrior", "Merchant", "Scholar"],
+                correct: 0,
+                hint: "Agricultural occupation of early Dutch settlers.",
+                explanation: "Correct Answer: Farmer (boer means farmer in Dutch)."
+            },
+            {
+                id: 83,
+                word: "Boer",
+                subtopic: "Synonym Analysis",
+                question: "Which term is modernly synonymous with the historical 'Boer' population in South Africa?",
+                options: ["Afrikaner", "Bibliophile", "Biologist", "Blasphemer"],
+                correct: 0,
+                hint: "Afrikaans-speaking South Africans.",
+                explanation: "Correct Answer: Afrikaner."
+            },
+            {
+                id: 84,
+                word: "Boer",
+                subtopic: "Contextual MCQ",
+                question: "Complete the sentence: 'The historical conflicts between the British Empire and the ________ republics marked late 19th-century South Africa.'",
+                options: ["Boer", "Bizarre", "Biodegradable", "Bimonthly"],
+                correct: 0,
+                hint: "South African Dutch descent.",
+                explanation: "Correct Answer: Boer."
+            },
+
+            // --- BOHEMIAN (Q85 - Q88) ---
+            {
+                id: 85,
+                word: "Bohemian",
+                subtopic: "One Word Substitution",
+                question: "Choose the correct one-word substitution for: 'One who does not follow the usual rules of social life; an unconventional, artistic style of living.'",
+                options: ["Conventionalist", "Bohemian", "Bigot", "Beneficiary"],
+                correct: 1,
+                hint: "Free-spirited artist living unconventionally.",
+                explanation: "Correct Answer: Bohemian (Adj./N.). Unconventional, socially unorthodox, often artistic lifestyle. Synonyms: Nonconformist, free spirit, hippie."
+            },
+            {
+                id: 86,
+                word: "Bohemian",
+                subtopic: "Synonym & Antonym Analysis",
+                question: "Which of the following is an ANTONYM for 'Bohemian'?",
+                options: ["Nonconformist", "Conventional / Orthodox / Bourgeois", "Free spirit", "Eccentric"],
+                correct: 1,
+                hint: "Opposite of unconventional is traditional or conventional.",
+                explanation: "Correct Answer: Conventional / Orthodox / Bourgeois."
+            },
+            {
+                id: 87,
+                word: "Bohemian",
+                subtopic: "Synonym Matching",
+                question: "Select the closest SYNONYM for 'Bohemian':",
+                options: ["Nonconformist / Free spirit", "Strict legalist", "Orthodox priest", "Conformist"],
+                correct: 0,
+                hint: "Someone living outside societal norms.",
+                explanation: "Correct Answer: Nonconformist / Free spirit."
+            },
+            {
+                id: 88,
+                word: "Bohemian",
+                subtopic: "Contextual MCQ",
+                question: "Complete the sentence: 'Rejecting corporate life, the young artist moved into a garret and embraced a ________ lifestyle.'",
+                options: ["Bohemian", "Bicentennial", "Bimonthly", "Biopsy"],
+                correct: 0,
+                hint: "Unconventional artistic life.",
+                explanation: "Correct Answer: Bohemian."
+            },
+
+            // --- BOMBARD (Q89 - Q92) ---
+            {
+                id: 89,
+                word: "Bombard",
+                subtopic: "One Word Substitution",
+                question: "Choose the correct one-word substitution for: 'To subject someone to a continuous flow of questions, criticisms, or information (or attack with artillery).'",
+                options: ["Bombard", "Bleat", "Bereft", "Bilingual"],
+                correct: 0,
+                hint: "Barrage or deluge with questions.",
+                explanation: "Correct Answer: Bombard (V.). To attack continuously with artillery or overwhelm with questions/criticism. Synonyms: Pester, assail, barrage, deluge."
+            },
+            {
+                id: 90,
+                word: "Bombard",
+                subtopic: "Synonym Analysis",
+                question: "Which of the following is a direct SYNONYM for 'Bombard' when used metaphorically?",
+                options: ["Barrage / Pester / Deluge", "Protect / Shield", "Compliment gently", "Ignore completely"],
+                correct: 0,
+                hint: "Overwhelm with a continuous stream.",
+                explanation: "Correct Answer: Barrage / Pester / Deluge."
+            },
+            {
+                id: 91,
+                word: "Bombard",
+                subtopic: "Grammar & Usage",
+                question: "What part of speech is 'Bombard'?",
+                options: ["Verb", "Noun", "Adjective", "Adverb"],
+                correct: 0,
+                hint: "An action word.",
+                explanation: "Correct Answer: Verb (V.)."
+            },
+            {
+                id: 92,
+                word: "Bombard",
+                subtopic: "Contextual MCQ",
+                question: "Complete the sentence: 'Reporters continued to ________ the celebrity with questions as he stepped out of the airport.'",
+                options: ["Bombard", "Bleat", "Biopsy", "Befriend"],
+                correct: 0,
+                hint: "Overwhelm with questions.",
+                explanation: "Correct Answer: Bombard."
+            },
+
+            // --- BOMBASTIC (Q93 - Q96) ---
+            {
+                id: 93,
+                word: "Bombastic",
+                subtopic: "One Word Substitution",
+                question: "Choose the correct one-word substitution for: 'Using high-sounding, pompous words with little true meaning or substance.'",
+                options: ["Concise", "Bombastic", "Biodegradable", "Bilingual"],
+                correct: 1,
+                hint: "All talk and big vocabulary, but empty substance.",
+                explanation: "Correct Answer: Bombastic (Adj.). High-sounding, inflated language with little meaning. Synonyms: Pompous, grandiloquent, turgid, flowery."
+            },
+            {
+                id: 94,
+                word: "Bombastic",
+                subtopic: "Synonym & Antonym Analysis",
+                question: "Which of the following is an ANTONYM for 'Bombastic'?",
+                options: ["Pompous", "Grandiloquent", "Concise / Plain / Straightforward", "Inflated"],
+                correct: 2,
+                hint: "Opposite of pretentious and wordy is concise and plain.",
+                explanation: "Correct Answer: Concise / Plain / Straightforward."
+            },
+            {
+                id: 95,
+                word: "Bombastic",
+                subtopic: "Exam Statement Analysis",
+                question: "Which evaluation best describes a 'bombastic' speech?",
+                options: [
+                    "It is extremely brief and concise.",
+                    "It uses grandiose, pretentious language that lacks genuine substance.",
+                    "It is scientifically precise and accurate.",
+                    "It is written in two languages."
+                ],
+                correct: 1,
+                hint: "Big words, empty meaning.",
+                explanation: "Correct Answer: It uses grandiose, pretentious language that lacks genuine substance."
+            },
+            {
+                id: 96,
+                word: "Bombastic",
+                subtopic: "Contextual MCQ",
+                question: "Complete the sentence: 'The politician's ________ speech filled with empty promises failed to impress the intelligent audience.'",
+                options: ["Bombastic", "Bimonthly", "Bibliophile", "Biopsy"],
+                correct: 0,
+                hint: "Pompous and empty words.",
+                explanation: "Correct Answer: Bombastic."
+            },
+
+            // --- BONFIRE (Q97 - Q100) ---
+            {
+                id: 97,
+                word: "Bonfire",
+                subtopic: "One Word Substitution",
+                question: "Choose the correct one-word substitution for: 'A large open-air fire used for celebration, parties, or burning waste.'",
+                options: ["Beverage", "Bonfire", "Biopsy", "Bibliography"],
+                correct: 1,
+                hint: "Huge outdoor fire.",
+                explanation: "Correct Answer: Bonfire (N.). A large fire built outdoors for celebration or rubbish disposal."
+            },
+            {
+                id: 98,
+                word: "Bonfire",
+                subtopic: "Synonym Analysis",
+                question: "Which of the following is a close SYNONYM for 'Bonfire'?",
+                options: ["Open-air blaze / Pyre", "Subterranean cave", "Cold beverage", "Book list"],
+                correct: 0,
+                hint: "Outdoor burning fire.",
+                explanation: "Correct Answer: Open-air blaze / Pyre."
+            },
+            {
+                id: 99,
+                word: "Bonfire",
+                subtopic: "Etymology & Roots",
+                question: "Historically, what does the word 'Bonfire' derive from?",
+                options: ["Bone fire (originally fires fueled by bones or public burnings)", "Books and fire", "Biological fire", "Bilingual fire"],
+                correct: 0,
+                hint: "Middle English bone-fire.",
+                explanation: "Correct Answer: Bone fire (originally fires fueled by bones in medieval times)."
+            },
+            {
+                id: 100,
+                word: "Bonfire",
+                subtopic: "Contextual MCQ",
+                question: "Complete the sentence: 'During the winter solstice festival, villagers gathered around a massive ________ to sing and dance.'",
+                options: ["Bonfire", "Biopsy", "Bibliography", "Bombard"],
+                correct: 0,
+                hint: "Huge outdoor celebration fire.",
+                explanation: "Correct Answer: Bonfire."
+            }
+        ];
+
+        // Quiz State Variables
+        let currentIndex = 0;
+        let score = 0;
+        let selectedAnswers = new Array(quizData.length).fill(null); // stores selected option index
+        let questionStatuses = new Array(quizData.length).fill('unanswered'); // 'correct', 'incorrect', 'unanswered'
+
+        // DOM Elements
+        const questionBadge = document.getElementById('question-badge');
+        const subtopicBadge = document.getElementById('subtopic-badge');
+        const statusPill = document.getElementById('status-pill');
+        const progressBar = document.getElementById('progress-bar');
+        const progressPercent = document.getElementById('progress-percent');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const hintToggle = document.getElementById('hint-toggle');
+        const hintBox = document.getElementById('hint-box');
+        const hintText = document.getElementById('hint-text');
+        const explanationBox = document.getElementById('explanation-box');
+        const explanationTitle = document.getElementById('explanation-title');
+        const explanationText = document.getElementById('explanation-text');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const scoreDisplay = document.getElementById('score-display');
+        const jumpInput = document.getElementById('jump-input');
+
+        // Initialize Quiz
+        function initQuiz() {
+            loadQuestion(currentIndex);
+            updateScoreDisplay();
+        }
+
+        // Load Question Function
+        function loadQuestion(index) {
+            const q = quizData[index];
+            
+            // Update Badges & Meta
+            questionBadge.textContent = `Question ${index + 1} of ${quizData.length}`;
+            subtopicBadge.textContent = q.subtopic;
+            
+            // Question Text
+            questionText.textContent = q.question;
+
+            // Hint
+            hintText.textContent = q.hint;
+            hintBox.classList.add('hidden');
+            hintToggle.innerHTML = '<span>💡 Show Hint</span>';
+
+            // Options
+            optionsContainer.innerHTML = '';
+            q.options.forEach((opt, i) => {
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left p-4 rounded-2xl border transition-all flex items-center justify-between font-medium text-sm sm:text-base shadow-sm`;
+                
+                const isSelected = selectedAnswers[index] === i;
+                const isAnswered = selectedAnswers[index] !== null;
+
+                if (isAnswered) {
+                    if (i === q.correct) {
+                        btn.classList.add('bg-emerald-50', 'border-emerald-400', 'text-emerald-900', 'font-semibold');
+                    } else if (isSelected && i !== q.correct) {
+                        btn.classList.add('bg-rose-50', 'border-rose-400', 'text-rose-900');
+                    } else {
+                        btn.classList.add('bg-white', 'border-borderPurple', 'text-darkPurple', 'opacity-60');
+                    }
+                    btn.disabled = true;
+                } else {
+                    btn.classList.add('bg-white', 'border-borderPurple', 'text-darkPurple', 'hover:bg-hoverPurple', 'hover:border-primaryPurple');
+                    btn.onclick = () => selectOption(i);
+                }
+
+                btn.innerHTML = `
+                    <span class="flex items-center gap-3">
+                        <span class="w-7 h-7 rounded-full bg-lightPurple text-primaryPurple font-bold flex items-center justify-center text-xs border border-borderPurple">${String.fromCharCode(65 + i)}</span>
+                        <span>${opt}</span>
+                    </span>
+                    ${isAnswered && i === q.correct ? '<span class="text-emerald-600 font-bold">✓ Correct</span>' : ''}
+                    ${isAnswered && isSelected && i !== q.correct ? '<span class="text-rose-600 font-bold">✗ Your Answer</span>' : ''}
+                `;
+                optionsContainer.appendChild(btn);
+            });
+
+            // Explanation State
+            if (selectedAnswers[index] !== null) {
+                const isCorrect = selectedAnswers[index] === q.correct;
+                explanationBox.classList.remove('hidden');
+                if (isCorrect) {
+                    explanationBox.className = 'mb-6 p-4 rounded-2xl border bg-emerald-50 border-emerald-200 text-emerald-900';
+                    explanationTitle.innerHTML = '🎉 Correct! Excellent Exam Recall';
+                } else {
+                    explanationBox.className = 'mb-6 p-4 rounded-2xl border bg-rose-50 border-rose-200 text-rose-900';
+                    explanationTitle.innerHTML = '❌ Incorrect. Review Rationale Below';
+                }
+                explanationText.textContent = q.explanation;
+                statusPill.textContent = isCorrect ? 'Correct ✓' : 'Incorrect ✗';
+                statusPill.className = isCorrect ? 'text-xs font-bold text-emerald-600' : 'text-xs font-bold text-rose-600';
+            } else {
+                explanationBox.classList.add('hidden');
+                statusPill.textContent = 'Unanswered';
+                statusPill.className = 'text-xs font-medium text-mutedText';
+            }
+
+            // Navigation Buttons State
+            prevBtn.disabled = index === 0;
+            nextBtn.textContent = index === quizData.length - 1 ? 'Finish Quiz' : 'Next →';
+
+            // Progress Bar & Percentage
+            const progressVal = ((index + 1) / quizData.length) * 100;
+            progressBar.style.width = `${progressVal}%`;
+            progressPercent.textContent = `${Math.round(progressVal)}%`;
+        }
+
+        // Option Selection Handler
+        function selectOption(optionIndex) {
+            const q = quizData[currentIndex];
+            selectedAnswers[currentIndex] = optionIndex;
+            
+            const isCorrect = optionIndex === q.correct;
+            if (isCorrect) {
+                questionStatuses[currentIndex] = 'correct';
+                score++;
+            } else {
+                questionStatuses[currentIndex] = 'incorrect';
+            }
+
+            updateScoreDisplay();
+            loadQuestion(currentIndex);
+        }
+
+        // Update Score Display
+        function updateScoreDisplay() {
+            scoreDisplay.textContent = `${score} / ${quizData.length}`;
+        }
+
+        // Navigation Functions
+        function nextQuestion() {
+            if (currentIndex < quizData.length - 1) {
+                currentIndex++;
+                loadQuestion(currentIndex);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                alert(`Quiz Completed! Your Final Score: ${score} / ${quizData.length}. You are well on your way to complete mastery!`);
+            }
+        }
+
+        function prevQuestion() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                loadQuestion(currentIndex);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // Jump to Question
+        function jumpToQuestion() {
+            const val = parseInt(jumpInput.value);
+            if (!isNaN(val) && val >= 1 && val <= quizData.length) {
+                currentIndex = val - 1;
+                loadQuestion(currentIndex);
+                jumpInput.value = '';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                alert(`Please enter a valid question number between 1 and ${quizData.length}.`);
+            }
+        }
+
+        // Hint Toggle
+        function toggleHint() {
+            if (hintBox.classList.contains('hidden')) {
+                hintBox.classList.remove('hidden');
+                hintToggle.innerHTML = '<span>💡 Hide Hint</span>';
+            } else {
+                hintBox.classList.add('hidden');
+                hintToggle.innerHTML = '<span>💡 Show Hint</span>';
+            }
+        }
+
+        // Reset Quiz
+        function confirmReset() {
+            if (confirm('Are you sure you want to reset the quiz? All progress and scores will be cleared.')) {
+                currentIndex = 0;
+                score = 0;
+                selectedAnswers = new Array(quizData.length).fill(null);
+                questionStatuses = new Array(quizData.length).fill('unanswered');
+                initQuiz();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // Keyboard Navigation Event Listener
+        document.addEventListener('keydown', (e) => {
+            // Do not trigger if user is typing in inputs or textareas
+            if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+                if (e.key === 'Enter' && document.activeElement === jumpInput) {
+                    jumpToQuestion();
+                }
+                return;
+            }
+
+            if (e.key === 'ArrowLeft') {
+                prevQuestion();
+            } else if (e.key === 'ArrowRight') {
+                nextQuestion();
+            }
+        });
+
+        // Run on page load
+        window.onload = initQuiz;
+    </script>
+</body>
+</html>

@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haryana GK Panchayati Raj Interactive Quiz - 80 Questions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+<style id="cosmic-readable-quiz-theme">
+:root{--space:#e8dcff;--panel:#f3eaff;--panel2:#dcc6ff;--edge:#6a45bf;--glow:#d28b28;--accent:#d15f9f;--ink:#2c1b4d;--muted:#66547c;--mist:rgba(106,69,191,.2)}html{background:var(--space)}body{background:radial-gradient(ellipse 62% 45% at 90% -5%,rgba(209,95,159,.28),transparent 62%),radial-gradient(ellipse 55% 40% at 8% 100%,rgba(65,164,207,.26),transparent 64%),var(--space)!important;color:var(--ink)!important;min-height:100vh}body:before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.78;background-image:radial-gradient(circle at 9% 18%,var(--glow) 0 1px,transparent 1.7px),radial-gradient(circle at 26% 69%,var(--edge) 0 .8px,transparent 1.5px),radial-gradient(circle at 68% 24%,var(--accent) 0 1px,transparent 1.8px),radial-gradient(circle at 88% 73%,#47a8d3 0 .8px,transparent 1.5px);background-size:220px 190px,300px 270px,260px 230px,340px 310px;z-index:-1}header{background:linear-gradient(105deg,var(--panel),var(--panel2))!important;border-color:rgba(106,69,191,.25)!important;box-shadow:0 7px 24px rgba(84,48,142,.14)!important}header h1{color:var(--edge)!important;text-shadow:none!important}header p,header .text-slate-400,header .text-indigo-200,header .text-indigo-300{color:var(--muted)!important}main>div,#quiz-card,.bg-slate-800,.bg-slate-900,.bg-indigo-900,.bg-indigo-950{background:linear-gradient(145deg,#f8f0ff,var(--panel))!important;border-color:rgba(106,69,191,.22)!important;color:var(--ink)!important;box-shadow:0 14px 35px rgba(84,48,142,.12)!important}.bg-slate-700,.bg-slate-100,.bg-slate-50{background:#eadffd!important;color:var(--ink)!important}.text-slate-100,.text-slate-200,.text-slate-300,.text-slate-400,.text-white,.text-slate-800,.text-slate-700,.text-slate-600{color:var(--ink)!important}.text-indigo-400,.text-indigo-300,.text-emerald-400,.text-yellow-300{color:var(--edge)!important}.border-slate-700,.border-slate-700\/60,.border-indigo-700,.border-slate-200{border-color:rgba(106,69,191,.25)!important}button:not(.bg-green-600):not(.bg-red-600){background:#f9f2ff!important;color:var(--ink)!important;border:1px solid rgba(106,69,191,.25)!important;box-shadow:0 3px 10px rgba(84,48,142,.09)!important}button.bg-indigo-600,button.bg-slate-800,button.bg-slate-900,button.bg-indigo-900{background:linear-gradient(120deg,var(--edge),var(--accent))!important;color:#fff!important;border:0!important}button.bg-indigo-600 *,button.bg-slate-800 *,button.bg-slate-900 *,button.bg-indigo-900 *{color:#fff!important}button:hover{filter:brightness(1.04);transform:translateY(-1px)}input,select,textarea{background:#f9f2ff!important;border-color:rgba(106,69,191,.35)!important;color:var(--ink)!important}input:focus,select:focus,textarea:focus{outline:none!important;border-color:var(--edge)!important;box-shadow:0 0 0 3px var(--mist)!important}.bg-indigo-500,#progress-bar{background:linear-gradient(90deg,var(--edge),var(--accent),var(--glow))!important}.rounded-2xl{border-radius:1.25rem!important}
+</style></head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between">
+    <!-- Header -->
+    <header class="bg-indigo-700 text-white shadow-md py-4 px-6">
+        <div class="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center">
+            <h1 class="text-xl font-bold">हरियाणा पंचायती राज (HR GK) - Mega Quiz (80 Qs)</h1>
+            <div id="score-display" class="mt-2 sm:mt-0 bg-indigo-800 px-3 py-1 rounded-full text-sm font-semibold">
+                Score: 0 / 80
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Quiz Container -->
+    <main class="max-w-2xl w-full mx-auto p-4 sm:p-6 my-auto">
+        <!-- Progress Bar -->
+        <div class="w-full bg-slate-200 rounded-full h-2.5 mb-6">
+            <div id="progress-bar" class="bg-indigo-600 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+        </div>
+
+        <div id="quiz-card" class="bg-white rounded-xl shadow-lg p-6 relative border border-slate-100">
+            <!-- Question Meta -->
+            <div class="flex justify-between items-center text-xs text-slate-500 mb-3 font-semibold uppercase tracking-wider">
+                <span id="question-counter">Question 1 of 80</span>
+                <span id="source-tag" class="bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded">Page 1</span>
+            </div>
+
+            <!-- Question Text -->
+            <h2 id="question-text" class="text-lg sm:text-xl font-bold text-slate-900 mb-4"></h2>
+
+            <!-- Options List -->
+            <div id="options-container" class="space-y-3 mb-6"></div>
+
+            <!-- Hint Section -->
+            <div class="mb-4">
+                <button onclick="toggleHint()" class="text-xs text-indigo-600 hover:text-indigo-800 font-medium underline focus:outline-none">
+                    💡 संकेत देखें / View Hint
+                </button>
+                <div id="hint-box" class="hidden mt-2 p-3 bg-amber-50 border border-amber-200 text-amber-800 text-sm rounded-lg"></div>
+            </div>
+
+            <!-- Explanation Section -->
+            <div id="explanation-box" class="hidden mb-6 p-4 bg-emerald-50 border border-emerald-200 text-emerald-900 text-sm rounded-lg">
+                <h4 class="font-bold mb-1">व्याख्या / Rationale:</h4>
+                <p id="explanation-text"></p>
+            </div>
+
+            <!-- Navigation Controls -->
+            <div class="flex flex-wrap justify-between items-center gap-2 pt-4 border-t border-slate-100">
+                <button id="prev-btn" onclick="prevQuestion()" class="px-4 py-2 bg-slate-200 text-slate-700 rounded-lg font-medium hover:bg-slate-300 transition disabled:opacity-50">
+                    ← पिछला / Prev
+                </button>
+                
+                <div class="flex items-center space-x-2">
+                    <span class="text-xs text-slate-500">Jump to:</span>
+                    <input type="number" id="jump-input" min="1" max="80" class="w-16 px-2 py-1 text-center border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" onchange="jumpToQuestion(this.value)">
+                </div>
+
+                <button id="next-btn" onclick="nextQuestion()" class="px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition">
+                    अगला / Next →
+                </button>
+            </div>
+        </div>
+
+        <!-- Completion Modal / Screen -->
+        <div id="completion-screen" class="hidden bg-white rounded-xl shadow-lg p-8 text-center">
+            <h2 class="text-2xl font-bold text-slate-900 mb-2">🎉 Quiz Completed!</h2>
+            <p id="final-score-text" class="text-lg text-slate-600 mb-6"></p>
+            <button onclick="restartQuiz()" class="px-6 py-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition">
+                पुनः आरंभ करें / Restart Quiz
+            </button>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-4 text-xs text-slate-400">
+        Interactive Haryana GK Quiz Application &copy; 2026
+    </footer>
+
+    <script>
+        // 80 Unique Questions Dataset (40 from Page 1, 40 from Page 2)
+        const questions = [
+            // --- PAGE 1 QUESTIONS (1 to 40) ---
+            {
+                page: "Page 1",
+                question: "भारत में प्रत्यक्ष लोकतंत्र का मुख्य साधन या मंच इनमें से किसे माना जाता है? / Which of the following is considered the main instrument or platform of direct democracy in India?",
+                options: ["ग्राम सभा", "जिला परिषद्", "पंचायत समिति", "विधान सभा"],
+                answer: 0,
+                hint: "यह ग्रामीण स्तर पर पंजीकृत मतदाताओं की एक सभा होती है।",
+                explanation: "भारत में प्रत्यक्ष लोकतंत्र का साधन ग्राम सभा है।"
+            },
+            {
+                page: "Page 1",
+                question: "ग्राम पंचायत में उप-सरपंच का चयन किसके द्वारा किया जाता है? / Who selects the Up-Sarpanch in a Gram Panchayat?",
+                options: ["नव निर्वाचित ग्राम पंचायत के सदस्य (पंच)", "क्षेत्र के विधायक", "जिला कलेक्टर", "ग्राम विकास अधिकारी"],
+                answer: 0,
+                hint: "चयनित पंच मिलकर अपने में से ही इनका चुनाव करते हैं।",
+                explanation: "ग्राम पंचायत में उप-सरपंच का चयन नव निर्वाचित ग्राम पंचायत के सदस्यों (पंचों) द्वारा किया जाता है।"
+            },
+            {
+                page: "Page 1",
+                question: "ग्राम सभा या पंचायत को उचित स्तर पर प्रदान की जाने वाली प्रमुख शक्ति इनमें से कौन सी है? / Which of the following is a major power granted to the Gram Sabha/Panchayat at the appropriate level?",
+                options: ["छोटे खनिजों का स्वामित्व और लाइसेंस/पट्टे देने की शक्ति", "बड़े उद्योगों का नियंत्रण", "राजकीय करों का निर्धारण", "पुलिस बल का नियंत्रण"],
+                answer: 0,
+                hint: "यह शक्ति खनिज पदार्थों की खरीद और स्वामित्व से जुड़ी है।",
+                explanation: "ग्राम सभा/पंचायत को उचित स्तर पर दी जाने वाली शक्ति छोटे खनिजों का स्वामित्व और छोटे खनिजों की खरीद के लिए लाइसेंस/पट्टे देने की शक्ति है।"
+            },
+            {
+                page: "Page 1",
+                question: "पूरे जिले के लिए विकास योजनाएं बनाने का कार्य कौन सी समिति करती है? / Which committee formulates development plans for the entire district?",
+                options: ["जिला योजना समिति", "पंचायत समिति", "ग्राम पंचायत", "स्थानीय विकास बोर्ड"],
+                answer: 0,
+                hint: "यह पूरी जिला इकाई के लिए योजना तैयार करती है।",
+                explanation: "जिला योजना समिति पूरे जिले के लिए योजना बनाती है।"
+            },
+            {
+                page: "Page 1",
+                question: "'पंचायती राज' को 'लोकतान्त्रिक मार्ग' (Democratic Path) की संज्ञा किसने दी थी? / Who termed 'Panchayati Raj' as the 'Democratic Path'?",
+                options: ["ओ. पी. वर्मा", "अशोक मेहता", "बलवंत राय मेहता", "एल.एम. सिंघवी"],
+                answer: 0,
+                hint: "इनका नाम 'ओ. पी.' से शुरू होता है।",
+                explanation: "'पंचायती राज' को 'लोकतान्त्रिक मार्ग' ओ. पी. वर्मा ने कहा था।"
+            },
+            {
+                page: "Page 1",
+                question: "पंचायती राज व्यवस्था स्थापित करने के पीछे का मूल और प्रमुख उद्देश्य क्या है? / What is the fundamental and primary objective behind establishing the Panchayati Raj system?",
+                options: ["विकेन्द्रीकरण की शक्ति (Decentralization of Power)", "राजकीय खजाने को बढ़ाना", "न्यायिक मामलों का त्वरित निपटारा", "कृषि उत्पादों का निर्यात"],
+                answer: 0,
+                hint: "सत्ता का एक स्थान पर केंद्रित न रहकर नीचे स्तर तक पहुँचना।",
+                explanation: "पंचायती राज के पीछे का प्रमुख उद्देश्य शक्ति का विकेन्द्रीकरण (विकेन्द्रीकरण की शक्ति) है।"
+            },
+            {
+                page: "Page 1",
+                question: "प्रशासनिक दृष्टि से पंचायती राज व्यवस्था किस प्रकार की विधि के अंतर्गत आती है? / From an administrative perspective, under what type of law does the Panchayati Raj system fall?",
+                options: ["शासन विधि", "आपत्कालीन विधि", "आपराधिक विधि", "दीवानी विधि"],
+                answer: 0,
+                hint: "यह शासन संचालन से जुड़ी विधि है।",
+                explanation: "पंचायती राज एक शासन विधि है।"
+            },
+            {
+                page: "Page 1",
+                question: "पंचायत समिति की अनुशंसा सबसे पहले किस वर्ष और किस समिति द्वारा की गई थी? / Recommendation for the Panchayat Samiti was first made in which year and by which committee?",
+                options: ["1977 में अशोक मेहता समिति द्वारा", "1957 में बलवंत राय मेहता समिति द्वारा", "1985 में जी.बी.के. राव समिति द्वारा", "1986 में एल.एम. सिंघवी समिति द्वारा"],
+                answer: 0,
+                hint: "अशोक मेहता समिति ने त्रिस्तरीय व्यवस्था में पंचायत समिति का सुझाव दिया था।",
+                explanation: "पंचायत समिति की अनुशंसा 1977 में अशोक मेहता समिति ने की थी।"
+            },
+            {
+                page: "Page 1",
+                question: "वर्ष 1977 में जनता दल सरकार द्वारा पंचायती राज में सुधार हेतु किस समिति का गठन किया गया था? / Which committee was formed by the Janata Dal government in 1977 to reform Panchayati Raj?",
+                options: ["अशोक मेहता समिति", "बलवंत राय मेहता समिति", "जी.बी.के. राव समिति", "सरदार स्वर्ण सिंह समिति"],
+                answer: 0,
+                hint: "इसने त्रिस्तरीय पंचायत राज का सुझाव दिया था।",
+                explanation: "1977 में जनता दल सरकार ने पंचायती राज में सुधार के लिए अशोक मेहता समिति का गठन किया था।"
+            },
+            {
+                page: "Page 1",
+                question: "बलवंत राय मेहता समिति (1957) द्वारा किस प्रकार की पंचायती राज व्यवस्था का सुझाव दिया गया था? / What type of Panchayati Raj system was suggested by the Balwant Rai Mehta Committee (1957)?",
+                options: ["द्विस्तरीय पंचायती राज (जिला परिषद् व मंडल पंचायत)", "त्रिस्तरीय पंचायती राज", "चतुर्स्तरीय पंचायती राज", "एकस्तरीय ग्राम पंचायत"],
+                answer: 0,
+                hint: "इसमें दो स्तर बताए गए थे - जिला परिषद् व मंडल पंचायत।",
+                explanation: "1957 की बलवंत राय मेहता समिति ने द्विस्तरीय पंचायती राज (जिला परिषद् व मंडल पंचायत) का सुझाव दिया था।"
+            },
+            {
+                page: "Page 1",
+                question: "किस समिति ने जिले को योजना की बुनियादी इकाई बनाने तथा नियमित चुनाव करवाने का सुझाव 1985 में दिया था? / Which committee suggested making the district the basic unit of planning and holding regular elections in 1985?",
+                options: ["जी.बी.के. राव समिति", "अशोक मेहता समिति", "एल.एम. सिंघवी समिति", "बलवंत राय मेहता समिति"],
+                answer: 0,
+                hint: "इनका संबंध 1985 के काल से है।",
+                explanation: "1985 में जी.बी.के. राव समिति ने जिले को योजना की बुनियादी इकाई बनाने व नियमित चुनाव करने का सुझाव दिया था।"
+            },
+            {
+                page: "Page 1",
+                question: "पंचायती राज संस्थाओं को संवैधानिक दर्जा प्रदान करने और अधिक वित्तीय संसाधन सौंपने की सिफारिश किस समिति ने की थी? / Which committee recommended granting constitutional status to panchayats and handing over more financial resources in 1986?",
+                options: ["एल.एम. सिंघवी समिति", "अशोक मेहता समिति", "जी.बी.के. राव समिति", "सरकारी आयोग"],
+                answer: 0,
+                hint: "यह 1986 की प्रसिद्ध समिति है।",
+                explanation: "1986 में एल.एम. सिंघवी समिति ने पंचायतों को संवैधानिक दर्जा प्रदान करने व अधिक वित्तीय संसाधन सौंपने की सिफारिश की थी।"
+            },
+            {
+                page: "Page 1",
+                question: "HRDFA का पूर्ण रूप (Full Form) क्या है? / What is the full form of HRDFA?",
+                options: ["हरियाणा रूरल डेवलपमेंट फंड एडमिनिस्ट्रेशन", "हरियाणा रूरल डेवलपमेंट फाइनेंस एजेंसी", "हरियाणा रीजनल डेवलपमेंट फंड अथॉरिटी", "हरियाणा रूरल डायरेक्टरी फॉर एडमिनिस्ट्रेशन"],
+                answer: 0,
+                hint: "यह ग्रामीण विकास निधि प्रशासन से जुड़ा है।",
+                explanation: "HRDFA का पूर्ण रूप हरियाणा रूरल डेवलपमेंट फंड एडमिनिस्ट्रेशन (Haryana Rural Development Fund Administration) है।"
+            },
+            {
+                page: "Page 1",
+                question: "जिला परिषद् के प्रधान (Pradhan Zilla Parishad) को राज्य में कितना मानदेय निर्धारित किया गया है? / What honorarium is prescribed for the Pradhan of Zilla Parishad in the state?",
+                options: ["7500 रुपये", "6000 रुपये", "5000 रुपये", "2500 रुपये"],
+                answer: 0,
+                hint: "यह जिला स्तर पर सबसे अधिक मानदेय है (7500 रु)।",
+                explanation: "प्रधान जिला परिषद् का मानदेय 7500 रुपये है।"
+            },
+            {
+                page: "Page 1",
+                question: "जिला परिषद् के उप प्रधान (Up Pradhan) को कितना मासिक मानदेय मिलता है? / How much monthly honorarium does the Up Pradhan of Zilla Parishad receive?",
+                options: ["6000 रुपये", "7500 रुपये", "2500 रुपये", "1600 रुपये"],
+                answer: 0,
+                hint: "यह प्रधान से थोड़ा कम यानी 6000 रुपये है।",
+                explanation: "उप प्रधान जिला परिषद् का मानदेय 6000 रुपये है।"
+            },
+            {
+                page: "Page 1",
+                question: "जिला परिषद् के साधारण सदस्य (Member Zilla Parishad) को कितना मानदेय मिलता है? / How much honorarium is given to a Zilla Parishad Member?",
+                options: ["2500 रुपये", "1250 रुपये", "1600 रुपये", "5000 रुपये"],
+                answer: 0,
+                hint: "यह पंचायत समिति के उपाध्यक्ष के मानदेय के बराबर (2500 रु) है।",
+                explanation: "सदस्य जिला परिषद् का मानदेय 2500 रुपये है।"
+            },
+            {
+                page: "Page 1",
+                question: "पंचायत समिति के अध्यक्ष (Chairman Panchayat Samiti) का मानदेय कितना है? / What is the honorarium of the Panchayat Samiti Chairman?",
+                options: ["6000 रुपये", "7500 रुपये", "2500 रुपये", "5000 रुपये"],
+                answer: 0,
+                hint: "यह जिला परिषद् के उप प्रधान के मानदेय (6000 रु) के समान है।",
+                explanation: "अध्यक्ष पंचायत समिति का मानदेय 6000 रुपये है।"
+            },
+            {
+                page: "Page 1",
+                question: "पंचायत समिति के उपाध्यक्ष (Vice Chairman Panchayat Samiti) का मानदेय कितना है? / What is the honorarium of the Panchayat Samiti Vice Chairman?",
+                options: ["2500 रुपये", "1250 रुपये", "6000 रुपये", "1600 रुपये"],
+                answer: 0,
+                hint: "यह 2500 रुपये निर्धारित है।",
+                explanation: "उपाध्यक्ष पंचायत समिति का मानदेय 2500 रुपये है।"
+            },
+            {
+                page: "Page 1",
+                question: "पंचायत समिति के साधारण सदस्य (Member Panchayat Samiti) को कितना मानदेय दिया जाता है? / How much honorarium is given to a Panchayat Samiti Member?",
+                options: ["1250 रुपये", "1600 रुपये", "2500 रुपये", "1000 रुपये"],
+                answer: 0,
+                hint: "यह समिति सदस्यों के लिए 1250 रुपये है।",
+                explanation: "सदस्य पंचायत समिति का मानदेय 1250 रुपये है।"
+            },
+            {
+                page: "Page 1",
+                question: "ग्राम पंचायत के सरपंच (Sarpanch Gram Panchayat) को कितना मानदेय मिलता है? / How much honorarium does a Gram Panchayat Sarpanch receive?",
+                options: ["5000 रुपये", "1600 रुपये", "7500 रुपये", "3000 रुपये"],
+                answer: 0,
+                hint: "यह 5000 रुपये प्रतिमाह है।",
+                explanation: "सरपंच ग्राम पंचायत का मानदेय 5000 रुपये है।"
+            },
+            {
+                page: "Page 1",
+                question: "ग्राम पंचायत के पंच (Panch Gram Panchayat) को कितना मानदेय मिलता है? / How much honorarium does a Gram Panchayat Panch receive?",
+                options: ["1600 रुपये", "1250 रुपये", "2500 रुपये", "1000 रुपये"],
+                answer: 0,
+                hint: "यह 1600 रुपये है।",
+                explanation: "पंच ग्राम पंचायत का मानदेय 1600 रुपये है।"
+            },
+            {
+                page: "Page 1",
+                question: "पूर्व सरपंच की पेंशन (Pension for Former Sarpanch) के रूप में कितनी राशि निर्धारित है? / What amount is prescribed as pension for a former Sarpanch?",
+                options: ["1000 रुपये", "1600 रुपये", "2500 रुपये", "3000 रुपये"],
+                answer: 0,
+                hint: "यह एक हजार रुपये है।",
+                explanation: "पैशन पूर्व सरपंच के लिए 1000 रुपये निर्धारित है।"
+            },
+            {
+                page: "Page 1",
+                question: "नम्बरदार का मानदेय राज्य में कितना है? / What is the honorarium of a Numberdar in the state?",
+                options: ["3000 रुपये", "11000 रुपये", "5000 रुपये", "7500 रुपये"],
+                answer: 0,
+                hint: "यह तीन हजार रुपये है।",
+                explanation: "नम्बरदार का मानदेय 3000 रुपये है।"
+            },
+            {
+                page: "Page 1",
+                question: "चौकीदार का मानदेय राज्य में कितना तय किया गया है? / What honorarium is fixed for a Chowkidar in the state?",
+                options: ["11000 रुपये", "7500 रुपये", "6000 रुपये", "5000 रुपये"],
+                answer: 0,
+                hint: "यह सूची में सबसे अधिक यानी 11000 रुपये है।",
+                explanation: "चौकीदार का मानदेय 11000 रुपये है।"
+            },
+            {
+                page: "Page 1",
+                question: "हरियाणा पंचायती राज एक्ट को कुल कितने अध्यायों (Chapters) में बांटा गया है? / Into how many total chapters is the Haryana Panchayati Raj Act divided?",
+                options: ["22", "6", "280", "15"],
+                answer: 0,
+                hint: "इसकी कुल अध्यायों की संख्या 22 है।",
+                explanation: "हरियाणा पंचायती राज एक्ट को कुल 22 अध्यायों में बांटा गया है।"
+            },
+            {
+                page: "Page 1",
+                question: "हरियाणा पंचायती राज एक्ट में कुल धाराओं (Sections) की संख्या कितनी है? / What is the total number of sections in the Haryana Panchayati Raj Act?",
+                options: ["280", "218", "150", "300"],
+                answer: 0,
+                hint: "धाराओं की कुल संख्या 280 है।",
+                explanation: "हरियाणा पंचायती राज एक्ट में कुल 280 धारायें हैं।"
+            },
+            {
+                page: "Page 1",
+                question: "हरियाणा पंचायती राज एक्ट को कुल कितने भागों (Parts) में विभाजित किया गया है? / Into how many total parts is the Haryana Panchayati Raj Act divided?",
+                options: ["6", "22", "5", "8"],
+                answer: 0,
+                hint: "इसके मुख्य भागों की संख्या 6 है।",
+                explanation: "हरियाणा पंचायती राज एक्ट को कुल 6 पार्ट में बांटा गया है।"
+            },
+            {
+                page: "Page 1",
+                question: "हरियाणा पंचायती राज एक्ट के 'पार्ट-2' का संबंध किससे है? / What is 'Part-2' of the Haryana Panchayati Raj Act related to?",
+                options: ["ग्राम पंचायत व ग्राम सभा", "पंचायत समिति", "जिला परिषद्", "चुनाव के नियम"],
+                answer: 0,
+                hint: "यह सबसे बुनियादी स्थानीय इकाई (ग्राम पंचायत व ग्राम सभा) से है।",
+                explanation: "पार्ट-2 का संबंध ग्राम पंचायत व ग्राम सभा से है।"
+            },
+            {
+                page: "Page 1",
+                question: "हरियाणा पंचायती राज एक्ट के 'पार्ट-3' के अंतर्गत क्या आता है? / What comes under 'Part-3' of the Haryana Panchayati Raj Act?",
+                options: ["पंचायत समिति", "जिला परिषद्", "अन्य प्रावधान", "ग्राम पंचायत व ग्राम सभा"],
+                answer: 0,
+                hint: "यह खंड स्तर की संस्था से जुड़ा है।",
+                explanation: "पार्ट-3 के अंतर्गत पंचायत समिति आती है।"
+            },
+            {
+                page: "Page 1",
+                question: "हरियाणा पंचायती राज एक्ट के 'पार्ट-4' में किसका उल्लेख किया गया है? / What is mentioned in 'Part-4' of the Haryana Panchayati Raj Act?",
+                options: ["जिला परिषद्", "पंचायत समिति", "चुनाव के नियम", "ग्राम सभा"],
+                answer: 0,
+                hint: "यह शीर्ष जिला स्तरीय निकाय है।",
+                explanation: "पार्ट-4 में जिला परिषद् का उल्लेख है।"
+            },
+            {
+                page: "Page 1",
+                question: "हरियाणा पंचायती राज एक्ट का 'पार्ट-5' किससे संबंधित है? / 'Part-5' of the Haryana Panchayati Raj Act is related to?",
+                options: ["चुनाव के नियम", "अन्य प्रावधान", "ग्राम पंचायत के वित्त", "कराधान"],
+                answer: 0,
+                hint: "यह चुनाव प्रक्रिया के नियमों से संबंधित है।",
+                explanation: "पार्ट-5 चुनाव के नियमों से संबंधित है।"
+            },
+            {
+                page: "Page 1",
+                question: "हरियाणा पंचायती राज एक्ट का 'पार्ट-6' क्या दर्शाता है? / What does 'Part-6' of the Haryana Panchayati Raj Act indicate?",
+                options: ["अन्य प्रावधान", "ग्राम पंचायत व ग्राम सभा", "जिला परिषद् के कार्य", "पंचायत समिति की कार्यप्रणाली"],
+                answer: 0,
+                hint: "यह शेष बची व्यवस्थाओं यानी अन्य प्रावधानों से है।",
+                explanation: "पार्ट-6 अन्य प्रावधानों से संबंधित है।"
+            },
+            {
+                page: "Page 1",
+                question: "हरियाणा पंचायती राज एक्ट 1994 के अध्याय-1 (Chapter-1) में कुल कितनी धाराएं शामिल हैं? / How many sections are included in Chapter-1 of the Haryana Panchayati Raj Act 1994?",
+                options: ["धारा 1 से 2", "धारा 3 से 6", "धारा 7 से 12", "धारा 13 से 38"],
+                answer: 0,
+                hint: "यह शुरुआत की पहली दो धाराएं हैं।",
+                explanation: "अध्याय-1 में कुल धारायें 1-2 हैं, जो एक्ट के नाम आदि से संबंधित हैं।"
+            },
+            {
+                page: "Page 1",
+                question: "हरियाणा पंचायती राज एक्ट का अध्याय-2 किससे संबंधित प्रावधान करता है? / Chapter-2 of the Haryana Panchayati Raj Act provides provisions related to?",
+                options: ["ग्राम पंचायत, पंचायत समिति व जिला परिषद् के सामान्य प्रावधान", "ग्राम पंचायत का गठन", "कराधान और वित्त", "नियंत्रण"],
+                answer: 0,
+                hint: "इसमें धारा 3 से 6 तक के प्रावधान हैं।",
+                explanation: "अध्याय-2 में ग्राम पंचायत, पंचायत समिति व जिला परिषद् के प्रावधान (कुल धारायें 3-6) शामिल हैं।"
+            },
+            {
+                page: "Page 1",
+                question: "ग्राम पंचायत व ग्राम सभा के गठन से संबंधित धाराएं हरियाणा पंचायती राज एक्ट के किस अध्याय में हैं? / Sections related to the constitution of Gram Panchayat and Gram Sabha are in which chapter of the Act?",
+                options: ["अध्याय-3 (धारायें 7-12)", "अध्याय-4 (धारायें 13-38)", "अध्याय-5 (धारायें 39-45)", "अध्याय-6 (धारायें 46-54)"],
+                answer: 0,
+                hint: "यह गठन से जुड़ा तीसरा अध्याय है।",
+                explanation: "अध्याय-3 (कुल धारायें 7-12) ग्राम पंचायत व ग्राम सभा के गठन से संबंधित है।"
+            },
+            {
+                page: "Page 1",
+                question: "ग्राम पंचायत के कर्तव्य, कार्य और शक्तियां किस अध्याय और धारा के अंतर्गत आती हैं? / Under which chapter and sections do the duties, functions, and powers of the Gram Panchayat fall?",
+                options: ["अध्याय-4 (कुल धारायें 13-38)", "अध्याय-3 (कुल धारायें 7-12)", "अध्याय-5 (कुल धारायें 39-45)", "अध्याय-6 (कुल धारायें 46-54)"],
+                answer: 0,
+                hint: "यह कार्यों और शक्तियों का बड़ा विस्तार (13-38) है।",
+                explanation: "अध्याय-4 (कुल धारायें 13-38) ग्राम पंचायत के कर्तव्य, कार्य और शक्तियों से संबंधित है।"
+            },
+            {
+                page: "Page 1",
+                question: "ग्राम पंचायत के वित्त और कराधान (Finance and Taxation) का उल्लेख किस अध्याय में किया गया है? / Finance and taxation of Gram Panchayat are mentioned in which chapter?",
+                options: ["अध्याय-5 (कुल धारायें 39-45)", "अध्याय-6 (कुल धारायें 46-54)", "अध्याय-7 (कुल धारायें 55-65)", "अध्याय-11 (कुल धारायें 88-105)"],
+                answer: 0,
+                hint: "यह पांचवां अध्याय है।",
+                explanation: "अध्याय-5 ग्राम पंचायत के वित्त और कराधान (कुल धारायें 39-45) से संबंधित है।"
+            },
+            {
+                page: "Page 1",
+                question: "हरियाणा पंचायती राज एक्ट का अध्याय-6 किससे संबंधित है? / Chapter-6 of the Haryana Panchayati Raj Act is related to?",
+                options: ["नियंत्रण (Control) - कुल धारायें 46-54", "परीक्षण - कुल धारायें 106-116", "निरीक्षण - कुल धारायें 155-160", "चुनाव नियम - कुल धारायें 162-188"],
+                answer: 0,
+                hint: "यह छठा अध्याय नियंत्रण से जुड़ा है।",
+                explanation: "अध्याय-6 नियंत्रण (कुल धारायें 46-54) से संबंधित है।"
+            },
+            {
+                page: "Page 1",
+                question: "अशोक मेहता समिति का गठन किस वर्ष किया गया था? / In which year was the Ashok Mehta Committee constituted?",
+                options: ["1977", "1957", "1985", "1986"],
+                answer: 0,
+                hint: "यह जनता दल सरकार के समय 1977 में बनी थी।",
+                explanation: "अशोक मेहता समिति का गठन 1977 में किया गया था।"
+            },
+            {
+                page: "Page 1",
+                question: "इनमें से कौन सी समिति त्रिस्तरीय पंचायती राज प्रणाली की सिफारिश करने के लिए जानी जाती है? / Which of the following committees is known for recommending the three-tier Panchayati Raj system?",
+                options: ["अशोक मेहता समिति", "बलवंत राय मेहता समिति", "जी.बी.के. राव समिति", "एल.एम. सिंघवी समिति"],
+                answer: 0,
+                hint: "इसने खंड/ब्लॉक स्तर पर पंचायत समिति का सुझाव भी दिया था।",
+                explanation: "अशोक मेहता समिति (1977) ने त्रिस्तरीय पंचायती राज प्रणाली का सुझाव दिया था।"
+
+            },
+            // --- PAGE 2 QUESTIONS (41 to 80) ---
+            {
+                page: "Page 2",
+                question: "हरियाणा पंचायती राज एक्ट का 'अध्याय-7' किससे संबंधित है? / What is 'Chapter-7' of the Haryana Panchayati Raj Act related to?",
+                options: ["पंचायत समिति (कुल धारायें 55-65)", "जिला परिषद् (कुल धारायें 117-125)", "ग्रामीण विकास (कुल धारायें 219-280)", "अन्य नियम (कुल धारायें 189-218)"],
+                answer: 0,
+                hint: "यह अध्याय पंचायत समिति की रूपरेखा (धारा 55-65) तय करता है।",
+                explanation: "अध्याय-7 पंचायत समिति (कुल धारायें 55-65) से संबंधित है।"
+            },
+            {
+                page: "Page 2",
+                question: "पंचायत समितियों के सदस्यों की संख्या को कौन सी धारा निर्धारित करती है? / Which section determines the number of members of Panchayat Samitis?",
+                options: ["धारा 58", "धारा 83", "धारा 126", "धारा 148"],
+                answer: 0,
+                hint: "यह अध्याय-7 के अंतर्गत आने वाली महत्वपूर्ण धारा 58 है।",
+                explanation: "धारा 58 पंचायत समितियों के सदस्यों की संख्या को निर्धारित करती है।"
+            },
+            {
+                page: "Page 2",
+                question: "पंचायत समिति की कार्यप्रणाली (Functioning) से संबंधित धाराएं किस अध्याय में दी गई हैं? / Sections related to the functioning of the Panchayat Samiti are given in which chapter?",
+                options: ["अध्याय-8 (कुल धारायें 66-72 तक)", "अध्याय-9 (कुल धारायें 73-74)", "अध्याय-10 (कुल धारायें 75-87)", "अध्याय-11 (कुल धारायें 88-105)"],
+                answer: 0,
+                hint: "यह धारा 66 से 72 तक का अध्याय है।",
+                explanation: "अध्याय-8 पंचायत समिति की कार्यप्रणाली (कुल धारायें 66-72 तक) से संबंधित है।"
+            },
+            {
+                page: "Page 2",
+                question: "पंचायत समिति के कार्यकारी अधिकार (Executive Powers) किस अध्याय के अंतर्गत आते हैं? / Executive powers of the Panchayat Samiti fall under which chapter?",
+                options: ["अध्याय-9 (कुल धारायें 73-74)", "अध्याय-7 (कुल धारायें 55-65)", "अध्याय-10 (कुल धारायें 75-87)", "अध्याय-12 (कुल धारायें 106-116)"],
+                answer: 0,
+                hint: "यह धारा 73-74 का संक्षिप्त अध्याय है।",
+                explanation: "अध्याय-9 पंचायत समिति के कार्यकारी अधिकार (कुल धारायें 73-74) से संबंधित है।"
+            },
+            {
+                page: "Page 2",
+                question: "पंचायत समिति के कार्य व शक्तियां किस अध्याय में वर्णित हैं? / The functions and powers of the Panchayat Samiti are described in which chapter?",
+                options: ["अध्याय-10 (कुल धारायें 75 से 87 तक)", "अध्याय-4 (कुल धारायें 13-38)", "अध्याय-14 (कुल धारायें 126-132)", "अध्याय-16 (कुल धारायें 137-143)"],
+                answer: 0,
+                hint: "यह धारा 75 से 87 तक का दसवां अध्याय है।",
+                explanation: "अध्याय-10 पंचायत समिति के कार्य व शक्तियां (कुल धारायें 75 से 87 तक) से संबंधित है।"
+            },
+            {
+                page: "Page 2",
+                question: "धारा 83 के तहत पंचायत समिति कुल कितने प्रकार की कमेटियां/समितियां बना सकती है? / Under Section 83, how many types of committees can a Panchayat Samiti form?",
+                options: ["तीन प्रकार की (1. सामान्य, 2. वित्त व लेखा, 3. सामाजिक न्याय)", "दो प्रकार की", "चार प्रकार की", "पाँच प्रकार की"],
+                answer: 0,
+                hint: "इसमें सामान्य, वित्त व लेखा और सामाजिक न्याय कमेटियां शामिल हैं।",
+                explanation: "धारा 83 के तहत पंचायत समिति तीन प्रकार की कमेटी बना सकती है: 1) सामान्य कमेटी, 2) वित्त व लेखा कमेटी, 3) सामाजिक न्याय कमेटी।"
+            },
+            {
+                page: "Page 2",
+                question: "वित्त एवं कराधान (Finance and Taxation) से संबंधित पंचायत समिति का अध्याय कौन सा है? / Which chapter of the Panchayat Samiti relates to Finance and Taxation?",
+                options: ["अध्याय-11 (कुल धारायें 88-105)", "अध्याय-5 (कुल धारायें 39-45)", "अध्याय-17 (कुल धारायें 144-154)", "अध्याय-10 (कुल धारायें 75-87)"],
+                answer: 0,
+                hint: "यह ग्यारहवां अध्याय है।",
+                explanation: "अध्याय-11 वित्त एवं कराधान (कुल धारायें 88-105) से संबंधित है।"
+            },
+            {
+                page: "Page 2",
+                question: "परीक्षण (Audit/Inspection) से संबंधित अध्याय 12 में कुल कितनी धाराएं शामिल हैं? / How many sections are included in Chapter 12 related to Audit/Inspection?",
+                options: ["कुल धारायें 106-116", "कुल धारायें 117-125", "कुल धारायें 133-136", "कुल धारायें 155-160"],
+                answer: 0,
+                hint: "यह धारा 106 से 116 तक है।",
+                explanation: "अध्याय-12 परीक्षण (कुल धारायें 106-116) से संबंधित है।"
+            },
+            {
+                page: "Page 2",
+                question: "जिला परिषद् (Zilla Parishad) का गठन और उसकी मूल धाराएं किस अध्याय में हैं? / The constitution of Zilla Parishad and its core sections are in which chapter?",
+                options: ["अध्याय-13 (कुल धारायें 117-125)", "अध्याय-14 (कुल धारायें 126-132)", "अध्याय-15 (कुल धारायें 133-136)", "अध्याय-16 (कुल धारायें 137-143)"],
+                answer: 0,
+                hint: "यह तेरहवां अध्याय है।",
+                explanation: "अध्याय-13 जिला परिषद् (कुल धारायें 117-125) से संबंधित है।"
+            },
+            {
+                page: "Page 2",
+                question: "जिला परिषद् के कार्य (Functions of Zilla Parishad) किस अध्याय के अंतर्गत आते हैं? / Functions of Zilla Parishad come under which chapter?",
+                options: ["अध्याय-14 (कुल धारायें 126-132)", "अध्याय-16 (कुल धारायें 137-143)", "अध्याय-10 (कुल धारायें 75-87)", "अध्याय-4 (कुल धारायें 13-38)"],
+                answer: 0,
+                hint: "यह धारा 126 से 132 तक का चौदहवां अध्याय है।",
+                explanation: "अध्याय-14 जिला परिषद् के कार्य (कुल धारायें 126-132) से संबंधित है।"
+            },
+            {
+                page: "Page 2",
+                question: "जिला परिषद् की बैठक साल में कम से कम कितनी बार होनी चाहिए और दो बैठकों के बीच अधिकतम कितना अंतर होना चाहिए? (HSSC 2021 ग्राम सचिव) / How many times at least should a Zilla Parishad meeting be held in a year and what is the max gap? (HSSC 2021 Gram Sachiv)",
+                options: ["कम से कम छः बार तथा दो महीने से ज्यादा का अंतर नहीं होना चाहिए", "साल में चार बार तथा तीन महीने का अंतर", "साल में बारह बार तथा एक महीने का अंतर", "साल में दो बार तथा छह महीने का अंतर"],
+                answer: 0,
+                hint: "यह प्रावधान धारा 126 के तहत दिया गया है (साल में 6 बार)।",
+                explanation: "धारा 126 के अनुसार जिला परिषद् की बैठक साल में कम से कम छः बार तथा एक बैठक के बीच दो महीने से ज्यादा का अन्तर नहीं होना चाहिए (HSSC 2021 ग्राम सचिव)।"
+            },
+            {
+                page: "Page 2",
+                question: "मुख्य कार्यकारी अधिकारी (CEO) तथा अन्य कर्मचारी से संबंधित प्रावधान किस अध्याय में हैं? / Provisions related to the Chief Executive Officer (CEO) and other staff are in which chapter?",
+                options: ["अध्याय-15 (कुल धारायें 133 से 136 तक)", "अध्याय-13 (कुल धारायें 117-125)", "अध्याय-16 (कुल धारायें 137-143)", "अध्याय-18 (कुल धारायें 155-160)"],
+                answer: 0,
+                hint: "यह पंद्रहवां अध्याय है (धारा 133-136)।",
+                explanation: "अध्याय-15 मुख्य कार्यकारी अधिकारी तथा अन्य कर्मचारी (कुल धारायें 133 से 136 तक) से संबंधित है।"
+            },
+            {
+                page: "Page 2",
+                question: "मुख्य कार्यकारी अधिकारी (CEO) व अन्य कर्मचारी की नियुक्ति से संबंधित प्रमुख धारा कौन सी है? (HSSC 2021 ग्राम सचिव) / Which major section is related to the appointment of CEO and other staff? (HSSC 2021 Gram Sachiv)",
+                options: ["धारा 123", "धारा 148", "धारा 212", "धारा 188"],
+                answer: 0,
+                hint: "यह अध्याय 15 के आसपास की धारा 123 है।",
+                explanation: "धारा 123 मुख्य कार्यकारी अधिकारी व अन्य कर्मचारी की नियुक्ति से सम्बन्धित है (HSSC 2021 ग्राम सचिव)।"
+            },
+            {
+                page: "Page 2",
+                question: "जिला परिषद् के कर्तव्य व कार्य (Duties and Functions) किस अध्याय में वर्णित हैं? / Duties and functions of Zilla Parishad are described in which chapter?",
+                options: ["अध्याय-16 (कुल धारायें 137-143)", "अध्याय-14 (कुल धारायें 126-132)", "अध्याय-4 (कुल धारायें 13-38)", "अध्याय-10 (कुल धारायें 75-87)"],
+                answer: 0,
+                hint: "यह धारा 137 से 143 तक का सोलहवां अध्याय है।",
+                explanation: "अध्याय-16 जिला परिषद् के कर्तव्य व कार्य (कुल धारायें 137-143) से संबंधित है।"
+            },
+            {
+                page: "Page 2",
+                question: "संपत्ति, वित्त और कर (Property, Finance and Tax) से संबंधित जिला परिषद् का अध्याय कौन सा है? / Which chapter of Zilla Parishad relates to Property, Finance and Tax?",
+                options: ["अध्याय-17 (कुल धारायें 144-154)", "अध्याय-5 (कुल धारायें 39-45)", "अध्याय-11 (कुल धारायें 88-105)", "अध्याय-7 (कुल धारायें 55-65)"],
+                answer: 0,
+                hint: "यह सत्रहवां अध्याय है।",
+                explanation: "अध्याय-17 संपत्ति/वित्त/कर (कुल धारायें 144-154) से संबंधित है।"
+            },
+            {
+                page: "Page 2",
+                question: "टैक्स लगाने के तरीके या प्रक्रिया से संबंधित धारा कौन सी है? (HSSC 2021 ग्राम सचिव) / Which section is related to the method/procedure of imposing tax? (HSSC 2021 Gram Sachiv)",
+                options: ["धारा 148", "धारा 123", "धारा 220", "धारा 254"],
+                answer: 0,
+                hint: "यह अध्याय 17 के अंतर्गत आने वाली धारा 148 है।",
+                explanation: "धारा 148 टैक्स लगाने के तरीके/प्रक्रिया से सम्बन्धित है (HSSC 2021 ग्राम सचिव)।"
+            },
+            {
+                page: "Page 2",
+                question: "जिला परिषद् का निरीक्षण (Inspection) किस अध्याय के अंतर्गत आता है? / Inspection of Zilla Parishad comes under which chapter?",
+                options: ["अध्याय-18 (कुल धारायें 155-160)", "अध्याय-12 (कुल धारायें 106-116)", "अध्याय-6 (कुल धारायें 46-54)", "अध्याय-20 (कुल धारायें 162-188)"],
+                answer: 0,
+                hint: "यह धारा 155 से 160 तक का अठारहवां अध्याय है।",
+                explanation: "अध्याय-18 जिला परिषद् का निरीक्षण (कुल धारायें 155-160) से संबंधित है।"
+            },
+            {
+                page: "Page 2",
+                question: "ग्राम पंचायत, पंचायत समिति व जिला परिषद् के चुनाव से संबंधित विशिष्ट धारा किस अध्याय में है? / In which chapter is the specific section related to elections of panchayats?",
+                options: ["अध्याय-19 (धारा 161)", "अध्याय-20 (धारायें 162-188)", "अध्याय-21 (धारायें 189-218)", "अध्याय-5 (धारायें 39-45)"],
+                answer: 0,
+                hint: "यह धारा 161 वाला उन्नीसवां अध्याय है।",
+                explanation: "अध्याय-19 ग्राम पंचायत/पंचायत समिति/जिला परिषद् के चुनाव से सम्बन्धित धारा (161) से संबंधित है।"
+            },
+            {
+                page: "Page 2",
+                question: "चुनाव संबंधी नियम (Election Rules) हरियाणा पंचायती राज एक्ट के किस अध्याय में दिए गए हैं? / Election rules are given in which chapter of the Haryana Panchayati Raj Act?",
+                options: ["अध्याय-20 (कुल धारायें 162 से 188 तक)", "अध्याय-19 (धारा 161)", "अध्याय-21 (कुल धारायें 189-218)", "अध्याय-5 (कुल धारायें 39-45)"],
+                answer: 0,
+                hint: "यह धारा 162 से 188 तक का बीसवां अध्याय है।",
+                explanation: "अध्याय-20 चुनाव सम्बन्धी नियम (कुल धारायें 162 से 188 तक) से संबंधित है।"
+            },
+            {
+                page: "Page 2",
+                question: "वोटों की गोपनीयता (Secrecy of Votes) से संबंधित कौन सी धारा है? (HSSC 2021 ग्राम सचिव) / Which section is related to the secrecy of votes? (HSSC 2021 Gram Sachiv)",
+                options: ["धारा 188", "धारा 212", "धारा 148", "धारा 123"],
+                answer: 0,
+                hint: "यह अध्याय 20 की अंतिम धारा 188 है।",
+                explanation: "धारा 188 का सम्बन्ध वोटों की गोपनीयता से है (HSSC 2021 ग्राम सचिव)।"
+            },
+            {
+                page: "Page 2",
+                question: "अन्य नियम (Other Rules) हरियाणा पंचायती राज एक्ट के किस अध्याय में समाहित हैं? / Other rules are contained in which chapter of the Haryana Panchayati Raj Act?",
+                options: ["अध्याय-21 (कुल धारायें 189 से 218 तक)", "अध्याय-22 (कुल धारायें 219-280)", "अध्याय-20 (कुल धारायें 162-188)", "अध्याय-1 (कुल धारायें 1-2)"],
+                answer: 0,
+                hint: "यह धारा 189 से 218 तक का इक्कीसवां अध्याय है।",
+                explanation: "अध्याय-21 अन्य नियम (कुल धारायें 189 से 218 तक) से संबंधित है।"
+            },
+            {
+                page: "Page 2",
+                question: "राज्य चुनाव आयोग के गठन से सम्बन्धित प्रमुख धारा कौन सी है? (HSSC 2021 ग्राम सचिव) / Which major section is related to the constitution of the State Election Commission? (HSSC 2021 Gram Sachiv)",
+                options: ["धारा 212", "धारा 188", "धारा 123", "धारा 220"],
+                answer: 0,
+                hint: "यह अध्याय 21 के अंतर्गत आने वाली धारा 212 है।",
+                explanation: "धारा 212 राज्य चुनाव आयोग के गठन से सम्बन्धित है (HSSC 2021 ग्राम सचिव)।"
+            },
+            {
+                page: "Page 2",
+                question: "ग्रामीण विकास (Rural Development) से संबंधित अंतिम अध्याय कौन सा है? / Which is the final chapter related to Rural Development?",
+                options: ["अध्याय-22 (धारायें 219 से 280 तक)", "अध्याय-21 (धारायें 189 से 218)", "अध्याय-20 (धारायें 162 से 188)", "अध्याय-19 (धारा 161)"],
+                answer: 0,
+                hint: "यह सबसे अंतिम अध्याय 22 है जिसे 8 पार्टों में बांटा गया है।",
+                explanation: "अध्याय-22 ग्रामीण विकास से संबंधित है जिसमें 219 से 280 तक धारायें हैं।"
+            },
+            {
+                page: "Page 2",
+                question: "एचआरडीएफ/प्राधिकरण की स्थापना और गठन से सम्बन्धित धारा कौन सी है? (HSSC 2021 ग्राम सचिव) / Which section is related to the establishment and constitution of HRDF/Authority? (HSSC 2021 Gram Sachiv)",
+                options: ["धारा 220", "धारा 249", "धारा 254", "धारा 262"],
+                answer: 0,
+                hint: "यह ग्रामीण विकास अध्याय की धारा 220 है।",
+                explanation: "धारा 220 एचआरडीएफ/प्राधिकरण की स्थापना और गठन से सम्बन्धित है (HSSC 2021 ग्राम सचिव)।"
+            },
+            {
+                page: "Page 2",
+                question: "विकास योजनाओं से संबंधित धारा कौन सी है? (HSSC 2021 ग्राम सचिव) / Which section is related to development plans? (HSSC 2021 Gram Sachiv)",
+                options: ["धारा 249", "धारा 220", "धारा 254", "धारा 276"],
+                answer: 0,
+                hint: "यह धारा 249 है।",
+                explanation: "धारा 249 का संबंध विकास योजनाओं से है (HSSC 2021 ग्राम सचिव)।"
+            },
+            {
+                page: "Page 2",
+                question: "भूमि के अधिग्रहण (Land Acquisition) से संबंधित धारा कौन सी है? (HSSC 2021 ग्राम सचिव) / Which section is related to land acquisition? (HSSC 2021 Gram Sachiv)",
+                options: ["धारा 254", "धारा 220", "धारा 249", "धारा 262"],
+                answer: 0,
+                hint: "यह धारा 254 है।",
+                explanation: "धारा 254 का संबंध भूमि के अधिग्रहण से है (HSSC 2021 ग्राम सचिव)।"
+            },
+            {
+                page: "Page 2",
+                question: "सदस्यों को हटाने (Removal of Members) से संबंधित धारा कौन सी है? (HSSC 2021 ग्राम सचिव) / Which section is related to the removal of members? (HSSC 2021 Gram Sachiv)",
+                options: ["धारा 262", "धारा 254", "धारा 276", "धारा 188"],
+                answer: 0,
+                hint: "यह धारा 262 है।",
+                explanation: "धारा 262 का संबंध सदस्यों को हटाने से संबंधित है (HSSC 2021 ग्राम सचिव)।"
+            },
+            {
+                page: "Page 2",
+                question: "विभाग का पुलिस के साथ संबंध किस धारा के अंतर्गत दर्शाया गया है? (HSSC 2021 ग्राम सचिव) / The department's relation with the police is shown under which section? (HSSC 2021 Gram Sachiv)",
+                options: ["धारा 276", "धारा 262", "धारा 254", "धारा 249"],
+                answer: 0,
+                hint: "यह इस अनुभाग की अंतिम धाराओं में से एक (धारा 276) है।",
+                explanation: "धारा 276 का संबंध विभाग का पुलिस के साथ संबंध से है (HSSC 2021 ग्राम सचिव)।"
+            },
+            {
+                page: "Page 2",
+                question: "सरपंच व पंच का चुनाव किस पद्धति द्वारा जनता द्वारा किया जाता है? / By which method is the election of Sarpanch and Panch conducted by the public?",
+                options: ["प्रत्यक्ष मतदान (गुप्त मतदान) द्वारा", "अप्रत्यक्ष मतदान द्वारा", "मनोयन द्वारा", "लॉटरी सिस्टम द्वारा"],
+                answer: 0,
+                hint: "इसमें जनता सीधे वोट डालती है।",
+                explanation: "सरपंच व पंच का चुनाव प्रत्यक्ष मतदान (गुप्त मतदान) से जनता द्वारा होता है।"
+            },
+            {
+                page: "Page 2",
+                question: "सरपंच व पंच को पद की शपथ किसके द्वारा दिलाई जाती है? / Who administers the oath of office to the Sarpanch and Panch?",
+                options: ["पीठासीन अधिकारी द्वारा", "जिला कलेक्टर द्वारा", "विकास अधिकारी द्वारा", "मुख्यमंत्री द्वारा"],
+                answer: 0,
+                hint: "यह चुनाव के समय पीठासीन अधिकारी कराता है।",
+                explanation: "सरपंच व पंच को शपथ पीठासीन अधिकारी द्वारा दिलाई जाती है।"
+            },
+            {
+                page: "Page 2",
+                question: "उपसरपंच का चुनाव किसके द्वारा किया जाता है? / How is the Up-Sarpanch elected?",
+                options: ["अप्रत्यक्ष मतदान द्वारा अपने में से पंचों द्वारा", "प्रत्यक्ष जनता द्वारा", "सरकार द्वारा सीधे", "सरपंच द्वारा मनोनीत"],
+                answer: 0,
+                hint: "चुने हुए पंच अपने बीच में से ही चुनते हैं।",
+                explanation: "उपसरपंच का चुनाव अप्रत्यक्ष मतदान द्वारा अपने में से पंचों द्वारा किया जाता है।"
+            },
+            {
+                page: "Page 2",
+                question: "सरपंच, उपसरपंच या पंच अपना त्यागपत्र (Resignation) किसे सौंपते हैं? / To whom do the Sarpanch, Up-Sarpanch or Panch submit their resignation?",
+                options: ["विकास अधिकारी को", "जिला कलेक्टर को", "मुख्यमंत्री को", "ग्राम सभा को"],
+                answer: 0,
+                hint: "यह बीडीपीओ या विकास अधिकारी होते हैं।",
+                explanation: "सरपंच/उपसरपंच/पंच अपना त्यागपत्र विकास अधिकारी को देते हैं।"
+            },
+            {
+                page: "Page 2",
+                question: "इनमें से किस पद के प्रति अविश्वास प्रस्ताव (No-Confidence Motion) नहीं लाया जा सकता है? / Against which of the following positions can a no-confidence motion NOT be brought?",
+                options: ["पंच के प्रति", "सरपंच के प्रति", "उपसरपंच के प्रति", "पंचायत समिति सदस्य के प्रति"],
+                answer: 0,
+                hint: "यह वार्ड के पंच पर लागू नहीं होता।",
+                explanation: "पंच के प्रति अविश्वास प्रस्ताव नहीं लाया जा सकता है।"
+            },
+            {
+                page: "Page 2",
+                question: "हरियाणा पंचायती राज एक्ट के अध्याय-22 में कुल कितनी धाराएं हैं और उन्हें कितने पार्टों में बांटा गया है? / How many total sections are in Chapter-22 of the Act and into how many parts are they divided?",
+                options: ["धारा 219 से 280 तक, जिन्हें 8 पार्टों में बांटा गया है", "धारा 162 से 188, 5 पार्ट", "धारा 117 से 125, 3 पार्ट", "धारा 55 से 65, 2 पार्ट"],
+                answer: 0,
+                hint: "यह ग्रामीण विकास का अध्याय है जिसमें 219 से 280 धाराएं हैं।",
+                explanation: "अध्याय 22 में 219 से 280 तक धारायें हैं जिन्हें आठ (8) पार्टों में बांटा गया है।"
+            },
+            {
+                page: "Page 2",
+                question: "हरियाणा पंचायती राज एक्ट के किस अध्याय में मुख्य कार्यकारी अधिकारी और कर्मचारियों का प्रावधान है? / In which chapter of the Act are the CEO and staff provided for?",
+                options: ["अध्याय-15", "अध्याय-13", "अध्याय-10", "अध्याय-7"],
+                answer: 0,
+                hint: "यह धारा 133 से 136 वाला पंद्रहवां अध्याय है।",
+                explanation: "अध्याय-15 में मुख्य कार्यकारी अधिकारी तथा अन्य कर्मचारियों का प्रावधान है।"
+            },
+            {
+                page: "Page 2",
+                question: "हरियाणा पंचायती राज एक्ट के किस अध्याय में जिला परिषद् की बैठकों और कार्यों का वर्णन है? / In which chapter of the Act are the meetings and functions of Zilla Parishad described?",
+                options: ["अध्याय-14", "अध्याय-12", "अध्याय-18", "अध्याय-9"],
+                answer: 0,
+                hint: "यह धारा 126 से 132 तक का चौदहवां अध्याय है।",
+                explanation: "अध्याय-14 में जिला परिषद् के कार्य (धारा 126-132) वर्णित हैं।"
+            },
+            {
+                page: "Page 2",
+                question: "हरियाणा पंचायती राज एक्ट के तहत पंचायत समिति कितने प्रकार की कमेटियां बना सकती है? / Under the Act, how many types of committees can a Panchayat Samiti form?",
+                options: ["3 प्रकार की", "2 प्रकार की", "4 प्रकार की", "5 प्रकार की"],
+                answer: 0,
+                hint: "सामान्य, वित्त एवं लेखा, सामाजिक न्याय - कुल 3।",
+                explanation: "पंचायत समिति तीन प्रकार की कमेटियां (सामान्य, वित्त व लेखा, सामाजिक न्याय) बना सकती है।"
+            },
+            {
+                page: "Page 2",
+                question: "इनमें से कौन सा जोड़ा सही सुमेलित **नहीं** है? / Which of the following pairs is NOT correctly matched?",
+                options: ["धारा 212 - वोटों की गोपनीयता", "धारा 123 - मुख्य कार्यकारी अधिकारी की नियुक्ति", "धारा 148 - टैक्स लगाने की प्रक्रिया", "धारा 249 - विकास योजनाएं"],
+                answer: 0,
+                hint: "वोटों की गोपनीयता धारा 188 से संबंधित है, जबकि धारा 212 राज्य चुनाव आयोग के गठन से है।",
+                explanation: "धारा 212 राज्य चुनाव आयोग के गठन से संबंधित है (वोटों की गोपनीयता धारा 188 से संबंधित है), अतः यह युग्म सुमेलित नहीं है।"
+            },
+            {
+                page: "Page 2",
+                question: "जिला परिषद् के निरीक्षण से संबंधित धाराएं किस अध्याय के अंतर्गत आती हैं? / Sections related to the inspection of Zilla Parishad fall under which chapter?",
+                options: ["अध्याय-18 (धारा 155-160)", "अध्याय-12 (धारा 106-116)", "अध्याय-6 (धारा 46-54)", "अध्याय-8 (धारा 66-72)"],
+                answer: 0,
+                hint: "यह अठारहवां अध्याय है।",
+                explanation: "अध्याय-18 (धारा 155-160) जिला परिषद् के निरीक्षण से संबंधित है।"
+            },
+            {
+                page: "Page 2",
+                question: "हरियाणा पंचायती राज एक्ट के किस भाग या अध्याय में राज्य निर्वाचन आयोग के गठन की बात कही गई है? / In which chapter/section is the formation of the State Election Commission mentioned?",
+                options: ["अध्याय-21 (धारा 212)", "अध्याय-20 (धारा 188)", "अध्याय-19 (धारा 161)", "अध्याय-22 (धारा 220)"],
+                answer: 0,
+                hint: "यह धारा 212 (अध्याय 21) के अंतर्गत है।",
+                explanation: "अध्याय-21 के अंतर्गत धारा 212 राज्य चुनाव आयोग के गठन से सम्बन्धित है।"
+            },
+            {
+                page: "Page 2",
+                question: "रोचक तथ्य के अनुसार, सरपंच या पंच अपना त्यागपत्र किसे देते हैं? / According to interesting facts, to whom do the Sarpanch or Panch submit their resignation?",
+                options: ["विकास अधिकारी को", "ग्राम सभा को", "उपसरपंच को", "जिला कलेक्टर को"],
+                answer: 0,
+                hint: "यह विकास अधिकारी (Block Development Officer) होते हैं।",
+                explanation: "रोचक तथ्य के अनुसार सरपंच/उपसरपंच/पंच अपना त्यागपत्र विकास अधिकारी को देते हैं।"
+            }
+        ];
+
+        let currentIdx = 0;
+        let score = 0;
+        let answered = new Array(questions.length).fill(false);
+        let userAnswers = new Array(questions.length).fill(null);
+
+        const questionCounter = document.getElementById('question-counter');
+        const sourceTag = document.getElementById('source-tag');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const hintBox = document.getElementById('hint-box');
+        const explanationBox = document.getElementById('explanation-box');
+        const explanationText = document.getElementById('explanation-text');
+        const scoreDisplay = document.getElementById('score-display');
+        const progressBar = document.getElementById('progress-bar');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const jumpInput = document.getElementById('jump-input');
+        const quizCard = document.getElementById('quiz-card');
+        const completionScreen = document.getElementById('completion-screen');
+
+        function loadQuestion() {
+            const q = questions[currentIdx];
+            questionCounter.innerText = `Question ${currentIdx + 1} of ${questions.length}`;
+            sourceTag.innerText = q.page;
+            questionText.innerText = q.question;
+            jumpInput.value = currentIdx + 1;
+
+            // Reset hint and explanation
+            hintBox.classList.add('hidden');
+            hintBox.innerText = q.hint;
+            explanationBox.classList.add('hidden');
+            explanationText.innerText = q.explanation;
+
+            // Render options
+            optionsContainer.innerHTML = '';
+            q.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left p-3.5 rounded-lg border text-sm sm:text-base font-medium transition flex justify-between items-center ${getOptionStyle(index, q.answer)}`;
+                btn.innerText = `${String.fromCharCode(65 + index)}. ${opt}`;
+                
+                if (answered[currentIdx]) {
+                    btn.disabled = true;
+                } else {
+                    btn.onclick = () => selectOption(index);
+                }
+                optionsContainer.appendChild(btn);
+            });
+
+            // Update navigation buttons
+            prevBtn.disabled = currentIdx === 0;
+            nextBtn.innerText = currentIdx === questions.length - 1 ? 'समाप्त / Finish →' : 'अगला / Next →';
+
+            // Update Progress Bar
+            const progress = ((currentIdx + 1) / questions.length) * 100;
+            progressBar.style.width = `${progress}%`;
+            scoreDisplay.innerText = `Score: ${score} / ${questions.length}`;
+        }
+
+        function getOptionStyle(index, correctIndex) {
+            if (!answered[currentIdx]) {
+                return 'bg-white border-slate-200 hover:bg-slate-50 text-slate-700 cursor-pointer';
+            }
+            if (index === correctIndex) {
+                return 'bg-emerald-100 border-emerald-400 text-emerald-900 font-semibold';
+            }
+            if (index === userAnswers[currentIdx] && index !== correctIndex) {
+                return 'bg-rose-100 border-rose-400 text-rose-900';
+            }
+            return 'bg-white border-slate-200 text-slate-400 opacity-60';
+        }
+
+        function selectOption(index) {
+            if (answered[currentIdx]) return;
+            answered[currentIdx] = true;
+            userAnswers[currentIdx] = index;
+
+            if (index === questions[currentIdx].answer) {
+                score++;
+            }
+
+            explanationBox.classList.remove('hidden');
+            loadQuestion();
+        }
+
+        function toggleHint() {
+            hintBox.classList.toggle('hidden');
+        }
+
+        function nextQuestion() {
+            if (currentIdx < questions.length - 1) {
+                currentIdx++;
+                loadQuestion();
+            } else {
+                showCompletion();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentIdx > 0) {
+                currentIdx--;
+                loadQuestion();
+            }
+        }
+
+        function jumpToQuestion(val) {
+            let num = parseInt(val);
+            if (num >= 1 && num <= questions.length) {
+                currentIdx = num - 1;
+                loadQuestion();
+            } else {
+                jumpInput.value = currentIdx + 1;
+            }
+        }
+
+        function showCompletion() {
+            quizCard.classList.add('hidden');
+            completionScreen.classList.remove('hidden');
+            document.getElementById('final-score-text').innerText = `You scored ${score} out of ${questions.length} (${Math.round((score/questions.length)*100)}%)`;
+        }
+
+        function restartQuiz() {
+            currentIdx = 0;
+            score = 0;
+            answered.fill(false);
+            userAnswers.fill(null);
+            completionScreen.classList.add('hidden');
+            quizCard.classList.remove('hidden');
+            loadQuestion();
+        }
+
+        // Initialize quiz on load
+        loadQuestion();
+    </script>
+<script src="../../quiz-question-controls.js"></script>
+<script src="../../quiz-app-ui-v2.js"></script></body>
+</html>

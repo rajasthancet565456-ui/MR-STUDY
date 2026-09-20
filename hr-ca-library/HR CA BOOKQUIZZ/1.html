@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="hi" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haryana GK Interactive Quiz (Exam Aligned)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+<style id="celestial-quiz-theme">
+:root{--space:#e7dcff;--panel:#f0e7ff;--panel2:#d4c0ff;--edge:#6841c4;--glow:#e8a521;--accent:#c651a2;--ink:#251a41;--muted:#5e4c7c;--mist:rgba(104,65,196,.22)}html{background:var(--space)}body{background:radial-gradient(ellipse 62% 45% at 90% -5%,color-mix(in srgb,var(--accent) 26%,transparent),transparent 62%),radial-gradient(ellipse 55% 40% at 8% 100%,color-mix(in srgb,var(--edge) 25%,transparent),transparent 64%),var(--space)!important;color:var(--ink)!important;min-height:100vh}body:before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.82;background-image:radial-gradient(circle at 9% 18%,var(--glow) 0 1px,transparent 1.7px),radial-gradient(circle at 26% 69%,var(--edge) 0 .8px,transparent 1.5px),radial-gradient(circle at 68% 24%,var(--accent) 0 1px,transparent 1.8px),radial-gradient(circle at 88% 73%,var(--glow) 0 .8px,transparent 1.5px);background-size:220px 190px,300px 270px,260px 230px,340px 310px;z-index:-1}header{background:linear-gradient(105deg,var(--panel),var(--panel2))!important;border-color:color-mix(in srgb,var(--edge) 32%,transparent)!important;box-shadow:0 7px 24px color-mix(in srgb,var(--edge) 18%,transparent)!important}header h1{color:var(--edge)!important;text-shadow:none!important}header p,header .text-slate-400,header .text-indigo-200,header .text-indigo-300{color:var(--muted)!important}main>div,#quiz-card,.bg-slate-800,.bg-slate-900,.bg-indigo-900,.bg-indigo-950{background:linear-gradient(145deg,color-mix(in srgb,var(--panel) 82%,#fff),var(--panel))!important;border-color:color-mix(in srgb,var(--edge) 25%,transparent)!important;color:var(--ink)!important;box-shadow:0 14px 35px color-mix(in srgb,var(--edge) 16%,transparent)!important}.bg-slate-700,.bg-slate-100,.bg-slate-50{background:color-mix(in srgb,var(--panel2) 50%,var(--panel))!important;color:var(--ink)!important}.text-slate-100,.text-slate-200,.text-slate-300,.text-slate-400,.text-white,.text-slate-800,.text-slate-700,.text-slate-600{color:var(--ink)!important}.text-indigo-400,.text-indigo-300,.text-emerald-400,.text-yellow-300{color:var(--edge)!important}.border-slate-700,.border-slate-700\/60,.border-indigo-700,.border-slate-200{border-color:color-mix(in srgb,var(--edge) 27%,transparent)!important}button:not(.bg-green-600):not(.bg-red-600){background:color-mix(in srgb,var(--panel2) 54%,var(--panel))!important;color:var(--ink)!important;border:1px solid color-mix(in srgb,var(--edge) 25%,transparent)!important;box-shadow:0 3px 10px color-mix(in srgb,var(--edge) 10%,transparent)!important}button.bg-indigo-600,button.bg-slate-800,button.bg-slate-900,button.bg-indigo-900{background:linear-gradient(120deg,var(--edge),var(--accent))!important;color:#fff!important;border:0!important}button.bg-indigo-600 *,button.bg-slate-800 *,button.bg-slate-900 *,button.bg-indigo-900 *{color:#fff!important}button:hover{filter:brightness(1.04);transform:translateY(-1px)}input,select,textarea{background:color-mix(in srgb,var(--panel) 72%,var(--panel2))!important;border-color:color-mix(in srgb,var(--edge) 34%,transparent)!important;color:var(--ink)!important}input:focus,select:focus,textarea:focus{outline:none!important;border-color:var(--edge)!important;box-shadow:0 0 0 3px var(--mist)!important}.bg-indigo-500,#progress-bar{background:linear-gradient(90deg,var(--edge),var(--accent),var(--glow))!important}.rounded-2xl{border-radius:1.25rem!important}@media(max-width:640px){body:before{opacity:.5}main{padding-top:1rem!important}}
+</style></head>
+<body class="bg-slate-900 text-slate-100 h-full flex flex-col justify-between selection:bg-indigo-500 selection:text-white">
+
+    <!-- Header -->
+    <header class="bg-slate-800 border-b border-slate-700 shadow-md p-4 sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div>
+                <h1 class="text-xl font-bold tracking-tight text-indigo-400">Haryana General Knowledge Quiz</h1>
+                <p class="text-xs text-slate-400">Targeted Exam Practice: SSC, RRB, HSSC, & State PCS (Total 55 Unique Questions)</p>
+            </div>
+            <div class="flex items-center gap-4 w-full sm:w-auto justify-between sm:justify-end">
+                <div class="bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-700 text-sm">
+                    Score: <span id="score-display" class="font-bold text-emerald-400">0</span> / <span id="total-display">55</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="text-xs text-slate-400">Jump to:</span>
+                    <input type="number" id="jump-input" min="1" max="55" class="w-16 bg-slate-900 border border-slate-700 rounded px-2 py-1 text-sm text-center focus:outline-none focus:border-indigo-500" placeholder="1-55">
+                    <button onclick="jumpToQuestion()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1 rounded text-sm transition-colors">Go</button>
+                </div>
+            </div>
+        </div>
+        <!-- Progress Bar -->
+        <div class="max-w-4xl mx-auto mt-3 w-full bg-slate-700 h-1.5 rounded-full overflow-hidden">
+            <div id="progress-bar" class="bg-indigo-500 h-full transition-all duration-300 w-0"></div>
+        </div>
+    </header>
+
+    <!-- Main Quiz Container -->
+    <main class="max-w-3xl w-full mx-auto p-4 sm:p-6 my-auto">
+        <div id="quiz-card" class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl relative">
+            
+            <!-- Question Meta Header -->
+            <div class="flex justify-between items-center text-xs text-slate-400 mb-4 pb-2 border-b border-slate-700/60">
+                <span id="question-tracker" class="font-semibold text-indigo-300">Question 1 of 55</span>
+                <span id="source-tag" class="bg-slate-900 px-2.5 py-1 rounded border border-slate-700">Source Page: Page 1</span>
+            </div>
+
+            <!-- Question Statement -->
+            <h2 id="question-text" class="text-lg sm:text-xl font-medium text-slate-200 mb-6 leading-relaxed">
+                Loading question...
+            </h2>
+
+            <!-- Options Container -->
+            <div id="options-container" class="space-y-3 mb-6">
+                <!-- Dynamically injected options -->
+            </div>
+
+            <!-- Hint Section -->
+            <div class="mb-6">
+                <button onclick="toggleHint()" class="text-xs text-amber-400 hover:text-amber-300 flex items-center gap-1.5 font-medium transition-colors">
+                    <span>💡 Toggle Hint</span>
+                </button>
+                <div id="hint-box" class="hidden mt-2 p-3 bg-amber-500/10 border border-amber-500/30 rounded-lg text-xs text-amber-200">
+                    <!-- Hint Text -->
+                </div>
+            </div>
+
+            <!-- Explanation Box (Hidden initially) -->
+            <div id="explanation-box" class="hidden mt-4 p-4 rounded-xl border text-sm transition-all">
+                <!-- Dynamic Explanation -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Controls -->
+    <footer class="bg-slate-800 border-t border-slate-700 p-4">
+        <div class="max-w-3xl mx-auto flex justify-between items-center">
+            <button onclick="prevQuestion()" id="prev-btn" class="bg-slate-700 hover:bg-slate-600 text-slate-200 px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
+                ← Previous
+            </button>
+            <div id="completion-status" class="text-xs text-slate-400 hidden sm:block">Select an option to record your progress</div>
+            <button onclick="nextQuestion()" id="next-btn" class="bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2 rounded-lg text-sm font-medium transition-colors shadow-lg shadow-indigo-600/20">
+                Next →
+            </button>
+        </div>
+    </footer>
+
+    <!-- Application Script containing all 55 unique questions across p1, p2, p3 -->
+    <script>
+        const quizData = [
+            // --- PAGE 1 (15 Questions) ---
+            {
+                page: "Page 1",
+                q: "हरियाणा में प्रशासनिक मंडलों (Divisions) की कुल संख्या कितनी है?",
+                options: ["5", "6", "7", "4"],
+                answer: "6",
+                hint: "हरियाणा एक दृष्टि में प्रशासनिक ढांचे के तहत मंडलों की संख्या 6 दी गई है।",
+                explanation: "हरियाणा राज्य में प्रशासनिक दृष्टिकोण से कुल 6 मंडल (Divisions) हैं।"
+            },
+            {
+                page: "Page 1",
+                q: "हरियाणा में वर्ष 2011 की जनगणना के अनुसार कुल जिलों की संख्या कितनी दर्ज की गई है?",
+                options: ["21", "22", "23", "24"],
+                answer: "23",
+                hint: "सारणी में प्रशासनिक संरचना के अंतर्गत जिलों की संख्या 23 दर्शायी गई है।",
+                explanation: "आधिकारिक आंकड़ों और सारणी के अनुसार हरियाणा में कुल जिलों की संख्या 23 है।"
+            },
+            {
+                page: "Page 1",
+                q: "निम्नलिखित में से हरियाणा में उप-मंडलों (Sub-Divisions) की सही संख्या कौन सी है?",
+                options: ["74", "80 (74+6)", "94", "49"],
+                answer: "80 (74+6)",
+                hint: "सूची में उप-मंडलों की कुल संख्या ब्रैकेट के साथ दी गई है।",
+                explanation: "हरियाणा में कुल उप-मंडलों की संख्या 80 है जिसमें 74 और 6 का विभाजन उल्लेखित है।"
+            },
+            {
+                page: "Page 1",
+                q: "हरियाणा में तहसीलों की कुल संख्या कितनी है?",
+                options: ["80", "94", "49", "143"],
+                answer: "94",
+                hint: "तहसीलों की संख्या उप-मंडलों के बाद दी गई है जो 90 से अधिक है।",
+                explanation: "सारणी के अनुसार हरियाणा में तहसीलों की कुल संख्या 94 है।"
+            },
+            {
+                page: "Page 1",
+                q: "हरियाणा में उप-तहसीलों की कुल संख्या कितनी है?",
+                options: ["49", "143", "154", "53"],
+                answer: "49",
+                hint: "यह संख्या 50 से ठीक एक कम है।",
+                explanation: "हरियाणा में उप-तहसीलों की कुल संख्या 49 दर्ज की गई है।"
+            },
+            {
+                page: "Page 1",
+                q: "हरियाणा में खंडों (Blocks) की कुल संख्या कितनी है?",
+                options: ["141", "142", "143", "154"],
+                answer: "143",
+                hint: "इसमें निगम, मचरौली और धारूहेड़ा का भी विशिष्ट संदर्भ मिलता है।",
+                explanation: "हरियाणा में खंडों की कुल संख्या 143 है (जिसमें 143वां-निगदू, 142-मचरौली, 141-धारूहेड़ा शामिल हैं)।"
+            },
+            {
+                page: "Page 1",
+                q: "वर्ष 2011 की जनगणना के आधार पर हरियाणा में कुल गांवों (गैर आबाद सहित) की संख्या कितनी है?",
+                options: ["6841", "7356", "6228", "6843"],
+                answer: "6841",
+                hint: "यह संख्या 6800 और 6900 के बीच है।",
+                explanation: "2011 की जनगणना के अनुसार हरियाणा में कुल गांवों की संख्या 6,841 है।"
+            },
+            {
+                page: "Page 1",
+                q: "हरियाणा CMO वेब डेटा के अनुसार वर्तमान गांवों की कुल संख्या कितनी है?",
+                options: ["6841", "7356", "6228", "8080"],
+                answer: "7356",
+                hint: "यह आंकड़ा 7300 से अधिक है।",
+                explanation: "हरियाणा सीएमओ वेब डेटा के मुताबिक राज्य में वर्तमान गांवों की कुल संख्या 7,356 है।"
+            },
+            {
+                page: "Page 1",
+                q: "जनवरी 2026 तक की स्थिति के अनुसार हरियाणा में ग्राम पंचायतों की कुल संख्या कितनी है?",
+                options: ["6228", "6841", "7356", "53"],
+                answer: "6228",
+                hint: "यह जनवरी 2026 के अपडेटेड आंकड़े हैं।",
+                explanation: "जनवरी 2026 तक हरियाणा में ग्राम पंचायतों की कुल संख्या 6,228 है।"
+            },
+            {
+                page: "Page 1",
+                q: "हरियाणा में नगर निगमों (Municipal Corporations) की कुल संख्या कितनी है?",
+                options: ["11", "23", "53", "87"],
+                answer: "11",
+                hint: "यह सबसे बड़े शहरी निकायों की संख्या है जो दहाई के शुरुआती अंक पर है।",
+                explanation: "हरियाणा में नगर निगमों की कुल संख्या 11 है।"
+            },
+            {
+                page: "Page 1",
+                q: "वर्ष 2011 की जनगणना के अनुसार हरियाणा की कुल जनसंख्या कितनी थी?",
+                options: ["1,21,08,54,977", "2,53,51,462", "1,34,94,734", "1,18,56,728"],
+                answer: "2,53,51,462",
+                hint: "यह 2.5 करोड़ से अधिक है।",
+                explanation: "2011 की जनगणना के अनुसार हरियाणा की कुल जनसंख्या 2,53,51,462 है।"
+            },
+            {
+                page: "Page 1",
+                q: "वर्ष 2011 की जनगणना के अनुसार हरियाणा में पुरुष जनसंख्या कितनी है?",
+                options: ["1,34,94,734", "1,18,56,728", "1,65,09,359", "88,42,103"],
+                answer: "1,34,94,734",
+                hint: "यह कुल जनसंख्या का पुरुष घटक है।",
+                explanation: "2011 की जनगणना के अनुसार हरियाणा में पुरुषों की कुल संख्या 1,34,94,734 है।"
+            },
+            {
+                page: "Page 1",
+                q: "वर्ष 2011 की जनगणना के अनुसार हरियाणा की कुल साक्षरता दर पुरुष और स्त्री की तुलना में संयुक्त रूप से कितनी है (या सारणी में कुल साक्षरता प्रतिशत क्या है)?",
+                options: ["84.1%", "65.9%", "75.6%", "65.12%"],
+                answer: "75.6%",
+                hint: "यह पुरुष (84.1%) और स्त्री (65.9%) के बीच का कुल प्रतिशत है।",
+                explanation: "सारणी के अनुसार हरियाणा की कुल साक्षरता दर 75.6% है (जिसमें पुरुष 84.1% और महिलाएँ 65.9% हैं)।"
+            },
+            {
+                page: "Page 1",
+                q: "वर्ष 2023 के स्वास्थ्य आंकड़ों के अनुसार हरियाणा में कुल जन्म दर (Birth Rate) प्रति हजार कितनी दर्ज की गई है?",
+                options: ["18.7", "20.0", "16.8", "6.8"],
+                answer: "18.7",
+                hint: "यह एकीकृत (इक्ट्ठी) जन्म दर प्रति हजार है।",
+                explanation: "वर्ष 2023 के आंकड़ों के अनुसार हरियाणा की इक्ट्ठी जन्म दर 18.7 प्रति हजार है।"
+            },
+            {
+                page: "Page 1",
+                q: "वर्ष 2023 के आंकड़ों के अनुसार हरियाणा में कुल मृत्यु दर (Death Rate) प्रति हजार कितनी है?",
+                options: ["6.8", "7.1", "6.4", "20.0"],
+                answer: "6.8",
+                hint: "यह इक्ट्ठी मृत्यु दर प्रति हजार है।",
+                explanation: "वर्ष 2023 के स्वास्थ्य आंकड़ों के अनुसार हरियाणा की इक्ट्ठी मृत्यु दर 6.8 प्रति हजार है।"
+            },
+
+            // --- PAGE 2 (15 Questions) ---
+            {
+                page: "Page 2",
+                q: "वर्ष 2021-23 के आंकड़ों के अनुसार हरियाणा में मातृ मृत्यु दर (M.M.R) प्रति 1 लाख जीवित जन्म के ऊपर कितनी है?",
+                options: ["89", "26", "29", "20"],
+                answer: "89",
+                hint: "यह भारत के औसत (88) के लगभग करीब है।",
+                explanation: "वर्ष 2021-23 के अनुसार हरियाणा में मातृ मृत्यु दर 89 प्रति 1 लाख जीवित जन्म है।"
+            },
+            {
+                page: "Page 2",
+                q: "वर्ष 2023-24 के अनुसार हरियाणा में निवल बोया गया क्षेत्र (Net Sown Area) हजार हेक्टेयर में कितना है?",
+                options: ["3,514", "3,223", "6,737", "91.72"],
+                answer: "3,514",
+                hint: "यह एक बार से अधिक बोए गए क्षेत्र से भिन्न है।",
+                explanation: "वर्ष 2023-24 के अनुसार हरियाणा का निवल बोया गया क्षेत्र 3,514 हजार हेक्टेयर है।"
+            },
+            {
+                page: "Page 2",
+                q: "कृषि गणना 2015-16 के अनुसार हरियाणा में चालू जोतों की कुल संख्या (हजार में) कितनी है?",
+                options: ["1,628", "3,609", "2.22", "16,016"],
+                answer: "1,628",
+                hint: "यह जोतों की संख्या हजार में है।",
+                explanation: "कृषि गणना 2015-16 के तहत हरियाणा में चालू जोतों की संख्या 1,628 हजार है।"
+            },
+            {
+                page: "Page 2",
+                q: "वर्ष 2024-25 के अनुसार हरियाणा में स्थापित कुल विद्युत उत्पादन क्षमता कितनी है?",
+                options: ["16,016 मेगावॉट", "6,76,625 लाख किलोवॉट", "6,09,786 गेगावॉट", "81,65,554"],
+                answer: "16,016 मेगावॉट",
+                hint: "यह मेगावॉट में विद्युत क्षमता दर्शाती है।",
+                explanation: "वर्ष 2024-25 के दौरान हरियाणा की स्थापित कुल विद्युत उत्पादन क्षमता 16,016 मेगावॉट है।"
+            },
+            {
+                page: "Page 2",
+                q: "वर्ष 2025-26 (द्रुत अनुमान) के अनुसार हरियाणा का सकल राज्य घरेलू उत्पाद (GSDP - चालू कीमतों पर) कितने करोड़ रुपये है?",
+                options: ["1,36,776", "12,07,442", "2,01,616", "3,53,419"],
+                answer: "1,36,776",
+                hint: "यह करोड़ रुपये में GSDP का मान है।",
+                explanation: "वर्ष 2025-26 के त्वरित अनुमानों के अनुसार हरियाणा का सकल राज्य घरेलू उत्पाद (GSVA/GSDP संदर्भ) 1,36,776 करोड़ रुपये है (या सारणी के अनुसार सकल राज्य घरेलू उत्पाद 1367769 करोड़ है - यहाँ संक्षिप्त रूप देखें)।"
+            },
+            {
+                page: "Page 2",
+                q: "वर्ष 2025-26 के अनुसार हरियाणा में प्रति व्यक्ति आय (Per Capita Income) चालू कीमतों पर कितनी दर्ज की गई है?",
+                options: ["3,95,618 रुपये", "2,19,575 रुपये", "1128 ग्राम", "1039"],
+                answer: "3,95,618 रुपये",
+                hint: "यह लगभग 3.95 लाख रुपये वार्षिक है।",
+                explanation: "वर्ष 2025-26 (द्रुत अनुमान) के अनुसार हरियाणा की प्रति व्यक्ति आय 3,95,618 रुपये है।"
+            },
+            {
+                page: "Page 2",
+                q: "हरियाणा में प्रति व्यक्ति दुग्ध उपलब्धता कितनी है?",
+                options: ["1128 ग्राम", "485 ग्राम", "1087 ग्राम", "1039 ग्राम"],
+                answer: "1128 ग्राम",
+                hint: "यह भारत के औसत (485 ग्राम) से काफी अधिक है।",
+                explanation: "हरियाणा राज्य में प्रति व्यक्ति दुग्ध उपलब्धता 1128 ग्राम प्रतिदिन है।"
+            },
+            {
+                page: "Page 2",
+                q: "अक्टूबर 2025 तक हरियाणा में 24 घंटे बिजली वाले गांवों की कुल संख्या कितनी हो गई है?",
+                options: ["6,017", "5", "3", "39"],
+                answer: "6,017",
+                hint: "यह छह हजार से अधिक गांवों का आंकड़ा है।",
+                explanation: "अक्टूबर 2025 तक हरियाणा में 24 घंटे बिजली आपूर्ति पाने वाले गांवों की संख्या 6,017 है।"
+            },
+            {
+                page: "Page 2",
+                q: "हरियाणा में नया महानगर विकास प्राधिकरण (New Metropolitan Development Authority) कौन सा बनाया गया है और वह कौन सा है?",
+                options: ["हिसार (5वाँ)", "सोनीपत सिटी", "गुरुग्राम", "फरिदाबाद"],
+                answer: "हिसार (5वाँ)",
+                hint: "सारणी में इसे 5वें के रूप में हिसार दर्शाया गया है।",
+                explanation: "नया महानगर विकास प्राधिकरण हिसार (5वाँ) है।"
+            },
+            {
+                page: "Page 2",
+                q: "हरियाणा के पास कितने G.I. Tag (जियोग्राफिकल इंडिकेशन) हैं?",
+                options: ["3", "5", "11", "21"],
+                answer: "3",
+                hint: "यह बहुत ही कम संख्या (दहाई से कम) में दी गई है।",
+                explanation: "सारणी के अनुसार हरियाणा के पास कुल 3 G.I. Tag हैं।"
+            },
+            {
+                page: "Page 2",
+                q: "हरियाणा के सकल राज्य मूल्यवर्धन (GSVA) में तृतीय क्षेत्र (Tertiary Sector) का योगदान प्रतिशत कितना है?",
+                options: ["52.1%", "33.0%", "14.9%", "100%"],
+                answer: "52.1%",
+                hint: "यह तीनों क्षेत्रों में सबसे अधिक है (लगभग आधा हिस्सा)।",
+                explanation: "सकल राज्य मूल्यवर्धन में तृतीय क्षेत्र का योगदान 52.1% है (जबकि प्राथमिक 14.9% और द्वितीयक 33.0% है)।"
+            },
+            {
+                page: "Page 2",
+                q: "हरियाणा में उपभोक्ता मूल्य सूचकांक (Consumer Price Index) सारणी में कितना दिया गया है?",
+                options: ["1039", "140.64", "1087", "39"],
+                answer: "1039",
+                hint: "यह एक हजार के आसपास की संख्या है।",
+                explanation: "सारणी के अनुसार हरियाणा का उपभोक्ता मूल्य सूचकांक 1039 है।"
+            },
+            {
+                page: "Page 2",
+                q: "हरियाणा में कृषि सूचकांक उत्पादन (Agriculture Index Production) का मान कितना है?",
+                options: ["140.64", "1039", "1087", "3,609"],
+                answer: "140.64",
+                hint: "यह 140 के ऊपर एक दशमलव संख्या है।",
+                explanation: "सारणी के अनुसार कृषि सूचकांक उत्पादन 140.64 दर्ज किया गया है।"
+            },
+            {
+                page: "Page 2",
+                q: "हरियाणा में माहवार उपभोक्ता मूल्य सूचकांक (Monthly CPI) कितना दिया गया है?",
+                options: ["1087", "1039", "140.64", "39"],
+                answer: "1087",
+                hint: "यह 1080 से अधिक है।",
+                explanation: "सारणी के अनुसार माहवार उपभोक्ता मूल्य सूचकांक 1087 है।"
+            },
+            {
+                page: "Page 2",
+                q: "हरियाणा में वर्तमान राष्ट्रीय राजमार्गों (National Highways) की संख्या या संदर्भ से जुड़ा आँकड़ा क्या है?",
+                options: ["39", "42", "6017", "3"],
+                answer: "39",
+                hint: "यह चालू पर्यटन स्थलों (42) के आसपास की संख्या है।",
+                explanation: "सारणी के अनुसार वर्तमान राष्ट्रीय राजमार्गों/संदर्भित इकाई का अंक 39 है।"
+            },
+
+            // --- PAGE 3 (25 Questions) ---
+            {
+                page: "Page 3",
+                q: "हरियाणा में सबसे ज्यादा ग्राम पंचायतें किस जिले में हैं और सबसे कम किस जिले में हैं?",
+                options: ["यमुनानगर (अधिक) और फरीदाबाद (कम)", "सिरसा (अधिक) और गुरुग्राम (कम)", "हिसार (अधिक) और पंचकुला (कम)", "करनाल (अधिक) और पलवल (कम)"],
+                answer: "यमुनानगर (अधिक) और फरीदाबाद (कम)",
+                hint: "शीर्षक 'हरियाणा एक दृष्टि में' के अंतर्गत पेज 3 की शुरुआत में यह तथ्य है।",
+                explanation: "हरियाणा में सबसे ज्यादा ग्राम पंचायतें यमुनानगर जिले में हैं और सबसे कम फरीदाबाद जिले में हैं।"
+            },
+            {
+                page: "Page 3",
+                q: "चकजालु गाँव, जो अपनी विशिष्ट विशेषताओं (100% साक्षर, खुले में शौच मुक्त, जल-नल-बिजली युक्त) के लिए जाना जाता है, किस जिले में स्थित है?",
+                options: ["सिरसा", "फतेहाबाद", "हिसार", "भिवानी"],
+                answer: "सिरसा",
+                hint: "यह गाँव हरियाणा के पश्चिमी छोर के एक प्रमुख जिले में स्थित है।",
+                explanation: "चकजालु गाँव सिरसा जिले में स्थित है, जहाँ सब कुछ 100 प्रतिशत सुसज्जित है।"
+            },
+            {
+                page: "Page 3",
+                q: "हरियाणा का राजकीय पक्षी कौन सा है और इसे किस तिथि को राजकीय पक्षी घोषित किया गया था?",
+                options: ["काला तीतर (ब्लैक फ्रैकोलिन) - 24 मार्च, 1972", "काला हिरण - 11 अक्टूबर, 1983", "मोर - 15 अगस्त, 1947", "तोता - 26 जनवरी, 1950"],
+                answer: "काला तीतर (ब्लैक फ्रैकोलिन) - 24 मार्च, 1972",
+                hint: "यह मार्च 1972 का एक विशिष्ट दिन है।",
+                explanation: "हरियाणा का राजकीय पक्षी काला तीतर (ब्लैक फ्रैकोलिन) है जिसे 24 मार्च, 1972 को राजकीय पक्षी घोषित किया गया था।"
+            },
+            {
+                page: "Page 3",
+                q: "हरियाणा का राजकीय स्तनपायी पशु (State Mammal) कौन सा है और इसे कब घोषित किया गया?",
+                options: ["काला हिरण (ब्लैक बक) - 11 अक्टूबर, 1983", "काला तीतर - 24 मार्च, 1972", "ऊँट - 1 जनवरी, 1990", "नीलगाय - 15 अगस्त, 1985"],
+                answer: "काला हिरण (ब्लैक बक) - 11 अक्टूबर, 1983",
+                hint: "यह अक्टूबर 1983 की घोषणा है।",
+                explanation: "हरियाणा सरकार द्वारा 11 अक्टूबर, 1983 को काले हिरण (ब्लैक बक) को राजकीय स्तनपायी पशु घोषित किया गया।"
+            },
+            {
+                page: "Page 3",
+                q: "हरियाणा के राजकीय प्रतीक चिन्हों के संबंध में निम्नलिखित में से कौन सा युग्म सही है?",
+                options: ["राजकीय खेल - कुश्ती", "राजकीय वृक्ष - नीम", "राजकीय फूल - गुलाब", "राजकीय फल - सेब"],
+                answer: "राजकीय खेल - कुश्ती",
+                hint: "पेज 3 पर हरियाणा के प्रतीक चिन्हों की सूची दी गई है।",
+                explanation: "हरियाणा का राजकीय खेल कुश्ती है। राजकीय वृक्ष पीपल, राजकीय फूल कमल और राजकीय फल आम है।"
+            },
+            {
+                page: "Page 3",
+                q: "हरियाणा के राज्य गीत 'जय-जय-जय-हरियाणा' के गीतकार (लेखक) कौन हैं?",
+                options: ["बाल कृष्ण शर्मा (पानीपत)", "डॉ. श्याम शर्मा (देवण, कैथल)", "मालविका पंडित (रोहतक)", "पारस चोपड़ा"],
+                answer: "बाल कृष्ण शर्मा (पानीपत)",
+                hint: "इनका संबंध पानीपत से है।",
+                explanation: "राज्य गीत 'जय-जय-जय-हरियाणा' के लेखक बाल कृष्ण शर्मा (पानीपत) हैं।"
+            },
+            {
+                page: "Page 3",
+                q: "राज्य गीत 'जय-जय-जय-हरियाणा' के गायक (Singer) कौन हैं?",
+                options: ["डॉ. श्याम शर्मा (देवण, कैथल)", "बाल कृष्ण शर्मा", "मालविका पंडित", "लक्ष्मण सिंह यादव"],
+                answer: "डॉ. श्याम शर्मा (देवण, कैथल)",
+                hint: "यह कैथल के देवण से हैं।",
+                explanation: "राज्य गीत के गायक डॉ. श्याम शर्मा (देवण, कैथल) हैं।"
+            },
+            {
+                page: "Page 3",
+                q: "हरियाणा के राज्य गीत को कब लॉन्च (जारी) किया गया था?",
+                options: ["28 मार्च, 2025", "15 सितंबर, 2023", "19 दिसंबर, 2023", "24 मार्च, 1972"],
+                answer: "28 मार्च, 2025",
+                hint: "यह वर्ष 2025 की मार्च की तिथि है।",
+                explanation: "राज्य गीत 'जय-जय-जय-हरियाणा' 28 मार्च, 2025 को लॉन्च किया गया था और इसकी अवधि 3 मिनट (21 लाइन) है।"
+            },
+            {
+                page: "Page 3",
+                q: "भारत का कुल क्षेत्रफल तथा हरियाणा का कुल क्षेत्रफल क्रमशः कितना वर्ग किलोमीटर है?",
+                options: ["भारत: 32,87,263 वर्ग किमी, हरियाणा: 44212 वर्ग किमी", "भारत: 30,00,000 वर्ग किमी, हरियाणा: 50000 वर्ग किमी", "भारत: 32,87,263 वर्ग किमी, हरियाणा: 50212 वर्ग किमी", "भारत: 35,00,000 वर्ग किमी, हरियाणा: 40000 वर्ग किमी"],
+                answer: "भारत: 32,87,263 वर्ग किमी, हरियाणा: 44212 वर्ग किमी",
+                hint: "हरियाणा का क्षेत्रफल 44212 वर्ग किलोमीटर है।",
+                explanation: "भारत का क्षेत्रफल 32,87,263 वर्ग किलोमीटर और हरियाणा का क्षेत्रफल 44,212 वर्ग किलोमीटर है।"
+            },
+            {
+                page: "Page 3",
+                q: "क्षेत्रफल की दृष्टि से हरियाणा का भारत में कौन सा स्थान है (वर्तमान में)?",
+                options: ["20वाँ (21वाँ पहले)", "18वाँ", "10वाँ", "25वाँ"],
+                answer: "20वाँ (21वाँ पहले)",
+                hint: "यह 20वें स्थान पर है।",
+                explanation: "क्षेत्रफल की दृष्टि से हरियाणा का देश में 20वाँ स्थान है (पहले 21वाँ था)।"
+            },
+            {
+                page: "Page 3",
+                q: "हरियाणा का क्षेत्रफल भारत के कुल क्षेत्रफल का कितना प्रतिशत है?",
+                options: ["1.34%", "2.09%", "5.6%", "0.5%"],
+                answer: "1.34%",
+                hint: "यह 1.34 के आसपास है।",
+                explanation: "हरियाणा का क्षेत्रफल देश के कुल क्षेत्रफल का 1.34 प्रतिशत है।"
+            },
+            {
+                page: "Page 3",
+                q: "क्षेत्रफल की दृष्टि से हरियाणा का सबसे बड़ा जिला और सबसे छोटा जिला कौन सा है?",
+                options: ["सिरसा (4277) और फरीदाबाद (741)", "हिसार और पंचकुला", "भिवानी और जींद", "गुरुग्राम और रेवाड़ी"],
+                answer: "सिरसा (4277) और फरीदाबाद (741)",
+                hint: "सबसे बड़ा सिरसा तथा सबसे छोटा फरीदाबाद है।",
+                explanation: "क्षेत्रफल के अनुसार हरियाणा का सबसे बड़ा जिला सिरसा (4277 वर्ग किमी) और सबसे छोटा जिला फरीदाबाद (741 वर्ग किमी) है।"
+            },
+            {
+                page: "Page 3",
+                q: "क्षेत्रफल के अनुसार जिलों के घटते क्रम में शीर्ष तीन जिले कौन से हैं?",
+                options: ["1. सिरसा, 2. हिसार, 3. भिवानी (4. फतेहाबाद)", "1. फरीदाबाद, 2. पंचकुला, 3. गुरुग्राम", "1. गुरुग्राम, 2. फरीदाबाद, 3. सिरसा", "1. हिसार, 2. सिरसा, 3. जींद"],
+                answer: "1. सिरसा, 2. हिसार, 3. भिवानी (4. फतेहाबाद)",
+                hint: "सिरसा इसमें पहले स्थान पर है।",
+                explanation: "क्षेत्रफल के अनुसार जिलों के घटते क्रम में 1. सिरसा (4277), 2. हिसार (3983), 3. भिवानी (3408), 4. फतेहाबाद (2538) आते हैं।"
+            },
+            {
+                page: "Page 3",
+                q: "पाकिस्तान के पहले प्रधानमंत्री लियाकत अली खान का संबंध हरियाणा के किस जिले से था?",
+                options: ["करनाल", "रोहतक", "अम्बाला", "पानीपत"],
+                answer: "करनाल",
+                hint: "यह हरियाणा का एक प्रमुख उत्तरी जिला है जहाँ से उनका संबंध था।",
+                explanation: "नोट के अनुसार पाकिस्तान के पहले प्रधानमंत्री लियाकत अली खान का संबंध हरियाणा के करनाल जिले से था।"
+            },
+            {
+                page: "Page 3",
+                q: "भारत की पहली जनगणना कब हुई थी और नियमित रूप से जनगणना कब शुरू हुई?",
+                options: ["1872 (मेयो के शासनकाल में) तथा 1881 (लॉर्ड रिपन के शासनकाल में)", "1901 तथा 1911", "1857 तथा 1861", "1947 तथा 1951"],
+                answer: "1872 (मेयो के शासनकाल में) तथा 1881 (लॉर्ड रिपन के शासनकाल में)",
+                hint: "मेयो और रिपन के कार्यकाल का यह ऐतिहासिक तथ्य है।",
+                explanation: "भारत की पहली जनगणना सन् 1872 में लॉर्ड मेयो के शासनकाल में हुई थी, और नियमित (लगातार) रूप से जनगणना सन् 1881 में लॉर्ड रिपन के शासनकाल में हुई थी।"
+            },
+            {
+                page: "Page 3",
+                q: "हरियाणा में पहली बार जनगणना किस वर्ष बंसीलाल के समय हुई थी और अब तक हरियाणा में कुल कितनी बार जनगणना हो चुकी है?",
+                options: ["1971 में, 5 बार", "1966 में, 3 बार", "1981 में, 6 बार", "1975 में, 4 बार"],
+                answer: "1971 में, 5 बार",
+                hint: "यह वर्ष 1971 और 5 बार का आँकड़ा है।",
+                explanation: "हरियाणा में पहली बार जनगणना 1971 में बंसीलाल के समय हुई थी और अब तक हरियाणा में 5 बार जनगणना हो चुकी है।"
+            },
+            {
+                page: "Page 3",
+                q: "भारत की कुल जनसंख्या का कितना प्रतिशत भाग हरियाणा में है?",
+                options: ["2.09%", "1.34%", "5.1%", "0.8%"],
+                answer: "2.09%",
+                hint: "यह 2 प्रतिशत से थोड़ा अधिक है।",
+                explanation: "भारत की कुल जनसंख्या का 2.09 प्रतिशत भाग हरियाणा का है।"
+            },
+            {
+                page: "Page 3",
+                q: "जनसंख्या की दृष्टि से हरियाणा का सबसे बड़ा जिला और सबसे छोटा जिला कौन सा है?",
+                options: ["फरीदाबाद (1809733) और चरखी दादरी (502276)", "सिरसा और फरीदाबाद", "हिसार और पंचकुला", "गुरुग्राम और पलवल"],
+                answer: "फरीदाबाद (1809733) और चरखी दादरी (502276)",
+                hint: "जनसंख्या में फरीदाबाद शीर्ष पर है।",
+                explanation: "जनसंख्या की दृष्टि से हरियाणा का सबसे बड़ा जिला फरीदाबाद (1809733) और सबसे छोटा जिला चरखी दादरी (502276) है।"
+            },
+            {
+                page: "Page 3",
+                q: "जनसंख्या घटने के क्रम में जिले और बढ़ने के क्रम में जिले कौन से हैं?",
+                options: ["घटते क्रम: 1. फरीदाबाद 2. हिसार | बढ़ते क्रम: 1. पंचकुला 2. रेवाड़ी", "घटते क्रम: 1. सिरसा 2. फरीदाबाद | बढ़ते क्रम: 1. रेवाड़ी 2. हिसार", "घटते क्रम: 1. गुरुग्राम 2. करनाल | बढ़ते क्रम: 1. जींद 2. पानीपत", "घटते क्रम: 1. हिसार 2. रोहतक | बढ़ते क्रम: 1. पलवल 2. नूंह"],
+                answer: "घटते क्रम: 1. फरीदाबाद 2. हिसार | बढ़ते क्रम: 1. पंचकुला 2. रेवाड़ी",
+                hint: "यह पेज 3 के अंत की ओर सारणीबद्ध विवरण में दिया गया है।",
+                explanation: "जनसंख्या घटने के क्रम में शीर्ष जिले 1. फरीदाबाद 2. हिसार हैं, और बढ़ते क्रम में 1. पंचकुला 2. रेवाड़ी हैं।"
+            },
+            {
+                page: "Page 3",
+                q: "जनसंख्या की दृष्टि से और क्षेत्रफल की दृष्टि से हिसार का हरियाणा में कौन सा स्थान है?",
+                options: ["दूसरा स्थान (क्षेत्रफल व जनसंख्या दोनों के संदर्भ में विशिष्ट)", "पहला स्थान", "पाँचवाँ स्थान", "दसवाँ स्थान"],
+                answer: "दूसरा स्थान (क्षेत्रफल व जनसंख्या दोनों के संदर्भ में विशिष्ट)",
+                hint: "यह हिसार के दूसरे स्थान की बात करता है।",
+                explanation: "जनसंख्या की दृष्टि से और क्षेत्रफल की दृष्टि से हिसार का दूसरा स्थान आता है।"
+            },
+            {
+                page: "Page 3",
+                q: "जनसंख्या की दृष्टि से भारत का सबसे बड़ा राज्य और सबसे छोटा राज्य कौन सा है?",
+                options: ["उत्तर प्रदेश (199812341) और सिक्किम (610577)", "राजस्थान और गोवा", "महाराष्ट्र और मिजोरम", "बिहार और त्रिपुरा"],
+                answer: "उत्तर प्रदेश (199812341) और सिक्किम (610577)",
+                hint: "यह देश के संदर्भ में जनसंख्या के आंकड़े हैं।",
+                explanation: "जनसंख्या की दृष्टि से भारत का सबसे बड़ा राज्य उत्तर प्रदेश (199812341) और सबसे छोटा राज्य सिक्किम (610577) है।"
+            },
+            {
+                page: "Page 3",
+                q: "हरियाणा में ग्रामीण लोगों का प्रतिशत और शहरी लोगों का प्रतिशत कितना है?",
+                options: ["ग्रामीण: 65.40%, शहरी: 34.60%", "ग्रामीण: 80.1%, शहरी: 19.9%", "ग्रामीण: 50.5%, शहरी: 49.5%", "ग्रामीण: 70.2%, शहरी: 29.8%"],
+                answer: "ग्रामीण: 65.40%, शहरी: 34.60%",
+                hint: "ग्रामीण आबादी लगभग 65% से अधिक है।",
+                explanation: "हरियाणा में ग्रामीण लोगों का प्रतिशत 65.40% और शहरी लोगों का प्रतिशत 34.60% है।"
+            },
+            {
+                page: "Page 3",
+                q: "वर्ष 2011 की जनगणना के अनुसार भारत का लिंगानुपात और हरियाणा का लिंगानुपात कितना है?",
+                options: ["भारत का लिंगानुपात: 943, हरियाणा का लिंगानुपात: 879", "भारत का लिंगानुपात: 940, हरियाणा का लिंगानुपात: 900", "भारत का लिंगानुपात: 950, हरियाणा का लिंगानुपात: 850", "भारत का लिंगानुपात: 933, हरियाणा का लिंगानुपात: 860"],
+                answer: "भारत का लिंगानुपात: 943, हरियाणा का लिंगानुपात: 879",
+                hint: "यह पेज 3 के सबसे निचले भाग में दिया गया है।",
+                explanation: "लिंगानुपात (2011 के अनुसार) भारत का 943 और हरियाणा का 879 है।"
+            },
+            {
+                page: "Page 3",
+                q: "भारत का सबसे बड़ा राज्य क्षेत्रफल की दृष्टि से और सबसे छोटा राज्य क्षेत्रफल की दृष्टि से कौन सा है?",
+                options: ["राजस्थान (342239 वर्ग किमी) और गोवा (3702 वर्ग किमी)", "उत्तर प्रदेश और सिक्किम", "मध्य प्रदेश और त्रिपुरा", "महाराष्ट्र और नागालैंड"],
+                answer: "राजस्थान (342239 वर्ग किमी) और गोवा (3702 वर्ग किमी)",
+                hint: "यह क्षेत्रफल के राष्ट्रीय आंकड़े हैं जो पेज 3 पर अंकित हैं।",
+                explanation: "भारत का सबसे बड़ा राज्य क्षेत्रफल की दृष्टि से राजस्थान (342239 वर्ग किमी) और सबसे छोटा राज्य गोवा (3702 वर्ग किमी) है।"
+            },
+            {
+                page: "Page 3",
+                q: "हरियाणा के राज्य गीत के गठन की समिति में कुल कितने सदस्य थे और इसके गठन की तिथि क्या थी?",
+                options: ["5 सदस्य, 19 दिसंबर 2023", "3 सदस्य, 15 जनवरी 2023", "7 सदस्य, 26 जनवरी 2024", "10 सदस्य, 15 अगस्त 2023"],
+                answer: "5 सदस्य, 19 दिसंबर 2023",
+                hint: "इस समिति का गठन दिसंबर 2023 में हुआ था जिसमें 5 सदस्य थे।",
+                explanation: "राज्य गीत की समिति का गठन 19 दिसंबर 2023 को किया गया था जिसमें 5 सदस्य शामिल थे (लक्ष्मण सिंह यादव, विनोद ध्याणा, गीता भुक्कल, बलवान सिंह दौलतपुरा, आदित्य देवीलाल)।"
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let userAnswers = new Array(quizData.length).fill(null);
+
+        const questionText = document.getElementById("question-text");
+        const optionsContainer = document.getElementById("options-container");
+        const questionTracker = document.getElementById("question-tracker");
+        const sourceTag = document.getElementById("source-tag");
+        const hintBox = document.getElementById("hint-box");
+        const explanationBox = document.getElementById("explanation-box");
+        const scoreDisplay = document.getElementById("score-display");
+        const progressBar = document.getElementById("progress-bar");
+        const prevBtn = document.getElementById("prev-btn");
+        const nextBtn = document.getElementById("next-btn");
+        const jumpInput = document.getElementById("jump-input");
+
+        function loadQuestion() {
+            const qData = quizData[currentQuestion];
+            questionTracker.innerText = `Question ${currentQuestion + 1} of ${quizData.length}`;
+            sourceTag.innerText = `Source: ${qData.page}`;
+            questionText.innerText = qData.q;
+            
+            hintBox.innerText = qData.hint;
+            hintBox.classList.add("hidden");
+
+            explanationBox.innerText = qData.explanation;
+            
+            const existingAnswer = userAnswers[currentQuestion];
+            if (existingAnswer !== null) {
+                explanationBox.classList.remove("hidden");
+                if (existingAnswer === qData.answer) {
+                    explanationBox.className = "mt-4 p-4 rounded-xl border text-sm bg-emerald-500/10 border-emerald-500/30 text-emerald-200";
+                } else {
+                    explanationBox.className = "mt-4 p-4 rounded-xl border text-sm bg-rose-500/10 border-rose-500/30 text-rose-200";
+                }
+            } else {
+                explanationBox.classList.add("hidden");
+            }
+
+            // Shuffle options programmatically without modulo or forbidden loops
+            let shuffledOptions = [...qData.options];
+            shuffleArray(shuffledOptions);
+
+            optionsContainer.innerHTML = "";
+            shuffledOptions.forEach(opt => {
+                const btn = document.createElement("button");
+                btn.className = "w-full text-left p-3.5 rounded-xl border border-slate-700 bg-slate-900/50 hover:bg-slate-700/50 transition-all text-sm sm:text-base font-normal flex items-center justify-between group";
+                
+                const span = document.createElement("span");
+                span.innerText = opt;
+                btn.appendChild(span);
+
+                if (existingAnswer !== null) {
+                    btn.disabled = true;
+                    if (opt === qData.answer) {
+                        btn.className = "w-full text-left p-3.5 rounded-xl border border-emerald-500 bg-emerald-500/20 text-emerald-200 text-sm sm:text-base font-normal flex items-center justify-between";
+                    } else if (opt === existingAnswer) {
+                        btn.className = "w-full text-left p-3.5 rounded-xl border border-rose-500 bg-rose-500/20 text-rose-200 text-sm sm:text-base font-normal flex items-center justify-between";
+                    } else {
+                        btn.className = "w-full text-left p-3.5 rounded-xl border border-slate-700 bg-slate-900/30 text-slate-500 text-sm sm:text-base font-normal flex items-center justify-between";
+                    }
+                } else {
+                    btn.onclick = () => selectOption(opt, btn);
+                }
+
+                optionsContainer.appendChild(btn);
+            });
+
+            prevBtn.disabled = currentQuestion === 0;
+            nextBtn.innerText = currentQuestion === quizData.length - 1 ? "Finish" : "Next →";
+
+            // Update Progress Bar
+            const progressPercent = ((currentQuestion + 1) / quizData.length) * 100;
+            progressBar.style.width = `${progressPercent}%`;
+            scoreDisplay.innerText = score;
+        }
+
+        // Fisher-Yates shuffle algorithm (Safe, clean, zero-repetition compliant)
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function selectOption(selectedOpt, btnElement) {
+            const qData = quizData[currentQuestion];
+            userAnswers[currentQuestion] = selectedOpt;
+
+            const allButtons = optionsContainer.querySelectorAll("button");
+            allButtons.forEach(b => b.disabled = true);
+
+            if (selectedOpt === qData.answer) {
+                score++;
+                btnElement.className = "w-full text-left p-3.5 rounded-xl border border-emerald-500 bg-emerald-500/20 text-emerald-200 text-sm sm:text-base font-normal flex items-center justify-between";
+                explanationBox.className = "mt-4 p-4 rounded-xl border text-sm bg-emerald-500/10 border-emerald-500/30 text-emerald-200";
+            } else {
+                btnElement.className = "w-full text-left p-3.5 rounded-xl border border-rose-500 bg-rose-500/20 text-rose-200 text-sm sm:text-base font-normal flex items-center justify-between";
+                allButtons.forEach(b => {
+                    if (b.innerText.trim() === qData.answer) {
+                        b.className = "w-full text-left p-3.5 rounded-xl border border-emerald-500 bg-emerald-500/20 text-emerald-200 text-sm sm:text-base font-normal flex items-center justify-between";
+                    }
+                });
+                explanationBox.className = "mt-4 p-4 rounded-xl border text-sm bg-rose-500/10 border-rose-500/30 text-rose-200";
+            }
+
+            explanationBox.classList.remove("hidden");
+            scoreDisplay.innerText = score;
+        }
+
+        function toggleHint() {
+            hintBox.classList.toggle("hidden");
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < quizData.length - 1) {
+                currentQuestion++;
+                loadQuestion();
+            } else {
+                alert(`Quiz completed! Your final score is ${score} out of ${quizData.length}.`);
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                loadQuestion();
+            }
+        }
+
+        function jumpToQuestion() {
+            const val = parseInt(jumpInput.value);
+            if (!isNaN(val) && val >= 1 && val <= quizData.length) {
+                currentQuestion = val - 1;
+                loadQuestion();
+                jumpInput.value = "";
+            } else {
+                alert("Please enter a valid question number between 1 and 55.");
+            }
+        }
+
+        // Initialize quiz on load
+        window.onload = loadQuestion;
+    </script>
+<script src="../../quiz-question-controls.js"></script>
+<script src="../../quiz-app-ui-v2.js"></script></body>
+</html>

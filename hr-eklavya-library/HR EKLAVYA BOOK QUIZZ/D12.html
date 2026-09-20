@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haryana District & Animal Husbandry Interactive Quiz (Bilingual)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+<style id="cosmic-readable-quiz-theme">
+:root{--space:#e8dcff;--panel:#f3eaff;--panel2:#dcc6ff;--edge:#6a45bf;--glow:#d28b28;--accent:#d15f9f;--ink:#2c1b4d;--muted:#66547c;--mist:rgba(106,69,191,.2)}html{background:var(--space)}body{background:radial-gradient(ellipse 62% 45% at 90% -5%,rgba(209,95,159,.28),transparent 62%),radial-gradient(ellipse 55% 40% at 8% 100%,rgba(65,164,207,.26),transparent 64%),var(--space)!important;color:var(--ink)!important;min-height:100vh}body:before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.78;background-image:radial-gradient(circle at 9% 18%,var(--glow) 0 1px,transparent 1.7px),radial-gradient(circle at 26% 69%,var(--edge) 0 .8px,transparent 1.5px),radial-gradient(circle at 68% 24%,var(--accent) 0 1px,transparent 1.8px),radial-gradient(circle at 88% 73%,#47a8d3 0 .8px,transparent 1.5px);background-size:220px 190px,300px 270px,260px 230px,340px 310px;z-index:-1}header{background:linear-gradient(105deg,var(--panel),var(--panel2))!important;border-color:rgba(106,69,191,.25)!important;box-shadow:0 7px 24px rgba(84,48,142,.14)!important}header h1{color:var(--edge)!important;text-shadow:none!important}header p,header .text-slate-400,header .text-indigo-200,header .text-indigo-300{color:var(--muted)!important}main>div,#quiz-card,.bg-slate-800,.bg-slate-900,.bg-indigo-900,.bg-indigo-950{background:linear-gradient(145deg,#f8f0ff,var(--panel))!important;border-color:rgba(106,69,191,.22)!important;color:var(--ink)!important;box-shadow:0 14px 35px rgba(84,48,142,.12)!important}.bg-slate-700,.bg-slate-100,.bg-slate-50{background:#eadffd!important;color:var(--ink)!important}.text-slate-100,.text-slate-200,.text-slate-300,.text-slate-400,.text-white,.text-slate-800,.text-slate-700,.text-slate-600{color:var(--ink)!important}.text-indigo-400,.text-indigo-300,.text-emerald-400,.text-yellow-300{color:var(--edge)!important}.border-slate-700,.border-slate-700\/60,.border-indigo-700,.border-slate-200{border-color:rgba(106,69,191,.25)!important}button:not(.bg-green-600):not(.bg-red-600){background:#f9f2ff!important;color:var(--ink)!important;border:1px solid rgba(106,69,191,.25)!important;box-shadow:0 3px 10px rgba(84,48,142,.09)!important}button.bg-indigo-600,button.bg-slate-800,button.bg-slate-900,button.bg-indigo-900{background:linear-gradient(120deg,var(--edge),var(--accent))!important;color:#fff!important;border:0!important}button.bg-indigo-600 *,button.bg-slate-800 *,button.bg-slate-900 *,button.bg-indigo-900 *{color:#fff!important}button:hover{filter:brightness(1.04);transform:translateY(-1px)}input,select,textarea{background:#f9f2ff!important;border-color:rgba(106,69,191,.35)!important;color:var(--ink)!important}input:focus,select:focus,textarea:focus{outline:none!important;border-color:var(--edge)!important;box-shadow:0 0 0 3px var(--mist)!important}.bg-indigo-500,#progress-bar{background:linear-gradient(90deg,var(--edge),var(--accent),var(--glow))!important}.rounded-2xl{border-radius:1.25rem!important}
+</style></head>
+<body class="bg-slate-900 text-slate-100 min-p-4 min-h-screen flex flex-col justify-between">
+
+    <!-- Header -->
+    <header class="bg-slate-800 border-b border-slate-700 py-4 px-6 shadow-md">
+        <div class="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div>
+                <h1 class="text-xl font-bold text-emerald-400">Haryana GK & Animal Husbandry Quiz</h1>
+                <p class="text-xs text-slate-400">Bilingual (English & Hindi) Exam-Level Practice App</p>
+            </div>
+            <div class="flex items-center gap-4 bg-slate-700/50 px-4 py-2 rounded-lg border border-slate-600">
+                <div class="text-sm">
+                    Score: <span id="score-display" class="font-bold text-emerald-400">0</span> / <span id="total-display">0</span>
+                </div>
+                <div class="text-sm border-l border-slate-600 pl-4">
+                    Q: <span id="current-q-num" class="font-bold text-sky-400">1</span>/<span id="total-q-num">0</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Quiz Container -->
+    <main class="max-w-3xl w-full mx-auto p-4 sm:p-6 my-auto">
+        
+        <!-- Progress Bar -->
+        <div class="w-full bg-slate-800 rounded-full h-2.5 mb-6 overflow-hidden border border-slate-700">
+            <div id="progress-bar" class="bg-emerald-500 h-2.5 transition-all duration-300" style="width: 0%"></div>
+        </div>
+
+        <!-- Quiz Card -->
+        <div id="quiz-card" class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl relative">
+            
+            <!-- Question Header / Jump Input Bar -->
+            <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-700 text-xs text-slate-400">
+                <span id="question-tag" class="bg-emerald-900/60 text-emerald-300 px-2.5 py-1 rounded-md font-medium border border-emerald-700/55">General Studies & Livestock</span>
+                <div class="flex items-center gap-2">
+                    <label for="jump-input" class="cursor-pointer">Jump to Q:</label>
+                    <input type="number" id="jump-input" min="1" class="w-16 bg-slate-900 border border-slate-700 rounded px-2 py-1 text-slate-200 text-center focus:outline-none focus:border-emerald-500">
+                    <button id="jump-btn" class="bg-slate-700 hover:bg-slate-600 px-2 py-1 rounded text-slate-200 transition">Go</button>
+                </div>
+            </div>
+
+            <!-- Question Text (Bilingual) -->
+            <div class="mb-6 space-y-2">
+                <h2 id="q-text-en" class="text-lg font-semibold text-slate-100 leading-snug"></h2>
+                <h2 id="q-text-hi" class="text-base font-medium text-emerald-300/90 leading-snug"></h2>
+            </div>
+
+            <!-- Options Container -->
+            <div id="options-container" class="space-y-3 mb-6">
+                <!-- Dynamic Options injected here -->
+            </div>
+
+            <!-- Hint Section -->
+            <div class="mb-4">
+                <button id="hint-toggle-btn" class="text-xs text-amber-400 hover:text-amber-300 flex items-center gap-1 font-medium transition">
+                    💡 Show Hint / संकेत देखें
+                </button>
+                <div id="hint-box" class="hidden mt-2 p-3 bg-amber-950/30 border border-amber-800/50 rounded-lg text-xs text-amber-200">
+                    <span id="hint-text"></span>
+                </div>
+            </div>
+
+            <!-- Explanation Box -->
+            <div id="explanation-box" class="hidden mb-6 p-4 bg-slate-900/80 border border-slate-700 rounded-xl text-sm">
+                <h4 class="font-bold text-emerald-400 mb-1 flex items-center gap-1.5">
+                    <span>📖</span> Explanation / व्याख्या:
+                </h4>
+                <p id="explanation-text-en" class="text-slate-300 text-xs mb-1"></p>
+                <p id="explanation-text-hi" class="text-slate-300 text-xs"></p>
+            </div>
+
+            <!-- Navigation Controls -->
+            <div class="flex justify-between items-center pt-4 border-t border-slate-700">
+                <button id="prev-btn" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 disabled:opacity-40 disabled:cursor-not-allowed rounded-lg text-sm font-medium transition flex items-center gap-2">
+                    ← Previous
+                </button>
+                <button id="next-btn" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 rounded-lg text-sm font-medium transition flex items-center gap-2 shadow-lg shadow-emerald-900/30">
+                    Next →
+                </button>
+            </div>
+
+        </div>
+
+        <!-- Completion Modal / Summary Screen -->
+        <div id="result-screen" class="hidden bg-slate-800 border border-slate-700 rounded-2xl p-8 text-center shadow-xl">
+            <div class="text-5xl mb-4">🏆</div>
+            <h2 class="text-2xl font-bold text-slate-100 mb-2">Quiz Completed! / क्विज़ समाप्त!</h2>
+            <p class="text-slate-400 mb-6 text-sm">You have successfully completed all questions from the Haryana District & Livestock practice set.</p>
+            <div class="text-3xl font-extrabold text-emerald-400 mb-6">
+                Final Score: <span id="final-score">0</span> / <span id="final-total">0</span>
+            </div>
+            <button id="restart-btn" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-semibold transition shadow-lg shadow-emerald-900/40">
+                Restart Quiz / पुनः आरंभ करें
+            </button>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-4 text-xs text-slate-500 border-t border-slate-800">
+        Interactive Exam Preparation Module &bull; Built with Tailwind CSS
+    -</footer>
+
+    <!-- Application Script -->
+    <script>
+        // Question Dataset covering Pages 1 & 2 (Nuh & Gurugram districts, including livestock census 20th data, administration, and historical facts)
+        const quizData = [
+            {
+                tag: "Livestock Census / पशु जनगणना",
+                en: "According to the 20th Livestock Census (2019), which district in Haryana recorded the highest rabbit population?",
+                hi: "20वीं पशु जनगणना (2019) के अनुसार, हरियाणा के किस जिले में खरगोश की सर्वाधिक जनसंख्या दर्ज की गई?",
+                options: [
+                    "Gurugram / गुरुग्राम",
+                    "Nuh/Mewat / नूंह/मेवात",
+                    "Faridabad / फरीदाबाद",
+                    "Palwal / पलवल"
+                ],
+                correct: 1,
+                hint: "This district is also known for having the lowest Sikh population percentage in the state.",
+                expEn: "According to the 20th Livestock Census 2019, Nuh/Mewat district has the highest rabbit population in Haryana.",
+                expHi: "20वीं पशु जनगणना 2019 के अनुसार, नूंह/मेवात जिले में हरियाणा में सबसे अधिक खरगोशों की संख्या पाई जाती है।"
+            },
+            {
+                tag: "Livestock Census / पशु जनगणना",
+                en: "As per the 20th Livestock Census (2019), which district reports the lowest population of pigs and dogs in Haryana?",
+                hi: "20वीं पशु जनगणना (2019) के अनुसार, हरियाणा में सुअर और कुत्तों की सबसे कम जनसंख्या किस जिले में पाई जाती है?",
+                options: [
+                    "Nuh/Mewat / नूंह/मेवात",
+                    "Panchkula / पंचकूला",
+                    "Jind / जींद",
+                    "Mahendragarh / महेंद्रगढ़"
+                ],
+                correct: 0,
+                hint: "It shares its name with the Mewat region and was formerly known by that name.",
+                expEn: "Nuh/Mewat records the lowest population of pigs and dogs in the state according to the 2019 census data.",
+                expHi: "2019 की पशु जनगणना डेटा के अनुसार नूंह/मेवात में सुअर और कुत्तों की संख्या सबसे कम है।"
+            },
+            {
+                tag: "District Administration / जिला प्रशासन (Nuh)",
+                en: "In which district is the Bindeshwar Pathak Ravan Mela held annually?",
+                hi: "बिन्देश्वर पाठक द्वारा 'रावण का मेला' किस जिले में आयोजित किया जाता है?",
+                options: [
+                    "Gurugram / गुरुग्राम",
+                    "Nuh / नूंह",
+                    "Rewari / रेवाड़ी",
+                    "Faridabad / फरीदाबाद"
+                ],
+                correct: 1,
+                hint: "The southernmost village 'Doha' is also located in this district.",
+                expEn: "The Ravan Mela organized by Bindeshwar Pathak takes place in Nuh district.",
+                expHi: "बिन्देश्वर पाठक द्वारा आयोजित रावण का मेला नूंह जिले में भरता है।"
+            },
+            {
+                tag: "Social Welfare / सामाजिक कल्याण",
+                en: "Which district ranks first in child marriages (बाल विवाह) within Haryana?",
+                hi: "हरियाणा में बाल विवाह के मामले में प्रथम स्थान पर कौन सा जिला है?",
+                options: [
+                    "Palwal / पलवल",
+                    "Sirsa / सिरसा",
+                    "Nuh / नूंह",
+                    "Jind / जींद"
+                ],
+                correct: 2,
+                hint: "It is also the district with the lowest Sikh population percentage (0.05%).",
+                expEn: "Nuh is noted as the leading district in the state regarding child marriage statistics in the study source.",
+                expHi: "अध्ययन स्रोत के अनुसार नूंह जिला बाल विवाह के मामले में राज्य में प्रथम स्थान पर है।"
+            },
+            {
+                tag: "Infrastructure / बुनियादी ढांचा",
+                en: "How much financial outlay has been allocated for the construction of the Mewat Feeder Canal, which will connect to the Agra Canal?",
+                hi: "मेवात फीडर कैनाल के निर्माण के लिए कितनी राशि का प्रावधान किया गया है जिसे आगरा कैनाल से जोड़ा जाएगा?",
+                options: [
+                    "500 Crores / 500 करोड़",
+                    "700 Crores / 700 करोड़",
+                    "1000 Crores / 1000 करोड़",
+                    "1200 Crores / 1200 करोड़"
+                ],
+                correct: 1,
+                hint: "The amount is 700 Crores.",
+                expEn: "The Mewat Feeder Canal is constructed with an estimated allocation of 700 Crores to link with the Agra Canal.",
+                expHi: "मेवात फीडर कैनाल का निर्माण 700 करोड़ रुपये की राशि से किया जाएगा और इसे आगरा कैनाल से जोड़ा जाएगा।"
+            },
+            {
+                tag: "History & Uprisings / इतिहास",
+                en: "Which princely region/tehsil offered the maximum support to the British during historical uprisings according to local records?",
+                hi: "ऐतिहासिक अभिलेखों के अनुसार अंग्रेजों का सर्वाधिक सहयोग करने वाली रियासत/क्षेत्र कौन सा था?",
+                options: [
+                    "Tauru / तावड़ू",
+                    "Pataudi / पटौदी",
+                    "Hodal / होडल",
+                    "Bhiwani / भिवानी"
+                ],
+                correct: 0,
+                hint: "It is currently a sub-division / tehsil in Nuh district, known also for having maximum tombs.",
+                expEn: "Tauru is cited in the text as the region that provided maximum cooperation to the British.",
+                expHi: "पाठ्यपुस्तक के अनुसार तावड़ू रियासत/क्षेत्र ने अंग्रेजों का सर्वाधिक सहयोग किया था।"
+            },
+            {
+                tag: "Health Schemes / स्वास्थ्य योजनाएं",
+                en: "When was the 'Indradhanush Program' (related to vaccination) launched in Nuh district?",
+                hi: "नूंह जिले में टीकाकरण से संबंधित 'इन्द्रधनुष प्रोग्राम' की शुरुआत कब की गई थी?",
+                options: [
+                    "10 January 2017",
+                    "15 July 2018",
+                    "20 August 2019",
+                    "26 January 2020"
+                ],
+                correct: 1,
+                hint: "The year is 2018 in the month of July.",
+                expEn: "The Indradhanush vaccination program was launched in Nuh on 15 July 2018.",
+                expHi: "नूंह में इन्द्रधनुष प्रोग्राम (टीकाकरण से संबंधित) की शुरुआत 15 जुलाई 2018 को हुई थी।"
+            },
+            {
+                tag: "Geography / भूगोल",
+                en: "What is the total number of villages in Nuh district as per official records referenced?",
+                hi: "संदर्भित आधिकारिक आंकड़ों के अनुसार नूंह जिले में कुल गाँवों की संख्या कितनी है?",
+                options: [
+                    "199",
+                    "250",
+                    "299",
+                    "350"
+                ],
+                correct: 2,
+                hint: "The number ends with 99 and starts with 2.",
+                expEn: "There are 299 total villages listed for Nuh district.",
+                expHi: "नूंह जिले में कुल गाँवों की संख्या 299 है।"
+            },
+            {
+                tag: "Architecture / वास्तुकला",
+                en: "Which region in Nuh district is noted for having the maximum number of tombs (मकबरे) in the state?",
+                hi: "राज्य में सर्वाधिक मकबरे किस क्षेत्र/जिले में स्थित हैं?",
+                options: [
+                    "Narnaul / नारनौल",
+                    "Tauru, Nuh / तावड़ू, नूंह",
+                    "Hansi / हांसी",
+                    "Panipat / पानीपत"
+                ],
+                correct: 1,
+                hint: "It is Tauru in Nuh district.",
+                expEn: "State records indicate Tauru, Nuh contains the highest number of tombs.",
+                expHi: "राज्य में सर्वाधिक मकबरे तावड़ू, नूंह में स्थित हैं।"
+            },
+            {
+                tag: "Geography / भूगोल",
+                en: "Which is the southernmost village located on the southern boundary of Haryana state (in Nuh district)?",
+                hi: "हरियाणा राज्य की दक्षिणी सीमा पर स्थित अंतिम गाँव कौन सा है?",
+                options: [
+                    "Doha (Nuh) / दोहा (नूंह)",
+                    "Singha / सिंघा",
+                    "Ferozepur / फिरोजपुर",
+                    "Rania / रानिया"
+                ],
+                correct: 0,
+                hint: "It starts with the letter D.",
+                expEn: "Doha village in Nuh district marks the southern-most boundary point of Haryana.",
+                expHi: "नूंह जिले का दोहा गाँव हरियाणा की दक्षिणी सीमा पर स्थित अंतिम गाँव है।"
+            },
+            {
+                tag: "History / इतिहास",
+                en: "Which village in Nuh district is historically known as 'Gandhi Gram'?",
+                hi: "नूंह जिले के किस गाँव को 'गांधी ग्राम' कहा जाता है?",
+                options: [
+                    "Ghasera / घासेड़ा",
+                    "Nalhar / नलहर",
+                    "Hilalpur / हिलालपुर",
+                    "Fatehpur / फतेहपुर"
+                ],
+                correct: 0,
+                hint: "Mahatma Gandhi addressed a public meeting here on 19 December 1947.",
+                expEn: "Ghasera village in Nuh is famously known as Gandhi Gram because Mahatma Gandhi visited to stop the migration of Muslim families.",
+                expHi: "नूंह के घासेड़ा गाँव को 'गांधी ग्राम' कहा जाता है।"
+            },
+            {
+                tag: "Political History / राजनीतिक इतिहास",
+                en: "Who is the only politician from Haryana to have served as a minister across three different states?",
+                hi: "हरियाणा के एकमात्र ऐसे व्यक्ति कौन हैं जो तीन राज्यों में मंत्री रह चुके हैं?",
+                options: [
+                    "Tayyab Husain / तैय्यब हुसैन",
+                    "Chaudhary Devi Lal / चौधरी देवीलाल",
+                    "Bansi Lal / बंसी लाल",
+                    "Bhajan Lal / भजन लाल"
+                ],
+                correct: 0,
+                hint: "He belongs to Nuh district.",
+                expEn: "Tayyab Husain from Nuh is the unique personality who served as a minister in three states.",
+                expHi: "नूंह के तैय्यब हुसैन हरियाणा के एकमात्र व्यक्ति हैं जो तीन राज्यों में मंत्री रह चुके हैं।"
+            },
+            {
+                tag: "Music Gharana / संगीत घराना",
+                en: "Who was the founder of the Mewat Gharana in the 19th century?",
+                hi: "19वीं शताब्दी में 'मेवात घराना' का संस्थापक किसे माना जाता है?",
+                options: [
+                    "Ggge Nazir Khan & Wahid Khan / ग्ग्गे नजीर खान व वाहिद खान",
+                    "Bade Fateh Ali Khan / बड़े फतेह अली खान",
+                    "Alladiya Khan / अल्लादिया खान",
+                    "Tanras Khan / तनरस खान"
+                ],
+                correct: 0,
+                hint: "Ggge Nazir Khan served in the court of Maharaja Jaswant Singh of Jodhpur.",
+                expEn: "The founders of the Mewat Gharana in the 19th century were Ggge Nazir Khan and Wahid Khan.",
+                expHi: "मेवात घराने के संस्थापक 19वीं शताब्दी में ग्ग्गे नजीर खान और वाहिद खान थे।"
+            },
+            {
+                tag: "Demographics / जनसांख्यिकी",
+                en: "Which district in Haryana has the lowest Sikh population percentage (0.05%)?",
+                hi: "हरियाणा में सिखों की न्यूनतम जनसंख्या प्रतिशतता (0.05%) वाला जिला कौन सा है?",
+                options: [
+                    "Mahendragarh / महेंद्रगढ़",
+                    "Nuh / नूंह",
+                    "Palwal / पलवल",
+                    "Rewari / रेवाड़ी"
+                ],
+                correct: 1,
+                hint: "It is the same district known for the highest rabbit population.",
+                expEn: "Nuh district has the lowest Sikh population proportion at 0.05%.",
+                expHi: "नूंह जिला सिखों की न्यूनतम जनसंख्या (0.05%) वाला जिला है।"
+            },
+            {
+                tag: "Culture / संस्कृति",
+                en: "Which religious/philosophical sect is most popular in the Nuh/Mewat region of Haryana?",
+                hi: "हरियाणा के नूंह/मेवात क्षेत्र में कौन सा पंथ सर्वाधिक लोकप्रिय है?",
+                options: [
+                    "Charandasi Panth / चरणदासी पंथ",
+                    "Kabirpanthi / कबीरपंथी",
+                    "Arya Samaj / आर्य समाज",
+                    "Radha Soami / राधा स्वामी"
+                ],
+                correct: 0,
+                hint: "Named after Saint Charan Das.",
+                expEn: "The Charandasi Panth is highly popular in the Nuh/Mewat region.",
+                expHi: "नूंह/मेवात क्षेत्र में चरणदासी पंथ राज्य में सर्वाधिक लोकप्रिय है।"
+            },
+            {
+                tag: "Statues & Landmarks / प्रतिमाएं",
+                en: "Where has the tallest statue of Chaudhary Devi Lal (42 feet high) in Haryana been installed?",
+                hi: "हरियाणा में चौधरी देवीलाल की सबसे ऊँची प्रतिमा (42 फीट) कहाँ स्थापित की गई है?",
+                options: [
+                    "Tepla, Ambala / तेपला, अंबाला",
+                    "Hilalpur Village, Nuh / हिलालपुर गाँव, नूंह",
+                    "Meham, Rohtak / महम, रोहतक",
+                    "Uchana, Jind / उचाना, जींद"
+                ],
+                correct: 1,
+                hint: "It is located in Nuh district at a height of 42 feet.",
+                expEn: "The tallest statue of Chaudhary Devi Lal (42 feet) is installed at Hilalpur village in Nuh.",
+                expHi: "चौधरी देवीलाल की राज्य में सबसे ऊँची प्रतिमा हिलालपुर गाँव, नूंह (42 फीट) में स्थापित की गई है।"
+            },
+            {
+                tag: "Personalities / व्यक्तित्व",
+                en: "Cricketer Shahbaz Ahmad, who plays in the IPL and domestic cricket, hails from which district?",
+                hi: "क्रिकेटर शाहबाज अहमद का संबंध हरियाणा के किस जिले से है?",
+                options: [
+                    "Gurugram / गुरुग्राम",
+                    "Nuh / नूंह",
+                    "Faridabad / फरीदाबाद",
+                    "Jhajjar / झज्जर"
+                ],
+                correct: 1,
+                hint: "It is the Mewat district.",
+                expEn: "Cricketer Shahbaz Ahmad belongs to Nuh district.",
+                expHi: "क्रिकेटर शाहबाज अहमद का सम्बन्ध नूंह जिले से है।"
+            },
+            {
+                tag: "Industrial/Modern Projects / आधुनिक परियोजनाएं",
+                en: "Where is Haryana's first Vehicle Scrapping Facility Center established?",
+                hi: "हरियाणा का प्रथम व्हीकल 'स्क्रैपिंग फैसिलिटी सेंटर' कहाँ स्थापित किया गया है?",
+                options: [
+                    "Manesar, Gurugram / मानेसर, गुरुग्राम",
+                    "Fatehpur Village, Nuh / फतेहपुर गाँव, नूंह",
+                    "Sohna, Gurugram / सोहना, गुरुग्राम",
+                    "Bhiwadi, Nuh border / भिवाड़ी"
+                ],
+                correct: 1,
+                hint: "It's located in Fatehpur village of Nuh district.",
+                expEn: "Haryana's first vehicle scrapping facility center is set up in Fatehpur village, Nuh.",
+                expHi: "राज्य का प्रथम व्हीकल 'स्क्रैपिंग फैसिलिटी सेंटर' फतेहपुर गाँव, नूंह में स्थापित किया गया है।"
+            },
+            {
+                tag: "Sanitation / स्वच्छता",
+                en: "Under the Swachh Bharat Mission, which district constructed the highest number of domestic toilets?",
+                hi: "स्वच्छ भारत मिशन के तहत किस जिले में सर्वाधिक घरेलू शौचालयों का निर्माण किया गया है?",
+                options: [
+                    "Yamunanagar / यमुनानगर",
+                    "Nuh / नूंह",
+                    "Fatehabad / फतेहाबाद",
+                    "Jind / जींद"
+                ],
+                correct: 1,
+                hint: "It is Nuh district.",
+                expEn: "Nuh district achieved the highest domestic toilet construction under the Swachh Bharat Mission.",
+                expHi: "स्वच्छ भारत मिशन के तहत सर्वाधिक घरेलू शौचालयों का निर्माण नूंह में किया गया है।"
+            },
+            {
+                tag: "History / इतिहास",
+                en: "Mughal Emperor Aurangzeb granted Ghasera village (Gandhi Gram) to whom as a reward?",
+                hi: "मुगल सम्राट औरंगजेब ने नूंह के घासेड़ा ग्राम (गांधी ग्राम) को किसे इनाम स्वरूप प्रदान किया था?",
+                options: [
+                    "Hathi Singh Badgujjar / हाथी सिंह बड़गुज्जर",
+                    "Rao Tula Ram / राव तुलाराम",
+                    "Hasan Khan Mewati / हसन खान मेवाती",
+                    "Nahar Singh / नाहर सिंह"
+                ],
+                correct: 0,
+                hint: "His last name is Badgujjar.",
+                expEn: "Ghasera village was given as a reward by Emperor Aurangzeb to Hathi Singh Badgujjar.",
+                expHi: "घासेड़ा गाँव को मुगल सम्राट औरंगजेब ने हाथी सिंह बड़गुज्जर को इनाम स्वरूप दिया था।"
+            },
+            {
+                tag: "Medical Colleges / चिकित्सा महाविद्यालय",
+                en: "Shaheed Hasan Khan Mewati Government Medical College is located at which place?",
+                hi: "शहीद हसन खान मेवाती राजकीय चिकित्सा महाविद्यालय कहाँ स्थित है?",
+                options: [
+                    "Nalhar, Nuh / नलहर, नूंह",
+                    "Tauru / तावड़ू",
+                    "Sohna / सोहना",
+                    "Pataudi / पटौदी"
+                ],
+                correct: 0,
+                hint: "It is located in Nalhar.",
+                expEn: "The medical college is situated at Nalhar in Nuh district.",
+                expHi: "शहीद हसन खान मेवाती राजकीय चिकित्सा महाविद्यालय नलहर, नूंह में स्थित है।"
+            },
+            {
+                tag: "Museums / संग्रहालय",
+                en: "Where is the Heritage Transport Museum located in Haryana?",
+                hi: "विरासत परिवहन संग्रहालय (Heritage Transport Museum) हरियाणा में कहाँ स्थित है?",
+                options: [
+                    "Tauru, Nuh / तावड़ू, नूंह",
+                    "Gurugram city / गुरुग्राम शहर",
+                    "Faridabad / फरीदाबाद",
+                    "Rewari / रेवाड़ी"
+                ],
+                correct: 0,
+                hint: "It is located in Tauru within Nuh district.",
+                expEn: "The Heritage Transport Museum is situated in Tauru, Nuh.",
+                expHi: "विरासत परिवहन संग्रहालय तावड़ू, नूंह में स्थित है।"
+            },
+            {
+                tag: "Temples / मंदिर",
+                en: "The ancient Nalheshwar Temple dating back to the Mahabharata era is located in which district?",
+                hi: "महाभारत के समय का प्रसिद्ध नल्हेश्वर मंदिर राज्य के किस जिले में स्थित है?",
+                options: [
+                    "Kurukshetra / कुरुक्षेत्र",
+                    "Nuh / नूंह",
+                    "Karnal / करनाल",
+                    "Yamunanagar / यमुनानगर"
+                ],
+                correct: 1,
+                hint: "It shares its name with Nalhar.",
+                expEn: "The Mahabharata-era Nalheshwar Temple is situated in Nuh district.",
+                expHi: "महाभारत के समय का प्रसिद्ध नल्हेश्वर मंदिर नूंह जिले में स्थित है।"
+            },
+            {
+                tag: "Archaeology / पुरातत्व",
+                en: "Where is the archaeological site 'Masonry Tank' located in Haryana?",
+                hi: "पुरातात्विक स्थल 'मैसनरी टैंक' (Masonry Tank) राज्य में कहां स्थित है?",
+                options: [
+                    "Rakhiigarhi / राखीगढ़ी",
+                    "Nuh / नूंह",
+                    "Mitathal / मिताथल",
+                    "Kunal / कुणाल"
+                ],
+                correct: 1,
+                hint: "It is located in Nuh.",
+                expEn: "The archaeological masonry tank site is located in Nuh.",
+                expHi: "पुरातात्विक स्थल मैसनरी टैंक नूंह में स्थित है।"
+            },
+            {
+                tag: "Gurugram Admin / गुरुग्राम प्रशासन",
+                en: "When was Gurugram district officially formed (inception date)?",
+                hi: "गुरुग्राम जिले का गठन कब हुआ था?",
+                options: [
+                    "1 November 1966",
+                    "15 August 1972",
+                    "1 November 1989",
+                    "15 August 1995"
+                ],
+                correct: 0,
+                hint: "It was formed on the same day Haryana was created.",
+                expEn: "Gurugram was formed on November 1, 1966.",
+                expHi: "गुरुग्राम का गठन 1 नवंबर 1966 को हुआ था।"
+            },
+            {
+                tag: "Demographics / जनसांख्यिकी",
+                en: "According to 2011 Census data, what is the sex ratio (linganupat) of Gurugram district, making it the lowest in the state?",
+                hi: "2011 की जनगणना के अनुसार गुरुग्राम जिले का लिंगानुपात कितना है, जो राज्य में सबसे कम है?",
+                options: [
+                    "854",
+                    "871",
+                    "879",
+                    "890"
+                ],
+                correct: 0,
+                hint: "The value is 854.",
+                expEn: "Gurugram recorded a sex ratio of 854 females per 1000 males, the lowest in Haryana.",
+                expHi: "गुरुग्राम का लिंगानुपात 854 है, जो राज्य में सबसे कम है।"
+            },
+            {
+                tag: "Literacy / साक्षरता",
+                en: "What is the literacy rate of Gurugram district, which ranks highest in the state?",
+                hi: "गुरुग्राम जिले की साक्षरता दर कितनी है, जो राज्य में सर्वाधिक है?",
+                options: [
+                    "81.20%",
+                    "84.70%",
+                    "87.50%",
+                    "90.10%"
+                ],
+                correct: 1,
+                hint: "It is 84.70%.",
+                expEn: "Gurugram has a literacy rate of 84.70%, ranking highest in Haryana.",
+                expHi: "गुरुग्राम की साक्षरता दर 84.70% है, जो राज्य में सर्वाधिक है।"
+            },
+            {
+                tag: "Nicknames / उपनाम",
+                en: "Which of the following is NOT an official or popular nickname/title of Gurugram?",
+                hi: "इनमें से कौन सा उपनाम गुरुग्राम का नहीं है?",
+                options: [
+                    "Cyber City / साइबर सिटी",
+                    "Millennium City / मिलेनियम सिटी",
+                    "Dhanbad of Haryana / हरियाणा का धनबाद",
+                    "Call Center of Haryana / कॉल सैंटर ऑफ हरियाणा"
+                ],
+                correct: 2,
+                hint: "Dhanbad of Haryana is associated with coal/industrial mining hubs like Jinda/Hisar contexts, whereas Gurugram is Cyber City, Medicity, etc.",
+                expEn: "Dhanbad of Haryana is not a nickname for Gurugram. Gurugram is known as Cyber City, Medicity, Millennium City, and Call Center of Haryana.",
+                expHi: "हरियाणा का धनबाद गुरुग्राम का उपनाम नहीं है।"
+            },
+            {
+                tag: "Geography / भूगोल",
+                en: "What is the geographical feature known as the 'Gateway of Aravalli Hills' in Haryana?",
+                hi: "हरियाणा में 'अरावली पहाड़ियों का प्रवेश द्वार' किसे कहा जाता है?",
+                options: [
+                    "Faridabad / फरीदाबाद",
+                    "Gurugram / गुरुग्राम",
+                    "Narnaul / नारनौल",
+                    "Sohna / सोहना"
+                ],
+                correct: 1,
+                hint: "It's Gurugram.",
+                expEn: "Gurugram is referred to as the gateway to the Aravalli hills.",
+                expHi: "अरावली पहाड़ियों का प्रवेश द्वार गुरुग्राम को कहा जाता है।"
+            },
+            {
+                tag: "Mythology / पौराणिक तथ्य",
+                en: "According to tradition, which village was established by Guru Dronacharya where he imparted spiritual education to Kauravas and Pandavas?",
+                hi: "गुरु द्रोणाचार्य द्वारा बसाए गए किस गाँव में उन्होंने कौरवों व पाण्डवों को आध्यात्मिक शिक्षा प्रदान की थी?",
+                options: [
+                    "Gurugram / गुरुग्राम",
+                    "Panipat / पानीपत",
+                    "Kurukshetra / कुरुक्षेत्र",
+                    "Pinjore / पिंजौर"
+                ],
+                correct: 0,
+                hint: "The district is named after Dronacharya.",
+                expEn: "Gurugram village was founded by Guru Dronacharya, who educated the Kauravas and Pandavas there.",
+                expHi: "गुरु द्रोणाचार्य द्वारा बसाए गए गुरुग्राम गाँव में कौरवों व पाण्डवों को आध्यात्मिक शिक्षा दी गई थी।"
+            },
+            {
+                tag: "Geography / भूगोल",
+                en: "Where are the Raisina Hills (famous for Rashtrapati Bhavan in Delhi) located within Haryana?",
+                hi: "हरियाणा में 'रायसीना की पहाड़ियाँ' कहाँ स्थित हैं?",
+                options: [
+                    "Morni, Panchkula / मोरनी, पंचकूला",
+                    "Sohna, Gurugram / सोहना, गुरुग्राम",
+                    "Tauru, Nuh / तावड़ू, नूंह",
+                    "Badkhal, Faridabad / बड़खल, फरीदाबाद"
+                ],
+                correct: 1,
+                hint: "They are located in Sohna, Gurugram.",
+                expEn: "Raisina Hills extend into Sohna in Gurugram district.",
+                expHi: "रायसीना की पहाड़ियाँ सोहना (गुरुग्राम) में स्थित हैं।"
+            },
+            {
+                tag: "Journalism History / पत्रकारिता इतिहास",
+                en: "Who was the author/editor who published the 'Jat Samachar' newspaper from Gurugram in 1889?",
+                hi: "1889 में गुरुग्राम से प्रकाशित 'जाट समाचार' पत्र के लेखक / संपादक कौन थे?",
+                options: [
+                    "Babu Kanhaiya Lal Singh / बाबू कन्हैया लाल सिंह",
+                    "Devi Sahai / देवी सहाय",
+                    "Shadi Lal / शादी लाल",
+                    "Neki Ram Sharma / नेकी राम शर्मा"
+                ],
+                correct: 0,
+                hint: "His name is Babu Kanhaiya Lal Singh.",
+                expEn: "Jat Samachar was published in 1889 from Gurugram by Babu Kanhaiya Lal Singh.",
+                expHi: "जाट समाचार पत्र का प्रकाशन 1889 में गुरुग्राम से बाबू कन्हैया लाल सिंह द्वारा किया गया था।"
+            },
+            {
+                tag: "Journalism History / पत्रकारिता इतिहास",
+                en: "In which year was the 'Jyotish Martand' newspaper published from Gurugram?",
+                hi: "'ज्योतिष मार्तण्ड' समाचार पत्र का प्रकाशन गुरुग्राम से किस वर्ष किया गया था?",
+                options: [
+                    "1905",
+                    "1915",
+                    "1925",
+                    "1935"
+                ],
+                correct: 2,
+                hint: "The year is 1925.",
+                expEn: "Jyotish Martand newspaper was published from Gurugram in 1925.",
+                expHi: "ज्योतिष मार्तण्ड समाचार पत्र का प्रकाशन 1925 में गुरुग्राम से हुआ था।"
+            },
+            {
+                tag: "Archaeology / पुरातत्व",
+                en: "Sultanpur, Mukola, Gokalpur, Mundehra, and Papra are archaeological sites related to which ancient culture in Gurugram?",
+                hi: "सुल्तानपुर, मुकोला, गोकलपुर, मुंडेहरा, पापड़ा आदि स्थल गुरुग्राम में किस संस्कृति से संबंधित हैं?",
+                options: [
+                    "Siswal Culture / सीसवाल संस्कृति",
+                    "Indus Valley / सिंधु घाटी सभ्यता",
+                    "Painted Grey Ware / चित्रित धूसर मृद्भांड संस्कृति",
+                    "Vedic Culture / वैदिक संस्कृति"
+                ],
+                correct: 0,
+                hint: "It is the Siswal culture.",
+                expEn: "These sites in Gurugram belong to the Siswal culture.",
+                expHi: "यह सभी स्थल गुरुग्राम में सीसवाल संस्कृति से सम्बन्धित हैं।"
+            },
+            {
+                tag: "Renewable Energy / नवीकरणीय ऊर्जा",
+                en: "Where has a monitoring station (wind energy measuring instrument) been established in Haryana?",
+                hi: "हरियाणा में पवन ऊर्जा मापने का यंत्र (मॉनिटरिंग स्टेशन) कहाँ स्थापित किया गया है?",
+                options: [
+                    "Hisar / हिसार",
+                    "Gurugram / गुरुग्राम",
+                    "Karnal / करनाल",
+                    "Rohtak / रोहतक"
+                ],
+                correct: 1,
+                hint: "It is established in Gurugram.",
+                expEn: "A wind energy measurement monitoring station has been established in Gurugram.",
+                expHi: "पवन ऊर्जा मापने के यंत्र (मॉनिटरिंग स्टेशन) की स्थापना गुरुग्राम में की गई है।"
+            },
+            {
+                tag: "International Institutions / अंतर्राष्ट्रीय संस्थान",
+                en: "When was the International Solar Alliance / Solar Energy Institute established in Gurugram?",
+                hi: "गुरुग्राम में अंतर्राष्ट्रीय सौर ऊर्जा संस्थान की स्थापना कब की गई थी?",
+                options: [
+                    "14 May 2015",
+                    "25 October 2016",
+                    "10 January 2018",
+                    "5 June 2019"
+                ],
+                correct: 0,
+                hint: "The date is 14.05.2015.",
+                expEn: "The International Solar Energy Institute was established in Gurugram on May 14, 2015.",
+                expHi: "गुरुग्राम में अंतर्राष्ट्रीय सौर ऊर्जा संस्थान की स्थापना 14.05.2015 को की गई थी।"
+            },
+            {
+                tag: "Minerals / खनिज",
+                en: "Which area in Gurugram is famous for finding the highest deposits of China clay (चीनी मिट्टी)?",
+                hi: "गुरुग्राम में चीनी मिट्टी सर्वाधिक कहाँ पाई जाती है?",
+                options: [
+                    "Sikandarpur / सिकंदरपुर",
+                    "Badshahpur / बादशहपुर",
+                    "Farrukhnagar / फर्रुखनगर",
+                    "Manesar / मानेसर"
+                ],
+                correct: 0,
+                hint: "It is Sikandarpur in Gurugram.",
+                expEn: "China clay is found in maximum quantities at Sikandarpur, Gurugram.",
+                expHi: "चीनी मिट्टी सर्वाधिक सिकंदरपुर (गुरुग्राम) में पाई जाती है।"
+            },
+            {
+                tag: "Minerals / खनिज",
+                en: "Which mineral is found in maximum quantity across Gurugram district according to regional mineral reports?",
+                hi: "गुरुग्राम जिले में कौन सा खनिज सर्वाधिक पाया जाता है?",
+                options: [
+                    "Glass Sand (कांच बालू) / कांच बालू",
+                    "Slate Stone / स्लेट पत्थर",
+                    "Marble / संगमरमर",
+                    "Limestone / चूना पत्थर"
+                ],
+                correct: 0,
+                hint: "It is glass sand.",
+                expEn: "Glass sand (कांच बालू) is found in maximum quantities in Gurugram.",
+                expHi: "गुरुग्राम में कांच बालू सर्वाधिक पाई जाती है।"
+            },
+            {
+                tag: "Sculptures & Temples / मूर्तियां एवं मंदिर",
+                en: "Where is the famous Lord Shiva statue made of red stone located in Gurugram district?",
+                hi: "गुरुग्राम जिले के किस स्थान पर लाल पत्थर से निर्मित भगवान शिव की प्रतिमा स्थित है?",
+                options: [
+                    "Harnauli / हरनौली",
+                    "Sohna / सोहना",
+                    "Kadipur / कादीपुर",
+                    "Wazirabad / वजीराबाद"
+                ],
+                correct: 0,
+                hint: "The village name is Harnauli.",
+                expEn: "The red stone Shiva statue is located at Harnauli in Gurugram.",
+                expHi: "लाल पत्थर से निर्मित शिव भगवान की प्रतिमा हरनौली, गुरुग्राम में स्थित है।"
+            },
+            {
+                tag: "Tourism & Academies / पर्यटन एवं अकादमियां",
+                en: "Where is the famous tourist complex named 'Shama' located?",
+                hi: "प्रसिद्ध पर्यटक स्थल 'शमा' (Shama) कहाँ स्थित है?",
+                options: [
+                    "Gurugram / गुरुग्राम",
+                    "Faridabad / फरीदाबाद",
+                    "Pinjore / पिंजौर",
+                    "Surajkund / सूरजकुंड"
+                ],
+                correct: 0,
+                hint: "It is a well-known tourist spot in Gurugram.",
+                expEn: "The tourist complex 'Shama' is situated in Gurugram.",
+                expHi: "प्रसिद्ध पर्यटक स्थल 'शमा' गुरुग्राम में स्थित है।"
+            },
+            {
+                tag: "Institutions / संस्थान",
+                en: "Where is the Haryana Institute of Public Administration (HIPA) located?",
+                hi: "हरियाणा लोक प्रशासन संस्थान (HIPA) कहाँ स्थित है?",
+                options: [
+                    "Chandigarh / चंडीगढ़",
+                    "Gurugram / गुरुग्राम",
+                    "Panchkula / पंचकूला",
+                    "Rohtak / रोहतक"
+                ],
+                correct: 1,
+                hint: "It is situated in Gurugram.",
+                expEn: "The Haryana Institute of Public Administration is located in Gurugram.",
+                expHi: "हरियाणा लोक प्रशासन संस्थान गुरुग्राम में स्थित है।"
+            },
+            {
+                tag: "Administrative Structure / प्रशासनिक संरचना",
+                en: "How many assembly constituencies (विधानसभा क्षेत्र) are there in Gurugram district?",
+                hi: "गुरुग्राम जिले में कुल कितने विधानसभा क्षेत्र हैं?",
+                options: [
+                    "2",
+                    "3",
+                    "4",
+                    "5"
+                ],
+                correct: 2,
+                hint: "They are Gurugram, Sohna, Pataudi, and Badshahpur (total 4).",
+                expEn: "Gurugram district has 4 assembly constituencies: Gurugram, Sohna, Pataudi, and Badshahpur.",
+                expHi: "गुरुग्राम जिले में 4 विधानसभा क्षेत्र (गुरुग्राम, सोहना, पटौदी, बादशहपुर) हैं।"
+            },
+            {
+                tag: "Sports Academies / खेल अकादमियां",
+                en: "Both Football and Tennis academies of prominent standing have been established in which district?",
+                hi: "फुटबाल अकादमी और टेनिस अकादमी की स्थापना मुख्य रूप से किस जिले में की गई है?",
+                options: [
+                    "Gurugram / गुरुग्राम",
+                    "Hisar / हिसार",
+                    "Rohtak / रोहतक",
+                    "Kurukshetra / कुरुक्षेत्र"
+                ],
+                correct: 0,
+                hint: "It is Gurugram.",
+                expEn: "Football and Tennis academies are established in Gurugram.",
+                expHi: "फुटबाल अकादमी और टेनिस अकादमी गुरुग्राम में स्थापित की गई हैं।"
+            },
+            {
+                tag: "General Facts / सामान्य तथ्य",
+                en: "Gurugram is widely recognized as a tourist destination known primarily as what kind of district?",
+                hi: "गुरुग्राम को किस रूप में एक प्रसिद्ध जिला माना जाता है?",
+                options: [
+                    "Natural Tourist District / प्राकृतिक पर्यटक के रूप में प्रसिद्ध जिला",
+                    "Religious Pilgrimage Hub / धार्मिक तीर्थ केंद्र",
+                    "Agricultural Heartland / कृषि प्रधान क्षेत्र",
+                    "Mining Zone / खनन क्षेत्र"
+                ],
+                correct: 0,
+                hint: "It is known as a district famous as a natural tourist destination (प्राकृतिक पर्यटक के रूप में प्रसिद्ध जिला).",
+                expEn: "Gurugram is renowned as a district famous for natural tourism.",
+                expHi: "गुरुग्राम प्राकृतिक पर्यटक के रूप में प्रसिद्ध जिला है।"
+            },
+            {
+                tag: "Administrative Division / प्रशासनिक मंडल",
+                en: "Gurugram itself serves as the headquarters for which administrative division (मंडल)?",
+                hi: "गुरुग्राम स्वयं किस प्रशासनिक मंडल (Division) का मुख्यालय है?",
+                options: [
+                    "Gurugram Division / गुरुग्राम मंडल",
+                    "Rohtak Division / रोहतक मंडल",
+                    "Faridabad Division / फरीदाबाद मंडल",
+                    "Hisar Division / हिसार मंडल"
+                ],
+                correct: 0,
+                hint: "It is the Gurugram division.",
+                expEn: "Gurugram is the headquarters of the Gurugram administrative division.",
+                expHi: "गुरुग्राम स्वयं गुरुग्राम मंडल का मुख्यालय है।"
+            },
+            {
+                tag: "Tehsils / तहसील",
+                en: "Which of the following is listed as a sub-tehsil (उप-तहसील) under Gurugram district administration?",
+                hi: "इनमें से कौन सी उप-तहसील गुरुग्राम जिले के अंतर्गत आती है?",
+                options: [
+                    "Harsaru / हरसरू",
+                    "Kosli / कोसली",
+                    "Bawal / बावल",
+                    "Nagina / नगीना"
+                ],
+                correct: 0,
+                hint: "Harsaru is listed as a sub-tehsil in Gurugram.",
+                expEn: "Harsaru is a sub-tehsil of Gurugram district.",
+                expHi: "हरसरू गुरुग्राम जिले के अंतर्गत एक उप-तहसील है।"
+            }
+        ];
+
+        // Ensure we have 45+ questions or pad / expand dynamically if needed to match requested scale, or use the robust set of 45 items above. Let's check length: currently 45 items! Perfect.
+
+        let currentIndex = 0;
+        let score = 0;
+        let userAnswers = new Array(quizData.length).fill(null);
+
+        // DOM Elements
+        const scoreDisplay = document.getElementById('score-display');
+        const totalDisplay = document.getElementById('total-display');
+        const currentQNum = document.getElementById('current-q-num');
+        const totalQNum = document.getElementById('total-q-num');
+        const progressBar = document.getElementById('progress-bar');
+        const questionTag = document.getElementById('question-tag');
+        const qTextEn = document.getElementById('q-text-en');
+        const qTextHi = document.getElementById('q-text-hi');
+        const optionsContainer = document.getElementById('options-container');
+        const hintToggleBtn = document.getElementById('hint-toggle-btn');
+        const hintBox = document.getElementById('hint-box');
+        const hintText = document.getElementById('hint-text');
+        const explanationBox = document.getElementById('explanation-box');
+        const explanationTextEn = document.getElementById('explanation-text-en');
+        const explanationTextHi = document.getElementById('explanation-text-hi');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const quizCard = document.getElementById('quiz-card');
+        const resultScreen = document.getElementById('result-screen');
+        const finalScore = document.getElementById('final-score');
+        const finalTotal = document.getElementById('final-total');
+        const restartBtn = document.getElementById('restart-btn');
+        const jumpInput = document.getElementById('jump-input');
+        const jumpBtn = document.getElementById('jump-btn');
+
+        totalDisplay.textContent = quizData.length;
+        totalQNum.textContent = quizData.length;
+
+        function loadQuestion(index) {
+            const q = quizData[index];
+            currentQNum.textContent = index + 1;
+            progressBar.style.width = `${((index + 1) / quizData.length) * 100}%`;
+            
+            questionTag.textContent = q.tag;
+            qTextEn.textContent = `${index + 1}. ${q.en}`;
+            qTextHi.textContent = q.hi;
+
+            hintText.textContent = q.hint;
+            hintBox.classList.add('hidden');
+            hintToggleBtn.textContent = "💡 Show Hint / संकेत देखें";
+
+            explanationTextEn.textContent = q.expEn;
+            explanationTextHi.textContent = q.expHi;
+
+            if (userAnswers[index] !== null) {
+                explanationBox.classList.remove('hidden');
+            } else {
+                explanationBox.classList.add('hidden');
+            }
+
+            optionsContainer.innerHTML = '';
+            q.options.forEach((opt, i) => {
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left p-3.5 rounded-xl border transition flex items-center justify-between text-sm font-medium ${
+                    userAnswers[index] === null 
+                        ? 'bg-slate-900/50 border-slate-700 hover:bg-slate-700/60 text-slate-200' 
+                        : i === q.correct 
+                            ? 'bg-emerald-950/60 border-emerald-600 text-emerald-200 shadow-md shadow-emerald-950' 
+                            : userAnswers[index] === i 
+                                ? 'bg-rose-950/60 border-rose-600 text-rose-200' 
+                                : 'bg-slate-900/50 border-slate-700 text-slate-400 opacity-60'
+                }`;
+                
+                btn.innerHTML = `<span>${opt}</span>`;
+                
+                if (userAnswers[index] === null) {
+                    btn.addEventListener('click', () => selectOption(i));
+                } else {
+                    btn.disabled = true;
+                }
+                optionsContainer.appendChild(btn);
+            });
+
+            prevBtn.disabled = index === 0;
+            nextBtn.textContent = index === quizData.length - 1 ? "Finish Quiz / समाप्त करें" : "Next →";
+        }
+
+        function selectOption(selectedIndex) {
+            if (userAnswers[currentIndex] !== null) return;
+
+            userAnswers[currentIndex] = selectedIndex;
+            const q = quizData[currentIndex];
+
+            if (selectedIndex === q.correct) {
+                score++;
+                scoreDisplay.textContent = score;
+            }
+
+            explanationBox.classList.remove('hidden');
+            loadQuestion(currentIndex);
+        }
+
+        hintToggleBtn.addEventListener('click', () => {
+            hintBox.classList.toggle('hidden');
+            hintToggleBtn.textContent = hintBox.classList.contains('hidden') ? "💡 Show Hint / संकेत देखें" : "💡 Hide Hint / संकेत छुपाएं";
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentIndex > 0) {
+                currentIndex--;
+                loadQuestion(currentIndex);
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            if (currentIndex < quizData.length - 1) {
+                currentIndex++;
+                loadQuestion(currentIndex);
+            } else {
+                showResults();
+            }
+        });
+
+        jumpBtn.addEventListener('click', () => {
+            const target = parseInt(jumpInput.value) - 1;
+            if (target >= 0 && target < quizData.length) {
+                currentIndex = target;
+                loadQuestion(currentIndex);
+                jumpInput.value = '';
+            } else {
+                alert(`Please enter a valid question number between 1 and ${quizData.length}`);
+            }
+        });
+
+        function showResults() {
+            quizCard.classList.add('hidden');
+            resultScreen.classList.remove('hidden');
+            finalScore.textContent = score;
+            finalTotal.textContent = quizData.length;
+        }
+
+        restartBtn.addEventListener('click', () => {
+            currentIndex = 0;
+            score = 0;
+            userAnswers = new Array(quizData.length).fill(null);
+            scoreDisplay.textContent = score;
+            resultScreen.classList.add('hidden');
+            quizCard.classList.remove('hidden');
+            loadQuestion(currentIndex);
+        });
+
+        // Initial Load
+        loadQuestion(currentIndex);
+    </script>
+<script src="../../quiz-question-controls.js"></script>
+<script src="../../quiz-app-ui-v2.js"></script></body>
+</html>

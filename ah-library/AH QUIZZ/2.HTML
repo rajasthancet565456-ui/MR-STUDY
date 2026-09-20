@@ -1,0 +1,1550 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animal Husbandry Interactive Quiz - पशुपालन क्विज़</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .option-btn {
+            transition: all 0.2s ease-in-out;
+        }
+        .option-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+        }
+    </style>
+<style id="cosmic-readable-quiz-theme">
+:root{--space:#e8dcff;--panel:#f3eaff;--panel2:#dcc6ff;--edge:#6a45bf;--glow:#d28b28;--accent:#d15f9f;--ink:#2c1b4d;--muted:#66547c;--mist:rgba(106,69,191,.2)}html{background:var(--space)}body{background:radial-gradient(ellipse 62% 45% at 90% -5%,rgba(209,95,159,.28),transparent 62%),radial-gradient(ellipse 55% 40% at 8% 100%,rgba(65,164,207,.26),transparent 64%),var(--space)!important;color:var(--ink)!important;min-height:100vh}body:before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.78;background-image:radial-gradient(circle at 9% 18%,var(--glow) 0 1px,transparent 1.7px),radial-gradient(circle at 26% 69%,var(--edge) 0 .8px,transparent 1.5px),radial-gradient(circle at 68% 24%,var(--accent) 0 1px,transparent 1.8px),radial-gradient(circle at 88% 73%,#47a8d3 0 .8px,transparent 1.5px);background-size:220px 190px,300px 270px,260px 230px,340px 310px;z-index:-1}header{background:linear-gradient(105deg,var(--panel),var(--panel2))!important;border-color:rgba(106,69,191,.25)!important;box-shadow:0 7px 24px rgba(84,48,142,.14)!important}header h1{color:var(--edge)!important;text-shadow:none!important}header p,header .text-slate-400,header .text-indigo-200,header .text-indigo-300{color:var(--muted)!important}main>div,#quiz-card,.bg-slate-800,.bg-slate-900,.bg-indigo-900,.bg-indigo-950{background:linear-gradient(145deg,#f8f0ff,var(--panel))!important;border-color:rgba(106,69,191,.22)!important;color:var(--ink)!important;box-shadow:0 14px 35px rgba(84,48,142,.12)!important}.bg-slate-700,.bg-slate-100,.bg-slate-50{background:#eadffd!important;color:var(--ink)!important}.text-slate-100,.text-slate-200,.text-slate-300,.text-slate-400,.text-white,.text-slate-800,.text-slate-700,.text-slate-600{color:var(--ink)!important}.text-indigo-400,.text-indigo-300,.text-emerald-400,.text-yellow-300{color:var(--edge)!important}.border-slate-700,.border-slate-700\/60,.border-indigo-700,.border-slate-200{border-color:rgba(106,69,191,.25)!important}button:not(.bg-green-600):not(.bg-red-600){background:#f9f2ff!important;color:var(--ink)!important;border:1px solid rgba(106,69,191,.25)!important;box-shadow:0 3px 10px rgba(84,48,142,.09)!important}button.bg-indigo-600,button.bg-slate-800,button.bg-slate-900,button.bg-indigo-900{background:linear-gradient(120deg,var(--edge),var(--accent))!important;color:#fff!important;border:0!important}button.bg-indigo-600 *,button.bg-slate-800 *,button.bg-slate-900 *,button.bg-indigo-900 *{color:#fff!important}button:hover{filter:brightness(1.04);transform:translateY(-1px)}input,select,textarea{background:#f9f2ff!important;border-color:rgba(106,69,191,.35)!important;color:var(--ink)!important}input:focus,select:focus,textarea:focus{outline:none!important;border-color:var(--edge)!important;box-shadow:0 0 0 3px var(--mist)!important}.bg-indigo-500,#progress-bar{background:linear-gradient(90deg,var(--edge),var(--accent),var(--glow))!important}.rounded-2xl{border-radius:1.25rem!important}
+</style></head>
+<body class="bg-slate-100 min-h-screen text-slate-800 font-sans pb-12">
+
+    <!-- Header -->
+    <header class="bg-indigo-700 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto px-4 py-4 flex flex-wrap justify-between items-center gap-2">
+            <div>
+                <h1 class="text-xl md:text-2xl font-bold">पशुपालन क्विज़ / Animal Husbandry Quiz</h1>
+                <p class="text-xs md:text-sm text-indigo-200">SSC, RRB, HSSC & State Exams Preparation</p>
+            </div>
+            <div class="flex items-center gap-3">
+                <div class="bg-indigo-800 px-3 py-1.5 rounded-lg border border-indigo-500 text-center">
+                    <span class="block text-xs text-indigo-300">Score / अंक</span>
+                    <span id="score-display" class="font-bold text-lg text-emerald-400">0 / 145</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 mt-6">
+        <!-- Progress Bar & Controls -->
+        <div class="bg-white p-4 rounded-xl shadow-md mb-6">
+            <div class="flex flex-wrap justify-between items-center mb-2 gap-2 text-sm font-semibold text-slate-600">
+                <span id="question-tracker">Question 1 of 145</span>
+                <span id="page-source-tag" class="bg-indigo-100 text-indigo-800 text-xs px-2.5 py-1 rounded-full font-bold">Source: Page 6</span>
+            </div>
+            <div class="w-full bg-slate-200 rounded-full h-2.5 mb-4">
+                <div id="progress-bar" class="bg-indigo-600 h-2.5 rounded-full transition-all duration-300" style="width: 0.69%"></div>
+            </div>
+            
+            <!-- Direct Navigation Jump -->
+            <div class="flex flex-wrap items-center justify-between gap-2 border-t pt-3">
+                <div class="flex items-center gap-2">
+                    <label for="jump-input" class="text-xs font-semibold text-slate-500">Jump to / प्रश्न संख्या:</label>
+                    <input type="number" id="jump-input" min="1" max="145" class="w-16 border rounded px-2 py-1 text-sm text-center focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="1">
+                    <button onclick="jumpToQuestion()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-3 py-1.5 rounded font-medium transition">Go</button>
+                </div>
+                <div class="flex gap-2">
+                    <button id="prev-btn" onclick="prevQuestion()" disabled class="bg-slate-300 text-slate-500 px-4 py-1.5 rounded text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-400 transition">Previous</button>
+                    <button id="next-btn" onclick="nextQuestion()" class="bg-indigo-600 text-white px-4 py-1.5 rounded text-sm font-semibold hover:bg-indigo-700 transition">Next</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question Card -->
+        <div class="bg-white rounded-xl shadow-md p-6 mb-6">
+            <!-- Question Text -->
+            <div class="mb-6">
+                <p id="question-hi" class="text-lg md:text-xl font-semibold text-slate-900 mb-2"></p>
+                <p id="question-en" class="text-sm md:text-base text-slate-600 italic border-l-4 border-indigo-400 pl-3"></p>
+            </div>
+
+            <!-- Options Container -->
+            <div id="options-container" class="grid grid-cols-1 gap-3 mb-6"></div>
+
+            <!-- Hint Collapsible -->
+            <div class="mb-4">
+                <button onclick="toggleHint()" class="text-xs font-semibold text-amber-600 hover:text-amber-700 flex items-center gap-1 focus:outline-none">
+                    <span>💡 Show Hint / संकेत देखें</span>
+                </button>
+                <div id="hint-box" class="hidden mt-2 p-3 bg-amber-50 border border-amber-200 text-amber-800 rounded-lg text-xs md:text-sm"></div>
+            </div>
+
+            <!-- Explanation Box -->
+            <div id="explanation-box" class="hidden p-4 rounded-lg text-sm border"></div>
+        </div>
+    </main>
+
+    <script>
+        const rawDataset = [
+            // --- PAGE 6: 25 QUESTIONS (Index 0 to 24) ---
+            {
+                page: 6,
+                qHi: "मेवाती गाय का सामान्यतः रंग कैसा होता है और इसके सिर, गले व कन्धे पर कैसा रंग पाया जाता है?",
+                qEn: "What is the general color of the Mewati cow, and what color is found on its head, neck, and shoulders?",
+                options: ["सफेद, हल्का काला / White, Light Black", "लाल, कत्थई / Red, Brown", "धूसर, गहरा लाल / Grey, Dark Red", "काला, सफेद चित्तियां / Black, White spots"],
+                correct: 0,
+                hint: "Check general appearance characteristics of Mewati breed.",
+                exp: "मेवाती गाय का रंग सामान्यतः सफेद होता है परन्तु सिर, गला व कन्धे पर हल्का काला रंग भी पाया जाता है।"
+            },
+            {
+                page: 6,
+                qHi: "मेवाती नस्ल की गाय का भार कितना होता है?",
+                qEn: "What is the body weight of a female Mewati cow?",
+                options: ["300 से 450 कि.ग्रा. / 300 to 450 kg", "200 से 250 कि.ग्रा. / 200 to 250 kg", "500 से 600 कि.ग्रा. / 500 to 600 kg", "150 से 200 कि.ग्रा. / 150 to 200 kg"],
+                correct: 0,
+                hint: "Weight range for Mewati cow.",
+                exp: "मेवाती गाय का भार 300 से 450 कि.ग्रा. तथा नर का भार 375 से 425 कि.ग्रा. होता है।"
+            },
+            {
+                page: 6,
+                qHi: "मेवाती गाय के नर (बैल) का भार कितना होता है?",
+                qEn: "What is the weight of a male Mewati bull?",
+                options: ["375 से 425 कि.ग्रा. / 375 to 425 kg", "500 से 550 कि.ग्रा. / 500 to 550 kg", "250 से 300 कि.ग्रा. / 250 to 300 kg", "600 से 700 कि.ग्रा. / 600 to 700 kg"],
+                correct: 0,
+                hint: "Weight range for male Mewati bull.",
+                exp: "मेवाती नस्ल में नर का भार 375 से 425 कि.ग्रा. होता है।"
+            },
+            {
+                page: 6,
+                qHi: "मेवाती नस्ल की गाय का प्रति ब्यांत दूध उत्पादन कितना होता है?",
+                qEn: "What is the milk yield per lactation of the Mewati cow breed?",
+                options: ["800-1000 लीटर / 800-1000 Litres", "1500-2000 लीटर / 1500-2000 Litres", "3000-4000 लीटर / 3000-4000 Litres", "500-600 लीटर / 500-600 Litres"],
+                correct: 0,
+                hint: "Lactation yield range for Mewati breed.",
+                exp: "मेवाती नस्ल की गाय का दूध उत्पादन 800-1000 लीटर प्रति ब्यांत होता है।"
+            },
+            {
+                page: 6,
+                qHi: "राठी गाय नस्ल का मूल उत्पत्ति स्थल कौन सा माना जाता है?",
+                qEn: "Which area is considered the place of origin for the Rathi cow breed?",
+                options: ["पश्चिम राजस्थान के बीकानेर, गंगानगर व जैसलमेर / Bikaner, Ganganagar & Jaisalmer of Western Rajasthan", "हरियाणा के रोहतक व हिसार / Rohtak & Hisar of Haryana", "गुजरात का काठियावाड़ / Kathiawar of Gujarat", "उत्तर प्रदेश का मथुारा / Mathura of UP"],
+                correct: 0,
+                hint: "Districts in Western Rajasthan.",
+                exp: "राठी गाय नस्ल का उत्पत्ति स्थल पश्चिम राजस्थान के बीकानेर, गंगानगर व जैसलमेर जिलों को माना जाता है।"
+            },
+            {
+                page: 6,
+                qHi: "राठी नस्ल की गाय का शारीरिक रंग और पैटर्न कैसा होता है?",
+                qEn: "What is the body color and pattern of the Rathi cow breed?",
+                options: ["हल्का सफेद, हलका लाल रंग जैसा काले या लाल धब्बेदार / Light white, light red with black or red spots", "शुद्ध जेट ब्लैक / Pure Jet Black", "चमकदार भूरा व नीला / Shiny Brown and Blue", "पीला और हरा धब्बेदार / Yellow and Green spotted"],
+                correct: 0,
+                hint: "Spotted pattern with light white and red shades.",
+                exp: "राठी नस्ल के पशुओं का रंग हल्का सफेद, हलका लाल रंग जैसा काले या लाल धब्बेदार होता है।"
+            },
+            {
+                page: 6,
+                qHi: "राठी गाय का शारीरिक भार और इसके नर का भार कितना होता है?",
+                qEn: "What is the body weight of a Rathi cow and Rathi bull respectively?",
+                options: ["गाय: 350-380 कि.ग्रा., नर: 500-550 कि.ग्रा. / Cow: 350-380 kg, Bull: 500-550 kg", "गाय: 500-600 कि.ग्रा., नर: 200-300 कि.ग्रा. / Cow: 500-600 kg, Bull: 200-300 kg", "गाय: 200-250 कि.ग्रा., नर: 300-350 कि.ग्रा. / Cow: 200-250 kg, Bull: 300-350 kg", "दोनों का भार समान 400 कि.ग्रा. / Both equal 400 kg"],
+                correct: 0,
+                hint: "Check weight ranges given for female and male Rathi.",
+                exp: "राठी गाय का भार 350 से 380 कि.ग्रा. तथा नर का भार 500 से 550 कि.ग्रा. होता है।"
+            },
+            {
+                page: 6,
+                qHi: "राठी नस्ल की गाय का दुग्ध उत्पादन और दूध में वसा प्रतिशत कितना होता है?",
+                qEn: "What is the milk yield and fat percentage in milk for the Rathi cow?",
+                options: ["1200-1500 लीटर, वसा 4 से 4.5% / 1200-1500 Litres, Fat 4-4.5%", "2000-2500 लीटर, वसा 8% / 2000-2500 Litres, Fat 8%", "500-800 लीटर, वसा 2% / 500-800 Litres, Fat 2%", "4000-5000 लीटर, वसा 6% / 4000-5000 Litres, Fat 6%"],
+                correct: 0,
+                hint: "Yield is 1200-1500 L with moderate fat content.",
+                exp: "राठी नस्ल की गाय का दूध उत्पादन 1200-1500 लीटर प्रति ब्यांत होता है जिसमें वसा 4 से 4.5% होती है।"
+            },
+            {
+                page: 6,
+                qHi: "जर्सी गाय का मूल उत्पत्ति स्थान कौन सा माना जाता है?",
+                qEn: "Which location is considered the place of origin for Jersey cow?",
+                options: ["इंग्लिश चैनल का जर्सी द्वीप समूह / Jersey Island of English Channel", "नीदरलैंड (हॉलैंड) / Netherlands (Holland)", "डेनमार्क / Denmark", "स्कॉटलैंड / Scotland"],
+                correct: 0,
+                hint: "Island in the English Channel.",
+                exp: "जर्सी नस्ल की गाय का मूल स्थान इंग्लिश चैनल का जर्सी द्वीप समूह माना जाता है।"
+            },
+            {
+                page: 6,
+                qHi: "भारत के किन राज्यों में जर्सी गाय अधिक दूध उत्पादन के लिए मुख्य रूप से पाली जाती है?",
+                qEn: "In which Indian states is Jersey cow mainly reared for high milk yield?",
+                options: ["राजस्थान, हरियाणा, पंजाब, दिल्ली व उत्तर प्रदेश / Rajasthan, Haryana, Punjab, Delhi & UP", "केरला, तमिलनाडु, आंध्र प्रदेश / Kerala, Tamil Nadu, Andhra Pradesh", "असम, मेघालय, नागालैंड / Assam, Meghalaya, Nagaland", "ओडिशा व बिहार / Odisha & Bihar"],
+                correct: 0,
+                hint: "Northern and North-Western states of India.",
+                exp: "भारत में यह नस्ल राजस्थान, हरियाणा, पंजाब, दिल्ली व उत्तर प्रदेश के राज्यों में अधिक दूध उत्पादन के लिए पाली जाती है।"
+            },
+            {
+                page: 6,
+                qHi: "जर्सी गाय की शारीरिक विशेषता के संबंध में कौन सा कथन सही है?",
+                qEn: "Which characteristic statement regarding Jersey cow is correct?",
+                options: ["शरीर लम्बा एवं कूबड़ रहित (Hump-less) होता है / Body is long and hump-less", "पीठ पर विशाल कूबड़ होता है / Has a huge hump on back", "सिर पर तीन सींग होते हैं / Has three horns on head", "शरीर पर काले-सफेद बड़े चकत्ते होते हैं / Has huge black-white patches"],
+                correct: 0,
+                hint: "Exotic cows (Bos taurus) are hump-less.",
+                exp: "जर्सी गाय का शरीर लम्बा तथा कूबड़ रहित होता है, अयन बड़ा व पूर्ण विकसित होता है।"
+            },
+            {
+                page: 6,
+                qHi: "जर्सी गाय और उसके नर का शारीरिक भार क्रमशः कितना होता है?",
+                qEn: "What is the body weight of Jersey cow and Jersey bull respectively?",
+                options: ["गाय: 450-500 कि.ग्रा., नर: 600-750 कि.ग्रा. / Cow: 450-500 kg, Bull: 600-750 kg", "गाय: 200-250 कि.ग्रा., नर: 300-350 कि.ग्रा. / Cow: 200-250 kg, Bull: 300-350 kg", "गाय: 800-900 कि.ग्रा., नर: 1200 कि.ग्रा. / Cow: 800-900 kg, Bull: 1200 kg", "दोनों 400 कि.ग्रा. / Both 400 kg"],
+                correct: 0,
+                hint: "Female weight range is 450-500 kg.",
+                exp: "जर्सी गाय का भार 450 से 500 कि.ग्रा. तथा नर का भार 600 से 750 कि.ग्रा. होता है।"
+            },
+            {
+                page: 6,
+                qHi: "जर्सी नस्ल की गाय का प्रति ब्यांत दुग्ध उत्पादन कितना होता है?",
+                qEn: "What is the milk production per lactation cycle of a Jersey cow?",
+                options: ["4000-4200 लीटर / 4000-4200 Litres", "1000-1200 लीटर / 1000-1200 Litres", "8000-10000 लीटर / 8000-10000 Litres", "2000-2200 लीटर / 2000-2200 Litres"],
+                correct: 0,
+                hint: "Exotic breed giving above 4000L.",
+                exp: "जर्सी नस्ल की गाय का दूध उत्पादन 4000-4200 लीटर प्रति ब्यांत होता है।"
+            },
+            {
+                page: 6,
+                qHi: "होलस्टीन फ्रेजियन (HF) गाय का मूल उत्पत्ति स्थान कौन सा देश है?",
+                qEn: "Which country is the original place of origin for Holstein Friesian (HF) cow?",
+                options: ["नीदरलैंड (हॉलैंड) / Netherlands (Holland)", "स्विट्जरलैंड / Switzerland", "इंग्लैंड / England", "डेनमार्क / Denmark"],
+                correct: 0,
+                hint: "European nation famous for Holland region.",
+                exp: "होलस्टीन फ्रेजियन नस्ल की गाय का मूल उत्पत्ति स्थान (हॉलैंड) नीदरलैंड माना जाता है।"
+            },
+            {
+                page: 6,
+                qHi: "होलस्टीन फ्रेजियन गाय का शारीरिक रंग कैसा होता है?",
+                qEn: "What is the typical body color of Holstein Friesian cow?",
+                options: ["रंग काला व बड़ी-बड़ी सफेद चित्तियों वाला / Black color with large white patches", "शुद्ध लाल / Pure Red", "भूरा एवं पीला / Brown and Yellow", "सफेद के साथ काले छोटे धब्बे / White with small black dots"],
+                correct: 0,
+                hint: "Classic black and white piebald pattern.",
+                exp: "इस नस्ल के पशुओं का रंग काला व बड़ी-बड़ी सफेद चित्तियों वाला होता है।"
+            },
+            {
+                page: 6,
+                qHi: "गाय की सबसे भारी नस्ल कौन सी है जिसका नर 900 से 1000 कि.ग्रा. तक होता है?",
+                qEn: "Which is the heaviest cow breed whose male weighs between 900 to 1000 kg?",
+                options: ["होलस्टीन फ्रेजियन / Holstein Friesian", "साहीवाल / Sahiwal", "गिर / Gir", "मेवाती / Mewati"],
+                correct: 0,
+                hint: "World-famous highest milk producer breed.",
+                exp: "होलस्टीन फ्रेजियन गाय का भार 600-650 कि.ग्रा. व नर का भार 900-1000 कि.ग्रा. होता है। यह सबसे भारी नस्ल है।"
+            },
+            {
+                page: 6,
+                qHi: "होलस्टीन फ्रेजियन गाय का प्रति ब्यांत दुग्ध उत्पादन कितना होता है?",
+                qEn: "What is the milk production per lactation of Holstein Friesian cow?",
+                options: ["5000-6000 लीटर / 5000-6000 Litres", "2000-3000 लीटर / 2000-3000 Litres", "1000-1500 लीटर / 1000-1500 Litres", "8000-10000 लीटर / 8000-10000 Litres"],
+                correct: 0,
+                hint: "Highest milk yield among foreign breeds, 5k-6k L.",
+                exp: "होलस्टीन फ्रेजियन नस्ल की गाय का दूध उत्पादन 5000-6000 लीटर प्रति ब्यांत होता है।"
+            },
+            {
+                page: 6,
+                qHi: "होलस्टीन फ्रेजियन गाय के दूध में वसा प्रतिशत कितना पाया जाता है?",
+                qEn: "What is the fat percentage in the milk of Holstein Friesian cow?",
+                options: ["3.5 से 4 प्रतिशत / 3.5 to 4 percent", "5.5 से 6.5 प्रतिशत / 5.5 to 6.5 percent", "8 से 10 प्रतिशत / 8 to 10 percent", "1 से 2 प्रतिशत / 1 to 2 percent"],
+                correct: 0,
+                hint: "Lowest fat among major dairy breeds (~3.5%).",
+                exp: "होलस्टीन फ्रेजियन नस्ल के दूध में वसा 3.5 से 4 प्रतिशत (या सबसे कम ~3.5%) होती है।"
+            },
+            {
+                page: 6,
+                qHi: "गाय में गुणसूत्रों (Chromosomes) की संख्या कितनी होती है?",
+                qEn: "What is the number of chromosomes in a cow?",
+                options: ["60", "50", "48", "38"],
+                correct: 0,
+                hint: "2n = 60 in cattle.",
+                exp: "गाय में गुणसूत्रों की संख्या 60 होती है।"
+            },
+            {
+                page: 6,
+                qHi: "गाय का वैज्ञानिक नाम क्या है? (देसी एवं विदेशी)",
+                qEn: "What are the scientific names of Indigenous and Exotic cows respectively?",
+                options: ["देसी: बोस इंडिकस, विदेशी: बोस टॉरस / Indigenous: Bos indicus, Exotic: Bos taurus", "देसी: बोस टॉरस, विदेशी: बोस इंडिकस / Indigenous: Bos taurus, Exotic: Bos indicus", "दोनों: बोस बुबेलिस / Both: Bos bubalis", "दोनों: कैप्रा हिरकस / Both: Capra hircus"],
+                correct: 0,
+                hint: "Indicus for Indian humped cattle.",
+                exp: "देसी गाय का वैज्ञानिक नाम 'बोस इंडिकस' (Bos indicus) तथा विदेशी गाय का वैज्ञानिक नाम 'बोस टॉरस' (Bos taurus) है।"
+            },
+            {
+                page: 6,
+                qHi: "देसी गायों में सबसे लम्बा दुग्धकाल (325 दिन) किस गाय का होता है?",
+                qEn: "Which indigenous cow breed has the longest lactation period (325 days)?",
+                options: ["साहीवाल / Sahiwal", "गिर / Gir", "हरियाना / Haryana", "थारपारकर / Tharparkar"],
+                correct: 0,
+                hint: "Best indigenous milch breed.",
+                exp: "देसी गायों में सबसे लम्बा दुग्धकाल (325 दिन) साहीवाल गाय का होता है।"
+            },
+            {
+                page: 6,
+                qHi: "विदेशी गायों में सबसे लम्बा दुग्धकाल (365 दिन) किस गाय का होता है?",
+                qEn: "Which exotic cow breed has the longest lactation period (365 days)?",
+                options: ["जर्सी / Jersey", "होलस्टीन / Holstein", "ब्राउनस्वीस / Brown Swiss", "रेडडेन / Red Dane"],
+                correct: 0,
+                hint: "Channel Island exotic breed.",
+                exp: "विदेशी गायों में सबसे लम्बा दुग्धकाल (365 दिन) जर्सी गाय का होता है।"
+            },
+            {
+                page: 6,
+                qHi: "भारत की सबसे भारी गाय की नस्ल और सबसे सुन्दर चाल वाली गाय की नस्ल कौन सी है?",
+                qEn: "Which cow breed is India's heaviest breed and known for the most majestic walking style (Sawai Chaal)?",
+                options: ["कांकरेज / Kankrej", "नागोरी / Nagori", "अमृतमहल / Amritmahal", "थारपारकर / Tharparkar"],
+                correct: 0,
+                hint: "Known for Sawai Chaal.",
+                exp: "भारत की सबसे भारी गाय की नस्ल तथा सबसे सुन्दर चाल (सवाई चाल) वाली गाय की नस्ल कांकरेज है।"
+            },
+            {
+                page: 6,
+                qHi: "किस गाय के दूध में सबसे ज्यादा वसा (5.5% तक) पाई जाती है?",
+                qEn: "Which cow breed's milk contains the highest fat content (up to 5.5%)?",
+                options: ["जर्सी / Jersey", "होलस्टीन फ्रेजियन / Holstein Friesian", "हरियाना / Haryana", "मालवी / Malvi"],
+                correct: 0,
+                hint: "Rich yellow milk exotic breed.",
+                exp: "जर्सी गाय के दूध में सबसे ज्यादा वसा (5.5% तक) पाई जाती है।"
+            },
+            {
+                page: 6,
+                qHi: "विश्व की सबसे छोटी गाय की नस्ल कौन सी है जिसे गिनिज बुक ऑफ रिकॉर्ड में शामिल किया गया है?",
+                qEn: "Which is the world's smallest cow breed, included in the Guinness Book of Records?",
+                options: ["वेचूर (केरल) / Vechur (Kerala)", "साहीवाल / Sahiwal", "देवनी / Deoni", "डांगी / Dangi"],
+                correct: 0,
+                hint: "Miniature cow from Kerala.",
+                exp: "विश्व की सबसे छोटी गाय की नस्ल 'वेचूर' (कोट्टादन, केरल) है।"
+            },
+
+            // --- PAGE 7: 50 QUESTIONS (Index 25 to 74) ---
+            {
+                page: 7,
+                qHi: "गिर गाय का उत्पत्ति स्थल कौन सा क्षेत्र है?",
+                qEn: "What is the place of origin of Gir cow breed?",
+                options: ["काठियावाड़ वन क्षेत्र (गुजरात) / Kathiawar forest region (Gujarat)", "थारपारकर जिला (पाकिस्तान) / Tharparkar district (Pakistan)", "रोहतक (हरियाणा) / Rohtak (Haryana)", "मंतसौर (मध्य प्रदेश) / Mandsaur (MP)"],
+                correct: 0,
+                hint: "Forest area in Gujarat.",
+                exp: "गिर गाय का उत्पत्ति स्थल काठियावाड़ वन क्षेत्र (गुजरात) है।"
+            },
+            {
+                page: 7,
+                qHi: "गिर गाय राजस्थान के किन जिलों में मुख्य रूप से पाई जाती है?",
+                qEn: "In which districts of Rajasthan is Gir cow mainly found?",
+                options: ["अजमेर व भीलवाड़ा / Ajmer and Bhilwara", "जैसलमेर व बीकानेर / Jaisalmer and Bikaner", "जयपुर व कोटा / Jaipur and Kota", "उदयपुर व बांसवाड़ा / Udaipur and Banswara"],
+                correct: 0,
+                hint: "Central Rajasthan districts.",
+                exp: "गिर नस्ल की गायें गुजरात के अलावा राजस्थान के अजमेर व भीलवाड़ा जिलों में पाई जाती हैं।"
+            },
+            {
+                page: 7,
+                qHi: "गिर गाय का रंग कैसा होता है?",
+                qEn: "What is the body color of Gir cow?",
+                options: ["रंग लाल जिस पर कत्थई व सफेद रंग के धब्बे / Red color with chocolate brown and white spots", "शुद्ध सफ़ेद / Pure White", "चित्तीदार काला / Spotted Black", "धूसर भूरा / Greyish Brown"],
+                correct: 0,
+                hint: "Red base with dark/white spots.",
+                exp: "गिर गाय का रंग लाल होता है जिस पर कत्थई व सफेद रंग के धब्बे होते हैं।"
+            },
+            {
+                page: 7,
+                qHi: "गिर गाय का शारीरिक भार (मादा व नर) कितना होता है?",
+                qEn: "What is the body weight of Gir cow (female) and Gir bull (male)?",
+                options: ["मादा: 380-450 कि.ग्रा., नर: 550-650 कि.ग्रा. / Female: 380-450 kg, Male: 550-650 kg", "मादा: 200-250 कि.ग्रा., नर: 300-350 कि.ग्रा. / Female: 200-250 kg, Male: 300-350 kg", "मादा: 600-700 कि.ग्रा., नर: 900-1000 कि.ग्रा. / Female: 600-700 kg, Male: 900-1000 kg", "दोनों 500 कि.ग्रा. / Both 500 kg"],
+                correct: 0,
+                hint: "Female around 400kg, male around 600kg.",
+                exp: "गिर गाय का भार 380 से 450 कि.ग्रा. तथा नर का भार 550 से 650 कि.ग्रा. होता है।"
+            },
+            {
+                page: 7,
+                qHi: "गिर नस्ल की गाय का औसत दूध उत्पादन और वसा प्रतिशत कितना होता है?",
+                qEn: "What is the average milk production and fat percentage of Gir cow breed?",
+                options: ["1500-1800 लीटर, वसा 4.5% / 1500-1800 Litres, Fat 4.5%", "3000-4000 लीटर, वसा 2% / 3000-4000 Litres, Fat 2%", "800-1000 लीटर, वसा 6% / 800-1000 Litres, Fat 6%", "500-600 लीटर, वसा 3% / 500-600 Litres, Fat 3%"],
+                correct: 0,
+                hint: "1500-1800 L per lactation.",
+                exp: "गिर नस्ल की गाय का दूध उत्पादन 1500-1800 लीटर प्रति ब्यांत होता है, जिसमें औसत वसा 4.5 प्रतिशत होती है।"
+            },
+            {
+                page: 7,
+                qHi: "थारपारकर गाय का उत्पत्ति स्थल कौन सा है?",
+                qEn: "What is the origin place of Tharparkar cow breed?",
+                options: ["पाकिस्तान में सिंध प्रदेश का थारपारकर जिला / Tharparkar district of Sindh province in Pakistan", "गुजरात का कच्छ / Kutch of Gujarat", "राजस्थान का नागौर / Nagaur of Rajasthan", "हरियाणा का हिसार / Hisar of Haryana"],
+                correct: 0,
+                hint: "Sindh province district.",
+                exp: "थारपारकर गाय का उत्पत्ति स्थल पाकिस्तान में सिंध प्रदेश का थारपारकर जिला है।"
+            },
+            {
+                page: 7,
+                qHi: "थारपारकर गाय भारत में मुख्य रूप से किन क्षेत्रों में पाई जाती है?",
+                qEn: "In which areas of India is Tharparkar cow mainly found?",
+                options: ["गुजरात के कच्छ के रण व राजस्थान के जैसलमेर, बाड़मेर व जोधपुर / Rann of Kutch (GJ) & Jaisalmer, Barmer, Jodhpur (RJ)", "पंजाब के पटियाला व लुधियाना / Patiala & Ludhiana of Punjab", "उत्तर प्रदेश के लखनऊ व कानपुर / Lucknow & Kanpur of UP", "हरियाणा के अंबाला व पंचकुला / Ambala & Panchkula of Haryana"],
+                correct: 0,
+                hint: "Desert/arid border districts of Rajasthan and Gujarat.",
+                exp: "भारत में यह नस्ल गुजरात के कच्छ के रण व राजस्थान के जैसलमेर, बाड़मेर व जोधपुर जिलों में पाई जाती है।"
+            },
+            {
+                page: 7,
+                qHi: "थारपारकर गाय का रंग कैसा होता है?",
+                qEn: "What is the color of Tharparkar cow?",
+                options: ["सफेद या धूसर (हल्का भूरा) / White or Grey (Light Brown)", "जेट ब्लैक / Jet Black", "चित्तीदार लाल / Spotted Red", "पीला / Yellow"],
+                correct: 0,
+                hint: "White/Grey light color.",
+                exp: "थारपारकर गाय का रंग सफेद या धूसर (हल्का भूरा) होता है।"
+            },
+            {
+                page: 7,
+                qHi: "थारपारकर नस्ल की गाय का दुग्ध उत्पादन कितना होता है?",
+                qEn: "What is the milk yield per lactation of Tharparkar cow?",
+                options: ["1600-2000 लीटर / 1600-2000 Litres", "500-800 लीटर / 500-800 Litres", "3500-4000 लीटर / 3500-4000 Litres", "5000-6000 लीटर / 5000-6000 Litres"],
+                correct: 0,
+                hint: "Yields around 1.6k to 2k Litres.",
+                exp: "थारपारकर नस्ल की गाय का दूध उत्पादन 1600-2000 लीटर प्रति ब्यांत होता है (औसत वसा 4.5%)।"
+            },
+            {
+                page: 7,
+                qHi: "हरियाना गाय का मूल उत्पत्ति स्थल और प्रमुख जिला कौन सा है?",
+                qEn: "What is the main origin place and primary home district of Haryana cow?",
+                options: ["हरियाणा (रोहतक, हिसार, करनाल, गुरुग्राम) / Haryana (Rohtak, Hisar, Karnal, Gurugram)", "राजस्थान (नागौर) / Rajasthan (Nagaur)", "गुजरात (गीर) / Gujarat (Gir)", "पंजाब (मोंटगोमरी) / Punjab (Montgomery)"],
+                correct: 0,
+                hint: "Named after Haryana state.",
+                exp: "हरियाना नस्ल का मूल उत्पत्ति स्थल हरियाणा है और यह रोहतक, हिसार, करनाल व गुरुग्राम में पाई जाती है।"
+            },
+            {
+                page: 7,
+                qHi: "हरियाना गाय की शारीरिक विशेषताएं क्या हैं?",
+                qEn: "What are the physical characteristics of Haryana cow?",
+                options: ["रंग सफेद/हल्का भूरा, सुगठित शरीर, सींग लंबे व पतले, कूबड़ उठा हुआ / White/light brown, compact body, long thin horns, raised hump", "बिना सींग और बिना कूबड़ की / Hornless and humpless", "काली त्वचा और बड़े लटकते कान / Black skin and long pendulous ears", "छोटी टांगें और गोल भारी पेट / Short legs and round heavy belly"],
+                correct: 0,
+                hint: "Dual purpose breed with well-built body and raised hump.",
+                exp: "हरियाना नस्ल का रंग सफेद/हल्का भूरा, सुगठित शरीर, सींग लम्बे व पतले, कूबड़ उठा हुआ तथा अयन मध्यम आकार का होता है।"
+            },
+            {
+                page: 7,
+                qHi: "हरियाना गाय का शारीरिक भार (गाय व नर) कितना होता है?",
+                qEn: "What is the weight of Haryana cow and bull respectively?",
+                options: ["गाय: 360 कि.ग्रा., नर: 500 कि.ग्रा. / Cow: 360 kg, Bull: 500 kg", "गाय: 200 कि.ग्रा., नर: 300 कि.ग्रा. / Cow: 200 kg, Bull: 300 kg", "गाय: 550 कि.ग्रा., नर: 800 कि.ग्रा. / Cow: 550 kg, Bull: 800 kg", "दोनों 400 कि.ग्रा. / Both 400 kg"],
+                correct: 0,
+                hint: "Female is 360 kg, male is 500 kg.",
+                exp: "हरियाना नस्ल की गाय का भार 360 कि.ग्रा. तथा नर का भार 500 कि.ग्रा. होता है।"
+            },
+            {
+                page: 7,
+                qHi: "हरियाना नस्ल की गाय का दुग्ध उत्पादन कितना होता है?",
+                qEn: "What is the milk yield per lactation of Haryana cow?",
+                options: ["1000-1500 लीटर / 1000-1500 Litres", "3000-4000 लीटर / 3000-4000 Litres", "400-600 लीटर / 400-600 Litres", "5000 लीटर / 5000 Litres"],
+                correct: 0,
+                hint: "Dual purpose milk yield range 1000-1500 L.",
+                exp: "हरियाना नस्ल की गाय का दूध उत्पादन 1000-1500 लीटर प्रति ब्यांत होता है।"
+            },
+            {
+                page: 7,
+                qHi: "नागौरी गाय का उत्पत्ति स्थल कौन सा है?",
+                qEn: "What is the place of origin of Nagori cow breed?",
+                options: ["राजस्थान का नागौर जिला / Nagaur district of Rajasthan", "हरियाणा का जींद जिला / Jind district of Haryana", "गुजरात का सुरत जिला / Surat district of Gujarat", "मध्य प्रदेश का मालवा / Malwa of MP"],
+                correct: 0,
+                hint: "Named after Nagaur district.",
+                exp: "नागौरी गाय का उत्पत्ति स्थल राजस्थान का नागौर व जोधपुर जिला है।"
+            },
+            {
+                page: 7,
+                qHi: "नागौरी गाय की प्रमुख उपयोगिता क्या है?",
+                qEn: "What is the primary utility of Nagori cow breed?",
+                options: ["बैल कृषि कार्य व गाड़ी खींचने के लिए उत्तम (भारवाही) / Bulls best for agricultural work & draft", "अत्यधिक दूध उत्पादन (दुधारू) / High milk production", "केवल ऊल उत्पादन / Wool production only", "पनीर उत्पादन / Cheese making only"],
+                correct: 0,
+                hint: "Famous draught bullocks.",
+                exp: "नागौरी नस्ल का दुग्ध उत्पादन 600-900 लीटर ही है, इसके बैल कृषि कार्य व गाड़ी खींचने के लिए उत्तम माने जाते हैं।"
+            },
+            {
+                page: 7,
+                qHi: "मालवी गाय का मूल उत्पत्ति स्थान कौन सा है?",
+                qEn: "What is the place of origin of Malvi cow breed?",
+                options: ["मध्य प्रदेश का मालवा क्षेत्र (मन्दसौर, रायसेन) / Malwa region of MP (Mandsaur, Raisen)", "पंजाब का मालवा / Malwa of Punjab", "हरियाणा का मेवात / Mewat of Haryana", "गुजरात का कच्छ / Kutch of Gujarat"],
+                correct: 0,
+                hint: "Malwa plateau of MP.",
+                exp: "मालवी गाय का मूल उत्पत्ति स्थान मध्य प्रदेश का मालवा क्षेत्र (मन्दसौर, रायसेन आदि) है।"
+            },
+            {
+                page: 7,
+                qHi: "मालवी गाय का दुग्ध उत्पादन कितना होता है?",
+                qEn: "What is the lactation milk yield of Malvi cow?",
+                options: ["700-900 लीटर / 700-900 Litres", "2000-2500 लीटर / 2000-2500 Litres", "4000-5000 लीटर / 4000-5000 Litres", "200-300 लीटर / 200-300 Litres"],
+                correct: 0,
+                hint: "Draft breed with 700-900 Litres yield.",
+                exp: "मालवी नस्ल की गाय का दूध उत्पादन 700-900 लीटर प्रति ब्यांत होता है।"
+            },
+            {
+                page: 7,
+                qHi: "मेवाती गाय का उत्पत्ति स्थल और वितरण क्षेत्र कौन सा है?",
+                qEn: "What is the place of origin and distribution of Mewati cow?",
+                options: ["राजस्थान का मेवात क्षेत्र, हरियाणा के नूंह/पलवल व अलवर/भरतपुर / Mewat region of RJ, Nuh/Palwal of HR & Alwar/Bharatpur", "कर्नाटक का मैसूर / Mysore of Karnataka", "महाराष्ट्र का सोलापुर / Solapur of Maharashtra", "तमिलनाडु का तंजावुर / Thanjavur of TN"],
+                correct: 0,
+                hint: "Mewat region spread across HR and RJ.",
+                exp: "मेवाती नस्ल की उत्पत्ति राजस्थान का मेवात क्षेत्र है तथा यह हरियाणा के नूंह, पलवल व राजस्थान के अलवर व भरतपुर में पाई जाती है।"
+            },
+            {
+                page: 7,
+                qHi: "देश का प्रथम गाय अभ्यारण्य कहाँ स्थापित किया गया था?",
+                qEn: "Where was India's first Cow Sanctuary established?",
+                options: ["पोरबंदर (गुजरात) / Porbandar (Gujarat)", "हिसार (हरियाणा) / Hisar (Haryana)", "बीकानेर (राजस्थान) / Bikaner (Rajasthan)", "मथुरा (उत्तर प्रदेश) / Mathura (UP)"],
+                correct: 0,
+                hint: "Mahatma Gandhi's birthplace.",
+                exp: "देश का प्रथम गाय अभ्यारण्य पोरबंदर (गुजरात) में स्थापित किया गया था।"
+            },
+            {
+                page: 7,
+                qHi: "एक गाय अपने पूरे जीवनकाल में लगभग कितने बच्चों को जन्म दे सकती है?",
+                qEn: "Approximately how many calves can a cow give birth to in her lifetime?",
+                options: ["8 - 10 बच्चे / 8 - 10 calves", "20 - 25 बच्चे / 20 - 25 calves", "2 - 3 बच्चे / 2 - 3 calves", "15 - 18 बच्चे / 15 - 18 calves"],
+                correct: 0,
+                hint: "Average lifetime calf count around 8 to 10.",
+                exp: "एक गाय अपने जीवनकाल में सामान्यतः 8 से 10 बच्चों को जन्म दे सकती है।"
+            },
+            {
+                page: 7,
+                qHi: "केरल में पाई जाने वाली सबसे कम ऊंचाई (2 फुट 10 इंच) व छोटे आकार की गाय 'वेचूर' को किस नाम से जाना जाता है?",
+                qEn: "By what name is the short stature (2ft 10in) Vechur cow of Kerala also known?",
+                options: ["मिनिएचर (Miniature)", "जाइंट (Giant)", "माइक्रो (Micro)", "सुपर (Super)"],
+                correct: 0,
+                hint: "English term for small scale version.",
+                exp: "वेचूर नस्ल की गाय को 'मिनिएचर' (Miniature) नाम से भी जाना जाता है।"
+            },
+            {
+                page: 7,
+                qHi: "पशु आनुवंशिक संसाधन ब्यूरो (NBAGR), करनाल के अनुसार भारत में गायों की कितनी नस्लें पंजीकृत/पाई जाती हैं?",
+                qEn: "According to National Bureau of Animal Genetic Resources (NBAGR), Karnal, how many cow breeds are recognized in India?",
+                options: ["40 नस्लें (As per text page 7) / 40 breeds", "10 नस्लें / 10 breeds", "100 नस्लें / 100 breeds", "25 नस्लें / 25 breeds"],
+                correct: 0,
+                hint: "40 breeds specified in text ledger.",
+                exp: "पशु आनुवंशिक संसाधन ब्यूरो करनाल के अनुसार भारत में गाय की 40 नस्लें पाई/पंजीकृत की गई हैं।"
+            },
+            {
+                page: 7,
+                qHi: "हरियाणा के किस जिले में सर्वाधिक और किसमें सबसे कम गाय पाई जाती हैं?",
+                qEn: "Which district in Haryana has the highest and lowest cow population respectively?",
+                options: ["सर्वाधिक: सिरसा, सबसे कम: पंचकुला / Highest: Sirsa, Lowest: Panchkula", "सर्वाधिक: हिसार, सबसे कम: मेवात / Highest: Hisar, Lowest: Mewat", "सर्वाधिक: रेवाड़ी, सबसे कम: अंबाला / Highest: Rewari, Lowest: Ambala", "सर्वाधिक: रोहतक, सबसे कम: जींद / Highest: Rohtak, Lowest: Jind"],
+                correct: 0,
+                hint: "Westernmost district highest, Northern hilly district lowest.",
+                exp: "हरियाणा के सिरसा जिले में सबसे ज्यादा गाय तथा पंचकुला जिले में सबसे कम गाय पाई जाती हैं।"
+            },
+            {
+                page: 7,
+                qHi: "हरियाणा के किस शहर/जिले में प्रथम गौशाला स्थापित की गई थी?",
+                qEn: "In which city/district of Haryana was the first Gaushala established?",
+                options: ["रेवाड़ी / Rewari", "सिरसा / Sirsa", "हिसार / Hisar", "पानीपत / Panipat"],
+                correct: 0,
+                hint: "Established by Swami Dayanand Saraswati in 1878.",
+                exp: "हरियाणा में प्रथम गौशाला रेवाड़ी जिले में स्थापित की गई थी।"
+            },
+            {
+                page: 7,
+                qHi: "हरियाणा राज्य में सर्वाधिक गौशालाएं किस जिले में स्थित हैं?",
+                qEn: "Which district in Haryana state has the highest number of Gaushalas?",
+                options: ["सिरसा / Sirsa", "पंचकुला / Panchkula", "रोहतक / Rohtak", "गुरुग्राम / Gurugram"],
+                correct: 0,
+                hint: "Same district having highest cow count.",
+                exp: "हरियाणा राज्य के सिरसा जिले में सर्वाधिक गौशालाएं स्थित हैं।"
+            },
+            {
+                page: 7,
+                qHi: "हरियाणा राज्य में 'गौचर मुक्ति आन्दोलन' के लिए कौन से संत प्रसिद्ध हैं?",
+                qEn: "Which saint is famous for the 'Gauchar Mukti Andolan' in Haryana state?",
+                options: ["संत गोपालदास / Sant Gopaldas", "संत कबीर / Sant Kabir", "संत रविदास / Sant Ravidas", "संत निश्चलदास / Sant Nischaldas"],
+                correct: 0,
+                hint: "Gopaldas.",
+                exp: "हरियाणा राज्य में गौचर भूमि मुक्ति आन्दोलन के प्रसिद्ध संत, संत गोपालदास हैं।"
+            },
+            {
+                page: 7,
+                qHi: "हरियाणा गौवध संरक्षण व संवर्धन कानून कब लागू किया गया और कब अधिसूचित किया गया?",
+                qEn: "When was Haryana Cow Slaughter Conservation and Prototyping Law implemented and notified?",
+                options: ["लागू: 16 मार्च 2015, अधिसूचित: 19 नवम्बर 2015 / Enforced: 16 Mar 2015, Notified: 19 Nov 2015", "लागू: 1 जनवरी 2016, अधिसूचित: 1 मार्च 2016 / Enforced: 1 Jan 2016, Notified: 1 Mar 2016", "लागू: 15 अगस्त 2014, अधिसूचित: 26 जनवरी 2015 / Enforced: 15 Aug 2014, Notified: 26 Jan 2015", "लागू: 2020, अधिसूचित: 2021 / Enforced: 2020, Notified: 2021"],
+                correct: 0,
+                hint: "Year 2015 for both.",
+                exp: "हरियाणा गौवध संरक्षण व संवर्धन कानून 16 मार्च 2015 को लागू हुआ तथा 19 नवम्बर 2015 को अधिसूचित किया गया।"
+            },
+            {
+                page: 7,
+                qHi: "हरियाणा राज्य में गौ वध (Cow Slaughter) पर कितने साल की सजा का प्रावधान है?",
+                qEn: "How many years of imprisonment is prescribed for cow slaughter in Haryana?",
+                options: ["2 से 10 वर्ष (अधिकतम 10 वर्ष) / 2 to 10 years (max 10 yrs)", "1 से 2 वर्ष / 1 to 2 years", "20 वर्ष / 20 years", "आजीवन कारावास / Life imprisonment"],
+                correct: 0,
+                hint: "Minimum 2 to maximum 10 years.",
+                exp: "हरियाणा राज्य में गौ वध पर 2 से 10 वर्ष तक की सजा (अधिकतम 10 वर्ष) का प्रावधान है।"
+            },
+            {
+                page: 7,
+                qHi: "हरियाणा राज्य में देसी गायों के लिए 'आधार कार्ड योजना' कब चालू की गई थी?",
+                qEn: "When was the 'Aadhaar Card Scheme' launched for indigenous cows in Haryana?",
+                options: ["18 मार्च 2015 / 18 March 2015", "1 जनवरी 2018 / 1 January 2018", "15 अगस्त 2020 / 15 August 2020", "26 नवम्बर 2012 / 26 November 2012"],
+                correct: 0,
+                hint: "March 2015.",
+                exp: "राज्य में देसी गायों के लिए आधार कार्ड पहचान योजना 18 मार्च 2015 को चालू की गई थी।"
+            },
+            {
+                page: 7,
+                qHi: "लाला लाजपत राय पशु विश्वविद्यालय (LUVAS), हिसार द्वारा विकसित 38 लीटर दूध देने वाली गाय की नस्ल कौन सी है?",
+                qEn: "Which cross-breed cow giving 38L milk daily was developed by LUVAS, Hisar?",
+                options: ["हरधेनु / Hardhenu", "करनफ्रिज / Karan Fries", "करनस्वीस / Karan Swiss", "हरनाल / Harnal"],
+                correct: 0,
+                hint: "Combination of Haryana and Dhenu.",
+                exp: "लाला लाजपतराय पशु विश्वविद्यालय, हिसार द्वारा विकसित 38 लीटर प्रतिदिन दूध देने वाली संकर गाय की नस्ल 'हरधेनु' (Hardhenu) है।"
+            },
+            {
+                page: 7,
+                qHi: "उपयोगिता के आधार पर गाय की नस्लों को मुख्य रूप से कितने भागों/वर्गों में बांटा गया है?",
+                qEn: "Into how many categories are cow breeds classified based on utility?",
+                options: ["3 वर्ग (दुधारू, द्विकाजी, भारवाही) / 3 classes (Milch, Dual, Draft)", "5 वर्ग / 5 classes", "2 वर्ग / 2 classes", "10 वर्ग / 10 classes"],
+                correct: 0,
+                hint: "Milch, Dual Purpose, and Draft.",
+                exp: "उपयोगिता के आधार पर गायों को 3 वर्गों में बांटा गया है: (1) दुधारू, (2) द्विकाजी नस्लें, (3) भारवाही नस्लें।"
+            },
+            {
+                page: 7,
+                qHi: "निम्नलिखित में से कौन सी नस्ल दुधारू (Milch) गायों के अंतर्गत आती है?",
+                qEn: "Which of the following breeds comes under Milch (dairy) cow breeds?",
+                options: ["साहीवाल, गिर, रेडसिंधी, देवनी / Sahiwal, Gir, Red Sindhi, Deoni", "अमृतमहल, खिल्लारी / Amritmahal, Khillari", "नागौरी, मालवी / Nagori, Malvi", "केंगायम, बरगुर / Kangayam, Bargur"],
+                correct: 0,
+                hint: "Sahiwal and Gir.",
+                exp: "दुधारू नस्लों (Milch Breeds) के अंतर्गत साहीवाल, गिर, रेडसिंधी, देवनी नस्लों को रखा गया है।"
+            },
+            {
+                page: 7,
+                qHi: "द्विकाजी (Dual Purpose) नस्लों का क्या अर्थ होता है?",
+                qEn: "What does Dual Purpose (Dwikaji) cow breed mean?",
+                options: ["दूध उत्पादन व कृषि कार्य/बोझा ढोने दोनों के लिए / Reared for both milk production & draft work", "केवल मांस के लिए / For meat only", "केवल ऊन के लिए / For wool only", "केवल दौड़ के लिए / For racing only"],
+                correct: 0,
+                hint: "Milk plus draft work.",
+                exp: "दूध व कार्य (कृषि/बोझा) दोनों के लिए पाली जाने वाली गाय की नस्लें 'द्विकाजी नस्लें' कहलाती हैं।"
+            },
+            {
+                page: 7,
+                qHi: "निम्नलिखित में से कौन सी द्विकाजी (Dual Purpose) गाय की नस्ल का उदाहरण है?",
+                qEn: "Which of the following is an example of a Dual Purpose cow breed?",
+                options: ["हरियाना, अंगोल, थारपारकर, कांकरेज, मेवाती / Haryana, Ongole, Tharparkar, Kankrej, Mewati", "साहीवाल / Sahiwal", "अमृतमहल / Amritmahal", "होलस्टीन फ्रेजियन / Holstein Friesian"],
+                correct: 0,
+                hint: "Includes Haryana and Tharparkar.",
+                exp: "हरियाना, अंगोल, थारपारकर, कांकरेज, राठी, मेवाती, निमाड़ी आदि द्विकाजी नस्लें हैं।"
+            },
+            {
+                page: 7,
+                qHi: "भारवाही (Draft Breeds) गायों का मुख्य उद्देश्य क्या होता है?",
+                qEn: "What is the primary purpose of Draft (Bharwahi) cow breeds?",
+                options: ["खेती, जुताई व बोझा ढोने के लिए / For agricultural work, plowing & pulling heavy loads", "अधिकतम दूध बेचने के लिए / For maximum milk sales", "मक्खन बनाने के लिए / For butter production", "सजावट के लिए / For decoration"],
+                correct: 0,
+                hint: "Work and draft utility.",
+                exp: "भारवाही नस्लों के नर बैल कृषि कार्य, जुताई व भारी सामान ढोने के लिए उपयुक्त होते हैं।"
+            },
+            {
+                page: 7,
+                qHi: "निम्नलिखित में से कौन सी भारवाही (Draft) गाय की नस्ल है?",
+                qEn: "Which of the following is a Draft (Bharwahi) cow breed?",
+                options: ["अमृतमहल, खिल्लारी, हल्लीकर, मालवी, नागौरी, केनकथा / Amritmahal, Khillari, Hallikar, Malvi, Nagori, Kenkatha", "गिर / Gir", "साहीवाल / Sahiwal", "जर्सी / Jersey"],
+                correct: 0,
+                hint: "Amritmahal and Hallikar.",
+                exp: "अमृतमहल, खिल्लारी, हल्लीकर, नागौरी, मालवी, केनकथा, खेरीगढ़, पंवार, कंगायाम भारवाही नस्लें हैं।"
+            },
+            {
+                page: 7,
+                qHi: "ब्राउनस्वीस (Brown Swiss) विदेशी गाय की नस्ल का मूल स्थान कौन सा देश है?",
+                qEn: "What is the origin country of the exotic Brown Swiss cow breed?",
+                options: ["स्विट्जरलैंड / Switzerland", "डेनमार्क / Denmark", "स्कॉटलैंड / Scotland", "हॉलैंड / Holland"],
+                correct: 0,
+                hint: "Named after Switzerland.",
+                exp: "ब्राउनस्वीस गाय की विदेशी नस्ल का मूल उत्पत्ति स्थान स्विट्जरलैंड है।"
+            },
+            {
+                page: 7,
+                qHi: "आयरशायर (Ayrshire) गाय का मूल स्थान कौन सा देश है?",
+                qEn: "Which country is the native place of Ayrshire cow breed?",
+                options: ["स्कॉटलैंड / Scotland", "इंग्लैंड / England", "डेनमार्क / Denmark", "जर्सी द्वीप / Jersey Island"],
+                correct: 0,
+                hint: "Northern region of UK.",
+                exp: "आयरशायर गाय का मूल उत्पत्ति स्थान स्कॉटलैंड है।"
+            },
+            {
+                page: 7,
+                qHi: "रेडडेन (Red Dane) गाय किस देश की नस्ल है?",
+                qEn: "Red Dane cow breed belongs to which country?",
+                options: ["डेनमार्क / Denmark", "स्विट्जरलैंड / Switzerland", "नीदरलैंड / Netherlands", "जर्मनी / Germany"],
+                correct: 0,
+                hint: "Danish breed.",
+                exp: "रेडडेन गाय का मूल उत्पत्ति स्थान डेनमार्क है।"
+            },
+            {
+                page: 7,
+                qHi: "गर्नसी (Guernsey) गाय का मूल उत्पत्ति स्थान कौन सा है?",
+                qEn: "What is the place of origin of Guernsey cow breed?",
+                options: ["गर्नसी द्वीप (Guernsey Island)", "स्कॉटलैंड (Scotland)", "हॉलैंड (Holland)", "ऑस्ट्रेलिया (Australia)"],
+                correct: 0,
+                hint: "Guernsey Island.",
+                exp: "गर्नसी गाय का मूल स्थान गर्नसी द्वीप है।"
+            },
+            {
+                page: 7,
+                qHi: "राष्ट्रीय डेयरी अनुसंधान संस्थान (NDRI), करनाल द्वारा तैयार की गई दो प्रमुख संकर (Cross-bred) नस्लें कौन सी हैं?",
+                qEn: "Which two major cross-bred cows were developed by NDRI Karnal?",
+                options: ["करनफ्रिज व करनस्वीस / Karan Fries and Karan Swiss", "हरधेनु व साहीवाल / Hardhenu and Sahiwal", "जर्सी व गिर / Jersey and Gir", "वेचूर व अमृतमहल / Vechur and Amritmahal"],
+                correct: 0,
+                hint: "Karan-prefix breeds from NDRI Karnal.",
+                exp: "NDRI करनाल द्वारा संकर प्रजनन से तयार की गई प्रमुख संकर नस्लें 'करनफ्रिज' (Karan Fries) तथा 'करनस्वीस' (Karan Swiss) हैं।"
+            },
+            {
+                page: 7,
+                qHi: "तमिलनाडु राज्य का गर्व (Pride of Tamil Nadu) गाय की किस नस्ल को कहा जाता है?",
+                qEn: "Which cow breed is known as the 'Pride of Tamil Nadu'?",
+                options: ["केंगायम (Kangayam)", "अमृतमहल (Amritmahal)", "वेचूर (Vechur)", "अंगोल (Ongole)"],
+                correct: 0,
+                hint: "Kangayam breed of TN.",
+                exp: "केंगायम (Kangayam) गाय की नस्ल को 'तमिलनाडु का गर्व' कहा जाता है।"
+            },
+            {
+                page: 7,
+                qHi: "भारत की सबसे अच्छी बोझा ढोने वाली गाय की नस्ल कौन सी है?",
+                qEn: "Which is considered India's best draft (bojha dhone wali) cow breed?",
+                options: ["अमृतमहल (कर्नाटक) / Amritmahal (Karnataka)", "नागौरी (राजस्थान) / Nagori (Rajasthan)", "खिल्लारी (महाराष्ट्र) / Khillari (Maharashtra)", "हरियाना / Haryana"],
+                correct: 0,
+                hint: "Karnataka's premier draft breed.",
+                exp: "भारत की सबसे अच्छी बोझा ढोने वाली गाय की नस्ल 'अमृतमहल' (कर्नाटक) है।"
+            },
+            {
+                page: 7,
+                qHi: "राजस्थान की सबसे अच्छी बोझा ढोने वाली गाय की नस्ल कौन सी है?",
+                qEn: "Which is the best draft cow breed of Rajasthan state?",
+                options: ["नागौरी / Nagori", "राठी / Rathi", "मालवी / Malvi", "थारपारकर / Tharparkar"],
+                correct: 0,
+                hint: "Famous for fast bullocks in Rajasthan.",
+                exp: "राजस्थान की सबसे अच्छी बोझा ढोने वाली गाय की नस्ल 'नागौरी' है।"
+            },
+            {
+                page: 7,
+                qHi: "महाराष्ट्र की सबसे अच्छी बोझा ढोने वाली गाय की नस्ल कौन सी है?",
+                qEn: "Which is Maharashtra's premier draft cow breed?",
+                options: ["खिल्लारी / Khillari", "अमृतमहल / Amritmahal", "गिर / Gir", "डांगी / Dangi"],
+                correct: 0,
+                hint: "Khillari breed.",
+                exp: "महाराष्ट्र की सबसे अच्छी बोझा ढोने वाली गाय की नस्ल 'खिल्लारी' (Khillari) है।"
+            },
+            {
+                page: 7,
+                qHi: "शुद्ध सफेद रंग की गाय की नस्ल कौन सी है?",
+                qEn: "Which cow breed is characterized by pure solid white color?",
+                options: ["अंगोल (Ongole)", "साहीवाल (Sahiwal)", "गिर (Gir)", "जर्सी (Jersey)"],
+                correct: 0,
+                hint: "Andhra Pradesh origin white breed.",
+                exp: "शुद्ध सफेद रंग की गाय की नस्ल 'अंगोल' (Ongole) है।"
+            },
+            {
+                page: 7,
+                qHi: "किस गाय में सबसे ज्यादा रोग प्रतिरोधक क्षमता (Disease Resistance) पाई जाती है?",
+                qEn: "Which cow breed possesses highest disease resistance capacity?",
+                options: ["थारपारकर व मालानी / Tharparkar & Malani", "होलस्टीन फ्रेजियन / Holstein Friesian", "जर्सी / Jersey", "ब्राउनस्वीस / Brown Swiss"],
+                correct: 0,
+                hint: "Resistant to extreme desert climate diseases.",
+                exp: "सबसे ज्यादा रोग प्रतिरोधक क्षमता 'थारपारकर' व 'मालानी' गाय में पाई जाती है।"
+            },
+            {
+                page: 7,
+                qHi: "भारत की सबसे अच्छी दोहरे उपयोग (Dual Purpose) की गाय की नस्ल कौन सी है?",
+                qEn: "Which breed is regarded as India's best Dual Purpose cow breed?",
+                options: ["हरियाना / Haryana", "साहीवाल / Sahiwal", "नागौरी / Nagori", "अमृतमहल / Amritmahal"],
+                correct: 0,
+                hint: "Ideal for both milk and work in North India.",
+                exp: "भारत की सबसे अच्छी दोहरे उपयोग (द्विकाजी) की गाय की नस्ल 'हरियाना' है।"
+            },
+            {
+                page: 7,
+                qHi: "किस गाय के दूध में सबसे ज्यादा लैक्टोज (5%) तक पाया जाता है?",
+                qEn: "Which cow breed's milk contains the highest percentage of lactose (up to 5%)?",
+                options: ["साहीवाल / Sahiwal", "जर्सी / Jersey", "होलस्टीन / Holstein", "गिर / Gir"],
+                correct: 0,
+                hint: "Produces sweetest milk among desi breeds.",
+                exp: "साहीवाल गाय के दूध में सबसे ज्यादा लैक्टोज (5% तक) पाया जाता है, जिससे इसका दूध मीठा होता है।"
+            },
+
+            // --- PAGE 8: 30 QUESTIONS (Index 75 to 104) ---
+            {
+                page: 8,
+                qHi: "हरियाणा पशुधन बीमा योजना कब और कहाँ से चालू की गई थी?",
+                qEn: "When and from where was the Haryana Pashudhan Bima Yojana launched?",
+                options: ["29 जुलाई 2016 (झज्जर) / 29 July 2016 (Jhajjar)", "15 अगस्त 2018 (हिसार) / 15 August 2018 (Hisar)", "1 जनवरी 2015 (करनाल) / 1 January 2015 (Karnal)", "26 जनवरी 2020 (अंबाला) / 26 January 2020 (Ambala)"],
+                correct: 0,
+                hint: "Launched in Jhajjar district in July 2016.",
+                exp: "हरियाणा पशुधन बीमा योजना 29 जुलाई 2016 को झज्जर से तत्कालीन कृषि मंत्री ओ.पी. धनखड़ द्वारा शुरू की गई थी।"
+            },
+            {
+                page: 8,
+                qHi: "हरियाणा पशुधन बीमा योजना के तहत बड़े दुधारू पशुओं (गाय, भैंस, बैल, ऊंट) के लिए 3 साल का प्रीमियम कितना निर्धारित है?",
+                qEn: "Under Haryana Livestock Insurance Scheme, what is the 3-year premium for large animals (Cow, Buffalo, Bull, Camel)?",
+                options: ["100 रुपये / ₹100", "500 रुपये / ₹500", "1000 रुपये / ₹1000", "निःशुल्क (सबके लिए) / Free for all"],
+                correct: 0,
+                hint: "Nominal fee of ₹100 for 3 years.",
+                exp: "गाय, भैंस, बैल व ऊंट का 3 साल के लिए केवल ₹100 में बीमा होता है।"
+            },
+            {
+                page: 8,
+                qHi: "हरियाणा पशुधन बीमा योजना के तहत भेड़, बकरी व सुअर का 3 साल का बीमा प्रीमियम कितना है?",
+                qEn: "What is the 3-year insurance premium for Sheep, Goat, and Swine under Haryana Livestock Insurance Scheme?",
+                options: ["25 रुपये / ₹25", "100 रुपये / ₹100", "50 रुपये / ₹50", "10 रुपये / ₹10"],
+                correct: 0,
+                hint: "Quarter of hundred rupees.",
+                exp: "भेड़, बकरी व सुअर का 3 साल के लिए प्रीमियम मात्र ₹25 निर्धारित है।"
+            },
+            {
+                page: 8,
+                qHi: "हरियाणा पशुधन बीमा योजना में किस वर्ग (Category) के पशुपालकों के लिए बीमा निःशुल्क रखा गया है?",
+                qEn: "For which category of livestock owners is the insurance premium kept completely free under Pashudhan Bima Yojana?",
+                options: ["SC / ST श्रेणी के पशुपालक / SC / ST category owners", "OBC श्रेणी / OBC category", "सामान्य वर्ग / General category", "बड़े ज़मींदार / Big Landlords"],
+                correct: 0,
+                hint: "Reserved SC/ST categories.",
+                exp: "हरियाणा पशुधन बीमा योजना के अंतर्गत SC/ST श्रेणी के लिए बीमा राशि पूर्णतः मुफ़्त (निःशुल्क) रखी गई है।"
+            },
+            {
+                page: 8,
+                qHi: "हरियाणा पशुधन बीमा योजना में शामिल दुधारू पशुओं के लिए प्रतिदिन कितने किलोग्राम दूध उत्पादन की शर्त रखी गई है?",
+                qEn: "What condition of daily milk yield is required for milch animals under Haryana Livestock Insurance?",
+                options: ["14 कि.ग्रा. प्रतिदिन / 14 kg per day", "5 कि.ग्रा. प्रतिदिन / 5 kg per day", "25 कि.ग्रा. प्रतिदिन / 25 kg per day", "20 कि.ग्रा. प्रतिदिन / 20 kg per day"],
+                correct: 0,
+                hint: "14 kg per day condition.",
+                exp: "दुधारू पशुओं के लिए प्रतिदिन 14 कि.ग्रा. दूध उत्पादन की शर्त रखी गई है।"
+            },
+            {
+                page: 8,
+                qHi: "हरियाणा में 'पशु-किसान क्रेडिट कार्ड योजना' (Pashu Kisan Credit Card) का उद्घाटन कब और कहाँ किया गया था?",
+                qEn: "When and where was the Pashu Kisan Credit Card scheme launched in Haryana?",
+                options: ["6 दिसम्बर 2019 (भिवानी) / 6 December 2019 (Bhiwani)", "15 अगस्त 2020 (हिसार) / 15 August 2020 (Hisar)", "26 जनवरी 2018 (रोहतक) / 26 January 2018 (Rohtak)", "12 जनवरी 2000 (पंचकुला) / 12 January 2000 (Panchkula)"],
+                correct: 0,
+                hint: "December 2019 in Bhiwani district.",
+                exp: "पशु-किसान क्रेडिट कार्ड योजना 6 दिसम्बर 2019 को भिवानी में कृषि मंत्री जयप्रकाश दलाल द्वारा शुरू की गई थी।"
+            },
+            {
+                page: 8,
+                qHi: "हरियाणा में पालतू पशु को आवारा छोड़ने पर कितने रुपये जुर्माने का प्रावधान रखा गया है?",
+                qEn: "How much fine is imposed for leaving domestic pet/livestock stray in Haryana?",
+                options: ["50 हजार रुपये / ₹50,000", "10 हजार रुपये / ₹10,000", "5 हजार रुपये / ₹5,000", "1 लाख रुपये / ₹1,00,000"],
+                correct: 0,
+                hint: "Fifty Thousand Rupees.",
+                exp: "राज्य में पालतू पशु को आवारा छोड़ने पर ₹50,000 (पचास हजार रुपये) जुर्माना राशि का प्रावधान है।"
+            },
+            {
+                page: 8,
+                qHi: "हरियाणा राज्य में पशुओं का सबसे बड़ा मेला कहाँ लगता है?",
+                qEn: "Where is the largest animal fair (Pashu Mela) held in Haryana state?",
+                options: ["जहाजगढ़ (झज्जर) / Jhajjar (Jhajjar)", "लोहारू (भिवानी) / Loharu (Bhiwani)", "हंसडीहर (जींद) / Hansdehar (Jind)", "तिलपत (फरीदाबाद) / Tilpat (Faridabad)"],
+                correct: 0,
+                hint: "Jhajjar district location.",
+                exp: "राज्य के जहाजगढ़ (झज्जर) स्थान पर पशुओं का सबसे बड़ा मेला लगता है।"
+            },
+            {
+                page: 8,
+                qHi: "हरियाणा राज्य में ऊंटों का सबसे बड़ा मेला कहाँ लगता है?",
+                qEn: "Where is the largest camel fair held in Haryana state?",
+                options: ["बरालू गांव, लोहारू (भिवानी) / Baralu village, Loharu (Bhiwani)", "जहाजगढ़ (झज्जर) / Jahajgarh (Jhajjar)", "सिरसा (Sirsa)", "हिसार (Hisar)"],
+                correct: 0,
+                hint: "Loharu tehsil in Bhiwani.",
+                exp: "राज्य में ऊंटों का सबसे बड़ा मेला बरालू गांव, लोहारू (भिवानी) में लगता है।"
+            },
+            {
+                page: 8,
+                qHi: "हरियाणा राज्य में किस दिन बैलों की आधिकारिक छुट्टी/विश्राम रहता है?",
+                qEn: "On which day is an official holiday/rest observed for bullocks in Haryana?",
+                options: ["अमावस्या (Amavasya)", "पूर्णिमा (Purnima)", "रविवार (Sunday)", "सोमवार (Monday)"],
+                correct: 0,
+                hint: "New moon day.",
+                exp: "हरियाणा राज्य में 'अमावस्या' के दिन बैलों की कार्य से छुट्टी रखी जाती है।"
+            },
+            {
+                page: 8,
+                qHi: "राष्ट्रीय अश्व अनुसंधान केंद्र (NRCE) और केंद्रीय भैंस अनुसंधान संस्थान (CIRB) हरियाणा के किस जिले में स्थित हैं?",
+                qEn: "National Research Centre on Equines (NRCE) and Central Institute for Research on Buffaloes (CIRB) are located in which district?",
+                options: ["हिसार / Hisar", "करनाल / Karnal", "रोहतक / Rohtak", "अंबाला / Ambala"],
+                correct: 0,
+                hint: "Livestock hub of Haryana.",
+                exp: "राष्ट्रीय अश्व अनुसंधान संस्थान, केन्द्रीय भैंस अनुसंधान केंद्र, केन्द्रीय भेड़ प्रजनन केंद्र तथा भ्रूण प्रत्यारोपण प्रयोगशाला हिसार में स्थित हैं।"
+            },
+            {
+                page: 8,
+                qHi: "1966 में हरियाणा राज्य गठन के समय कुल पशु चिकित्सा संस्थान कितने थे और वर्तमान में लगभग कितने हैं?",
+                qEn: "How many total veterinary institutions were in Haryana in 1966, and what is the current strength?",
+                options: ["1966 में 314, वर्तमान में 2799 / 314 in 1966, currently 2799", "1966 में 100, वर्तमान में 500 / 100 in 1966, currently 500", "1966 में 500, वर्तमान में 1000 / 500 in 1966, currently 1000", "1966 में 50, वर्तमान में 1500 / 50 in 1966, currently 1500"],
+                correct: 0,
+                hint: "314 in 1966.",
+                exp: "1966 में राज्य में कुल पशु चिकित्सा संस्थान 314 थे, जो वर्तमान में बढ़कर 2799 हो चुके हैं।"
+            },
+            {
+                page: 8,
+                qHi: "हरियाणा में 'पशु व पक्षी गोद लेने की योजना' कब प्रारम्भ की गई थी?",
+                qEn: "When was the 'Animal and Bird Adoption Scheme' launched in Haryana?",
+                options: ["7 फरवरी 2011 / 7 February 2011", "15 अगस्त 2015 / 15 August 2015", "26 जनवरी 2000 / 26 January 2000", "1 नवंबर 2019 / 1 November 2019"],
+                correct: 0,
+                hint: "February 2011.",
+                exp: "राज्य में पशु व पक्षी गोद लेने की योजना 7 फरवरी 2011 को प्रारम्भ की गई थी।"
+            },
+            {
+                page: 8,
+                qHi: "हरियाणा में पशु गोद लेने वाले प्रथम राज्य कैबिनेट मंत्री कौन थे और उन्होंने किस जानवर को गोद लिया था?",
+                qEn: "Who was the first Haryana Cabinet Minister to adopt an animal, and which animal was adopted?",
+                options: ["कैप्टन अजय यादव (ब्लैक बक - पीपली चिड़ियाघर) / Captain Ajay Yadav (Blackbuck - Pipli Zoo)", "जयप्रकाश दलाल (गाय) / JP Dalal (Cow)", "ओ.पी. धनखड़ (भैंस) / OP Dhankhar (Buffalo)", "अनिल विज (शेर) / Anil Vij (Lion)"],
+                correct: 0,
+                hint: "Adopted Blackbuck in Pipli Zoo for ₹22,500.",
+                exp: "पशु गोद लेने वाले प्रथम मंत्री कैप्टन अजय यादव थे। इन्होंने ₹22,500 में पीपली चिड़ियाघर में ब्लैक बक (काला हिरण) को गोद लिया था।"
+            },
+            {
+                page: 8,
+                qHi: "हरियाणा पशुधन विकास बोर्ड (HLDB) का गठन कब किया गया था?",
+                qEn: "When was the Haryana Livestock Development Board (HLDB) constituted?",
+                options: ["12-13 जनवरी 2000 / 12-13 January 2000", "15 अगस्त 1995 / 15 August 1995", "1 नवंबर 1966 / 1 November 1966", "26 मार्च 2010 / 26 March 2010"],
+                correct: 0,
+                hint: "January 2000.",
+                exp: "हरियाणा पशुधन विकास बोर्ड का गठन 12-13 जनवरी 2000 को किया गया था।"
+            },
+            {
+                page: 8,
+                qHi: "हरियाणा के किस जिले में सर्वाधिक तथा किसमें सबसे कम कुल पशुधन पाया जाता है?",
+                qEn: "Which district has highest total livestock and which has lowest in Haryana?",
+                options: ["सर्वाधिक: हिसार, सबसे कम: पंचकुला / Highest: Hisar, Lowest: Panchkula", "सर्वाधिक: सिरसा, सबसे कम: मेवात / Highest: Sirsa, Lowest: Mewat", "सर्वाधिक: जींद, सबसे कम: फरीदाबाद / Highest: Jind, Lowest: Faridabad", "सर्वाधिक: रोहतक, सबसे कम: अंबाला / Highest: Rohtak, Lowest: Ambala"],
+                correct: 0,
+                hint: "Hisar highest livestock, Panchkula lowest.",
+                exp: "हरियाणा में सर्वाधिक पशु हिसार में तथा सबसे कम पशु पंचकुला में पाए जाते हैं।"
+            },
+            {
+                page: 8,
+                qHi: "20वीं पशुधन गणना के अनुसार हरियाणा के किस जिले में सर्वाधिक भैंसें पाई जाती हैं?",
+                qEn: "According to 20th Livestock Census, which district has the highest buffalo population in Haryana?",
+                options: ["हिसार (4,26,486) / Hisar (4,26,486)", "जींद / Jind", "कैथल / Kaithal", "पंचकुला / Panchkula"],
+                correct: 0,
+                hint: "Hisar with over 4.26 lakh buffaloes.",
+                exp: "वर्तमान में हरियाणा में सर्वाधिक भैंसें हिसार (4,26,486) जिले में पाई जाती हैं (दूसरे पर जींद)।"
+            },
+            {
+                page: 8,
+                qHi: "मुर्रा नस्ल की भैंसों के लिए हरियाणा का कौन सा जिला सर्वाधिक प्रसिद्ध है जिसे 'हरियाणा की दूध की बाल्टी' भी कहा जाता है?",
+                qEn: "Which district is most famous for Murrah buffaloes in Haryana?",
+                options: ["जींद / Jind", "हिसार / Hisar", "सिरसा / Sirsa", "महेंद्रगढ़ / Mahendragarh"],
+                correct: 0,
+                hint: "Jind district.",
+                exp: "मुर्रा नस्ल की भैंसों के लिए हरियाणा का प्रसिद्ध जिला 'जींद' है।"
+            },
+            {
+                page: 8,
+                qHi: "हरियाणा में मुर्रा नस्ल की भैंस को स्थानीय भाषा में क्या कहा जाता है और इसका उपनाम क्या है?",
+                qEn: "What is Murrah buffalo locally called in Haryana, and what is its popular moniker?",
+                options: ["खुंडी, उपनाम: काला सोना / Khundi, Moniker: Black Gold", "कावेरी, उपनाम: सफेद सोना / Kaveri, Moniker: White Gold", "कामधेनु, उपनाम: लाल सोना / Kamdhenu, Moniker: Red Gold", "देसी, उपनाम: भूरा सोना / Desi, Moniker: Brown Gold"],
+                correct: 0,
+                hint: "Khundi / Black Gold (Kala Sona).",
+                exp: "मुर्रा भैंस का स्थानीय नाम 'खुंडी' है और इसे 'काला सोना' (Black Gold) तथा 'एशिया का ट्रैक्टर' भी कहा जाता है।"
+            },
+            {
+                page: 8,
+                qHi: "केंद्रीय भैंस अनुसंधान संस्थान (CIRB), हिसार द्वारा क्लोनिंग तकनीक से तैयार किया गया प्रसिद्ध कटड़ा/नर कौन सा है?",
+                qEn: "What is the name of the famous cloned buffalo bull produced by CIRB Hisar?",
+                options: ["सच गौरव / Sach Gaurav", "गौरव 1 / Gaurav 1", "करण 1 / Karan 1", "मुर्रा गौरव / Murrah Gaurav"],
+                correct: 0,
+                hint: "Sach Gaurav.",
+                exp: "केंद्रीय भैंस अनुसंधान केंद्र (CIRB) हिसार द्वारा तैयार किया गया क्लोन कटड़ा 'सच गौरव' (Sach Gaurav) है।"
+            },
+            {
+                page: 8,
+                qHi: "साहीवाल नस्ल की गाय का मूल उत्पत्ति स्थल कौन सा है और यह हरियाणा के किस जिले में सर्वाधिक पाई जाती है?",
+                qEn: "What is the origin place of Sahiwal cow and in which Haryana district is it most populated?",
+                options: ["उत्पत्ति: मोंटगोमरी (पाकिस्तान), सर्वाधिक: सिरसा / Origin: Montgomery (Pak), Max: Sirsa", "उत्पत्ति: रोहतक, सर्वाधिक: हिसार / Origin: Rohtak, Max: Hisar", "उत्पत्ति: गुजरात, सर्वाधिक: पंचकुला / Origin: Gujarat, Max: Panchkula", "उत्पत्ति: मथुारा, सर्वाधिक: जींद / Origin: Mathura, Max: Jind"],
+                correct: 0,
+                hint: "Montgomery district in Pakistan; max in Sirsa.",
+                exp: "साहीवाल गाय का उत्पत्ति स्थल मोंटगोमरी (पाकिस्तान) है और यह हरियाणा के सिरसा जिले में सर्वाधिक पाई जाती है।"
+            },
+            {
+                page: 8,
+                qHi: "25 किलोग्राम या उससे अधिक प्रतिदिन दूध देने वाली मुर्रा भैंस के पशुपालक को हरियाणा सरकार द्वारा कितनी पुरस्कार राशि दी जाती है?",
+                qEn: "What cash reward is given by the Haryana government to farmers owning a Murrah buffalo yielding 25 kg+ milk daily?",
+                options: ["30 हजार रुपये / ₹30,000", "50 हजार रुपये / ₹50,000", "10 हजार रुपये / ₹10,000", "1 लाख रुपये / ₹1,00,000"],
+                correct: 0,
+                hint: "30 thousand rupees reward.",
+                exp: "राज्य में 25 कि.ग्रा. दूध प्रतिदिन देने वाली मुर्रा भैंस के मालिक किसान को राज्य सरकार द्वारा ₹30,000 ईनाम दिया जाता है।"
+            },
+            {
+                page: 8,
+                qHi: "हरियाणा राज्य का प्रथम पशु विज्ञान केंद्र (Pashu Vigyan Kendra) कहाँ खोला गया था?",
+                qEn: "Where was Haryana's first Pashu Vigyan Kendra opened?",
+                options: ["कैथल / Kaithal", "हिसार / Hisar", "रोहतक / Rohtak", "भिवानी / Bhiwani"],
+                correct: 0,
+                hint: "Kaithal district.",
+                exp: "राज्य का प्रथम पशु विज्ञान केंद्र 'कैथल' में खोला गया था।"
+            },
+            {
+                page: 8,
+                qHi: "देश का प्रथम 'नंदघर' (Nand Ghar) हरियाणा के किस स्थान पर स्थापित किया गया है?",
+                qEn: "Where is India's first 'Nand Ghar' established in Haryana?",
+                options: ["हसनपुर (सोनीपत) / Hasanpur (Sonipat)", "जहाजगढ़ (झज्जर) / Jahajgarh (Jhajjar)", "बरालू (भिवानी) / Baralu (Bhiwani)", "नारनौंद (हिसार) / Narnaund (Hisar)"],
+                correct: 0,
+                hint: "Hasanpur in Sonipat district.",
+                exp: "देश का प्रथम 'नंदघर' हसनपुर (सोनीपत) में स्थापित किया गया है।"
+            },
+            {
+                page: 8,
+                qHi: "हरियाणा का एकमात्र पशु विश्वविद्यालय कौन सा है और यह कब स्थापित हुआ था?",
+                qEn: "Which is the only Veterinary University in Haryana and when was it established?",
+                options: ["लाला लाजपत राय पशु विश्वविद्यालय (LUVAS), हिसार - 2010 / LUVAS Hisar - 2010", "चौधरी चरण सिंह हरियाणा कृषि विश्वविद्यालय - 1970 / CCS HAU - 1970", "महर्षि दयानंद विश्वविद्यालय - 1976 / MDU - 1976", "केंद्रीय विश्वविद्यालय महेंद्रगढ़ - 2009 / CUH - 2009"],
+                correct: 0,
+                hint: "LUVAS Hisar created in 2010.",
+                exp: "राज्य का एकमात्र पशु विश्वविद्यालय लाला लाजपत राय पशु चिकित्सा एवं पशु विज्ञान विश्वविद्यालय (LUVAS), हिसार है, जो 2010 में स्थापित हुआ।"
+            },
+            {
+                page: 8,
+                qHi: "लाला लाजपत राय पशु विश्वविद्यालय (LUVAS) द्वारा विकसित सर्वाधिक ऊन देने वाली भेड़ की नस्ल कौन सी है?",
+                qEn: "Which high wool yielding sheep breed was developed by LUVAS Hisar?",
+                options: ["हरनाल भेड़ / Harnal Sheep", "हिसारडेल / Hisardale", "मांगरा / Magra", "चोकला / Chokla"],
+                correct: 0,
+                hint: "Harnal sheep.",
+                exp: "LUVAS हिसार द्वारा सर्वाधिक ऊन देने वाली भेड़ की नस्ल 'हरनाल भेड़' (Harnal Sheep) विकसित की गई है।"
+            },
+            {
+                page: 8,
+                qHi: "हरियाणा राज्य में प्रति व्यक्ति दूध उपलब्धता (Per capita milk availability) कितनी है?",
+                qEn: "What is the per capita milk availability in Haryana state (as per textbook text Page 8)?",
+                options: ["1344 ग्राम / 1344 grams", "800 ग्राम / 800 grams", "500 ग्राम / 500 grams", "2000 ग्राम / 2000 grams"],
+                correct: 0,
+                hint: "1344 grams.",
+                exp: "राज्य में प्रति व्यक्ति दूध उपलब्धता 1344 ग्राम है (जो पहले 1142 ग्राम थी), तथा खपत 673 ग्राम है। प्रति व्यक्ति उपलब्धता में हरियाणा देश में प्रथम है।"
+            },
+            {
+                page: 8,
+                qHi: "एशिया का सबसे बड़ा पशु फार्म (Asia's Largest Livestock Farm) हरियाणा में कहाँ स्थित है?",
+                qEn: "Where is Asia's largest Livestock Farm situated in Haryana?",
+                options: ["हिसार / Hisar", "करनाल / Karnal", "अंबाला / Ambala", "गुरुग्राम / Gurugram"],
+                correct: 0,
+                hint: "Hisar Livestock Farm.",
+                exp: "एशिया का सबसे बड़ा पशु फार्म (Government Livestock Farm) हिसार में स्थित है।"
+            },
+            {
+                page: 8,
+                qHi: "स्वामी दयानंद सरस्वती द्वारा हरियाणा में प्रथम गौशाला 24 दिसम्बर 1878 को कहाँ स्थापित की गई थी?",
+                qEn: "Where was Haryana's first Gaushala established by Swami Dayanand Saraswati on 24 Dec 1878?",
+                options: ["रेवाड़ी / Rewari", "सिरसा / Sirsa", "अंबाला / Ambala", "रोहतक / Rohtak"],
+                correct: 0,
+                hint: "Rewari district.",
+                exp: "राज्य में प्रथम गौशाला 24 दिसम्बर 1878 को स्वामी दयानंद सरस्वती जी द्वारा रेवाड़ी में स्थापित की गई थी।"
+            },
+            {
+                page: 8,
+                qHi: "हरियाणा की सिंधु घाटी सभ्यता (Indus Valley Civilization) के स्थलों से किस पालतू जानवर के अवशेष/जानकारी प्राप्त नहीं होती है?",
+                qEn: "Information about which animal is NOT found from Indus Valley sites in Haryana?",
+                options: ["घोड़े (Horse)", "गाय (Cow)", "भैंस (Buffalo)", "बैल (Bull)"],
+                correct: 0,
+                hint: "Equine / Horse.",
+                exp: "राज्य में सिंधु घाटी सभ्यता स्थलों से 'घोड़े' (Horse) के बारे में स्पस्ट जानकारी प्राप्त नहीं होती है।"
+            },
+
+            // --- PAGE 9: 10 QUESTIONS (Index 105 to 114) ---
+            {
+                page: 9,
+                qHi: "20वीं पशुधन जनगणना (2019) के अनुसार हरियाणा के किस जिले में सर्वाधिक घोड़े पाए जाते हैं?",
+                qEn: "According to the 20th Livestock Census, which district has highest horse population in Haryana?",
+                options: ["गुरुग्राम (710) / Gurugram (710)", "करनाल (677) / Karnal (677)", "कैथल (587) / Kaithal (587)", "पंचकुला (100) / Panchkula (100)"],
+                correct: 0,
+                hint: "Gurugram leads with 710 horses.",
+                exp: "20वीं जनगणना अनुसार सर्वाधिक घोड़ों वाला जिला गुरुग्राम (710) है, दूसरे पर करनाल (677) व तीसरे पर कैथल (587) है।"
+            },
+            {
+                page: 9,
+                qHi: "हरियाणा में सर्वाधिक कुत्तों (Dogs) की संख्या वाला जिला कौन सा है?",
+                qEn: "Which district in Haryana has the highest dog population?",
+                options: ["नूंह/मेवात (8248) / Nuh/Mewat (8248)", "भिवानी (6148) / Bhiwani (6148)", "सिरसा (5878) / Sirsa (5878)", "पंचकुला / Panchkula"],
+                correct: 0,
+                hint: "Nuh/Mewat district with over 8,200 dogs.",
+                exp: "हरियाणा में सर्वाधिक कुत्तों की संख्या नूंह/मेवात (8248) जिले में है, दूसरे पर भिवानी (6148) है।"
+            },
+            {
+                page: 9,
+                qHi: "हरियाणा के किस जिले में सर्वाधिक ऊंट (Camels) पाए जाते हैं?",
+                qEn: "Which district has the highest camel population in Haryana?",
+                options: ["सिरसा (1289) / Sirsa (1289)", "भिवानी (1001) / Bhiwani (1001)", "महेंद्रगढ़ (807) / Mahendragarh (807)", "अंबाला / Ambala"],
+                correct: 0,
+                hint: "Sirsa leads in camel count.",
+                exp: "सर्वाधिक ऊंटों की संख्या वाला जिला सिरसा (1289) है, दूसरे पर भिवानी (1001) तथा तीसरे पर महेंद्रगढ़ (807) है।"
+            },
+            {
+                page: 9,
+                qHi: "हरियाणा के किस जिले में सर्वाधिक हाथी (Elephants) पाए जाते हैं?",
+                qEn: "Which district has the highest number of elephants in Haryana?",
+                options: ["यमुनानगर (4) / Yamunanagar (4)", "कुरुक्षेत्र (1) / Kurukshetra (1)", "अंबाला (0) / Ambala (0)", "हिसार (0) / Hisar (0)"],
+                correct: 0,
+                hint: "Total 5 elephants in state, 4 in Yamunanagar.",
+                exp: "हरियाणा में कुल 5 हाथी हैं, जिनमें से सर्वाधिक 4 हाथी यमुनानगर में तथा 1 हाथी कुरुक्षेत्र में पाया जाता है।"
+            },
+            {
+                page: 9,
+                qHi: "हरियाणा के किस जिले में सर्वाधिक सूअर (Pigs / Swine) पाए जाते हैं?",
+                qEn: "Which district in Haryana has the highest pig population?",
+                options: ["सोनीपत (12,399) / Sonipat (12,399)", "मेवात (701) / Mewat (701)", "हिसार / Hisar", "करनाल / Karnal"],
+                correct: 0,
+                hint: "Sonipat district.",
+                exp: "राज्य में सर्वाधिक सूअर (Pigs) की संख्या वाला जिला सोनीपत (12,399) है।"
+            },
+            {
+                page: 9,
+                qHi: "हरियाणा में सर्वाधिक गधों (Donkeys) की संख्या किस जिले में है?",
+                qEn: "Which district in Haryana has the highest donkey population?",
+                options: ["पलवल (89) / Palwal (89)", "गुरुग्राम (88) / Gurugram (88)", "अंबाला (3) / Ambala (3)", "सिरसा / Sirsa"],
+                correct: 0,
+                hint: "Palwal leads with 89 donkeys.",
+                exp: "सर्वाधिक गधों की संख्या पलवल (89) में है, तथा दूसरा स्थान गुरुग्राम (88) का है।"
+            },
+            {
+                page: 9,
+                qHi: "हरियाणा के किस जिले में सर्वाधिक खच्चर (Mules) पाए जाते हैं?",
+                qEn: "Which district in Haryana has the highest mule population?",
+                options: ["झज्जर (330) / Jhajjar (330)", "रेवाड़ी (248) / Rewari (248)", "पानीपत (22) / Panipat (22)", "अंबाला / Ambala"],
+                correct: 0,
+                hint: "Jhajjar district with 330 mules.",
+                exp: "सर्वाधिक खच्चर (Mules) वाला जिला झज्जर (330) है और दूसरा रेवाड़ी (248) है।"
+            },
+            {
+                page: 9,
+                qHi: "20वीं पशुधन जनगणना (2019) के अनुसार हरियाणा में कुल भैंसों तथा कुल भेड़ों की संख्या क्रमशः कितनी है?",
+                qEn: "According to 20th Census (2019), what is total population of Buffaloes and Sheep in Haryana?",
+                options: ["भैंस: 43,76,644, भेड़: 2,88,766 / Buffaloes: 43,76,644, Sheep: 2,88,766", "भैंस: 10,00,000, भेड़: 5,00,000 / Buffaloes: 10 Lakh, Sheep: 5 Lakh", "भैंस: 50,00,000, भेड़: 10,00,000 / Buffaloes: 50 Lakh, Sheep: 10 Lakh", "दोनों 20-20 लाख / 20 Lakh each"],
+                correct: 0,
+                hint: "43.76 lakh buffaloes.",
+                exp: "20वीं पशुधन जनगणना 2019 के अनुसार कुल भैंस 43,76,644 तथा कुल भेड़ 2,88,766 हैं।"
+            },
+            {
+                page: 9,
+                qHi: "20वीं पशुधन जनगणना के अनुसार हरियाणा में सर्वाधिक बिल्लियाँ (Cats) किस जिले में पाई जाती हैं?",
+                qEn: "In which district are maximum cats found in Haryana as per 20th Census?",
+                options: ["नूंह/मेवात जिला / Nuh/Mewat district", "पंचकुला / Panchkula", "हिसार / Hisar", "भिवानी / Bhiwani"],
+                correct: 0,
+                hint: "Nuh / Mewat.",
+                exp: "राज्य में पहली बार बिल्लियों की गणना हुई जिसमें सर्वाधिक बिल्लियाँ नूंह (मेवात) जिले में पाई गईं।"
+            },
+            {
+                page: 9,
+                qHi: "2019 जनगणना के अनुसार हरियाणा पशुधन में सर्वाधिक जनसंख्या किस जानवर की है और दूसरा स्थान किसका है?",
+                qEn: "Which animal forms highest and second highest percentage in Haryana livestock population?",
+                options: ["प्रथम: भैंस (43,76,644), द्वितीय: बकरी (3,36,338) / 1st: Buffalo, 2nd: Goat", "प्रथम: गाय, द्वितीय: घोड़ा / 1st: Cow, 2nd: Horse", "प्रथम: भेड़, द्वितीय: सूअर / 1st: Sheep, 2nd: Swine", "प्रथम: ऊंट, द्वितीय: कुत्ता / 1st: Camel, 2nd: Dog"],
+                correct: 0,
+                hint: "Buffaloes are highest, Goats second highest.",
+                exp: "राज्य में सर्वाधिक पशुधन भैंस (43,76,644) है, जबकि पशुधन में दूसरा स्थान बकरियों (3,36,338) का है।"
+            },
+
+            // --- PAGE 10: 30 QUESTIONS (Index 115 to 144) ---
+            {
+                page: 10,
+                qHi: "भारतीय अर्थव्यवस्था के सकल घरेलू उत्पाद (GDP) में पशुपालन का कितना प्रतिशत योगदान है?",
+                qEn: "What is the percentage contribution of livestock sector in Indian GDP?",
+                options: ["28.30 प्रतिशत / 28.30 percent", "10.50 प्रतिशत / 10.50 percent", "50.00 प्रतिशत / 50.00 percent", "5.00 प्रतिशत / 5.00 percent"],
+                correct: 0,
+                hint: "Around 28.3%.",
+                exp: "सकल घरेलू उत्पाद (GDP) में पशुपालन का 28.30% योगदान है, जिसमें दुग्ध उत्पाद का सर्वाधिक हिस्सा है।"
+            },
+            {
+                page: 10,
+                qHi: "भारत की लगभग कितने प्रतिशत ग्रामीण आबादी आजीविका के लिए कृषि एवं पशुपालन पर निर्भर है?",
+                qEn: "What percentage of India's population depends on agriculture and livestock?",
+                options: ["लगभग 70 प्रतिशत / Approx 70 percent", "लगभग 20 प्रतिशत / Approx 20 percent", "लगभग 95 प्रतिशत / Approx 95 percent", "लगभग 40 प्रतिशत / Approx 40 percent"],
+                correct: 0,
+                hint: "Around 70%.",
+                exp: "देश की लगभग 70 प्रतिशत आबादी कृषि एवं पशुपालन पर निर्भर करती है।"
+            },
+            {
+                page: 10,
+                qHi: "विश्व में दुग्ध उत्पादन (Milk Production) और अंडा उत्पादन में भारत का कौन सा स्थान है?",
+                qEn: "What is India's global rank in Milk production and Egg production respectively?",
+                options: ["दुग्ध: प्रथम (1st), अंडा: तृतीय (3rd) / Milk: 1st, Egg: 3rd", "दुग्ध: द्वितीय (2nd), अंडा: प्रथम (1st) / Milk: 2nd, Egg: 1st", "दुग्ध: पांचवां (5th), अंडा: दसवां (10th) / Milk: 5th, Egg: 10th", "दोनों में प्रथम / 1st in both"],
+                correct: 0,
+                hint: "Rank 1 in milk, Rank 3 in egg.",
+                exp: "भारत दुग्ध उत्पादन में विश्व में प्रथम (1st) तथा अंडा उत्पादन में विश्व में तृतीय (3rd) स्थान पर है।"
+            },
+            {
+                page: 10,
+                qHi: "विश्व में मांस (Meat) उत्पादन में भारत का कौन सा स्थान है?",
+                qEn: "What is India's global rank in Meat production?",
+                options: ["सातवां स्थान (7th) / 7th Rank", "प्रथम स्थान (1st) / 1st Rank", "दूसरा स्थान (2nd) / 2nd Rank", "बीसवां स्थान (20th) / 20th Rank"],
+                correct: 0,
+                hint: "7th position globally.",
+                exp: "मांस उत्पादन में भारत विश्व में सातवें (7th) स्थान पर है।"
+            },
+            {
+                page: 10,
+                qHi: "भारत में विश्व की कुल गायों तथा भैंसों का कितना प्रतिशत पाया जाता है?",
+                qEn: "What percentage of the world's total cows and buffaloes are present in India?",
+                options: ["गायें: 15%, भैंसें: 55% / Cows: 15%, Buffaloes: 55%", "गायें: 50%, भैंसें: 10% / Cows: 50%, Buffaloes: 10%", "गायें: 5%, भैंसें: 5% / Cows: 5%, Buffaloes: 5%", "दोनों 30% / 30% each"],
+                correct: 0,
+                hint: "Over half of world's buffaloes (55%).",
+                exp: "भारत में विश्व की कुल संख्या का 15% गायें तथा 55% भैंसें पाई जाती हैं।"
+            },
+            {
+                page: 10,
+                qHi: "भारत के कुल दुग्ध उत्पादन का कितना प्रतिशत हिस्सा क्रमशः भैंसों, गायों और बकरियों से प्राप्त होता है?",
+                qEn: "What percentage of total milk production in India comes from Buffaloes, Cows, and Goats?",
+                options: ["भैंस: 53%, गाय: 43%, बकरी: 3% / Buffalo: 53%, Cow: 43%, Goat: 3%", "भैंस: 10%, गाय: 80%, बकरी: 10% / Buffalo: 10%, Cow: 80%, Goat: 10%", "भैंस: 90%, गाय: 5%, बकरी: 5% / Buffalo: 90%, Cow: 5%, Goat: 5%", "तीनों बराबर / All equal"],
+                correct: 0,
+                hint: "Buffaloes share >50%, cows ~43%.",
+                exp: "कुल दुग्ध उत्पादन का 53% भैंसों, 43% गायों तथा 3% बकरियों से प्राप्त होता है।"
+            },
+            {
+                page: 10,
+                qHi: "गाय का वैज्ञानिक वर्गीकरण: संघ (Phylum), वर्ग (Class) व कुल (Family) क्या है?",
+                qEn: "What is the Phylum, Class, and Family of Cow?",
+                options: ["संघ: कॉर्डेटा, वर्ग: मैमेलिया, कुल: बोविडी / Phylum: Chordata, Class: Mammalia, Family: Bovidae", "संघ: आर्थ्रोपोडा, वर्ग: इंसेक्टा, कुल: कैनिडे / Phylum: Arthropoda, Class: Insecta, Family: Canidae", "संघ: एनेलिडा, वर्ग: एवेस, कुल: फेलिडे / Phylum: Annelida, Class: Aves, Family: Felidae", "कोई नहीं / None"],
+                correct: 0,
+                hint: "Chordata, Mammalia, Bovidae.",
+                exp: "गाय का संघ: कॉर्डेटा (Chordata), वर्ग: मैमेलिया (Mammalia), कुल: बोविडी (Bovidae) है।"
+            },
+            {
+                page: 10,
+                qHi: "गाय का औसत जीवनकाल (Life Span) कितना होता है?",
+                qEn: "What is the average life span of a cow?",
+                options: ["20 - 25 वर्ष / 20 - 25 years", "5 - 10 वर्ष / 5 - 10 years", "40 - 50 वर्ष / 40 - 50 years", "100 वर्ष / 100 years"],
+                correct: 0,
+                hint: "20 to 25 years.",
+                exp: "गाय का औसत जीवनकाल 20 से 25 वर्ष होता है।"
+            },
+            {
+                page: 10,
+                qHi: "गायों के समूह/झुंड को अंग्रेजी तकनीकी शब्दावली में क्या कहा जाता है?",
+                qEn: "What is a group/flock of cows called?",
+                options: ["हर्ड (Herd)", "फ्लॉक (Flock)", "पैक (Pack)", "स्वाम (Swarm)"],
+                correct: 0,
+                hint: "Herd of cattle.",
+                exp: "गायों के समूह या झुंड को 'हर्ड' (Herd) कहा जाता है।"
+            },
+            {
+                page: 10,
+                qHi: "एक मानक पशु बाड़े (Shed) में अधिकतम कितनी गायों/पशुओं को रखा जाना चाहिए?",
+                qEn: "What is the maximum recommended number of cows in a single shed?",
+                options: ["50 पशु / 50 animals", "1000 पशु / 1000 animals", "10 पशु / 10 animals", "200 पशु / 200 animals"],
+                correct: 0,
+                hint: "Max 50 animals per shed.",
+                exp: "एक बाड़े में अधिकतम पशुओं (गायों) की संख्या 50 रखी जानी चाहिए।"
+            },
+            {
+                page: 10,
+                qHi: "गाय के दुग्ध काल (Lactation Period) के औसत दिनों की संख्या कितनी होती है?",
+                qEn: "What is the average number of lactation days for a cow?",
+                options: ["300 दिन / 300 days", "100 दिन / 100 days", "365 दिन / 365 days", "180 दिन / 180 days"],
+                correct: 0,
+                hint: "Standard 300 days lactation.",
+                exp: "गाय के दुग्ध काल के औसत दिनों की संख्या 300 दिन होती है।"
+            },
+            {
+                page: 10,
+                qHi: "गाय के पूर्ण वयस्क (Full Adult) होने की अवस्था/उम्र क्या होती है?",
+                qEn: "At what age does a cow reach full maturity/adulthood?",
+                options: ["5 से 5.5 वर्ष / 5 to 5.5 years", "1 से 2 वर्ष / 1 to 2 years", "10 से 12 वर्ष / 10 to 12 years", "6 महीने / 6 months"],
+                correct: 0,
+                hint: "Around 5 to 5.5 years.",
+                exp: "गाय के पूर्ण वयस्क होने की अवस्था 5 से 5.5 वर्ष होती है।"
+            },
+            {
+                page: 10,
+                qHi: "गाय का औसत गर्भधारण काल (Gestation Period) लगभग कितने दिन का होता है?",
+                qEn: "What is the average gestation period of a cow?",
+                options: ["282 दिन (लगभग 9 माह 9 दिन) / 282 days", "310 दिन / 310 days", "150 दिन / 150 days", "60 दिन / 60 days"],
+                correct: 0,
+                hint: "282 days (~9 months).",
+                exp: "गाय का गर्भधारण काल लगभग 282 दिन का होता है।"
+            },
+            {
+                page: 10,
+                qHi: "गाय के शरीर का सामान्य औसत तापमान (Normal Body Temperature) कितना होता है?",
+                qEn: "What is the normal body temperature of a cow in Fahrenheit?",
+                options: ["101.5 °F", "98.6 °F", "105.0 °F", "108.2 °F"],
+                correct: 0,
+                hint: "101.5 Degrees Fahrenheit.",
+                exp: "गाय का सामान्य औसत शारीरिक तापमान 101.5 °F होता है।"
+            },
+            {
+                page: 10,
+                qHi: "गाय के दूध में औसत वसा (Fat) की मात्रा कितनी होती है?",
+                qEn: "What is the average fat content in cow milk?",
+                options: ["4.92% (या लगभग 4.5 - 4.9%)", "10.5%", "1.2%", "15.0%"],
+                correct: 0,
+                hint: "Around 4.92%.",
+                exp: "गाय के दूध में औसत वसा की मात्रा 4.92% होती है।"
+            },
+            {
+                page: 10,
+                qHi: "गाय की वह कौन सी नस्ल है जो अपना 'सिर ऊपर उठाकर' चलती है?",
+                qEn: "Which cow breed walks with its head held high?",
+                options: ["कांकरेज (Kankrej)", "गिर (Gir)", "साहीवाल (Sahiwal)", "मेवाती (Mewati)"],
+                correct: 0,
+                hint: "Heaviest breed known for Sawai Chaal.",
+                exp: "गाय की 'कांकरेज' (Kankrej) नस्ल गर्व से सिर ऊपर उठाकर चलने के लिए जानी जाती है।"
+            },
+            {
+                page: 10,
+                qHi: "प्रसव (Calving) के बाद एक स्वस्थ गाय को कितने घंटे के भीतर जेर (Placenta) डाल देनी चाहिए?",
+                qEn: "Within how many hours after calving should a cow normally shed its placenta (Jer)?",
+                options: ["3 से 4 घंटे में / 3 to 4 hours", "24 घंटे बाद / 24 hours later", "10 मिनट में / 10 minutes", "3 दिन में / 3 days"],
+                correct: 0,
+                hint: "Within 3-4 hours.",
+                exp: "एक गाय को प्रसव के बाद 3 से 4 घंटे में जेर (Placenta) डाल देनी चाहिए।"
+            },
+            {
+                page: 10,
+                qHi: "जुगाली करने वाले पशुओं (गाय, भैंस) के आमाशय का प्रथम व सबसे बड़ा भाग कौन सा होता है?",
+                qEn: "Which is the first and largest compartment of the stomach in ruminant animals (cow, buffalo)?",
+                options: ["रूमेन (Rumen)", "रेटिकुलम (Reticulum)", "ओमेसम (Omasum)", "एबोमेसम (Abomasum)"],
+                correct: 0,
+                hint: "Rumen.",
+                exp: "जुगाली करने वाले पशुओं (गाय, भैंस) में 'रूमेन' (Rumen) नामक संरचना आमाशय का सबसे बड़ा भाग होती है।"
+            },
+            {
+                page: 10,
+                qHi: "डेयरी पशुओं (Dairy Cattle) में पाई जाने वाली गाय की सबसे सुन्दर नस्ल कौन सी मानी जाती है?",
+                qEn: "Which is considered the most beautiful breed of dairy cattle?",
+                options: ["आयरशायर (Ayrshire)", "जर्सी (Jersey)", "होलस्टीन (Holstein)", "गिर (Gir)"],
+                correct: 0,
+                hint: "Scottish origin breed.",
+                exp: "डेयरी पशुओं में पाई जाने वाली गाय की सबसे सुन्दर नस्ल 'आयरशायर' (Ayrshire) मानी जाती है।"
+            },
+            {
+                page: 10,
+                qHi: "20वीं राज्य पशु जनगणना (2019) हरियाणा में कब प्रारंभ की गई थी?",
+                qEn: "When was the 20th Livestock Census started in Haryana?",
+                options: ["27 जनवरी 2019 / 27 January 2019", "1 जनवरी 2020 / 1 January 2020", "15 अगस्त 2018 / 15 August 2018", "31 दिसंबर 2019 / 31 December 2019"],
+                correct: 0,
+                hint: "27th January 2019.",
+                exp: "20वीं राज्य पशु जनगणना का प्रारम्भ 27 जनवरी 2019 को हुआ था।"
+            },
+            {
+                page: 10,
+                qHi: "हरियाणा में 20वीं पशुधन जनगणना में पहली बार किस तकनीक का प्रयोग किया गया?",
+                qEn: "Which technology was used for the first time in Haryana's 20th Livestock Census?",
+                options: ["स्मार्ट फोन व टैबलेट (Smartphones & Tablets)", "ड्रोन तकनीक (Drones)", "सैटेलाइट मैपिंग (Satellites)", "पेपर रजिस्टर (Paper Registers)"],
+                correct: 0,
+                hint: "Digital mobile handheld devices.",
+                exp: "20वीं पशु जनगणना में राज्य में पहली बार स्मार्ट फोन व टैबलेट का प्रयोग किया गया।"
+            },
+            {
+                page: 10,
+                qHi: "20वीं जनगणना से पूर्व हरियाणा में पशु जनगणना राजस्व विभाग द्वारा की जाती थी, इस बार किस विभाग द्वारा की गई?",
+                qEn: "Which department conducted the 20th Livestock Census instead of Revenue Department?",
+                options: ["डेयरी व पशुपालन विभाग / Department of Animal Husbandry & Dairying", "शिक्षा विभाग / Education Department", "वन विभाग / Forest Department", "स्वास्थ्य विभाग / Health Department"],
+                correct: 0,
+                hint: "Animal Husbandry & Dairying Dept.",
+                exp: "20वीं जनगणना पहली बार डेयरी व पशुपालन विभाग द्वारा करवाई गई।"
+            },
+            {
+                page: 10,
+                qHi: "हरियाणा की सकल राज्य घरेलू उत्पाद (GSDP) में पशुधन (Livestock) का कितना प्रतिशत योगदान है?",
+                qEn: "What is the percentage contribution of livestock to Haryana's GSDP?",
+                options: ["2.5% (As per text page 10)", "10.0%", "15.5%", "0.5%"],
+                correct: 0,
+                hint: "2.5 percent.",
+                exp: "राज्य की GDP (GSDP) में पशुधन का योगदान 2.5% है।"
+            },
+            {
+                page: 10,
+                qHi: "देश के कुल मांस व गोजातीय (Bovine) आबादी में हरियाणा राज्य का प्रतिशत योगदान कितना है?",
+                qEn: "What is Haryana's percentage contribution to national meat and bovine population?",
+                options: ["2.5%", "10%", "20%", "5%"],
+                correct: 0,
+                hint: "2.5 percent.",
+                exp: "देश में मांस व गोजातीय आबादी में हरियाणा का योगदान 2.5% है।"
+            },
+            {
+                page: 10,
+                qHi: "20वीं जनगणना के अनुसार हरियाणा राज्य में कुल पशुओं की संख्या कितनी दर्ज की गई है?",
+                qEn: "What is the total livestock population recorded in Haryana in 20th Census?",
+                options: ["71,26,497 (इकहत्तर लाख छब्बीस हजार चार सौ सतानवे)", "1 करोड़", "50 लाख", "20 लाख"],
+                correct: 0,
+                hint: "71.26 Lakh total livestock.",
+                exp: "राज्य में कुल पशुओं की संख्या 71,26,497 दर्ज की गई है।"
+            },
+            {
+                page: 10,
+                qHi: "हरियाणा में सबसे कम पशुधन वाले शीर्ष दो जिले कौन से हैं?",
+                qEn: "Which two districts have lowest total livestock population in Haryana?",
+                options: ["प्रथम: पंचकुला (1,05,871), द्वितीय: फरीदाबाद (1,72,343) / 1st: Panchkula, 2nd: Faridabad", "प्रथम: हिसार, द्वितीय: सिरसा / 1st: Hisar, 2nd: Sirsa", "प्रथम: रोहतक, द्वितीय: जींद / 1st: Rohtak, 2nd: Jind", "प्रथम: नूंह, द्वितीय: पलवल / 1st: Nuh, 2nd: Palwal"],
+                correct: 0,
+                hint: "Panchkula followed by Faridabad.",
+                exp: "सबसे कम पशुधन वाला जिला पंचकुला (1,05,871) तथा दूसरा फरीदाबाद (1,72,343) है।"
+            },
+            {
+                page: 10,
+                qHi: "हरियाणा में सर्वाधिक पशुधन जनसंख्या वाले शीर्ष तीन जिले कौन से हैं?",
+                qEn: "Which three districts have highest livestock population in Haryana?",
+                options: ["1. हिसार (6.57 लाख), 2. सिरसा (5.71 लाख), 3. जींद (5.56 लाख)", "1. पंचकुला, 2. गुरुग्राम, 3. अंबाला", "1. मेवात, 2. फरीदाबाद, 3. पलवल", "1. पानीपत, 2. सोनीपत, 3. रोहतक"],
+                correct: 0,
+                hint: "Hisar, Sirsa, Jind.",
+                exp: "सर्वाधिक पशुधन वाला प्रथम जिला हिसार (6,57,532), दूसरा सिरसा (5,71,924) व तीसरा जींद (5,56,880) है।"
+            },
+            {
+                page: 10,
+                qHi: "20वीं पशु जनगणना में हरियाणा में किस जानवर की जनसंख्या में सर्वाधिक बढ़ोतरी दर्ज की गई?",
+                qEn: "Which animal recorded maximum growth in population in Haryana during 20th Census?",
+                options: ["भैंसों की संख्या में / Buffalo population", "घोड़ों की संख्या में / Horse population", "ऊंटों की संख्या में / Camel population", "गधों की संख्या में / Donkey population"],
+                correct: 0,
+                hint: "Buffaloes.",
+                exp: "राज्य में पशुधन की संख्या में भैंसों (Buffaloes) की संख्या में सर्वाधिक बढ़ोतरी हुई है।"
+            },
+            {
+                page: 10,
+                qHi: "हरियाणा में सबसे कम भैंसों की संख्या वाले जिले कौन से हैं?",
+                qEn: "Which districts have lowest buffalo population in Haryana?",
+                options: ["पंचकुला (57,242), गुरुग्राम (1,12,688), फरीदाबाद (1,14,183)", "हिसार, जींद, कैथल", "सिरसा, भिवानी, महेंद्रगढ़", "अंबाला, यमुनानगर, कुरुक्षेत्र"],
+                correct: 0,
+                hint: "Panchkula has lowest buffalo count (~57k).",
+                exp: "सबसे कम भैंसों वाला प्रथम जिला पंचकुला (57,242), दूसरा गुरुग्राम (1,12,688) तथा तीसरा फरीदाबाद (1,14,183) है।"
+            },
+            {
+                page: 10,
+                qHi: "हरियाणा में सर्वाधिक भेड़ों (Sheep) तथा सर्वाधिक बकरियों (Goat) वाले जिले कौन से हैं?",
+                qEn: "Which districts lead in Sheep and Goat population in Haryana respectively?",
+                options: ["सर्वाधिक भेड़: भिवानी (34,533), सर्वाधिक बकरी: सिरसा (47,609) / Max Sheep: Bhiwani, Max Goat: Sirsa", "सर्वाधिक भेड़: पंचकुला, सर्वाधिक बकरी: गुरुग्राम", "सर्वाधिक भेड़: पानीपत, सर्वाधिक बकरी: कैथल", "सर्वाधिक भेड़: फरीदाबाद, सर्वाधिक बकरी: यमुनानगर"],
+                correct: 0,
+                hint: "Bhiwani for Sheep, Sirsa for Goat.",
+                exp: "सर्वाधिक भेड़ों वाला जिला भिवानी (34,533) तथा सर्वाधिक बकरियों वाला जिला सिरसा (47,609) है।"
+            }
+        ];
+
+        // Global State Variable
+        let questions = [];
+        let currentIndex = 0;
+        let userAnswers = {}; // stores selected option index for each question index
+        let score = 0;
+
+        // Utility Function to Shuffle Options dynamic and prevent fixed position patterns
+        function shuffleArray(array) {
+            let arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        // Initialize and randomize options for all unique questions
+        function initQuestions() {
+            questions = rawDataset.map((item, idx) => {
+                const originalOptions = item.options;
+                const correctText = originalOptions[item.correct];
+                const shuffledOpts = shuffleArray(originalOptions);
+                const newCorrectIndex = shuffledOpts.indexOf(correctText);
+
+                return {
+                    id: idx + 1,
+                    page: item.page,
+                    qHi: item.qHi,
+                    qEn: item.qEn,
+                    options: shuffledOpts,
+                    correct: newCorrectIndex,
+                    hint: item.hint,
+                    exp: item.exp
+                };
+            });
+        }
+
+        function loadQuestion(index) {
+            const q = questions[index];
+            
+            // Update Tracker & Page Tag
+            document.getElementById('question-tracker').innerText = `Question ${index + 1} of ${questions.length}`;
+            document.getElementById('page-source-tag').innerText = `Source: Page ${q.page}`;
+            document.getElementById('progress-bar').style.width = `${((index + 1) / questions.length) * 100}%`;
+
+            // Update Questions
+            document.getElementById('question-hi').innerText = `${index + 1}. ${q.qHi}`;
+            document.getElementById('question-en').innerText = q.qEn;
+
+            // Render Options
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            const isAnswered = userAnswers.hasOwnProperty(index);
+            const selectedOpt = userAnswers[index];
+
+            q.options.forEach((opt, optIdx) => {
+                const btn = document.createElement('button');
+                btn.className = `option-btn w-full text-left p-3.5 rounded-lg border text-sm md:text-base font-medium flex items-center justify-between transition-all`;
+                
+                let prefix = String.fromCharCode(65 + optIdx); // A, B, C, D
+                
+                if (!isAnswered) {
+                    btn.className += ` border-slate-300 bg-white hover:bg-indigo-50 hover:border-indigo-400 text-slate-800`;
+                    btn.onclick = () => selectOption(index, optIdx);
+                } else {
+                    btn.disabled = true;
+                    if (optIdx === q.correct) {
+                        btn.className += ` bg-emerald-100 border-emerald-500 text-emerald-900 font-semibold`;
+                    } else if (optIdx === selectedOpt) {
+                        btn.className += ` bg-rose-100 border-rose-500 text-rose-900 font-semibold`;
+                    } else {
+                        btn.className += ` border-slate-200 bg-slate-50 text-slate-400`;
+                    }
+                }
+
+                btn.innerHTML = `<span><strong class="mr-2">${prefix}.</strong> ${opt}</span>`;
+                optionsContainer.appendChild(btn);
+            });
+
+            // Handle Hint
+            const hintBox = document.getElementById('hint-box');
+            hintBox.innerText = q.hint;
+            hintBox.classList.add('hidden');
+
+            // Handle Explanation
+            const expBox = document.getElementById('explanation-box');
+            if (isAnswered) {
+                expBox.classList.remove('hidden');
+                if (selectedOpt === q.correct) {
+                    expBox.className = "p-4 rounded-lg text-sm bg-emerald-50 border border-emerald-300 text-emerald-900";
+                    expBox.innerHTML = `<strong>✔ Correct! / सही उत्तर!</strong><br>${q.exp}`;
+                } else {
+                    expBox.className = "p-4 rounded-lg text-sm bg-rose-50 border border-rose-300 text-rose-900";
+                    expBox.innerHTML = `<strong>✖ Incorrect. / गलत उत्तर!</strong><br><strong>Correct Answer:</strong> Option ${String.fromCharCode(65 + q.correct)}<br>${q.exp}`;
+                }
+            } else {
+                expBox.classList.add('hidden');
+            }
+
+            // Controls state
+            document.getElementById('prev-btn').disabled = (index === 0);
+            document.getElementById('next-btn').disabled = (index === questions.length - 1);
+            document.getElementById('jump-input').value = index + 1;
+        }
+
+        function selectOption(qIdx, optIdx) {
+            userAnswers[qIdx] = optIdx;
+            
+            // Update Score if correct
+            if (optIdx === questions[qIdx].correct) {
+                score++;
+            }
+            
+            document.getElementById('score-display').innerText = `${score} / ${questions.length}`;
+            loadQuestion(qIdx);
+        }
+
+        function toggleHint() {
+            const hintBox = document.getElementById('hint-box');
+            hintBox.classList.toggle('hidden');
+        }
+
+        function prevQuestion() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                loadQuestion(currentIndex);
+            }
+        }
+
+        function nextQuestion() {
+            if (currentIndex < questions.length - 1) {
+                currentIndex++;
+                loadQuestion(currentIndex);
+            }
+        }
+
+        function jumpToQuestion() {
+            const val = parseInt(document.getElementById('jump-input').value);
+            if (val >= 1 && val <= questions.length) {
+                currentIndex = val - 1;
+                loadQuestion(currentIndex);
+            } else {
+                alert(`Please enter a valid question number between 1 and ${questions.length}.`);
+            }
+        }
+
+        // Initialize on load
+        window.onload = function() {
+            initQuestions();
+            loadQuestion(0);
+        };
+    </script>
+<script src="../../quiz-question-controls.js"></script>
+<script src="../../quiz-app-ui-v2.js"></script></body>
+</html>

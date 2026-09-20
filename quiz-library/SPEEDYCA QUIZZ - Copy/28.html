@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Competitive Exam Quiz (CA 90 Questions)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .option-btn {
+            transition: all 0.2s ease-in-out;
+        }
+        .option-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+    </style>
+<style id="cosmic-readable-quiz-theme">
+:root{--space:#e8dcff;--panel:#f3eaff;--panel2:#dcc6ff;--edge:#6a45bf;--glow:#d28b28;--accent:#d15f9f;--ink:#2c1b4d;--muted:#66547c;--mist:rgba(106,69,191,.2)}html{background:var(--space)}body{background:radial-gradient(ellipse 62% 45% at 90% -5%,rgba(209,95,159,.28),transparent 62%),radial-gradient(ellipse 55% 40% at 8% 100%,rgba(65,164,207,.26),transparent 64%),var(--space)!important;color:var(--ink)!important;min-height:100vh}body:before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.78;background-image:radial-gradient(circle at 9% 18%,var(--glow) 0 1px,transparent 1.7px),radial-gradient(circle at 26% 69%,var(--edge) 0 .8px,transparent 1.5px),radial-gradient(circle at 68% 24%,var(--accent) 0 1px,transparent 1.8px),radial-gradient(circle at 88% 73%,#47a8d3 0 .8px,transparent 1.5px);background-size:220px 190px,300px 270px,260px 230px,340px 310px;z-index:-1}header{background:linear-gradient(105deg,var(--panel),var(--panel2))!important;border-color:rgba(106,69,191,.25)!important;box-shadow:0 7px 24px rgba(84,48,142,.14)!important}header h1{color:var(--edge)!important;text-shadow:none!important}header p,header .text-slate-400,header .text-indigo-200,header .text-indigo-300{color:var(--muted)!important}main>div,#quiz-card,.bg-slate-800,.bg-slate-900,.bg-indigo-900,.bg-indigo-950{background:linear-gradient(145deg,#f8f0ff,var(--panel))!important;border-color:rgba(106,69,191,.22)!important;color:var(--ink)!important;box-shadow:0 14px 35px rgba(84,48,142,.12)!important}.bg-slate-700,.bg-slate-100,.bg-slate-50{background:#eadffd!important;color:var(--ink)!important}.text-slate-100,.text-slate-200,.text-slate-300,.text-slate-400,.text-white,.text-slate-800,.text-slate-700,.text-slate-600{color:var(--ink)!important}.text-indigo-400,.text-indigo-300,.text-emerald-400,.text-yellow-300{color:var(--edge)!important}.border-slate-700,.border-slate-700\/60,.border-indigo-700,.border-slate-200{border-color:rgba(106,69,191,.25)!important}button:not(.bg-green-600):not(.bg-red-600){background:#f9f2ff!important;color:var(--ink)!important;border:1px solid rgba(106,69,191,.25)!important;box-shadow:0 3px 10px rgba(84,48,142,.09)!important}button.bg-indigo-600,button.bg-slate-800,button.bg-slate-900,button.bg-indigo-900{background:linear-gradient(120deg,var(--edge),var(--accent))!important;color:#fff!important;border:0!important}button.bg-indigo-600 *,button.bg-slate-800 *,button.bg-slate-900 *,button.bg-indigo-900 *{color:#fff!important}button:hover{filter:brightness(1.04);transform:translateY(-1px)}input,select,textarea{background:#f9f2ff!important;border-color:rgba(106,69,191,.35)!important;color:var(--ink)!important}input:focus,select:focus,textarea:focus{outline:none!important;border-color:var(--edge)!important;box-shadow:0 0 0 3px var(--mist)!important}.bg-indigo-500,#progress-bar{background:linear-gradient(90deg,var(--edge),var(--accent),var(--glow))!important}.rounded-2xl{border-radius:1.25rem!important}
+</style></head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col justify-between">
+
+    <!-- Header -->
+    <header class="bg-indigo-700 text-white shadow-md py-4 px-6 sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div>
+                <h1 class="text-xl sm:text-2xl font-bold tracking-tight">Current Affairs Master Quiz</h1>
+                <p class="text-xs sm:text-sm text-indigo-200">Exam-Level Practice: SSC, RRB, HSSC & State PCS (Pages 52 & 53)</p>
+            </div>
+            <div class="flex items-center gap-4 bg-indigo-800 px-4 py-2 rounded-lg border border-indigo-600">
+                <div class="text-sm">Score: <span id="live-score" class="font-bold text-emerald-400">0</span></div>
+                <div class="h-4 w-[1px] bg-indigo-600"></div>
+                <div class="text-sm">Correct: <span id="live-correct" class="font-bold text-emerald-400">0</span></div>
+                <div class="h-4 w-[1px] bg-indigo-600"></div>
+                <div class="text-sm">Incorrect: <span id="live-incorrect" class="font-bold text-rose-400">0</span></div>
+            </div>
+        </div>
+        <!-- Progress Bar -->
+        <div class="max-w-4xl mx-auto mt-3 bg-indigo-900 rounded-full h-2 overflow-hidden">
+            <div id="progress-bar" class="bg-emerald-400 h-full w-0 transition-all duration-300"></div>
+        </div>
+    </header>
+
+    <!-- Main Quiz Container -->
+    <main class="max-w-3xl w-full mx-auto p-4 sm:p-6 my-auto flex-grow flex flex-col justify-center">
+        <div id="quiz-card" class="bg-white rounded-2xl shadow-xl border border-slate-100 p-6 sm:p-8 relative">
+            
+            <!-- Question Metadata / Numbering -->
+            <div class="flex justify-between items-center mb-4 text-xs font-semibold uppercase tracking-wider text-slate-400">
+                <span id="question-tag">Question 1 of 90</span>
+                <span id="question-category" class="bg-indigo-50 text-indigo-700 px-2.5 py-1 rounded-full text-[11px]">Important Days & Themes</span>
+            </div>
+
+            <!-- Question Statement -->
+            <h2 id="question-text" class="text-lg sm:text-xl font-semibold text-slate-900 mb-6 leading-relaxed">
+                Loading question...
+            </h2>
+
+            <!-- Options Container -->
+            <div id="options-container" class="space-y-3 mb-6">
+                <!-- Dynamically injected options -->
+            </div>
+
+            <!-- Hint Box (Collapsible) -->
+            <div class="mb-6">
+                <button onclick="toggleHint()" class="text-xs font-medium text-indigo-600 hover:text-indigo-800 flex items-center gap-1 focus:outline-none">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <span id="hint-toggle-text">Show Hint</span>
+                </button>
+                <div id="hint-box" class="hidden mt-2 p-3 bg-amber-50 border border-amber-200 text-amber-800 text-xs rounded-lg leading-relaxed">
+                    <!-- Hint text -->
+                </div>
+            </div>
+
+            <!-- Explanation / Rationale Box (Revealed on selection) -->
+            <div id="explanation-box" class="hidden mb-6 p-4 bg-slate-50 border border-slate-200 rounded-xl text-sm leading-relaxed">
+                <h3 class="font-bold text-slate-900 mb-1 flex items-center gap-1.5">
+                    <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    Explanation & Rationale:
+                </h3>
+                <p id="explanation-text" class="text-slate-600 text-xs sm:text-sm"></p>
+            </div>
+
+            <!-- Navigation & Controls Footer -->
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-slate-100">
+                <div class="flex items-center gap-2 w-full sm:w-auto">
+                    <button onclick="prevQuestion()" id="prev-btn" class="flex-1 sm:flex-none px-4 py-2 border border-slate-300 rounded-lg text-sm font-medium text-slate-700 bg-white hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition">
+                        Previous
+                    </button>
+                    <button onclick="nextQuestion()" id="next-btn" class="flex-1 sm:flex-none px-5 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 shadow-sm shadow-indigo-200 transition">
+                        Next
+                    </button>
+                </div>
+
+                <!-- Jump to Question Control -->
+                <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+                    <label for="jump-input" class="text-xs text-slate-500 whitespace-nowrap">Jump to:</label>
+                    <input type="number" id="jump-input" min="1" max="90" class="w-16 px-2.5 py-1 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-center" onchange="jumpToQuestion(this.value)">
+                    <span class="text-xs text-slate-400">/ 90</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Completion Modal / Scorecard Overlay (Hidden by default) -->
+        <div id="scorecard-modal" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+            <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 sm:p-8 text-center animate-fade-in">
+                <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">
+                    🎉
+                </div>
+                <h3 class="text-2xl font-bold text-slate-900 mb-2">Quiz Completed!</h3>
+                <p class="text-slate-600 text-sm mb-6">You have successfully finished all 90 exam-level current affairs questions.</p>
+                
+                <div class="bg-slate-50 rounded-xl p-4 mb-6 grid grid-cols-3 gap-2 border border-slate-100">
+                    <div>
+                        <div class="text-xs text-slate-400 uppercase font-semibold">Total Score</div>
+                        <div id="final-score" class="text-lg font-bold text-indigo-600">0</div>
+                    </div>
+                    <div>
+                        <div class="text-xs text-slate-400 uppercase font-semibold">Correct</div>
+                        <div id="final-correct" class="text-lg font-bold text-emerald-600">0</div>
+                    </div>
+                    <div>
+                        <div class="text-xs text-slate-400 uppercase font-semibold">Incorrect</div>
+                        <div id="final-incorrect" class="text-lg font-bold text-rose-600">0</div>
+                    </div>
+                </div>
+
+                <button onclick="restartQuiz()" class="w-full py-3 bg-indigo-600 text-white rounded-xl font-medium hover:bg-indigo-700 shadow-md shadow-indigo-200 transition">
+                    Restart Quiz
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-4 text-xs text-slate-400">
+        Interactive Assessment Application &bull; Built with Tailwind CSS & JavaScript
+    </footer>
+
+    <!-- Application Script -->
+    <script>
+        // Raw Dataset based strictly on PDF Pages 52 and 53 (90 Unique Questions)
+        const rawQuestions = [
+            {
+                q: "Consider the following statements regarding World Hepatitis Day 2026 based on the provided current affairs text:\n1. It was observed on 28 July 2026.\n2. Its designated theme or focus was 'Hepatitis Let's break it down'.\nWhich of the statement(s) given above is/are correct?",
+                options: ["Only 1", "Only 2", "Both 1 and 2", "Neither 1 nor 2"],
+                answer: "Both 1 and 2",
+                hint: "Check the top row of the Important Days & Themes table for July 2026.",
+                explanation: "According to the PDF page 52/53 table, World Hepatitis Day was observed on 28 July 2026 with the theme 'Hepatitis Let's break it down'. Both statements are correct.",
+                category: "Important Days & Themes"
+            },
+            {
+                q: "Match the following World/International Days (2026) with their respective themes as per the text:\nList I (Day):\nA. World Brain Day\nB. World Youth Skills Day\nC. World Population Day\nList II (Theme):\n1. Brain Health: Access for All\n2. Skills For a Shared future\n3. युवाओं की आशाओं और आकांक्षाओं को साकार करना आज और भविष्य के लिए",
+                options: ["A-1, B-2, C-3", "A-3, B-1, C-2", "A-2, B-3, C-1", "A-1, B-3, C-2"],
+                answer: "A-1, B-2, C-3",
+                hint: "Look closely at the July 2026 entries in the theme table.",
+                explanation: "World Brain Day (22 July 2026) has the theme 'Brain Health: Access for All'; World Youth Skills Day (15 July 2026) corresponds to 'Skills For a Shared future'; World Population Day (11 July 2026) matches 'युवाओं की आशाओं और आकांक्षाओं को साकार करना आज और भविष्य के लिए'.",
+                category: "Important Days & Themes"
+            },
+            {
+                q: "Which of the following international cooperative themes corresponds to the International Day of Cooperatives observed on 4 July 2026?",
+                options: ["Cooperatives for a Peaceful World", "Peace through Cooperative Growth", "Shared Futures via Cooperatives", "Global Unity and Cooperative Action"],
+                answer: "Cooperatives for a Peaceful World",
+                hint: "Check the July 4, 2026 entry in the PDF table.",
+                explanation: "As per the PDF syllabus table for July 2026, the theme for the International Day of Cooperatives (4 July 2026) is 'Cooperatives for a Peaceful World'.",
+                category: "Important Days & Themes"
+            },
+            {
+                q: "National Doctor's Day / GST Day is observed annually on 1st July. What was the specified theme/tag for National Doctor's Day 2026?",
+                options: ["Behind the Mask: Who Heals the Healers?", "Healing Hands, Caring Hearts", "Protecting the Lifeline of Healthcare", "Guardians of Public Wellness"],
+                answer: "Behind the Mask: Who Heals the Healers?",
+                hint: "Find the entry for 1 July 2026 under National Doctor's Day.",
+                explanation: "The theme specified for National Doctor's Day in 2026 is 'Behind the Mask: Who Heals the Healers?'.",
+                category: "Important Days & Themes"
+            },
+            {
+                q: "What was the official theme for National Statistics Day, observed on 29 June 2026?",
+                options: ["Unlocking the Potential of Administrative Data", "Data for Sustainable Governance", "Administrative Metrics in Modern Economy", "Statistics for National Development"],
+                answer: "Unlocking the Potential of Administrative Data",
+                hint: "Check the June 29, 2026 entry in the theme table.",
+                explanation: "National Statistics Day (29 June 2026) carried the theme 'Unlocking the Potential of Administrative Data'.",
+                category: "Important Days & Themes"
+            },
+            {
+                q: "Consider the theme for International Olympic Day (23 June 2026) mentioned in the source document:",
+                options: ["You Can Do This. Let's Move", "Move Forward Together", "Olympic Spirit for All", "Active Body, Peaceful Mind"],
+                answer: "You Can Do This. Let's Move",
+                hint: "Review the June 2026 list of themes.",
+                explanation: "International Olympic Day, celebrated on 23 June 2026, had the theme 'You Can Do This. Let's Move'.",
+                category: "Important Days & Themes"
+            },
+            {
+                q: "International Yoga Day is celebrated globally on 21st June. What was the focus theme for International Yoga Day 2026?",
+                options: ["Yoga for Healthy Ageing", "Yoga for Wellness and Harmony", "Yoga for Global Peace", "Yoga for Mind and Body Balance"],
+                answer: "Yoga for Healthy Ageing",
+                hint: "Check the June 21, 2026 entry.",
+                explanation: "The source document specifies the theme for International Yoga Day 2026 as 'Yoga for Healthy Ageing'.",
+                category: "Important Days & Themes"
+            },
+            {
+                q: "World Refugee Day is marked on 20 June 2026. Identify its theme from the given options:",
+                options: ["Until Everyone Is Safe", "Hope Away from Home", "Solidarity with Refugees", "Right to Seek Safety"],
+                answer: "Until Everyone Is Safe",
+                hint: "Look up the June 20, 2026 row in the document.",
+                explanation: "World Refugee Day 2026 featured the theme 'Until Everyone Is Safe'.",
+                category: "Important Days & Themes"
+            },
+            {
+                q: "World Day Against Child Labour is observed on 12 June. What was the theme assigned for the year 2026?",
+                options: ["Red card to child labour: Fair play for children, decent work for adults", "End Child Labour Now", "Protect Children from Exploitation", "Decent Work for Adults, Education for Children"],
+                answer: "Red card to child labour: Fair play for children, decent work for adults",
+                hint: "Find the June 12, 2026 entry.",
+                explanation: "The theme for World Day Against Child Labour (12 June 2026) is 'Red card to child labour: Fair play for children, decent work for adults'.",
+                category: "Important Days & Themes"
+            },
+            {
+                q: "International Play Day (International Sports Day) was observed on 11 June 2026. What was its core theme?",
+                options: ["Protect Play, Protect Childhood", "Play for Peace and Harmony", "Sportsmanship across Borders", "Active Children, Better World"],
+                answer: "Protect Play, Protect Childhood",
+                hint: "Check the June 11, 2026 entry.",
+                explanation: "The theme for the International Play/Sports Day on 11 June 2026 was 'Protect Play, Protect Childhood'.",
+                category: "Important Days & Themes"
+            },
+            {
+                q: "World Ocean Day is marked on 8 June 2026. Which of the following statements matches its theme in the text?",
+                options: ["Reimagine: Beyond world we know, a new relationship with ocean", "Planet Ocean: Tides are Changing", "Revitalize Action for Our Ocean", "Gender and Ocean Sustainability"],
+                answer: "Reimagine: Beyond world we know, a new relationship with ocean",
+                hint: "Look at the June 8, 2026 entry.",
+                explanation: "World Ocean Day 2026 was themed 'Reimagine: Beyond world we know, a new relationship with ocean'.",
+                category: "Important Days & Themes"
+            },
+            {
+                q: "World Food Safety Day is observed on 7 June 2026. Identify the correct theme:",
+                options: ["From burden to solutions safe food everywhere", "Safe food today for a healthy tomorrow", "Food standards save lives", "Safer food, better health"],
+                answer: "From burden to solutions safe food everywhere",
+                hint: "Check June 7, 2026 entry.",
+                explanation: "The theme for World Food Safety Day 2026 is listed as 'From burden to solutions safe food everywhere'.",
+                category: "Important Days & Themes"
+            },
+            {
+                q: "World Environment Day is celebrated on 5 June. What was the theme for World Environment Day 2026?",
+                options: ["Inspired by Nature. For Climate. For Our Future", "Only One Earth", "Beat Plastic Pollution", "Land Restoration, Desertification and Drought Resilience"],
+                answer: "Inspired by Nature. For Climate. For Our Future",
+                hint: "Check the June 5, 2026 entry in the theme table.",
+                explanation: "World Environment Day 2026 carried the theme 'Inspired by Nature. For Climate. For Our Future'.",
+                category: "Important Days & Themes"
+            },
+            {
+                q: "World No Tobacco Day is observed on 31 May. What was the theme for World No Tobacco Day 2026?",
+                options: ["Unmasking the Appeal: Countering Nicotine & Tobacco Addiction", "Commit to Quit", "Protecting youth from industry interference", "Tobacco: Threat to our environment"],
+                answer: "Unmasking the Appeal: Countering Nicotine & Tobacco Addiction",
+                hint: "Look at the May 31, 2026 entry.",
+                explanation: "The text states the 2026 theme for World No Tobacco Day as 'Unmasking the Appeal: Countering Nicotine & Tobacco Addiction'.",
+                category: "Important Days & Themes"
+            },
+            {
+                q: "International Day for Biological Diversity is marked on 26 May 2026. What was its guiding theme?",
+                options: ["Acting locally for global impact", "Building a shared future for all life", "From agreement to action: Build back biodiversity", "Be part of the Plan"],
+                answer: "Acting locally for global impact",
+                hint: "Find the May 26, 2026 entry.",
+                explanation: "International Biological Diversity Day 2026 was themed 'Acting locally for global impact'.",
+                category: "Important Days & Themes"
+            },
+            {
+                q: "World Football Day was observed on 25 May 2026. What was its simple promotional theme?",
+                options: ["Be Active", "Play Football, Live Healthy", "Unity Through Football", "Global Goal"],
+                answer: "Be Active",
+                hint: "Check the May 25, 2026 row.",
+                explanation: "World Football Day on 25 May 2026 had the theme 'Be Active'.",
+                category: "Important Days & Themes"
+            },
+            {
+                q: "International Nurses Day is observed on 12 May. What was the theme for 2026?",
+                options: ["Our Nurses. Our Future. Empowered Nurses Save Lives", "Nurses: A Voice to Lead", "Nurses: Invest in nursing and respect rights", "Nurses Across the World"],
+                answer: "Our Nurses. Our Future. Empowered Nurses Save Lives",
+                hint: "Look at the May 12, 2026 entry.",
+                explanation: "International Nurses Day 2026 focused on the theme 'Our Nurses. Our Future. Empowered Nurses Save Lives'.",
+                category: "Important Days & Themes"
+            },
+            {
+                q: "World Red Cross Day falls on 8 May. Identify the theme for 2026 from the options below:",
+                options: ["Keeping Humanity Alive", "Be human kind", "Everything we do comes from the heart", "Smile with Red Cross"],
+                answer: "Keeping Humanity Alive",
+                hint: "Check May 8, 2026 entry.",
+                explanation: "World Red Cross Day 2026 was themed 'Keeping Humanity Alive'.",
+                category: "Important Days & Themes"
+            },
+            {
+                q: "World Press Freedom Day is observed on 3 May 2026. What was its central theme?",
+                options: ["Shaping a Future at Peace", "Journalism under digital siege", "Freedom for expression", "Information as a Public Good"],
+                answer: "Shaping a Future at Peace",
+                hint: "Find May 3, 2026 in the table.",
+                explanation: "World Press Freedom Day 2026 featured the theme 'Shaping a Future at Peace'.",
+                category: "Important Days & Themes"
+            },
+            {
+                q: "World Intellectual Property Day is observed on 26 April 2026. What was its theme?",
+                options: ["IP and Sports: Ready, Set, Innovate!", "IP and Small Businesses", "Empowering Innovation", "Genomics and IP"],
+                answer: "IP and Sports: Ready, Set, Innovate!",
+                hint: "Check April 26, 2026 entry.",
+                explanation: "World Intellectual Property Day 2026 carried the theme 'IP and Sports: Ready, Set, Innovate!'.",
+                category: "Important Days & Themes"
+            },
+            {
+                q: "World Malaria Day is observed on 25 April 2026. Which statement reflects its core theme?",
+                options: ["Driven to End Malaria: Now We Can. Now We Must", "Time to deliver zero malaria", "Ready to beat malaria", "Zero malaria starts with me"],
+                answer: "Driven to End Malaria: Now We Can. Now We Must",
+                hint: "Look at the April 25, 2026 row.",
+                explanation: "World Malaria Day 2026 theme is 'Driven to End Malaria: Now We Can. Now We Must'.",
+                category: "Important Days & Themes"
+            },
+            {
+                q: "National Panchayati Raj Day is celebrated on 24 April 2026. What was its official theme/objective?",
+                options: ["सशक्त पंचायत, सर्वांगीण विकास", "ग्राम विकास, देश विकास", "पंचायती राज: लोकतंत्र की नींव", "डिजिटल पंचायत, उन्नत गाँव"],
+                answer: "सशक्त पंचायत, सर्वांगीण विकास",
+                hint: "Check the April 24, 2026 Hindi theme entry.",
+                explanation: "National Panchayati Raj Day 2026 was themed 'सशक्त पंचायत, सर्वांगीण विकास'.",
+                category: "Important Days & Themes"
+            },
+            {
+                q: "World Earth Day is marked on 22 April 2026. What was its theme?",
+                options: ["हमारी शक्ति, हमारा ग्रह", "Invest in Our Planet", "Planet vs. Plastics", "Restore Our Earth"],
+                answer: "हमारी शक्ति, हमारा ग्रह",
+                hint: "Look at the April 22, 2026 entry.",
+                explanation: "World Earth Day 2026 featured the Hindi/English theme 'हमारी शक्ति, हमारा ग्रह'.",
+                category: "Important Days & Themes"
+            },
+            {
+                q: "World Heritage Day is observed on 18 April 2026. What was its stated theme focus?",
+                options: ["Emergency Response for Living Heritage in the Context of ...", "Heritage Changes", "Climate Heritage", "Disaster Resilience of Heritage"],
+                answer: "Emergency Response for Living Heritage in the Context of ...",
+                hint: "Check the April 18, 2026 row.",
+                explanation: "World Heritage Day 2026 was themed 'Emergency Response for Living Heritage in the Context of ...'.",
+                category: "Important Days & Themes"
+            },
+            {
+                q: "World Health Day is observed on 7 April 2026. What was its theme?",
+                options: ["Together for health. Stand with science", "Health for All", "Our Planet, Our Health", "Building a fairer, healthier world"],
+                answer: "Together for health. Stand with science",
+                hint: "Check April 7, 2026 entry.",
+                explanation: "World Health Day 2026 theme is 'Together for health. Stand with science'.",
+                category: "Important Days & Themes"
+            },
+            {
+                q: "International Day of Sport for Development and Peace was marked on 6 April 2026. What was its theme?",
+                options: ["Sport: Building Bridges, Breaking Barriers", "Playing for Peace", "Global Sports Unity", "Active Communities, Peaceful Nations"],
+                answer: "Sport: Building Bridges, Breaking Barriers",
+                hint: "Look at April 6, 2026 entry.",
+                explanation: "The theme for International Day of Sport for Development and Peace 2026 was 'Sport: Building Bridges, Breaking Barriers'.",
+                category: "Important Days & Themes"
+            },
+            {
+                q: "World TB Day is observed on 24 March 2026. Identify the correct theme:",
+                options: ["Yes! We Can End TB", "The Clock's Ticking", "It's Time to End TB", "Invest to End TB"],
+                answer: "Yes! We Can End TB",
+                hint: "Check March 24, 2026 entry.",
+                explanation: "World TB Day 2026 carried the theme 'Yes! We Can End TB'.",
+                category: "Important Days & Themes"
+            },
+            {
+                q: "World Meteorological Day falls on 23 March 2026. What was its theme?",
+                options: ["Observing Today, Protecting Tomorrow", "The Ocean, Our Climate and Weather", "Early Warning and Early Action", "Sun, Earth and Weather"],
+                answer: "Observing Today, Protecting Tomorrow",
+                hint: "Look at March 23, 2026 entry.",
+                explanation: "World Meteorological Day 2026 was themed 'Observing Today, Protecting Tomorrow'.",
+                category: "Important Days & Themes"
+            },
+            {
+                q: "International Women's Day is observed on 8 March 2026. What was its theme?",
+                options: ["Give To Gain", "DigitALL: Innovation and technology for gender equality", "Break the Bias", "Embrace Equity"],
+                answer: "Give To Gain",
+                hint: "Check March 8, 2026 entry.",
+                explanation: "International Women's Day 2026 theme was 'Give To Gain'.",
+                category: "Important Days & Themes"
+            },
+            {
+                q: "World Wildlife Day is observed on 3 March 2026. What was its theme?",
+                options: ["Medicinal and Aromatic Plants: Conserving Health, Heritage......", "Recovering key species for ecosystem restoration", "Partnerships for wildlife conservation", "Connecting People and Planet"],
+                answer: "Medicinal and Aromatic Plants: Conserving Health, Heritage......",
+                hint: "Check March 3, 2026 entry.",
+                explanation: "World Wildlife Day 2026 had the theme 'Medicinal and Aromatic Plants: Conserving Health, Heritage......'.",
+                category: "Important Days & Themes"
+            },
+            {
+                q: "National Science Day is celebrated on 28 February 2026. What was its thematic focus?",
+                options: ["Women in Science: Catalysing Viksit Bharat", "Global Science for Global Wellbeing", "Integrated Approach in S&T for Sustainable Future", "Science for the People"],
+                answer: "Women in Science: Catalysing Viksit Bharat",
+                hint: "Check February 28, 2026 entry.",
+                explanation: "National Science Day 2026 theme was 'Women in Science: Catalysing Viksit Bharat'.",
+                category: "Important Days & Themes"
+            },
+            {
+                q: "International Mother Language Day was observed on 21 February 2026 with which theme?",
+                options: ["बहुभाषी शिक्षा पर युवाओं की आवाज", "Multilingual education a pillar of learning", "Using technology for multilingual learning", "Languages without borders"],
+                answer: "बहुभाषी शिक्षा पर युवाओं की आवाज",
+                hint: "Look at February 21, 2026 entry.",
+                explanation: "International Mother Language Day 2026 theme was 'बहुभाषी शिक्षा पर युवाओं की आवाज'.",
+                category: "Important Days & Themes"
+            },
+            {
+                q: "World Cancer Day (4 February 2026) and World Wetlands Day (2 February 2026) had which respective themes in the text?",
+                options: ["United by Unique / आद्रभूमि और पारंपरिक ज्ञान सांस्कृतिक विरासत का उत्सव", "Close the Care Gap / Wetlands and Biodiversity", "Not Beyond Us / Wetlands Action for People", "I Am and I Will / Wetlands and Climate Change"],
+                answer: "United by Unique / आद्रभूमि और पारंपरिक ज्ञान सांस्कृतिक विरासत का उत्सव",
+                hint: "Check the early February 2026 rows.",
+                explanation: "World Cancer Day 2026 theme was 'United by Unique', and World Wetlands Day 2026 theme was 'आद्रभूमि और पारंपरिक ज्ञान सांस्कृतिक विरासत का उत्सव'.",
+                category: "Important Days & Themes"
+            },
+            {
+                q: "International Data Privacy Day was observed on 28 January 2026. What was its objective/theme?",
+                options: ["डिजिटल युग में निजी डेटा और गोपनीयता के बारे में जागरूकता बढ़ाना है", "Respect Privacy, Safeguard Data", "Data Protection is National Security", "Own Your Data"],
+                answer: "डिजिटल युग में निजी डेटा और गोपनीयता के बारे में जागरूकता बढ़ाना है",
+                hint: "Look at January 28, 2026 entry on page 54.",
+                explanation: "International Data Privacy Day 2026 aimed at 'डिजिटल युग में निजी डेटा और गोपनीयता के बारे में जागरूकता बढ़ाना है'.",
+                category: "Important Days & Themes"
+            },
+            {
+                q: "National Tourism Day and National Voters' Day are both celebrated on 25 January 2026. Match their themes correctly:\n1. National Tourism Day: ग्रामीण और समुदाय केन्द्रित पर्यटन\n2. National Voters' Day: मेरा भारत, मेरा वोट\nWhich of the statements is/are correct?",
+                options: ["Only 1", "Only 2", "Both 1 and 2", "Neither 1 nor 2"],
+                answer: "Both 1 and 2",
+                hint: "Check January 25, 2026 entries on page 54.",
+                explanation: "Both statements match the text on page 54: National Tourism Day theme was 'ग्रामीण और समुदाय केन्द्रित पर्यटन' and National Voters' Day theme was 'मेरा भारत, मेरा वोट'.",
+                category: "Important Days & Themes"
+            },
+            {
+                q: "What was the theme for National Youth Day, observed on 12 January 2026?",
+                options: ["स्वयं को प्रज्वलित करें, दुनिया पर प्रभाव डाले", "Viksit Bharat @ 2047: Young Voice", "Youth for Digital India", "Ignited Minds, New India"],
+                answer: "स्वयं को प्रज्वलित करें, दुनिया पर प्रभाव डाले",
+                hint: "Check January 12, 2026 row on page 54.",
+                explanation: "National Youth Day 2026 carried the theme 'स्वयं को प्रज्वलित करें, दुनिया पर प्रभाव डाले'.",
+                category: "Important Days & Themes"
+            },
+            {
+                q: "World Hindi Day (10 January 2026) and National Consumer Day (24 December 2025) themes are respectively:",
+                options: ["हिंदी पारंपरिक ज्ञान से कृत्रिम बुद्धिमता तक / डिजिटल न्याय के माध्यम से कुशल और त्वरित समाधान", "हिंदी विश्व भाषा / उपभोक्ता अधिकार जागरूकता", "हिंदी से प्रगति / डिजिटल उपभोक्ता संरक्षण", "Traditional Knowledge to AI / Fast Consumer Redressal"],
+                answer: "हिंदी पारंपरिक ज्ञान से कृत्रिम बुद्धिमता तक / डिजिटल न्याय के माध्यम से कुशल और त्वरित समाधान",
+                hint: "Check the top of page 54 table entries.",
+                explanation: "World Hindi Day 2026 theme was 'हिंदी पारंपरिक ज्ञान से कृत्रिम बुद्धिमता तक' and National Consumer Day 2025 theme was 'डिजिटल न्याय के माध्यम से कुशल और त्वरित समाधान'.",
+                category: "Important Days & Themes"
+            },
+            {
+                q: "Human Rights Day (10 December 2025) and World AIDS Day (1 December 2025) were celebrated under which themes respectively?",
+                options: ["मानवाधिकार, हमारी रोजमर्रा की जरूरतें / बाधाओं पर काबू पाना, एड्स प्रतिक्रिया को बदलना", "Dignity for All / Equal Access to Treatment", "Stand up for Human Rights / Ending AIDS Epidemic", "Freedom and Equality / Zero Discrimination"],
+                answer: "मानवाधिकार, हमारी रोजमर्रा की जरूरतें / बाधाओं पर काबू पाना, एड्स प्रतिक्रिया को बदलना",
+                hint: "Check December 2025 entries on page 54.",
+                explanation: "Human Rights Day 2025 theme was 'मानवाधिकार, हमारी रोजमर्रा की जरूरतें' and World AIDS Day 2025 theme was 'बाधाओं पर काबू पाना, एड्स प्रतिक्रिया को बदलना'.",
+                category: "Important Days & Themes"
+            },
+            {
+                q: "Constitution Day (26 November 2025) and National Unity Day (31 October 2025) featured which themes?",
+                options: ["हमारा संविधान-हमारा स्वाभिमान / एक भारत, आत्मनिर्भर भारत", "Constitution First / Stronger India Together", "Samvidhan Gaurav / Ek Bharat Shreshtha Bharat", "Democratic Values / National Integration"],
+                answer: "हमारा संविधान-हमारा स्वाभिमान / एक भारत, आत्मनिर्भर भारत",
+                hint: "Check Nov 26 and Oct 31, 2025 entries on page 54.",
+                explanation: "Constitution Day 2025 theme was 'हम हमारा संविधान-हमारा स्वाभिमान' and National Unity Day 2025 theme was 'एक भारत, आत्मनिर्भर भारत'.",
+                category: "Important Days & Themes"
+            },
+            {
+                q: "World Statistics Day was observed on 20 October 2025. What was its theme?",
+                options: ["सबके लिए गुणवत्तापूर्ण सांख्यिकी और डेटा के साथ बदलाव लाना", "Better Data, Better Lives", "Connecting the world with data we can trust", "Statistics for sustainable development"],
+                answer: "सबके लिए गुणवत्तापूर्ण सांख्यिकी और डेटा के साथ बदलाव लाना",
+                hint: "Look up October 20, 2025 entry on page 54.",
+                explanation: "World Statistics Day 2025 theme was 'सबके लिए गुणवत्तापूर्ण सांख्यिकी और डेटा के साथ बदलाव लाना'.",
+                category: "Important Days & Themes"
+            },
+            {
+                q: "World Food Day was marked on 16 October 2025. What was its theme?",
+                options: ["स्वस्थ ग्रह के लिए सतत् खाद्य प्रणालियाँ", "Leave no one behind", "Water is life, water is food", "Right to foods for a better life and a better future"],
+                answer: "स्वस्थ ग्रह के लिए सतत् खाद्य प्रцияхियाँ",
+                hint: "Check October 16, 2025 entry.",
+                explanation: "World Food Day 2025 carried the theme 'स्वस्थ ग्रह के लिए सतत् खाद्य प्रणालियाँ'.",
+                category: "Important Days & Themes"
+            },
+            {
+                q: "World Mental Health Day (10 October 2025) and World Heart Day (29 September 2025) themes are respectively:",
+                options: ["सविर्सेस तक पहुँच-आपदाओं और आपात स्थितियों में मानसिक स्वास्थ्य / एक भी धड़कन न चूकें", "Mental Health is a Universal Human Right / Use Heart for Action", "Access to Care / Heart Health First", "Emergency Mental Health / Beat Heart Disease"],
+                answer: "सविर्सेस तक पहुँच-आपदाओं और आपात स्थितियों में मानसिक स्वास्थ्य / एक भी धड़कन न चूकें",
+                hint: "Check Oct 10 and Sept 29, 2025 entries.",
+                explanation: "World Mental Health Day 2025 theme was 'सविर्सेस तक पहुँच-आपदाओं और आपात स्थितियों में मानसिक स्वास्थ्य' and World Heart Day 2025 was 'एक भी धड़कन न चूकें'.",
+                category: "Important Days & Themes"
+            },
+            {
+                q: "Match the following UN Declared Years from the lower section of page 54:\n1. 2019: देशीय भाषाओं का अंतर्राष्ट्रीय वर्ष\n2. 2023: अंतर्राष्ट्रीय बाजरा वर्ष\n3. 2025: क्वांटम विज्ञान और प्रौद्योगिकी का अंतर्राष्ट्रीय वर्ष\nWhich of the above matches are correct?",
+                options: ["1 and 2 only", "2 and 3 only", "1 and 3 only", "1, 2 and 3"],
+                answer: "1, 2 and 3",
+                hint: "Check the UN Declared Years table at the bottom of page 54.",
+                explanation: "All three listed UN declared years match the reference table: 2019 (देशीय भाषाओं का अंतर्राष्ट्रीय वर्ष), 2023 (अंतर्राष्ट्रीय बाजरा वर्ष), and 2025 (क्वांटम विज्ञान और प्रौद्योगिकी का अंतर्राष्ट्रीय वर्ष).",
+                category: "UN Declared Years & Observances"
+            },
+            {
+                q: "According to the UN Declared Years table on page 54, what is the designation for the year 2026?",
+                options: ["अंतर्राष्ट्रीय सहकारिता वर्ष (International Year of Cooperatives)", "अंतर्राष्ट्रीय महिला किसान वर्ष", "ग्लेशियरों के संरक्षण का अंतर्राष्ट्रीय वर्ष", "क्वांटम विज्ञान और प्रौद्योगिकी का अंतर्राष्ट्रीय वर्ष"],
+                answer: "अंतर्राष्ट्रीय सहकारिता वर्ष (International Year of Cooperatives)",
+                hint: "Look at the year 2026 row in the UN Declared Years section.",
+                explanation: "The year 2026 is designated by the UN as the 'अंतर्राष्ट्रीय सहकारिता वर्ष' (International Year of Cooperatives).",
+                category: "UN Declared Years & Observances"
+            },
+            {
+                q: "What is the specific theme/focus noted for the 'Nasha Mukt Bharat Saptah' (17-26 June 2026) in the syllabus table?",
+                options: ["नशा मुक्त भारत अभियान विकसित भारत की पहचान", "Say No to Drugs, Yes to Life", "Youth against Drugs", "Healthy Nation, Drug-Free Nation"],
+                answer: "नशा मुक्त भारत अभियान विकसित भारत की पहचान",
+                hint: "Check the weeks/fortnights table on page 54.",
+                explanation: "Nasha Mukt Bharat Saptah (17-26 June 2026) has the theme 'नशा मुक्त भारत अभियान विकसित भारत की पहचान'.",
+                category: "Weeks, Fortnights & Observances"
+            },
+            {
+                q: "What is the theme specified for 'Vigilance Awareness Week' held from 27 October to 2 November 2025?",
+                options: ["Vigilance our shared responsibility", "Independent India @ 75: Self Reliance with Integrity", "Culture of Integrity for a Nation's Prosperity", "Corruption-Free India"],
+                answer: "Vigilance our shared responsibility",
+                hint: "Look at the Vigilance Awareness Week entry on page 54.",
+                explanation: "The theme for Vigilance Awareness Week (27 Oct - 2 Nov 2025) is 'Vigilance our shared responsibility'.",
+                category: "Weeks, Fortnights & Observances"
+            },
+            {
+                q: "Where was the 25th SCO (Shanghai Cooperation Organisation) Summit 2025 held?",
+                options: ["Tianjin City, China", "Beijing, China", "New Delhi, India", "Astana, Kazakhstan"],
+                answer: "Tianjin City, China",
+                hint: "Check the top row of the Important Conferences table on page 55.",
+                explanation: "The 25th SCO Summit 2025 was held in Tianjin City, China, on 31 August 2025.",
+                category: "Important Conferences & Summits"
+            },
+            {
+                q: "Semicon India 2025 was inaugurated at Yashobhoomi, New Delhi, on 2 September 2025. What was its core theme?",
+                options: ["भारत के सेमीकंडक्टर भविष्य में विश्वास", "Semiconductors: Driving the Future", "Next-Gen Silicon Hub India", "Building India's Chip Ecosystem"],
+                answer: "भारत के सेमीकंडक्टर भविष्य में विश्वास",
+                hint: "Check the Semicon India 2025 entry on page 55.",
+                explanation: "Semicon India 2025 carried the theme 'भारत के सेमीकंडक्टर भविष्य में विश्वास'.",
+                category: "Important Conferences & Summits"
+            },
+            {
+                q: "Where was the 5th Official Language Conference (राजभाषा सम्मेलन) 2025 organized on 14 September 2025?",
+                options: ["Gandhinagar, Gujarat", "Bhopal, Madhya Pradesh", "Varanasi, Uttar Pradesh", "New Delhi"],
+                answer: "Gandhinagar, Gujarat",
+                hint: "Check the 5th Rajbhasha Sammelan entry on page 55.",
+                explanation: "The 5th Official Language Conference 2025 was held in Gandhinagar, Gujarat.",
+                category: "Important Conferences & Summits"
+            },
+            {
+                q: "The 11th World Green Economy Summit 2025 took place in October 2025 at which location?",
+                options: ["Dubai (UAE)", "Abu Dhabi (UAE)", "Doha, Qatar", "Riyadh, Saudi Arabia"],
+                answer: "Dubai (UAE)",
+                hint: "Look at the World Green Economy Summit entry on page 55.",
+                explanation: "The 11th World Green Economy Summit 2025 was held in Dubai (UAE) on 1-2 October 2025.",
+                category: "Important Conferences & Summits"
+            },
+            {
+                q: "IUCN World Conservation Congress 2025 was held from 9-15 October 2025. Where was it hosted?",
+                options: ["Abu Dhabi (UAE)", "Geneva, Switzerland", "Nairobi, Kenya", "Montreal, Canada"],
+                answer: "Abu Dhabi (UAE)",
+                hint: "Check IUCN World Conservation Congress 2025 location on page 55.",
+                explanation: "IUCN World Conservation Congress 2025 was hosted in Abu Dhabi (UAE).",
+                category: "Important Conferences & Summits"
+            },
+            {
+                q: "Kuala Lumpur, Malaysia, served as the venue for several major summits in October 2025. Which of the following was NOT held there according to page 55?",
+                options: ["25th SCO Summit", "20th East Asia Summit 2025", "22nd ASEAN-India Summit 2025", "47th ASEAN Summit 2025"],
+                answer: "25th SCO Summit",
+                hint: "Recall where the SCO summit was held (Tianjin, China).",
+                explanation: "While the 20th East Asia Summit, 22nd ASEAN-India Summit, and 47th ASEAN Summit were held in Kuala Lumpur, Malaysia, the 25th SCO Summit was held in Tianjin, China.",
+                category: "Important Conferences & Summits"
+            },
+            {
+                q: "Where was the 8th International Solar Alliance (ISA) Assembly 2025 held from 27-30 October 2025?",
+                options: ["Bharat Mandapam, New Delhi", "Yashobhoomi, New Delhi", "Gandhinagar, Gujarat", "Mumbai, Maharashtra"],
+                answer: "Bharat Mandapam, New Delhi",
+                hint: "Look up the ISA Assembly 2025 entry on page 55.",
+                explanation: "The 8th International Solar Alliance Assembly 2025 was held at Bharat Mandapam, New Delhi.",
+                category: "Important Conferences & Summits"
+            },
+            {
+                q: "The 30th UN Climate Change Conference (COP-30) scheduled for November 2025 was held at which location?",
+                options: ["Belem (Brazil)", "Ontario (Canada)", "Glasgow (UK)", "Sharm El-Sheikh (Egypt)"],
+                answer: "Belem (Brazil)",
+                hint: "Check COP-30 entry on page 55.",
+                explanation: "The 30th UN Climate Change Conference (COP-30) took place in Belem, Brazil.",
+                category: "Important Conferences & Summits"
+            },
+            {
+                q: "Where was the 20th G-20 Summit 2025 held in November 2025?",
+                options: ["Johannesburg, South Africa", "New Delhi, India", "Rio de Janeiro, Brazil", "Buenos Aires, Argentina"],
+                answer: "Johannesburg, South Africa",
+                hint: "Check the G-20 Summit 2025 entry on page 55.",
+                explanation: "The 20th G-20 Summit 2025 was held in Johannesburg, South Africa.",
+                category: "Important Conferences & Summits"
+            },
+            {
+                q: "The 56th International Film Festival of India (IFFI) 2025 was hosted at which venue?",
+                options: ["Panaji, Goa", "Mumbai, Maharashtra", "New Delhi", "Chennai, Tamil Nadu"],
+                answer: "Panaji, Goa",
+                hint: "Check IFFI 2025 entry on page 55.",
+                explanation: "The 56th International Film Festival of India 2025 was held in Panaji, Goa.",
+                category: "Important Conferences & Summits"
+            },
+            {
+                q: "Where was the 2nd WHO Global Summit on Traditional Medicine 2025 held in December 2025?",
+                options: ["New Delhi", "Puri, Odisha", "Chandigarh", "Bengaluru, Karnataka"],
+                answer: "New Delhi",
+                hint: "Check traditional medicine summit entry on page 55.",
+                explanation: "The 2nd WHO Global Summit on Traditional Medicine, 2025, was held in New Delhi.",
+                category: "Important Conferences & Summits"
+            },
+            {
+                q: "The World Government Summit 2026 was organized in February 2026 at which international hub?",
+                options: ["Dubai", "Munich, Germany", "Nuremberg, Germany", "Hyderabad, India"],
+                answer: "Dubai",
+                hint: "Check World Government Summit 2026 on page 55.",
+                explanation: "The World Government Summit 2026 took place in Dubai.",
+                category: "Important Conferences & Summits"
+            },
+            {
+                q: "Where was the India AI Impact Summit 2026 held from 16-20 February 2026?",
+                options: ["Bharat Mandapam, New Delhi", "Hyderabad, Telangana", "Gandhinagar, Gujarat", "Bengaluru, Karnataka"],
+                answer: "Bharat Mandapam, New Delhi",
+                hint: "Check India AI Impact Summit entry on page 55.",
+                explanation: "The India AI Impact Summit 2026 was held at Bharat Mandapam, New Delhi.",
+                category: "Important Conferences & Summits"
+            },
+            {
+                q: "The 14th Ministerial Meeting of the WTO in 2026 was hosted by which city and country?",
+                options: ["Yaoundé, Cameroon", "Geneva, Switzerland", "New Delhi, India", "Paris, France"],
+                answer: "Yaoundé, Cameroon",
+                hint: "Check WTO 14th Ministerial Meeting 2026 on page 55.",
+                explanation: "WTO's 14th Ministerial Meeting 2026 was held in Yaoundé, Cameroon.",
+                category: "Important Conferences & Summits"
+            },
+            {
+                q: "Where was the 3rd India-Nordic Summit 2026 held in May 2026?",
+                options: ["Oslo, Norway", "Stockholm, Sweden", "Helsinki, Finland", "Copenhagen, Denmark"],
+                answer: "Oslo, Norway",
+                hint: "Check India-Nordic Summit 2026 entry on page 55.",
+                explanation: "The 3rd India-Nordic Summit 2026 took place in Oslo, Norway.",
+                category: "Important Conferences & Summits"
+            },
+            {
+                q: "The 1st International Big Cat Alliance Summit 2026 was held in June 2026 at which location?",
+                options: ["New Delhi", "Gandhinagar, Gujarat", "Kaziranga, Assam", "Mysuru, Karnataka"],
+                answer: "New Delhi",
+                hint: "Check International Big Cat Alliance Summit 2026 on page 55.",
+                explanation: "The first International Big Cat Alliance Summit 2026 was held in New Delhi.",
+                category: "Important Conferences & Summits"
+            },
+            {
+                q: "Where was the 52nd G-7 Summit 2026 held in June 2026?",
+                options: ["France", "Germany", "Italy", "Japan"],
+                answer: "France",
+                hint: "Check G-7 Summit 2026 entry on page 55.",
+                explanation: "The 52nd G-7 Summit 2026 was held in France.",
+                category: "Important Conferences & Summits"
+            },
+            {
+                q: "The 29th National e-Governance Conference 2026 was hosted in which Indian city?",
+                options: ["Jaipur, Rajasthan", "Visakhapatnam, Andhra Pradesh", "Hyderabad, Telangana", "Bengaluru, Karnataka"],
+                answer: "Jaipur, Rajasthan",
+                hint: "Check National e-Governance Conference 2026 on page 55.",
+                explanation: "The 29th National e-Governance Conference 2026 took place in Jaipur, Rajasthan.",
+                category: "Important Conferences & Summits"
+            },
+            {
+                q: "Where was the Quad Foreign Ministers' Meeting 2026 held in July 2026?",
+                options: ["Manila, Philippines", "Tokyo, Japan", "Washington D.C., USA", "New Delhi, India"],
+                answer: "Manila, Philippines",
+                hint: "Check Quad Foreign Ministers' Meeting 2026 on page 55.",
+                explanation: "The Quad Foreign Ministers' Meeting 2026 was held in Manila, Philippines.",
+                category: "Important Conferences & Summits"
+            },
+            {
+                q: "Match the following Abbreviations from page 56 correctly:\n1. TVK: Tamilaga Vettri Kazhagam\n2. BARC: Bhabha Atomic Research Centre\n3. SIDBI: Small Industries Development Bank of India\nWhich of the above are correctly matched?",
+                options: ["1 and 2 only", "2 and 3 only", "1 and 3 only", "1, 2 and 3"],
+                answer: "1, 2 and 3",
+                hint: "Check the latest abbreviations table on page 56.",
+                explanation: "All three acronym expansions are accurate based on the latest word abbreviations table on page 56.",
+                category: "Latest Abbreviations & Acronyms"
+            },
+            {
+                q: "What does the abbreviation 'VB-GRAMG' stand for in the current affairs abbreviations list?",
+                options: ["Viksit Bharat-Guarantee for Rozgar and Ajeevika Mission (Gramin)", "Village Bachat Gramin Mission", "Vikas Bharat Rozgar and Grameen Mission", "Viksit Bharat Gramin Rozgar Abhiyan"],
+                answer: "Viksit Bharat-Guarantee for Rozgar and Ajeevika Mission (Gramin)",
+                hint: "Check the top left of page 56.",
+                explanation: "VB-GRAMG stands for Viksit Bharat-Guarantee for Rozgar and Ajeevika Mission (Gramin).",
+                category: "Latest Abbreviations & Acronyms"
+            },
+            {
+                q: "What is the full form of 'OTT' in digital media as listed on page 56?",
+                options: ["Over-the-Top", "Online Transmission Technology", "Over-the-Transmission", "On-Demand Television Technology"],
+                answer: "Over-the-Top",
+                hint: "Check page 56 abbreviations for OTT.",
+                explanation: "OTT stands for Over-the-Top.",
+                category: "Latest Abbreviations & Acronyms"
+            },
+            {
+                q: "What is the expansion of 'FATF' in financial security organizations as per page 56?",
+                options: ["Financial Action Task Force", "Foreign Assets Tracking Federation", "Fiscal Audit and Tax Fund", "Financial Accountability Task Force"],
+                answer: "Financial Action Task Force",
+                hint: "Check page 56 for FATF.",
+                explanation: "FATF stands for Financial Action Task Force.",
+                category: "Latest Abbreviations & Acronyms"
+            },
+            {
+                q: "According to the Reserve Bank of India's latest monetary rates published on page 57 (as of 1 August 2026), what is the Bank Rate?",
+                options: ["5.50%", "5.25%", "3.00%", "3.35%"],
+                answer: "5.50%",
+                hint: "Check the monetary rates box on page 57.",
+                explanation: "As of 1 August 2026, the Bank Rate is 5.50% and MSF is also 5.50%.",
+                category: "RBI Monetary Rates & Economic Data"
+            },
+            {
+                q: "As of 1 August 2026, what are the current rates for Cash Reserve Ratio (CRR) and Statutory Liquidity Ratio (SLR) respectively according to page 57?",
+                options: ["3.00% and 18.00%", "5.50% and 18.00%", "3.35% and 5.25%", "4.00% and 20.00%"],
+                answer: "3.00% and 18.00%",
+                hint: "Look at the CRR and SLR values in the monetary table on page 57.",
+                explanation: "CRR is 3.00% and SLR is 18.00% as of 1 August 2026.",
+                category: "RBI Monetary Rates & Economic Data"
+            },
+            {
+                q: "What is the Repo Rate and Reverse Repo Rate as of 1 August 2026, according to the table on page 57?",
+                options: ["Repo: 5.25%, Reverse Repo: 3.35%", "Repo: 5.50%, Reverse Repo: 3.00%", "Repo: 6.00%, Reverse Repo: 4.00%", "Repo: 5.25%, Reverse Repo: 5.00%"],
+                answer: "Repo: 5.25%, Reverse Repo: 3.35%",
+                hint: "Check Repo and Reverse Repo figures on page 57.",
+                explanation: "Repo Rate stands at 5.25% and Reverse Repo Rate stands at 3.35% as of 1 August 2026.",
+                category: "RBI Monetary Rates & Economic Data"
+            },
+            {
+                q: "Match the Government of India's upcoming targets with their respective target years as given on page 57:\n1. Target to eliminate waiting tickets and provide confirmed tickets: 2027\n2. Target to make India a TB-free country: 2027\n3. Target to launch Chandrayaan-4: 2028\nWhich of the above matches are correct?",
+                options: ["1 and 2 only", "2 and 3 only", "1 and 3 only", "1, 2 and 3"],
+                answer: "1, 2 and 3",
+                hint: "Examine the 'Upcoming Targets of Government of India' table on page 57.",
+                explanation: "All three targets (waiting ticket elimination by 2027, TB-free India by 2027, and Chandrayaan-4 launch by 2028) are accurately listed on page 57.",
+                category: "Government of India Upcoming Targets"
+            },
+            {
+                q: "What is the target year set by India to achieve net-zero carbon emissions by Indian Railways and make India fully malaria-free?",
+                options: ["2030", "2047", "2050", "2070"],
+                answer: "2030",
+                hint: "Check the 2030 target list on page 57.",
+                explanation: "Both Indian Railways becoming a net-zero carbon emitter and total malaria eradication from India are targeted for the year 2030.",
+                category: "Government of India Upcoming Targets"
+            },
+            {
+                q: "By which year has India set a target to establish its own space station ('भारत का अपना अंतरिक्ष स्टेशन')?",
+                options: ["2035", "2030", "2040", "2047"],
+                answer: "2035",
+                hint: "Look at the space-related targets on page 57.",
+                explanation: "India's target to establish its own space station is set for the year 2035.",
+                category: "Government of India Upcoming Targets"
+            },
+            {
+                q: "What is the targeted year for India to land astronauts on the moon ('चंद्रमा पर अंतरिक्ष यात्री उतारने का लक्ष्य')?",
+                options: ["2040", "2035", "2047", "2050"],
+                answer: "2040",
+                hint: "Check the lunar astronaut landing target on page 57.",
+                explanation: "India's target for landing astronauts on the moon is set for 2040.",
+                category: "Government of India Upcoming Targets"
+            },
+            {
+                q: "By which milestone year does India aim to become a developed nation ('एक विकसित राष्ट्र बनाने का लक्ष्य'), achieve energy independence ('आत्मनिर्भर देश'), and eliminate anemia?",
+                options: ["2047", "2030", "2070", "2050"],
+                answer: "2047",
+                hint: "Look at the centenary milestone targets on page 57.",
+                explanation: "The year 2047 is targeted for making India a developed nation, energy independent, and eliminating anemia.",
+                category: "Government of India Upcoming Targets"
+            },
+            {
+                q: "What is the ultimate target year set by India to achieve Net Zero carbon emissions ('नेट जीरो शून्य कार्बन उत्सर्जन का लक्ष्य')?",
+                options: ["2070", "2050", "2047", "2030"],
+                answer: "2070",
+                hint: "Check the final net zero carbon target on page 57.",
+                explanation: "India has set the target year of 2070 to achieve overall Net Zero carbon emissions.",
+                category: "Government of India Upcoming Targets"
+            },
+            {
+                q: "Consider the facts regarding Ramsar Sites in India as presented on page 57-58:\n1. Total number of Ramsar sites in India currently stands at 100.\n2. State with the highest number of Ramsar sites is Tamil Nadu (20).\n3. First designated Ramsar site in India is Chilika Lake.\nWhich of the above statements is/are correct?",
+                options: ["1 and 2 only", "2 and 3 only", "1 and 3 only", "1, 2 and 3"],
+                answer: "1, 2 and 3",
+                hint: "Verify the summary statistics of Ramsar sites on page 57.",
+                explanation: "All given statements are facts from page 57: total Ramsar sites = 100, highest in Tamil Nadu (20), and first designated is Chilika Lake.",
+                category: "Ramsar Sites & Wetlands"
+            },
+            {
+                q: "Which is the largest Ramsar wetland site and the smallest wetland site in India respectively?",
+                options: ["Sundarban Wetland (Bengal) / Renuka Wetland (Himachal)", "Chilika Lake / Wular Lake", "Vembanad Wetland / Bhoj Wetland", "Loktak Lake / Dal Lake"],
+                answer: "Sundarban Wetland (Bengal) / Renuka Wetland (Himachal)",
+                hint: "Check the extremes of Ramsar sites on page 57.",
+                explanation: "The largest Ramsar site in India is the Sundarban Wetland (Bengal) and the smallest wetland site is Renuka Wetland (Himachal Pradesh).",
+                category: "Ramsar Sites & Wetlands"
+            },
+            {
+                q: "When is 'World Wetlands Day' celebrated globally, commemorating the first Ramsar Convention held in Ramsar, Iran?",
+                options: ["2 February", "5 June", "22 April", "2 February 1982"],
+                answer: "2 February",
+                hint: "Check the Ramsar facts box on page 57.",
+                explanation: "World Wetlands Day is celebrated on 2 February, marking the Ramsar Convention signed on 2 February 1971 in Ramsar, Iran.",
+                category: "Ramsar Sites & Wetlands"
+            },
+            {
+                q: "Consider the key facts about Mission Chandrayaan-3 given on page 58:\n1. Launched on 14 July 2023 from Satish Dhawan Space Centre, Sriharikota, using LVM3-M4 rocket under the chairmanship of S. Somanath.\n2. Successfully landed on the lunar South Pole on 23 August 2023.\n3. Consists of 3 modules: Propulsion module, Lander ('Vikram'), and Rover ('Pragyan').\nWhich of the above statements are correct?",
+                options: ["1 and 2 only", "2 and 3 only", "1 and 3 only", "1, 2 and 3"],
+                answer: "1, 2 and 3",
+                hint: "Review Mission Chandrayaan-3 summary box on page 58.",
+                explanation: "All statements regarding Chandrayaan-3's launch date, vehicle, chairman, landing date, and module names are entirely accurate according to page 58.",
+                category: "Space Missions & Historical Facts"
+            },
+            {
+                q: "When and under whose chairmanship was Chandrayaan-1 launched?",
+                options: ["22 October 2008, under G. Madhavan Nair using PSLV C11", "22 July 2019, under K. Sivan using GSLV Mark-3", "14 July 2023, under S. Somanath using LVM3", "22 October 2011, under A.S. Kiran Kumar using PSLV C25"],
+                answer: "22 October 2008, under G. Madhavan Nair using PSLV C11",
+                hint: "Check Chandrayaan-1 details on page 58.",
+                explanation: "Chandrayaan-1 was launched on 22 October 2008 under the chairmanship of G. Madhavan Nair using PSLV C11 from Sriharikota.",
+                category: "Space Missions & Historical Facts"
+            },
+            {
+                q: "Consider the facts about 'Operation Sindoor' mentioned on page 58:\n1. Started by the Indian Army on 7 May 2025 in response to a brutal terrorist attack in Baisaran Valley near Pahalgam (Anantnag district, J&K) on 22 April 2025.\n2. Objective was to destroy terrorist hideouts in Pakistan and POK, successfully eliminating 9 terror camps of JeM and LeT.\n3. Ceasefire was declared on 10 May 2025.\nWhich of the above statements is/are correct?",
+                options: ["1 and 2 only", "2 and 3 only", "1 and 3 only", "1, 2 and 3"],
+                answer: "1, 2 and 3",
+                hint: "Check Operation Sindoor summary block on page 58.",
+                explanation: "All facts regarding Operation Sindoor's inception date, trigger, objective, and ceasefire date are correct as per page 58.",
+                category: "Security Operations & Defence"
+            },
+            {
+                q: "Match the following features of the Ram Mandir (Ayodhya) as per page 58:\n1. Architectural style: Nagara style\n2. Designer / Architect: Chandrakant Sompura\n3. Construction companies: Tata and Larsen & Toubro\nWhich of the above are correct?",
+                options: ["1 and 2 only", "2 and 3 only", "1 and 3 only", "1, 2 and 3"],
+                answer: "1, 2 and 3",
+                hint: "Review the Ram Mandir fact box on page 58.",
+                explanation: "All architectural and construction details of the Ram Mandir in Ayodhya are accurately cited on page 58.",
+                category: "National Monuments & Landmarks"
+            },
+            {
+                q: "Who is the sculptor of the Ram Lalla idol installed in the Ayodhya Ram Mandir, and what is the height of the idol?",
+                options: ["Arun Yogiraj, 51 inches", "Ram V. Sutar, 51 inches", "Bimal Patel, 161 feet", "Chandrakant Sompura, 108 feet"],
+                answer: "Arun Yogiraj, 51 inches",
+                hint: "Check the Ram Mandir sculptor details on page 58.",
+                explanation: "The Ram Lalla idol (height 51 inches) was sculpted by Arun Yogiraj.",
+                category: "National Monuments & Landmarks"
+            },
+            {
+                q: "Consider the details of India's New Parliament Building on page 58:\n1. Inaugurated by PM Modi on 28 May 2023 on the 140th birth anniversary of Vinayak Damodar Savarkar.\n2. Built under the Central Vista project by Tata Projects Ltd. at an estimated cost of ₹971 crore, designed by HCP Design and Planning (architect Bimal Patel).\n3. Joint session seating capacity is 1,272 seats (Lok Sabha: 888, Rajya Sabha: 384).\nWhich of the above are correct?",
+                options: ["1 and 2 only", "2 and 3 only", "1 and 3 only", "1, 2 and 3"],
+                answer: "1, 2 and 3",
+                hint: "Review the New Parliament Building summary box on page 58.",
+                explanation: "All statements regarding the inauguration, cost, design company, architect, and seating capacities of the new Parliament building are correct.",
+                category: "National Monuments & Landmarks"
+            },
+            {
+                q: "Match the newly established Statues (2022-24) with their correct locations and personalities from page 58-59:\n1. Statue of Social Justice (125 ft): Dr. B.R. Ambedkar, Vijayawada, Andhra Pradesh\n2. Statue of Valour (125 ft): Lachit Barphukan, Jorhat, Assam\n3. Statue of Knowledge (70 ft): Dr. B.R. Ambedkar, Latur, Maharashtra\nWhich of the above matches are correct?",
+                options: ["1 and 2 only", "2 and 3 only", "1 and 3 only", "1, 2 and 3"],
+                answer: "1, 2 and 3",
+                hint: "Examine the 'Statues' compilation on page 58-59.",
+                explanation: "All three statue pairings—Statue of Social Justice, Statue of Valour, and Statue of Knowledge—are correctly matched with their personalities and locations.",
+                category: "Statues & Monuments"
+            },
+            {
+                q: "Who are the sculptors of the 'Statue of Prosperity' (Bengaluru) and 'Statue of Unity' (Gujarat) as mentioned on page 59?",
+                options: ["Ram V. Sutar", "Arun Yogiraj", "Bimal Patel", "Chandrakant Sompura"],
+                answer: "Ram V. Sutar",
+                hint: "Check the sculptor credits for major statues on page 59.",
+                explanation: "Both the Statue of Prosperity (Campegowda, Bengaluru) and the Statue of Unity (Sardar Patel, Gujarat) were sculpted by Ram V. Sutar.",
+                category: "Statues & Monuments"
+            },
+            {
+                q: "What is the height of 'Statue of Belief' (विश्वास स्वरूपम्), which depicts Lord Shiva and is located in Nathdwara, Rajasthan?",
+                options: ["369 feet (112 meters)", "597 feet (182 meters)", "108 feet", "216 feet"],
+                answer: "369 feet (112 meters)",
+                hint: "Check Statue of Belief height on page 59.",
+                explanation: "The Statue of Belief (Lord Shiva) in Nathdwara, Rajasthan, stands at 369 feet (112 meters).",
+                category: "Statues & Monuments"
+            },
+            {
+                q: "Who was appointed as the Chief Coach of the Indian Men's Football Team on 1 August 2025 as per page 59?",
+                options: ["Khalid Jamil", "Igor Stimac", "Manolo Marquez", "Stephen Constantine"],
+                answer: "Khalid Jamil",
+                hint: "Check the Q&A collection for August 2025 on page 59.",
+                explanation: "Khalid Jamil was appointed as the Chief Coach of the Indian Men's Football Team on 1 August 2025.",
+                category: "Current Affairs Q&A (August-September 2025)"
+            },
+            {
+                q: "Which country was declared the world's most food-insecure country on 1 August 2025?",
+                options: ["Afghanistan", "Yemen", "Syria", "Somalia"],
+                answer: "Afghanistan",
+                hint: "Check the second entry in August 2025 Q&A on page 59.",
+                explanation: "Afghanistan was declared the world's most food-insecure country on 1 August 2025.",
+                category: "Current Affairs Q&A (August-September 2025)"
+            },
+            {
+                q: "Where were 4,500-year-old Harappan civilization relics discovered in India, as reported in early August 2025?",
+                options: ["Jaisalmer (Rajasthan)", "Kutch (Gujarat)", "Hisar (Haryana)", "Rakhigarhi (Haryana)"],
+                answer: "Jaisalmer (Rajasthan)",
+                hint: "Check Harappan relics discovery entry on page 59.",
+                explanation: "4,500-year-old Harappan civilization relics were discovered in Jaisalmer, Rajasthan.",
+                category: "Current Affairs Q&A (August-September 2025)"
+            },
+            {
+                q: "Which National Park organized India's first pasture bird census ('चारागाह पक्षी जनगणना') in August 2025?",
+                options: ["Kaziranga National Park", "Jim Corbett National Park", "Gir National Park", "Keoladeo National Park"],
+                answer: "Kaziranga National Park",
+                hint: "Check the bird census entry on page 59.",
+                explanation: "Kaziranga National Park organized India's first pasture bird census.",
+                category: "Current Affairs Q&A (August-September 2025)"
+            },
+            {
+                q: "The Supreme Court declared the right to safe and motorable roads as a fundamental right under which Article of the Constitution of India?",
+                options: ["Article 21", "Article 19", "Article 14", "Article 32"],
+                answer: "Article 21",
+                hint: "Check the Supreme Court ruling entry on page 59.",
+                explanation: "The Supreme Court recognized the right to safe and motorable roads as part of Article 21 (Right to Life and Personal Liberty).",
+                category: "Current Affairs Q&A (August-September 2025)"
+            },
+            {
+                q: "Who was honored with the 43rd Lokmanya Tilak National Award on 2 August 2025?",
+                options: ["Nitin Gadkari", "Narendra Modi", "S. Jaishankar", "Droupadi Murmu"],
+                answer: "Nitin Gadkari",
+                hint: "Check Lokmanya Tilak National Award entry on page 59.",
+                explanation: "Union Minister Nitin Gadkari received the 43rd Lokmanya Tilak National Award on 2 August 2025.",
+                category: "Current Affairs Q&A (August-September 2025)"
+            },
+            {
+                q: "Where did India successfully test its first hydrogen-powered train coach in August 2025?",
+                options: ["Chennai (Tamil Nadu)", "Kolkata (West Bengal)", "Varanasi (Uttar Pradesh)", "Bengaluru (Karnataka)"],
+                answer: "Chennai (Tamil Nadu)",
+                hint: "Check hydrogen train coach test entry on page 59.",
+                explanation: "India successfully tested its first hydrogen-powered train coach in Chennai, Tamil Nadu.",
+                category: "Current Affairs Q&A (August-September 2025)"
+            },
+            {
+                q: "Who unveiled the mascot 'Ashok' for the Asia Rugby Under-20 Championship?",
+                options: ["Nitish Kumar (Chief Minister of Bihar)", "Tejashwi Yadav", "Droupadi Murmu", "Anurag Thakur"],
+                answer: "Nitish Kumar (Chief Minister of Bihar)",
+                hint: "Check Asia Rugby mascot 'Ashok' entry on page 59.",
+                explanation: "Bihar Chief Minister Nitish Kumar unveiled the mascot 'Ashok' for the Asia Rugby Under-20 Championship.",
+                category: "Current Affairs Q&A (August-September 2025)"
+            },
+            {
+                q: "Under 'Operation Muskaan-XI' in August 2025, which state's police rescued 7,600 children from exploitation?",
+                options: ["Telangana", "Uttar Pradesh", "Bihar", "Maharashtra"],
+                answer: "Telangana",
+                hint: "Check Operation Muskaan-XI entry on page 59.",
+                explanation: "Telangana police rescued 7,600 children from exploitation under Operation Muskaan-XI.",
+                category: "Current Affairs Q&A (August-September 2025)"
+            },
+            {
+                q: "Where did ISRO inaugurate its high-altitude analog mission 'HOPE' in August 2025?",
+                options: ["Ladakh", "Leh", "Siachen", "Uttarakhand"],
+                answer: "Ladakh",
+                hint: "Check ISRO analog mission HOPE entry on page 59.",
+                explanation: "ISRO inaugurated its high-altitude analog mission HOPE in Ladakh.",
+                category: "Current Affairs Q&A (August-September 2025)"
+            },
+            {
+                q: "Where was INS Himgiri, the third Nilgiri-class ship, handed over to the Indian Navy in August 2025?",
+                options: ["Kolkata", "Visakhapatnam", "Mumbai", "Kochi"],
+                answer: "Kolkata",
+                hint: "Check INS Himgiri handover entry on page 59.",
+                explanation: "INS Himgiri was handed over to the Indian Navy in Kolkata.",
+                category: "Current Affairs Q&A (August-September 2025)"
+            },
+            {
+                q: "At the Under-17 World Wrestling Championship 2025, what position did India secure in the medal tally?",
+                options: ["Third (4 Gold, 4 Silver, 1 Bronze, Total 9 medals)", "First", "Second", "Fourth"],
+                answer: "Third (4 Gold, 4 Silver, 1 Bronze, Total 9 medals)",
+                hint: "Check Under-17 World Wrestling Championship entry on page 59.",
+                explanation: "India secured the third position at the U-17 World Wrestling Championship 2025 with 9 medals (4 gold, 4 silver, 1 bronze).",
+                category: "Current Affairs Q&A (August-September 2025)"
+            },
+            {
+                q: "Which ministry launched the ambitious initiative named 'Apna Ghar' in August 2025?",
+                options: ["Ministry of Petroleum and Natural Gas", "Ministry of Housing and Urban Affairs", "Ministry of Rural Development", "Ministry of Home Affairs"],
+                answer: "Ministry of Petroleum and Natural Gas",
+                hint: "Check 'Apna Ghar' initiative entry on page 59.",
+                explanation: "The Ministry of Petroleum and Natural Gas launched the 'Apna Ghar' initiative.",
+                category: "Current Affairs Q&A (August-September 2025)"
+            },
+            {
+                q: "Who won the Best Actor award at the 71st National Film Awards for '12th Fail' and 'Jawan' respectively?",
+                options: ["Vikrant Massey and Shah Rukh Khan", "Ranbir Kapoor and Allu Arjun", "Manoj Bajpayee and Vicky Kaushal", "Rajkummar Rao and Prabhas"],
+                answer: "Vikrant Massey and Shah Rukh Khan",
+                hint: "Check 71st National Film Awards entry on page 59.",
+                explanation: "Vikrant Massey (12th Fail) and Shah Rukh Khan (Jawan) won the Best Actor award at the 71st National Film Awards.",
+                category: "Current Affairs Q&A (August-September 2025)"
+            },
+            {
+                q: "Where was the 'Basohli Festival 2025' organized?",
+                options: ["Jammu and Kashmir", "Himachal Pradesh", "Punjab", "Uttarakhand"],
+                answer: "Jammu and Kashmir",
+                hint: "Check Basohli Festival entry on page 59.",
+                explanation: "Basohli Festival 2025 was organized in Jammu and Kashmir.",
+                category: "Current Affairs Q&A (August-September 2025)"
+            },
+            {
+                q: "Where was India's first Make-in-India 'Green Hydrogen Plant' established in August 2025?",
+                options: ["Gujarat", "Maharashtra", "Karnataka", "Tamil Nadu"],
+                answer: "Gujarat",
+                hint: "Check Green Hydrogen Plant entry on page 59.",
+                explanation: "India's first Make-in-India Green Hydrogen Plant was started in Gujarat.",
+                category: "Current Affairs Q&A (August-September 2025)"
+            },
+            {
+                q: "Who won the World Chess Esports World Cup?",
+                options: ["Magnus Carlsen", "Hikaru Nakamura", "D. Gukesh", "Praggnanandhaa"],
+                answer: "Magnus Carlsen",
+                hint: "Check Chess Esports World Cup entry on page 59.",
+                explanation: "Magnus Carlsen won the first Chess Esports World Cup.",
+                category: "Current Affairs Q&A (August-September 2025)"
+            },
+            {
+                q: "Which team emerged as champion in the World Championship of Legends (WCL) 2025?",
+                options: ["South Africa", "India Champions", "Pakistan Champions", "Australia Champions"],
+                answer: "South Africa",
+                hint: "Check WCL 2025 champion entry on page 59.",
+                explanation: "South Africa emerged as the champion team in WCL 2025.",
+                category: "Current Affairs Q&A (August-September 2025)"
+            },
+            {
+                q: "Who was appointed as the new Chief Secretary of Bihar in August 2025?",
+                options: ["Pratyaya Amrit", "Amrit Lal Meena", "Brijesh Mehrotra", "Chaitanya Prasad"],
+                answer: "Pratyaya Amrit",
+                hint: "Check Bihar Chief Secretary entry on page 59.",
+                explanation: "Pratyaya Amrit was appointed as the new Chief Secretary of Bihar.",
+                category: "Current Affairs Q&A (August-September 2025)"
+            },
+            {
+                q: "In which state was the 'Matru Van' initiative launched?",
+                options: ["Haryana", "Rajasthan", "Madhya Pradesh", "Uttar Pradesh"],
+                answer: "Haryana",
+                hint: "Check Matru Van initiative entry on page 60.",
+                explanation: "The 'Matru Van' initiative was launched in Haryana.",
+                category: "Current Affairs Q&A (August-September 2025)"
+            },
+            {
+                q: "In which country did the Krasheninnikov Volcano erupt after 600 years?",
+                options: ["Russia", "Indonesia", "Chile", "Iceland"],
+                answer: "Russia",
+                hint: "Check Krasheninnikov Volcano entry on page 60.",
+                explanation: "The Krasheninnikov Volcano erupted in Russia after 600 years.",
+                category: "Current Affairs Q&A (August-September 2025)"
+            },
+            {
+                q: "Who topped the Global AI City Index 2025?",
+                options: ["Singapore", "San Francisco", "Tokyo", "London"],
+                answer: "Singapore",
+                hint: "Check Global AI City Index 2025 entry on page 60.",
+                explanation: "Singapore secured the top spot in the Global AI City Index 2025.",
+                category: "Current Affairs Q&A (August-September 2025)"
+            },
+            {
+                q: "Which state government launched the 'Nijut Moina 2.0 scheme'?",
+                options: ["Assam", "West Bengal", "Odisha", "Tripura"],
+                answer: "Assam",
+                hint: "Check Nijut Moina 2.0 scheme entry on page 60.",
+                explanation: "Assam government launched the 'Nijut Moina 2.0 scheme'.",
+                category: "Current Affairs Q&A (August-September 2025)"
+            },
+            {
+                q: "Who was awarded the 'Tribal Photo of the Year Award 2025' in August 2025?",
+                options: ["Budimudi Peddi Raju", "Kameshwar Rao", "Sanjay Soren", "Ramesh Tudu"],
+                answer: "Budimudi Peddi Raju",
+                hint: "Check Tribal Photo of the Year entry on page 60.",
+                explanation: "Budimudi Peddi Raju won the 'Tribal Photo of the Year Award 2025'.",
+                category: "Current Affairs Q&A (August-September 2025)"
+            },
+            {
+                q: "Who became the 107th member of the International Solar Alliance (ISA)?",
+                options: ["Moldova", "Maldives", "Paraguay", "Fiji"],
+                answer: "Moldova",
+                hint: "Check ISA 107th member entry on page 60.",
+                explanation: "Moldova became the 107th member of the International Solar Alliance.",
+                category: "Current Affairs Q&A (August-September 2025)"
+            },
+            {
+                q: "Which legislative assembly became India's first to run entirely on solar energy in August 2025?",
+                options: ["Delhi", "Goa", "Gujarat", "Kerala"],
+                answer: "Delhi",
+                hint: "Check solar-powered assembly entry on page 60.",
+                explanation: "Delhi legislative assembly became India's first to run entirely on solar energy.",
+                category: "Current Affairs Q&A (August-September 2025)"
+            },
+            {
+                q: "Who was appointed as the full-time Chairperson of the Capacity Building Commission in August 2025?",
+                options: ["S. Radha Chauhan", "Vinod K. Paul", "Rajiv Kumar", "Amitabh Kant"],
+                answer: "S. Radha Chauhan",
+                hint: "Check Capacity Building Commission chairperson entry on page 60.",
+                explanation: "S. Radha Chauhan was appointed as the full-time Chairperson of the Capacity Building Commission.",
+                category: "Current Affairs Q&A (August-September 2025)"
+            },
+            {
+                q: "Which IIT launched India's first AI-driven learning app named 'Tuteoz' in August 2025?",
+                options: ["IIT Palakkad", "IIT Madras", "IIT Bombay", "IIT Delhi"],
+                answer: "IIT Palakkad",
+                hint: "Check Tuteoz app entry on page 60.",
+                explanation: "IIT Palakkad launched India's first AI-driven learning app named 'Tuteoz'.",
+                category: "Current Affairs Q&A (August-September 2025)"
+            },
+            {
+                q: "Who laid the foundation stone for the redevelopment of the Janki Temple in Sitamarhi, Bihar, in August 2025?",
+                options: ["Amit Shah", "Narendra Modi", "Yogi Adityanath", "J.P. Nadda"],
+                answer: "Amit Shah",
+                hint: "Check Janki Temple redevelopment entry on page 60.",
+                explanation: "Union Home Minister Amit Shah laid the foundation stone for the redevelopment of the Janki Temple in Sitamarhi, Bihar.",
+                category: "Current Affairs Q&A (August-September 2025)"
+            },
+            {
+                q: "Which organization declared the Hepatitis-D virus as carcinogenic (cancer-causing) to humans in August 2025?",
+                options: ["WHO", "ICMR", "CDC", "AIIMS"],
+                answer: "WHO",
+                hint: "Check Hepatitis-D carcinogenic entry on page 60.",
+                explanation: "The World Health Organization (WHO) declared the Hepatitis-D virus as carcinogenic to humans.",
+                category: "Current Affairs Q&A (August-September 2025)"
+            },
+            {
+                q: "Which country will host the Commonwealth Youth Games in 2027?",
+                options: ["Malta", "Rwanda", "Samoa", "Trinidad and Tobago"],
+                answer: "Malta",
+                hint: "Check Commonwealth Youth Games 2027 entry on page 60.",
+                explanation: "Malta will host the Commonwealth Youth Games in 2027.",
+                category: "Current Affairs Q&A (August-September 2025)"
+            },
+            {
+                q: "Which state's mountaineer 'Kabak Yano' successfully scaled Mount Kilimanjaro?",
+                options: ["Arunachal Pradesh", "Sikkim", "Himachal Pradesh", "Uttarakhand"],
+                answer: "Arunachal Pradesh",
+                hint: "Check Kabak Yano entry on page 60.",
+                explanation: "Arunachal Pradesh mountaineer Kabak Yano successfully scaled Mount Kilimanjaro.",
+                category: "Current Affairs Q&A (August-September 2025)"
+            },
+            {
+                q: "Where was India's first state-of-the-art 'Animal Stem Cell BioBank' inaugurated in August 2025?",
+                options: ["Hyderabad", "Bengaluru", "Pune", "Ahmedabad"],
+                answer: "Hyderabad",
+                hint: "Check Animal Stem Cell BioBank entry on page 60.",
+                explanation: "India's first state-of-the-art Animal Stem Cell BioBank was inaugurated in Hyderabad.",
+                category: "Current Affairs Q&A (August-September 2025)"
+            },
+            {
+                q: "Which country became the 10th country to be declared free from sleeping sickness (trypanosomiasis)?",
+                options: ["Kenya", "Uganda", "Tanzania", "Zambia"],
+                answer: "Kenya",
+                hint: "Check sleeping sickness free country entry on page 60.",
+                explanation: "Kenya became the 10th country to be declared free from sleeping sickness.",
+                category: "Current Affairs Q&A (August-September 2025)"
+            },
+            {
+                q: "Where will the country's second-largest cricket stadium be built?",
+                options: ["Bengaluru", "Jaipur", "Ahmedabad", "Nagpur"],
+                answer: "Bengaluru",
+                hint: "Check second largest cricket stadium entry on page 60.",
+                explanation: "The country's second-largest cricket stadium will be built in Bengaluru.",
+                category: "Current Affairs Q&A (August-September 2025)"
+            },
+            {
+                q: "Where is the frequently discussed Debrigarh Wildlife Sanctuary located?",
+                options: ["Odisha", "Chhattisgarh", "Jharkhand", "Madhya Pradesh"],
+                answer: "Odisha",
+                hint: "Check Debrigarh Wildlife Sanctuary entry on page 60.",
+                explanation: "Debrigarh Wildlife Sanctuary is located in Odisha.",
+                category: "Current Affairs Q&A (August-September 2025)"
+            },
+            {
+                q: "Which city topped India's top 10 safest cities list in August 2025?",
+                options: ["Mangaluru", "Kolkata", "Pune", "Surat"],
+                answer: "Mangaluru",
+                hint: "Check safest cities list entry on page 60.",
+                explanation: "Mangaluru topped India's top 10 safest cities list in August 2025.",
+                category: "Current Affairs Q&A (August-September 2025)"
+            },
+            {
+                q: "What is the name of Asia's longest freight train trial-run conducted by Indian Railways in August 2025?",
+                options: ["Rudrastra", "Super Vasuki", "Trishul", "Sheshnag"],
+                answer: "Rudrastra",
+                hint: "Check longest freight train entry on page 60.",
+                explanation: "Indian Railways conducted a trial run of Asia's longest freight train named 'Rudrastra'.",
+                category: "Current Affairs Q&A (August-September 2025)"
+            },
+            {
+                q: "Where was the 'Gai Jatra' festival celebrated in August 2025?",
+                options: ["Nepal", "Bhutan", "India", "Sri Lanka"],
+                answer: "Nepal",
+                hint: "Check Gai Jatra festival entry on page 60.",
+                explanation: "The Gai Jatra festival was celebrated in Nepal.",
+                category: "Current Affairs Q&A (August-September 2025)"
+            },
+            {
+                q: "Who won India's first medal at the Asian Surfing Championship?",
+                options: ["Ramesh Budihal", "Harish M.", "Ishita Malaviya", "Ajeesh Ali"],
+                answer: "Ramesh Budihal",
+                hint: "Check Asian Surfing Championship medal entry on page 60.",
+                explanation: "Ramesh Budihal won India's first medal at the Asian Surfing Championship.",
+                category: "Current Affairs Q&A (August-September 2025)"
+            }
+        ];
+
+        // Application State
+        let questions = [...rawQuestions];
+        let currentIndex = 0;
+        let score = 0;
+        let correctCount = 0;
+        let incorrectCount = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+
+        // DOM Elements
+        const questionTag = document.getElementById('question-tag');
+        const questionCategory = document.getElementById('question-category');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const hintBox = document.getElementById('hint-box');
+        const hintToggleText = document.getElementById('hint-toggle-text');
+        const explanationBox = document.getElementById('explanation-box');
+        const explanationText = document.getElementById('explanation-text');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const jumpInput = document.getElementById('jump-input');
+        const progressBar = document.getElementById('progress-bar');
+        const liveScore = document.getElementById('live-score');
+        const liveCorrect = document.getElementById('live-correct');
+        const liveIncorrect = document.getElementById('live-incorrect');
+        const scorecardModal = document.getElementById('scorecard-modal');
+        const finalScore = document.getElementById('final-score');
+        const finalCorrect = document.getElementById('final-correct');
+        const finalIncorrect = document.getElementById('final-incorrect');
+
+        // Randomize Options Per Question to avoid predictable positions
+        function shuffleOptions(questionObj) {
+            if (questionObj.shuffledOptions) return; // Shuffle only once per session
+            const optionsWithMeta = questionObj.options.map(opt => ({
+                text: opt,
+                isCorrect: opt === questionObj.answer
+            }));
+            
+            // Fisher-Yates shuffle
+            for (let i = optionsWithMeta.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [optionsWithMeta[i], optionsWithMeta[j]] = [optionsWithMeta[j], optionsWithMeta[i]];
+            }
+
+            questionObj.shuffledOptions = optionsWithMeta;
+        }
+
+        // Initialize Quiz
+        function initQuiz() {
+            questions.forEach(q => shuffleOptions(q));
+            loadQuestion(currentIndex);
+        }
+
+        // Load Question into UI
+        function loadQuestion(index) {
+            const q = questions[index];
+            questionTag.textContent = `Question ${index + 1} of ${questions.length}`;
+            questionCategory.textContent = q.category || "General Studies";
+            questionText.textContent = q.q;
+            jumpInput.value = index + 1;
+
+            // Update Progress Bar
+            const progressPercent = ((index + 1) / questions.length) * 100;
+            progressBar.style.width = `${progressPercent}%`;
+
+            // Reset Hint
+            hintBox.classList.add('hidden');
+            hintBox.textContent = q.hint;
+            hintToggleText.textContent = "Show Hint";
+
+            // Render Options
+            optionsContainer.innerHTML = '';
+            const userSelected = userAnswers[index];
+
+            q.shuffledOptions.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = `option-btn w-full text-left p-4 rounded-xl border text-sm sm:text-base font-medium transition flex items-center justify-between ${
+                    userSelected !== null 
+                        ? opt.isCorrect 
+                            ? 'bg-emerald-50 border-emerald-300 text-emerald-900 shadow-sm' 
+                            : userSelected === opt.text 
+                                ? 'bg-rose-50 border-rose-300 text-rose-900 shadow-sm' 
+                                : 'bg-white border-slate-200 text-slate-600 opacity-60'
+                        : 'bg-white border-slate-200 text-slate-700 hover:border-indigo-300 hover:bg-slate-50'
+                }`;
+                
+                btn.innerHTML = `
+                    <span class="flex items-center gap-3">
+                        <span class="w-6 h-6 rounded-full border border-slate-300 flex items-center justify-center text-xs font-bold text-slate-500 bg-slate-50">${String.fromCharCode(65 + idx)}</span>
+                        <span>${opt.text}</span>
+                    </span>
+                    ${userSelected !== null && opt.isCorrect ? '<span class="text-emerald-600 font-bold">✓</span>' : ''}
+                    ${userSelected !== null && !opt.isCorrect && userSelected === opt.text ? '<span class="text-rose-600 font-bold">✗</span>' : ''}
+                `;
+
+                if (userSelected !== null) {
+                    btn.disabled = true;
+                } else {
+                    btn.onclick = () => selectOption(opt.text, q.answer, index);
+                }
+
+                optionsContainer.appendChild(btn);
+            });
+
+            // Handle Explanation Box
+            if (userSelected !== null) {
+                explanationBox.classList.remove('hidden');
+                explanationText.textContent = q.explanation;
+            } else {
+                explanationBox.classList.add('hidden');
+            }
+
+            // Navigation Buttons State
+            prevBtn.disabled = index === 0;
+            nextBtn.textContent = index === questions.length - 1 ? "Finish Quiz" : "Next";
+        }
+
+        // Handle Option Selection
+        function selectOption(selectedText, correctText, index) {
+            userAnswers[index] = selectedText;
+            const isCorrect = selectedText === correctText;
+
+            if (isCorrect) {
+                score += 4; // standard scoring model
+                correctCount++;
+            } else {
+                score -= 1; // negative marking model for competitive exam rigor
+                incorrectCount++;
+            }
+
+            updateLiveStats();
+            loadQuestion(index);
+        }
+
+        // Update Live Scoreboard
+        function updateLiveStats() {
+            liveScore.textContent = score;
+            liveCorrect.textContent = correctCount;
+            liveIncorrect.textContent = incorrectCount;
+        }
+
+        // Toggle Hint Box
+        function toggleHint() {
+            if (hintBox.classList.contains('hidden')) {
+                hintBox.classList.remove('hidden');
+                hintToggleText.textContent = "Hide Hint";
+            } else {
+                hintBox.classList.add('hidden');
+                hintToggleText.textContent = "Show Hint";
+            }
+        }
+
+        // Navigation Functions
+        function nextQuestion() {
+            if (currentIndex < questions.length - 1) {
+                currentIndex++;
+                loadQuestion(currentIndex);
+            } else {
+                showScorecard();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                loadQuestion(currentIndex);
+            }
+        }
+
+        function jumpToQuestion(val) {
+            const target = parseInt(val) - 1;
+            if (target >= 0 && target < questions.length) {
+                currentIndex = target;
+                loadQuestion(currentIndex);
+            } else {
+                jumpInput.value = currentIndex + 1;
+            }
+        }
+
+        // Show Final Scorecard Modal
+        function showScorecard() {
+            finalScore.textContent = score;
+            finalCorrect.textContent = correctCount;
+            finalIncorrect.textContent = incorrectCount;
+            scorecardModal.classList.remove('hidden');
+        }
+
+        // Restart Quiz
+        function restartQuiz() {
+            scorecardModal.classList.add('hidden');
+            currentIndex = 0;
+            score = 0;
+            correctCount = 0;
+            incorrectCount = 0;
+            userAnswers = new Array(questions.length).fill(null);
+            questions.forEach(q => q.shuffledOptions = null); // re-shuffle options
+            updateLiveStats();
+            initQuiz();
+        }
+
+        // Initialize on load
+        window.onload = initQuiz;
+    </script>
+<script src="../../quiz-question-controls.js"></script>
+<script src="../../quiz-app-ui-v2.js"></script></body>
+</html>

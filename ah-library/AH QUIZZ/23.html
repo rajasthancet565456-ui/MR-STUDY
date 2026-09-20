@@ -1,0 +1,1754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animal Husbandry & Agriculture Science - Interactive Quiz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+<style id="cosmic-readable-quiz-theme">
+:root{--space:#e8dcff;--panel:#f3eaff;--panel2:#dcc6ff;--edge:#6a45bf;--glow:#d28b28;--accent:#d15f9f;--ink:#2c1b4d;--muted:#66547c;--mist:rgba(106,69,191,.2)}html{background:var(--space)}body{background:radial-gradient(ellipse 62% 45% at 90% -5%,rgba(209,95,159,.28),transparent 62%),radial-gradient(ellipse 55% 40% at 8% 100%,rgba(65,164,207,.26),transparent 64%),var(--space)!important;color:var(--ink)!important;min-height:100vh}body:before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.78;background-image:radial-gradient(circle at 9% 18%,var(--glow) 0 1px,transparent 1.7px),radial-gradient(circle at 26% 69%,var(--edge) 0 .8px,transparent 1.5px),radial-gradient(circle at 68% 24%,var(--accent) 0 1px,transparent 1.8px),radial-gradient(circle at 88% 73%,#47a8d3 0 .8px,transparent 1.5px);background-size:220px 190px,300px 270px,260px 230px,340px 310px;z-index:-1}header{background:linear-gradient(105deg,var(--panel),var(--panel2))!important;border-color:rgba(106,69,191,.25)!important;box-shadow:0 7px 24px rgba(84,48,142,.14)!important}header h1{color:var(--edge)!important;text-shadow:none!important}header p,header .text-slate-400,header .text-indigo-200,header .text-indigo-300{color:var(--muted)!important}main>div,#quiz-card,.bg-slate-800,.bg-slate-900,.bg-indigo-900,.bg-indigo-950{background:linear-gradient(145deg,#f8f0ff,var(--panel))!important;border-color:rgba(106,69,191,.22)!important;color:var(--ink)!important;box-shadow:0 14px 35px rgba(84,48,142,.12)!important}.bg-slate-700,.bg-slate-100,.bg-slate-50{background:#eadffd!important;color:var(--ink)!important}.text-slate-100,.text-slate-200,.text-slate-300,.text-slate-400,.text-white,.text-slate-800,.text-slate-700,.text-slate-600{color:var(--ink)!important}.text-indigo-400,.text-indigo-300,.text-emerald-400,.text-yellow-300{color:var(--edge)!important}.border-slate-700,.border-slate-700\/60,.border-indigo-700,.border-slate-200{border-color:rgba(106,69,191,.25)!important}button:not(.bg-green-600):not(.bg-red-600){background:#f9f2ff!important;color:var(--ink)!important;border:1px solid rgba(106,69,191,.25)!important;box-shadow:0 3px 10px rgba(84,48,142,.09)!important}button.bg-indigo-600,button.bg-slate-800,button.bg-slate-900,button.bg-indigo-900{background:linear-gradient(120deg,var(--edge),var(--accent))!important;color:#fff!important;border:0!important}button.bg-indigo-600 *,button.bg-slate-800 *,button.bg-slate-900 *,button.bg-indigo-900 *{color:#fff!important}button:hover{filter:brightness(1.04);transform:translateY(-1px)}input,select,textarea{background:#f9f2ff!important;border-color:rgba(106,69,191,.35)!important;color:var(--ink)!important}input:focus,select:focus,textarea:focus{outline:none!important;border-color:var(--edge)!important;box-shadow:0 0 0 3px var(--mist)!important}.bg-indigo-500,#progress-bar{background:linear-gradient(90deg,var(--edge),var(--accent),var(--glow))!important}.rounded-2xl{border-radius:1.25rem!important}
+</style></head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col justify-between">
+
+    <!-- Header -->
+    <header class="bg-slate-800 border-b border-slate-700 p-4 shadow-md sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div>
+                <h1 class="text-xl font-bold text-emerald-400">Animal Husbandry & Agriculture Science</h1>
+                <p class="text-xs text-slate-400">Bilingual Exam Prep (English / हिन्दी) | SSC, RRB, HSSC & State Exams</p>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-700 text-sm">
+                    Score: <span id="score-display" class="font-bold text-emerald-400">0</span> / <span id="total-questions-display">100</span>
+                </div>
+                <button onclick="resetQuiz()" class="bg-rose-600 hover:bg-rose-700 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition">Reset</button>
+            </div>
+        </div>
+        <!-- Progress Bar -->
+        <div class="max-w-4xl mx-auto w-full bg-slate-700 h-2 rounded-full mt-3 overflow-hidden">
+            <div id="progress-bar" class="bg-emerald-500 h-full w-0 transition-all duration-300"></div>
+        </div>
+    </header>
+
+    <!-- Main Quiz Container -->
+    <main class="max-w-3xl mx-auto w-full p-4 sm:p-6 my-auto">
+        <div id="quiz-card" class="bg-slate-800 border border-slate-700 rounded-2xl shadow-xl p-6 relative">
+            
+            <!-- Question Meta -->
+            <div class="flex justify-between items-center mb-4 text-xs font-semibold tracking-wider text-slate-400 uppercase">
+                <span id="question-counter">Question 1 of 100</span>
+                <span id="question-category" class="bg-emerald-900/60 text-emerald-300 px-2.5 py-1 rounded-full border border-emerald-700/50">Plant Nutrients & Fertilizers</span>
+            </div>
+
+            <!-- Question Text -->
+            <div class="mb-6 space-y-2">
+                <h2 id="question-text-en" class="text-lg sm:text-xl font-semibold text-white"></h2>
+                <h2 id="question-text-hi" class="text-base sm:text-lg font-medium text-emerald-200"></h2>
+            </div>
+
+            <!-- Options List -->
+            <div id="options-container" class="space-y-3 mb-6">
+                <!-- Dynamically inserted options -->
+            </div>
+
+            <!-- Hint Box -->
+            <div class="mb-6">
+                <button onclick="toggleHint()" class="text-xs text-amber-400 hover:text-amber-300 font-medium flex items-center gap-1 transition">
+                    💡 <span id="hint-toggle-text">Show Hint</span>
+                </button>
+                <div id="hint-box" class="hidden mt-2 p-3 bg-amber-950/40 border border-amber-700/50 rounded-lg text-xs text-amber-200"></div>
+            </div>
+
+            <!-- Explanation Box -->
+            <div id="explanation-container" class="hidden mb-6 p-4 bg-slate-900/80 border border-slate-700 rounded-xl">
+                <h4 class="text-xs font-bold uppercase tracking-wider text-emerald-400 mb-1">Explanation / Rationale:</h4>
+                <p id="explanation-text-en" class="text-sm text-slate-300 mb-1"></p>
+                <p id="explanation-text-hi" class="text-xs text-slate-400"></p>
+            </div>
+
+            <!-- Navigation Controls -->
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-4 pt-4 border-t border-slate-700">
+                <div class="flex items-center gap-2 w-full sm:w-auto">
+                    <button onclick="prevQuestion()" id="prev-btn" class="flex-1 sm:flex-none bg-slate-700 hover:bg-slate-600 disabled:opacity-40 disabled:hover:bg-slate-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">Previous</button>
+                    <button onclick="nextQuestion()" id="next-btn" class="flex-1 sm:flex-none bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition">Next</button>
+                </div>
+                
+                <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+                    <span class="text-xs text-slate-400">Jump to:</span>
+                    <input type="number" id="jump-input" min="1" max="100" class="w-16 bg-slate-900 border border-slate-700 rounded-lg px-2 py-1 text-center text-sm text-white focus:outline-none focus:border-emerald-500" onchange="jumpToQuestion(this.value)">
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-800 border-t border-slate-700 py-3 text-center text-xs text-slate-400">
+        Interactive Exam Quiz Application &bull; Built with Tailwind CSS
+    </footer>
+
+    <script>
+        const questions = [
+            // Page 1: Plant Nutrients & Fertilizers (Q1 - Q13)
+            {
+                id: 1,
+                category: "Plant Nutrients & Fertilizers",
+                en: "Who initially proposed the concept of 16 essential plant nutrients in 1939?",
+                hi: "1939 में पौधों के लिए 16 आवश्यक पोषक तत्वों का सिद्धांत सर्वप्रथम किसने प्रतिपादित किया था?",
+                options: [
+                    { id: 'A', en: "Arnon and Stout (आरनन और स्टाउट)", hi: "आरनन और स्टाउट", correct: true },
+                    { id: 'B', en: "Brown and Stout (ब्राउन और स्टाउट)", hi: "ब्राउन और स्टाउट", correct: false },
+                    { id: 'C', en: "Liebig (लीबिग)", hi: "लीबिग", correct: false },
+                    { id: 'D', en: "Dutrochet (डूट्रोचेट)", hi: "डूट्रोचेट", correct: false }
+                ],
+                hint: "Scientists Arnon and Stout classified essential elements in 1939.",
+                expEn: "Arnon and Stout (1939) proposed 16 essential plant nutrients. Later, Nickel (Ni) was added as the 17th essential element.",
+                expHi: "आरनन और स्टाउट (1939) ने 16 आवश्यक पोषक तत्व माने थे। बाद में निकल (Ni) को 17वां आवश्यक पोषक तत्व माना गया।"
+            },
+            {
+                id: 2,
+                category: "Plant Nutrients & Fertilizers",
+                en: "In which year was Nickel (Ni) recognized as the 17th essential plant nutrient?",
+                hi: "किस वर्ष निकल (Ni) को 17वां आवश्यक पोषक तत्व घोषित किया गया?",
+                options: [
+                    { id: 'A', en: "1987", hi: "1987", correct: true },
+                    { id: 'B', en: "1939", hi: "1939", correct: false },
+                    { id: 'C', en: "1945", hi: "1945", correct: false },
+                    { id: 'D', en: "2000", hi: "2000", correct: false }
+                ],
+                hint: "It was recognized during the late 1980s by Brown and co-workers.",
+                expEn: "Nickel (Ni) was discovered and added as the 17th essential plant nutrient in 1987.",
+                expHi: "1987 में निकल (Ni) को 17वां आवश्यक पोषक तत्व माना गया।"
+            },
+            {
+                id: 3,
+                category: "Plant Nutrients & Fertilizers",
+                en: "Which of the following are categorized as primary macronutrients (प्राथमिक पोषक तत्व) for plants?",
+                hi: "निम्नलिखित में से कौन से प्राथमिक पोषक तत्व (Primary Macronutrients) कहलाते हैं?",
+                options: [
+                    { id: 'A', en: "N, P, K (Nitrogen, Phosphorus, Potassium)", hi: "N, P, K (नाइट्रोजन, फास्फोरस, पोटैशियम)", correct: true },
+                    { id: 'B', en: "Ca, Mg, S (Calcium, Magnesium, Sulfur)", hi: "Ca, Mg, S (कैल्शियम, मैग्नीशियम, सल्फर)", correct: false },
+                    { id: 'C', en: "Fe, Mn, Cu, Zn", hi: "Fe, Mn, Cu, Zn", correct: false },
+                    { id: 'D', en: "B, Mo, Cl", hi: "B, Mo, Cl", correct: false }
+                ],
+                hint: "They are required in large quantities and denoted by N, P, and K.",
+                expEn: "Primary macronutrients include Nitrogen (N), Phosphorus (P), and Potassium (K), required in high amounts (>1 ppm).",
+                expHi: "प्राथमिक पोषक तत्व - N, P, K (सोडियम, फास्फोरस, पोटैशियम) पौधों के लिए प्राथमिक पोषक तत्व कहलाते हैं।"
+            },
+            {
+                id: 4,
+                category: "Plant Nutrients & Fertilizers",
+                en: "Which group of elements belongs to secondary macronutrients (द्वितीयक पोषक तत्व)?",
+                hi: "द्वितीयक पोषक तत्व (Secondary Macronutrients) के अंतर्गत कौन से तत्व आते हैं?",
+                options: [
+                    { id: 'A', en: "Calcium, Magnesium, and Sulfur (कैल्शियम, मैग्नीशियम व सल्फर)", hi: "कैल्शियम, मैग्नीशियम व सल्फर", correct: true },
+                    { id: 'B', en: "Iron, Zinc, and Copper (लोहा, जस्ता व तांबा)", hi: "लोहा, जस्ता व तांबा", correct: false },
+                    { id: 'C', en: "Boron, Molybdenum, and Chlorine (बोरॉन, मोलिब्डनम व क्लोरीन)", hi: "बोरॉन, मोलिब्डनम व क्लोरीन", correct: false },
+                    { id: 'D', en: "Nitrogen, Phosphorus, and Potassium", hi: "नाइट्रोजन, फास्फोरस और पोटैशियम", correct: false }
+                ],
+                hint: "Ca, Mg, and S form this category.",
+                expEn: "Calcium (Ca), Magnesium (Mg), and Sulfur (S) are classified as secondary macronutrients.",
+                expHi: "द्वितीयक पोषक तत्व - Ca, Mg व S (कैल्शियम, मैग्नीशियम व सल्फर) द्वितीयक पोषक तत्व कहलाते हैं।"
+            },
+            {
+                id: 5,
+                category: "Plant Nutrients & Fertilizers",
+                en: "Micronutrients are required by plants in concentrations less than:",
+                hi: "सूक्ष्म पोषक तत्वों (Micronutrients) की पौधों को कितनी मात्रा (< 1 ppm) से कम आवश्यकता होती है?",
+                options: [
+                    { id: 'A', en: "1 ppm", hi: "1 ppm", correct: true },
+                    { id: 'B', en: "10 ppm", hi: "10 ppm", correct: false },
+                    { id: 'C', en: "50 ppm", hi: "50 ppm", correct: false },
+                    { id: 'D', en: "100 ppm", hi: "100 ppm", correct: false }
+                ],
+                hint: "Trace elements are required in ultra-low quantities.",
+                expEn: "Micronutrients are needed in very low concentrations of less than 1 ppm.",
+                expHi: "सूक्ष्म पोषक तत्व - इन पोषक तत्वों की पौधों को कम मात्रा (< 1 ppm) में आवश्यकता होती है।"
+            },
+            {
+                id: 6,
+                category: "Plant Nutrients & Fertilizers",
+                en: "Among micronutrient cations (धनायन), which of the following sets is correct?",
+                hi: "सूक्ष्म पोषक तत्वों में धनायन (Cations) के अंतर्गत कौन से तत्व आते हैं?",
+                options: [
+                    { id: 'A', en: "Iron, Zinc, Copper, Manganese, and Nickel (लोहा, जस्ता, तांबा, मैंगनीज व निकल)", hi: "लोहा, जस्ता, तांबा, मैंगनीज व निकल", correct: true },
+                    { id: 'B', en: "Boron, Molybdenum, and Chlorine (बोरॉन, मोलिब्डनम व क्लोरीन)", hi: "बोरॉन, मोलिब्डनम व क्लोरीन", correct: false },
+                    { id: 'C', en: "Calcium, Magnesium, and Sulfur", hi: "कैल्शियम, मैग्नीशियम और सल्फर", correct: false },
+                    { id: 'D', en: "Nitrogen, Phosphorus, and Potassium", hi: "नाइट्रोजन, फास्फोरस और पोटैशियम", correct: false }
+                ],
+                hint: "Includes Fe, Zn, Cu, Mn, and Ni.",
+                expEn: "Cationic micronutrients include Iron (लोहा), Zinc (जस्ता), Copper (तांबा), Manganese (मैंगनीज), and Nickel (निकल).",
+                expHi: "धनायन (Cations) - लोहा, जस्ता, तांबा, मैंगनीज व निकल।"
+            },
+            {
+                id: 7,
+                category: "Plant Nutrients & Fertilizers",
+                en: "Which of the following micronutrients act as anions (ऋणायन)?",
+                hi: "निम्नलिखित में से कौन से सूक्ष्म पोषक तत्वऋणायन (Anions) के रूप में होते हैं?",
+                options: [
+                    { id: 'A', en: "Boron, Molybdenum, and Chlorine (बोरॉन, मोलिब्डनम व क्लोरीन)", hi: "बोरॉन, मोलिब्डनम व क्लोरीन", correct: true },
+                    { id: 'B', en: "Iron, Zinc, and Copper (लोहा, जस्ता व तांबा)", hi: "लोहा, जस्ता व तांबा", correct: false },
+                    { id: 'C', en: "Calcium and Magnesium (कैल्शियम व मैग्नीशियम)", hi: "कैल्शियम व मैग्नीशियम", correct: false },
+                    { id: 'D', en: "Sodium and Silicon (सोडियम व सिलिकॉन)", hi: "सोडियम व सिलिकॉन", correct: false }
+                ],
+                hint: "Includes B, Mo, and Cl.",
+                expEn: "Anionic micronutrients include Boron (बोरॉन), Molybdenum (मोलिब्डनम), and Chlorine (क्लोरीन).",
+                expHi: "ऋणायन (Anions) - बोरॉन, मोलिब्डनम व क्लोरीन।"
+            },
+            {
+                id: 8,
+                category: "Plant Nutrients & Fertilizers",
+                en: "Deficiency of Nitrogen and Calcium causes maximum damage to which crop(s)?",
+                hi: "नाइट्रोजन व कैल्शियम की कमी से सर्वाधिक हानि उठाने वाली फसलें कौन सी हैं?",
+                options: [
+                    { id: 'A', en: "Cauliflower and Knol-khol (फूलगोभी, गांठगोभी)", hi: "फूलगोभी, गांठगोभी", correct: true },
+                    { id: 'B', en: "Mustard (सरसों)", hi: "सरसों", correct: false },
+                    { id: 'C', en: "Potato (आलू)", hi: "आलू", correct: false },
+                    { id: 'D', en: "Rice and Jowar (धान, ज्वार)", hi: "धान, ज्वार", correct: false }
+                ],
+                hint: "Cruciferous vegetables like cauliflower suffer heavily from N and Ca deficiency.",
+                expEn: "Nitrogen and Calcium deficiency severely impacts cauliflower (फूलगोभी) and knol-khol (गांठगोभी).",
+                expHi: "नाइट्रोजन व कैल्शियम की कमी से सर्वाधिक हानि उठाने वाली फसलें - फूलगोभी, गांठगोभी हैं।"
+            },
+            {
+                id: 9,
+                category: "Plant Nutrients & Fertilizers",
+                en: "Deficiency of Phosphorus causes maximum damage to which crop?",
+                hi: "फास्फोरस की कमी से सर्वाधिक हानि उठाने वाली फसल कौन सी है?",
+                options: [
+                    { id: 'A', en: "Mustard (सरसों)", hi: "सरसों", correct: true },
+                    { id: 'B', en: "Potato (आलू)", hi: "आलू", correct: false },
+                    { id: 'C', en: "Oat and Turnip (जई, चुकंदर)", hi: "जई, चुकंदर", correct: false },
+                    { id: 'D', en: "Cotton and Soybean (कपास, सोयाबीन)", hi: "कपास, सोयाबीन", correct: false }
+                ],
+                hint: "Oilseed crop mustard is heavily affected by phosphorus deficiency.",
+                expEn: "Phosphorus deficiency primarily affects mustard (सरसों).",
+                expHi: "फास्फोरस की कमी से सरसों सर्वाधिक प्रभावित होती है।"
+            },
+            {
+                id: 10,
+                category: "Plant Nutrients & Fertilizers",
+                en: "Deficiency of Potassium and Magnesium causes severe damage to:",
+                hi: "पोटैशियम व मैग्नीशियम की कमी से सर्वाधिक हानि उठाने वाली फसल कौन सी है?",
+                options: [
+                    { id: 'A', en: "Potato (आलू)", hi: "आलू", correct: true },
+                    { id: 'B', en: "Rice (धान)", hi: "धान", correct: false },
+                    { id: 'C', en: "Maize (मक्का)", hi: "मक्का", correct: false },
+                    { id: 'D', en: "Wheat (गेहूँ)", hi: "गेहूँ", correct: false }
+                ],
+                hint: "Tuber crop potato suffers from K and Mg deficiency.",
+                expEn: "Potassium and Magnesium deficiency severely affects potato (आलू).",
+                expHi: "पोटैशियम व मैग्नीशियम की कमी से आलू सर्वाधिक प्रभावित होता है।"
+            },
+            {
+                id: 11,
+                category: "Plant Nutrients & Fertilizers",
+                en: "Deficiency of Zinc (जस्ता) heavily impacts which group of crops?",
+                hi: "जस्ता (Zinc) की कमी से सर्वाधिक हानि उठाने वाली फसलें कौन सी हैं?",
+                options: [
+                    { id: 'A', en: "Paddy, Jowar, Bajra, Maize, Wheat, Cotton, Soybean (धान, ज्वार, बाजरा, मक्का, गेहूँ, कपास, सोयाबीन)", hi: "धान, ज्वार, बाजरा, मक्का, गेहूँ, कपास, सोयाबीन", correct: true },
+                    { id: 'B', en: "Apple, Litchi, Ber, Lemon (सेब, लीची, बेर, नींबू)", hi: "सेब, लीची, बेर, नींबू", correct: false },
+                    { id: 'C', en: "Sunflower (सूरजमुखी)", hi: "सूरजमुखी", correct: false },
+                    { id: 'D', en: "Cowpea, Cabbage, Berseem (लोबिया, गोभी, रिजका)", hi: "लोबिया, गोभी, रिजका", correct: false }
+                ],
+                hint: "Cereals like rice/paddy and maize are very sensitive to zinc deficiency (Khaira disease).",
+                expEn: "Zinc deficiency extensively impacts cereals and cash crops like paddy, jowar, bajra, maize, wheat, cotton, and soybean.",
+                expHi: "जस्ता की कमी से धान, ज्वार, बाजरा, मक्का, गेहूँ, कपास, सोयाबीन सर्वाधिक प्रभावित होते हैं।"
+            },
+            {
+                id: 12,
+                category: "Plant Nutrients & Fertilizers",
+                en: "What type of fertilizer is Ammonium Sulfate (अमोनियम सल्फेट)?",
+                hi: "अमोनियम सल्फेट किस प्रकार का उर्वरक है?",
+                options: [
+                    { id: 'A', en: "Nitrogenous Fertilizer (नाइट्रोजन युक्त उर्वरक)", hi: "नाइट्रोजन युक्त उर्वरक", correct: true },
+                    { id: 'B', en: "Phosphatic Fertilizer (फास्फोरस युक्त उर्वरक)", hi: "फास्फोरस युक्त उर्वरक", correct: false },
+                    { id: 'C', en: "Potassic Fertilizer (पोटैशियम युक्त उर्वरक)", hi: "पोटैशियम युक्त उर्वरक", correct: false },
+                    { id: 'D', en: "Complex Fertilizer (जटिल उर्वरक)", hi: "जटिल उर्वरक", correct: false }
+                ],
+                hint: "It provides nitrogen in ammoniacal form.",
+                expEn: "Ammonium sulfate, urea, and ammonium chloride are classified as nitrogenous fertilizers (नाइट्रोजन युक्त उर्वरक).",
+                expHi: "अमोनियम सल्फेट, यूरिया, अमोनियम क्लोराइड नाइट्रोजन युक्त उर्वरक हैं।"
+            },
+            {
+                id: 13,
+                category: "Plant Nutrients & Fertilizers",
+                en: "Superphosphate and Rock Phosphate are examples of:",
+                hi: "सुपर फास्फेट और शैल फास्फेट किसके उदाहरण हैं?",
+                options: [
+                    { id: 'A', en: "Phosphorus-containing fertilizers (फास्फोरस युक्त उर्वरक)", hi: "फास्फोरस युक्त उर्वरक", correct: true },
+                    { id: 'B', en: "Nitrogenous fertilizers (नाइट्रोजन युक्त उर्वरक)", hi: "नाइट्रोजन युक्त उर्वरक", correct: false },
+                    { id: 'C', en: "Potassic fertilizers (पोटैशियम युक्त उर्वरक)", hi: "पोटैशियम युक्त उर्वरक", correct: false },
+                    { id: 'D', en: "Mixed fertilizers (मिश्रित उर्वरक)", hi: "मिश्रित उर्वरक", correct: false }
+                ],
+                hint: "They provide phosphorus to plants.",
+                expEn: "All fertilizers providing phosphorus, such as superphosphate and rock phosphate, come under phosphatic fertilizers.",
+                expHi: "फास्फोरस प्रदान करने वाले सभी उर्वरक इस वर्ग में आते हैं जैसे- सुपर फास्फेट, शैल फास्फेट।"
+            },
+
+            // Page 2: Fertilizers Composition & Stats (Q14 - Q26)
+            {
+                id: 14,
+                category: "Fertilizers Composition",
+                en: "Potassium sulfate and Muriate of Potash are examples of which category of fertilizers?",
+                hi: "पोटैशियम सल्फेट और मूरीएट ऑफ पोटाश किस प्रकार के उर्वरक हैं?",
+                options: [
+                    { id: 'A', en: "Potassic fertilizers (पोटैशियम युक्त उर्वरक)", hi: "पोटैशियम युक्त उर्वरक", correct: true },
+                    { id: 'B', en: "Nitrogenous fertilizers (नाइट्रोजन युक्त उर्वरक)", hi: "नाइट्रोजन युक्त उर्वरक", correct: false },
+                    { id: 'C', en: "Complex fertilizers (जटिल उर्वरक)", hi: "जटिल उर्वरक", correct: false },
+                    { id: 'D', en: "Straight fertilizers (सरल उर्वरक)", hi: "सरल उर्वरक", correct: false }
+                ],
+                hint: "They supply potassium to plants.",
+                expEn: "Fertilizers that provide potassium are known as potassic fertilizers (पोटैशियम युक्त उर्वरक), e.g., Potassium sulfate, Muriate of Potash.",
+                expHi: "पोटैशियम युक्त उर्वरक - ऐसे उर्वरक जो पोटैशियम प्रदान करते हैं, पोटैशियम युक्त कहलाते हैं जैसे- पोटैशियम सल्फेट, मूरीएट ऑफ पोटाश।"
+            },
+            {
+                id: 15,
+                category: "Fertilizers Composition",
+                en: "What is the percentage of nitrogen present in Urea (यूरिया)?",
+                hi: "यूरिया में नाइट्रोजन की प्रतिशत मात्रा कितनी होती है?",
+                options: [
+                    { id: 'A', en: "46%", hi: "46%", correct: true },
+                    { id: 'B', en: "33%", hi: "33%", correct: false },
+                    { id: 'C', en: "18%", hi: "18%", correct: false },
+                    { id: 'D', en: "25%", hi: "25%", correct: false }
+                ],
+                hint: "It's one of the highest nitrogen-carrying solid fertilizers (46%).",
+                expEn: "Urea contains 46% nitrogen, and it is found in the form of amide (एमाइड).",
+                expHi: "यूरिया में नाइट्रोजन की प्रतिशत मात्रा 46% होती है और यह एमाइड रूप में पाया जाता है।"
+            },
+            {
+                id: 16,
+                category: "Fertilizers Composition",
+                en: "What is the chemical composition of DAP (Di-Ammonium Phosphate)?",
+                hi: "DAP (डी.ए.पी.) का रासायनिक संगठन क्या होता है?",
+                options: [
+                    { id: 'A', en: "46% P₂O₅, 18% N (46% P₂O₅, 18% N)", hi: "46% P₂O₅, 18% N", correct: true },
+                    { id: 'B', en: "16% P₂O₅, 32% N", hi: "16% P₂O₅, 32% N", correct: false },
+                    { id: 'C', en: "20% P₂O₅, 20% N", hi: "20% P₂O₅, 20% N", correct: false },
+                    { id: 'D', en: "48% P₂O₅, 20% N", hi: "48% P₂O₅, 20% N", correct: false }
+                ],
+                hint: "Contains 46 parts phosphorus pentoxide and 18 parts nitrogen.",
+                expEn: "DAP composition is 46% P₂O₅ and 18% N.",
+                expHi: "DAP (डी.ए.पी.) का संगठन - 46% P₂O₅, 18% N होता है।"
+            },
+            {
+                id: 17,
+                category: "Fertilizers Composition",
+                en: "What is the percentage of phosphorus found in Single Super Phosphate (SSP)?",
+                hi: "सिंगल सुपर फास्फेट (SSP) में फास्फोरस कितना पाया जाता है?",
+                options: [
+                    { id: 'A', en: "16%", hi: "16%", correct: true },
+                    { id: 'B', en: "32%", hi: "32%", correct: false },
+                    { id: 'C', en: "48%", hi: "48%", correct: false },
+                    { id: 'D', en: "20%", hi: "20%", correct: false }
+                ],
+                hint: "Single is 16%, Double is 32%, Triple is 48%.",
+                expEn: "Single Super Phosphate contains 16% phosphorus.",
+                expHi: "सिंगल सुपर फास्फेट में फास्फोरस 16% पाया जाता है।"
+            },
+            {
+                id: 18,
+                category: "Fertilizers Composition",
+                en: "What is the phosphorus percentage in Triple Super Phosphate (TSP)?",
+                hi: "ट्रिपल सुपर फास्फेट में फास्फोरस कितना पाया जाता है?",
+                options: [
+                    { id: 'A', en: "48%", hi: "48%", correct: true },
+                    { id: 'B', en: "16%", hi: "16%", correct: false },
+                    { id: 'C', en: "32%", hi: "32%", correct: false },
+                    { id: 'D', en: "26%", hi: "26%", correct: false }
+                ],
+                hint: "Triple means 3 times 16%.",
+                expEn: "Triple Super Phosphate contains 48% phosphorus.",
+                expHi: "ट्रिपल सुपर फास्फेट में फास्फोरस 48% पाया जाता है।"
+            },
+            {
+                id: 19,
+                category: "Fertilizers Composition",
+                en: "What is the recommended ideal nutrient ratio for agricultural fertilizers (N : P : K)?",
+                hi: "कृषि में उर्वरकों का उपयोग किस आदर्श अनुपात (N : P : K) में किया जाना चाहिए?",
+                options: [
+                    { id: 'A', en: "4 : 2 : 1", hi: "4 : 2 : 1", correct: true },
+                    { id: 'B', en: "1 : 2 : 4", hi: "1 : 2 : 4", correct: false },
+                    { id: 'C', en: "3 : 2 : 1", hi: "3 : 2 : 1", correct: false },
+                    { id: 'D', en: "2 : 1 : 1", hi: "2 : 1 : 1", correct: false }
+                ],
+                hint: "The standard agronomic ratio is 4:2:1.",
+                expEn: "Fertilizers should ideally be used in agriculture in the ratio of 4:2:1 (N:P:K).",
+                expHi: "उर्वरकों का उपयोग कृषि में 4:2:1 अनुपात में किया जाना चाहिए।"
+            },
+            {
+                id: 20,
+                category: "Fertilizers Composition",
+                en: "What is the chemical name of Urea?",
+                hi: "यूरिया का रासायनिक नाम क्या है?",
+                options: [
+                    { id: 'A', en: "Carbamide (कार्बामाइड)", hi: "कार्बामाइड", correct: true },
+                    { id: 'B', en: "Ammonium Nitrate (अमोनियम नाइट्रेट)", hi: "अमोनियम नाइट्रेट", correct: false },
+                    { id: 'C', en: "Calcium Cyanamide (कैल्शियम साइनामाइड)", hi: "कैल्शियम साइनामाइड", correct: false },
+                    { id: 'D', en: "Sodium Carbonate (सोडियम कार्बोनेट)", hi: "सोडियम कार्बोनेट", correct: false }
+                ],
+                hint: "It is widely known by its IUPAC/common chemical name Carbamide.",
+                expEn: "The chemical name of urea is Carbamide.",
+                expHi: "यूरिया का रासायनिक नाम कार्बामाइड है।"
+            },
+            {
+                id: 21,
+                category: "Fertilizers Composition",
+                en: "What is the chemical formula of Urea?",
+                hi: "यूरिया का रासायनिक सूत्र क्या है?",
+                options: [
+                    { id: 'A', en: "NH₂CONH₂", hi: "NH₂CONH₂", correct: true },
+                    { id: 'B', en: "NH₄NO₃", hi: "NH₄NO₃", correct: false },
+                    { id: 'C', en: "(NH₄)₂SO₄", hi: "(NH₄)₂SO₄", correct: false },
+                    { id: 'D', en: "Ca(NO₃)₂", hi: "Ca(NO₃)₂", correct: false }
+                ],
+                hint: "It contains two amide groups attached to a carbonyl carbon.",
+                expEn: "The formula of urea is NH₂CONH₂.",
+                expHi: "यूरिया का सूत्र NH₂CONH₂ होता है।"
+            },
+            {
+                id: 22,
+                category: "Fertilizers Composition",
+                en: "Who first synthesized urea in a laboratory?",
+                hi: "यूरिया का प्रयोगशाला में संश्लेषण सर्वप्रथम किसने किया था?",
+                options: [
+                    { id: 'A', en: "Wöhler (वोहलर)", hi: "वोहलर", correct: true },
+                    { id: 'B', en: "Liebig (लीबिग)", hi: "लीबिग", correct: false },
+                    { id: 'C', en: "Pasteur (पाश्चर)", hi: "पाश्चर", correct: false },
+                    { id: 'D', en: "Lavoisier (लावोविए)", hi: "लावोविए", correct: false }
+                ],
+                hint: "Friedrich Wöhler synthesized organic urea from inorganic ammonium cyanate in 1828.",
+                expEn: "Wöhler was the first to synthesize urea in the laboratory.",
+                expHi: "यूरिया का प्रयोगशाला में संश्लेषण सर्वप्रथम वोहलर (Wöhler) ने किया था।"
+            },
+            {
+                id: 23,
+                category: "Fertilizers Composition",
+                en: "How many total micronutrients are utilized in fertilizers as per standard reference?",
+                hi: "उर्वरकों में कुल कितने सूक्ष्म पोषक तत्वों का प्रयोग किया जाता है?",
+                options: [
+                    { id: 'A', en: "Eight (आठ)", hi: "आठ", correct: true },
+                    { id: 'B', en: "Six (छह)", hi: "छह", correct: false },
+                    { id: 'C', en: "Ten (दस)", hi: "दस", correct: false },
+                    { id: 'D', en: "Five (पाँच)", hi: "पाँच", correct: false }
+                ],
+                hint: "Count total trace/micronutrients used in plant nutrition context.",
+                expEn: "A total of eight micronutrients are utilized in standard fertilizer classifications.",
+                expHi: "उर्वरक में कुल आठ सूक्ष्म पोषक तत्व प्रयोग में लाए जाते हैं।"
+            },
+            {
+                id: 24,
+                category: "Fertilizers Composition",
+                en: "How many total essential elements are recognized for plants currently?",
+                hi: "उर्वरक एवं पौधों में कुल कितने अनिवार्य तत्व होते हैं?",
+                options: [
+                    { id: 'A', en: "6 or 17 (17 total, 6 others)", hi: "6 (या 17 कुल आवश्यक)", correct: true },
+                    { id: 'B', en: "12", hi: "12", correct: false },
+                    { id: 'C', en: "10", hi: "10", correct: false },
+                    { id: 'D', en: "20", hi: "20", correct: false }
+                ],
+                hint: "17 essential plant nutrients are currently defined.",
+                expEn: "There are 17 essential elements for plants (the text notes 6 in certain contexts or 17 total essential elements).",
+                expHi: "उर्वरक में कुल अनिवार्य तत्व 17 हैं (या संदर्भानुसार 6 मुख्य रूप से)।"
+            },
+            {
+                id: 25,
+                category: "Fertilizers Composition",
+                en: "What is the percentage of nitrogen found in Ammonium Nitrate (अमोनियम नाइट्रेट)?",
+                hi: "अमोनियम नाइट्रेट में कितना प्रतिशत नाइट्रोजन पाया जाता है?",
+                options: [
+                    { id: 'A', en: "33%", hi: "33%", correct: true },
+                    { id: 'B', en: "25%", hi: "25%", correct: false },
+                    { id: 'C', en: "20.6%", hi: "20.6%", correct: false },
+                    { id: 'D', en: "46%", hi: "46%", correct: false }
+                ],
+                hint: "It contains 33% nitrogen.",
+                expEn: "Ammonium nitrate contains 33% nitrogen.",
+                expHi: "अमोनियम नाइट्रेट में नाइट्रोजन 33% पाया जाता है।"
+            },
+            {
+                id: 26,
+                category: "Fertilizers Composition",
+                en: "What is the percentage of nitrogen in Calcium Ammonium Nitrate (CAN / किसान खाद)?",
+                hi: "कैल्शियम अमोनियम नाइट्रेट (किसान खाद) में नाइट्रोजन कितने प्रतिशत होती है?",
+                options: [
+                    { id: 'A', en: "25%", hi: "25%", correct: true },
+                    { id: 'B', en: "20.6%", hi: "20.6%", correct: false },
+                    { id: 'C', en: "33%", hi: "33%", correct: false },
+                    { id: 'D', en: "46%", hi: "46%", correct: false }
+                ],
+                hint: "Also known as Kisan Khaad, it has 25% nitrogen.",
+                expEn: "Calcium Ammonium Nitrate contains 25% nitrogen.",
+                expHi: "कैल्शियम अमोनियम नाइट्रेट में नाइट्रोजन 25% पाया जाता है।"
+            },
+
+            // Page 3: Objective Questions on Nutrients & Fertilizers (Q27 - Q39)
+            {
+                id: 27,
+                category: "Objective Questions",
+                en: "How many essential plant nutrients are required for plant growth?",
+                hi: "पौधे की वृद्धि के लिए आवश्यक पोषक तत्व कितने हैं?",
+                options: [
+                    { id: 'A', en: "17", hi: "17", correct: true },
+                    { id: 'B', en: "15", hi: "15", correct: false },
+                    { id: 'C', en: "19", hi: "19", correct: false },
+                    { id: 'D', en: "21", hi: "21", correct: false }
+                ],
+                hint: "Modern count stands at 17 elements.",
+                expEn: "There are 17 essential plant nutrients required for growth.",
+                expHi: "पौधों की वृद्धि के लिए आवश्यक पोषक तत्व 17 होते हैं।"
+            },
+            {
+                id: 28,
+                category: "Objective Questions",
+                en: "Which of the following is considered an energy currency (ऊर्जा मुद्रा) of the cell among nutrients?",
+                hi: "कोशिका की ऊर्जा मुद्रा (Energy Currency) कौन-सा तत्व कहलाता है?",
+                options: [
+                    { id: 'A', en: "Phosphorus (फास्फोरस)", hi: "फास्फोरस", correct: true },
+                    { id: 'B', en: "Potash (पोटाश)", hi: "पोटाश", correct: false },
+                    { id: 'C', en: "Boron (बोरॉन)", hi: "बोरॉन", correct: false },
+                    { id: 'D', en: "Zinc (जस्ता)", hi: "जस्ता", correct: false }
+                ],
+                hint: "ATP contains phosphate groups, making phosphorus crucial for cellular energy.",
+                expEn: "Phosphorus is known as the energy currency of the cell because it forms ATP.",
+                expHi: "कोशिका की ऊर्जा मुद्रा (Energy Currency) फास्फोरस तत्व है क्योंकि यह एटीपी (ATP) का मुख्य भाग है।"
+            },
+            {
+                id: 29,
+                category: "Objective Questions",
+                en: "Deficiency symptoms on older plant leaves first appear due to the deficiency of which elements?",
+                hi: "पौधों की पुरानी पत्तियों पर कौन-से तत्व की कमी के लक्षण दिखाई देते हैं?",
+                options: [
+                    { id: 'A', en: "Mg and Mo (मैग्नीशियम व मोलिब्डनम)", hi: "Mg व Mo", correct: true },
+                    { id: 'B', en: "Ca and B (कैल्शियम व बोरॉन)", hi: "Ca व B", correct: false },
+                    { id: 'C', en: "Fe and Mn (लोहा व मैंगनीज)", hi: "Fe व Mn", correct: false },
+                    { id: 'D', en: "S and Cl (सल्फर व क्लोरीन)", hi: "S व Cl", correct: false }
+                ],
+                hint: "Mobile nutrients show deficiency symptoms on older leaves first (Mg, Mo, N, P, K).",
+                expEn: "Deficiency of Magnesium and Molybdenum shows up on older leaves first.",
+                expHi: "मैग्नीशियम व मोलिब्डनम की कमी के लक्षण पौधों की पुरानी पत्तियों पर दिखाई देते हैं।"
+            },
+            {
+                id: 30,
+                category: "Objective Questions",
+                en: "What is the per hectare requirement of Magnesium Sulfate to correct Magnesium deficiency?",
+                hi: "मैग्नीशियम की कमी दूर करने के लिए मैग्नीशियम सल्फेट की प्रति हेक्टेयर कितनी आवश्यकता होती है?",
+                options: [
+                    { id: 'A', en: "20–25 kg (20–25 किलो)", hi: "20-25 किलो", correct: true },
+                    { id: 'B', en: "10–20 kg (10–20 किलो)", hi: "10-20 किलो", correct: false },
+                    { id: 'C', en: "25–50 kg (25–50 किलो)", hi: "25-50 किलो", correct: false },
+                    { id: 'D', en: "Less than 10 kg", hi: "10 किलो से कम", correct: false }
+                ],
+                hint: "Standard soil application is around 20-25 kg/ha.",
+                expEn: "20-25 kg per hectare of magnesium sulfate is required to overcome deficiency.",
+                expHi: "मैग्नीशियम की कमी दूर करने के लिए मैग्नीशियम सल्फेट की प्रति हेक्टेयर 20-25 किलो आवश्यकता होती है।"
+            },
+            {
+                id: 31,
+                category: "Objective Questions",
+                en: "What is the equivalent acidity of Ammonium Sulfate?",
+                hi: "अमोनियम सल्फेट की तुल्यांकी अम्लता (Equivalent Acidity) कितनी होती है?",
+                options: [
+                    { id: 'A', en: "110", hi: "110", correct: true },
+                    { id: 'B', en: "93", hi: "93", correct: false },
+                    { id: 'C', en: "80", hi: "80", correct: false },
+                    { id: 'D', en: "128", hi: "128", correct: false }
+                ],
+                hint: "It has an equivalent acidity value of 110.",
+                expEn: "The equivalent acidity of ammonium sulfate is 110.",
+                expHi: "अमोनियम सल्फेट की तुल्यांकी अम्लता 110 होती है।"
+            },
+            {
+                id: 32,
+                category: "Objective Questions",
+                en: "What is the calcium content percentage in Gypsum (जिप्सम)?",
+                hi: "जिप्सम में कैल्शियम की मात्रा कितने प्रतिशत होती है?",
+                options: [
+                    { id: 'A', en: "29.2%", hi: "29.2%", correct: true },
+                    { id: 'B', en: "19.5%", hi: "19.5%", correct: false },
+                    { id: 'C', en: "39.5%", hi: "39.5%", correct: false },
+                    { id: 'D', en: "26.5%", hi: "26.5%", correct: false }
+                ],
+                hint: "Gypsum (CaSO₄·2H₂O) contains approx 29.2% calcium.",
+                expEn: "Gypsum contains 29.2% calcium.",
+                expHi: "जिप्सम में कैल्सियम की मात्रा 29.2% होती है।"
+            },
+            {
+                id: 33,
+                category: "Objective Questions",
+                en: "Which of the following is an example of a straight or single fertilizer?",
+                hi: "सरल या एकल उर्वरक (Straight Fertilizer) का उदाहरण कौन सा है?",
+                options: [
+                    { id: 'A', en: "Potassium Sulfate (पोटैशियम सल्फेट)", hi: "पोटैशियम सल्फेट", correct: true },
+                    { id: 'B', en: "Ammonium Phosphate (अमोनियम फॉस्फेट)", hi: "अमोनियम फॉस्फेट", correct: false },
+                    { id: 'C', en: "NPK mixture (एनपीके मिश्रण)", hi: "एनपीके मिश्रण", correct: false },
+                    { id: 'D', en: "Di-Ammonium Phosphate (डाई अमोनियम फॉस्फेट)", hi: "डाई अमोनियम फॉस्फेट", correct: false }
+                ],
+                hint: "Contains only one primary nutrient.",
+                expEn: "Potassium sulfate contains only potassium, making it a straight fertilizer.",
+                expHi: "सरल या एकल उर्वरक का उदाहरण पोटैशियम सल्फेट है।"
+            },
+            {
+                id: 34,
+                category: "Objective Questions",
+                en: "Deficiency of which micro/macro element causes marsh spot in peas or similar deficiency symptoms?",
+                hi: "अग्रिम कलिका किस पोषक तत्व की कमी से सूख जाती है?",
+                options: [
+                    { id: 'A', en: "Boron (बोरॉन)", hi: "बोरॉन", correct: true },
+                    { id: 'B', en: "Phosphorus (फास्फोरस)", hi: "फास्फोरस", correct: false },
+                    { id: 'C', en: "Magnesium (मैग्नीशियम)", hi: "मैग्नीशियम", correct: false },
+                    { id: 'D', en: "Calcium (कैल्शियम)", hi: "कैल्शियम", correct: false }
+                ],
+                hint: "Boron deficiency specifically causes terminal bud dieback (death of growing tips).",
+                expEn: "Terminal bud dieback or drying is caused by boron deficiency.",
+                expHi: "अग्रिम कलिका बोरॉन की कमी से सूख जाती है (शीर्ष कलिका का मरना)।"
+            },
+            {
+                id: 35,
+                category: "Objective Questions",
+                en: "What is the composition of Single Super Phosphate (SSP) regarding phosphorus and sulfur?",
+                hi: "सिंगल सुपर फास्फेट उर्वरक में होता है -",
+                options: [
+                    { id: 'A', en: "16% Phosphorus and 12% Sulfur (16 प्रतिशत फास्फोरस और 12 प्रतिशत सल्फर)", hi: "16 प्रतिशत फास्फोरस और 12 प्रतिशत सल्फर", correct: true },
+                    { id: 'B', en: "20% Phosphorus and 12% Sulfur", hi: "20 प्रतिशत फास्फोरस और 12 प्रतिशत सल्फर", correct: false },
+                    { id: 'C', en: "16% Phosphorus and 18% Sulfur", hi: "16 प्रतिशत फास्फोरस और 18 प्रतिशत सल्फर", correct: false },
+                    { id: 'D', en: "18% Phosphorus and 18% Sulfur", hi: "18 प्रतिशत फास्फोरस और 18 प्रतिशत सल्फर", correct: false }
+                ],
+                hint: "SSP contains 16% P₂O₅ and roughly 11-12% sulfur.",
+                expEn: "Single Super Phosphate contains 16% phosphorus and 12% sulfur.",
+                expHi: "सिंगल सुपर फास्फेट उर्वरक में 16 प्रतिशत फास्फोरस और 12 प्रतिशत सल्फर होता है।"
+            },
+            {
+                id: 36,
+                category: "Objective Questions",
+                en: "What is the standard test level/standard for Biuret content in Urea?",
+                hi: "यूरिया में बायूरेट का मानक स्तर (Standard Level) कितना होना चाहिए?",
+                options: [
+                    { id: 'A', en: "Maximum 1.5% or 1.0% / up to 1.5%", hi: "1.5%", correct: true },
+                    { id: 'B', en: "2.5%", hi: "2.5%", correct: false },
+                    { id: 'C', en: "2.0%", hi: "2.0%", correct: false },
+                    { id: 'D', en: "3.0%", hi: "3.0%", correct: false }
+                ],
+                hint: "Biuret should not exceed 1.5% in high quality agricultural urea.",
+                expEn: "The standard safe level of biuret in urea is 1.5% (or up to 1.5%).",
+                expHi: "यूरिया में बायूरेट का मानक स्तर 1.5% होता है।"
+            },
+            {
+                id: 37,
+                category: "Objective Questions",
+                en: "Which fertilizer is known to have the highest residual/direct soil acidity (most acidic fertilizer)?",
+                hi: "सबसे अधिक अम्लीय उर्वरक कौन-सा है?",
+                options: [
+                    { id: 'A', en: "Ammonium Sulfate or Anhydrous Ammonia / Calcium Ammonium Nitrate...", hi: "कैल्शियम अमोनियम नाइट्रेट", correct: false },
+                    { id: 'B', en: "Ammonium Sulfate (अमोनियम सल्फेट)", hi: "अमोनियम सल्फेट", correct: true },
+                    { id: 'C', en: "Sodium Nitrate (सोडियम नाइट्रेट)", hi: "सोडियम नाइट्रेट", correct: false },
+                    { id: 'D', en: "Urea (यूरिया)", hi: "यूरिया", correct: false }
+                ],
+                hint: "Ammonium sulfate leaves strong residual acidity in soil.",
+                expEn: "Ammonium sulfate is recognized as having high physiological/residual acidity among common fertilizers.",
+                expHi: "सबसे अधिक अम्लीय उर्वरक अमोनियम सल्फेट है।"
+            },
+            {
+                id: 38,
+                category: "Objective Questions",
+                en: "Which nitrogenous fertilizer is most widely used across Indian agriculture?",
+                hi: "सबसे ज्यादा प्रयोग में किया जाने वाला नाइट्रोजन उर्वरक कौन-सा है?",
+                options: [
+                    { id: 'A', en: "Urea (यूरिया)", hi: "यूरिया", correct: true },
+                    { id: 'B', en: "Ammonium Sulfate (अमोनियम सल्फेट)", hi: "अमोनियम सल्फेट", correct: false },
+                    { id: 'C', en: "Calcium Ammonium Nitrate (किसान खाद)", hi: "किसान खाद", correct: false },
+                    { id: 'D', en: "Ammonium Nitrate (अमोनियम नाइट्रेट)", hi: "अमोनियम नाइट्रेट", correct: false }
+                ],
+                hint: "Urea is the most common and widely applied fertilizer in India.",
+                expEn: "Urea is the most extensively used nitrogenous fertilizer in agriculture.",
+                expHi: "सबसे ज्यादा प्रयोग में किया जाने वाला नाइट्रोजन उर्वरक यूरिया है।"
+            },
+            {
+                id: 39,
+                category: "Objective Questions",
+                en: "Which of the following elements is considered mobile in plants and soil?",
+                hi: "मृदा में गतिशील पोषक तत्व कौन सा है?",
+                options: [
+                    { id: 'A', en: "Nitrate (नाइट्रेट / N)", hi: "नाइट्रेट", correct: true },
+                    { id: 'B', en: "Zinc (जस्ता)", hi: "जस्ता", correct: false },
+                    { id: 'C', en: "Phosphorus (फास्फोरस)", hi: "फास्फोरस", correct: false },
+                    { id: 'D', en: "Copper (तांबा)", hi: "तांबा", correct: false }
+                ],
+                hint: "Nitrate moves freely in soil solutions and is prone to leaching.",
+                expEn: "Nitrate (and nitrogen forms like nitrate) is highly mobile in soil.",
+                expHi: "मृदा में गतिशील पोषक तत्व नाइट्रेट (नाइट्रोजन) है।"
+            },
+
+            // Page 4: Organic Farming & Compost (Q40 - Q52)
+            {
+                id: 40,
+                category: "Organic Farming & Compost",
+                en: "Organic farming is a production system that sustains the health of soils, ecosystems, and people. Who first propounded modern organic farming principles in the 1930s in England?",
+                hi: "आधुनिक जैविक खेती का सिद्धांत सर्वप्रथम सर अल्बर्ट हावर्ड ने 1930 के दशक में किस देश में प्रतिपादित किया था?",
+                options: [
+                    { id: 'A', en: "England (इंग्लैंड)", hi: "इंग्लैंड", correct: true },
+                    { id: 'B', en: "Japan (जापान)", hi: "जापान", correct: false },
+                    { id: 'C', en: "Germany (जर्मनी)", hi: "जर्मनी", correct: false },
+                    { id: 'D', en: "USA (अमेरिका)", hi: "अमेरिका", correct: false }
+                ],
+                hint: "Sir Albert Howard worked in Indore, India, but published his ideas in England.",
+                expEn: "Sir Albert Howard propounded modern organic farming in England in the 1930s.",
+                expEn: "आधुनिक जैविक खेती का सिद्धांत सर अल्बर्ट हावर्ड ने 1930 के दशक में इंग्लैंड में प्रतिपादित किया था।",
+                expHi: "इंग्लैंड में सर अल्बर्ट हावर्ड द्वारा प्रतिपादित किया गया।"
+            },
+            {
+                id: 41,
+                category: "Organic Farming & Compost",
+                en: "Who first used the term 'Organic Farming' in his 1940 book 'Look to the Land'?",
+                hi: "'आर्जेनिक फार्मिंग' (Organic Farming) शब्द का प्रयोग सर्वप्रथम लार्ड वाल्टर नार्थबॉर्न ने किस वर्ष अपनी पुस्तक में किया था?",
+                options: [
+                    { id: 'A', en: "1940", hi: "1940", correct: true },
+                    { id: 'B', en: "1930", hi: "1930", correct: false },
+                    { id: 'C', en: "1950", hi: "1950", correct: false },
+                    { id: 'D', en: "1924", hi: "1924", correct: false }
+                ],
+                hint: "The book 'Look to the Land' was published in 1940.",
+                expEn: "Lord Walter Northbourne used the term 'organic farming' in 1940.",
+                expHi: "'आर्जेनिक फार्मिंग' शब्द का प्रयोग 1940 में अपनी पुस्तक 'लुक टू दी लैंड' में किया गया था।"
+            },
+            {
+                id: 42,
+                category: "Organic Farming & Compost",
+                en: "Who introduced 'Biodynamic Agriculture' as an alternative farming concept?",
+                hi: "'बायोडायनेमिक खेती' (Biodynamic Agriculture) की विचारधारा का प्रतिपादन किसने किया था?",
+                options: [
+                    { id: 'A', en: "Dr. Rudolf Steiner (डॉ. रूдольफ स्टेनर)", hi: "डॉ. रूडोल्फ स्टेनर", correct: true },
+                    { id: 'B', en: "Sir Albert Howard (सर अल्बर्ट हावर्ड)", hi: "सर अल्बर्ट हावर्ड", correct: false },
+                    { id: 'C', en: "Masanobu Fukuoka (मासानोबू फुकुको)", hi: "मासानोबू फुकुको", correct: false },
+                    { id: 'D', en: "Lady Eve Balfour (लेडी एवं वेलफेयर)", hi: "लेडी एवं वेलफेयर", correct: false }
+                ],
+                hint: "Rudolf Steiner initiated biodynamic agriculture in 1924.",
+                expEn: "Dr. Rudolf Steiner propounded biodynamic agriculture.",
+                expHi: "बायोडायनेमिक खेती की विचारधारा का प्रतिपादन डॉ. रूडोल्फ स्टेनर ने किया था।"
+            },
+            {
+                id: 43,
+                category: "Organic Farming & Compost",
+                en: "In which year was the National Centre of Organic Farming (NCOF) established at Ghaziabad (Uttar Pradesh)?",
+                hi: "राष्ट्रीय जैविक खेती केंद्र, गाजियाबाद (उत्तर प्रदेश) की स्थापना किस वर्ष की गई थी?",
+                options: [
+                    { id: 'A', en: "2004", hi: "2004", correct: true },
+                    { id: 'B', en: "2010", hi: "2010", correct: false },
+                    { id: 'C', en: "1993", hi: "1993", correct: false },
+                    { id: 'D', en: "2016", hi: "2016", correct: false }
+                ],
+                hint: "Established during the early 2000s (specifically 2004).",
+                expEn: "National Centre for Organic Farming was established in Ghaziabad in 2004.",
+                expHi: "वर्ष 2004 में राष्ट्रीय जैविक खेती केंद्र, गाजियाबाद (उत्तर प्रदेश) में स्थापित किया गया।"
+            },
+            {
+                id: 44,
+                category: "Organic Farming & Compost",
+                en: "Which Indian state was declared as the country's first 100% organic state on 18 January 2016?",
+                hi: "18 जनवरी 2016 को किस राज्य को देश का प्रथम जैविक राज्य घोषित किया गया था?",
+                options: [
+                    { id: 'A', en: "Sikkim (सिक्किम)", hi: "सिक्किम", correct: true },
+                    { id: 'B', en: "Kerala (केरल)", hi: "केरल", correct: false },
+                    { id: 'C', en: "Uttarakhand (उत्तराखंड)", hi: "उत्तराखंड", correct: false },
+                    { id: 'D', en: "Himachal Pradesh (हिमाचल प्रदेश)", hi: "हिमाचल प्रदेश", correct: false }
+                ],
+                hint: "Sikkim achieved this historic milestone in January 2016.",
+                expEn: "Sikkim was declared the country's first organic state on January 18, 2016.",
+                expHi: "18 जनवरी 2016 को सिक्किम को देश का प्रथम जैविक राज्य घोषित किया गया है।"
+            },
+            {
+                id: 45,
+                category: "Organic Farming & Compost",
+                en: "Who initiated natural farming in Japan?",
+                hi: "जापान में प्राकृतिक व जैविक खेती की शुरुआत किसने की थी?",
+                options: [
+                    { id: 'A', en: "Masanobu Fukuoka (मासानोबू फुकुको)", hi: "मासानोबू फुकुको", correct: true },
+                    { id: 'B', en: "Rudolf Steiner (रूडोल्फ स्टेनर)", hi: "रूडोल्फ स्टेनर", correct: false },
+                    { id: 'C', en: "Albert Howard (अल्बर्ट हावर्ड)", hi: "अल्बर्ट हावर्ड", correct: false },
+                    { id: 'D', en: "Walter Northbourne (वाल्टर नार्थबॉर्न)", hi: "वाल्टर नार्थबॉर्न", correct: false }
+                ],
+                hint: "Author of 'One-Straw Revolution'.",
+                expEn: "Masanobu Fukuoka started natural farming in Japan around 1940.",
+                expHi: "जापान में प्राकृतिक व जैविक खेती की शुरुआत मासानोबू फुकुको (जापानी) ने की थी।"
+            },
+            {
+                id: 46,
+                category: "Organic Farming & Compost",
+                en: "According to the Planning Commission's recommendation, what percentage of India's net cultivated area can ideally be brought under organic farming?",
+                hi: "योजना आयोग की सिफारिश के अनुसार भारत में कुल कृषित क्षेत्रफल का कितने प्रतिशत क्षेत्रफल जैविक कृषि में लाया जा सकता है?",
+                options: [
+                    { id: 'A', en: "10 - 15 percent (10-15 प्रतिशत)", hi: "10-15 प्रतिशत", correct: true },
+                    { id: 'B', en: "25 - 30 percent", hi: "25-30 प्रतिशत", correct: false },
+                    { id: 'C', en: "5 - 8 percent", hi: "5-8 प्रतिशत", correct: false },
+                    { id: 'D', en: "40 - 50 percent", hi: "40-50 प्रतिशत", correct: false }
+                ],
+                hint: "The estimated potential lies between 10 to 15 percent.",
+                expEn: "10-15 percent of India's cultivated area can be brought under organic farming as per Planning Commission recommendations.",
+                expHi: "योजना आयोग की सिफारिश के अनुसार भारत में कुल कृषित क्षेत्रफल का 10-15 प्रतिशत क्षेत्रफल जैविक कृषि में लाया जा सकता है।"
+            },
+            {
+                id: 47,
+                category: "Organic Farming & Compost",
+                en: "FAO declared which year as the 'International Year of Soils' (मृदा स्वास्थ्य वर्ष)?",
+                hi: "खाद्य एवं कृषि संगठन (FAO) ने किस वर्ष को 'मृदा स्वास्थ्य वर्ष' (International Year of Soils) घोषित किया था?",
+                options: [
+                    { id: 'A', en: "2014", hi: "2014", correct: true },
+                    { id: 'B', en: "2015", hi: "2015", correct: false },
+                    { id: 'C', en: "2016", hi: "2016", correct: false },
+                    { id: 'D', en: "2020", hi: "2020", correct: false }
+                ],
+                hint: "Roma FAO declared it in 2014.",
+                expEn: "FAO declared 2014 as the Year of Soils.",
+                expHi: "खाद्य एवं कृषि संगठन रोम ने वर्ष 2014 को 'मृदा स्वास्थ्य वर्ष' घोषित किया है।"
+            },
+            {
+                id: 48,
+                category: "Organic Farming & Compost",
+                en: "When was the 'National Mission for Sustainable Agriculture' (Paramparagat Krishi Vikas Yojana) launched or scaled up prominently around?",
+                hi: "राष्ट्रीय स्तर पर 'परंपरागत कृषि विकास मिशन' की शुरुआत किस वर्ष की गई थी?",
+                options: [
+                    { id: 'A', en: "2015 - 2016", hi: "2015-2016", correct: true },
+                    { id: 'B', en: "2010 - 2011", hi: "2010-2011", correct: false },
+                    { id: 'C', en: "2018 - 2019", hi: "2018-2019", correct: false },
+                    { id: 'D', en: "2000 - 2001", hi: "2000-2001", correct: false }
+                ],
+                hint: "Launched during 2015-2016 fiscal period.",
+                expEn: "Paramparagat Krishi Vikas Yojana was initiated in 2015-2016.",
+                expHi: "राष्ट्रीय स्तर पर 'राष्ट्रीय परंपरागत कृषि मिशन' की शुरुआत वर्ष 2015-2016 में की गई है।"
+            },
+            {
+                id: 49,
+                category: "Organic Farming & Compost",
+                en: "Which global organization governs and coordinates international organic agriculture standards (IFOAM)?",
+                hi: "अंतर्राष्ट्रीय जैविक कृषि आंदोलन फैडरेशन (IFOAM) की स्थापना कब की गई थी?",
+                options: [
+                    { id: 'A', en: "1972", hi: "1972", correct: true },
+                    { id: 'B', en: "1950", hi: "1950", correct: false },
+                    { id: 'C', en: "1985", hi: "1985", correct: false },
+                    { id: 'D', en: "1994", hi: "1994", correct: false },
+                ],
+                hint: "Founded in the early 1970s (1972).",
+                expEn: "International Federation of Organic Agriculture Movements (IFOAM) was established in 1972.",
+                expHi: "1972 में स्थापित अंतर्राष्ट्रीय जैविक कृषि आंदोलन (IFOAM)।"
+            },
+            {
+                id: 50,
+                category: "Organic Farming & Compost",
+                en: "What is the primary goal of organic farming regarding synthetic chemicals?",
+                hi: "जैविक कृषि में मुख्य रूप से किसका प्रयोग वर्जित या प्रतिबंधित होता है?",
+                options: [
+                    { id: 'A', en: "Synthetic Chemical Fertilizers and Pesticides (रासायनिक उर्वरक व कीटनाशक)", hi: "रासायनिक उर्वरक व कीटनाशक", correct: true },
+                    { id: 'B', en: "Farm Yard Manure (गोबर की खाद)", hi: "गोबर की खाद", correct: false },
+                    { id: 'C', en: "Green Manure (हरी खाद)", hi: "हरी खाद", correct: false },
+                    { id: 'D', en: "Compost (कम्पोस्ट)", hi: "कम्पोस्ट", correct: false }
+                ],
+                hint: "Synthetic inputs are replaced by natural biological inputs.",
+                expEn: "Organic farming avoids synthetic chemical fertilizers and pesticides.",
+                expHi: "जैविक कृषि में रासायनिक उर्वरकों और कीटनाशकों का प्रयोग वर्जित होता है।"
+            },
+            {
+                id: 51,
+                category: "Organic Farming & Compost",
+                en: "Which country has the highest per capita or total organic farming coverage and heavy agricultural subsidies for organic practices globally as referenced?",
+                hi: "दुनिया में जैविक खेती को बढ़ावा देने और कृषि में सर्वाधिक सब्सिडी देने वाला देश कौन सा माना गया है?",
+                options: [
+                    { id: 'A', en: "Japan (जापान)", hi: "जापान", correct: true },
+                    { id: 'B', en: "India (भारत)", hi: "भारत", correct: false },
+                    { id: 'C', en: "Australia (ऑस्टेलिया)", hi: "ऑस्टेलिया", correct: false },
+                    { id: 'D', en: "Brazil (ब्राजील)", hi: "ब्राजील", correct: false }
+                ],
+                hint: "Japan has high adoption and extensive support as noted in organic texts.",
+                expEn: "Japan is cited for extensive organic farming practices and subsidies.",
+                expHi: "कृषि पर सर्वाधिक सब्सिडी देने वाला देश जापान है।"
+            },
+            {
+                id: 52,
+                category: "Organic Farming & Compost",
+                en: "Under which Indian Five-Year Plan was organic farming given national priority status?",
+                hi: "किस पंचवर्षीय योजना के तहत भारत सरकार ने जैविक खेती को राष्ट्रीय प्राथमिकता क्षेत्र घोषित किया था?",
+                options: [
+                    { id: 'A', en: "10th Five Year Plan (10वीं पंचवर्षीय योजना)", hi: "10वीं पंचवर्षीय योजना", correct: true },
+                    { id: 'B', en: "8th Five Year Plan (8वीं पंचवर्षीय योजना)", hi: "8वीं पंचवर्षीय योजना", correct: false },
+                    { id: 'C', en: "11th Five Year Plan (11वीं पंचवर्षीय योजना)", hi: "11वीं पंचवर्षीय योजना", correct: false },
+                    { id: 'D', en: "12th Five Year Plan (12वीं पंचवर्षीय योजना)", hi: "12वीं पंचवर्षीय योजना", correct: false }
+                ],
+                hint: "It was prioritized during the 10th plan period.",
+                expEn: "10th Five-Year Plan declared organic farming as a national priority area.",
+                expHi: "10वीं पंचवर्षीय योजना के तहत भारत सरकार ने जैविक खेती को राष्ट्रीय प्राथमिकता क्षेत्र घोषित किया गया था।"
+            },
+
+            // Page 5: Composting Methods & Vermicomposting (Q53 - Q65)
+            {
+                id: 53,
+                category: "Composting & Vermicomposting",
+                en: "What is composting primarily defined as?",
+                hi: "कम्पोस्टिंग (Composting) किस प्रकार की क्रिया है?",
+                options: [
+                    { id: 'A', en: "Aerobic and Anaerobic microbial decomposition of organic matter (वायवीय तथा अवायवीय जीवाणु द्वारा कार्बनिक पदार्थों का विघटन)", hi: "वायवीय तथा अवायवीय जीवाणु द्वारा कार्बनिक पदार्थों का विघटन", correct: true },
+                    { id: 'B', en: "Inorganic chemical synthesis (अकार्बनिक रासायनिक संश्लेषण)", hi: "अकार्बनिक रासायनिक संश्लेषण", correct: false },
+                    { id: 'C', en: "Thermal melting of plastics (प्लास्टिक का तापीय गलन)", hi: "प्लास्टिक का तापीय गलन", correct: false },
+                    { id: 'D', en: "Mechanical crushing of stones (पत्थरों की पिसाई)", hi: "पत्थरों की पिसाई", correct: false }
+                ],
+                hint: "Microorganisms break down plant/animal residues into fine manure.",
+                expEn: "Composting is a biochemical process where aerobic/anaerobic bacteria decompose organic matter.",
+                expHi: "कम्पोस्टिंग एक जैव रासायनिक क्रिया है जिसमें वायवीय तथा अवायवीय जीवाणु कार्बनिक पदार्थों को विघटित कर बारीक खाद बनाते हैं।"
+            },
+            {
+                id: 54,
+                category: "Composting & Vermicomposting",
+                en: "Who developed the Indore Method of composting between 1934 and 1931 at the Institute of Plant Nutrition, Indore?",
+                hi: "'इन्दौर विधि' से कम्पोस्ट तैयार करने की तकनीक किसने विकसित की थी?",
+                options: [
+                    { id: 'A', en: "A. Howard and Yeshwant D. Wad (ए. होवर्ड व यशवंत डी. वाड)", hi: "ए. होवर्ड व यशवंत डी. वाड", correct: true },
+                    { id: 'B', en: "C.N. Acharya (सी.एन. आचार्य)", hi: "सी.एन. आचार्य", correct: false },
+                    { id: 'C', en: "Narayan Kaka (कृषक नाडेप काका)", hi: "कृषक नाडेप काका", correct: false },
+                    { id: 'D', en: "Masanobu Fukuoka (मासानोबू फुकुको)", hi: "मासानोबू फुकुको", correct: false }
+                ],
+                hint: "Developed by Albert Howard and Wad at Indore.",
+                expEn: "Indore method was developed by A. Howard and Yeshwant D. Wad in Indore.",
+                expHi: "इन्दौर विधि - ए. होवर्ड तथा यशवंत डी. वाड द्वारा 'इन्दौर प्लांट न्यूट्रीशन' में विकसित की गई।"
+            },
+            {
+                id: 55,
+                category: "Composting & Vermicomposting",
+                en: "How long does it typically take to prepare compost using the Indore Method under aerobic conditions?",
+                hi: "इन्दौर विधि द्वारा कम्पोस्ट वायवीय दशा में कितने समय में तैयार हो जाती है?",
+                options: [
+                    { id: 'A', en: "4 months (चार माह में)", hi: "चार माह में", correct: true },
+                    { id: 'B', en: "1 year (एक वर्ष)", hi: "एक वर्ष", correct: false },
+                    { id: 'C', en: "15 days (15 दिन)", hi: "15 दिन", correct: false },
+                    { id: 'D', en: "90-120 days under anaerobic condition", hi: "90-120 दिन", correct: false }
+                ],
+                hint: "It takes about 4 months.",
+                expEn: "Compost is prepared in 4 months under the Indore aerobic method.",
+                expHi: "इस विधि में कम्पोस्ट वायवीय दशा में चार माह में तैयार हो जाती है।"
+            },
+            {
+                id: 56,
+                category: "Composting & Vermicomposting",
+                en: "Who developed the Bangalore Method of composting, which is an anaerobic method primarily used for urban waste?",
+                hi: "कम्पोस्ट बनाने की 'बंगलौर विधि' का विकास किसने किया था?",
+                options: [
+                    { id: 'A', en: "C.N. Acharya (सी.एन. आचार्य)", hi: "सी.एन. आचार्य", correct: true },
+                    { id: 'B', en: "A. Howard (ए. होवर्ड)", hi: "ए. होवर्ड", correct: false },
+                    { id: 'C', en: "Narayan Kaka (नाडेप काका)", hi: "नाडेप काका", correct: false },
+                    { id: 'D', en: "Rudolf Steiner (रूडोल्फ स्टेनर)", hi: "रूडोल्फ स्टेनर", correct: false }
+                ],
+                hint: "Developed at the Indian Institute of Science, Bangalore by C.N. Acharya.",
+                expEn: "Bangalore method was developed by C.N. Acharya at Indian Institute of Science, Bangalore.",
+                expHi: "बंगलौर विधि - इसका विकास सी.एन. आचार्य ने इण्डियन इन्स्टीट्यूट ऑफ साइन्स, बंगलौर में किया।"
+            },
+            {
+                id: 57,
+                category: "Composting & Vermicomposting",
+                en: "What is the key characteristic of the Bangalore composting method?",
+                hi: "कम्पोस्ट बनाने की बंगलौर विधि की मुख्य विशेषता क्या है?",
+                options: [
+                    { id: 'A', en: "It is an anaerobic process where turning of compost is NOT done (इसमें खाद की पलटाए नहीं की जाती)", hi: "इसमें खाद की पलटाई नहीं की जाती", correct: true },
+                    { id: 'B', en: "It requires frequent daily turning (इसमें प्रतिदिन पलटाई होती है)", hi: "इसमें प्रतिदिन पलटाई होती है", correct: false },
+                    { id: 'C', en: "It takes only 5 days (यह 5 दिन में बनती है)", hi: "यह 5 दिन में बनती है", correct: false },
+                    { id: 'D', en: "It is exclusively for chemical fertilizers (यह केवल रासायनिक उर्वरकों के लिए है)", hi: "यह रासायनिक उर्वरकों के लिए है", correct: false }
+                ],
+                hint: "Unlike Indore method, turning is not required in Bangalore method.",
+                expEn: "In the Bangalore method, turning (पलटाई) of the manure is not performed.",
+                expHi: "इस विधि की मुख्य विशेषता यह है कि इसमें खाद की पलटाई नहीं की जाती है।"
+            },
+            {
+                id: 58,
+                category: "Composting & Vermicomposting",
+                en: "Who developed the Nadep Method of composting in Maharashtra?",
+                hi: "नाडेप कम्पोस्ट विधि महाराष्ट्र के किस कृषक द्वारा विकसित की गई थी?",
+                options: [
+                    { id: 'A', en: "Narayanrao Deshpande / Nadep Kaka (कृषक नाडेप काका)", hi: "कृषक नाडेप काका", correct: true },
+                    { id: 'B', en: "Yeshwant Wad (यशवंत वाड)", hi: "यशवंत वाड", correct: false },
+                    { id: 'C', en: "C.N. Acharya (सी.एन. आचार्य)", hi: "सी.एन. आचार्य", correct: false },
+                    { id: 'D', en: "Albert Howard (अल्बर्ट हावर्ड)", hi: "अल्बर्ट हावर्ड", correct: false }
+                ],
+                hint: "Developed by Maharashtrian farmer Nadep Kaka.",
+                expEn: "Nadep method was developed by farmer Nadep Kaka in Maharashtra.",
+                expHi: "नेडेप कम्पोस्ट विधि - यह विधि महाराष्ट्र के कृषक नाडेप काका द्वारा विकसित की गई है।"
+            },
+            {
+                id: 59,
+                category: "Composting & Vermicomposting",
+                en: "How long does it take to prepare compost through the Nadep method?",
+                hi: "नाडेप विधि द्वारा कम्पोस्ट तैयार होने में कितना समय लगता है?",
+                options: [
+                    { id: 'A', en: "90 - 120 days (90-120 दिन)", hi: "90-120 दिन", correct: true },
+                    { id: 'B', en: "30 days (30 दिन)", hi: "30 दिन", correct: false },
+                    { id: 'C', en: "6 months (6 महीने)", hi: "6 महीने", correct: false },
+                    { id: 'D', en: "1 year (1 वर्ष)", hi: "1 वर्ष", correct: false }
+                ],
+                hint: "Takes roughly 3 to 4 months (90-120 days).",
+                expEn: "Nadep composting takes 90-120 days.",
+                expHi: "नाडेप विधि से कम्पोस्ट तैयार होने में 90-120 दिन का समय लगता है।"
+            },
+            {
+                id: 60,
+                category: "Composting & Vermicomposting",
+                en: "What is Vermicomposting?",
+                hi: "वर्मीकम्पोस्ट (Vermicomposting) क्या है?",
+                options: [
+                    { id: 'A', en: "Compost prepared using earthworms to digest organic waste (केंचुओं द्वारा कृषि अपशिष्ट को पचाकर उत्तम किस्म का कम्पोस्ट)", hi: "केंचुओं द्वारा कृषि अपशिष्ट को पचाकर उत्तम किस्म का कम्पोस्ट", correct: true },
+                    { id: 'B', en: "Compost made strictly with chemical acids (रासायनिक अम्लों द्वारा खाद)", hi: "रासायनिक अम्लों द्वारा खाद", correct: false },
+                    { id: 'C', en: "Compost made from burnt crop residue (जले हुए अवशेषों की खाद)", hi: "जले हुए अवशेषों की खाद", correct: false },
+                    { id: 'D', en: "Compost made from industrial wastewater (औद्योगिक अपशिष्ट जल)", hi: "औद्योगिक अपशिष्ट जल", correct: false }
+                ],
+                hint: "Uses earthworms (केंचुए).",
+                expEn: "Vermicomposting involves earthworms breaking down organic waste into premium compost.",
+                expHi: "केंचुओं द्वारा कृषि अपशिष्ट को पचाकर उत्तम किस्म का कम्पोस्ट बनाया जाता है, जो वर्मीकम्पोस्ट कहलाता है।"
+            },
+            {
+                id: 61,
+                category: "Composting & Vermicomposting",
+                en: "Actinomycetes concentration in vermicompost is found to be how many times higher compared to cow dung manure?",
+                hi: "वर्मीकम्पोस्ट में एक्टिनोमाइसिटीज की मात्रा गोबर की खाद की तुलना में कितने गुना अधिक पाई जाती है?",
+                options: [
+                    { id: 'A', en: "8 times (8 गुना)", hi: "8 गुना", correct: true },
+                    { id: 'B', en: "2 times (2 गुना)", hi: "2 गुना", correct: false },
+                    { id: 'C', en: "5 times (5 गुना)", hi: "5 गुना", correct: false },
+                    { id: 'D', en: "20 times (20 गुना)", hi: "20 गुना", correct: false }
+                ],
+                hint: "It is 8 times higher.",
+                expEn: "Actinomycetes are 8 times more abundant in vermicompost than in cow dung.",
+                expHi: "वर्मीकम्पोस्ट में एक्टिनोमाइसिटीज की मात्रा गोबर की खाद की तुलना में 8 गुना अधिक पाई जाती है।"
+            },
+            {
+                id: 62,
+                category: "Composting & Vermicomposting",
+                en: "Earthworms that live in the topsoil and feed heavily on organic residues (surface feeders) are known as:",
+                hi: "भूमि की ऊपरी सतह पर रहने वाले और कृषि अपशिष्टों को अधिक खाने वाले केंचुए क्या कहलाते हैं?",
+                options: [
+                    { id: 'A', en: "Epigeic (एपिजिस / Epijic)", hi: "एपिजिस", correct: true },
+                    { id: 'B', en: "Endogeic (इण्डोजिक)", hi: "इण्डोजिक", correct: false },
+                    { id: 'C', en: "Anaerobic (अवायवीय)", hi: "अवायवीय", correct: false },
+                    { id: 'D', en: "Diogeic (डायोजिक)", hi: "डायोजिक", correct: false }
+                ],
+                hint: "Epigeic earthworms like Eisenia fetida are surface litter feeders.",
+                expEn: "Epigeic earthworms remain near the surface and consume high amounts of organic waste.",
+                expHi: "एपिजिस (Epigeic) - ये भूमि में एक मीटर की गहराई तक ही रहते हैं और कृषि अपशिष्टों को अधिक खाते हैं।"
+            },
+            {
+                id: 63,
+                category: "Composting & Vermicomposting",
+                en: "Which earthworm species is most commonly and successfully used in vermicomposting in Haryana and similar regions?",
+                hi: "वर्मीकम्पोस्ट बनाने हेतु सबसे उपयुक्त और लोकप्रिय केंचुए की प्रजाति कौन सी है?",
+                options: [
+                    { id: 'A', en: "Eisenia fetida (आईसीनिया फोईटिडा / Red Wriggler)", hi: "आईसीनिया फोईटिडा", correct: true },
+                    { id: 'B', en: "Pheretima posthuma (फेरेटिमा इलोनोटाइ)", hi: "फेरेटिमा इलोनोटाइ", correct: false },
+                    { id: 'C', en: "Perionyx excavatus (पेरिनिप्स)", hi: "पेरिनिप्स", correct: false },
+                    { id: 'D', en: "Allolobophora (आर्बोशीकोली)", hi: "आर्बोशीकोली", correct: false }
+                ],
+                hint: "Eisenia fetida thrives best under local vermicomposting conditions.",
+                expEn: "Eisenia fetida (आईसीनिया फोईटिडा) is the most preferred earthworm species for vermicomposting.",
+                expHi: "वर्मीकम्पोस्ट बनाने हेतु आईसीनिया फोईटिडा (Eisenia fetida) प्रजाति के केंचुए सबसे उपयुक्त पाए गए हैं।"
+            },
+            {
+                id: 64,
+                category: "Composting & Vermicomposting",
+                en: "Deep-burrowing earthworms that make deep tunnels (more than 3 meters deep) are called:",
+                hi: "भूमि में गहरी सुरंग (3 मीटर से अधिक) बनाने वाले केंचुए क्या कहलाते हैं?",
+                options: [
+                    { id: 'A', en: "Endogeic (इण्डोजिक)", hi: "इण्डोजिक", correct: true },
+                    { id: 'B', en: "Epigeic (एपिजिस)", hi: "एपिजिस", correct: false },
+                    { id: 'C', en: "Dayozic (डायोजिक)", hi: "डायोजिक", correct: false },
+                    { id: 'D', en: "Surface feeders (सतह भक्षी)", hi: "सतह भक्षी", correct: false }
+                ],
+                hint: "Endogeic earthworms burrow deep into the soil.",
+                expEn: "Endogeic earthworms build deep burrows over 3 meters deep.",
+                expHi: "इण्डोजिक - ये केंचुए भूमि में गहरी सुरंग (3 मीटर से अधिक) बनाते हैं।"
+            },
+            {
+                id: 65,
+                category: "Composting & Vermicomposting",
+                en: "What is the average nutrient percentage content in standard FYM (Farm Yard Manure / गोबर की खाद)?",
+                hi: "गोबर की खाद (FYM) में सामान्यतः कितने प्रतिशत नाइट्रोजन, फास्फोरस व पोटाश पाया जाता है?",
+                options: [
+                    { id: 'A', en: "0.5% N, 0.25% P₂O₅, 0.50% K₂O", hi: "0.5% N, 0.25% P, 0.50% K", correct: true },
+                    { id: 'B', en: "1.0% N, 1.0% P, 1.0% K", hi: "1.0% N, 1.0% P, 1.0% K", correct: false },
+                    { id: 'C', en: "0.1% N, 0.1% P, 0.1% K", hi: "0.1% N, 0.1% P, 0.1% K", correct: false },
+                    { id: 'D', en: "2.5% N, 1.5% P, 1.0% K", hi: "2.5% N, 1.5% P, 1.0% K", correct: false }
+                ],
+                hint: "Standard composition is 0.5:0.25:0.50.",
+                expEn: "FYM contains 0.5% Nitrogen, 0.25% Phosphorus, and 0.50% Potassium.",
+                expHi: "गोबर की खाद में 0.5% नाइट्रोजन, 0.25% फास्फोरस व 0.50% पोटाश होता है।"
+            },
+
+            // Page 6: Biofertilizers & Pest Management (Q66 - Q78)
+            {
+                id: 66,
+                category: "Biofertilizers & Pest Management",
+                en: "Which biofertilizer is specifically recommended for legume crops (दलहनी फसलें)?",
+                hi: "दलहनी फसलों (Leguminous crops) में किस जैव उर्वरक का प्रयोग किया जाता है?",
+                options: [
+                    { id: 'A', en: "Rhizobium (राइजोबियम)", hi: "राइजोबियम", correct: true },
+                    { id: 'B', en: "Azotobacter (एजोटोबैक्टर)", hi: "एजोटोबैक्टर", correct: false },
+                    { id: 'C', en: "Blue-Green Algae / Azolla (नील हरित शैवाल व एजोला)", hi: "नील हरित शैवाल व एजोला", correct: false },
+                    { id: 'D', en: "PSB / PSM (पी.एस.एम.)", hi: "पी.एस.एम.", correct: false }
+                ],
+                hint: "Rhizobium forms symbiotic nodules in legume roots.",
+                expEn: "Rhizobium is used as a biofertilizer for pulse and legume crops.",
+                expHi: "राइजोबियम का उपयोग दलहनी फसलों में किया जाता है।"
+            },
+            {
+                id: 67,
+                category: "Biofertilizers & Pest Management",
+                en: "Blue-Green Algae (BGA) and Azolla are primarily used as biofertilizers in which crop?",
+                hi: "नील हरित शैवाल व एजोला का उपयोग किस फसल में किया जाता है?",
+                options: [
+                    { id: 'A', en: "Rice / Paddy (धान)", hi: "धान", correct: true },
+                    { id: 'B', en: "Wheat (गेहूँ)", hi: "गेहूँ", correct: false },
+                    { id: 'C', en: "Gram (चना)", hi: "चना", correct: false },
+                    { id: 'D', en: "Mustard (सरसों)", hi: "सरसों", correct: false }
+                ],
+                hint: "Grown in flooded paddy fields.",
+                expEn: "BGA and Azolla are standard biofertilizers for paddy/rice cultivation.",
+                expHi: "नील हरित शैवाल व एजोला का उपयोग धान में किया जाता है।"
+            },
+            {
+                id: 68,
+                category: "Biofertilizers & Pest Management",
+                en: "Which biofertilizers are recommended for non-leguminous crops (अदलहनी फसलें)?",
+                hi: "अदलहनी फसलों (Non-legume) के लिए किस जैव उर्वरक का प्रयोग किया जाता है?",
+                options: [
+                    { id: 'A', en: "Azotobacter and Azospirillum (एजोटोबैक्टर व एजोस्पिरिलम)", hi: "एजोटोबैक्टर व एजोस्पिरिलम", correct: true },
+                    { id: 'B', en: "Rhizobium (राइजोबियम)", hi: "राइजोबियम", correct: false },
+                    { id: 'C', en: "Rhizobium exclusively", hi: "केवल राइजोबियम", correct: false },
+                    { id: 'D', en: "Mycorrhiza only", hi: "केवल माइकोराइजा", correct: false }
+                ],
+                hint: "Azotobacter fixes nitrogen in non-legumes.",
+                expEn: "Azotobacter and Azospirillum are biofertilizers used for non-leguminous crops.",
+                expHi: "एजोटोबैक्टर व एजोस्पिरिलम जैव उर्वरकों का प्रयोग अदलहनी फसलों में किया जाता है।"
+            },
+            {
+                id: 69,
+                category: "Biofertilizers & Pest Management",
+                en: "Who propounded the concept of Biodynamic Agriculture (बायोडायनेमिक खेती)?",
+                hi: "डॉ. रूдольफ स्टेनर (Dr. Rudolf Steiner) ने किस खेती की विचारधारा का प्रतिपादन किया था?",
+                options: [
+                    { id: 'A', en: "Biodynamic agriculture (बायोडायनेमिक खेती)", hi: "बायोडायनेमिक खेती", correct: true },
+                    { id: 'B', en: "Zero Budget Natural Farming (जीरो बजट प्राकृतिक खेती)", hi: "जीरो बजट प्राकृतिक खेती", correct: false },
+                    { id: 'C', en: "Organic farming by Howard (हावर्ड की जैविक खेती)", hi: "हावर्ड की जैविक खेती", correct: false },
+                    { id: 'D', en: "Permaculture (परमेकल्चर)", hi: "परमेकल्चर", correct: false }
+                ],
+                hint: "Steiner pioneered biodynamic agriculture.",
+                expEn: "Dr. Rudolf Steiner propounded biodynamic agriculture.",
+                expHi: "डॉ. रूडोल्फ स्टेनर ने बायोडायनेमिक खेती की विचारधारा का प्रतिपादन किया था।"
+            },
+            {
+                id: 70,
+                category: "Biofertilizers & Pest Management",
+                en: "Agricultural panchang (पंचांग) is primarily based on the movement of which celestial body?",
+                hi: "कृषि पंचांग मूलतः किस खगोलीय पिंड की गति पर आधारित होता है?",
+                options: [
+                    { id: 'A', en: "Moon (चन्द्रमा की गति)", hi: "चन्द्रमा की गति", correct: true },
+                    { id: 'B', en: "Sun (सूर्य)", hi: "सूर्य", correct: false },
+                    { id: 'C', en: "Mars (मंगल)", hi: "मंगल", correct: false },
+                    { id: 'D', en: "Jupiter (बृहस्पति)", hi: "बृहस्पति", correct: false }
+                ],
+                hint: "Based on lunar cycles (चन्द्रमा).",
+                expEn: "Agricultural panchang is based on the movement of the moon.",
+                expHi: "कृषि पंचांग मूलतः चन्द्रमा की गति पर आधारित होता है।"
+            },
+            {
+                id: 71,
+                category: "Biofertilizers & Pest Management",
+                en: "What is observed when seeds are sown 48 hours before a full moon (पूर्णिमा)?",
+                hi: "पूर्णिमा के 48 घंटे पूर्व बीजों की बुआई की जाए तो क्या प्रभाव पड़ता है?",
+                options: [
+                    { id: 'A', en: "Germination rate increases due to higher moisture/humidity (अंकुरण दर में वृद्धि होती है)", hi: "अंकुरण दर में वृद्धि होती है", correct: true },
+                    { id: 'B', en: "Germination stops completely (अंकुरण रुक जाता है)", hi: "अंकुरण रुक जाता है", correct: false },
+                    { id: 'C', en: "Seeds get destroyed by pests (कीड़े खा जाते हैं)", hi: "कीड़े खा जाते हैं", correct: false },
+                    { id: 'D', en: "No effect at all (कोई प्रभाव नहीं पड़ता)", hi: "कोई प्रभाव नहीं पड़ता", correct: false }
+                ],
+                hint: "Moisture and germination rates increase near full moon.",
+                expEn: "Sowing seeds 48 hours before full moon increases germination rate due to higher moisture.",
+                expHi: "पूर्णिमा के 48 घंटे पूर्व बीजों की बुआई की जाए तो अंकुरण दर में वृद्धि होती है।"
+            },
+            {
+                id: 72,
+                category: "Biofertilizers & Pest Management",
+                en: "Which predator insect is commonly used for biological control (जैविक नियंत्रण) of pests?",
+                hi: "जैविक नियंत्रण हेतु क्राइसोपीड्स (Chrysopids) व कोक्सीनेला (Coccinella) क्या हैं?",
+                options: [
+                    { id: 'A', en: "Major predator insects (प्रमुख परभक्षी कीट)", hi: "प्रमुख परभक्षी कीट", correct: true },
+                    { id: 'B', en: "Harmful crop pests (हानिकारक कीट)", hi: "हानिकारक कीट", correct: false },
+                    { id: 'C', en: "Fungal biofertilizers (कवक जैव उर्वरक)", hi: "कवक जैव उर्वरक", correct: false },
+                    { id: 'D', en: "Earthworm species (केंचुए की प्रजाति)", hi: "केंचुए की प्रजाति", correct: false }
+                ],
+                hint: "They are beneficial predatory insects.",
+                expEn: "Chrysopids and Coccinella are prominent predatory insects used for biological control.",
+                expHi: "जैविक नियंत्रण हेतु क्राइसोपीड्स व कोक्सीनेला प्रमुख परभक्षी कीट हैं।"
+            },
+            {
+                id: 73,
+                category: "Biofertilizers & Pest Management",
+                en: "Trichogramma and Apanteles are known as prominent biological control:",
+                hi: "ट्राइकोग्रामा व एपिकार्निया क्या हैं?",
+                options: [
+                    { id: 'A', en: "Major parasitoid insects (जैविक नियंत्रण के प्रमुख परजीवी कीट)", hi: "प्रमुख परजीवी कीट", correct: true },
+                    { id: 'B', en: "Chemical fungicides (रासायनिक कवकनाशी)", hi: "रासायनिक कवकनाशी", correct: false },
+                    { id: 'C', en: "weed varieties (खरपतवार किस्में)", hi: "खरपतवार किस्में", correct: false },
+                    { id: 'D', en: "Viral fertilizers (विषाणु उर्वरक)", hi: "विषाणु उर्वरक", correct: false }
+                ],
+                hint: "They act as parasitoids (परजीवी कीट).",
+                expEn: "Trichogramma and Apanteles are prominent parasitoid insects for biological control.",
+                expHi: "ट्राइकोग्रामा व एपिकार्निया जैविक नियंत्रण के प्रमुख परजीवी कीट हैं।"
+            },
+            {
+                id: 74,
+                category: "Biofertilizers & Pest Management",
+                en: "Trichoderma is a fungus used for:",
+                hi: "ट्राइकोडरमा (Trichoderma) एक कवक है जो किसके लिए काम में ली जाती है?",
+                options: [
+                    { id: 'A', en: "Seed and soil treatment across various crops (विभिन्न फसलों में बीज एवं मृदा उपचार हेतु)", hi: "विभिन्न फसलों में बीज एवं मृदा उपचार हेतु", correct: true },
+                    { id: 'B', en: "Animal feed formulation (पशु आहार)", hi: "पशु आहार", correct: false },
+                    { id: 'C', en: "Milk preservation (दूध परीक्षण)", hi: "दूध परीक्षण", correct: false },
+                    { id: 'D', en: "Urea synthesis (यूरिया निर्माण)", hi: "यूरिया निर्माण", correct: false }
+                ],
+                hint: "It's a bio-fungicide used for seed and soil treatment.",
+                expEn: "Trichoderma is a beneficial fungus used for seed and soil treatment against pathogens.",
+                expHi: "ट्राइकोडरमा एक फफूंद है जो विभिन्न फसलों में बीज एवं मृदा उपचार हेतु काम में ली जाती है।"
+            },
+            {
+                id: 75,
+                category: "Biofertilizers & Pest Management",
+                en: "NPV (Nuclear Polyhedrosis Virus) and GV are primarily used for:",
+                hi: "एन.पी.वी. (NPV) व जी.वी. (GV) जैविक नियंत्रण हेतु क्या हैं?",
+                options: [
+                    { id: 'A', en: "Main biological control viruses (जैविक नियंत्रण हेतु मुख्य विषाणु / Virus)", hi: "जैविक नियंत्रण हेतु मुख्य विषाणु", correct: true },
+                    { id: 'B', en: "Bacterial fertilizers (बैक्टीरिया उर्वरक)", hi: "बैक्टीरिया उर्वरक", correct: false },
+                    { id: 'C', en: "Growth hormones (वृद्धि हार्मोन)", hi: "वृद्धि हार्मोन", correct: false },
+                    { id: 'D', en: "Soil sterilizers (मृदा स्टरलाइज़र)", hi: "मृदा स्टरलाइज़र", correct: false }
+                ],
+                hint: "They are insecticidal viruses.",
+                expEn: "NPV and GV are principal viruses used for biological pest control.",
+                expHi: "एन.पी.वी. व जी.वी. जैविक नियंत्रण हेतु मुख्य विषाणु (Virus) हैं।"
+            },
+            {
+                id: 76,
+                category: "Biofertilizers & Pest Management",
+                en: "What is Mycorrhiza (माइकोराइजा)?",
+                hi: "माइकोराइजा (Mycorrhiza) क्या है?",
+                options: [
+                    { id: 'A', en: "A symbiotic association between fungi and plant roots (कवक और पौधों की जड़ों का सहजीवी संबंध)", hi: "कवक और पौधों की जड़ों का सहजीवी संबंध", correct: true },
+                    { id: 'B', en: "A chemical pesticide (रासायनिक कीटनाशक)", hi: "रासायनिक कीटनाशक", correct: false },
+                    { id: 'C', en: "A bacterial weed killer (बैक्टीरियल खरपतवार नाशक)", hi: "खरपतवार नाशक", correct: false },
+                    { id: 'D', en: "A synthetic hormone (संश्लेषित हॉर्मोन)", hi: "संश्लेषित हॉर्मोन", correct: false }
+                ],
+                hint: "Fungal root symbiosis helping in phosphorus uptake.",
+                expEn: "Mycorrhiza is a symbiotic association of fungi with plant roots.",
+                expHi: "माइकोराइजा कवक और पौधों की जड़ों का सहजीवी संबंध है।"
+            },
+            {
+                id: 77,
+                category: "Biofertilizers & Pest Management",
+                en: "PSM / PSB (Phosphate Solubilizing Bacteria) are used in:",
+                hi: "पी.एस.एम. / पी.एस.बी. (PSM / PSB) का प्रयोग किस में किया जाता है?",
+                options: [
+                    { id: 'A', en: "All types of crops and vegetables for phosphorus availability (सभी प्रकार की फसलों व सब्जियों में)", hi: "सभी प्रकार की फसलों व सब्जियों में", correct: true },
+                    { id: 'B', en: "Only in barren deserts (केवल बंजर मरुस्थल में)", hi: "केवल बंजर मरुस्थल में", correct: false },
+                    { id: 'C', en: "Exclusively in aquatic fish tanks (केवल मछली टैंक में)", hi: "केवल मछली टैंक में", correct: false },
+                    { id: 'D', en: "In metallic corrosion prevention (धातु संक्षारण रोकने में)", hi: "धातु संक्षारण रोकने में", correct: false }
+                ],
+                hint: "Phosphate solubilizing microorganisms are applied broadly to crops and vegetables.",
+                expEn: "PSM/PSB find application across all crop types and vegetables to solubilize soil phosphorus.",
+                expHi: "पी.एस.एम./पी.एस.बी. का प्रयोग सभी प्रकार की फसलों व सब्जियों में किया जाता है।"
+            },
+            {
+                id: 78,
+                category: "Biofertilizers & Pest Management",
+                en: "What is the primary role of Azotobacter and Azospirillum when applied as biofertilizers?",
+                hi: "एजोटोबैक्टर व एजोस्पिरिलम का मुख्य कार्य क्या है?",
+                options: [
+                    { id: 'A', en: "Non-symbiotic biological nitrogen fixation (असहजीवी नाइट्रोजन स्थिरीकरण)", hi: "असहजीवी नाइट्रोजन स्थिरीकरण", correct: true },
+                    { id: 'B', en: "Potassium absorption (पोटैशियम अवशोषण)", hi: "पोटैशियम अवशोषण", correct: false },
+                    { id: 'C', en: "Weed eradication (खरपतवार नाश)", hi: "खरपतवार नाश", correct: false },
+                    { id: 'D', en: "Insect killing (कीट नियंत्रण)", hi: "कीट नियंत्रण", correct: false }
+                ],
+                hint: "They fix atmospheric nitrogen freely in soil.",
+                expEn: "They perform free-living/non-symbiotic nitrogen fixation.",
+                expHi: "ये असहजीवी रूप से वायुमंडलीय नाइट्रोजन का स्थिरीकरण करते हैं।"
+            },
+
+            // Page 7: Objective Questions on Organic Farming (Q79 - Q100)
+            {
+                id: 79,
+                category: "Organic Farming Objectives",
+                en: "Who first used the term 'Organic Farming'?",
+                hi: "'ऑर्गेनिक फार्मिंग' शब्द का प्रयोग प्रथम बार किसने किया था?",
+                options: [
+                    { id: 'A', en: "Lord Northbourne (नार्थबॉर्न ने)", hi: "नार्थबॉर्न ने", correct: true },
+                    { id: 'B', en: "Howard (हावर्ड ने)", hi: "हावर्ड ने", correct: false },
+                    { id: 'C', en: "Fukuoka (फार्सन ने / फुकुको)", hi: "फार्सन ने", correct: false },
+                    { id: 'D', en: "Welfour (वेलफोर ने)", hi: "वेलफोर ने", correct: false }
+                ],
+                hint: "Lord Northbourne coined the term.",
+                expEn: "Lord Northbourne used the term organic farming first.",
+                expHi: "'ऑर्गेनिक फार्मिंग' शब्द का प्रयोग प्रथम बार नार्थबॉर्न ने किया था।"
+            },
+            {
+                id: 80,
+                category: "Organic Farming Objectives",
+                en: "What inputs are strictly used in Organic Farming among the choices?",
+                hi: "जैविक खेती में उपयोग लिया जाता है -",
+                options: [
+                    { id: 'A', en: "Organic manure / Jiwamsh khaad (जीवांश खाद)", hi: "जीवांश खाद", correct: true },
+                    { id: 'B', en: "Chemical fertilizers (रासायनिक उर्वरक)", hi: "रासायनिक उर्वरक", correct: false },
+                    { id: 'C', en: "Weedicides (शाकनाशी)", hi: "शाकनाशी", correct: false },
+                    { id: 'D', en: "Synthetic pesticides (कीटनाशी)", hi: "कीटनाशी", correct: false }
+                ],
+                hint: "Organic farming relies on organic manure.",
+                expEn: "Organic farming utilizes organic manures (जीवांश खाद).",
+                expHi: "जैविक खेती में जीवांश खाद उपयोग लिया जाता है।"
+            },
+            {
+                id: 81,
+                category: "Organic Farming Objectives",
+                en: "What is the percentage of nitrogen found in Farm Yard Manure (गोबर की खाद)?",
+                hi: "गोबर खाद में कितने प्रतिशत नाइट्रोजन पाया जाता है?",
+                options: [
+                    { id: 'A', en: "0.5%", hi: "0.5%", correct: true },
+                    { id: 'B', en: "0.75%", hi: "0.75%", correct: false },
+                    { id: 'C', en: "0.25%", hi: "0.25%", correct: false },
+                    { id: 'D', en: "1.0%", hi: "1.0%", correct: false }
+                ],
+                hint: "It contains 0.5% N.",
+                expEn: "FYM contains 0.5% nitrogen.",
+                expHi: "गोबर खाद में 0.5 प्रतिशत नाइट्रोजन पाया जाता है।"
+            },
+            {
+                id: 82,
+                category: "Organic Farming Objectives",
+                en: "What is the recommended seed rate per hectare for Dhaincha (ढैंचा) when grown for green manure (हरी खाद)?",
+                hi: "हरी खाद बनाने के लिए ढैंचे की प्रति हेक्टेयर बीज दर कितनी रखते हैं?",
+                options: [
+                    { id: 'A', en: "40 - 50 kg / 60-80 kg (60-80 कि.ग्रा.)", hi: "60-80 कि.ग्रा.", correct: true },
+                    { id: 'B', en: "20 - 30 kg", hi: "20-30 कि.ग्रा.", correct: false },
+                    { id: 'C', en: "100 - 120 kg", hi: "100-120 कि.ग्रा.", correct: false },
+                    { id: 'D', en: "10 - 15 kg", hi: "10-15 कि.ग्रा.", correct: false }
+                ],
+                hint: "Standard seed rate for green manure dhaincha is around 40-50 or 60-80 kg/ha.",
+                expEn: "Seed rate for dhaincha green manuring is around 40-50 or 60-80 kg per hectare.",
+                expHi: "हरी खाद बनाने के लिए ढैंचे की प्रति हेक्टेयर बीज दर 60-80 कि.ग्रा. रखते हैं।"
+            },
+            {
+                id: 83,
+                category: "Organic Farming Objectives",
+                en: "Organic manure primarily affects which property of soil?",
+                hi: "जीवांश खाद से मृदा की कौन-सी अवस्था पर प्रभाव पड़ता है?",
+                options: [
+                    { id: 'A', en: "Physical, biological and chemical properties (भौतिक, रासायनिक एवं जैविक - उपरोक्त सभी)", hi: "उपरोक्त सभी", correct: true },
+                    { id: 'B', en: "Only physical structure (केवल भौतिक)", hi: "केवल भौतिक", correct: false },
+                    { id: 'C', en: "Only chemical pH (केवल रासायनिक)", hi: "केवल रासायनिक", correct: false },
+                    { id: 'D', en: "None of the above (कोई नहीं)", hi: "कोई नहीं", correct: false }
+                ],
+                hint: "Organic matter improves physical, chemical, and biological properties.",
+                expEn: "Organic manure impacts physical, chemical, and biological conditions of soil.",
+                expHi: "जीवांश खाद से मृदा की भौतिक, रासायनिक और जैविक (उपरोक्त सभी) अवस्था पर प्रभाव पड़ता है।"
+            },
+            {
+                id: 84,
+                category: "Organic Farming Objectives",
+                en: "What percentage of soils in India are reported to suffer from zinc deficiency as per surveys?",
+                hi: "भारत में कितने प्रतिशत मृदाओं में जस्ते की कमी है?",
+                options: [
+                    { id: 'A', en: "47% / 58% / 47", hi: "47", correct: true },
+                    { id: 'B', en: "12%", hi: "12", correct: false },
+                    { id: 'C', en: "64%", hi: "64", correct: false },
+                    { id: 'D', en: "30%", hi: "30", correct: false }
+                ],
+                hint: "Around 47% of soils suffer from zinc deficiency.",
+                expEn: "Approximately 47% of Indian soils suffer from zinc deficiency.",
+                expHi: "भारत में 47 प्रतिशत मृदाओं में जस्ते की कमी है।"
+            },
+            {
+                id: 85,
+                category: "Organic Farming Objectives",
+                en: "Which biofertilizer is used to inoculate chickpea (चना) seeds?",
+                hi: "चने के बीजों को कौन-से जैव उर्वरक से उपचारित करते हैं?",
+                options: [
+                    { id: 'A', en: "Rhizobium (राइजोबियम)", hi: "राइजोबियम", correct: true },
+                    { id: 'B', en: "Azotobacter (एजोटोबैक्टर)", hi: "एजोटोबैक्टर", correct: false },
+                    { id: 'C', en: "Azolla (एजोला)", hi: "एजोला", correct: false },
+                    { id: 'D', en: "Azospirillum (एजोस्पिरिलम)", hi: "एजोस्पिरिलम", correct: false }
+                ],
+                hint: "Chickpea is a pulse crop, inoculated with Rhizobium.",
+                expEn: "Chickpea seeds are treated with Rhizobium.",
+                expHi: "चने के बीजों को राइजोबियम से उपचारित करते हैं क्योंकि यह दलहनी फसल है।"
+            },
+            {
+                id: 86,
+                category: "Organic Farming Objectives",
+                en: "Azolla biofertilizer is predominantly used in which crop?",
+                hi: "एजोला का उपयोग कौन-सी फसल में करते हैं?",
+                options: [
+                    { id: 'A', en: "Paddy / Rice (धान)", hi: "धान", correct: true },
+                    { id: 'B', en: "Wheat (गेहूँ)", hi: "गेहूँ", correct: false },
+                    { id: 'C', en: "Barley (जौ)", hi: "जौ", correct: false },
+                    { id: 'D', en: "Maize (मक्का)", hi: "मक्का", correct: false }
+                ],
+                hint: "Azolla grows in water in rice paddies.",
+                expEn: "Azolla is used in paddy (धान) cultivation.",
+                expHi: "एजोला का उपयोग धान (Rice) फसल में करते हैं।"
+            },
+            {
+                id: 87,
+                category: "Organic Farming Objectives",
+                en: "Who propounded the concept of Biodynamic Agriculture?",
+                hi: "बायोडायनेमिक खेती की विचारधारा का प्रतिपादन किसने किया था?",
+                options: [
+                    { id: 'A', en: "Dr. Rudolf Steiner (डॉ. रूडोल्फ स्टेनर)", hi: "डॉ. रूडोल्फ स्टेनर", correct: true },
+                    { id: 'B', en: "Rodale Family (रोडेल फैमिली)", hi: "रोडेल फैमिली", correct: false },
+                    { id: 'C', en: "Hans Müller (हंस मूलर)", hi: "हंस मूलर", correct: false },
+                    { id: 'D', en: "Lady Eve Balfour (लेडी एवं वेलफोर)", hi: "लेडी एवं वेलफोर", correct: false }
+                ],
+                hint: "Steiner propounded biodynamic agriculture.",
+                expEn: "Dr. Rudolf Steiner propounded biodynamic agriculture.",
+                expHi: "बायोडायनेमिक खेती की विचारधारा का प्रतिपादन डॉ. रूडोल्फ स्टेनर ने किया था।"
+            },
+            {
+                id: 88,
+                category: "Organic Farming Objectives",
+                en: "During Moon's descending phase (चन्द्र दक्षिणायन अवस्था), crop quality improves mostly for which part?",
+                hi: "चन्द्र दक्षिणायन अवस्था में कौन-सी फसलों की गुणवत्ता में वृद्धि होती है?",
+                options: [
+                    { id: 'A', en: "Flower / root / specific plant parts (फूल / कंद / चारा)", hi: "फूल", correct: true },
+                    { id: 'B', en: "Grains only (केवल अनाज)", hi: "अनाज", correct: false },
+                    { id: 'C', en: "Stem fibers only (केवल तना रेशा)", hi: "तना रेशा", correct: false },
+                    { id: 'D', en: "Leaf vegetables only (केवल पत्तेदार सब्जियाँ)", hi: "पत्तेदार सब्जियाँ", correct: false }
+                ],
+                hint: "Affects flowering and root crops as per biodynamic calendars.",
+                expEn: "Descending moon phase enhances quality of flowers (फूल) and root/tuber crops.",
+                expHi: "चन्द्र दक्षिणायन अवस्था में फूल (या कंद/चारा) की गुणवत्ता में वृद्धि होती है।"
+            },
+            {
+                id: 89,
+                category: "Organic Farming Objectives",
+                en: "Which of the following is used as a biological predator insect for biological control?",
+                hi: "जैविक नियंत्रण हेतु परभक्षी कीट कौन-सा है?",
+                options: [
+                    { id: 'A', en: "Chrysopid (क्राइसोपिड्स)", hi: "क्राइसोपिड्स", correct: true },
+                    { id: 'B', en: "Trichogramma (ट्राइकोग्रामा)", hi: "ट्राइकोग्रामा", correct: false },
+                    { id: 'C', en: "Trichoderma (ट्राइकोडरमा)", hi: "ट्राइकोडरमा", correct: false },
+                    { id: 'D', en: "NPV (एन.पी.वी.)", hi: "एन.पी.वी.", correct: false }
+                ],
+                hint: "Chrysopids are predators.",
+                expEn: "Chrysopid is a prominent biological predator insect.",
+                expHi: "जैविक नियंत्रण हेतु परभक्षी कीट क्राइसोपिड्स है।"
+            },
+            {
+                id: 90,
+                category: "Organic Farming Objectives",
+                en: "Apanteles insect is used in which crop as a biological agent?",
+                hi: "एपिकार्निया (या एपेंटेलीज) का उपयोग कौन-सी फसल में किया जाता है?",
+                options: [
+                    { id: 'A', en: "Rice / Paddy or Sugarcane / Cotton (धान / कपास / गन्ना)", hi: "धान / गन्ना", correct: true },
+                    { id: 'B', en: "Wheat (गेहूँ)", hi: "गेहूँ", correct: false },
+                    { id: 'C', en: "Maize (मक्का)", hi: "मक्का", correct: false },
+                    { id: 'D', en: "Barley (जौ)", hi: "जौ", correct: false }
+                ],
+                hint: "Used in crops like paddy or sugarcane.",
+                expEn: "Apanteles/Epikarnia is used in crops like paddy/sugarcane.",
+                expHi: "एपिकार्निया का उपयोग धान अथवा गन्ने की फसल में किया जाता है।"
+            },
+            {
+                id: 91,
+                category: "Organic Farming Objectives",
+                en: "Where was the First World Environment Conference held?",
+                hi: "प्रथम विश्व पर्यावरण सम्मेलन कहां आयोजित किया गया था?",
+                options: [
+                    { id: 'A', en: "Stockholm (स्टॉकहोम)", hi: "स्टॉकहोम", correct: true },
+                    { id: 'B', en: "New Delhi (नई दिल्ली)", hi: "नई दिल्ली", correct: false },
+                    { id: 'C', en: "Rio de Janeiro (रियो-डी-जेनेरियो)", hi: "रियो-डी-जेनेरियो", correct: false },
+                    { id: 'D', en: "Washington (वाशिंगटन)", hi: "वाशिंगटन", correct: false }
+                ],
+                hint: "Stockholm Conference 1972.",
+                expEn: "The first World Environment Conference was held in Stockholm.",
+                expHi: "प्रथम विश्व पर्यावरण सम्मेलन स्टॉकहोम में आयोजित किया गया था।"
+            },
+            {
+                id: 92,
+                category: "Organic Farming Objectives",
+                en: "Which of the following is crucial for determining sustainable farming (टिकायू खेती)?",
+                hi: "निम्नलिखित में से कौन-सा मानक टिकाऊ खेती के निर्धारण के लिए महत्वपूर्ण है?",
+                options: [
+                    { id: 'A', en: "Energy management (ऊर्जा प्रबंधन)", hi: "ऊर्जा प्रबंधन", correct: true },
+                    { id: 'B', en: "Environment alone (केवल पर्यावरण)", hi: "पर्यावरण", correct: false },
+                    { id: 'C', en: "Information management (सूचना प्रबंधन)", hi: "सूचना प्रबंधन", correct: false },
+                    { id: 'D', en: "Genetic diversity (आनुवंशिक विविधता)", hi: "आनुवंशिक विविधता", correct: false }
+                ],
+                hint: "Energy management is highlighted as a core indicator for sustainable farming.",
+                expEn: "Energy management is essential for sustainable agriculture evaluation.",
+                expHi: "टिकाऊ खेती के निर्धारण के लिए ऊर्जा प्रबंधन महत्वपूर्ण है।"
+            },
+            {
+                id: 93,
+                category: "Organic Farming Objectives",
+                en: "Who propounded the modern organic farming theory in England in the 1930s?",
+                hi: "आधुनिक जैविक खेती का सिद्धांत 1930 के दशक में इंग्लैंड के किस व्यक्ति ने प्रतिपादित किया था?",
+                options: [
+                    { id: 'A', en: "Albert Howard (अल्बर्ट हावर्ड)", hi: "अल्बर्ट हावर्ड", correct: true },
+                    { id: 'B', en: "Lord Northbourne (लार्ड वाल्टर नार्थबॉर्न)", hi: "लार्ड वाल्टर नार्थबॉर्न", correct: false },
+                    { id: 'C', en: "Rudolf Steiner (रूडोल्फ स्टेनर)", hi: "रूडोल्फ स्टेनर", correct: false },
+                    { id: 'D', en: "Rodale (रोडेल)", hi: "रोडेल", correct: false }
+                ],
+                hint: "Sir Albert Howard in the 1930s.",
+                expEn: "Albert Howard propounded modern organic farming in England.",
+                expHi: "अल्बर्ट हावर्ड ने 1930 के दशक में इंग्लैंड में प्रतिपादित किया था।"
+            },
+            {
+                id: 94,
+                category: "Organic Farming Objectives",
+                en: "Who established the Soil and Health Foundation in America in 1947?",
+                hi: "अमेरिका में वर्ष 1947 में मृदा एवं स्वास्थ्य संगठन की स्थापना किसने की थी?",
+                options: [
+                    { id: 'A', en: "Rodale Family (रोडेल फैमिली)", hi: "रोडेल फैमिली", correct: true },
+                    { id: 'B', en: "Albert Howard (अल्बर्ट हावर्ड)", hi: "अल्बर्ट हावर्ड", correct: false },
+                    { id: 'C', en: "Rudolf Steiner (रूडोल्फ स्टेनर)", hi: "रूडोल्फ स्टेनर", correct: false },
+                    { id: 'D', en: "Northbourne (नार्थबॉर्न)", hi: "नार्थबॉर्न", correct: false }
+                ],
+                hint: "J.I. Rodale established the Rodale Institute / Soil and Health Foundation.",
+                expEn: "Rodale family established the Soil and Health Foundation in America in 1947.",
+                expHi: "अमेरिका में वर्ष 1947 में मृदा एवं स्वास्थ्य संगठन की स्थापना रोडेल फैमिली ने की थी।"
+            },
+            {
+                id: 95,
+                category: "Organic Farming Objectives",
+                en: "Who started organic farming in Japan?",
+                hi: "जापान में जैविक खेती की शुरुआत किसने की थी?",
+                options: [
+                    { id: 'A', en: "Masanobu Fukuoka (मासानोबू फुकुको)", hi: "मासानोबू फुकुको", correct: true },
+                    { id: 'B', en: "Albert Howard (अल्बर्ट हावर्ड)", hi: "अल्बर्ट हावर्ड", correct: false },
+                    { id: 'C', en: "Rudolf Steiner (रूडोल्फ स्टेनर)", hi: "रूडोल्फ स्टेनर", correct: false },
+                    { id: 'D', en: "Northbourne (नार्थबॉर्न)", hi: "नार्थबॉर्न", correct: false }
+                ],
+                hint: "Masanobu Fukuoka in Japan.",
+                expEn: "Masanobu Fukuoka started organic farming in Japan.",
+                expHi: "जापान में जैविक खेती की शुरुआत मासानोबू फुकुको ने की थी।"
+            },
+            {
+                id: 96,
+                category: "Organic Farming Objectives",
+                en: "FAO declared which year as the 'International Year of Soils' (मृदा स्वास्थ्य वर्ष)?",
+                hi: "खाद्य एवं कृषि संगठन रोम द्वारा 'मृदा स्वास्थ्य वर्ष' घोषित किया गया था -",
+                options: [
+                    { id: 'A', en: "2015", hi: "2015", correct: true },
+                    { id: 'B', en: "2014", hi: "2014", correct: false },
+                    { id: 'C', en: "2018", hi: "2018", correct: false },
+                    { id: 'D', en: "2020", hi: "2020", correct: false }
+                ],
+                hint: "FAO declared 2015 as International Year of Soils (noted on page 7).",
+                expEn: "FAO declared 2015 as the International Year of Soils in the objective questions list.",
+                expHi: "खाद्य एवं कृषि संगठन रोम द्वारा वर्ष 2015 'मृदा स्वास्थ्य वर्ष' घोषित किया गया था।"
+            },
+            {
+                id: 97,
+                category: "Organic Farming Objectives",
+                en: "Under which Five-Year Plan was organic farming given priority by the central government in India?",
+                hi: "किस पंचवर्षीय योजना में केन्द्र सरकार द्वारा जैविक खेती को राष्ट्रीय प्राथमिकता क्षेत्र किया गया?",
+                options: [
+                    { id: 'A', en: "10th Five-Year Plan (10वीं पंचवर्षीय योजना)", hi: "10वीं पंचवर्षीय योजना", correct: true },
+                    { id: 'B', en: "8th Five-Year Plan (8वीं पंचवर्षीय योजना)", hi: "8वीं पंचवर्षीय योजना", correct: false },
+                    { id: 'C', en: "11th Five-Year Plan (11वीं पंचवर्षीय योजना)", hi: "11वीं पंचवर्षीय योजना", correct: false },
+                    { id: 'D', en: "12th Five-Year Plan (12वीं पंचवर्षीय योजना)", hi: "12वीं पंचवर्षीय योजना", correct: false }
+                ],
+                hint: "10th plan.",
+                expEn: "10th Five-Year Plan prioritized organic farming.",
+                expHi: "10वीं पंचवर्षीय योजना में केन्द्र सरकार द्वारा जैविक खेती को राष्ट्रीय प्राथमिकता क्षेत्र दिया गया था।"
+            },
+            {
+                id: 98,
+                category: "Organic Farming Objectives",
+                en: "When was Sikkim declared as India's first organic state?",
+                hi: "सिक्किम को देश का प्रथम जैविक राज्य घोषित किया गया था -",
+                options: [
+                    { id: 'A', en: "18 January 2016 (18 जनवरी 2016)", hi: "18 जनवरी 2016", correct: true },
+                    { id: 'B', en: "18 August 2017 (18 अगस्त 2017)", hi: "18 अगस्त 2017", correct: false },
+                    { id: 'C', en: "18 January 2018 (18 जनवरी 2018)", hi: "18 जनवरी 2018", correct: false },
+                    { id: 'D', en: "15 August 2020 (15 अगस्त 2020)", hi: "15 अगस्त 2020", correct: false }
+                ],
+                hint: "January 18, 2016.",
+                expEn: "Sikkim was declared the first organic state on 18 January 2016.",
+                expHi: "सिक्किम को देश का प्रथम जैविक राज्य 18 जनवरी 2016 को घोषित किया गया था।"
+            },
+            {
+                id: 100,
+                category: "Organic Farming Objectives",
+                en: "Which earthworms build deep burrows more than 3 meters deep in the soil?",
+                hi: "कौन-से केंचुए भूमि में गहरी सुरंग (3 मीटर से अधिक) बनाते हैं?",
+                options: [
+                    { id: 'A', en: "Endogeic (इण्डोजिक)", hi: "इण्डोजिक", correct: true },
+                    { id: 'B', en: "Epigeic (एपिजिस)", hi: "एपिजिस", correct: false },
+                    { id: 'C', en: "Dayozic (डायोजिक)", hi: "डायोजिक", correct: false },
+                    { id: 'D', en: "None of these (इनमें से कोई नहीं)", hi: "इनमें से कोई नहीं", correct: false }
+                ],
+                hint: "Endogeic earthworms burrow deep.",
+                expEn: "Endogeic earthworms create deep burrows exceeding 3 meters.",
+                expHi: "इण्डोजिक केंचुए भूमि में गहरी सुरंग (3 मीटर से अधिक) बनाते हैं।"
+            }
+        ];
+
+        // Fill remaining question 99 if needed to make it cleanly 100 unique items
+        if (questions.length < 100) {
+            questions.push({
+                id: 99,
+                category: "Composting Methods",
+                en: "Who prepared the Indore method of composting along with Albert Howard?",
+                hi: "अल्बर्ट हावर्ड के साथ इन्दौर कम्पोस्ट विधि तैयार करने में सहयोग किसने किया था?",
+                options: [
+                    { id: 'A', en: "Yeshwant D. Wad (यशवंत डी. वाड)", hi: "यशवंत डी. वाड", correct: true },
+                    { id: 'B', en: "C.N. Acharya (सी.एन. आचार्य)", hi: "सी.एन. आचार्य", correct: false },
+                    { id: 'C', en: "Nadep Kaka (नाडेप काका)", hi: "नाडेप काका", correct: false },
+                    { id: 'D', en: "Masanobu Fukuoka (मासानोबू फुकुको)", hi: "मासानोबू फुकुको", correct: false }
+                ],
+                hint: "Yeshwant D. Wad partnered with Albert Howard at Indore.",
+                expEn: "Yeshwant D. Wad co-developed the Indore composting method.",
+                expHi: "यशवंत डी. वाड ने अल्बर्ट हावर्ड के साथ मिलकर इन्दौर विधि विकसित की थी।"
+            });
+        }
+
+        // Sort questions by ID to ensure sequence 1 to 100
+        questions.sort((a, b) => a.id - b.id);
+
+        let currentIndex = 0;
+        let score = 0;
+        let userAnswers = {}; // stores selected option id per question index
+
+        const totalQuestions = questions.length;
+        document.getElementById('total-questions-display').innerText = totalQuestions;
+
+        function loadQuestion(index) {
+            const q = questions[index];
+            currentIndex = index;
+
+            // Update header / counter
+            document.getElementById('question-counter').innerText = `Question ${index + 1} of ${totalQuestions}`;
+            document.getElementById('question-category').innerText = q.category;
+            document.getElementById('progress-bar').style.width = `${((index + 1) / totalQuestions) * 100}%`;
+
+            // Text
+            document.getElementById('question-text-en').innerText = `${index + 1}. ${q.en}`;
+            document.getElementById('question-text-hi').innerText = q.hi;
+
+            // Options
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+
+            const selectedOption = userAnswers[index];
+
+            q.options.forEach((opt) => {
+                const isSelected = selectedOption === opt.id;
+                let btnClass = "w-full text-left p-4 rounded-xl border transition flex items-center justify-between ";
+                
+                if (selectedOption !== undefined) {
+                    // Already answered
+                    if (opt.correct) {
+                        btnClass += "bg-emerald-950/60 border-emerald-500 text-emerald-200";
+                    } else if (isSelected && !opt.correct) {
+                        btnClass += "bg-rose-950/60 border-rose-500 text-rose-200";
+                    } else {
+                        btnClass += "bg-slate-900 border-slate-700 text-slate-300 opacity-60";
+                    }
+                } else {
+                    btnClass += "bg-slate-900 hover:bg-slate-700/60 border-slate-700 text-slate-200";
+                }
+
+                const button = document.createElement('button');
+                button.className = btnClass;
+                button.innerHTML = `
+                    <span class="font-medium"><strong class="mr-2 text-emerald-400">${opt.id}.</strong> ${opt.en} <br><span class="text-xs text-emerald-300/80">${opt.hi}</span></span>
+                `;
+                button.disabled = selectedOption !== undefined;
+                button.onclick = () => selectOption(opt.id);
+                container.appendChild(button);
+            });
+
+            // Hint Box
+            const hintBox = document.getElementById('hint-box');
+            hintBox.innerText = q.hint;
+            hintBox.classList.add('hidden');
+            document.getElementById('hint-toggle-text').innerText = "Show Hint";
+
+            // Explanation Box
+            const expContainer = document.getElementById('explanation-container');
+            if (selectedOption !== undefined) {
+                document.getElementById('explanation-text-en').innerText = q.expEn;
+                document.getElementById('explanation-text-hi').innerText = q.expHi;
+                expContainer.classList.remove('hidden');
+            } else {
+                expContainer.classList.add('hidden');
+            }
+
+            // Navigation Buttons
+            document.getElementById('prev-btn').disabled = index === 0;
+            document.getElementById('next-btn').disabled = index === totalQuestions - 1;
+            document.getElementById('jump-input').value = index + 1;
+        }
+
+        function selectOption(optionId) {
+            if (userAnswers[currentIndex] !== undefined) return; // already answered
+
+            userAnswers[currentIndex] = optionId;
+            const q = questions[currentIndex];
+            const chosen = q.options.find(o => o.id === optionId);
+
+            if (chosen && chosen.correct) {
+                score++;
+                document.getElementById('score-display').innerText = score;
+            }
+
+            loadQuestion(currentIndex);
+        }
+
+        function nextQuestion() {
+            if (currentIndex < totalQuestions - 1) {
+                loadQuestion(currentIndex + 1);
+            }
+        }
+
+        function prevQuestion() {
+            if (currentIndex > 0) {
+                loadQuestion(currentIndex - 1);
+            }
+        }
+
+        function jumpToQuestion(val) {
+            const num = parseInt(val);
+            if (!isNaN(num) && num >= 1 && num <= totalQuestions) {
+                loadQuestion(num - 1);
+            }
+        }
+
+        function toggleHint() {
+            const hintBox = document.getElementById('hint-box');
+            const toggleText = document.getElementById('hint-toggle-text');
+            if (hintBox.classList.contains('hidden')) {
+                hintBox.classList.remove('hidden');
+                toggleText.innerText = "Hide Hint";
+            } else {
+                hintBox.classList.add('hidden');
+                toggleText.innerText = "Show Hint";
+            }
+        }
+
+        function resetQuiz() {
+            score = 0;
+            userAnswers = {};
+            document.getElementById('score-display').innerText = score;
+            loadQuestion(0);
+        }
+
+        // Initialize first question on load
+        window.onload = () => {
+            loadQuestion(0);
+        };
+    </script>
+<script src="../../quiz-question-controls.js"></script>
+<script src="../../quiz-app-ui-v2.js"></script></body>
+</html>

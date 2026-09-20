@@ -1,0 +1,1537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haryana GK Quiz Application (Karnal District - Bilingual)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+<style id="cosmic-readable-quiz-theme">
+:root{--space:#e8dcff;--panel:#f3eaff;--panel2:#dcc6ff;--edge:#6a45bf;--glow:#d28b28;--accent:#d15f9f;--ink:#2c1b4d;--muted:#66547c;--mist:rgba(106,69,191,.2)}html{background:var(--space)}body{background:radial-gradient(ellipse 62% 45% at 90% -5%,rgba(209,95,159,.28),transparent 62%),radial-gradient(ellipse 55% 40% at 8% 100%,rgba(65,164,207,.26),transparent 64%),var(--space)!important;color:var(--ink)!important;min-height:100vh}body:before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.78;background-image:radial-gradient(circle at 9% 18%,var(--glow) 0 1px,transparent 1.7px),radial-gradient(circle at 26% 69%,var(--edge) 0 .8px,transparent 1.5px),radial-gradient(circle at 68% 24%,var(--accent) 0 1px,transparent 1.8px),radial-gradient(circle at 88% 73%,#47a8d3 0 .8px,transparent 1.5px);background-size:220px 190px,300px 270px,260px 230px,340px 310px;z-index:-1}header{background:linear-gradient(105deg,var(--panel),var(--panel2))!important;border-color:rgba(106,69,191,.25)!important;box-shadow:0 7px 24px rgba(84,48,142,.14)!important}header h1{color:var(--edge)!important;text-shadow:none!important}header p,header .text-slate-400,header .text-indigo-200,header .text-indigo-300{color:var(--muted)!important}main>div,#quiz-card,.bg-slate-800,.bg-slate-900,.bg-indigo-900,.bg-indigo-950{background:linear-gradient(145deg,#f8f0ff,var(--panel))!important;border-color:rgba(106,69,191,.22)!important;color:var(--ink)!important;box-shadow:0 14px 35px rgba(84,48,142,.12)!important}.bg-slate-700,.bg-slate-100,.bg-slate-50{background:#eadffd!important;color:var(--ink)!important}.text-slate-100,.text-slate-200,.text-slate-300,.text-slate-400,.text-white,.text-slate-800,.text-slate-700,.text-slate-600{color:var(--ink)!important}.text-indigo-400,.text-indigo-300,.text-emerald-400,.text-yellow-300{color:var(--edge)!important}.border-slate-700,.border-slate-700\/60,.border-indigo-700,.border-slate-200{border-color:rgba(106,69,191,.25)!important}button:not(.bg-green-600):not(.bg-red-600){background:#f9f2ff!important;color:var(--ink)!important;border:1px solid rgba(106,69,191,.25)!important;box-shadow:0 3px 10px rgba(84,48,142,.09)!important}button.bg-indigo-600,button.bg-slate-800,button.bg-slate-900,button.bg-indigo-900{background:linear-gradient(120deg,var(--edge),var(--accent))!important;color:#fff!important;border:0!important}button.bg-indigo-600 *,button.bg-slate-800 *,button.bg-slate-900 *,button.bg-indigo-900 *{color:#fff!important}button:hover{filter:brightness(1.04);transform:translateY(-1px)}input,select,textarea{background:#f9f2ff!important;border-color:rgba(106,69,191,.35)!important;color:var(--ink)!important}input:focus,select:focus,textarea:focus{outline:none!important;border-color:var(--edge)!important;box-shadow:0 0 0 3px var(--mist)!important}.bg-indigo-500,#progress-bar{background:linear-gradient(90deg,var(--edge),var(--accent),var(--glow))!important}.rounded-2xl{border-radius:1.25rem!important}
+</style></head>
+<body class="bg-slate-900 text-slate-100 min-p-4 md:p-8 flex flex-col items-center justify-center min-h-screen">
+
+    <div class="w-full max-w-4xl bg-slate-800 rounded-2xl shadow-2xl border border-slate-700 overflow-hidden flex flex-col my-auto">
+        
+        <!-- Header -->
+        <div class="bg-slate-900 px-6 py-4 border-b border-slate-700 flex flex-wrap justify-between items-center gap-4">
+            <div>
+                <h1 class="text-xl md:text-2xl font-bold text-emerald-400">Haryana GK Interactive Quiz</h1>
+                <p class="text-xs md:text-sm text-slate-400">Topic: Karnal District (Haryana Districts Study)</p>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="bg-slate-800 border border-slate-700 px-3 py-1.5 rounded-lg text-sm">
+                    Score: <span id="score-display" class="font-bold text-emerald-400">0</span> / <span id="total-questions-display">90</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="w-full bg-slate-700 h-2">
+            <div id="progress-bar" class="bg-emerald-500 h-2 transition-all duration-300" style="width: 0%;"></div>
+        </div>
+
+        <!-- Main Quiz Body -->
+        <div class="p-6 md:p-8 flex-1 flex flex-col justify-between">
+            
+            <div>
+                <!-- Question Meta info & Jump controls -->
+                <div class="flex justify-between items-center mb-6 text-sm text-slate-400">
+                    <span id="question-counter" class="font-semibold text-slate-300">Question 1 of 90</span>
+                    <div class="flex items-center gap-2">
+                        <span>Jump to:</span>
+                        <input type="number" id="jump-input" min="1" max="90" class="w-16 bg-slate-900 border border-slate-700 rounded px-2 py-1 text-center text-white focus:outline-none focus:border-emerald-500 text-sm" placeholder="1-90">
+                        <button id="jump-btn" class="bg-slate-700 hover:bg-slate-600 px-3 py-1 rounded text-xs font-medium text-white transition-colors">Go</button>
+                    </div>
+                </div>
+
+                <!-- Question Text (Bilingual: English & Hindi) -->
+                <div class="mb-6 space-y-3">
+                    <div id="question-text-en" class="text-lg md:text-xl font-medium text-white">
+                        <!-- English Question injected here -->
+                    </div>
+                    <div id="question-text-hi" class="text-base md:text-lg font-medium text-emerald-300 border-l-2 border-emerald-500 pl-3">
+                        <!-- Hindi Question injected here -->
+                    </div>
+                </div>
+
+                <!-- Options List -->
+                <div id="options-container" class="space-y-3 mb-6">
+                    <!-- Options injected here -->
+                </div>
+
+                <!-- Hint Section -->
+                <div class="mb-6">
+                    <button id="hint-toggle-btn" class="text-xs bg-slate-700 hover:bg-slate-600 text-slate-300 px-3 py-1.5 rounded-md transition-colors flex items-center gap-1">
+                        <span>💡 Show Hint</span>
+                    </button>
+                    <div id="hint-box" class="hidden mt-2 p-3 bg-slate-900/60 border border-slate-700 rounded-lg text-sm text-slate-300 italic">
+                        <!-- Hint text injected here -->
+                    </div>
+                </div>
+
+                <!-- Explanation Box -->
+                <div id="explanation-box" class="hidden p-4 rounded-xl border transition-all duration-300 mb-6">
+                    <h3 id="explanation-title" class="font-bold text-sm mb-1 flex items-center gap-2"></h3>
+                    <p id="explanation-text" class="text-sm leading-relaxed"></p>
+                </div>
+            </div>
+
+            <!-- Footer Navigation Controls -->
+            <div class="flex justify-between items-center pt-4 border-t border-slate-700">
+                <button id="prev-btn" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg font-medium text-sm transition-colors text-white">
+                    ← Previous
+                </button>
+                <button id="next-btn" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg font-medium text-sm transition-colors text-white">
+                    Next →
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        // Complete Dataset of 90 Unique Questions split across Page 1 (45) and Page 2 (45)
+        const quizData = [
+            // ================= PAGE 1 QUESTIONS (45 Qs) =================
+            {
+                page: 1,
+                en: "Who was the Member of Parliament (MP) from the 18th Lok Sabha representing Karnal district references?",
+                hi: "18वीं लोकसभा से सांसद - मनोहर लाल खट्टर के संदर्भ में करनाल से संबंधित कौन हैं?",
+                options: [
+                    "Nayab Singh Saini",
+                    "Manohar Lal Khattar",
+                    "Rao Inderjit Singh",
+                    "Krishan Pal Gurjar"
+                ],
+                correct: 1,
+                hint: "He served as the Chief Minister of Haryana before taking up central parliamentary responsibilities.",
+                explanation: "Manohar Lal Khattar is noted as the MP from the 18th Lok Sabha associated with Karnal framework details."
+            },
+            {
+                page: 1,
+                en: "On which date was Kalpana Chawla born?",
+                hi: "कल्पना चावला का जन्म कब हुआ था?",
+                options: [
+                    "15 August, 1962",
+                    "1 July, 1961",
+                    "12 March, 1965",
+                    "20 January, 1960"
+                ],
+                correct: 1,
+                hint: "Her birth date falls in the middle of the year 1961.",
+                explanation: "Kalpana Chawla was born on July 1, 1961."
+            },
+            {
+                page: 1,
+                en: "In which year was Kalpana Chawla selected by NASA?",
+                hi: "कल्पना चावला का नासा में चयन किस वर्ष हुआ था?",
+                options: [
+                    "1990",
+                    "1994",
+                    "1997",
+                    "2003"
+                ],
+                correct: 1,
+                hint: "It occurred four years after 1990.",
+                explanation: "Kalpana Chawla was selected by NASA in 1994."
+            },
+            {
+                page: 1,
+                en: "In which year did Kalpana Chawla undertake her first space mission?",
+                hi: "कल्पना चावला की प्रथम अंतरिक्ष यात्रा किस वर्ष हुई थी?",
+                options: [
+                    "1994",
+                    "1997",
+                    "2003",
+                    "1999"
+                ],
+                correct: 1,
+                hint: "Three years after her selection by NASA.",
+                explanation: "Her first space travel/mission took place in 1997 under mission STS-87."
+            },
+            {
+                page: 1,
+                en: "What was the designation code of Kalpana Chawla's second and final space mission?",
+                hi: "कल्पना चावला की द्वितीय (IInd) अंतरिक्ष यात्रा का मिशन कोड क्या था?",
+                options: [
+                    "STS-87",
+                    "STS-107",
+                    "STS-115",
+                    "STS-120"
+                ],
+                correct: 1,
+                hint: "It matches the tragic mission designation of Columbia.",
+                explanation: "Her second space mission code was STS-107, flown on space shuttle Columbia."
+            },
+            {
+                page: 1,
+                en: "On which date did Kalpana Chawla's second space mission return/end tragically just 16 minutes before landing?",
+                hi: "कल्पना चावला की द्वितीय अंतरिक्ष यात्रा के दौरान धरती पर उतरने से 16 मिनट पूर्व दुर्घटना कब हुई?",
+                options: [
+                    "16 January 2003",
+                    "1 February 2003",
+                    "15 March 2003",
+                    "20 February 2003"
+                ],
+                correct: 1,
+                hint: "It occurred on the very first day of the second month of 2003.",
+                explanation: "She passed away on February 1, 2003, 16 minutes prior to landing."
+            },
+            {
+                page: 1,
+                en: "From which educational institution did Kalpana Chawla complete her 10+2 education in Karnal?",
+                hi: "कल्पना चावला ने अपनी 10+2 शिक्षा करनाल के किस स्कूल से प्राप्त की थी?",
+                options: [
+                    "Dayanand Public School, Karnal",
+                    "Tagore Public School, Karnal",
+                    "St. Theresa Convent School",
+                    "DAV Public School"
+                ],
+                correct: 1,
+                hint: "Named after a famous Nobel laureate poet starting with 'T'.",
+                explanation: "She completed her 10+2 education from Tagore Public School, Karnal."
+            },
+            {
+                page: 1,
+                en: "From which institution did Kalpana Chawla complete her engineering degree?",
+                hi: "कल्पना चावला ने अपनी इंजीनियरिंग की डिग्री कहाँ से पूरी की थी?",
+                options: [
+                    "IIT Delhi",
+                    "Punjab Engineering College, Chandigarh",
+                    "NIT Kurukshetra",
+                    "PEC Roorkee"
+                ],
+                correct: 1,
+                hint: "PEC located in Chandigarh.",
+                explanation: "She completed her engineering from Punjab Engineering College, Chandigarh."
+            },
+            {
+                page: 1,
+                en: "Where was the Kalpana Chawla Medical College established?",
+                hi: "कल्पना चावला मेडिकल कॉलेज की स्थापना कहाँ की गई है?",
+                options: [
+                    "Kutail Village, Karnal",
+                    "Assandh, Karnal",
+                    "Nilokheri, Karnal",
+                    "Indri, Karnal"
+                ],
+                correct: 1,
+                hint: "It is established in Kutail village, Karnal.",
+                explanation: "Kalpana Chawla Medical College's setup is noted around Kutail village, Karnal."
+            },
+            {
+                page: 1,
+                en: "What is the title of the biography/autobiography associated with Kalpana Chawla?",
+                hi: "कल्पना चावला की आत्मकथा / जीवनी का क्या नाम है?",
+                options: [
+                    "Wings of Fire",
+                    "Edge of Time (ए एज ऑफ़ टाइम)",
+                    "Space Odyssey",
+                    "Beyond the Stars"
+                ],
+                correct: 1,
+                hint: "Translated as 'ए एज ऑफ़ टाइम' in Hindi records.",
+                explanation: "The autobiography/book associated with her life journey is 'Edge of Time'."
+            },
+            {
+                page: 1,
+                en: "Where is the Botanical Unit (वनस्पति यूनिट) located in Karnal?",
+                hi: "वनस्पति यूनिट स्थित है:",
+                options: [
+                    "Karnal",
+                    "Panipat",
+                    "Kurukshetra",
+                    "Rohtak"
+                ],
+                correct: 0,
+                hint: "It is located within the district focus of this study.",
+                explanation: "The botanical unit is located in Karnal."
+            },
+            {
+                page: 1,
+                en: "In which country was the construction of roads named after Kalpana Chawla undertaken?",
+                hi: "कल्पना चावला वे सड़क का निर्माण किस देश में किया गया?",
+                options: [
+                    "United States of America (अमेरिका)",
+                    "Canada",
+                    "Russia",
+                    "France"
+                ],
+                correct: 0,
+                hint: "A major North American nation.",
+                explanation: "Road construction dedicated to her name was done in America."
+            },
+            {
+                page: 1,
+                en: "What award is given in the name of Kalpana Chawla to female students scoring first position in 10th and 12th board exams in the state?",
+                hi: "हरियाणा विद्यालय शिक्षा बोर्ड द्वारा दसवीं व बारहवीं की परीक्षा में राज्य में प्रथम स्थान प्राप्त करने वाली छात्रा को कौन सा पुरस्कार दिया जाता है?",
+                options: [
+                    "Indira Award",
+                    "Kalpana Chawla Award",
+                    "Savitribai Phule Award",
+                    "Jhalkari Bai Award"
+                ],
+                correct: 1,
+                hint: "Named after the space hero from Karnal.",
+                explanation: "The Kalpana Chawla Award is given to the topper girls by the Haryana School Education Board."
+            },
+            {
+                page: 1,
+                en: "Where is 'Gau Karna Talab' (गऊ कर्ण तालाब) located?",
+                hi: "गऊ कर्ण तालाब कहाँ स्थित है?",
+                options: [
+                    "Karnal",
+                    "Rohtak",
+                    "Kurukshetra",
+                    "Fatehabad"
+                ],
+                correct: 1,
+                hint: "It is located in Rohtak district.",
+                explanation: "Gau Karna Talab is located in Rohtak."
+            },
+            {
+                page: 1,
+                en: "Where is 'Karn ka Tila' (कर्ण का टिला) located?",
+                hi: "कर्ण का टिला कहाँ स्थित है?",
+                options: [
+                    "Mirzapur Village, Kurukshetra",
+                    "Buana Bhatti, Fatehabad",
+                    "Assandh, Karnal",
+                    "Indri, Karnal"
+                ],
+                correct: 0,
+                hint: "Located in Mirzapur village.",
+                explanation: "Karn ka Tila is located in Mirzapur village, Kurukshetra."
+            },
+            {
+                page: 1,
+                en: "Where is 'Karnkot ka Kila' (कर्णकोट का किला) located?",
+                hi: "कर्णकोट का किला कहाँ स्थित है?",
+                options: [
+                    "Kurukshetra",
+                    "Buanabhatt, Ratiya, Fatehabad",
+                    "Rohtak",
+                    "Karnal"
+                ],
+                correct: 1,
+                hint: "Located in Fatehabad district (Ratiya region).",
+                explanation: "Karnkot ka Kila is located in Buanabhatt, Ratiya, Fatehabad."
+            },
+            {
+                page: 1,
+                en: "Where is 'Raja Karn ka Kila' (राजा कर्ण का किला) located?",
+                hi: "राजा कर्ण का किला कहाँ स्थित है?",
+                options: [
+                    "Karnal",
+                    "Kurukshetra",
+                    "Panipat",
+                    "Sonipat"
+                ],
+                correct: 1,
+                hint: "It is often confused with Karnal, but located in Kurukshetra.",
+                explanation: "Raja Karn ka Kila is located in Kurukshetra."
+            },
+            {
+                page: 1,
+                en: "When was the Kalpana Chawla Auditorium established in Kurukshetra?",
+                hi: "कल्पना चावला ऑडिटोरियम - कुरुक्षेत्र की स्थापना कब हुई थी?",
+                options: [
+                    "15 August 2015",
+                    "24 July 2017",
+                    "1 January 2019",
+                    "10 October 2020"
+                ],
+                correct: 1,
+                hint: "It was established on July 24, 2017.",
+                explanation: "Kalpana Chawla Auditorium in Kurukshetra was established on July 24, 2017."
+            },
+            {
+                page: 1,
+                en: "Where is Jarasandha ka Kila (जरासंध का किला) located?",
+                hi: "जरासंध का किला कहाँ स्थित है?",
+                options: [
+                    "Assandh (Karnal)",
+                    "Indri (Karnal)",
+                    "Nilokheri (Karnal)",
+                    "Gharaunda (Karnal)"
+                ],
+                correct: 0,
+                hint: "Assandh town in Karnal district.",
+                explanation: "Jarasandha ka Kila is located in Assandh, Karnal."
+            },
+            {
+                page: 1,
+                en: "What is the alternative name of Jarasandha ka Kila in Assandh?",
+                hi: "असंध स्थित जरासंध के किले का अन्य नाम क्या है?",
+                options: [
+                    "Asandh Stupa or Kushan Stupa (आसंध स्तूप या कुषाण स्तूप)",
+                    "Ashokan Pillar",
+                    "Harsh Ka Tila",
+                    "Prithviraj Stupa"
+                ],
+                correct: 0,
+                hint: "It is associated with Kushan stupa structures.",
+                explanation: "Its alternative name is Asandh Stupa or Kushan Stupa."
+            },
+            {
+                page: 1,
+                en: "What is the height of the Stupa structure at Assandh (Jarasandha ka Kila)?",
+                hi: "असंध स्तूप की ऊँचाई कितनी है?",
+                options: [
+                    "More than 25 meters (25 मीटर से ज्यादा)",
+                    "10 meters",
+                    "15 meters",
+                    "50 meters"
+                ],
+                correct: 0,
+                hint: "It is taller than Sanchi Stupa.",
+                explanation: "Its height is more than 25 meters, and it is even taller than the Sanchi Stupa."
+            },
+            {
+                page: 1,
+                en: "Which district in Haryana has the highest population of the Punjabi community?",
+                hi: "किस जिले में पंजाबी समुदाय की सर्वाधिक संख्या है?",
+                options: [
+                    "Ambala",
+                    "Karnal",
+                    "Sirsa",
+                    "Kurukshetra"
+                ],
+                correct: 1,
+                hint: "The central focus district of this study.",
+                explanation: "Karnal has the maximum population of the Punjabi community."
+            },
+            {
+                page: 1,
+                en: "Which city is recognized as the state's first smart city in the context of these notes?",
+                hi: "राज्य का प्रथम स्मार्ट शहर कौन सा है?",
+                options: [
+                    "Gurugram",
+                    "Karnal",
+                    "Faridabad",
+                    "Panchkula"
+                ],
+                correct: 1,
+                hint: "Karnal holds this distinction.",
+                explanation: "Karnal is noted as the state's first smart city."
+            },
+            {
+                page: 1,
+                en: "Where is the country's first international university proposed to be established?",
+                hi: "देश के प्रथम आंतरिक (अंतर्राष्ट्रीय/आंतरिक) विश्वविद्यालय की स्थापना की जायेगी:",
+                options: [
+                    "Karnal",
+                    "Rohtak",
+                    "Sonipat",
+                    "Hisar"
+                ],
+                correct: 0,
+                hint: "Karnal district context.",
+                explanation: "The country's first international university setup is slated for Karnal."
+            },
+            {
+                page: 1,
+                en: "Where is the Fish Seed Farm for ornamental fishes (सजावटी मछलियों के लिए मत्स्य बीज फार्म) located?",
+                hi: "सजावटी मछलियों के लिए मत्स्य बीज फार्म - मैदपुरा कहाँ स्थित है?",
+                options: [
+                    "Maedpura, Karnal",
+                    "Assandh, Karnal",
+                    "Nilokheri, Karnal",
+                    "Indri, Karnal"
+                ],
+                correct: 0,
+                hint: "Located in Maedpura village.",
+                explanation: "It is located in Maedpura, Karnal."
+            },
+            {
+                page: 1,
+                en: "Where was the state's first traffic headquarters opened?",
+                hi: "प्रदेश का प्रथम ट्रैफिक मुख्यालय कहाँ खोला गया है?",
+                options: [
+                    "Karnal",
+                    "Gurugram",
+                    "Faridabad",
+                    "Ambala"
+                ],
+                correct: 0,
+                hint: "Karnal district notes.",
+                explanation: "The state's first traffic headquarters was opened in Karnal."
+            },
+            {
+                page: 1,
+                en: "What is noted as the second capital of Kuru kingdom (कुरु राज्य की दूसरी राजधानी)?",
+                hi: "कुरु राज्य की दूसरी राजधानी क्या थी?",
+                options: [
+                    "Assandh (Karnal)",
+                    "Kurukshetra",
+                    "Indri",
+                    "Panipat"
+                ],
+                correct: 0,
+                hint: "Located in Karnal district.",
+                explanation: "Assandh (Karnal) is noted as the second capital of the Kuru kingdom, while the first capital was Kurukshetra."
+            },
+            {
+                page: 1,
+                en: "Where is the reserved Vidhan Sabha constituency of Nilokheri located?",
+                hi: "आरक्षित विधान सभा - नीलोखेड़ी कहाँ स्थित है?",
+                options: [
+                    "Karnal",
+                    "Yamunanagar",
+                    "Panipat",
+                    "Kaithal"
+                ],
+                correct: 0,
+                hint: "It belongs to Karnal district.",
+                explanation: "Nilokheri reserved constituency is in Karnal."
+            },
+            {
+                page: 1,
+                en: "Where is Haryana's first Science Park (हरियाणा का प्रथम साइंस उद्यान) established?",
+                hi: "हरियाणा का प्रथम साइंस उद्यान कहाँ स्थापित है?",
+                options: [
+                    "Karnal",
+                    "Ambala",
+                    "Panchkula",
+                    "Hisar"
+                ],
+                correct: 0,
+                hint: "Karnal district entry.",
+                explanation: "Haryana's first science park is established in Karnal."
+            },
+            {
+                page: 1,
+                en: "According to the Karnal District Gazetteer, what are the two main 'Gotras' of Rajputs inhabiting Karnal?",
+                hi: "करनाल जिला गजेटियर के अनुसार हरियाणा के बसने वाले राजपूतों के दो मुख्य गोत्र कौन से हैं?",
+                options: [
+                    "Mandhar and Chauhan (मंधार व चौहान)",
+                    "Tomar and Tanwar",
+                    "Pundir and Chauhan",
+                    "Rathi and Hooda"
+                ],
+                correct: 0,
+                hint: "Mandhar and Chauhan.",
+                explanation: "According to the Gazetteer, Mandhar and Chauhan are the two main Rajput gotras."
+            },
+            {
+                page: 1,
+                en: "Until October 31, 1989, which city came under the jurisdiction of Karnal?",
+                hi: "31 अक्टूबर, 1989 तक कौन सा शहर करनाल के अन्तर्गत आता था?",
+                options: [
+                    "Panipat (पानीपत)",
+                    "Kaithal",
+                    "Kurukshetra",
+                    "Yamunanagar"
+                ],
+                correct: 0,
+                hint: "It later became a separate district on Nov 1, 1989.",
+                explanation: "Panipat came under Karnal until October 31, 1989."
+            },
+            {
+                page: 1,
+                en: "Which district of Haryana became the first to provide online Jamabandi (ऑनलाइन जमाबंदी करने वाला हरियाणा का प्रथम जिला)?",
+                hi: "ऑनलाइन जमाबंदी करने वाला हरियाणा का प्रथम जिला कौन सा है?",
+                options: [
+                    "Karnal",
+                    "Sirsa",
+                    "Gurugram",
+                    "Faridabad"
+                ],
+                correct: 0,
+                hint: "Karnal district.",
+                explanation: "Karnal is the first district in Haryana to offer online Jamabandi."
+            },
+            {
+                page: 1,
+                en: "When was the 'Sakhi Scheme' for distressed women (पीडित महिलाओं के लिए सखी योजना) launched?",
+                hi: "पीडित महिलाओं के लिए सखी योजना की शुरुआत कब से की गई?",
+                options: [
+                    "1 September 2015",
+                    "15 August 2017",
+                    "26 January 2016",
+                    "1 November 2018"
+                ],
+                correct: 0,
+                hint: "September 1, 2015.",
+                explanation: "The Sakhi scheme for distressed women was started on September 1, 2015."
+            },
+            {
+                page: 1,
+                en: "When and where was the Gobardhan Yojana launched (गोवर्धन योजना की शुरुआत)?",
+                hi: "गोवर्धन योजना की शुरुआत कब और कहाँ की गई?",
+                options: [
+                    "May 2018, Kunjpura (Karnal)",
+                    "January 2019, Nilokheri",
+                    "October 2017, Indri",
+                    "March 2020, Assandh"
+                ],
+                correct: 0,
+                hint: "May 2018 in Kunjpura.",
+                explanation: "Gobardhan Yojana was launched in May 2018 in Kunjpura, Karnal."
+            },
+            {
+                page: 1,
+                en: "Where has Haryana's first driving school been opened?",
+                hi: "हरियाणा का प्रथम ड्राइविंग स्कूल कहाँ खोला गया है?",
+                options: [
+                    "Karnal",
+                    "Rohtak",
+                    "Hisar",
+                    "Faridabad"
+                ],
+                correct: 0,
+                hint: "Karnal.",
+                explanation: "Haryana's first driving school was opened in Karnal."
+            },
+            {
+                page: 1,
+                en: "Where is the first plant for generating electricity from stubble (पराली से बिजली बनाने का प्रथम प्लांट) proposed to be established?",
+                hi: "पराली से बिजली बनाने का प्रथम प्लांट स्थापित किया जायेगा:",
+                options: [
+                    "Karnal",
+                    "Kurukshetra",
+                    "Jind",
+                    "Kaithal"
+                ],
+                correct: 0,
+                hint: "Karnal.",
+                explanation: "The first stubble-to-electricity plant is established/planned in Karnal."
+            },
+            {
+                page: 1,
+                en: "With whose assistance/collaboration is the Maharana Pratap Horticultural University being established?",
+                hi: "महाराणा प्रताप बागवानी विश्वविद्यालय किस देश की सहायता से स्थापित किया जायेगा?",
+                options: [
+                    "Netherlands (नीदरलैंड)",
+                    "Israel",
+                    "Germany",
+                    "Japan"
+                ],
+                correct: 0,
+                hint: "Known for advanced horticulture (Netherlands).",
+                explanation: "It is established with the assistance of the Netherlands."
+            },
+            {
+                page: 1,
+                en: "Where was Liaquat Ali Khan, who became India's first Finance Minister in the Interim Government (General Mountbatten's council), originally from?",
+                hi: "भारत के प्रथम वित्तमंत्री बने जनरल माउण्ट बेटन की अंतरिम सरकार में लियाकत अली खाँ कहाँ के थे?",
+                options: [
+                    "Karnal",
+                    "Panipat",
+                    "Lahore",
+                    "Delhi"
+                ],
+                correct: 0,
+                hint: "Karnal.",
+                explanation: "Liaquat Ali Khan was from Karnal."
+            },
+            {
+                page: 1,
+                en: "When was Pakistan's first Prime Minister, Liaquat Ali Khan, born?",
+                hi: "पाकिस्तान के प्रथम प्रधानमंत्री लियाकत अली खाँ का जन्म कब हुआ था?",
+                options: [
+                    "1 October 1895",
+                    "15 August 1900",
+                    "25 December 1890",
+                    "10 November 1898"
+                ],
+                correct: 0,
+                hint: "October 1, 1895.",
+                explanation: "He was born on October 1, 1895."
+            },
+            {
+                page: 1,
+                en: "Which place is referred to as the administrative capital of Haryana in historical/local notes?",
+                hi: "हरियाणा की प्रशासनिक राजधानी कहलाती है:",
+                options: [
+                    "Nilokheri (नीलोखेड़ी, करनाल)",
+                    "Chandigarh",
+                    "Panchkula",
+                    "Karnal City"
+                ],
+                correct: 0,
+                hint: "Nilokheri in Karnal.",
+                explanation: "Nilokheri (Karnal) is referred to as the administrative capital contextually in these notes."
+            },
+            {
+                page: 1,
+                en: "What is the name of the oldest Mughal bridge located in Karnal?",
+                hi: "सबसे पुराना मुगलकालीन पुल - बादशाही पुल कहाँ स्थित है?",
+                options: [
+                    "Badshahi Pul, Karnal (बादशाही पुल)",
+                    "Grand Trunk Bridge",
+                    "Mughal Pul, Nilokheri",
+                    "Indri Pul"
+                ],
+                correct: 0,
+                hint: "Badshahi Pul.",
+                explanation: "Badshahi Pul is the oldest Mughal bridge located in Karnal."
+            },
+            {
+                page: 1,
+                en: "Where is the National Gaurav Award recipient first Panchayat located?",
+                hi: "राष्ट्रीय गौरव पुरस्कार प्राप्त प्रथम पंचायत - दुबड़ी कहाँ स्थित है?",
+                options: [
+                    "Dubri, Karnal (दुबड़ी)",
+                    "Sirsi, Karnal",
+                    "Udana, Karnal",
+                    "Kohand, Karnal"
+                ],
+                correct: 0,
+                hint: "Dubri village.",
+                explanation: "Dubri village in Karnal received the National Gaurav Award as the first panchayat."
+            },
+            {
+                page: 1,
+                en: "Navdeep Singh, the 26-year-old fast bowler, is associated with which town/city in Karnal?",
+                hi: "26 वर्षीय तेज गेंदबाज - नवदीप सिंह - तरावड्डी (करनाल) से सम्बन्धित हैं। तरावड्डी का अन्य नाम क्या है?",
+                options: [
+                    "Tarori / Taraori (तरावड्डी / तराइन)",
+                    "Assandh",
+                    "Nilokheri",
+                    "Gharaunda"
+                ],
+                correct: 0,
+                hint: "Taraori.",
+                explanation: "Navdeep Singh is from Taraori (Tarawardi), Karnal."
+            },
+            {
+                page: 1,
+                en: "Where is Chamanlal Setia Export located?",
+                hi: "चमनलाल सेतिया एक्सपोर्ट स्थित है:",
+                options: [
+                    "Karnal",
+                    "Panipat",
+                    "Sonipat",
+                    "Gurugram"
+                ],
+                correct: 0,
+                hint: "Rice export institution headquartered in Gurugram with plant in Karnal.",
+                explanation: "Chamanlal Setia Export is located in Karnal (with corporate headquarters in Gurugram)."
+            },
+            {
+                page: 1,
+                en: "Where was Kautilya Pandit (Google Boy) born?",
+                hi: "गुगल बॉय कौटिल्य पंडित का जन्म स्थान कौन सा है?",
+                options: [
+                    "Kohand, Karnal (कोहांड)",
+                    "Sirsi, Karnal",
+                    "Udana, Karnal",
+                    "Kunjpura, Karnal"
+                ],
+                correct: 0,
+                hint: "Kohand village.",
+                explanation: "Kautilya Pandit was born in Kohand village, Karnal."
+            },
+
+            // ================= PAGE 2 QUESTIONS (45 Qs) =================
+            {
+                page: 2,
+                en: "Where is the Health Science University proposed to be established?",
+                hi: "स्वास्थ्य विज्ञान विश्वविद्यालय की स्थापना की जायेगी:",
+                options: [
+                    "Karnal",
+                    "Rohtak",
+                    "Sonipat",
+                    "Hisar"
+                ],
+                correct: 0,
+                hint: "Karnal.",
+                explanation: "Health Science University is proposed to be established in Karnal."
+            },
+            {
+                page: 2,
+                en: "In which year was Karnal established/founded by the British?",
+                hi: "अंग्रेजों द्वारा करनाल की स्थापना की गई थी:",
+                options: [
+                    "1806",
+                    "1857",
+                    "1792",
+                    "1911"
+                ],
+                correct: 0,
+                hint: "1806.",
+                explanation: "Karnal was established by the British in 1806."
+            },
+            {
+                page: 2,
+                en: "Where was the state's first swimming pool indoor stadium established?",
+                hi: "राज्य का प्रथम स्वीमिंग पूल इंडोर स्टेडियम स्थापित किया गया है:",
+                options: [
+                    "Shaheed Udham Singh Government College, Indri (Karnal)",
+                    "Karnal City Stadium",
+                    "Nilokheri Sports Complex",
+                    "Assandh Stadium"
+                ],
+                correct: 0,
+                hint: "Indri college.",
+                explanation: "It was established at Shaheed Udham Singh Government College, Indri (Karnal)."
+            },
+            {
+                page: 2,
+                en: "Where is the Pharma Park proposed to be established?",
+                hi: "फार्मा पार्क स्थापित किया जायेगा:",
+                options: [
+                    "Karnal",
+                    "Panchkula",
+                    "Gurugram",
+                    "Faridabad"
+                ],
+                correct: 0,
+                hint: "Karnal.",
+                explanation: "Pharma Park is proposed to be set up in Karnal."
+            },
+            {
+                page: 2,
+                en: "Where is the state's first Cow-shelter jail (गौ-शाला वाली जेल) located?",
+                hi: "राज्य की प्रथम गौ-शाला वाली जेल है:",
+                options: [
+                    "Karnal",
+                    "Hisar",
+                    "Ambala",
+                    "Kurukshetra"
+                ],
+                correct: 0,
+                hint: "Karnal jail.",
+                explanation: "Karnal houses the state's first prison with a cow shelter."
+            },
+            {
+                page: 2,
+                en: "Where is the HAFED cold store proposed to be opened by the state?",
+                hi: "राज्य का प्रथम हैफेड का कोल्ड स्टोर खोला जायेगा - घरौंडा:",
+                options: [
+                    "Gharaunda, Karnal (घरौंडा)",
+                    "Assandh, Karnal",
+                    "Indri, Karnal",
+                    "Taraori, Karnal"
+                ],
+                correct: 0,
+                hint: "Gharaunda.",
+                explanation: "The first HAFED cold store is opened in Gharaunda, Karnal."
+            },
+            {
+                page: 2,
+                en: "Karnal is the _____ district to be included in the National Capital Region (NCR)?",
+                hi: "राज्य का एनसीआर में सम्मिलित 13वां जिला कौन सा है?",
+                options: [
+                    "13th District (13वां जिला)",
+                    "11th District",
+                    "15th District",
+                    "10th District"
+                ],
+                correct: 0,
+                hint: "13th.",
+                explanation: "Karnal is the 13th district included in the NCR."
+            },
+            {
+                page: 2,
+                en: "Where is the Liberty Shoe industry located, and in which year was it established?",
+                hi: "लिबर्टी जूता उद्योग स्थित है और इसकी स्थापना कब हुई थी?",
+                options: [
+                    "Karnal, 1954",
+                    "Panipat, 1965",
+                    "Sonipat, 1970",
+                    "Faridabad, 1950"
+                ],
+                correct: 0,
+                hint: "Karnal, 1954.",
+                explanation: "Liberty Shoe Industry is located in Karnal, established in 1954."
+            },
+            {
+                page: 2,
+                en: "Which type of forests are found in maximum abundance (सबसे अधिक पाए जाते हैं) in Karnal?",
+                hi: "राज्य में ढाक वन (चौड़े पत्ते वाले) वन सर्वाधिक पाये जाते हैं:",
+                options: [
+                    "Karnal",
+                    "Yamunanagar",
+                    "Panchkula",
+                    "Sirsi"
+                ],
+                correct: 0,
+                hint: "Karnal.",
+                explanation: "Dhak forests (broad-leaved) are found in maximum abundance in Karnal according to this data."
+            },
+            {
+                page: 2,
+                en: "Where is the 'Actor Loney and Addam House' built by the British located?",
+                hi: "अंग्रेजों द्वारा निर्मित अक्टर लोनी व एड्म हाउस स्थित है:",
+                options: [
+                    "Karnal",
+                    "Ambala",
+                    "Rohtak",
+                    "Hisar"
+                ],
+                correct: 0,
+                hint: "Karnal.",
+                explanation: "Actor Loney and Addam House built by the British is in Karnal."
+            },
+            {
+                page: 2,
+                en: "In ancient times, which animal was found in maximum numbers in Karnal?",
+                hi: "प्राचीन काल में सर्वाधिक घोड़े पाये जाते थे:",
+                options: [
+                    "Karnal",
+                    "Hisar",
+                    "Sirsa",
+                    "Mahendragarh"
+                ],
+                correct: 0,
+                hint: "Karnal.",
+                explanation: "In ancient times, horses were found in maximum abundance in Karnal."
+            },
+            {
+                page: 2,
+                en: "Where was the state's first NCC Academy established?",
+                hi: "प्रदेश की प्रथम N.C.C. अकादमी स्थापित की गई है:",
+                options: [
+                    "Gharaunda, Karnal (घरौंडा)",
+                    "Nilokheri",
+                    "Indri",
+                    "Assandh"
+                ],
+                correct: 0,
+                hint: "Gharaunda.",
+                explanation: "The first NCC Academy of the state was established in Gharaunda, Karnal."
+            },
+            {
+                page: 2,
+                en: "Where is the oldest Kos Minar located?",
+                hi: "सबसे प्राचीन कोस मीनार कहाँ स्थित है?",
+                options: [
+                    "Kohand, Karnal (कोहांड)",
+                    "Taraori",
+                    "Gharaunda",
+                    "Assandh"
+                ],
+                correct: 0,
+                hint: "Kohand.",
+                explanation: "The oldest Kos Minar is located in Kohand, Karnal."
+            },
+            {
+                page: 2,
+                en: "To whom did King Karna donate his armor and earrings (कवच व कुण्डल)?",
+                hi: "राजा कर्ण ने देवराज इंद्र को कवच व कुण्डल दान किए थे:",
+                options: [
+                    "At Karn Lake (कर्ण झील के किनारे, करनाल)",
+                    "At Kurukshetra",
+                    "At Panipat",
+                    "At Rohtak"
+                ],
+                correct: 0,
+                hint: "Karn Lake.",
+                explanation: "He donated them on the banks of Karn Lake, Karnal."
+            },
+            {
+                page: 2,
+                en: "During excavations in which Karnal village were Bhojkal artifacts and Kushan period bricks, Nandi, and Shivling found?",
+                hi: "राज्य के किस गाँव में खुदाई के दौरान भोजकाल की कलाकृतियां व कुषाण काल की ईंटें, नंदी व शिवलिंग मिला?",
+                options: [
+                    "Faridpur Village, Gharaunda, Karnal (फरीदपुर गाँव, घरौंडा)",
+                    "Kohand Village",
+                    "Sirsi Village",
+                    "Udana Village"
+                ],
+                correct: 0,
+                hint: "Faridpur village in Gharaunda.",
+                explanation: "It was found in Faridpur village, Gharaunda, Karnal."
+            },
+            {
+                page: 2,
+                en: "Where is the Sugarcane Research Center (गन्ना अनुसंधान केंद्र) located in the state?",
+                hi: "गन्ना अनुसंधान केंद्र राज्य में स्थित है:",
+                options: [
+                    "Uchani, Karnal (उचाणी, करनाल)",
+                    "Kunjpura, Karnal",
+                    "Assandh, Karnal",
+                    "Indri, Karnal"
+                ],
+                correct: 0,
+                hint: "Uchani.",
+                explanation: "The Sugarcane Research Center is located in Uchani, Karnal."
+            },
+            {
+                page: 2,
+                en: "Where are delinquent girls aged 7 to 18 kept in the state?",
+                hi: "राज्य में 7 से 18 वर्ष की अपराधी लड़कियों को रखा जाता है:",
+                options: [
+                    "Karnal",
+                    "Ambala",
+                    "Rohtak",
+                    "Hisar"
+                ],
+                correct: 0,
+                hint: "Karnal.",
+                explanation: "Delinquent girls aged 7 to 18 are kept in Karnal."
+            },
+            {
+                page: 2,
+                en: "Who is the sculptor of the grand statue of Danveer Karna (दानवीर कर्ण)?",
+                hi: "दानवीर कर्ण की भव्य प्रतिमा के मूर्तिकार कौन हैं?",
+                options: [
+                    "V. P. Verma (वी.पी. वर्मा)",
+                    "Ram Sutar",
+                    "Nand Lal",
+                    "Sohan Lal"
+                ],
+                correct: 0,
+                hint: "V.P. Verma.",
+                explanation: "The sculptor is V.P. Verma (the 18-quintal iron and bronze statue is installed at Karnatal, Karnal)."
+            },
+            {
+                page: 2,
+                en: "Where is Baba Simran Das's 'Kachhi Samadhi' located?",
+                hi: "बाबा सिमरण दास की 'कच्ची समाधि' उपस्थित है:",
+                options: [
+                    "Indri, Karnal (इन्द्री, करनाल)",
+                    "Assandh",
+                    "Nilokheri",
+                    "Gharaunda"
+                ],
+                correct: 0,
+                hint: "Indri.",
+                explanation: "Baba Simran Das's Kachhi Samadhi is in Indri, Karnal."
+            },
+            {
+                page: 2,
+                en: "Where was the vaccine storage for the state established during COVID-19?",
+                hi: "राज्य में कोरोना वैक्सीन का भंडारण किया गया है:",
+                options: [
+                    "Karnal",
+                    "Panchkula",
+                    "Gurugram",
+                    "Rohtak"
+                ],
+                correct: 0,
+                hint: "Karnal.",
+                explanation: "State vaccine storage was established in Karnal."
+            },
+            {
+                page: 2,
+                en: "In which year did Maharani Victoria visit Karnal?",
+                hi: "महारानी विक्टोरिया करनाल आई थी:",
+                options: [
+                    "1906",
+                    "1857",
+                    "1911",
+                    "1890"
+                ],
+                correct: 0,
+                hint: "1906.",
+                explanation: "Maharani Victoria visited Karnal in 1906."
+            },
+            {
+                page: 2,
+                en: "Which district lies to the north-west of Kurukshetra district and east of Uttar Pradesh?",
+                hi: "हरियाणा के किस जिले के उत्तर-पश्चिम में कुरुक्षेत्र जिला और पूर्व में उत्तर प्रदेश राज्य है?",
+                options: [
+                    "Karnal",
+                    "Panipat",
+                    "Ambala",
+                    "Yamunanagar"
+                ],
+                correct: 0,
+                hint: "Karnal.",
+                explanation: "Karnal district location description."
+            },
+            {
+                page: 2,
+                en: "Which temple in the state is included in the Ramayana Circuit (रामायण सर्किट)?",
+                hi: "रामायण सर्किट में राज्य के किस मंदिर को सम्मिलित किया गया है?",
+                options: [
+                    "Sitamai Temple / Vedvati Teerth, Karnal (सीतामाई मंदिर)",
+                    "Dauji Temple",
+                    "Bhuteshwar Temple",
+                    "Sthaneshwar Temple"
+                ],
+                correct: 0,
+                hint: "Sitamai temple.",
+                explanation: "Sitamai Temple (Vedvati Teerth) in Karnal is included in the Ramayana Circuit."
+            },
+            {
+                page: 2,
+                en: "Where is the country's first solar electric vehicle charging station established?",
+                hi: "देश का प्रथम शौलर इलेक्ट्रिक व्हीकल चार्जिंग स्टेशन स्थापित किया गया है:",
+                options: [
+                    "Lake Resort, Karnal (लेक रिजॉर्ट, करनाल)",
+                    "Karnal Bus Stand",
+                    "Nilokheri Highway",
+                    "Gharaunda Expressway"
+                ],
+                correct: 0,
+                hint: "Lake Resort.",
+                explanation: "It is established at Lake Resort, Karnal."
+            },
+            {
+                page: 2,
+                en: "In Karnal district, which demographic group has the highest count/number of Self-Help Groups?",
+                hi: "करनाल जिले में सर्वाधिक महिला स्वयं सहायता समूह की संख्या है:",
+                options: [
+                    "Karnal",
+                    "Sirsa",
+                    "Hisar",
+                    "Bhiwani"
+                ],
+                correct: 0,
+                hint: "Karnal.",
+                explanation: "Karnal has the maximum number of women self-help groups."
+            },
+            {
+                page: 2,
+                en: "In which village of Karnal district is a hockey stadium being built at a cost of 2 crore rupees?",
+                hi: "करनाल जिले के किस गाँव में 2 करोड़ रुपये की लागत से हॉकी स्टेडियम बनवाया जायेगा?",
+                options: [
+                    "Kailash Village (कैलाश गाँव)",
+                    "Sirsi Village",
+                    "Kohand Village",
+                    "Udana Village"
+                ],
+                correct: 0,
+                hint: "Kailash village.",
+                explanation: "It is being built in Kailash village, Karnal."
+            },
+            {
+                page: 2,
+                en: "Where is the Pandit Deendayal Upadhyaya Health Sciences University located?",
+                hi: "पंडित दीनदयाल उपाध्याय स्वास्थ्य विश्वविद्यालय स्थित है:",
+                options: [
+                    "Karnal",
+                    "Rohtak",
+                    "Kurukshetra",
+                    "Sonipat"
+                ],
+                correct: 0,
+                hint: "Karnal.",
+                explanation: "It is located in Karnal."
+            },
+            {
+                page: 2,
+                en: "To whom did the Marathas hand over Karnal in the year 1787?",
+                hi: "वर्ष 1787 को मराठों ने करनाल को किसे सौंपा था?",
+                options: [
+                    "George Thomas (जार्ज थॉमस को)",
+                    "Scindia",
+                    "British East India Company",
+                    "Mohammad Khan"
+                ],
+                correct: 0,
+                hint: "George Thomas.",
+                explanation: "The Marathas handed Karnal over to George Thomas in 1787."
+            },
+            {
+                page: 2,
+                en: "To which place is the student Shivani, selected for NASA, related?",
+                hi: "नासा के लिए चयनित छात्रा शिवानी का सम्बन्ध है:",
+                options: [
+                    "Karnal",
+                    "Panipat",
+                    "Kurukshetra",
+                    "Sonipat"
+                ],
+                correct: 0,
+                hint: "Karnal.",
+                explanation: "Shivani is related to Karnal."
+            },
+            {
+                page: 2,
+                en: "With which sport is the famous hockey player Surender Kumar associated?",
+                hi: "प्रसिद्ध हॉकी प्लेयर सुरेन्द्र कुमार सम्बन्धित हैं:",
+                options: [
+                    "Karnal",
+                    "Hisar",
+                    "Sonipat",
+                    "Sirsa"
+                ],
+                correct: 0,
+                hint: "Karnal.",
+                explanation: "Surender Kumar is a famous hockey player from Karnal."
+            },
+            {
+                page: 2,
+                en: "With which sport is the famous basketball player Shiba Maigon associated?",
+                hi: "प्रसिद्ध बास्केटबॉल प्लेयर शीबा मैगोन सम्बन्धित हैं:",
+                options: [
+                    "Karnal",
+                    "Kurukshetra",
+                    "Ambala",
+                    "Rohtak"
+                ],
+                correct: 0,
+                hint: "Karnal.",
+                explanation: "Shiba Maigon is a famous basketball player from Karnal."
+            },
+            {
+                page: 2,
+                en: "Where is the country's first military I.T.I. opened?",
+                hi: "देश की प्रथम सैनिक I.T.I. खोली गई है:",
+                options: [
+                    "Karnal",
+                    "Ambala",
+                    "Rewari",
+                    "Gurugram"
+                ],
+                correct: 0,
+                hint: "Karnal.",
+                explanation: "The country's first military ITI is opened in Karnal."
+            },
+            {
+                page: 2,
+                en: "With which region is the former Speaker of the Punjab Legislative Assembly, Rana Mohammad Khan, associated?",
+                hi: "पंजाब विधानसभा के पूर्व स्पीकर राणा मोहम्मद खान सम्बन्धित हैं - करनाल:",
+                options: [
+                    "Karnal",
+                    "Hisar",
+                    "Sirsa",
+                    "Jind"
+                ],
+                correct: 0,
+                hint: "Karnal.",
+                explanation: "Rana Mohammad Khan is associated with Karnal."
+            },
+            {
+                page: 2,
+                en: "Where in the state is North India's first climbing wall being built?",
+                hi: "राज्य के किस शहर में उत्तर भारत की प्रथम क्लाइम्बिंग वाल बनाई जायेगी?",
+                options: [
+                    "Karnal",
+                    "Panchkula",
+                    "Kurukshetra",
+                    "Ambala"
+                ],
+                correct: 0,
+                hint: "Karnal.",
+                explanation: "North India's first climbing wall is being built in Karnal."
+            },
+            {
+                page: 2,
+                en: "In which district of the state is the first CC TV Drone Flying Academy established?",
+                hi: "राज्य के किस जिले में प्रथम सीसी ड्रोन उड़ान एकेडमी स्थापित की जाएगी?",
+                options: [
+                    "Karnal",
+                    "Hisar",
+                    "Gurugram",
+                    "Faridabad"
+                ],
+                correct: 0,
+                hint: "Karnal.",
+                explanation: "It is established in Karnal."
+            },
+            {
+                page: 2,
+                en: "Which animal clone was prepared by NDRI (Karnal) before cloning the cow?",
+                hi: "एनडीआरआई (करनाल) के द्वारा गिर गाय से तैयार किया गया - गंगा। इससे पहले एनडीआरआई (करनाल) द्वारा किस भैंस नस्ल का क्लोन 'प्रथम' तैयार किया गया था?",
+                options: [
+                    "Murrah Buffalo (मुरा नस्ल की भैंस)",
+                    "Nili Ravi Buffalo",
+                    "Surti Buffalo",
+                    "Mehsana Buffalo"
+                ],
+                correct: 0,
+                hint: "Murrah.",
+                explanation: "Before the cow clone 'Ganga', NDRI prepared the clone of a Murrah buffalo named 'Pratham'."
+            },
+            {
+                page: 2,
+                en: "Where is Mata Shakumbhari pilgrimage site (माता शाकुंभरी तीर्थ स्थल) located?",
+                hi: "माता शाकुंभरी तीर्थ स्थल स्थित है:",
+                options: [
+                    "Alawala Village, Karnal (अलावाला गाँव, करनाल)",
+                    "Sirsi Village, Karnal",
+                    "Kohand Village, Karnal",
+                    "Udana Village, Karnal"
+                ],
+                correct: 0,
+                hint: "Alawala village.",
+                explanation: "Mata Shakumbhari pilgrimage is located in Alawala village, Karnal."
+            },
+            {
+                page: 2,
+                en: "What was the ancient name of Alawala village, associated with the Mahabharata era?",
+                hi: "अलावाला गाँव का प्राचीन नाम क्या था?",
+                options: [
+                    "Lovakushpura (लवकुशपुरा)",
+                    "Karnapura",
+                    "Indrapura",
+                    "Hastinapura"
+                ],
+                correct: 0,
+                hint: "Lovakushpura.",
+                explanation: "Its ancient name was Lovakushpura."
+            },
+            {
+                page: 2,
+                en: "Where is the state's first Govansh Shavdah Graha (गौवंश शवदाह गृह) proposed to be established?",
+                hi: "राज्य का प्रथम गौवंश शवदाह गृह स्थापित किया जाएगा:",
+                options: [
+                    "Karnal",
+                    "Hisar",
+                    "Rohtak",
+                    "Panipat"
+                ],
+                correct: 0,
+                hint: "Karnal.",
+                explanation: "The state's first cow crematorium/shavdah graha is established in Karnal."
+            },
+            {
+                page: 2,
+                en: "Which prestigious research institute is headquartered in Karnal, famous for dairy research?",
+                hi: "करनाल में स्थित प्रसिद्ध राष्ट्रीय डेयरी अनुसंधान संस्थान (NDRI) की स्थापना किस वर्ष हुई थी/किससे सम्बंधित है?",
+                options: [
+                    "National Dairy Research Institute (NDRI)",
+                    "Central Soil Salinity Research Institute",
+                    "Directorate of Wheat Research",
+                    "National Bureau of Animal Genetic Resources"
+                ],
+                correct: 0,
+                hint: "NDRI.",
+                explanation: "NDRI is globally renowned and located in Karnal."
+            },
+            {
+                page: 2,
+                en: "Which central agricultural institution dealing with wheat research is located in Karnal?",
+                hi: "करनाल में स्थित केंद्रीय गेहूँ अनुसंधान निदेशालय (DWR) का मुख्य कार्य क्या है?",
+                options: [
+                    "Wheat Research & Development",
+                    "Rice Export Promotion",
+                    "Dairy Breeding",
+                    "Soil Testing"
+                ],
+                correct: 0,
+                hint: "Wheat Research.",
+                explanation: "Directorate of Wheat Research is based in Karnal."
+            },
+            {
+                page: 2,
+                en: "Where is the Central Soil Salinity Research Institute (CSSRI) situated?",
+                hi: "केंद्रीय मृदा लवणता अनुसंधान संस्थान (CSSRI) कहाँ स्थित है?",
+                options: [
+                    "Karnal",
+                    "Hisar",
+                    "Sirsa",
+                    "Rohtak"
+                ],
+                correct: 0,
+                hint: "Karnal.",
+                explanation: "CSSRI is situated in Karnal."
+            },
+            {
+                page: 2,
+                en: "Which National Bureau related to animal genetic resources has its headquarters in Karnal?",
+                hi: "राष्ट्रीय पशु आनुवंशिक संसाधन ब्यूरो (NBAGR) कहाँ स्थित है?",
+                options: [
+                    "Karnal",
+                    "Gurugram",
+                    "Faridabad",
+                    "Panchkula"
+                ],
+                correct: 0,
+                hint: "Karnal.",
+                explanation: "NBAGR headquarters is located in Karnal."
+            },
+            {
+                page: 2,
+                en: "What historical battle fought in 1191 and 1192 is associated with Taraori (Tarawardi) in Karnal district?",
+                hi: "करनाल जिले के तरावड्डी (तराइन) में कौन से प्रसिद्ध ऐतिहासिक युद्ध लड़े गए थे?",
+                options: [
+                    "Battles of Tarain (1191, 1192)",
+                    "Battles of Panipat",
+                    "Battle of Karnal (1739)",
+                    "Battle of Kurukshetra"
+                ],
+                correct: 0,
+                hint: "Battles of Tarain.",
+                explanation: "The Battles of Tarain between Prithviraj Chauhan and Mohammad Ghori took place in Taraori, Karnal."
+            },
+            {
+                page: 2,
+                en: "Which notorious invasion battle involving Nadir Shah and Muhammad Shah took place around Karnal in 1739?",
+                hi: "वर्ष 1739 में नादिर शाह और मुगल बादशाह मुहम्मद शाह के बीच प्रसिद्ध 'करनाल का युद्ध' किस क्षेत्र में हुआ था?",
+                options: [
+                    "Karnal Battle Field",
+                    "Panipat Field",
+                    "Kurukshetra Fields",
+                    "Assandh Plains"
+                ],
+                correct: 0,
+                hint: "Battle of Karnal.",
+                explanation: "The Battle of Karnal was fought in 1739."
+            }
+        ];
+
+        // Application State Variables
+        let currentIndex = 0;
+        let score = 0;
+        let userAnswers = new Array(quizData.length).fill(null);
+        let showHintState = false;
+
+        // DOM Element References
+        const questionCounterEl = document.getElementById('question-counter');
+        const questionTextEnEl = document.getElementById('question-text-en');
+        const questionTextHiEl = document.getElementById('question-text-hi');
+        const optionsContainerEl = document.getElementById('options-container');
+        const hintToggleBtn = document.getElementById('hint-toggle-btn');
+        const hintBox = document.getElementById('hint-box');
+        const explanationBox = document.getElementById('explanation-box');
+        const explanationTitle = document.getElementById('explanation-title');
+        const explanationText = document.getElementById('explanation-text');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const scoreDisplay = document.getElementById('score-display');
+        const totalQuestionsDisplay = document.getElementById('total-questions-display');
+        const progressBar = document.getElementById('progress-bar');
+        const jumpInput = document.getElementById('jump-input');
+        const jumpBtn = document.getElementById('jump-btn');
+
+        totalQuestionsDisplay.textContent = quizData.length;
+
+        // Shuffle options helper keeping track of correct option
+        function getShuffledOptions(q) {
+            const optionsWithIndex = q.options.map((opt, idx) => ({ text: opt, originalIndex: idx }));
+            // Simple deterministic seed-free shuffle or fixed layout with randomized display mapping
+            // To ensure safe reproducible rendering per question index:
+            for (let i = optionsWithIndex.length - 1; i > 0; i--) {
+                const j = (currentIndex * 7 + i) % optionsWithIndex.length;
+                [optionsWithIndex[i], optionsWithIndex[j]] = [optionsWithIndex[j], optionsWithIndex[i]];
+            }
+            return optionsWithIndex;
+        }
+
+        function loadQuestion() {
+            const q = quizData[currentIndex];
+            questionCounterEl.textContent = `Question ${currentIndex + 1} of ${quizData.length} (Page ${q.page})`;
+            questionTextEnEl.textContent = q.en;
+            questionTextHiEl.textContent = q.hi;
+
+            // Reset hint and explanation views
+            showHintState = false;
+            hintBox.classList.add('hidden');
+            hintBox.textContent = q.hint;
+            hintToggleBtn.innerHTML = `<span>💡 Show Hint</span>`;
+
+            const userSelected = userAnswers[currentIndex];
+            if (userSelected !== null) {
+                explanationBox.classList.remove('hidden');
+                if (userSelected === q.correct) {
+                    explanationBox.className = "p-4 rounded-xl border border-emerald-500/40 bg-emerald-950/30 text-emerald-200 mb-6 transition-all duration-300";
+                    explanationTitle.innerHTML = "✅ Correct Answer";
+                } else {
+                    explanationBox.className = "p-4 rounded-xl border border-rose-500/40 bg-rose-950/30 text-rose-200 mb-6 transition-all duration-300";
+                    explanationTitle.innerHTML = "❌ Incorrect Answer";
+                }
+                explanationText.textContent = q.explanation;
+            } else {
+                explanationBox.classList.add('hidden');
+            }
+
+            // Render options
+            optionsContainerEl.innerHTML = '';
+            const shuffled = getShuffledOptions(q);
+
+            shuffled.forEach((optObj, idx) => {
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left p-4 rounded-xl border transition-all duration-200 flex items-center justify-between text-sm md:text-base font-medium `;
+                
+                const optionLabel = String.fromCharCode(65 + idx); // A, B, C, D
+                
+                if (userSelected !== null) {
+                    // Already answered state
+                    if (optObj.originalIndex === q.correct) {
+                        btn.className += "bg-emerald-900/40 border-emerald-500 text-emerald-200";
+                    } else if (optObj.originalIndex === userSelected) {
+                        btn.className += "bg-rose-900/40 border-rose-500 text-rose-200";
+                    } else {
+                        btn.className += "bg-slate-900/40 border-slate-700 text-slate-400 opacity-60";
+                    }
+                    btn.disabled = true;
+                } else {
+                    // Unanswered state
+                    btn.className += "bg-slate-900/60 border-slate-700 hover:border-emerald-500 hover:bg-slate-900 text-slate-200 cursor-pointer";
+                    btn.onclick = () => selectOption(optObj.originalIndex);
+                }
+
+                btn.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="w-7 h-7 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center text-xs font-bold text-slate-300">${optionLabel}</span>
+                        <span>${optObj.text}</span>
+                    </div>
+                `;
+                optionsContainerEl.appendChild(btn);
+            });
+
+            // Update Nav controls & Progress
+            prevBtn.disabled = currentIndex === 0;
+            nextBtn.disabled = currentIndex === quizData.length - 1;
+            progressBar.style.width = `${((currentIndex + 1) / quizData.length) * 100}%`;
+            scoreDisplay.textContent = score;
+        }
+
+        function selectOption(selectedIndex) {
+            if (userAnswers[currentIndex] !== null) return; // prevent multiple answers
+            
+            userAnswers[currentIndex] = selectedIndex;
+            const q = quizData[currentIndex];
+
+            if (selectedIndex === q.correct) {
+                score++;
+                explanationBox.className = "p-4 rounded-xl border border-emerald-500/40 bg-emerald-950/30 text-emerald-200 mb-6 transition-all duration-300";
+                explanationTitle.innerHTML = "✅ Correct Answer";
+            } else {
+                explanationBox.className = "p-4 rounded-xl border border-rose-500/40 bg-rose-950/30 text-rose-200 mb-6 transition-all duration-300";
+                explanationTitle.innerHTML = "❌ Incorrect Answer";
+            }
+            explanationText.textContent = q.explanation;
+            explanationBox.classList.remove('hidden');
+
+            scoreDisplay.textContent = score;
+            loadQuestion(); // Reload to show color coding on options
+        }
+
+        // Hint Toggle
+        hintToggleBtn.onclick = () => {
+            showHintState = !showHintState;
+            if (showHintState) {
+                hintBox.classList.remove('hidden');
+                hintToggleBtn.innerHTML = `<span>💡 Hide Hint</span>`;
+            } else {
+                hintBox.classList.add('hidden');
+                hintToggleBtn.innerHTML = `<span>💡 Show Hint</span>`;
+            }
+        };
+
+        // Navigation Handlers
+        prevBtn.onclick = () => {
+            if (currentIndex > 0) {
+                currentIndex--;
+                loadQuestion();
+            }
+        };
+
+        nextBtn.onclick = () => {
+            if (currentIndex < quizData.length - 1) {
+                currentIndex++;
+                loadQuestion();
+            }
+        };
+
+        jumpBtn.onclick = () => {
+            const val = parseInt(jumpInput.value);
+            if (!isNaN(val) && val >= 1 && val <= quizData.length) {
+                currentIndex = val - 1;
+                jumpInput.value = '';
+                loadQuestion();
+            } else {
+                alert(`Please enter a valid question number between 1 and ${quizData.length}`);
+            }
+        };
+
+        // Initial Load
+        loadQuestion();
+    </script>
+<script src="../../quiz-question-controls.js"></script>
+<script src="../../quiz-app-ui-v2.js"></script></body>
+</html>

@@ -1,0 +1,1736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master English Vocabulary Quiz - Exam Prep</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F0E6FF;
+            background-image: linear-gradient(135deg, #F0E6FF 0%, #E5D5FA 100%);
+            min-height: 100vh;
+        }
+        .quiz-card {
+            background-color: #FBF7FF;
+            border: 1px solid #DCCBF2;
+        }
+        .option-btn {
+            background-color: #FBF7FF;
+            border: 1px solid #DCCBF2;
+            transition: all 0.2s ease-in-out;
+        }
+        .option-btn:hover:not(:disabled) {
+            background-color: #F0E5FF;
+            border-color: #6542C8;
+            transform: translateY(-1px);
+        }
+        /* Custom scrollbar for smooth feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #E9DDF8;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #7352C9;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="text-[#30205D] flex flex-col min-h-screen justify-between pb-24">
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-[#E5D5FA]/90 backdrop-blur-md border-b border-[#DCCBF2] shadow-sm px-4 py-3">
+        <div class="max-w-4xl mx-auto flex flex-wrap items-center justify-between gap-4">
+            <div>
+                <h1 class="text-lg md:text-xl font-bold text-[#30205D] flex items-center gap-2">
+                    <span class="bg-[#6542C8] text-white p-1.5 rounded-lg text-sm shadow">✨</span>
+                    Advanced Vocabulary Mastery
+                </h1>
+                <p class="text-xs text-[#716782]">Comprehensive Indian Competitive Exam Prep (SSC, RRB, State PCS)</p>
+            </div>
+            <div class="flex items-center gap-3">
+                <div class="bg-[#FBF7FF] border border-[#DCCBF2] px-3 py-1 rounded-full text-xs font-semibold text-[#6542C8] shadow-sm">
+                    Score: <span id="header-score">0</span> / <span id="header-total">100</span>
+                </div>
+                <div class="bg-[#FBF7FF] border border-[#DCCBF2] px-3 py-1 rounded-full text-xs font-semibold text-[#7352C9] shadow-sm">
+                    Accuracy: <span id="header-accuracy">0%</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-3xl w-full mx-auto px-4 mt-6 flex-grow">
+        <!-- Quiz Card -->
+        <div class="quiz-card rounded-2xl shadow-lg p-6 md:p-8 transition-all duration-300">
+            
+            <!-- Question Meta Header -->
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+                <div class="flex items-center gap-2">
+                    <span id="question-badge" class="bg-[#E9DDF8] text-[#6542C8] font-bold text-xs px-3 py-1 rounded-full uppercase tracking-wider">
+                        Question 1 of 100
+                    </span>
+                    <span id="question-category" class="bg-[#F3A62A]/20 text-[#B8760B] font-medium text-xs px-2.5 py-1 rounded-full">
+                        Synonym Analysis
+                    </span>
+                </div>
+                <div class="text-xs text-[#716782] font-medium">
+                    Exam Standard: <span class="text-[#30205D] font-bold">Tier-1 / Tier-2 Level</span>
+                </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="w-full bg-[#DDD9E8] rounded-full h-2.5 mb-6 overflow-hidden">
+                <div id="progress-bar" class="bg-[#6542C8] h-2.5 rounded-full transition-all duration-300" style="width: 1%;"></div>
+            </div>
+
+            <!-- Question Statement -->
+            <div class="mb-6">
+                <h2 id="question-text" class="text-lg md:text-xl font-bold text-[#30205D] leading-relaxed">
+                    Loading question...
+                </h2>
+            </div>
+
+            <!-- Options Container -->
+            <div id="options-container" class="space-y-3 mb-6">
+                <!-- Dynamically injected option buttons -->
+            </div>
+
+            <!-- Hint Toggle & Box -->
+            <div class="mb-6">
+                <button id="hint-toggle" onclick="toggleHint()" class="text-xs font-semibold text-[#7352C9] hover:text-[#30205D] flex items-center gap-1.5 focus:outline-none focus:ring-2 focus:ring-[#6542C8] rounded px-1 py-0.5">
+                    <span>💡</span> <span id="hint-btn-text">Reveal Concept Clue / Hint</span>
+                </button>
+                <div id="hint-box" class="hidden mt-2 p-3.5 bg-[#E9DDF8]/50 border border-[#DCCBF2] rounded-xl text-xs text-[#30205D] leading-relaxed">
+                    <!-- Hint text -->
+                </div>
+            </div>
+
+            <!-- Explanation / Rationale Box (Revealed on choice selection) -->
+            <div id="explanation-box" class="hidden p-4 rounded-xl border transition-all duration-300 mb-2">
+                <div class="flex items-center gap-2 font-bold text-sm mb-1" id="explanation-header">
+                    <!-- Correct/Incorrect badge -->
+                </div>
+                <p id="explanation-text" class="text-xs md:text-sm text-[#30205D] leading-relaxed">
+                    <!-- Detailed rationale -->
+                </p>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Sticky Bottom Navigation Panel -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-[#DCCBF2] shadow-lg py-3 px-4 z-40">
+        <div class="max-w-4xl mx-auto flex flex-wrap items-center justify-between gap-3">
+            
+            <!-- Left Controls: Prev / Next -->
+            <div class="flex items-center gap-2">
+                <button id="prev-btn" onclick="prevQuestion()" class="px-4 py-2 bg-[#E9DDF8] text-[#30205D] hover:bg-[#DCCBF2] font-semibold rounded-xl text-xs md:text-sm shadow-sm transition disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1">
+                    <span>←</span> Previous
+                </button>
+                <button id="next-btn" onclick="nextQuestion()" class="px-4 py-2 bg-[#6542C8] text-white hover:bg-[#30205D] font-semibold rounded-xl text-xs md:text-sm shadow-md transition flex items-center gap-1">
+                    Next <span>→</span>
+                </button>
+            </div>
+
+            <!-- Center Controls: Jump to Q & Reset -->
+            <div class="flex items-center gap-2">
+                <div class="flex items-center bg-[#FBF7FF] border border-[#DCCBF2] rounded-xl px-2.5 py-1 shadow-inner">
+                    <span class="text-xs text-[#716782] mr-1.5 hidden sm:inline">Jump to:</span>
+                    <input type="number" id="jump-input" min="1" max="100" placeholder="Q#" 
+                           class="w-12 text-center text-xs font-bold bg-transparent focus:outline-none text-[#30205D]"
+                           onkeydown="handleJumpKey(event)">
+                    <button onclick="jumpToQuestion()" class="ml-1 px-2 py-0.5 bg-[#7352C9] text-white rounded-lg text-xs hover:bg-[#6542C8] transition font-medium">
+                        Go
+                    </button>
+                </div>
+                <button onclick="confirmReset()" class="px-3 py-2 bg-red-100 text-red-700 hover:bg-red-200 font-semibold rounded-xl text-xs transition shadow-sm" title="Reset Quiz">
+                    🔄 Reset
+                </button>
+            </div>
+
+        </div>
+    </nav>
+
+    <!-- Application Logic & Comprehensive 100-Question Dataset -->
+    <script>
+        const quizData = [
+            // 1. Acquit (V.)
+            {
+                id: 1,
+                category: "Synonym Analysis",
+                question: "In a high-profile judicial trial, the defendant was formally declared not guilty of all charges. Which term best characterizes this legal clearance?",
+                options: [
+                    { text: "Acquit", correct: true },
+                    { text: "Accost", correct: false },
+                    { text: "Acquiesce", correct: false },
+                    { text: "Accumulate", correct: false }
+                ],
+                hint: "Prefix 'ac-' with root related to rendering free or discharging from an obligation.",
+                explanation: "To 'Acquit' (Verb) means to decide and state officially in court that somebody is not guilty of a crime. Antonyms include convict or condemn. Derivative noun: Acquittal."
+            },
+            {
+                id: 2,
+                category: "Statement Matching",
+                question: "Match List I (Vocabulary Term) with List II (Definition/Context):\n(A) Acquit - 1. To discharge from blame or accusation\n(B) Accost - 2. To approach and speak to aggressively or boldly\n(C) Acquiesce - 3. To accept, agree, or give consent tacitly\nChoose the correct code:",
+                options: [
+                    { text: "A-1, B-2, C-3", correct: true },
+                    { text: "A-2, B-1, C-3", correct: false },
+                    { text: "A-3, B-2, C-1", correct: false },
+                    { text: "A-1, B-3, C-2", correct: false }
+                ],
+                hint: "Examine legal and behavioral nuances of these closely spelled words.",
+                explanation: "Acquit means clearing of charges (1), accost means aggressive approach (2), and acquiesce means passive compliance (3). Option A-1, B-2, C-3 is correct."
+            },
+            {
+                id: 3,
+                category: "Spotting Errors / Correct Usage",
+                question: "Which of the following sentences uses the verb form correctly in legal parlance?",
+                options: [
+                    { text: "The jury decided to acquit the accused due to insufficient forensic evidence.", correct: true },
+                    { text: "She was heavily acquit for her exceptional contribution to quantum physics.", correct: false },
+                    { text: "They will acquit the building with modern security architecture.", correct: false },
+                    { text: "His reckless driving led the judge to acquit him with a severe prison term.", correct: false }
+                ],
+                hint: "Look for contextual propriety associated with courtroom trials and judgments.",
+                explanation: "Option 1 correctly uses 'acquit' in the context of a jury ruling someone not guilty. Options 2, 3, and 4 misuse the word contextually."
+            },
+            {
+                id: 4,
+                category: "Antonym Identification",
+                question: "Identify the word that is most nearly OPPOSITE in meaning to 'Acquit':",
+                options: [
+                    { text: "Convict", correct: true },
+                    { text: "Absolve", correct: false },
+                    { text: "Exonerate", correct: false },
+                    { text: "Vindicate", correct: false }
+                ],
+                hint: "Opposite of declaring someone innocent is declaring them guilty.",
+                explanation: "'Convict' is the precise antonym of acquit. Absolve, exonerate, and vindicate are synonyms meaning to free from blame."
+            },
+            {
+                id: 5,
+                category: "Root Word & Etymology",
+                question: "The legal term meaning to declare someone not guilty traces its roots to Latin elements meaning 'to quiet or settle a charge'. What is this term?",
+                options: [
+                    { text: "Acquit", correct: true },
+                    { text: "Acumen", correct: false },
+                    { text: "Adherent", correct: false },
+                    { text: "Algaecide", correct: false }
+                ],
+                hint: "It starts with 'Ac' and ends with a consonant cluster found in our target list.",
+                explanation: "Acquit comes from Latin 'ad-' (to) + 'quietare' (to rest/quiet), settling the legal dispute. Hindi meaning: बरी (दोषमुक्त) कर देना."
+            },
+
+            // 2. Acrobat (N.)
+            {
+                id: 6,
+                category: "One-Word Substitution",
+                question: "An entertainer who performs difficult physical feats, balancing acts, and gymnastics high above the ground is known as:",
+                options: [
+                    { text: "Acrobat", correct: true },
+                    { text: "Agnostic", correct: false },
+                    { text: "Alchemist", correct: false },
+                    { text: "Acrophobe", correct: false }
+                ],
+                hint: "Root 'acro-' means high or top; combined with movement roots.",
+                explanation: "An 'Acrobat' (Noun) is an entertainer who performs difficult physical feats (trapeze, tightrope walking). Hindi meaning: हवाई करतब करने वाला."
+            },
+            {
+                id: 7,
+                category: "Root Word Analysis",
+                question: "In the word 'Acrobat', the Greek root 'acro-' signifies which of the following?",
+                options: [
+                    { text: "High, topmost, or extreme tip", correct: true },
+                    { text: "Hidden or secret underworld", correct: false },
+                    { text: "Water-borne or aquatic movement", correct: false },
+                    { text: "Sound or acoustic resonance", correct: false }
+                ],
+                hint: "Think of 'acrophobia' (fear of heights) to connect 'acro-'.",
+                explanation: "'Acro-' originates from Greek 'akros', meaning topmost or high, which is why acrobats perform high wire and aerial stunts."
+            },
+            {
+                id: 8,
+                category: "Incorrect Statement Check",
+                question: "Which of the following statements regarding the term 'Acrobat' is NOT correct?",
+                options: [
+                    { text: "It is exclusively used as an adjective describing high-altitude clouds.", correct: true },
+                    { text: "It functions primarily as a noun.", correct: false },
+                    { text: "It relates to individuals performing dangerous balancing routines in circuses.", correct: false },
+                    { text: "It shares a common root prefix with 'acrophobia'.", correct: false }
+                ],
+                hint: "Check the Part of Speech (PoS). Is it an adjective or a noun?",
+                explanation: "Statement 1 is incorrect because 'Acrobat' is a noun, not an adjective for clouds. All other statements are accurate."
+            },
+            {
+                id: 9,
+                category: "Synonym & Derivative",
+                question: "Which term describes the extraordinary physical agility and gymnastic skill displayed by an acrobat?",
+                options: [
+                    { text: "Acrobatics", correct: true },
+                    { text: "Alchemy", correct: false },
+                    { text: "Acronym", correct: false },
+                    { text: "Agony", correct: false }
+                ],
+                hint: "The plural/abstract noun form derived directly from acrobat.",
+                explanation: "'Acrobatics' refers to the performance of feats of balance, agility, and motor coordination."
+            },
+            {
+                id: 10,
+                category: "Contextual Fill-in",
+                question: "The circus troupe featured a daring _______ who walked across a tightrope suspended fifty feet in the air without a safety net.",
+                options: [
+                    { text: "acrobat", correct: true },
+                    { text: "agnostic", correct: false },
+                    { text: "alchemist", correct: false },
+                    { text: "adherent", correct: false }
+                ],
+                hint: "Requires someone skilled in physical aerial balancing feats.",
+                explanation: "Acrobat fits perfectly into the sentence describing tightrope balancing."
+            },
+
+            // 3. Acronym (N.)
+            {
+                id: 11,
+                category: "One-Word Substitution",
+                question: "An abbreviation formed from the initial letters of other words and pronounced as a single word (e.g., NASA, UNESCO) is called:",
+                options: [
+                    { text: "Acronym", correct: true },
+                    { text: "Album", correct: false },
+                    { text: "Agenda", correct: false },
+                    { text: "Algaecide", correct: false }
+                ],
+                hint: "Combines 'acro-' (tip/initial) with 'nym' (name).",
+                explanation: "An 'Acronym' (Noun) is an abbreviation formed from initial letters pronounced as one word. Hindi meaning: शब्दों के पहले अक्षरों से बना शब्द."
+            },
+            {
+                id: 12,
+                category: "Distinction Test",
+                question: "What differentiates a standard 'acronym' from a general 'initialism' (like FBI or HTML)?",
+                options: [
+                    { text: "Acronyms are pronounced as a single synthesized word rather than spelled out letter by letter.", correct: true },
+                    { text: "Acronyms can only be used in legal documents and court proceedings.", correct: false },
+                    { text: "Initialisms always contain numeric digits while acronyms do not.", correct: false },
+                    { text: "There is no linguistic difference whatsoever.", correct: false }
+                ],
+                hint: "Think about how you say 'NATO' versus 'FBI'.",
+                explanation: "NATO is spoken as a word ('ney-toe'), making it an acronym, whereas FBI is spelled out letter by letter (initialism)."
+            },
+            {
+                id: 13,
+                category: "Etymology & Roots",
+                question: "The suffix '-nym' in 'Acronym' is derived from Greek meaning:",
+                options: [
+                    { text: "Name or word", correct: true },
+                    { text: "Height or summit", correct: false },
+                    { text: "Fear or phobia", correct: false },
+                    { text: "Action or deed", correct: false }
+                ],
+                hint: "Consider words like synonym, antonym, and pseudonym.",
+                explanation: "'-nym' derives from Greek 'onoma' meaning name. Combined with 'acro-' (tip/beginning), it means a name formed from initial tips."
+            },
+            {
+                id: 14,
+                category: "Statement Matching",
+                question: "Match the linguistic devices:\n(A) Acronym - 1. Abbreviation pronounced as a word (e.g., radar)\n(B) Synonym - 2. Word having the same or nearly the same meaning\n(C) Antonym - 3. Word having opposite meaning\nChoose correct matching:",
+                options: [
+                    { text: "A-1, B-2, C-3", correct: true },
+                    { text: "A-3, B-1, C-2", correct: false },
+                    { text: "A-2, B-3, C-1", correct: false },
+                    { text: "A-1, B-3, C-2", correct: false }
+                ],
+                hint: "Standard linguistic terminology matching.",
+                explanation: "All definitions correctly map to their respective linguistic terms."
+            },
+            {
+                id: 15,
+                category: "Spotting Errors",
+                question: "Identify the correct sentence formation using the concept of acronyms:",
+                options: [
+                    { text: "PIN is a commonly used acronym for Personal Identification Number.", correct: true },
+                    { text: "She decided to acronym her entire research thesis into one paragraph.", correct: false },
+                    { text: "The acrobat used an acronym to balance on the tightrope.", correct: false },
+                    { text: "His aggrandized acronym was sentenced to five years in prison.", correct: false }
+                ],
+                hint: "PIN is pronounced as 'pin', making it an exact acronym example.",
+                explanation: "Option 1 correctly illustrates PIN as an acronym. Options 2, 3, and 4 misuse the term."
+            },
+
+            // 4. Acrophobia (N.)
+            {
+                id: 16,
+                category: "One-Word Substitution",
+                question: "An abnormal, irrational, and intense fear of great heights is medically classified as:",
+                options: [
+                    { text: "Acrophobia", correct: true },
+                    { text: "Algophobia", correct: false },
+                    { text: "Agoraphobia", correct: false },
+                    { text: "Agnosticism", correct: false }
+                ],
+                hint: "'Acro-' (heights) + 'phobia' (fear).",
+                explanation: "'Acrophobia' (Noun) is the extreme or irrational fear of heights. Hindi meaning: ऊँचाई का डर."
+            },
+            {
+                id: 17,
+                category: "Root Word Breakdown",
+                question: "In the medical term 'Acrophobia', the suffix '-phobia' originates from the Greek deity Phobos, personifying which concept?",
+                options: [
+                    { text: "Fear and panic", correct: true },
+                    { text: "Wisdom and knowledge", correct: false },
+                    { text: "Transformation and alchemy", correct: false },
+                    { text: "Justice and law", correct: false }
+                ],
+                hint: "Phobia denotes dread or fear.",
+                explanation: "'-phobia' comes from Greek 'phobos', meaning fear or terror."
+            },
+            {
+                id: 18,
+                category: "Differential Diagnosis",
+                question: "How does 'Acrophobia' differ fundamentally from 'Algophobia'?",
+                options: [
+                    { text: "Acrophobia is fear of heights, whereas algophobia is fear of pain.", correct: true },
+                    { text: "Acrophobia is fear of crowds, whereas algophobia is fear of heights.", correct: false },
+                    { text: "Acrophobia is fear of chemical algaecides, whereas algophobia is fear of acronyms.", correct: false },
+                    { text: "There is no difference; they are synonymous.", correct: false }
+                ],
+                hint: "Check the root prefixes: 'acro-' (heights) vs 'algo-' (pain).",
+                explanation: "Acrophobia is height anxiety; algophobia is pain anxiety."
+            },
+            {
+                id: 19,
+                category: "Contextual Usage",
+                question: "Standing on the glass observation deck on the 80th floor triggered severe dizziness and panic attacks due to his acute _______.",
+                options: [
+                    { text: "acrophobia", correct: true },
+                    { text: "alchemy", correct: false },
+                    { text: "agenda", correct: false },
+                    { text: "admiration", correct: false }
+                ],
+                hint: "Looking down from high floors causes this specific phobia.",
+                explanation: "Acrophobia accurately describes the terror experienced at great heights."
+            },
+            {
+                id: 20,
+                category: "Assertion-Reasoning",
+                question: "Assertion (A): A person suffering from severe acrophobia finds it extremely difficult to climb high mountain peaks or cross suspension bridges.\nReason (R): The root 'acro' denotes high altitude and elevation.\nChoose the correct code:",
+                options: [
+                    { text: "Both (A) and (R) are true, and (R) is the correct explanation of (A).", correct: true },
+                    { text: "Both (A) and (R) are true, but (R) is NOT the correct explanation of (A).", correct: false },
+                    { text: "(A) is true, but (R) is false.", correct: false },
+                    { text: "(A) is false, but (R) is true.", correct: false }
+                ],
+                hint: "Does the definition of acro explain why sufferers avoid heights?",
+                explanation: "Both statements are correct and logically linked through etymology."
+            },
+
+            // 5. Act (V.)
+            {
+                id: 21,
+                category: "Polysemy & Context",
+                question: "To do something, to behave in a particular way, or to perform a part in a play, film, or function is expressed by the verb:",
+                options: [
+                    { text: "Act (V.)", correct: true },
+                    { text: "Acquit (V.)", correct: false },
+                    { text: "Adulterate (V.)", correct: false },
+                    { text: "Aggrandize (V.)", correct: false }
+                ],
+                hint: "A common verb with multiple dimensions from drama to action.",
+                explanation: "'Act' (Verb) means to take action, behave, or perform in theatrical productions. Hindi meaning: कार्य करना, अभिनय करना."
+            },
+            {
+                id: 22,
+                category: "Idiomatic Phrasal Verb",
+                question: "What does the phrasal verb 'to act up' generally signify in colloquial English?",
+                options: [
+                    { text: "To misbehave, function improperly, or cause trouble", correct: true },
+                    { text: "To perform heroically in a theatrical play", correct: false },
+                    { text: "To officially clear someone of criminal charges", correct: false },
+                    { text: "To increase national wealth aggressively", correct: false }
+                ],
+                hint: "When machinery or children start misbehaving, they do this.",
+                explanation: "'Act up' means to malfunction or misbehave."
+            },
+            {
+                id: 23,
+                category: "Synonym Match",
+                question: "Which of the following verbs is the closest synonym to 'Act' when used in the sense of performing a role?",
+                options: [
+                    { text: "Portray", correct: true },
+                    { text: "Acquiesce", correct: false },
+                    { text: "Adulterate", correct: false },
+                    { text: "Aggress", correct: false }
+                ],
+                hint: "Think of actors portraying characters on stage.",
+                explanation: "'Portray' is a direct synonym for acting a role."
+            },
+            {
+                id: 24,
+                category: "Grammatical Category Check",
+                question: "Can the word 'Act' function as both a Noun and a Verb in English grammar?",
+                options: [
+                    { text: "Yes, as a noun it means a deed or law, and as a verb it means to perform or behave.", correct: true },
+                    { text: "No, it is strictly an adjective.", correct: false },
+                    { text: "No, it can only function as a proper noun.", correct: false },
+                    { text: "Yes, but only in medieval alchemy contexts.", correct: false }
+                ],
+                hint: "Consider 'an act of parliament' (noun) vs 'to act wisely' (verb).",
+                explanation: "Act is fully versatile, functioning dynamically as both noun and verb."
+            },
+            {
+                id: 25,
+                category: "Contextual Sentence",
+                question: "The experienced director instructed the lead actor to _______ with greater emotional depth during the dramatic climax.",
+                options: [
+                    { text: "act", correct: true },
+                    { text: "acronym", correct: false },
+                    { text: "alchemy", correct: false },
+                    { text: "algaecide", correct: false }
+                ],
+                hint: "The context relates to theatrical performance.",
+                explanation: "Verb 'act' fits seamlessly here."
+            },
+
+            // 6. Actionable (Adj.)
+            {
+                id: 26,
+                category: "One-Word Substitution",
+                question: "Giving sufficient cause for legal action or providing practical steps that can be implemented is termed as:",
+                options: [
+                    { text: "Actionable (Adj.)", correct: true },
+                    { text: "Aerial (Adj.)", correct: false },
+                    { text: "Aesthetic (Adj.)", correct: false },
+                    { text: "Aggressive (Adj.)", correct: false }
+                ],
+                hint: "Combines 'action' with suffix '-able' denoting capability or legal sufficiency.",
+                explanation: "'Actionable' (Adjective) means giving cause for legal action. Hindi meaning: कानूनी कार्यवाही करने योग्य."
+            },
+            {
+                id: 27,
+                category: "Legal Context Test",
+                question: "In corporate law, what makes a complaint or grievance 'actionable'?",
+                options: [
+                    { text: "It has sufficient legal grounds for a court to grant relief or trial.", correct: true },
+                    { text: "It is written entirely in acronyms.", correct: false },
+                    { text: "It relates exclusively to aerial photography.", correct: false },
+                    { text: "It has been adulterated with chemical impurities.", correct: false }
+                ],
+                hint: "Look for legal validity and enforceability.",
+                explanation: "An actionable claim is one strong enough to sustain a lawsuit."
+            },
+            {
+                id: 28,
+                category: "Antonym Identification",
+                question: "Which term is the exact OPPOSITE of 'actionable' in a legal or practical context?",
+                options: [
+                    { text: "Unenforceable / Groundless", correct: true },
+                    { text: "Aesthetic", correct: false },
+                    { text: "Adherent", correct: false },
+                    { text: "Aggrandized", correct: false }
+                ],
+                hint: "Opposite of having valid legal cause.",
+                explanation: "Unenforceable or groundless claims lack legal standing (not actionable)."
+            },
+            {
+                id: 29,
+                category: "Statement Evaluation",
+                question: "Which of the following statements about 'Actionable' is correct?",
+                options: [
+                    { text: "It functions as an adjective ending in '-able'.", correct: true },
+                    { text: "It is a noun describing an instrument used in alchemy.", correct: false },
+                    { text: "It is synonymous with acrophobia.", correct: false },
+                    { text: "It means lacking any legal validity whatsoever in all contexts.", correct: false }
+                ],
+                hint: "Check Part of Speech and prefix/suffix structure.",
+                explanation: "Actionable is an adjective indicating legal standing."
+            },
+            {
+                id: 30,
+                category: "Practical Context",
+                question: "The CEO requested the management team to provide _______ insights rather than vague theoretical concepts during the quarterly meeting.",
+                options: [
+                    { text: "actionable", correct: true },
+                    { text: "acronym", correct: false },
+                    { text: "agony", correct: false },
+                    { text: "agnostic", correct: false }
+                ],
+                hint: "Insights that can be practically executed.",
+                explanation: "Actionable insights means practical data that can be acted upon."
+            },
+
+            // 7. Activate (V.)
+            {
+                id: 31,
+                category: "One-Word Substitution",
+                question: "To make a machine, system, or operative device active or functional is to:",
+                options: [
+                    { text: "Activate (V.)", correct: true },
+                    { text: "Acquit (V.)", correct: false },
+                    { text: "Adulterate (V.)", correct: false },
+                    { text: "Aggrandize (V.)", correct: false }
+                ],
+                hint: "Derived from 'active' with verb-forming suffix '-ate'.",
+                explanation: "'Activate' (Verb) means to make a machine active or operative. Hindi meaning: सक्रिय करना."
+            },
+            {
+                id: 32,
+                category: "Synonym Matching",
+                question: "Identify the closest synonym to 'Activate' among the following choices:",
+                options: [
+                    { text: "Trigger / Initiate", correct: true },
+                    { text: "Acquiesce", correct: false },
+                    { text: "Adhere", correct: false },
+                    { text: "Acronym", correct: false }
+                ],
+                hint: "Synonyms involve setting something into motion.",
+                explanation: "Trigger or initiate are direct synonyms of activate."
+            },
+            {
+                id: 33,
+                category: "Antonym Identification",
+                question: "Which term is most nearly OPPOSITE in meaning to 'Activate'?",
+                options: [
+                    { text: "Deactivate / Disable", correct: true },
+                    { text: "Aggravate", correct: false },
+                    { text: "Aggrandize", correct: false },
+                    { text: "Adulterate", correct: false }
+                ],
+                hint: "Turning something off or stopping its operation.",
+                explanation: "Deactivate or disable opposes activate."
+            },
+            {
+                id: 34,
+                category: "Contextual Fill-in",
+                question: "Security personnel had to manually _______ the emergency backup generator during the sudden electrical grid failure.",
+                options: [
+                    { text: "activate", correct: true },
+                    { text: "acquit", correct: false },
+                    { text: "adulterate", correct: false },
+                    { text: "adorn", correct: false }
+                ],
+                hint: "Turning on a backup system.",
+                explanation: "Activate is the precise verb for turning on a generator."
+            },
+            {
+                id: 35,
+                category: "Grammatical Derivation",
+                question: "What is the noun form representing the process or result of making something operative?",
+                options: [
+                    { text: "Activation", correct: true },
+                    { text: "Acrobatics", correct: false },
+                    { text: "Alchemy", correct: false },
+                    { text: "Agonizing", correct: false }
+                ],
+                hint: "Adding '-ion' to the verb base.",
+                explanation: "Activation is the standard noun derivative."
+            },
+
+            // 8. Acumen (N.)
+            {
+                id: 36,
+                category: "One-Word Substitution",
+                question: "The ability to make good judgments, sharp insights, and take quick decisions with accuracy of judgment is known as:",
+                options: [
+                    { text: "Acumen (N.)", correct: true },
+                    { text: "Agony (N.)", correct: false },
+                    { text: "Album (N.)", correct: false },
+                    { text: "Alchemy (N.)", correct: false }
+                ],
+                hint: "Often paired with 'business' or 'financial'.",
+                explanation: "'Acumen' (Noun) denotes sharpness and accuracy of judgment. Hindi meaning: कुशाग्र बुद्धि."
+            },
+            {
+                id: 37,
+                category: "Contextual Usage",
+                question: "Her remarkable financial _______ allowed her to steer the startup through severe market volatility and secure high profitability.",
+                options: [
+                    { text: "acumen", correct: true },
+                    { text: "acronym", correct: false },
+                    { text: "acrophobia", correct: false },
+                    { text: "alchemy", correct: false }
+                ],
+                hint: "Business or financial sharpness.",
+                explanation: "Financial acumen signifies sharp business insight."
+            },
+            {
+                id: 38,
+                category: "Synonym Analysis",
+                question: "Which of the following words is synonymous with 'Acumen'?",
+                options: [
+                    { text: "Shrewdness / Astuteness", correct: true },
+                    { text: "Ignorance", correct: false },
+                    { text: "Adulteration", correct: false },
+                    { text: "Aggression", correct: false }
+                ],
+                hint: "Keen mental sharpness and discernment.",
+                explanation: "Shrewdness and astuteness capture the essence of acumen."
+            },
+            {
+                id: 39,
+                category: "Antonym Identification",
+                question: "Identify the antonym of 'Acumen':",
+                options: [
+                    { text: "Obtuseness / Ineptitude", correct: true },
+                    { text: "Brightness", correct: false },
+                    { text: "Perspicacity", correct: false },
+                    { text: "Cleverness", correct: false }
+                ],
+                hint: "Lack of mental sharpness or dullness.",
+                explanation: "Obtuseness and ineptitude mean dullness of mind, opposing acumen."
+            },
+            {
+                id: 40,
+                category: "Statement Matching",
+                question: "Match the following nouns:\n(A) Acumen - 1. Sharpness and accuracy of judgment\n(B) Agony - 2. Extreme mental or physical suffering\n(C) Album - 3. Blank book for collecting photographs\nChoose correct code:",
+                options: [
+                    { text: "A-1, B-2, C-3", correct: true },
+                    { text: "A-2, B-3, C-1", correct: false },
+                    { text: "A-3, B-1, C-2", correct: false },
+                    { text: "A-1, B-3, C-2", correct: false }
+                ],
+                hint: "Verify definitions from standard vocabulary lists.",
+                explanation: "All definitions are precisely matched."
+            },
+
+            // 9. Addict (N.)
+            {
+                id: 41,
+                category: "One-Word Substitution",
+                question: "A person who is physically or psychologically dependent on a substance (like drugs or alcohol) or harmful habit is called:",
+                options: [
+                    { text: "Addict (N.)", correct: true },
+                    { text: "Agnostic (N.)", correct: false },
+                    { text: "Advocate (N.)", correct: false },
+                    { text: "Acrobat (N.)", correct: false }
+                ],
+                hint: "Someone enslaved to a harmful habit or chemical dependency.",
+                explanation: "'Addict' (Noun) is a person dependent on harmful substances. Hindi meaning: नशेड्डी."
+            },
+            {
+                id: 42,
+                category: "Grammatical Form & Meaning",
+                question: "Can 'Addict' function as both a verb (to cause oneself to become dependent) and a noun?",
+                options: [
+                    { text: "Yes, 'to addict oneself' is a valid verb usage, though 'addict' is most frequently a noun.", correct: true },
+                    { text: "No, it is strictly an adjective like 'actionable'.", correct: false },
+                    { text: "No, it is exclusively a medical prefix.", correct: false },
+                    { text: "Yes, it means clearing someone of criminal charges.", correct: false }
+                ],
+                hint: "Consider how dependency is formed.",
+                explanation: "Addict acts primarily as a noun but has historical verb roots."
+            },
+            {
+                id: 43,
+                category: "Contextual Fill-in",
+                question: "Rehabilitation clinics provide specialized medical and psychological therapy to help every recovering _______ break the cycle of dependency.",
+                options: [
+                    { text: "addict", correct: true },
+                    { text: "acrobat", correct: false },
+                    { text: "adherent", correct: false },
+                    { text: "adonis", correct: false }
+                ],
+                hint: "Target individual undergoing rehab.",
+                explanation: "Addict fits the rehab context."
+            },
+            {
+                id: 44,
+                category: "Synonym & Derivative",
+                question: "What adjective is derived from 'Addict' to describe substances or habits that cause dependency?",
+                options: [
+                    { text: "Addictive", correct: true },
+                    { text: "Actionable", correct: false },
+                    { text: "Aesthetic", correct: false },
+                    { text: "Agonizing", correct: false }
+                ],
+                hint: "Think of addictive substances.",
+                explanation: "Addictive is the standard adjectival form."
+            },
+            {
+                id: 45,
+                category: "Incorrect Statement Check",
+                question: "Which statement about 'Addict' is NOT correct?",
+                options: [
+                    { text: "It denotes someone who possesses exceptional financial acumen.", correct: true },
+                    { text: "It functions primarily as a noun.", correct: false },
+                    { text: "It relates to chemical or behavioral dependency.", correct: false },
+                    { text: "It has the adjectival form 'addictive'.", correct: false }
+                ],
+                hint: "Check definition consistency.",
+                explanation: "Statement 1 is false; an addict has nothing to do with financial acumen."
+            },
+
+            // 10. Adhere (V.)
+            {
+                id: 46,
+                category: "One-Word Substitution",
+                question: "To believe in, follow, and remain firmly attached to practices, principles, or rules is expressed by the verb:",
+                options: [
+                    { text: "Adhere (V.)", correct: true },
+                    { text: "Adulterate (V.)", correct: false },
+                    { text: "Aggrandize (V.)", correct: false },
+                    { text: "Acquiesce (V.)", correct: false }
+                ],
+                hint: "Often followed by the preposition 'to' (e.g., adhere to rules).",
+                explanation: "'Adhere' (Verb) means to believe in and follow practices or stick physically. Hindi meaning: पालन करना."
+            },
+            {
+                id: 47,
+                category: "Synonym Analysis",
+                question: "Which of the following is the closest synonym to 'Adhere' when used in the sense of obeying rules?",
+                options: [
+                    { text: "Comply / Abide", correct: true },
+                    { text: "Adulterate", correct: false },
+                    { text: "Aggress", correct: false },
+                    { text: "Acquait", correct: false }
+                ],
+                hint: "Synonyms mean sticking to guidelines.",
+                explanation: "Comply and abide are direct synonyms for adhering to rules."
+            },
+            {
+                id: 48,
+                category: "Antonym Identification",
+                question: "Identify the OPPOSITE of 'Adhere':",
+                options: [
+                    { text: "Flout / Disobey / Detach", correct: true },
+                    { text: "Stick", correct: false },
+                    { text: "Observe", correct: false },
+                    { text: "Cohere", correct: false }
+                ],
+                hint: "Opposite of following rules or sticking together.",
+                explanation: "Flouting or disobeying rules is the antonym of adhering."
+            },
+            {
+                id: 49,
+                category: "Contextual Usage",
+                question: "All participating athletes must strictly _______ to the anti-doping regulations set by the international sports committee.",
+                options: [
+                    { text: "adhere", correct: true },
+                    { text: "adulterate", correct: false },
+                    { text: "aggrandize", correct: false },
+                    { text: "acquit", correct: false }
+                ],
+                hint: "Following regulations strictly.",
+                explanation: "Adhere correctly pairs with 'to regulations'."
+            },
+            {
+                id: 50,
+                category: "Noun Derivative",
+                question: "What noun is used to describe a person who follows a particular leader, party, or philosophy?",
+                options: [
+                    { text: "Adherent", correct: true },
+                    { text: "Acrobat", correct: false },
+                    { text: "Agnostic", correct: false },
+                    { text: "Algaecide", correct: false }
+                ],
+                hint: "Derived from adhere; a follower or supporter.",
+                explanation: "An adherent is a supporter or follower of a rule, leader, or belief."
+            },
+
+            // 11. Adolescence (N.)
+            {
+                id: 51,
+                category: "One-Word Substitution",
+                question: "The transitional period of human development between the beginning of puberty and legal adulthood is known as:",
+                options: [
+                    { text: "Adolescence (N.)", correct: true },
+                    { text: "Agony (N.)", correct: false },
+                    { text: "Alchemy (N.)", correct: false },
+                    { text: "Agenda (N.)", correct: false }
+                ],
+                hint: "The bridge between childhood and adult maturity.",
+                explanation: "'Adolescence' (Noun) is the period between puberty and adulthood. Hindi meaning: किशोरावस्था."
+            },
+            {
+                id: 52,
+                category: "Etymology & Roots",
+                question: "The Latin root of 'Adolescence' ('adolescere') translates literally to:",
+                options: [
+                    { text: "To grow up or mature", correct: true },
+                    { text: "To fear heights", correct: false },
+                    { text: "To mix impurities", correct: false },
+                    { text: "To judge accurately", correct: false }
+                ],
+                hint: "Think about growing toward maturity.",
+                explanation: "Adolescere means to grow up or reach maturity."
+            },
+            {
+                id: 53,
+                category: "Adjectival Form",
+                question: "What is the correct adjectival form describing someone or something in the stage of adolescence?",
+                options: [
+                    { text: "Adolescent", correct: true },
+                    { text: "Actionable", correct: false },
+                    { text: "Aesthetic", correct: false },
+                    { text: "Aerial", correct: false }
+                ],
+                hint: "Dropping the noun ending to form the adjective.",
+                explanation: "Adolescent is the adjective (e.g., adolescent behavior)."
+            },
+            {
+                id: 54,
+                category: "Contextual Fill-in",
+                question: "Psychologists note that _______ is a phase marked by rapid physical maturation, identity exploration, and emotional shifts.",
+                options: [
+                    { text: "adolescence", correct: true },
+                    { text: "acumen", correct: false },
+                    { text: "alchemy", correct: false },
+                    { text: "album", correct: false }
+                ],
+                hint: "The developmental life stage.",
+                explanation: "Adolescence fits the psychological description."
+            },
+            {
+                id: 55,
+                category: "Statement Matching",
+                question: "Match the developmental/life terms:\n(A) Adolescence - 1. Period between puberty and adulthood\n(B) Adherent - 2. A supporter or follower\n(C) Addict - 3. Person dependent on a substance\nChoose correct code:",
+                options: [
+                    { text: "A-1, B-2, C-3", correct: true },
+                    { text: "A-3, B-2, C-1", correct: false },
+                    { text: "A-2, B-1, C-3", correct: false },
+                    { text: "A-1, B-3, C-2", correct: false }
+                ],
+                hint: "Standard mapping of terms.",
+                explanation: "All definitions are perfectly matched."
+            },
+
+            // 12. Adonis (N.)
+            {
+                id: 56,
+                category: "One-Word Substitution",
+                question: "An extremely handsome, attractive young man is metaphorically referred to in literature as a(n):",
+                options: [
+                    { text: "Adonis (N.)", correct: true },
+                    { text: "Acrobat (N.)", correct: false },
+                    { text: "Agnostic (N.)", correct: false },
+                    { text: "Advocate (N.)", correct: false }
+                ],
+                hint: "Named after the Greek mythological youth loved by Aphrodite for his supreme beauty.",
+                explanation: "'Adonis' (Noun) denotes an extremely beautiful young man. Hindi meaning: खूबसूरत नौजवान."
+            },
+            {
+                id: 57,
+                category: "Mythological Origin",
+                question: "In Greek mythology, Adonis was renowned primarily for his:",
+                options: [
+                    { text: "Exquisite physical beauty", correct: true },
+                    { text: "Mastery of medieval alchemy", correct: false },
+                    { text: "Severe fear of heights", correct: false },
+                    { text: "Financial acumen", correct: false }
+                ],
+                hint: "Mythological archetype of male attractiveness.",
+                explanation: "Adonis is the archetypal handsome youth in classical mythology."
+            },
+            {
+                id: 58,
+                category: "Synonym Analysis",
+                question: "Which of the following is a synonym for 'Adonis' when describing a handsome man?",
+                options: [
+                    { text: "Apollo / Hunk / Looker", correct: true },
+                    { text: "Acronym", correct: false },
+                    { text: "Acrophobe", correct: false },
+                    { text: "Algaecide", correct: false }
+                ],
+                hint: "Another mythological figure representing male beauty.",
+                explanation: "Apollo is another mythological name used to describe extreme male beauty."
+            },
+            {
+                id: 59,
+                category: "Contextual Usage",
+                question: "He strutted onto the fashion runway, posing with the confidence of an modern-day _______.",
+                options: [
+                    { text: "Adonis", correct: true },
+                    { text: "acronym", correct: false },
+                    { text: "algaecide", correct: false },
+                    { text: "agenda", correct: false }
+                ],
+                hint: "Refers to a strikingly handsome male model.",
+                explanation: "Adonis fits the context of runway modeling and physical attractiveness."
+            },
+            {
+                id: 60,
+                category: "Grammatical Category",
+                question: "Although derived from a proper mythological name, how does 'adonis' function in general English literature?",
+                options: [
+                    { text: "As a common noun denoting any exceptionally handsome man.", correct: true },
+                    { text: "As an adjective describing chemical purity.", correct: false },
+                    { text: "As a verb meaning to acquit someone in court.", correct: false },
+                    { text: "As an acronym for legal actions.", correct: false }
+                ],
+                hint: "Proper noun turned into common noun noun metaphor.",
+                explanation: "It functions as a common noun representing male beauty."
+            },
+
+            // 13. Adorable (Adj.)
+            {
+                id: 61,
+                category: "One-Word Substitution",
+                question: "Very attractive, charming, and easy to feel love for is best described by the adjective:",
+                options: [
+                    { text: "Adorable (Adj.)", correct: true },
+                    { text: "Actionable (Adj.)", correct: false },
+                    { text: "Aerial (Adj.)", correct: false },
+                    { text: "Aggressive (Adj.)", correct: false }
+                ],
+                hint: "Derived from 'adore' with suffix '-able'.",
+                explanation: "'Adorable' (Adjective) means very attractive and lovable. Hindi meaning: प्यारा."
+            },
+            {
+                id: 62,
+                category: "Synonym Match",
+                question: "Which term is most synonymous with 'Adorable'?",
+                options: [
+                    { text: "Endearing / Delightful / Charming", correct: true },
+                    { text: "Repulsive", correct: false },
+                    { text: "Aggressive", correct: false },
+                    { text: "Actionable", correct: false }
+                ],
+                hint: "Words that evoke warm, affectionate feelings.",
+                explanation: "Endearing and delightful are direct synonyms."
+            },
+            {
+                id: 63,
+                category: "Antonym Identification",
+                question: "Identify the antonym of 'Adorable':",
+                options: [
+                    { text: "Hateful / Hideous / Repulsive", correct: true },
+                    { text: "Lovely", correct: false },
+                    { text: "Cute", correct: false },
+                    { text: "Charming", correct: false }
+                ],
+                hint: "Opposite of lovable and attractive.",
+                explanation: "Repulsive or hateful are antonyms of adorable."
+            },
+            {
+                id: 64,
+                category: "Contextual Fill-in",
+                question: "The rescue shelter posted pictures of the _______ golden retriever puppies online, and they were adopted within hours.",
+                options: [
+                    { text: "adorable", correct: true },
+                    { text: "actionable", correct: false },
+                    { text: "agile", correct: false },
+                    { text: "agnostic", correct: false }
+                ],
+                hint: "Describes cute puppies.",
+                explanation: "Adorable perfectly characterizes lovable puppies."
+            },
+            {
+                id: 65,
+                category: "Root & Etymology",
+                question: "The verb root 'adore' underlying 'adorable' originates from Latin meaning:",
+                options: [
+                    { text: "To worship or venerate with deep affection", correct: true },
+                    { text: "To mix inferior substances", correct: false },
+                    { text: "To increase wealth", correct: false },
+                    { text: "To clear of legal guilt", correct: false }
+                ],
+                hint: "Root 'adorare' connects to worship.",
+                explanation: "Adorare means to worship or pay homage to."
+            },
+
+            // 14. Adulterate (V.)
+            {
+                id: 66,
+                category: "One-Word Substitution",
+                question: "To make a substance impure or poor in quality by adding inferior, cheap, or improper ingredients is to:",
+                options: [
+                    { text: "Adulterate (V.)", correct: true },
+                    { text: "Aggrandize (V.)", correct: false },
+                    { text: "Acquit (V.)", correct: false },
+                    { text: "Activate (V.)", correct: false }
+                ],
+                hint: "Commonly used in food safety regarding milk, spices, or medicine contamination.",
+                explanation: "'Adulterate' (Verb) means to make impure by adding inferior substances. Hindi meaning: मिलावट करना."
+            },
+            {
+                id: 67,
+                category: "Synonym Match",
+                question: "Which of the following verbs is synonymous with 'Adulterate'?",
+                options: [
+                    { text: "Contaminate / Debase / Taint", correct: true },
+                    { text: "Purify", correct: false },
+                    { text: "Aggrandize", correct: false },
+                    { text: "Acquiesce", correct: false }
+                ],
+                hint: "Words meaning to ruin purity.",
+                explanation: "Contaminate and debase are exact synonyms for adulterate."
+            },
+            {
+                id: 68,
+                category: "Antonym Identification",
+                question: "Identify the OPPOSITE of 'Adulterate':",
+                options: [
+                    { text: "Purify / Refine", correct: true },
+                    { text: "Taint", correct: false },
+                    { text: "Dilute", correct: false },
+                    { text: "Pollute", correct: false }
+                ],
+                hint: "Opposite of adding impurities.",
+                explanation: "Purify or refine means making pure, opposing adulterate."
+            },
+            {
+                id: 69,
+                category: "Contextual Usage",
+                question: "Food safety inspectors raided the warehouse and seized tons of spices found to be _______ with toxic industrial dyes.",
+                options: [
+                    { text: "adulterated", correct: true },
+                    { text: "acclaimed", correct: false },
+                    { text: "adhered", correct: false },
+                    { text: "aggrandized", correct: false }
+                ],
+                hint: "Spices mixed with inferior/toxic ingredients.",
+                explanation: "Adulterated accurately describes contaminated food products."
+            },
+            {
+                id: 70,
+                category: "Statement Evaluation",
+                question: "Which statement regarding 'Adulterate' is NOT correct?",
+                options: [
+                    { text: "It is an adjective meaning extremely cute and lovable.", correct: true },
+                    { text: "It functions as a verb.", correct: false },
+                    { text: "It refers to corrupting the purity of a substance.", correct: false },
+                    { text: "Its antonym includes 'purify'.", correct: false }
+                ],
+                hint: "Check the Part of Speech.",
+                explanation: "Statement 1 is incorrect; adulterate is a verb meaning to contaminate, not an adjective meaning cute."
+            },
+
+            // 15. Adventurous (Adj.)
+            {
+                id: 71,
+                category: "One-Word Substitution",
+                question: "Willing to take risks, try new ideas, and explore uncharted territories is described as:",
+                options: [
+                    { text: "Adventurous (Adj.)", correct: true },
+                    { text: "Actionable (Adj.)", correct: false },
+                    { text: "Aerial (Adj.)", correct: false },
+                    { text: "Aesthetic (Adj.)", correct: false }
+                ],
+                hint: "Derived from adventure with suffix '-ous'.",
+                explanation: "'Adventurous' (Adjective) means willing to take risks and try new ideas. Hindi meaning: साहसिक."
+            },
+            {
+                id: 72,
+                category: "Synonym Analysis",
+                question: "Which of the following is synonymous with 'Adventurous'?",
+                options: [
+                    { text: "Daring / Enterprising / Bold", correct: true },
+                    { text: "Timid", correct: false },
+                    { text: "Cautious", correct: false },
+                    { text: "Dull", correct: false }
+                ],
+                hint: "Traits of explorers and risk-takers.",
+                explanation: "Daring and enterprising are synonyms for adventurous."
+            },
+            {
+                id: 73,
+                category: "Antonym Identification",
+                question: "Identify the antonym of 'Adventurous':",
+                options: [
+                    { text: "Timorous / Cautious / Cowardly", correct: true },
+                    { text: "Bold", correct: false },
+                    { text: "Daring", correct: false },
+                    { text: "Enterprising", correct: false }
+                ],
+                hint: "Opposite of taking risks.",
+                explanation: "Timorous or overly cautious opposes adventurous."
+            },
+            {
+                id: 74,
+                category: "Contextual Fill-in",
+                question: "The expedition team took an _______ route across the treacherous Himalayan mountain pass to shave days off their travel time.",
+                options: [
+                    { text: "adventurous", correct: true },
+                    { text: "actionable", correct: false },
+                    { text: "adulterated", correct: false },
+                    { text: "agile", correct: false }
+                ],
+                hint: "A risky and bold travel route.",
+                explanation: "Adventurous fits the risky expedition route."
+            },
+            {
+                id: 75,
+                category: "Noun Derivative",
+                question: "What noun form represents an exciting or remarkable experience?",
+                options: [
+                    { text: "Adventure", correct: true },
+                    { text: "Acrobat", correct: false },
+                    { text: "Acumen", correct: false },
+                    { text: "Addict", correct: false }
+                ],
+                hint: "The base noun from which adventurous is formed.",
+                explanation: "Adventure is the noun form."
+            },
+
+            // 16. Advocate (N.)
+            {
+                id: 76,
+                category: "One-Word Substitution",
+                question: "A person who supports, pleads, or speaks in favour of something or someone (especially in legal contexts) is an:",
+                options: [
+                    { text: "Advocate (N.)", correct: true },
+                    { text: "Agnostic (N.)", correct: false },
+                    { text: "Addict (N.)", correct: false },
+                    { text: "Acrobat (N.)", correct: false }
+                ],
+                hint: "Legal counsel or public champion of a cause.",
+                explanation: "'Advocate' (Noun) is a person who supports or speaks in favour of something. Hindi meaning: वकील / अधिवक्ता."
+            },
+            {
+                id: 77,
+                category: "Dual Part of Speech",
+                question: "Can 'Advocate' function as both a Noun and a Verb in English?",
+                options: [
+                    { text: "Yes, as a noun it's a supporter/lawyer, and as a verb it means to publicly recommend.", correct: true },
+                    { text: "No, it is exclusively a verb.", correct: false },
+                    { text: "No, it is exclusively a medical term.", correct: false },
+                    { text: "Yes, but only in medieval alchemy.", correct: false }
+                ],
+                hint: "Think of 'to advocate reform' (verb) and 'human rights advocate' (noun).",
+                explanation: "Advocate is fully functional as both noun and verb."
+            },
+            {
+                id: 78,
+                category: "Synonym Match",
+                question: "Which term is synonymous with 'Advocate' when used as a verb meaning to recommend publicly?",
+                options: [
+                    { text: "Champion / Espouse / Support", correct: true },
+                    { text: "Condemn", correct: false },
+                    { text: "Adulterate", correct: false },
+                    { text: "Agonize", correct: false }
+                ],
+                hint: "Standing up for a cause.",
+                explanation: "Champion and espouse are exact synonyms for advocating."
+            },
+            {
+                id: 79,
+                category: "Contextual Usage",
+                question: "Renowned civil rights activists _______ for policy reforms to ensure equitable access to education across all rural districts.",
+                options: [
+                    { text: "advocate", correct: true },
+                    { text: "adulterate", correct: false },
+                    { text: "aggrandize", correct: false },
+                    { text: "acquit", correct: false }
+                ],
+                hint: "Publicly supporting policy reforms.",
+                explanation: "Advocate correctly fits the verb slot for supporting reforms."
+            },
+            {
+                id: 80,
+                category: "Antonym Identification",
+                question: "Identify the antonym of 'Advocate' (when used as a verb):",
+                options: [
+                    { text: "Oppose / Impugn / Condemn", correct: true },
+                    { text: "Support", correct: false },
+                    { text: "Champion", correct: false },
+                    { text: "Promote", correct: false }
+                ],
+                hint: "Opposite of supporting or defending a cause.",
+                explanation: "Opposing or condemning is the antonym of advocating."
+            },
+
+            // 17. Aerial (Adj.)
+            {
+                id: 81,
+                category: "One-Word Substitution",
+                question: "Growing, existing, or living in air, or operating from the air, is described by the adjective:",
+                options: [
+                    { text: "Aerial (Adj.)", correct: true },
+                    { text: "Actionable (Adj.)", correct: false },
+                    { text: "Aesthetic (Adj.)", correct: false },
+                    { text: "Aggressive (Adj.)", correct: false }
+                ],
+                hint: "Derived from air with adjectival ending.",
+                explanation: "'Aerial' (Adjective) means growing, existing, or living in air. Hindi meaning: हवाई."
+            },
+            {
+                id: 82,
+                category: "Contextual Usage",
+                question: "The military drone captured high-resolution _______ photographs of the terrain before ground forces entered the valley.",
+                options: [
+                    { text: "aerial", correct: true },
+                    { text: "actionable", correct: false },
+                    { text: "adulterated", correct: false },
+                    { text: "agile", correct: false }
+                ],
+                hint: "Photographs taken from the air.",
+                explanation: "Aerial photographs means photos taken from aircraft or drones in the air."
+            },
+            {
+                id: 83,
+                category: "Synonym Match",
+                question: "Which of the following is synonymous with 'Aerial'?",
+                options: [
+                    { text: "Atmospheric / Airborne", correct: true },
+                    { text: "Subterranean", correct: false },
+                    { text: "Terrestrial", correct: false },
+                    { text: "Ground-based", correct: false }
+                ],
+                hint: "Things existing in the atmosphere or air.",
+                explanation: "Airborne and atmospheric are synonyms for aerial."
+            },
+            {
+                id: 84,
+                category: "Antonym Identification",
+                question: "Identify the OPPOSITE of 'Aerial':",
+                options: [
+                    { text: "Terrestrial / Subterranean", correct: true },
+                    { text: "Airborne", correct: false },
+                    { text: "Atmospheric", correct: false },
+                    { text: "High-flying", correct: false }
+                ],
+                hint: "Relating to the earth rather than the air.",
+                explanation: "Terrestrial (of the earth) opposes aerial."
+            },
+            {
+                id: 85,
+                category: "Statement Evaluation",
+                question: "Which statement regarding 'Aerial' is correct?",
+                options: [
+                    { text: "It functions as an adjective relating to air.", correct: true },
+                    { text: "It is a noun meaning an illegal drug addict.", correct: false },
+                    { text: "It is synonymous with acrophobia.", correct: false },
+                    { text: "It means making food impure.", correct: false }
+                ],
+                hint: "Check Part of Speech and definition.",
+                explanation: "Aerial is indeed an adjective relating to the air."
+            },
+
+            // 18. Aesthetic (Adj.)
+            {
+                id: 86,
+                category: "One-Word Substitution",
+                question: "Concerned with beauty or the appreciation of beauty, art, and sensory-emotional design is termed as:",
+                options: [
+                    { text: "Aesthetic (Adj.)", correct: true },
+                    { text: "Actionable (Adj.)", correct: false },
+                    { text: "Aerial (Adj.)", correct: false },
+                    { text: "Aggressive (Adj.)", correct: false }
+                ],
+                hint: "Relating to artistic beauty and visual appeal.",
+                explanation: "'Aesthetic' (Adjective) means concerned with beauty or the appreciation of beauty. Hindi meaning: सौंदर्य संबंधी."
+            },
+            {
+                id: 87,
+                category: "Contextual Usage",
+                question: "The interior designer revamped the minimalist apartment to enhance its overall _______ appeal using soft lavender tones and warm lighting.",
+                options: [
+                    { text: "aesthetic", correct: true },
+                    { text: "actionable", correct: false },
+                    { text: "adulterated", correct: false },
+                    { text: "aerial", correct: false }
+                ],
+                hint: "Refers to visual beauty and design appeal.",
+                explanation: "Aesthetic appeal relates to how visually pleasing something is."
+            },
+            {
+                id: 88,
+                category: "Synonym Match",
+                question: "Which of the following is synonymous with 'Aesthetic'?",
+                options: [
+                    { text: "Artistic / Pleasing / Tasteful", correct: true },
+                    { text: "Ugly", correct: false },
+                    { text: "Grotesque", correct: false },
+                    { text: "Repulsive", correct: false }
+                ],
+                hint: "Associated with artistic beauty.",
+                explanation: "Artistic and tasteful are synonyms for aesthetic."
+            },
+            {
+                id: 89,
+                category: "Antonym Identification",
+                question: "Identify the antonym of 'Aesthetic':",
+                options: [
+                    { text: "Unaesthetic / Utilitarian / Ugly", correct: true },
+                    { text: "Artistic", correct: false },
+                    { text: "Beautiful", correct: false },
+                    { text: "Exquisite", correct: false }
+                ],
+                hint: "Lacking artistic beauty or purely functional without regard for beauty.",
+                explanation: "Unaesthetic or purely utilitarian opposes aesthetic."
+            },
+            {
+                id: 90,
+                category: "Statement Matching",
+                question: "Match the adjectives:\n(A) Aesthetic - 1. Concerned with beauty and art\n(B) Actionable - 1. Giving cause for legal action\n(C) Aerial - 3. Existing or operating in air\nChoose correct code:",
+                options: [
+                    { text: "A-1, B-2, C-3", correct: true },
+                    { text: "A-3, B-2, C-1", correct: false },
+                    { text: "A-2, B-1, C-3", correct: false },
+                    { text: "A-1, B-3, C-2", correct: false }
+                ],
+                hint: "Verify adjective definitions.",
+                explanation: "All adjective definitions are correctly matched."
+            },
+
+            // 19. Agenda (N.)
+            {
+                id: 91,
+                category: "One-Word Substitution",
+                question: "A list of items, topics, or tasks to be discussed at a formal meeting is known as a(n):",
+                options: [
+                    { text: "Agenda (N.)", correct: true },
+                    { text: "Album (N.)", correct: false },
+                    { text: "Alchemy (N.)", correct: false },
+                    { text: "Agony (N.)", correct: false }
+                ],
+                hint: "What participants look at before starting a conference.",
+                explanation: "'Agenda' (Noun) is a list of items to be discussed at a meeting. Hindi meaning: कार्यसूची."
+            },
+            {
+                id: 92,
+                category: "Grammatical Number",
+                question: "What is the singular form of the Latin-derived noun 'Agenda'?",
+                options: [
+                    { text: "Agendum", correct: true },
+                    { text: "Agendas", correct: false },
+                    { text: "Agon", correct: false },
+                    { text: "Acrobat", correct: false }
+                ],
+                hint: "Latin plural ending in '-a' has a singular form in '-um'.",
+                explanation: "Agendum is the singular form, though agenda is now commonly treated as both singular and plural in modern English."
+            },
+            {
+                id: 93,
+                category: "Contextual Usage",
+                question: "The board chairperson circulated the meeting _______ via email twenty-four hours prior to the corporate summit.",
+                options: [
+                    { text: "agenda", correct: true },
+                    { text: "acumen", correct: false },
+                    { text: "alchemy", correct: false },
+                    { text: "acronym", correct: false }
+                ],
+                hint: "List of meeting topics.",
+                explanation: "Agenda fits the meeting document context."
+            },
+            {
+                id: 94,
+                category: "Synonym Match",
+                question: "Which of the following is synonymous with 'Agenda'?",
+                options: [
+                    { text: "Schedule / Program / Docket", correct: true },
+                    { text: "Chaos", correct: false },
+                    { text: "Randomness", correct: false },
+                    { text: "Improvisation", correct: false }
+                ],
+                hint: "A structured plan of items.",
+                explanation: "Schedule and program are synonyms for agenda."
+            },
+            {
+                id: 95,
+                category: "Statement Evaluation",
+                question: "Which statement regarding 'Agenda' is NOT correct?",
+                options: [
+                    { text: "It is a verb meaning to make food impure with chemical additives.", correct: true },
+                    { text: "It functions as a noun.", correct: false },
+                    { text: "It refers to a list of meeting items.", correct: false },
+                    { text: "Its Latin singular is agendum.", correct: false }
+                ],
+                hint: "Check definition consistency.",
+                explanation: "Statement 1 is false; agenda is a noun, not a verb about food impurity."
+            },
+
+            // 20. Aggrandize (V.)
+            {
+                id: 96,
+                category: "One-Word Substitution",
+                question: "To increase the power, importance, status, position, or wealth of oneself or an institution is to:",
+                options: [
+                    { text: "Aggrandize (V.)", correct: true },
+                    { text: "Adulterate (V.)", correct: false },
+                    { text: "Acquit (V.)", correct: false },
+                    { text: "Activate (V.)", correct: false }
+                ],
+                hint: "To make grander or increase in scope/power.",
+                explanation: "'Aggrandize' (Verb) means to increase the importance, power, or wealth. Hindi meaning: वृद्धि करना (शक्ति संपत्ति या पद)."
+            },
+            {
+                id: 97,
+                category: "Synonym Analysis",
+                question: "Which of the following verbs is synonymous with 'Aggrandize'?",
+                options: [
+                    { text: "Amplifier / Amplify / Exalt / Boost", correct: true },
+                    { text: "Diminish", correct: false },
+                    { text: "Reduce", correct: false },
+                    { text: "Devalue", correct: false }
+                ],
+                hint: "To magnify power or status.",
+                explanation: "Amplify, exalt, and boost are synonyms for aggrandizing."
+            },
+            {
+                id: 98,
+                category: "Antonym Identification",
+                question: "Identify the OPPOSITE of 'Aggrandize':",
+                options: [
+                    { text: "Decrease / Belittle / Reduce", correct: true },
+                    { text: "Exalt", correct: false },
+                    { text: "Elevate", correct: false },
+                    { text: "Expand", correct: false }
+                ],
+                hint: "Opposite of increasing power or status.",
+                explanation: "Decreasing or reducing power opposes aggrandize."
+            },
+            {
+                id: 99,
+                category: "Contextual Fill-in",
+                question: "Dictators throughout history have often used aggressive military propaganda campaigns to _______ their personal rule and territory.",
+                options: [
+                    { text: "aggrandize", correct: true },
+                    { text: "adulterate", correct: false },
+                    { text: "acquit", correct: false },
+                    { text: "adhere", correct: false }
+                ],
+                hint: "To enhance power and territory.",
+                explanation: "Aggrandize fits the context of boosting personal power and territory."
+            },
+            {
+                id: 100,
+                category: "Comprehensive Review & Mastery",
+                question: "Which of the following terms from our vocabulary list specifically denotes someone who is not sure about God's existence (an agnostic), contrasted with someone seeking to aggrandize power?",
+                options: [
+                    { text: "Agnostic (N.)", correct: true },
+                    { text: "Album (N.)", correct: false },
+                    { text: "Alchemy (N.)", correct: false },
+                    { text: "Algaecide (N.)", correct: false }
+                ],
+                hint: "Look for the term dealing with skepticism regarding divine existence.",
+                explanation: "Agnostic (Noun) refers to one who is not sure about God's existence (Hindi: ईश्वर के बारे में संशयवादी व्यक्ति). This concludes our comprehensive 100-question vocabulary mastery set."
+            }
+        ];
+
+        // Application State
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let answeredQuestions = new Array(quizData.length).fill(false);
+        let userSelections = new Array(quizData.length).fill(null);
+        let shuffledOptionsCache = {};
+
+        // DOM Elements
+        const questionBadge = document.getElementById("question-badge");
+        const questionCategory = document.getElementById("question-category");
+        const progressBar = document.getElementById("progress-bar");
+        const questionText = document.getElementById("question-text");
+        const optionsContainer = document.getElementById("options-container");
+        const hintToggle = document.getElementById("hint-toggle");
+        const hintBtnText = document.getElementById("hint-btn-text");
+        const hintBox = document.getElementById("hint-box");
+        const explanationBox = document.getElementById("explanation-box");
+        const explanationHeader = document.getElementById("explanation-header");
+        const explanationText = document.getElementById("explanation-text");
+        const headerScore = document.getElementById("header-score");
+        const headerTotal = document.getElementById("header-total");
+        const headerAccuracy = document.getElementById("header-accuracy");
+        const prevBtn = document.getElementById("prev-btn");
+        const nextBtn = document.getElementById("next-btn");
+        const jumpInput = document.getElementById("jump-input");
+
+        window.onload = function() {
+            headerTotal.textContent = quizData.length;
+            loadQuestion(currentQuestionIndex);
+            updateStats();
+        };
+
+        // Shuffle array helper (Fisher-Yates)
+        function shuffleArray(array) {
+            let arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        function loadQuestion(index) {
+            const q = quizData[index];
+            questionBadge.textContent = `Question ${index + 1} of ${quizData.length}`;
+            questionCategory.textContent = q.category;
+            questionText.textContent = q.question;
+
+            // Update Progress Bar
+            const progressPercent = ((index + 1) / quizData.length) * 100;
+            progressBar.style.width = `${progressPercent}%`;
+
+            // Reset Hint
+            hintBox.classList.add("hidden");
+            hintBtnText.textContent = "Reveal Concept Clue / Hint";
+            hintBox.textContent = q.hint;
+
+            // Get or create shuffled options for this question
+            if (!shuffledOptionsCache[index]) {
+                shuffledOptionsCache[index] = shuffleArray(q.options);
+            }
+            const currentOptions = shuffledOptionsCache[index];
+
+            // Render Options
+            optionsContainer.innerHTML = "";
+            currentOptions.forEach((opt, optIdx) => {
+                const btn = document.createElement("button");
+                btn.className = "option-btn w-full text-left p-4 rounded-xl font-medium text-sm md:text-base flex items-center justify-between shadow-sm";
+                btn.innerHTML = `<span>${String.fromCharCode(65 + optIdx)}. ${opt.text}</span>`;
+                
+                // Check if already answered
+                if (answeredQuestions[index]) {
+                    btn.disabled = true;
+                    if (opt.correct) {
+                        btn.classList.add("bg-green-100", "border-green-500", "text-green-900");
+                        btn.innerHTML += `<span class="text-green-700 font-bold">✓ Correct</span>`;
+                    } else if (userSelections[index] === opt.text) {
+                        btn.classList.add("bg-red-100", "border-red-500", "text-red-900");
+                        btn.innerHTML += `<span class="text-red-700 font-bold">✗ Your Choice</span>`;
+                    } else {
+                        btn.classList.add("opacity-60");
+                    }
+                } else {
+                    btn.onclick = () => selectOption(opt, btn, currentOptions);
+                }
+
+                optionsContainer.appendChild(btn);
+            });
+
+            // Handle Explanation Box state
+            if (answeredQuestions[index]) {
+                showExplanation(index, userSelections[index]);
+            } else {
+                explanationBox.classList.add("hidden");
+            }
+
+            // Navigation Buttons State
+            prevBtn.disabled = index === 0;
+            nextBtn.textContent = index === quizData.length - 1 ? "Finish Quiz 🏁" : "Next →";
+        }
+
+        function selectOption(selectedOpt, selectedBtn, currentOptions) {
+            if (answeredQuestions[currentQuestionIndex]) return;
+
+            answeredQuestions[currentQuestionIndex] = true;
+            userSelections[currentQuestionIndex] = selectedOpt.text;
+
+            const q = quizData[currentQuestionIndex];
+            const isCorrect = selectedOpt.correct;
+
+            if (isCorrect) {
+                score++;
+                selectedBtn.classList.add("bg-green-100", "border-green-500", "text-green-900");
+                selectedBtn.innerHTML += `<span class="text-green-700 font-bold">✓ Correct</span>`;
+            } else {
+                selectedBtn.classList.add("bg-red-100", "border-red-500", "text-red-900");
+                selectedBtn.innerHTML += `<span class="text-red-700 font-bold">✗ Incorrect</span>`;
+
+                // Highlight correct option
+                const allBtns = optionsContainer.getElementsByTagName("button");
+                Array.from(allBtns).forEach((b, idx) => {
+                    if (currentOptions[idx].correct) {
+                        b.classList.add("bg-green-50", "border-green-400", "text-green-900");
+                        b.innerHTML += `<span class="text-green-600 font-bold text-xs ml-2">(Correct Answer)</span>`;
+                    }
+                });
+            }
+
+            // Disable all option buttons after selection
+            const allBtns = optionsContainer.getElementsByTagName("button");
+            Array.from(allBtns).forEach(b => b.disabled = true);
+
+            updateStats();
+            showExplanation(currentQuestionIndex, selectedOpt.text);
+        }
+
+        function showExplanation(index, selectedText) {
+            const q = quizData[index];
+            const isCorrect = selectedText === q.options.find(o => o.correct).text;
+
+            explanationBox.classList.remove("hidden");
+            if (isCorrect) {
+                explanationBox.className = "p-4 rounded-xl border border-green-300 bg-green-50 mb-2 transition-all duration-300";
+                explanationHeader.innerHTML = `<span class="text-green-700">🎉 Correct! Excellent Mastery.</span>`;
+            } else {
+                explanationBox.className = "p-4 rounded-xl border border-red-300 bg-red-50 mb-2 transition-all duration-300";
+                explanationHeader.innerHTML = `<span class="text-red-700">❌ Incorrect. Review the Rationale Below:</span>`;
+            }
+            explanationText.textContent = q.explanation;
+        }
+
+        function updateStats() {
+            headerScore.textContent = score;
+            const answeredCount = answeredQuestions.filter(Boolean).length;
+            const accuracyVal = answeredCount > 0 ? Math.round((score / answeredCount) * 100) : 0;
+            headerAccuracy.textContent = `${accuracyVal}%`;
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < quizData.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion(currentQuestionIndex);
+            } else {
+                alert(`Quiz Completed! Final Score: ${score} / ${quizData.length} (${Math.round((score/quizData.length)*100)}%)`);
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion(currentQuestionIndex);
+            }
+        }
+
+        function jumpToQuestion() {
+            const val = parseInt(jumpInput.value);
+            if (!isNaN(val) && val >= 1 && val <= quizData.length) {
+                currentQuestionIndex = val - 1;
+                loadQuestion(currentQuestionIndex);
+                jumpInput.value = "";
+            } else {
+                alert(`Please enter a valid question number between 1 and ${quizData.length}.`);
+            }
+        }
+
+        function handleJumpKey(event) {
+            if (event.key === "Enter") {
+                jumpToQuestion();
+            }
+        }
+
+        // Hint Toggle
+        function toggleHint() {
+            if (hintBox.classList.contains("hidden")) {
+                hintBox.classList.remove("hidden");
+                hintBtnText.textContent = "Hide Concept Clue / Hint";
+            } else {
+                hintBox.classList.add("hidden");
+                hintBtnText.textContent = "Reveal Concept Clue / Hint";
+            }
+        }
+
+        // Reset Quiz
+        function confirmReset() {
+            if (confirm("Are you sure you want to reset the quiz? All progress and scores will be cleared.")) {
+                currentQuestionIndex = 0;
+                score = 0;
+                answeredQuestions = new Array(quizData.length).fill(false);
+                userSelections = new Array(quizData.length).fill(null);
+                shuffledOptionsCache = {};
+                loadQuestion(0);
+                updateStats();
+                jumpInput.value = "";
+            }
+        }
+
+        // Keyboard Navigation (Arrow Keys and Enter)
+        document.addEventListener("keydown", function(event) {
+            // Do not trigger if typing inside input
+            if (document.activeElement.tagName === "INPUT" || document.activeElement.tagName === "TEXTAREA") {
+                return;
+            }
+
+            if (event.key === "ArrowLeft") {
+                prevQuestion();
+            } else if (event.key === "ArrowRight") {
+                nextQuestion();
+            }
+        });
+    </script>
+</body>
+</html>

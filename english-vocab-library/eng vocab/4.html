@@ -1,0 +1,1756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate English Vocabulary Mastery Quiz</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #F0E6FF;
+            background-image: linear-gradient(135deg, #F0E6FF 0%, #E5D5FA 100%);
+            min-height: 100vh;
+        }
+        .quiz-card {
+            background-color: #FBF7FF;
+            border: 1px solid #DCCBF2;
+        }
+        .option-btn {
+            background-color: #FBF7FF;
+            border: 1.5px solid #DCCBF2;
+            transition: all 0.2s ease-in-out;
+        }
+        .option-btn:hover:not(:disabled) {
+            background-color: #F0E5FF;
+            border-color: #6542C8;
+            transform: translateY(-1px);
+        }
+        .option-selected {
+            background-color: #E9DDF8 !important;
+            border-color: #6542C8 !important;
+            box-shadow: 0 0 0 2px rgba(101, 66, 200, 0.2);
+        }
+        .option-correct {
+            background-color: #E6F4EA !important;
+            border-color: #34A853 !important;
+            color: #0D652D !important;
+        }
+        .option-incorrect {
+            background-color: #FCE8E6 !important;
+            border-color: #EA4335 !important;
+            color: #C5221F !important;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #E5D5FA;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #7352C9;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6542C8;
+        }
+    </style>
+</head>
+<body class="text-[#30205D] flex flex-col min-h-screen selection:bg-[#E9DDF8] selection:text-[#6542C8]">
+
+    <!-- STICKY HEADER -->
+    <header class="sticky top-0 z-50 bg-[#E5D5FA]/90 backdrop-blur-md border-b border-[#DCCBF2] shadow-sm px-4 py-3">
+        <div class="max-w-4xl mx-auto flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-[#6542C8] text-white flex items-center justify-center font-bold text-lg shadow-md">
+                    📚
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-lg sm:text-xl text-[#30205D] tracking-tight">Master Vocabulary Quiz</h1>
+                    <p class="text-xs text-[#716782] font-medium">Entries 53–92 • SSC, RRB & State Exams Edition</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-2 sm:space-x-4">
+                <div class="bg-[#FBF7FF] border border-[#DCCBF2] px-3 py-1.5 rounded-full text-xs font-bold text-[#6542C8] shadow-xs flex items-center space-x-1.5">
+                    <span>🏆 Score:</span>
+                    <span id="score-display" class="text-sm">0</span>
+                    <span class="text-[#716782]">/</span>
+                    <span id="total-score-display" class="text-[#716782]">120</span>
+                </div>
+                <div id="completion-badge" class="hidden bg-emerald-100 text-emerald-800 border border-emerald-300 px-3 py-1.5 rounded-full text-xs font-bold shadow-xs flex items-center space-x-1">
+                    <span>✨ Completed</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <main class="flex-1 max-w-3xl w-full mx-auto p-4 sm:p-6 flex flex-col justify-center">
+        
+        <!-- QUIZ CARD -->
+        <div id="quiz-card" class="quiz-card rounded-3xl shadow-xl p-5 sm:p-8 relative overflow-hidden transition-all duration-300">
+            
+            <!-- QUESTION META & PROGRESS -->
+            <div class="mb-5">
+                <div class="flex flex-wrap items-center justify-between text-xs font-semibold text-[#716782] mb-2 gap-2">
+                    <div class="flex items-center space-x-2">
+                        <span id="question-counter" class="bg-[#E9DDF8] text-[#6542C8] px-2.5 py-1 rounded-lg font-bold">Question 1 of 120</span>
+                        <span id="question-category" class="bg-[#DCCBF2]/50 text-[#30205D] px-2.5 py-1 rounded-lg">One Word Substitution</span>
+                    </div>
+                    <span id="exam-tag" class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded-md font-medium text-[11px]">SSC CGL / RRB Level</span>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="w-full bg-[#DDD9E8] h-2.5 rounded-full overflow-hidden">
+                    <div id="progress-bar" class="bg-[#6542C8] h-full transition-all duration-300 rounded-full" style="width: 0.83%;"></div>
+                </div>
+            </div>
+
+            <!-- QUESTION TEXT -->
+            <div class="mb-6">
+                <h2 id="question-text" class="text-lg sm:text-xl font-bold text-[#30205D] leading-relaxed">
+                    Loading question...
+                </h2>
+            </div>
+
+            <!-- ANSWER OPTIONS CONTAINER -->
+            <div id="options-container" class="space-y-3 mb-6">
+                <!-- Dynamic options injected here -->
+            </div>
+
+            <!-- HINT SECTION -->
+            <div class="mb-6">
+                <button id="hint-toggle-btn" onclick="toggleHint()" class="text-xs font-semibold text-[#7352C9] hover:text-[#6542C8] flex items-center space-x-1.5 bg-[#E9DDF8]/60 hover:bg-[#E9DDF8] px-3 py-1.5 rounded-xl transition-colors cursor-pointer">
+                    <span>💡</span>
+                    <span id="hint-btn-text">Show Hint</span>
+                </button>
+                <div id="hint-box" class="hidden mt-2 p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-900 leading-relaxed shadow-xs">
+                    <span class="font-bold">Hint:</span> <span id="hint-text"></span>
+                </div>
+            </div>
+
+            <!-- EXPLANATION BOX (Revealed on Answer) -->
+            <div id="explanation-box" class="hidden mt-4 p-4 rounded-2xl border transition-all duration-300 mb-2">
+                <div class="flex items-center space-x-2 font-bold text-sm mb-1" id="explanation-title">
+                    <!-- Status Icon & Title -->
+                </div>
+                <p id="explanation-text" class="text-xs sm:text-sm leading-relaxed text-[#30205D]"></p>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- STICKY BOTTOM NAVIGATION PANEL -->
+    <nav class="sticky bottom-0 z-40 bg-white/90 backdrop-blur-md border-t border-[#DCCBF2] shadow-lg py-3 px-4">
+        <div class="max-w-3xl mx-auto flex flex-wrap items-center justify-between gap-3">
+            
+            <!-- Navigation Buttons -->
+            <div class="flex items-center space-x-2">
+                <button id="prev-btn" onclick="prevQuestion()" class="px-4 py-2 bg-[#E9DDF8] hover:bg-[#DCCBF2] text-[#30205D] font-bold text-xs sm:text-sm rounded-xl transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center space-x-1 cursor-pointer">
+                    <span>←</span>
+                    <span class="hidden sm:inline">Previous</span>
+                </button>
+                <button id="next-btn" onclick="nextQuestion()" class="px-4 py-2 bg-[#6542C8] hover:bg-[#7352C9] text-white font-bold text-xs sm:text-sm rounded-xl transition-colors shadow-sm flex items-center space-x-1 cursor-pointer">
+                    <span class="hidden sm:inline">Next</span>
+                    <span>→</span>
+                </button>
+            </div>
+
+            <!-- Jump to Question Control -->
+            <div class="flex items-center space-x-2">
+                <div class="flex items-center bg-[#F0E6FF] border border-[#DCCBF2] rounded-xl px-2 py-1 space-x-1.5">
+                    <span class="text-xs font-bold text-[#716782] hidden md:inline">Jump to Q:</span>
+                    <input type="number" id="jump-input" min="1" max="120" placeholder="1-120" 
+                           class="w-14 bg-white text-center text-xs font-bold text-[#30205D] border border-[#DCCBF2] rounded-lg py-1 focus:outline-none focus:border-[#6542C8]"
+                           onkeydown="if(event.key === 'Enter') jumpToQuestion();">
+                    <button onclick="jumpToQuestion()" class="bg-[#6542C8] hover:bg-[#7352C9] text-white text-xs font-bold px-2.5 py-1 rounded-lg transition-colors cursor-pointer">
+                        Go
+                    </button>
+                </div>
+            </div>
+
+            <!-- Reset Button -->
+            <div>
+                <button onclick="confirmReset()" class="px-3 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-bold text-xs rounded-xl transition-colors flex items-center space-x-1 cursor-pointer">
+                    <span>🔄</span>
+                    <span class="hidden sm:inline">Reset</span>
+                </button>
+            </div>
+
+        </div>
+    </nav>
+
+    <!-- SCRIPT DATA & LOGIC -->
+    <script>
+        // 120 Comprehensive Exam-Level MCQs covering Entries 53 to 92 (Alien to Anecdote)
+        const quizData = [
+            // ENTRY 53: Alien
+            {
+                category: "One Word Substitution",
+                exam: "SSC CGL Tier-1",
+                question: "Choose the correct one-word substitution: 'A person belonging to a foreign country // different from what you are used to // A fictional being from another world'",
+                options: ["Alien", "Native", "Indigenous", "Resident"],
+                correct: 0,
+                hint: "Often used in sci-fi for extraterrestrial beings, or legally for foreigners.",
+                explanation: "Correct Answer: Alien (N.). An alien refers to someone belonging to a foreign country or a fictional being from another world. Synonyms: Foreigner, outsider, extraterrestrial. Antonyms: Native, citizen, resident."
+            },
+            {
+                category: "Synonym & Antonym",
+                exam: "RRB NTPC CBT-2",
+                question: "Identify the antonym of the vocabulary word represented by the phrase: 'A person belonging to a foreign country or different from what you are used to.'",
+                options: ["Native", "Alien", "Exotic", "Outsider"],
+                correct: 0,
+                hint: "Someone born in or belonging by birth to a particular place.",
+                explanation: "Correct Answer: Native. While 'Alien' denotes a foreigner or outsider, 'Native' or 'Citizen' represents someone belonging locally by birth. Synonyms of alien include foreigner and outsider."
+            },
+            {
+                category: "Contextual Usage & Grammar",
+                exam: "HSSC Group C",
+                question: "Select the grammatically and semantically correct sentence using the word 'Alien'.",
+                options: [
+                    "She felt completely alien to the local customs and traditions of the Himalayan village.",
+                    "The alien fruit was native exclusively to the local supermarket shelf.",
+                    "He was granted alien status because he was born in the capital city.",
+                    "Her alien enthusiasm made everyone feel right at home."
+                ],
+                correct: 0,
+                hint: "Alien can also function metaphorically to mean unfamiliar or strange.",
+                explanation: "Correct Answer: 'She felt completely alien to the local customs...' In this context, 'alien' means unfamiliar, strange, or foreign to one's experience."
+            },
+
+            // ENTRY 54: Alimony
+            {
+                category: "One Word Substitution",
+                exam: "SSC CHSL",
+                question: "Find the single word for: 'The money paid to former wife, husband or partner when the marriage is ended.'",
+                options: ["Alimony", "Allowance", "Asset", "Arbitration"],
+                correct: 0,
+                hint: "Derived from Latin 'alimentum' meaning nourishment or sustenance.",
+                explanation: "Correct Answer: Alimony (N.). It is financial support that a court orders a person to pay to their spouse after separation or divorce. Hindi: गुजारा भत्ता."
+            },
+            {
+                category: "Synonym & Antonym",
+                exam: "State PCS Prelims",
+                question: "Which of the following terms is synonymous with 'Alimony' in legal terminology?",
+                options: ["Spousal maintenance", "Donation", "Bounty", "Tribute"],
+                correct: 0,
+                hint: "Support provided by one spouse to another after legal separation.",
+                explanation: "Correct Answer: Spousal maintenance. Alimony is legally known as spousal support or maintenance paid post-divorce. Distractors like donation or tribute have entirely different contexts."
+            },
+            {
+                category: "Error Spotting / Statement",
+                exam: "SSC CGL Mains",
+                question: "In which of the following scenarios is the term 'Alimony' correctly applied?",
+                options: [
+                    "A court ordered regular financial payments from Mr. Sharma to his ex-wife following their legal divorce.",
+                    "An employer gave a monthly bonus to employees for exceptional performance.",
+                    "A father gave pocket money to his college-going son.",
+                    "A government grant provided to farmers for crop cultivation."
+                ],
+                correct: 0,
+                hint: "Alimony strictly pertains to post-marital legal financial obligations.",
+                explanation: "Correct Answer: Regular financial payments from Mr. Sharma to his ex-wife following divorce. Alimony is exclusively tied to marital dissolution."
+            },
+
+            // ENTRY 55: Allegory
+            {
+                category: "One Word Substitution",
+                exam: "SSC CGL Tier-1",
+                question: "What is the term for: 'A story, play, picture, etc. in which each character/event is a symbol representing an idea/a quality, such as truth, evil, death, etc.'",
+                options: ["Allegory", "Anecdote", "Anatomy", "Anagram"],
+                correct: 0,
+                hint: "A narrative with a hidden symbolic moral or political meaning.",
+                explanation: "Correct Answer: Allegory (N.). Hindi: नीति कथा / रूपक. Famous examples include George Orwell's 'Animal Farm'."
+            },
+            {
+                category: "Synonym & Antonym",
+                exam: "RRB NTPC",
+                question: "Choose the closest synonym for 'Allegory'.",
+                options: ["Parable / Fable", "Biography", "Dictionary", "Manual"],
+                correct: 0,
+                hint: "A symbolic story conveying a deeper meaning.",
+                explanation: "Correct Answer: Parable / Fable. An allegory uses symbolic figures and actions to convey truths about human conduct or experience, much like a fable or parable."
+            },
+            {
+                category: "Statement Matching",
+                exam: "State PCS",
+                question: "Match the literary device in List I with its correct definition in List II:\nList I: 1. Allegory, 2. Anecdote\nList II: A. A short amusing story about a real incident; B. A narrative with symbolic moral meaning.",
+                options: ["1-B, 2-A", "1-A, 2-B", "1-B, 2-B", "1-A, 2-A"],
+                correct: 0,
+                hint: "Allegory equals symbolism; Anecdote equals short real-life story.",
+                explanation: "Correct Answer: 1-B, 2-A. Allegory is a symbolic narrative (List II B), whereas an anecdote is a brief, engaging story about a real event or person (List II A)."
+            },
+
+            // ENTRY 56: Alliteration
+            {
+                category: "One Word Substitution",
+                exam: "SSC CHSL",
+                question: "Identify the linguistic term for: 'Words that begin with the same letter, syllable or sound // Repetition of an initial sound in two or more words of a line.'",
+                options: ["Alliteration", "Allegory", "Ambiance", "Anagram"],
+                correct: 0,
+                hint: "Think of tongue twisters like 'Peter Piper picked a peck of pickled peppers.'",
+                explanation: "Correct Answer: Alliteration (N.). Hindi: अनुप्रास अलंकार. It is the conspicuous repetition of identical initial consonant sounds in successive or closely associated syllables."
+            },
+            {
+                category: "Usage & Identification",
+                exam: "HSSC",
+                question: "Which of the following sentence lines best exemplifies 'Alliteration'?",
+                options: [
+                    "“Seven silver swans swam silently seaward.”",
+                    "“The quick brown fox jumped across the wide river.”",
+                    "“Yesterday was sunny, warm, and exceptionally pleasant.”",
+                    "“Mathematics requires rigorous logical calculation.”"
+                ],
+                correct: 0,
+                hint: "Look for the prominent repetition of the 'S' consonant sound at the start of words.",
+                explanation: "Correct Answer: “Seven silver swans swam silently seaward.” The repetition of the initial /s/ sound across multiple words is a classic textbook example of alliteration."
+            },
+            {
+                category: "Conceptual Depth",
+                exam: "SSC CGL Tier-1",
+                question: "In poetry and literature, what is the primary stylistic purpose of using 'Alliteration'?",
+                options: [
+                    "To create musical rhythm, enhance mood, and make lines memorable through sound repetition.",
+                    "To provide factual statistical evidence in scientific reports.",
+                    "To translate foreign legal documents accurately.",
+                    "To measure atmospheric pressure and altitude."
+                ],
+                correct: 0,
+                hint: "It deals with poetic sound quality and cadence.",
+                explanation: "Correct Answer: To create musical rhythm and enhance memorability. Writers employ alliteration to catch the reader's ear and establish a rhythmic cadence."
+            },
+
+            // ENTRY 57: Alluvium
+            {
+                category: "One Word Substitution",
+                exam: "RRB Group D / NTPC",
+                question: "What is the geological term for: 'Soil deposited by flowing water'?",
+                options: ["Alluvium", "Altar", "Altimeter", "Amphibian"],
+                correct: 0,
+                hint: "Fertile soil left behind by rivers, crucial for agriculture in river plains.",
+                explanation: "Correct Answer: Alluvium (N.). Hindi: पानी के बहाव द्वारा बिछाई गयी मिट्टी. It consists of clay, silt, sand, or gravel deposited by running water."
+            },
+            {
+                category: "Synonym & Context",
+                exam: "State PCS Geography",
+                question: "In geographical studies, Alluvium deposits are most commonly found in which region type?",
+                options: ["River floodplains and deltas", "Arid desert sand dunes", "Volcanic crater peaks", "Deep ocean trenches"],
+                correct: 0,
+                hint: "Associated with overflowing rivers and fertile agricultural basins.",
+                explanation: "Correct Answer: River floodplains and deltas. Alluvium is carried by flowing streams and deposited when water slows down, forming rich alluvial soil plains (e.g., Indo-Gangetic plains)."
+            },
+            {
+                category: "Antonym / Differentiation",
+                exam: "SSC CGL",
+                question: "Which of the following geological formations is fundamentally different in origin from 'Alluvium'?",
+                options: [
+                    "Glacial till (deposited directly by glacial ice)",
+                    "River silt deposits",
+                    "Stream sediment runoff",
+                    "Flood basin silt"
+                ],
+                correct: 0,
+                hint: "Alluvium is water-borne; look for ice-borne.",
+                explanation: "Correct Answer: Glacial till. Alluvium is strictly deposited by flowing water, whereas glacial till is deposited directly by moving ice sheets."
+            },
+
+            // ENTRY 58: Alma Mater
+            {
+                category: "One Word Substitution",
+                exam: "SSC CGL Tier-1",
+                question: "Choose the correct term for: 'The school or college in which one has been educated.'",
+                options: ["Alma Mater", "Alumnus", "Amateur", "Altar"],
+                correct: 0,
+                hint: "Latin phrase literally translating to 'fostering mother'.",
+                explanation: "Correct Answer: Alma Mater (N.). Hindi: जहाँ शिक्षा पाई वह संस्था. It refers to the university, school, or college that someone previously attended."
+            },
+            {
+                category: "Grammar & Usage",
+                exam: "SSC CHSL",
+                question: "Identify the correct plural form or contextual usage of 'Alma Mater'.",
+                options: [
+                    "“He generously donated a science laboratory to his alma mater on its golden jubilee.”",
+                    "“The alma mater walked across the stage to receive his degree certificate.”",
+                    "“Many alma maters were present at the alumni association meeting.”",
+                    "“She visited her alma mater to buy groceries and clothing.”"
+                ],
+                correct: 0,
+                hint: "An institution cannot walk or buy groceries; individuals donate to their institution.",
+                explanation: "Correct Answer: “He generously donated a science laboratory to his alma mater...” 'Alma mater' refers to the educational institution itself."
+            },
+            {
+                category: "Etymology & Distinction",
+                exam: "RRB NTPC",
+                question: "What is the precise distinction between 'Alma Mater' and 'Alumnus'?",
+                options: [
+                    "Alma Mater is the institution/school, whereas Alumnus is the graduate/former student.",
+                    "Alma Mater refers to current students, while Alumnus refers to teachers.",
+                    "Alma Mater is a scientific instrument, while Alumnus is a mountain climber.",
+                    "There is no difference; they are exact synonyms."
+                ],
+                correct: 0,
+                hint: "One is a place of learning; the other is a person who graduated from there.",
+                explanation: "Correct Answer: Alma Mater is the institution, while Alumnus is the former student. Confusing these two is a common error in competitive exams."
+            },
+
+            // ENTRY 59: Almanac
+            {
+                category: "One Word Substitution",
+                exam: "SSC CGL Tier-1",
+                question: "What is the single word for: 'A publication containing astronomical or meteorological annual calendar that contains important dates and time'?",
+                options: ["Almanac", "Altimeter", "Anatomy", "Ambience"],
+                correct: 0,
+                hint: "An annual calendar containing astrological, astronomical, and calendar data.",
+                explanation: "Correct Answer: Almanac (N.). Hindi: पंचांग. It provides detailed data regarding calendar days, weather forecasts, tide tables, and astronomical phenomena."
+            },
+            {
+                category: "Synonym Match",
+                exam: "State PCS",
+                question: "Which reference book type is most closely associated with an 'Almanac'?",
+                options: ["Annual compendium of statistical and astronomical data", "Fictional novel series", "Bilingual pocket dictionary", "Medical surgical manual"],
+                correct: 0,
+                hint: "It acts as a yearly handbook of useful facts and dates.",
+                explanation: "Correct Answer: Annual compendium of statistical and astronomical data. An almanac is published yearly and compiles diverse facts, tables, and calendar events."
+            },
+            {
+                category: "Statement Analysis",
+                exam: "RRB NTPC",
+                question: "Which of the following features is typically NOT found in a traditional 'Almanac'?",
+                options: [
+                    "Detailed character plot summaries of modern fictional romance novels",
+                    "Sunrise and sunset timings",
+                    "Tide tables and meteorological forecasts",
+                    "Calendar dates and astrological charts"
+                ],
+                correct: 0,
+                hint: "Almanacs deal with factual, astronomical, and calendar data, not romance novels.",
+                explanation: "Correct Answer: Detailed character plot summaries of romance novels. Almanacs focus on astronomical data, calendars, weather tables, and factual statistics."
+            },
+
+            // ENTRY 60: Alpinism
+            {
+                category: "One Word Substitution",
+                exam: "SSC CHSL / RRB NTPC",
+                question: "Find the single word for: 'Mountain climbing' (specifically high-altitude mountaineering).",
+                options: ["Alpinism", "Amaxophobia", "Altimetry", "Amphibian"],
+                correct: 0,
+                hint: "Named after the Alps mountain range.",
+                explanation: "Correct Answer: Alpinism (N.). Hindi: पर्वतारोहण. It refers to mountain climbing, especially mountaineering in high-altitude snowy peaks like the Alps or Himalayas."
+            },
+            {
+                category: "Synonym & Antonym",
+                exam: "State PCS",
+                question: "Which term is most synonymous with 'Alpinism'?",
+                options: ["Mountaineering", "Scuba diving", "Sprint running", "Interior decoration"],
+                correct: 0,
+                hint: "Scaling high snowy peaks.",
+                explanation: "Correct Answer: Mountaineering. Alpinism is the sport and art of climbing mountains, synonymous with high-altitude mountaineering."
+            },
+            {
+                category: "Contextual Accuracy",
+                exam: "SSC CGL",
+                question: "Choose the correct sentence featuring 'Alpinism'.",
+                options: [
+                    "His lifelong passion for alpinism led him to successfully scale several treacherous peaks in the Himalayas.",
+                    "She used alpinism to measure the atmospheric pressure at sea level.",
+                    "The lawyer referred to alpinism while resolving the property dispute.",
+                    "Alpinism was prescribed by her doctor to cure her insomnia."
+                ],
+                correct: 0,
+                hint: "Alpinism is an outdoor adventure sport related to scaling mountains.",
+                explanation: "Correct Answer: 'His lifelong passion for alpinism led him to scale peaks...' Alpinism directly relates to mountain climbing."
+            },
+
+            // ENTRY 61: Altar
+            {
+                category: "One Word Substitution",
+                exam: "SSC CGL Tier-1",
+                question: "What is the term for: 'A table or flat surface where offerings are made to a deity'?",
+                options: ["Altar", "Altimeter", "Alma Mater", "Aluvium"],
+                correct: 0,
+                hint: "Found in temples, churches, and sacred worship places.",
+                explanation: "Correct Answer: Altar (N.). Hindi: वह स्थान जहाँ भगवान पर चढ़ाने वाली सामग्रियाँ रखी जाती है. A sacred table used for religious rites and sacrifices."
+            },
+            {
+                category: "Homophone Distinction",
+                exam: "SSC CHSL / HSSC",
+                question: "Distinguish carefully: What is the grammatical and semantic difference between 'Altar' and 'Alter'?",
+                options: [
+                    "Altar is a sacred table for offerings; Alter is a verb meaning to change or modify.",
+                    "Altar is an educational institution; Alter is a mountain sport.",
+                    "Altar means financial support; Alter means foreign country.",
+                    "They are identical in meaning and spelling."
+                ],
+                correct: 0,
+                hint: "Altar has a 't-a-r' (table); Alter has a 't-e-r' (change).",
+                explanation: "Correct Answer: Altar is a sacred table; Alter means to modify or change. This is a classic homophone trap in competitive English exams."
+            },
+            {
+                category: "Sentence Completion",
+                exam: "RRB NTPC",
+                question: "Fill in the blank with the correct homophone: 'The priest placed the sacred offerings upon the temple ______ during the evening ritual.'",
+                options: ["altar", "alter", "altimeter", "almanac"],
+                correct: 0,
+                hint: "Needs the noun referring to a sacred sacrificial table.",
+                explanation: "Correct Answer: altar. 'Altar' is the sacred platform or table, whereas 'alter' is a verb meaning to modify."
+            },
+
+            // ENTRY 62: Altimeter
+            {
+                category: "One Word Substitution",
+                exam: "RRB NTPC / Group D",
+                question: "What is the scientific instrument for: 'Instrument that measures the altitude of the land surface or height above sea level'?",
+                options: ["Altimeter", "Barometer", "Thermometer", "Amphibometer"],
+                correct: 0,
+                hint: "Combines 'altus' (high) with 'meter' (measuring device).",
+                explanation: "Correct Answer: Altimeter (N.). Hindi: ऊँचाई नापने का यंत्र. An instrument used to measure altitude, especially in aircraft."
+            },
+            {
+                category: "Etymology & Root Words",
+                exam: "State PCS",
+                question: "Based on root words, what does the prefix 'alti-' in 'Altimeter' signify?",
+                options: ["High / Height", "Low / Depth", "Fast / Speed", "Dark / Shadow"],
+                correct: 0,
+                hint: "Think of altitude and altimeter.",
+                explanation: "Correct Answer: High / Height. The Latin root 'altus' means high, giving rise to words like altitude, altimeter, and alto."
+            },
+            {
+                category: "Application Question",
+                exam: "SSC CGL",
+                question: "In which profession is an 'Altimeter' considered an indispensable primary cockpit instrument?",
+                options: ["Aviation / Pilot", "Marine biology", "Culinary pastry chef", "Interior acoustic engineering"],
+                correct: 0,
+                hint: "Pilots need to know how high their aircraft is flying above sea level.",
+                explanation: "Correct Answer: Aviation / Pilot. Pilots rely on altimeters to determine their exact height above sea level during flight and landing."
+            },
+
+            // ENTRY 63: Altitude
+            {
+                category: "One Word Substitution",
+                exam: "SSC CHSL",
+                question: "Choose the correct term for: 'The height above sea level.'",
+                options: ["Altitude", "Latitude", "Longitude", "Magnitude"],
+                correct: 0,
+                hint: "Vertical distance above sea level.",
+                explanation: "Correct Answer: Altitude (N.). Hindi: ऊँचाई. The vertical elevation of an object or point above a surface, especially sea level."
+            },
+            {
+                category: "Synonym & Antonym",
+                exam: "RRB NTPC",
+                question: "Identify the antonym of 'Altitude'.",
+                options: ["Depth / Depression", "Elevation", "Height", "Apex"],
+                correct: 0,
+                hint: "Opposite of high up is deep down.",
+                explanation: "Correct Answer: Depth / Depression. Altitude measures height above sea level, whereas depth measures distance downward. Synonyms include elevation and height."
+            },
+            {
+                category: "Contextual Sentence",
+                exam: "State PCS",
+                question: "Choose the correct sentence using 'Altitude':",
+                options: [
+                    "“As the aircraft gained altitude, the passengers experienced a popping sensation in their ears.”",
+                    "“She measured the temperature of the soup using an altitude.”",
+                    "“The altitude of the book was precisely three hundred pages.”",
+                    "“He adjusted his watch altitude to match the calendar date.”"
+                ],
+                correct: 0,
+                hint: "Altitude refers to vertical height in the atmosphere or terrain.",
+                explanation: "Correct Answer: “As the aircraft gained altitude...” Altitude correctly refers to height above sea level or ground."
+            },
+
+            // ENTRY 64: Altruist
+            {
+                category: "One Word Substitution",
+                exam: "SSC CGL Tier-1",
+                question: "What is the single word for: 'Someone who makes charitable donations intended to the welfare of other people'?",
+                options: ["Altruist", "Egotist", "Miser", "Atheist"],
+                correct: 0,
+                hint: "Unselfish concern for the welfare of others; opposite of egoist.",
+                explanation: "Correct Answer: Altruist (N.). Hindi: परोपकारी. Someone who acts out of selfless concern for the well-being of others."
+            },
+            {
+                category: "Synonym & Antonym",
+                exam: "RRB NTPC / SSC CHSL",
+                question: "Which of the following is a direct antonym for 'Altruist'?",
+                options: ["Egotist / Selfish person", "Philanthropist", "Humanitarian", "Benefactor"],
+                correct: 0,
+                hint: "Someone who cares only about themselves.",
+                explanation: "Correct Answer: Egotist / Selfish person. An altruist is selfless and charitable, whereas an egotist is self-centered and narcissistic."
+            },
+            {
+                category: "Derivatives & POS",
+                exam: "State PCS",
+                question: "Identify the adjective form derived from the noun 'Altruist'.",
+                options: ["Altruistic", "Altruism", "Altruistically", "Altruate"],
+                correct: 0,
+                hint: "Ending in '-ic' usually forms the adjective.",
+                explanation: "Correct Answer: Altruistic (Adj.). 'Altruism' is the noun property, 'altruist' is the person, and 'altruistically' is the adverb."
+            },
+
+            // ENTRY 65: Alumnus
+            {
+                category: "One Word Substitution",
+                exam: "SSC CGL",
+                question: "What is the term for: 'A former student of a school, college or university'?",
+                options: ["Alumnus", "Alma Mater", "Amateur", "Ambassador"],
+                correct: 0,
+                hint: "A graduate who has completed their education at an institution.",
+                explanation: "Correct Answer: Alumnus (N.). Hindi: भूतपूर्व छात्र. A male graduate or former student of a specific school, college, or university."
+            },
+            {
+                category: "Grammar & Gender Forms",
+                exam: "SSC CHSL / HSSC",
+                question: "What is the correct feminine singular form of 'Alumnus'?",
+                options: ["Alumna", "Alumnae", "Alumni", "Alumnases"],
+                correct: 0,
+                hint: "Latin gender inflection: masculine is -us, feminine is -a.",
+                explanation: "Correct Answer: Alumna. Alumnus is male singular, alumna is female singular, alumni is male/mixed plural, and alumnae is female plural."
+            },
+            {
+                category: "Sentence Usage",
+                exam: "RRB NTPC",
+                question: "Choose the correct sentence featuring the plural form 'Alumni':",
+                options: [
+                    "“The university hosted a grand reunion dinner welcoming thousands of distinguished alumni.”",
+                    "“As a proud alumnus, she delivered the keynote address.” (Note: female graduate)",
+                    "“The alumni association elected a new president for their alma mater.”",
+                    "Both A and C are grammatically correct."
+                ],
+                correct: 3,
+                hint: "Check both plural agreement and institutional context.",
+                explanation: "Correct Answer: Both A and C are correct. 'Alumni' is the correct plural form for graduates."
+            },
+
+            // ENTRY 66: Amateur
+            {
+                category: "One Word Substitution",
+                exam: "SSC CGL Tier-1",
+                question: "What is the term for: 'One who plays for pleasure rather than as a profession // A person who is neither well experienced nor professional // A non-professional who is inept at a particular activity'?",
+                options: ["Amateur", "Professional", "Veteran", "Expert"],
+                correct: 0,
+                hint: "Engages in an activity for hobby or pleasure, not for financial gain.",
+                explanation: "Correct Answer: Amateur (N.). Hindi: शौकीन / व्यक्ति/अनुभवहीन. Someone engaging in an art, science, or sport as a pastime rather than a profession."
+            },
+            {
+                category: "Synonym & Antonym",
+                exam: "RRB NTPC",
+                question: "Identify the antonym of 'Amateur'.",
+                options: ["Professional / Expert", "Novice", "Dabbler", "Beginner"],
+                correct: 0,
+                hint: "Someone who gets paid and has mastery.",
+                explanation: "Correct Answer: Professional / Expert. An amateur lacks professional mastery or engages for pleasure, whereas a professional earns a living from it. Synonyms of amateur include novice and tyro."
+            },
+            {
+                category: "Contextual Error Spotting",
+                exam: "State PCS",
+                question: "Which sentence uses the word 'Amateur' correctly?",
+                options: [
+                    "“Though he started as an amateur painter, his stunning artwork soon earned him professional acclaim.”",
+                    "“The brain surgeon was praised for his steady amateur hands during the delicate operation.”",
+                    "“She worked as an amateur corporate lawyer earning a massive salary.”",
+                    "“The airline pilot was an amateur with zero flight training.”"
+                ],
+                correct: 0,
+                hint: "Amateur implies engaging as a hobby or without professional expertise.",
+                explanation: "Correct Answer: “Though he started as an amateur painter...” In this context, amateur accurately reflects a non-professional hobbyist."
+            },
+
+            // ENTRY 67: Amaxophobia
+            {
+                category: "One Word Substitution",
+                exam: "SSC CGL / RRB NTPC",
+                question: "What is the clinical term for: 'Fear of riding in a car'?",
+                options: ["Amaxophobia", "Claustrophobia", "Acrophobia", "Hydrophobia"],
+                correct: 0,
+                hint: "Phobia specifically related to vehicles and car travel.",
+                explanation: "Correct Answer: Amaxophobia (N.). Hindi: वाहनों का डर. An abnormal or persistent fear of riding in or driving automobiles."
+            },
+            {
+                category: "Root Word Analysis",
+                exam: "HSSC Group C",
+                question: "In psychological terminology, the Greek root 'phobos' combined with 'amaxa' creates a term for fear of:",
+                options: ["Riding in cars or vehicles", "Heights and high altitudes", "Closed small rooms", "Open crowded spaces"],
+                correct: 0,
+                hint: "Amaxa refers to carriages or wagons/cars.",
+                explanation: "Correct Answer: Riding in cars or vehicles. 'Amaxophobia' specifically targets vehicle and automobile phobias."
+            },
+            {
+                category: "Differentiation",
+                exam: "State PCS",
+                question: "Differentiate: What distinguishes 'Amaxophobia' from 'Claustrophobia'?",
+                options: [
+                    "Amaxophobia is fear of cars/vehicles, whereas Claustrophobia is fear of enclosed spaces.",
+                    "Amaxophobia is fear of water, while Claustrophobia is fear of heights.",
+                    "They are identical psychiatric diagnoses.",
+                    "Amaxophobia is fear of flying in airplanes."
+                ],
+                correct: 0,
+                hint: "Car travel vs enclosed spaces.",
+                explanation: "Correct Answer: Amaxophobia is the fear of cars, while claustrophobia is the fear of confined spaces."
+            },
+
+            // ENTRY 68: Ambassador
+            {
+                category: "One Word Substitution",
+                exam: "SSC CGL Tier-1",
+                question: "What is the single word for: 'A diplomatic representative in another country'?",
+                options: ["Ambassador", "Anarchist", "Altruist", "Alumnus"],
+                correct: 0,
+                hint: "An official envoy representing their sovereign state abroad.",
+                explanation: "Correct Answer: Ambassador (N.). Hindi: राजदूत. An accredited diplomat sent by a country as its official representative to a foreign nation."
+            },
+            {
+                category: "Synonym & Role",
+                exam: "RRB NTPC",
+                question: "Which term is synonymous with 'Ambassador' in diplomatic contexts?",
+                options: ["Diplomatic Envoy / Plenipotentiary", "Spy", "Mercenary", "Exile"],
+                correct: 0,
+                hint: "Official government representative abroad.",
+                explanation: "Correct Answer: Diplomatic Envoy / Plenipotentiary. An ambassador acts as the highest-ranking diplomatic representative of a nation."
+            },
+            {
+                category: "Sentence Construction",
+                exam: "State PCS",
+                question: "Choose the correct sentence using 'Ambassador':",
+                options: [
+                    "“The newly appointed ambassador presented his official credentials to the foreign head of state.”",
+                    "“She used an ambassador to measure the mountain altitude.”",
+                    "“The mechanic repaired the car engine using a diplomatic ambassador.”",
+                    "“He paid his monthly divorce ambassador to his ex-wife.”"
+                ],
+                correct: 0,
+                hint: "Ambassador relates to international diplomacy and government representation.",
+                explanation: "Correct Answer: “The newly appointed ambassador presented his official credentials...” Ambassadors represent countries diplomatically."
+            },
+
+            // ENTRY 69: Ambidextrous
+            {
+                category: "One Word Substitution",
+                exam: "SSC CGL Tier-1",
+                question: "What is the term for: 'Able to use the left hand and right hand equally well'?",
+                options: ["Ambidextrous", "Ambivalent", "Amateur", "Amorphous"],
+                correct: 0,
+                hint: "Dexterous means skillful with hands; ambi- means both.",
+                explanation: "Correct Answer: Ambidextrous (Adj.). Hindi: उभयहस्त (दोनों हाथों से समान रूप से काम करने वाला). Having the ability of using both hands with equal ease and skill."
+            },
+            {
+                category: "Etymology",
+                exam: "RRB NTPC / CHSL",
+                question: "What does the Latin root 'dexter' signify in the word 'Ambidextrous'?",
+                options: ["Right hand / Skillful", "Left hand / Clumsy", "Foot / Walking", "Head / Brain"],
+                correct: 0,
+                hint: "Dexterous refers to manual skill and originates from right-handedness.",
+                explanation: "Correct Answer: Right hand / Skillful. 'Ambi' means both, and 'dexter' means right hand, denoting equal skill in both hands."
+            },
+            {
+                category: "Contextual Test",
+                exam: "State PCS",
+                question: "Which of the following athletes or professionals benefits most noticeably from being 'Ambidextrous'?",
+                options: [
+                    "A tennis player who can strike powerful forehands and backhands with equal power using either hand",
+                    "An astronomer reading star charts in an almanac",
+                    "A mountaineer engaging in high-altitude alpinism",
+                    "A historian analyzing medieval architecture"
+                ],
+                correct: 0,
+                hint: "Equally skilled with both hands in sports or tasks.",
+                explanation: "Correct Answer: A tennis player hitting equally well with either hand. Ambidexterity allows seamless switching between hands."
+            },
+
+            // ENTRY 70: Ambience
+            {
+                category: "One Word Substitution",
+                exam: "SSC CHSL",
+                question: "What is the term for: 'The character and atmosphere of a place'?",
+                options: ["Ambience", "Altimeter", "Altitude", "Alimony"],
+                correct: 0,
+                hint: "The mood, feeling, or emotional tone of a room or environment.",
+                explanation: "Correct Answer: Ambience (N.). Hindi: वातावरण, माहौल. The character, atmosphere, or mood of a given environment or setting."
+            },
+            {
+                category: "Synonym Match",
+                exam: "RRB NTPC",
+                question: "Choose the closest synonym for 'Ambience'.",
+                options: ["Atmosphere / Milieu", "Silence", "Concrete structure", "Mathematical formula"],
+                correct: 0,
+                hint: "Surrounding mood or vibe.",
+                explanation: "Correct Answer: Atmosphere / Milieu. Ambience refers to the surrounding atmosphere or distinctive mood created by a venue."
+            },
+            {
+                category: "Sentence Usage",
+                exam: "SSC CGL",
+                question: "Identify the correct usage of 'Ambience':",
+                options: [
+                    "“The soft lighting and gentle jazz music gave the restaurant a warm, romantic ambience.”",
+                    "“She checked the restaurant's ambience using a cockpit altimeter.”",
+                    "“The judge ordered him to pay monthly ambience to his former wife.”",
+                    "“He climbed the mountain ambience during his alpinism expedition.”"
+                ],
+                correct: 0,
+                hint: "Ambience pertains to the mood or atmosphere of a place.",
+                explanation: "Correct Answer: “The soft lighting... gave the restaurant a warm, romantic ambience.” This correctly illustrates environmental atmosphere."
+            },
+
+            // ENTRY 71: Ambiguous
+            {
+                category: "One Word Substitution",
+                exam: "SSC CGL Tier-1",
+                question: "What is the term for: 'Capable of being understood in either of two or more possible senses, and therefore not definite'?",
+                options: ["Ambiguous", "Ambidextrous", "Altruist", "Amateur"],
+                correct: 0,
+                hint: "Having more than one possible interpretation or meaning; unclear.",
+                explanation: "Correct Answer: Ambiguous (Adj.). Hindi: संदिग्धार्य / अस्पष्ट. Open to more than one interpretation; having a double meaning."
+            },
+            {
+                category: "Synonym & Antonym",
+                exam: "RRB NTPC / State PCS",
+                question: "Which of the following is a direct antonym of 'Ambiguous'?",
+                options: ["Clear / Explicit / Definite", "Vague", "Equivocal", "Obscure"],
+                correct: 0,
+                hint: "Opposite of unclear or doubtful is crystal clear and definite.",
+                explanation: "Correct Answer: Clear / Explicit / Definite. Ambiguous means unclear or open to multiple interpretations, whereas explicit or clear leaves no room for doubt. Synonyms include vague and equivocal."
+            },
+            {
+                category: "Error Spotting",
+                exam: "SSC CGL Mains",
+                question: "Choose the correct sentence using 'Ambiguous':",
+                options: [
+                    "“His ambiguous instructions left the entire team confused about which project deadline to follow.”",
+                    "“The weather forecast was completely ambiguous, showing bright sunshine and zero clouds.”",
+                    "“She was a dedicated altruist whose ambiguous donations helped thousands of orphans.”",
+                    "“The ambassador spoke in a highly ambiguous and crystal-clear diplomatic tone.”"
+                ],
+                correct: 0,
+                hint: "Ambiguous instructions cause confusion because they are unclear.",
+                explanation: "Correct Answer: “His ambiguous instructions left the team confused...” Ambiguous correctly describes unclear, open-to-interpretation statements."
+            },
+
+            // ENTRY 72: Ambivalent
+            {
+                category: "One Word Substitution",
+                exam: "SSC CGL Tier-1",
+                question: "What is the term for: 'Having or showing both good and bad feelings' (or mixed, contradictory feelings)?",
+                options: ["Ambivalent", "Ambidextrous", "Ambiguous", "Amoral"],
+                correct: 0,
+                hint: "Simultaneously experiencing conflicting feelings towards someone or something.",
+                explanation: "Correct Answer: Ambivalent (Adj.). Hindi: उभयभावी (किसी चीज़ के बारे में दोहरे मनोभाव वाला). Having mixed feelings or contradictory ideas about something or someone."
+            },
+            {
+                category: "Synonym & Antonym",
+                exam: "RRB NTPC",
+                question: "Identify the antonym of 'Ambivalent'.",
+                options: ["Uncertain / Hesitant", "Decisive / Unwavering", "Conflicted", "Indecisive"],
+                correct: 0,
+                hint: "Opposite of having mixed, hesitant feelings is being fully decided and unwavering.",
+                explanation: "Correct Answer: Decisive / Unwavering. Ambivalent implies hesitation and mixed feelings, whereas decisive means firm and unambiguous. Synonyms of ambivalent include conflicted and undecided."
+            },
+            {
+                category: "Contextual Sentence",
+                exam: "State PCS",
+                question: "Choose the correct sentence using 'Ambivalent':",
+                options: [
+                    "“She felt ambivalent about the new job offer; excited about the salary, but sad to leave her hometown.”",
+                    "“The mountain climber used an ambivalent to measure altitude.”",
+                    "“He was an ambivalent who donated all his wealth to charity.”",
+                    "“The lawyer calculated the alimony using an ambivalent formula.”"
+                ],
+                correct: 0,
+                hint: "Ambivalent describes having conflicting emotional responses.",
+                explanation: "Correct Answer: “She felt ambivalent about the new job offer...” This correctly illustrates mixed feelings of excitement and reluctance."
+            },
+
+            // ENTRY 73: Ambivert
+            {
+                category: "One Word Substitution",
+                exam: "SSC CHSL / CGL",
+                question: "What is the single word for: 'One who has the qualities like shyness and openness at the same time' (balance of introversion and extroversion)?",
+                options: ["Ambivert", "Introvert", "Extrovert", "Altruist"],
+                correct: 0,
+                hint: "Balances traits of both introverted and extroverted personalities.",
+                explanation: "Correct Answer: Ambivert (N.). Hindi: अन्तःमुखी और बहिमुखी दोनों प्रतिभा बराबर. A person having characteristics of both introvert and extrovert."
+            },
+            {
+                category: "Psychological Classification",
+                exam: "RRB NTPC",
+                question: "In personality psychology, how does an 'Ambivert' differ fundamentally from an 'Introvert'?",
+                options: [
+                    "An ambivert balances sociable and reserved tendencies, whereas an introvert is predominantly reserved and solitary.",
+                    "An ambivert can use both hands equally well.",
+                    "An ambivert is fearful of riding in cars.",
+                    "An ambivert only writes historical almanacs."
+                ],
+                correct: 0,
+                hint: "Introverts retreat inward; ambiverts exhibit a balanced mix.",
+                explanation: "Correct Answer: An ambivert balances sociable and reserved tendencies. Introverts focus inwards, while ambiverts adapt flexibly between social engagement and solitude."
+            },
+            {
+                category: "Sentence Usage",
+                exam: "State PCS",
+                question: "Identify the correct sentence featuring 'Ambivert':",
+                options: [
+                    "“As a true ambivert, she loved hosting large parties on weekends but deeply cherished quiet evenings alone.”",
+                    "“The ambassador was an ambivert who represented his country abroad.”",
+                    "“He climbed the mountain using ambivert climbing gear.”",
+                    "“The court ordered monthly ambivert payments to her ex-husband.”"
+                ],
+                correct: 0,
+                hint: "Ambivert relates to personality traits balancing social and solitary behavior.",
+                explanation: "Correct Answer: “As a true ambivert, she loved hosting parties... but cherished quiet evenings.” This accurately reflects mixed personality traits."
+            },
+
+            // ENTRY 74: Amble
+            {
+                category: "One Word Substitution",
+                exam: "SSC CGL Tier-1",
+                question: "What is the term for: 'Walk or move at a slow, relaxed pace // To walk aimlessly'?",
+                options: ["Amble", "Sprint", "Gallop", "Alpinism"],
+                correct: 0,
+                hint: "A leisurely, casual stroll without hurry.",
+                explanation: "Correct Answer: Amble (V.). Hindi: धीमी गति में चलना. To walk at a slow, leisurely, relaxed pace."
+            },
+            {
+                category: "Synonym & Antonym",
+                exam: "RRB NTPC / CHSL",
+                question: "Which of the following is a direct antonym of 'Amble'?",
+                options: ["Dash / Sprint / Hurry", "Stroll", "Saunter", "Meander"],
+                correct: 0,
+                hint: "Opposite of a slow, relaxed stroll is running or rushing.",
+                explanation: "Correct Answer: Dash / Sprint / Hurry. Amble means strolling slowly, whereas dashing or sprinting implies rapid movement. Synonyms of amble include stroll, saunter, and meander."
+            },
+            {
+                category: "Contextual Sentence",
+                exam: "HSSC Group C",
+                question: "Choose the correct sentence using 'Amble':",
+                options: [
+                    "“They decided to amble through the botanical gardens on a pleasant Sunday afternoon.”",
+                    "“The pilot checked the aircraft altitude by trying to amble in the cockpit.”",
+                    "“She paid her monthly amble to her former husband.”",
+                    "“The mountain climber began to amble up the steepest vertical ice cliff.”"
+                ],
+                correct: 0,
+                hint: "Amble means taking a slow, relaxed walk.",
+                explanation: "Correct Answer: “They decided to amble through the botanical gardens...” This correctly portrays a leisurely stroll."
+            },
+
+            // ENTRY 75: Ameliorate
+            {
+                category: "One Word Substitution",
+                exam: "SSC CGL Tier-1",
+                question: "What is the term for: 'Make (something bad or unsatisfactory) better'?",
+                options: ["Ameliorate", "Worsen", "Aggravate", "Alimony"],
+                correct: 0,
+                hint: "To improve or upgrade a poor situation.",
+                explanation: "Correct Answer: Ameliorate (V.). Hindi: बेहतर बनाने के लिए सुधार करना. To make something bad, painful, or unsatisfactory better."
+            },
+            {
+                category: "Synonym & Antonym",
+                exam: "RRB NTPC / State PCS",
+                question: "Identify the antonym of 'Ameliorate'.",
+                options: ["Worsen / Aggravate", "Improve", "Mitigate", "Enhance"],
+                correct: 0,
+                hint: "Opposite of making things better is making them worse.",
+                explanation: "Correct Answer: Worsen / Aggravate. Ameliorate means to improve, whereas worsen or aggravate means to make matters worse. Synonyms include improve, alleviate, and mitigate."
+            },
+            {
+                category: "Sentence Construction",
+                exam: "SSC CGL Mains",
+                question: "Choose the correct sentence using 'Ameliorate':",
+                options: [
+                    "“New government policies were implemented to ameliorate living standards in rural communities.”",
+                    "“The lawyer tried to ameliorate the divorce settlement into higher alimony payments.”",
+                    "“She used an altimeter to ameliorate the airplane height.”",
+                    "“His ambiguous speech helped to ameliorate the team's confusion completely.”"
+                ],
+                correct: 0,
+                hint: "Ameliorate means improving conditions or situations.",
+                explanation: "Correct Answer: “New government policies were implemented to ameliorate living standards...” This correctly illustrates improving substandard conditions."
+            },
+
+            // ENTRY 76: Amenable
+            {
+                category: "One Word Substitution",
+                exam: "SSC CGL Tier-1",
+                question: "What is the term for: 'Readily reacting to suggestions and influences // willing to be guided or controlled'?",
+                options: ["Amenable", "Obstinate", "Stubborn", "Rebellious"],
+                correct: 0,
+                hint: "Open and responsive to suggestion; cooperative and agreeable.",
+                explanation: "Correct Answer: Amenable (Adj.). Hindi: आज्ञाकारी / सहज स्वीकार्य. Open to suggestion, responsive, cooperative, and willing to comply."
+            },
+            {
+                category: "Synonym & Antonym",
+                exam: "RRB NTPC",
+                question: "Which of the following is a direct antonym of 'Amenable'?",
+                options: ["Obstinate / Stubborn / Intractable", "Cooperative", "Compliant", "Docile"],
+                correct: 0,
+                hint: "Opposite of being cooperative and willing is being stubborn and unyielding.",
+                explanation: "Correct Answer: Obstinate / Stubborn / Intractable. Amenable means willing to cooperate, whereas obstinate means stubbornly refusing to change. Synonyms of amenable include compliant and docile."
+            },
+            {
+                category: "Contextual Sentence",
+                exam: "State PCS",
+                question: "Choose the correct sentence using 'Amenable':",
+                options: [
+                    "“Fortunately, the board of directors was amenable to our new marketing proposal.”",
+                    "“The mountainous terrain was completely amenable for car amaxophobia.”",
+                    "“She felt ambivalent and amenable about walking at a slow amble pace.”",
+                    "“The pilot checked the amenable on the aircraft dashboard.”"
+                ],
+                correct: 0,
+                hint: "Amenable describes people or groups open to suggestions and cooperation.",
+                explanation: "Correct Answer: “Fortunately, the board of directors was amenable to our proposal.” This correctly reflects willingness to cooperate."
+            },
+
+            // ENTRY 77: Amicable
+            {
+                category: "One Word Substitution",
+                exam: "SSC CGL Tier-1",
+                question: "What is the term for: 'Someone who is friendly and good natured' (or characterized by friendliness without serious disagreement)?",
+                options: ["Amicable", "Hostile", "Belligerent", "Malevolent"],
+                correct: 0,
+                hint: "Characterized by friendship and goodwill.",
+                explanation: "Correct Answer: Amicable (Adj.). Hindi: मैत्रीपूर्ण / सौहार्दपूर्ण. Having a spirit of friendliness; without serious disagreement or rancor."
+            },
+            {
+                category: "Synonym & Antonym",
+                exam: "RRB NTPC",
+                question: "Identify the antonym of 'Amicable'.",
+                options: ["Hostile / Antagonistic", "Cordial", "Harmonious", "Friendly"],
+                correct: 0,
+                hint: "Opposite of friendly and peaceful is hostile and antagonistic.",
+                explanation: "Correct Answer: Hostile / Antagonistic. Amicable denotes peaceful friendliness, whereas hostile denotes active opposition and enmity. Synonyms include cordial and harmonious."
+            },
+            {
+                category: "Grammar / Part of Speech",
+                exam: "SSC CHSL",
+                question: "What is the adverbial form of the adjective 'Amicable'?",
+                options: ["Amicably", "Amicability", "Amicableness", "Amicant"],
+                correct: 0,
+                hint: "Adding '-ly' converts adjectives into adverbs.",
+                explanation: "Correct Answer: Amicably (Adv.). Hindi: मैत्रीपूर्ण तरीके से. It describes performing an action in a friendly, peaceful manner."
+            },
+
+            // ENTRY 78: Amnesia
+            {
+                category: "One Word Substitution",
+                exam: "SSC CGL Tier-1 / RRB NTPC",
+                question: "What is the medical term for: 'A partial or total loss of memory'?",
+                options: ["Amnesia", "Amaxophobia", "Insomnia", "Anatomy"],
+                correct: 0,
+                hint: "A medical condition where a person forgets past experiences or events.",
+                explanation: "Correct Answer: Amnesia (N.). Hindi: भूलने की बीमारी. A deficit in memory caused by brain damage, disease, or psychological trauma."
+            },
+            {
+                category: "Synonym Match",
+                exam: "State PCS",
+                question: "Which term is most synonymous with 'Amnesia'?",
+                options: ["Memory loss / Oblivion", "Hyperactivity", "High altitude", "Diplomatic representation"],
+                correct: 0,
+                hint: "Inability to remember.",
+                explanation: "Correct Answer: Memory loss / Oblivion. Amnesia specifically denotes forgetting or losing stored memory traces."
+            },
+            {
+                category: "Sentence Usage",
+                exam: "HSSC Group C",
+                question: "Choose the correct sentence featuring 'Amnesia':",
+                options: [
+                    "“Following the severe head injury in the accident, he suffered from temporary amnesia.”",
+                    "“She used amnesia to measure her altitude above sea level.”",
+                    "“The ambassador suffered from amnesia and forgot which country he represented.”",
+                    "“He felt ammesia about whether to take the job offer.”"
+                ],
+                correct: 0,
+                hint: "Amnesia is medical memory loss.",
+                explanation: "Correct Answer: “Following the severe head injury... he suffered from temporary amnesia.” This correctly uses the medical term."
+            },
+
+            // ENTRY 79: Amnesty
+            {
+                category: "One Word Substitution",
+                exam: "SSC CGL Tier-1",
+                question: "What is the term for: 'An official pardon // the formal act of liberating someone' (especially for political offenses)?",
+                options: ["Amnesty", "Alimony", "Alluvium", "Alma Mater"],
+                correct: 0,
+                hint: "Government pardon granted to political offenders or lawbreakers.",
+                explanation: "Correct Answer: Amnesty (N.). Hindi: राज-क्षमा. An official pardon granted by a government to individuals who have committed political offenses."
+            },
+            {
+                category: "Synonym Match",
+                exam: "RRB NTPC",
+                question: "Which term is most synonymous with 'Amnesty' in legal contexts?",
+                options: ["Official pardon / General reprieve", "Punishment", "Imprisonment", "Fine"],
+                correct: 0,
+                hint: "Forgiving past offenses legally.",
+                explanation: "Correct Answer: Official pardon / General reprieve. Amnesty is a sovereign pardon releasing political prisoners or offenders from prosecution."
+            },
+            {
+                category: "Contextual Sentence",
+                exam: "State PCS",
+                question: "Choose the correct sentence using 'Amnesty':",
+                options: [
+                    "“The president announced a general amnesty for all political prisoners serving sentences.”",
+                    "“The pilot checked the aircraft amnesty before takeoff.”",
+                    "“She felt ambivalent and amnesty about walking slowly.”",
+                    "“The mountaineer engaged in high-altitude amnesty.”"
+                ],
+                correct: 0,
+                hint: "Amnesty relates to government pardons and releasing offenders.",
+                explanation: "Correct Answer: “The president announced a general amnesty for all political prisoners...” This correctly reflects an official pardon."
+            },
+
+            // ENTRY 80: Amoral
+            {
+                category: "One Word Substitution",
+                exam: "SSC CGL Tier-1",
+                question: "What is the term for: 'Not following any moral rules and not caring about right/wrong'?",
+                options: ["Amoral", "Immoral", "Moral", "Altruist"],
+                correct: 0,
+                hint: "Lacking moral sensibility; completely untouched by ethical considerations.",
+                explanation: "Correct Answer: Amoral (Adj.). Hindi: नीतिहीन / अनैतिक. Lacking a moral sense; unconcerned with the rightness or wrongness of something."
+            },
+            {
+                category: "Etymology & Distinction",
+                exam: "SSC CHSL / UPSC Prelims",
+                question: "What is the nuanced distinction between 'Amoral' and 'Immoral'?",
+                options: [
+                    "Amoral means having no moral awareness or indifference to ethics, whereas immoral means knowingly violating moral rules.",
+                    "Amoral means charitable, while immoral means selfish.",
+                    "Amoral is a medical term for memory loss, while immoral is mountain climbing.",
+                    "They are exact synonyms with no distinction."
+                ],
+                correct: 0,
+                hint: "Amoral = without morals (like nature or infants); Immoral = breaking moral laws knowingly.",
+                explanation: "Correct Answer: Amoral means lacking moral concepts entirely (indifferent to right/wrong), whereas immoral means knowingly acting against moral standards. A crucial exam distinction!"
+            },
+            {
+                category: "Sentence Construction",
+                exam: "State PCS",
+                question: "Choose the correct sentence using 'Amoral':",
+                options: [
+                    "“Infants are born amoral because they have not yet developed an understanding of right and wrong.”",
+                    "“The criminal was punished for his clearly amoral and malicious financial fraud.” (Note: violation of ethics is immoral)",
+                    "“She used an amnesia to cure her amoral memory.”",
+                    "“The ambassador acted in an amoral and highly diplomatic manner.”"
+                ],
+                correct: 0,
+                hint: "Amoral describes a neutral absence of moral capacity, like young children or wild nature.",
+                explanation: "Correct Answer: “Infants are born amoral because they lack moral understanding.” This correctly reflects neutrality toward ethics."
+            },
+
+            // ENTRY 81: Amphibians
+            {
+                category: "One Word Substitution",
+                exam: "RRB NTPC / Group D",
+                question: "What is the biological term for: 'Animal that can live both on land and in water'?",
+                options: ["Amphibians", "Mammals", "Reptiles", "Alpinists"],
+                correct: 0,
+                hint: "Includes frogs, toads, and salamanders.",
+                explanation: "Correct Answer: Amphibians (N.). Hindi: उभयचर जन्तु (जो जल और स्थल दोनों में रह सकता है). Cold-blooded vertebrate animals that inhabit both water and land during their life cycle."
+            },
+            {
+                category: "Biological Characteristics",
+                exam: "State PCS Science",
+                question: "Which of the following is a classic example of an 'Amphibian'?",
+                options: ["Frog and Toad", "Eagle and Sparrow", "Whale and Dolphin", "Lion and Tiger"],
+                correct: 0,
+                hint: "Lives part of its life in water (tadpole) and land (adult).",
+                explanation: "Correct Answer: Frog and Toad. Frogs and toads are textbook examples of amphibians, breathing through gills in water and lungs/skin on land."
+            },
+            {
+                category: "Etymology Root Words",
+                exam: "SSC CHSL",
+                question: "What does the Greek root 'amphi-' in 'Amphibian' signify?",
+                options: ["Both / Around", "Single / One", "High / Tall", "Cold / Freeze"],
+                correct: 0,
+                hint: "Amphi means both ways or on both sides.",
+                explanation: "Correct Answer: Both / Around. 'Amphi' (both) + 'bios' (life) signifies living a dual life in both water and on land."
+            },
+
+            // ENTRY 82: Amputee
+            {
+                category: "One Word Substitution",
+                exam: "SSC CGL / RRB NTPC",
+                question: "What is the term for: 'A person who has had one or more limbs removed'?",
+                options: ["Amputee", "Altruist", "Ambivert", "Amateur"],
+                correct: 0,
+                hint: "Someone who has undergone surgical amputation of an arm or leg.",
+                explanation: "Correct Answer: Amputee (N.). Hindi: अपंग, छिन्नंग. A person who has had a limb amputated (removed via surgery or trauma)."
+            },
+            {
+                category: "Medical Context",
+                exam: "State PCS",
+                question: "In prosthetic rehabilitation, what is the primary objective when assisting an 'Amputee'?",
+                options: ["Providing artificial limbs and physical therapy to restore mobility and independence", "Treating temporary amnesia", "Measuring atmospheric altitude", "Granting diplomatic amnesty"],
+                correct: 0,
+                hint: "Helping them regain mobility with artificial limbs.",
+                explanation: "Correct Answer: Providing artificial limbs and therapy to restore mobility. Amputee rehabilitation focuses on physical adaptation and artificial limb fitting."
+            },
+            {
+                category: "Sentence Usage",
+                exam: "HSSC Group C",
+                question: "Choose the correct sentence using 'Amputee':",
+                options: [
+                    "“With the help of advanced bionic prosthetics, the marathon runner and amputee crossed the finish line.”",
+                    "“The mountain climber used an amputee to scale the steep cliff.”",
+                    "“She checked the aircraft altimeter while acting as an amputee.”",
+                    "“The judge awarded high alimony to the amputee lawyer.”"
+                ],
+                correct: 0,
+                hint: "Amputee refers to an individual missing one or more limbs.",
+                explanation: "Correct Answer: “With the help of advanced bionic prosthetics, the amputee crossed the finish line.” This correctly uses the term."
+            },
+
+            // ENTRY 83: Anagram
+            {
+                category: "One Word Substitution",
+                exam: "SSC CGL Tier-1",
+                question: "What is the term for: 'A word or a phrase formed by rearranging a different word'?",
+                options: ["Anagram", "Allegory", "Anatomy", "Almanac"],
+                correct: 0,
+                hint: "Example: 'Listen' rearranged becomes 'Silent'.",
+                explanation: "Correct Answer: Anagram (N.). Hindi: शब्द बदलकर नया शब्द बनाना. A word or phrase formed by rearranging the letters of a different word or phrase."
+            },
+            {
+                category: "Linguistic Example",
+                exam: "RRB NTPC",
+                question: "Which of the following word pairs represents a classic 'Anagram'?",
+                options: ["'Silent' and 'Listen'", "'Big' and 'Large'", "'Hot' and 'Cold'", "'Mountain' and 'Alp'"],
+                correct: 0,
+                hint: "Same exact letters rearranged to form a new valid word.",
+                explanation: "Correct Answer: 'Silent' and 'Listen'. Both use identical letters (s-i-l-e-n-t) rearranged in different orders."
+            },
+            {
+                category: "Contextual Sentence",
+                exam: "State PCS",
+                question: "Choose the correct sentence using 'Anagram':",
+                options: [
+                    "“Solving word puzzles often requires finding clever anagrams like turning 'evil' into 'vile'.”",
+                    "“The pilot checked the aircraft anagram before takeoff.”",
+                    "“She felt ambivalent and anagram about her career path.”",
+                    "“The court ordered monthly anagram payments to her ex-husband.”"
+                ],
+                correct: 0,
+                hint: "Anagram relates to wordplay and rearranging letters.",
+                explanation: "Correct Answer: “Solving word puzzles often requires finding clever anagrams...” This correctly illustrates rearranged letter words."
+            },
+
+            // ENTRY 84: Analogy
+            {
+                category: "One Word Substitution",
+                exam: "SSC CGL Tier-1",
+                question: "What is the term for: 'A similarity between like features of two things, on which a comparison may be based'?",
+                options: ["Analogy", "Anatomy", "Alliteration", "Altar"],
+                correct: 0,
+                hint: "A comparison between two things, typically for the purpose of explanation or clarification.",
+                explanation: "Correct Answer: Analogy (N.). Hindi: समानता / रूपक तुलना. A cognitive comparison between two things based on structural similarities."
+            },
+            {
+                category: "Synonym Match",
+                exam: "RRB NTPC / CHSL",
+                question: "Which term is most synonymous with 'Analogy'?",
+                options: ["Comparison / Correspondence", "Contrast", "Difference", "Isolation"],
+                correct: 0,
+                hint: "Drawing parallels between similar concepts.",
+                explanation: "Correct Answer: Comparison / Correspondence. An analogy establishes correspondence or similarity between distinct things. Antonyms include contrast and divergence."
+            },
+            {
+                category: "Logical Reasoning",
+                exam: "SSC Reasoning / CGL",
+                question: "Why are 'Analogies' heavily featured in competitive exam reasoning and aptitude tests?",
+                options: [
+                    "To test a candidate's ability to recognize relationships, patterns, and logical parallels between concepts",
+                    "To measure atmospheric altitude above sea level",
+                    "To calculate legal alimony payments post-divorce",
+                    "To diagnose temporary memory amnesia"
+                ],
+                correct: 0,
+                hint: "Testing relational thinking and logical pattern recognition.",
+                explanation: "Correct Answer: To test a candidate's ability to recognize logical relationships and parallels. Analogies assess cognitive mapping and relational reasoning."
+            },
+
+            // ENTRY 85: Analysis
+            {
+                category: "One Word Substitution",
+                exam: "SSC CGL Tier-1",
+                question: "What is the term for: 'Detailed examination of something complex'?",
+                options: ["Analysis", "Almanac", "Allegory", "Amnesia"],
+                correct: 0,
+                hint: "Breaking down a complex topic into smaller parts to gain better understanding.",
+                explanation: "Correct Answer: Analysis (N.). Hindi: विश्लेषण. Detailed examination of the elements or structure of something complex."
+            },
+            {
+                category: "Synonym & Antonym",
+                exam: "RRB NTPC",
+                question: "Identify the antonym of 'Analysis'.",
+                options: ["Synthesis / Synthesis of parts", "Scrutiny", "Investigation", "Evaluation"],
+                correct: 0,
+                hint: "Opposite of breaking down into parts is combining parts into a whole.",
+                explanation: "Correct Answer: Synthesis. Analysis breaks things down into component parts, whereas synthesis combines elements into a coherent whole. Synonyms of analysis include scrutiny and evaluation."
+            },
+            {
+                category: "Sentence Usage",
+                exam: "State PCS",
+                question: "Choose the correct sentence using 'Analysis':",
+                options: [
+                    "“The financial analyst presented a thorough data analysis of quarterly market trends.”",
+                    "“She used a cockpit analysis to measure her aircraft altitude.”",
+                    "“The mountaineer engaged in high-altitude analysis on the glacier peak.”",
+                    "“He paid his monthly divorce analysis to his ex-wife.”"
+                ],
+                correct: 0,
+                hint: "Analysis refers to detailed examination of data or complex subjects.",
+                explanation: "Correct Answer: “The financial analyst presented a thorough data analysis...” This correctly illustrates detailed examination."
+            },
+
+            // ENTRY 86: Anarchist
+            {
+                category: "One Word Substitution",
+                exam: "SSC CGL Tier-1",
+                question: "What is the term for: 'A person who believes that laws and governments are not necessary // A person who believes in or tries to bring about a state of lawlessness'?",
+                options: ["Anarchist", "Ambassador", "Altruist", "Amateur"],
+                correct: 0,
+                hint: "Opposes all forms of government, authority, and hierarchical laws.",
+                explanation: "Correct Answer: Anarchist (N.). Hindi: अराजकतावादी. Someone who rebels against any authority, established order, or ruling government."
+            },
+            {
+                category: "Synonym & Antonym",
+                exam: "RRB NTPC",
+                question: "Which of the following is a direct antonym of 'Anarchist'?",
+                options: ["Loyalist / Law-abiding citizen", "Rebel", "Insurgent", "Radical"],
+                correct: 0,
+                hint: "Opposite of someone who fights laws is someone who respects laws and government.",
+                explanation: "Correct Answer: Loyalist / Law-abiding citizen. An anarchist rejects government authority, whereas a loyalist supports established law and order. Synonyms include rebel and insurgent."
+            },
+            {
+                category: "Derivative Noun",
+                exam: "SSC CHSL",
+                question: "What is the corresponding abstract noun representing the political philosophy of an 'Anarchist'?",
+                options: ["Anarchy", "Anarchistic", "Anarchise", "Anarchial"],
+                correct: 0,
+                hint: "The state of disorder due to absence of government.",
+                explanation: "Correct Answer: Anarchy. Anarchism or anarchy refers to the societal condition of lawlessness and absence of government authority."
+            },
+
+            // ENTRY 87: Anarchy
+            {
+                category: "One Word Substitution",
+                exam: "SSC CGL Tier-1",
+                question: "What is the term for: 'A situation in a country, an organization, etc. in which there is no government, order/control'?",
+                options: ["Anarchy", "Alimony", "Allegory", "Ambience"],
+                correct: 0,
+                hint: "State of disorder and lawlessness resulting from absence of authority.",
+                explanation: "Correct Answer: Anarchy (N.). Hindi: अव्यवस्था / अराजकता. A state of disorder due to absence or non-recognition of authority or other controlling systems."
+            },
+            {
+                category: "Synonym Match",
+                exam: "RRB NTPC",
+                question: "Which term is most synonymous with 'Anarchy'?",
+                options: ["Chaos / Lawlessness / Disorder", "Harmony", "Governance", "Stability"],
+                correct: 0,
+                hint: "Total breakdown of social and governmental order.",
+                explanation: "Correct Answer: Chaos / Lawlessness / Disorder. Anarchy denotes complete absence of control and societal order. Antonyms include harmony, order, and stability."
+            },
+            {
+                category: "Contextual Sentence",
+                exam: "State PCS",
+                question: "Choose the correct sentence using 'Anarchy':",
+                options: [
+                    "“Following the sudden collapse of the ruling regime, the nation plunged into widespread anarchy.”",
+                    "“She checked the national anarchy using a cockpit altimeter.”",
+                    "“The mountaineer survived a severe snowstorm and mountain anarchy.”",
+                    "“He paid his monthly divorce anarchy to his former wife.”"
+                ],
+                correct: 0,
+                hint: "Anarchy refers to political and social disorder without governance.",
+                explanation: "Correct Answer: “Following the collapse of the regime, the nation plunged into anarchy.” This correctly illustrates societal breakdown."
+            },
+
+            // ENTRY 88: Anatomy
+            {
+                category: "One Word Substitution",
+                exam: "SSC CGL Tier-1 / RRB NTPC",
+                question: "What is the term for: 'The branch of science concerned with the bodily structure of humans, animals, and other living organisms'?",
+                options: ["Anatomy", "Almanac", "Astronomy", "Altimetry"],
+                correct: 0,
+                hint: "Study of internal physical body structures.",
+                explanation: "Correct Answer: Anatomy (N.). Hindi: शरीर रचना विज्ञान. The branch of biology concerned with the study of the structure of organisms and their parts."
+            },
+            {
+                category: "Medical & Scientific Context",
+                exam: "State PCS Medical",
+                question: "In medical education, studying 'Anatomy' primarily involves examining:",
+                options: ["Physical bodily structures, organs, and tissue arrangements", "Stellar constellations and galaxy movements", "Atmospheric pressure and altitude", "Diplomatic treaties between nations"],
+                correct: 0,
+                hint: "Human and animal body structure.",
+                explanation: "Correct Answer: Physical bodily structures and organs. Anatomy dissects and maps biological physical structures."
+            },
+            {
+                category: "Sentence Usage",
+                exam: "HSSC Group C",
+                question: "Choose the correct sentence using 'Anatomy':",
+                options: [
+                    "“Medical students spend their first year meticulously studying human anatomy in the laboratory.”",
+                    "“The pilot checked the aircraft anatomy on his dashboard altimeter.”",
+                    "“She felt ambivalent and anatomy about walking slowly at an amble.”",
+                    "“The judge awarded high alimony based on the defendant's anatomy.”"
+                ],
+                correct: 0,
+                hint: "Anatomy deals with biological body structures.",
+                explanation: "Correct Answer: “Medical students spend their first year studying human anatomy...” This correctly reflects biological study."
+            },
+
+            // ENTRY 89: Anchor
+            {
+                category: "One Word Substitution",
+                exam: "SSC CGL Tier-1",
+                question: "What is the term for: 'A person who presents a radio/television programme' (or a heavy metal device dropped from a vessel to hold it in place)?",
+                options: ["Anchor", "Ambassador", "Anarchist", "Alpinist"],
+                correct: 0,
+                hint: "Can mean a news host or a ship's heavy mooring hook.",
+                explanation: "Correct Answer: Anchor (N.). Hindi: रेडियो/टेलीविजन कार्यक्रम प्रस्तुत करने वाला / लंगर. A broadcast host or a heavy metal device used to secure ships."
+            },
+            {
+                category: "Homonym / Dual Meaning",
+                exam: "RRB NTPC",
+                question: "How does the noun 'Anchor' function across different contexts?",
+                options: ["It serves both as a nautical device to moor ships and as a television broadcast host.",
+                          "It is exclusively an instrument for measuring mountain altitude.",
+                          "It is a legal term for post-divorce financial alimony.",
+                          "It is a medical term for total memory amnesia."],
+                correct: 0,
+                hint: "Ships and TV news broadcasts share this exact word.",
+                explanation: "Correct Answer: It serves both as a nautical mooring device and as a TV broadcast host. Polysemous words like anchor are common in competitive exams."
+            },
+            {
+                category: "Contextual Sentence",
+                exam: "State PCS",
+                question: "Choose the correct sentence using 'Anchor':",
+                options: [
+                    "“The veteran news anchor delivered the evening broadcast with poise and professionalism.”",
+                    "“She used a television anchor to measure the aircraft altitude above sea level.”",
+                    "“The mountaineer dropped an anchor to cure his temporary amnesia.”",
+                    "“He paid his monthly divorce anchor to his ex-wife.”"
+                ],
+                correct: 0,
+                hint: "Anchor in media refers to the news presenter.",
+                explanation: "Correct Answer: “The veteran news anchor delivered the evening broadcast...” This correctly illustrates a broadcasting host."
+            },
+
+            // ENTRY 90: Ancient
+            {
+                category: "One Word Substitution",
+                exam: "SSC CGL Tier-1",
+                question: "What is the term for: 'Belonging to long past' (very old or from times long ago)?",
+                options: ["Ancient", "Modern", "Contemporary", "Recent"],
+                correct: 0,
+                hint: "Opposite of modern; belonging to antiquity.",
+                explanation: "Correct Answer: Ancient (Adj.). Hindi: प्राचीन. Belonging to the very distant past or times long gone by."
+            },
+            {
+                category: "Synonym & Antonym",
+                exam: "RRB NTPC",
+                question: "Identify the antonym of 'Ancient'.",
+                options: ["Modern / Contemporary / Recent", "Antique", "Archaic", "Primeval"],
+                correct: 0,
+                hint: "Opposite of ancient history is current or modern times.",
+                explanation: "Correct Answer: Modern / Contemporary / Recent. Ancient denotes remote antiquity, whereas modern denotes current or recent times. Synonyms include antique and archaic."
+            },
+            {
+                category: "Historical Context",
+                exam: "State PCS History",
+                question: "In historical studies, the 'Ancient' period typically precedes which major historical era?",
+                options: ["Medieval period and Middle Ages", "The Information Age", "The 21st-century digital era", "Contemporary postmodern era"],
+                correct: 0,
+                hint: "Ancient history is followed by the medieval era.",
+                explanation: "Correct Answer: Medieval period and Middle Ages. Historical chronology progresses from ancient times to the medieval period, then modern history."
+            },
+
+            // ENTRY 91: Anecdote
+            {
+                category: "One Word Substitution",
+                exam: "SSC CGL Tier-1",
+                question: "What is the term for: 'A short, interesting or amusing story about a real person or an event'?",
+                options: ["Anecdote", "Allegory", "Almanac", "Analogy"],
+                correct: 0,
+                hint: "A brief, entertaining narrative from real life.",
+                explanation: "Correct Answer: Anecdote (N.). Hindi: लघुकथा. A short and amusing or interesting story about a real incident or person."
+            },
+            {
+                category: "Synonym Match",
+                exam: "RRB NTPC / CHSL",
+                question: "Which term is most synonymous with 'Anecdote'?",
+                options: ["Short story / Tale / Vignette", "Encyclopedic textbook", "Legal statute", "Scientific treatise"],
+                correct: 0,
+                hint: "A brief, entertaining real-life story.",
+                explanation: "Correct Answer: Short story / Tale / Vignette. An anecdote is a brief recounting of an episode or event. Antonyms include exhaustive treatise."
+            },
+            {
+                category: "Sentence Usage",
+                exam: "State PCS",
+                question: "Choose the correct sentence using 'Anecdote':",
+                options: [
+                    "“He entertained the audience with a humorous anecdote from his early college days.”",
+                    "“She checked the airplane altitude using a pocket anecdote.”",
+                    "“The lawyer submitted an anecdote to prove the alimony payment.”",
+                    "“The mountaineer used an anecdote to scale the vertical cliff.”"
+                ],
+                correct: 0,
+                hint: "Anecdote refers to a brief, entertaining real-life story.",
+                explanation: "Correct Answer: “He entertained the audience with a humorous anecdote...” This correctly illustrates a short real-life story."
+            },
+
+            // ENTRY 92 (Comprehensive integration covering the final span & review reinforcement):
+            {
+                category: "Comprehensive Review",
+                exam: "SSC CGL Master Test",
+                question: "Match the following One-Word Substitutions correctly:\n1. Altimeter -> A. Instrument measuring altitude\n2. Alimony -> B. Money paid to former spouse post-divorce\n3. Alpinism -> C. Mountain climbing\n4. Almanac -> D. Annual calendar with astronomical data",
+                options: ["1-A, 2-B, 3-C, 4-D", "1-D, 2-C, 3-B, 4-A", "1-B, 2-A, 3-D, 4-C", "1-C, 2-D, 3-A, 4-B"],
+                correct: 0,
+                hint: "Check all matching pairs carefully: Altimeter (height), Alimony (divorce money), Alpinism (climbing), Almanac (annual calendar).",
+                explanation: "Correct Answer: 1-A, 2-B, 3-C, 4-D. All listed definitions perfectly match their respective vocabulary entries from the Blackbook syllabus."
+            }
+        ];
+
+        // Quiz State Management
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let userAnswers = new Array(quizData.length).fill(null);
+        let answeredQuestions = new Array(quizData.length).fill(false);
+
+        // DOM Elements
+        const questionCounterEl = document.getElementById('question-counter');
+        const questionCategoryEl = document.getElementById('question-category');
+        const examTagEl = document.getElementById('exam-tag');
+        const progressBarEl = document.getElementById('progress-bar');
+        const questionTextEl = document.getElementById('question-text');
+        const optionsContainerEl = document.getElementById('options-container');
+        const hintToggleBtn = document.getElementById('hint-toggle-btn');
+        const hintBtnText = document.getElementById('hint-btn-text');
+        const hintBox = document.getElementById('hint-box');
+        const hintTextEl = document.getElementById('hint-text');
+        const explanationBox = document.getElementById('explanation-box');
+        const explanationTitle = document.getElementById('explanation-title');
+        const explanationTextEl = document.getElementById('explanation-text');
+        const scoreDisplayEl = document.getElementById('score-display');
+        const totalScoreDisplayEl = document.getElementById('total-score-display');
+        const completionBadge = document.getElementById('completion-badge');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const jumpInput = document.getElementById('jump-input');
+
+        totalScoreDisplayEl.textContent = quizData.length;
+
+        function loadQuestion(index) {
+            if (index < 0 || index >= quizData.length) return;
+            currentQuestionIndex = index;
+            const q = quizData[currentQuestionIndex];
+
+            // Update Header & Meta
+            questionCounterEl.textContent = `Question ${currentQuestionIndex + 1} of ${quizData.length}`;
+            questionCategoryEl.textContent = q.category;
+            examTagEl.textContent = q.exam;
+
+            // Update Progress Bar
+            const progressPercent = ((currentQuestionIndex + 1) / quizData.length) * 100;
+            progressBarEl.style.width = `${progressPercent}%`;
+
+            // Update Question Text
+            questionTextEl.textContent = q.question;
+
+            // Hint Reset & Setup
+            hintBox.classList.add('hidden');
+            hintBtnText.textContent = "Show Hint";
+            hintTextEl.textContent = q.hint;
+
+            // Render Options with deterministic/shuffled order stored or calculated per question
+            renderOptions(q);
+
+            // Restore Explanation State if already answered
+            if (answeredQuestions[currentQuestionIndex]) {
+                showExplanationState(userAnswers[currentQuestionIndex], q);
+            } else {
+                explanationBox.classList.add('hidden');
+            }
+
+            // Navigation Button States
+            prevBtn.disabled = currentQuestionIndex === 0;
+            nextBtn.textContent = currentQuestionIndex === quizData.length - 1 ? "Finish 🏁" : "Next →";
+
+            // Update jump input placeholder
+            jumpInput.value = '';
+            jumpInput.placeholder = `1-${quizData.length}`;
+        }
+
+        function renderOptions(q) {
+            optionsContainerEl.innerHTML = '';
+            
+            // To ensure correct option position varies across A, B, C, D without losing tracking,
+            // we map original indices and shuffle them deterministically or per load session.
+            let optionsWithIndices = q.options.map((opt, idx) => ({ text: opt, originalIdx: idx }));
+            
+            // Stable shuffle seeded or randomized on load
+            // Using a reliable shuffle algorithm
+            if (!q.shuffledIndices) {
+                // Shuffle options once per question so it remains consistent during back/forth navigation
+                for (let i = optionsWithIndices.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [optionsWithIndices[i], optionsWithIndices[j]] = [optionsWithIndices[j], optionsWithIndices[i]];
+                }
+                q.shuffledIndices = optionsWithIndices;
+            } else {
+                optionsWithIndices = q.shuffledIndices;
+            }
+
+            optionsWithIndices.forEach((item, displayIdx) => {
+                const btn = document.createElement('button');
+                btn.className = `option-btn w-full text-left p-4 rounded-2xl font-semibold text-sm sm:text-base flex items-center justify-between cursor-pointer`;
+                
+                const optionLetters = ['A', 'B', 'C', 'D'];
+                
+                let stateClass = '';
+                let isDisabled = answeredQuestions[currentQuestionIndex];
+
+                if (isDisabled) {
+                    if (item.originalIdx === q.correct) {
+                        stateClass = 'option-correct';
+                    } else if (userAnswers[currentQuestionIndex] === item.originalIdx) {
+                        stateClass = 'option-incorrect';
+                    } else {
+                        stateClass = 'opacity-60';
+                    }
+                    btn.disabled = true;
+                } else {
+                    if (userAnswers[currentQuestionIndex] === item.originalIdx) {
+                        stateClass = 'option-selected';
+                    }
+                }
+
+                btn.className += ` ${stateClass}`;
+
+                btn.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <span class="w-7 h-7 rounded-xl bg-[#E9DDF8] text-[#6542C8] flex items-center justify-center text-xs font-bold shrink-0">${optionLetters[displayIdx]}</span>
+                        <span class="text-[#30205D]">${item.text}</span>
+                    </div>
+                `;
+
+                if (!isDisabled) {
+                    btn.onclick = () => selectOption(item.originalIdx);
+                }
+
+                optionsContainerEl.appendChild(btn);
+            });
+        }
+
+        function selectOption(selectedOriginalIdx) {
+            if (answeredQuestions[currentQuestionIndex]) return;
+
+            const q = quizData[currentQuestionIndex];
+            userAnswers[currentQuestionIndex] = selectedOriginalIdx;
+            answeredQuestions[currentQuestionIndex] = true;
+
+            const isCorrect = selectedOriginalIdx === q.correct;
+            if (isCorrect) {
+                score++;
+                scoreDisplayEl.textContent = score;
+            }
+
+            // Re-render options to show correct/incorrect colors
+            renderOptions(q);
+
+            // Show explanation
+            showExplanationState(selectedOriginalIdx, q);
+
+            // Check if all answered
+            if (answeredQuestions.every(val => val === true)) {
+                completionBadge.classList.remove('hidden');
+            }
+        }
+
+        function showExplanationState(selectedIdx, q) {
+            const isCorrect = selectedIdx === q.correct;
+            explanationBox.classList.remove('hidden');
+            
+            if (isCorrect) {
+                explanationBox.className = "mt-4 p-4 rounded-2xl border bg-emerald-50 border-emerald-200 text-emerald-900 transition-all duration-300 shadow-xs";
+                explanationTitle.innerHTML = `<span>✅ Correct! Excellent grasp of the concept.</span>`;
+            } else {
+                explanationBox.className = "mt-4 p-4 rounded-2xl border bg-rose-50 border-rose-200 text-rose-900 transition-all duration-300 shadow-xs";
+                explanationTitle.innerHTML = `<span>❌ Incorrect. Review the rationale below:</span>`;
+            }
+            explanationTextEl.textContent = q.explanation;
+        }
+
+        function toggleHint() {
+            if (hintBox.classList.contains('hidden')) {
+                hintBox.classList.remove('hidden');
+                hintBtnText.textContent = "Hide Hint";
+            } else {
+                hintBox.classList.add('hidden');
+                hintBtnText.textContent = "Show Hint";
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < quizData.length - 1) {
+                loadQuestion(currentQuestionIndex + 1);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                alert(`Quiz Completed! 🎉 Your Final Score is ${score} out of ${quizData.length}.`);
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                loadQuestion(currentQuestionIndex - 1);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function jumpToQuestion() {
+            const val = parseInt(jumpInput.value);
+            if (!isNaN(val) && val >= 1 && val <= quizData.length) {
+                loadQuestion(val - 1);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                alert(`Please enter a valid question number between 1 and ${quizData.length}.`);
+            }
+        }
+
+        function confirmReset() {
+            if (confirm("Are you sure you want to reset the quiz? All progress and answers will be cleared.")) {
+                score = 0;
+                scoreDisplayEl.textContent = score;
+                userAnswers = new Array(quizData.length).fill(null);
+                answeredQuestions = new Array(quizData.length).fill(false);
+                completionBadge.classList.add('hidden');
+                quizData.forEach(q => delete q.shuffledIndices);
+                loadQuestion(0);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // Keyboard Navigation (Left/Right arrows)
+        document.addEventListener('keydown', (e) => {
+            // Ignore if typing inside input fields
+            if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
+
+            if (e.key === 'ArrowLeft') {
+                prevQuestion();
+            } else if (e.key === 'ArrowRight') {
+                nextQuestion();
+            }
+        });
+
+        // Initial Load
+        window.onload = () => {
+            loadQuestion(0);
+        };
+    </script>
+</body>
+</html>

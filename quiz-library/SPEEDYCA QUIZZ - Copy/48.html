@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive English Current Affairs Quiz (Pages 89 & 90)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .option-btn {
+            transition: all 0.2s ease-in-out;
+        }
+    </style>
+<style id="cosmic-readable-quiz-theme">
+:root{--space:#e8dcff;--panel:#f3eaff;--panel2:#dcc6ff;--edge:#6a45bf;--glow:#d28b28;--accent:#d15f9f;--ink:#2c1b4d;--muted:#66547c;--mist:rgba(106,69,191,.2)}html{background:var(--space)}body{background:radial-gradient(ellipse 62% 45% at 90% -5%,rgba(209,95,159,.28),transparent 62%),radial-gradient(ellipse 55% 40% at 8% 100%,rgba(65,164,207,.26),transparent 64%),var(--space)!important;color:var(--ink)!important;min-height:100vh}body:before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.78;background-image:radial-gradient(circle at 9% 18%,var(--glow) 0 1px,transparent 1.7px),radial-gradient(circle at 26% 69%,var(--edge) 0 .8px,transparent 1.5px),radial-gradient(circle at 68% 24%,var(--accent) 0 1px,transparent 1.8px),radial-gradient(circle at 88% 73%,#47a8d3 0 .8px,transparent 1.5px);background-size:220px 190px,300px 270px,260px 230px,340px 310px;z-index:-1}header{background:linear-gradient(105deg,var(--panel),var(--panel2))!important;border-color:rgba(106,69,191,.25)!important;box-shadow:0 7px 24px rgba(84,48,142,.14)!important}header h1{color:var(--edge)!important;text-shadow:none!important}header p,header .text-slate-400,header .text-indigo-200,header .text-indigo-300{color:var(--muted)!important}main>div,#quiz-card,.bg-slate-800,.bg-slate-900,.bg-indigo-900,.bg-indigo-950{background:linear-gradient(145deg,#f8f0ff,var(--panel))!important;border-color:rgba(106,69,191,.22)!important;color:var(--ink)!important;box-shadow:0 14px 35px rgba(84,48,142,.12)!important}.bg-slate-700,.bg-slate-100,.bg-slate-50{background:#eadffd!important;color:var(--ink)!important}.text-slate-100,.text-slate-200,.text-slate-300,.text-slate-400,.text-white,.text-slate-800,.text-slate-700,.text-slate-600{color:var(--ink)!important}.text-indigo-400,.text-indigo-300,.text-emerald-400,.text-yellow-300{color:var(--edge)!important}.border-slate-700,.border-slate-700\/60,.border-indigo-700,.border-slate-200{border-color:rgba(106,69,191,.25)!important}button:not(.bg-green-600):not(.bg-red-600){background:#f9f2ff!important;color:var(--ink)!important;border:1px solid rgba(106,69,191,.25)!important;box-shadow:0 3px 10px rgba(84,48,142,.09)!important}button.bg-indigo-600,button.bg-slate-800,button.bg-slate-900,button.bg-indigo-900{background:linear-gradient(120deg,var(--edge),var(--accent))!important;color:#fff!important;border:0!important}button.bg-indigo-600 *,button.bg-slate-800 *,button.bg-slate-900 *,button.bg-indigo-900 *{color:#fff!important}button:hover{filter:brightness(1.04);transform:translateY(-1px)}input,select,textarea{background:#f9f2ff!important;border-color:rgba(106,69,191,.35)!important;color:var(--ink)!important}input:focus,select:focus,textarea:focus{outline:none!important;border-color:var(--edge)!important;box-shadow:0 0 0 3px var(--mist)!important}.bg-indigo-500,#progress-bar{background:linear-gradient(90deg,var(--edge),var(--accent),var(--glow))!important}.rounded-2xl{border-radius:1.25rem!important}
+</style></head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col justify-between font-sans">
+
+    <!-- Header / Navigation Bar -->
+    <header class="bg-slate-800 border-b border-slate-700 shadow-md sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div>
+                <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
+                    CA Exam-Level Master Quiz
+                </h1>
+                <p class="text-xs text-slate-400">Strictly from Pages 89 & 90 (90 Unique Quality Questions)</p>
+            </div>
+            <div class="flex items-center gap-4 bg-slate-900/60 px-4 py-2 rounded-xl border border-slate-700">
+                <div class="text-sm font-medium">
+                    Score: <span id="score-display" class="text-emerald-400 font-bold">0</span> / <span id="total-display">90</span>
+                </div>
+                <div class="h-4 w-[1px] bg-slate-700"></div>
+                <div class="text-sm font-medium">
+                    Q: <span id="current-q-num" class="text-cyan-400 font-bold">1</span>/90
+                </div>
+            </div>
+        </div>
+        <!-- Progress Bar -->
+        <div class="w-full bg-slate-700 h-1.5">
+            <div id="progress-bar" class="bg-cyan-500 h-1.5 transition-all duration-300" style="width: 1.11%;"></div>
+        </div>
+    </header>
+
+    <!-- Main Quiz Container -->
+    <main class="max-w-3xl w-full mx-auto px-4 py-8 flex-grow flex flex-col justify-center">
+        
+        <div id="quiz-card" class="bg-slate-800 border border-slate-700 rounded-2xl shadow-xl p-6 sm:p-8 relative overflow-hidden">
+            
+            <!-- Question Metadata Badge -->
+            <div class="flex justify-between items-center mb-4">
+                <span id="q-tag" class="text-xs font-semibold px-3 py-1 bg-cyan-950 text-cyan-300 rounded-full border border-cyan-800">
+                    Direct Factual / Factual MCQ
+                </span>
+                <span id="source-page-badge" class="text-xs font-medium text-slate-400 bg-slate-900 px-2.5 py-1 rounded-md border border-slate-700">
+                    Source: Page 89
+                </span>
+            </div>
+
+            <!-- Question Statement -->
+            <h2 id="question-text" class="text-lg sm:text-xl font-semibold text-slate-100 mb-6 leading-relaxed">
+                Loading question...
+            </h2>
+
+            <!-- Options Container -->
+            <div id="options-container" class="space-y-3 mb-6">
+                <!-- Dynamically injected options -->
+            </div>
+
+            <!-- Hint Box (Collapsible) -->
+            <div class="mb-6">
+                <button onclick="toggleHint()" class="text-xs font-medium text-amber-400 hover:text-amber-300 flex items-center gap-1.5 transition">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <span id="hint-toggle-text">Show Exam Hint</span>
+                </button>
+                <div id="hint-box" class="hidden mt-2 p-3 bg-amber-950/40 border border-amber-900/50 rounded-lg text-xs text-amber-200/90 leading-relaxed">
+                    <!-- Hint text -->
+                </div>
+            </div>
+
+            <!-- Explanation Box (Revealed on Answer) -->
+            <div id="explanation-box" class="hidden mt-4 p-4 bg-slate-900/80 border rounded-xl transition-all">
+                <div class="flex items-center gap-2 mb-1">
+                    <span id="expl-icon" class="font-bold text-sm"></span>
+                    <h4 id="expl-title" class="font-bold text-sm tracking-wide"></h4>
+                </div>
+                <p id="expl-text" class="text-xs sm:text-sm text-slate-300 leading-relaxed mt-1"></p>
+            </div>
+
+            <!-- Controls Footer -->
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mt-8 pt-6 border-t border-slate-700/60">
+                <div class="flex items-center gap-2 w-full sm:w-auto">
+                    <button onclick="jumpToQuestion()" class="text-xs bg-slate-700 hover:bg-slate-600 text-slate-200 px-3 py-2 rounded-lg font-medium transition flex items-center gap-1">
+                        Jump to Q#
+                    </button>
+                    <input type="number" id="jump-input" min="1" max="90" placeholder="1-90" class="w-20 bg-slate-900 border border-slate-700 rounded-lg px-2 py-1.5 text-xs text-slate-100 focus:outline-none focus:border-cyan-500">
+                </div>
+
+                <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
+                    <button id="prev-btn" onclick="prevQuestion()" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 text-sm font-semibold rounded-xl transition disabled:opacity-40 disabled:cursor-not-allowed">
+                        Previous
+                    </button>
+                    <button id="next-btn" onclick="nextQuestion()" class="px-5 py-2 bg-cyan-600 hover:bg-cyan-500 text-white text-sm font-semibold rounded-xl transition shadow-lg shadow-cyan-900/30">
+                        Next Question
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer Copyright -->
+    <footer class="text-center py-4 text-xs text-slate-500 border-t border-slate-800">
+        Interactive Current Affairs Master Quiz Application &bull; Exam-Aligned &bull; 90 Unique Questions
+    </footer>
+
+    <!-- Quiz Logic Script -->
+    <script>
+        const questionsData = [
+            // --- PAGE 89 QUESTIONS (1 to 45) ---
+            {
+                page: 89,
+                type: "Direct Factual",
+                question: "According to the PDF data (Page 89), which state's 'Sipaijala Panchayat' was awarded the best district Panchayat in India on April 6, 2026?",
+                options: ["Assam", "Tripura", "Manipur", "Nagaland"],
+                correct: 1,
+                hint: "This north-eastern state frequently appeared for top ranks in PAL and panchayat development indexes on these pages.",
+                explanation: "On April 6, 2026, Tripura's 'Sipaijala Panchayat' was officially awarded the title of the best district Panchayat in India."
+            },
+            {
+                page: 89,
+                type: "Statement Matching / Factual",
+                question: "On April 6, 2026, which state government launched the significant campaign titled 'Maze Gav, Arogya Sampanna Gav'?",
+                options: ["Maharashtra", "Gujarat", "Karnataka", "Madhya Pradesh"],
+                correct: 0,
+                hint: "A state known for major local infrastructure updates and cabinet decisions matching this Marathi-titled campaign.",
+                explanation: "On April 6, 2026, the Maharashtra state government launched the 'Maze Gav, Arogya Sampanna Gav' (My Village, Healthy Village) campaign."
+            },
+            {
+                page: 89,
+                type: "Direct Factual",
+                question: "What was the official theme for the 'International Day of Sport for Development and Peace' observed on April 6, 2026?",
+                options: [
+                    "Sports for a Sustainable Future",
+                    "Sport: Bridging Bridges, Breaking Barriers",
+                    "Uniting Through Global Athletics",
+                    "Peace and Harmony Through Games"
+                ],
+                correct: 1,
+                hint: "The theme focuses heavily on creating connections and demolishing obstacles.",
+                explanation: "The International Day of Sport for Development and Peace on April 6, 2026, was observed under the theme: 'Sport: Bridging Bridges, Breaking Barriers'."
+            },
+            {
+                page: 89,
+                type: "Factual MCQ",
+                question: "In the financial year 2026, which port secured the first position in terms of cargo handling (माल ढुलाई)?",
+                options: ["Paradip Port", "Mundra Port", "Deendayal Port", "Visakhapatnam Port"],
+                correct: 2,
+                hint: "Named after a prominent historical leader, this port topped cargo performance metrics for FY 2026.",
+                explanation: "According to the financial year 2026 data, Deendayal Port secured the first position in terms of cargo handling performance."
+            },
+            {
+                page: 89,
+                type: "Direct Factual",
+                question: "On April 7, 2026, which individual from Uttar Pradesh set a record by reaching the Everest Base Camp on a bicycle in just 14 days?",
+                options: ["Srishti Sharma", "Divya Singh", "Payal Nag", "Ritika Shree"],
+                correct: 1,
+                hint: "Her first name is Divya and she hails from UP.",
+                explanation: "On April 7, 2026, Divya Singh from Uttar Pradesh set a remarkable record by reaching the Everest Base Camp on a bicycle in merely 14 days."
+            },
+            {
+                page: 89,
+                type: "Factual MCQ",
+                question: "Where did Microsoft launch its very first AI Skill Center in India on April 7, 2026?",
+                options: ["IIT Madras", "Chandigarh University", "IIT Delhi", "IISc Bangalore"],
+                correct: 1,
+                hint: "Located in a prominent northern educational hub/university campus.",
+                explanation: "On April 7, 2026, Microsoft launched its first AI Skill Center in India at Chandigarh University."
+            },
+            {
+                page: 89,
+                type: "Which of the following is NOT correct?",
+                options: [
+                    "Switzerland topped the ranking for the cleanest water globally.",
+                    "The One Health Summit 2026 was hosted in France.",
+                    "T.M. Krishna is the author of the book 'We, the People of India'.",
+                    "Menaka Guruswamy became India's first straight Rajya Sabha member."
+                ],
+                correct: 3,
+                hint: "Look closely at the LGBTQ representation milestone on Page 89.",
+                explanation: "Statement D is incorrect because Menaka Guruswamy became India's *first LGBTQ* Rajya Sabha member, not straight."
+            },
+            {
+                page: 89,
+                type: "Direct Factual",
+                question: "On April 8, 2026, Payal Nag won which medal at the World Para Archery Series Finals?",
+                options: ["Gold Medal", "Silver Medal", "Bronze Medal", "No Medal"],
+                correct: 0,
+                hint: "She secured the top podium finish.",
+                explanation: "On April 8, 2026, Payal Nag won the Gold Medal at the World Para Archery Series Finals."
+            },
+            {
+                page: 89,
+                type: "Factual MCQ",
+                question: "Where has India's first 'Prototype Fast Breeder Reactor' been established?",
+                options: ["Odisha", "Tamil Nadu", "Gujarat", "Maharashtra"],
+                correct: 1,
+                hint: "A southern coastal industrial state known for heavy tech and nuclear milestones.",
+                explanation: "India's first Prototype Fast Breeder Reactor was established in Tamil Nadu, as noted on April 8, 2026."
+            },
+            {
+                page: 89,
+                type: "Direct Factual",
+                question: "Which bank launched the multilingual AI platform named 'BOB Sanvad' on April 8, 2026?",
+                options: ["State Bank of India", "Bank of Baroda", "IDFC First Bank", "Punjab National Bank"],
+                correct: 1,
+                hint: "BOB stands for this major public sector bank.",
+                explanation: "On April 8, 2026, Bank of Baroda (BOB) launched its multi-lingual AI platform called 'BOB Sanvad'."
+            },
+            {
+                page: 89,
+                type: "Direct Factual",
+                question: "The spring festival known as 'Aoleang Monyu' is traditionally celebrated in which state?",
+                options: ["Nagaland", "Manipur", "Mizoram", "Arunachal Pradesh"],
+                correct: 0,
+                hint: "Associated with the Konyak or similar tribal traditions in this north-eastern state.",
+                explanation: "The spring festival 'Aoleang Monyu' is celebrated in the state of Nagaland."
+            },
+            {
+                page: 89,
+                type: "Assertion-Reasoning Style",
+                question: "Consider the Chetak Screen Awards 2026: Aditya Dhar won Best Director for 'Homebound'. Who won the Best Actor and Best Actress awards respectively?",
+                options: [
+                    "Ranveer Singh ('Dhurandar') and Yami Gautam Dhar ('Haq')",
+                    "Ranbir Kapoor ('Animal') and Alia Bhatt ('Rocky') ",
+                    "Vicky Kaushal ('Sam') and Deepika Padukone",
+                    "Shah Rukh Khan and Kareena Kapoor"
+                ],
+                correct: 0,
+                hint: "Matches the dynamic duo of real-life/screen accomplishments noted for 'Dhurandar' and 'Haq'.",
+                explanation: "At the Chetak Screen Awards 2026, Ranveer Singh ('Dhurandar') won Best Actor and Yami Gautam Dhar ('Haq') won Best Actress."
+            },
+            {
+                page: 89,
+                type: "Factual MCQ",
+                question: "Which country launched the world's first commercial Upper 6GHz (U6GHz) internet network on April 9, 2026?",
+                options: ["United States", "United Arab Emirates", "South Korea", "Japan"],
+                correct: 1,
+                hint: "A major Gulf nation driving rapid modern connectivity innovations.",
+                explanation: "On April 9, 2026, the United Arab Emirates (UAE) launched the world's first commercial Upper 6GHz internet network."
+            },
+            {
+                page: 89,
+                type: "Direct Factual",
+                question: "The Indian Army's Trishakti Corps launched 'Operation Himsetu' in April 2026 in which state?",
+                options: ["Sikkim", "Arunachal Pradesh", "Jammu & Kashmir", "Uttarakhand"],
+                correct: 0,
+                hint: "A Himalayan border state often secured by the Trishakti Corps.",
+                explanation: "On April 9, 2026, the Trishakti Corps of the Indian Army launched 'Operation Himsetu' in Sikkim."
+            },
+            {
+                page: 89,
+                type: "Factual MCQ",
+                question: "Who was the last surviving player of the team that won India's first Test cricket match in 1952, who passed away on April 9, 2026?",
+                options: ["C.D. Gopinath", "Madhav Apte", "Deepak Shodhan", "E.A.S. Prasanna"],
+                correct: 0,
+                hint: "Initials C.D.",
+                explanation: "C.D. Gopinath, the last surviving member of the team that won India's first-ever Test match in 1952, passed away on April 9, 2026."
+            },
+            {
+                page: 89,
+                type: "Direct Factual",
+                question: "Which state government officially declared 'cancer' as a notifiable disease (नोटोफाय करने योग्य बीमारी) in April 2026?",
+                options: ["Telangana", "Kerala", "Gujarat", "Maharashtra"],
+                correct: 0,
+                hint: "A southern state that also launched 'Narit AI' police tool around the same time.",
+                explanation: "The Telangana government declared cancer as a notifiable disease to track and manage cases more effectively."
+            },
+            {
+                page: 89,
+                type: "Direct Factual",
+                question: "Under the IOS SAGAR mission, which Indian Naval Ship reached Malé to enhance maritime cooperation with Maldives on April 9, 2026?",
+                options: ["INS Sunayna", "INS Shivalik", "INS Vikrant", "INS Kochi"],
+                correct: 0,
+                hint: "Name means a woman with lovely eyes.",
+                explanation: "INS Sunayna reached Malé under the IOS SAGAR mission to foster maritime cooperation between India and Maldives."
+            },
+            {
+                page: 89,
+                type: "Direct Factual",
+                question: "Which major tech company introduced its new AI model named 'Muse Spark' in April 2026?",
+                options: ["Google", "OpenAI", "Meta", "Microsoft"],
+                correct: 2,
+                hint: "Parent organization of Facebook and Instagram.",
+                explanation: "Meta introduced its new advanced AI model named 'Muse Spark'."
+            },
+            {
+                page: 89,
+                type: "Factual MCQ",
+                question: "The police force of which state launched the AI tool named 'Narit AI' on April 10, 2026?",
+                options: ["Gujarat", "Uttar Pradesh", "Maharashtra", "Tamil Nadu"],
+                correct: 0,
+                hint: "A western state noted for pioneering industrial and police tech apps on these pages.",
+                explanation: "On April 10, 2026, the Gujarat police launched an AI tool named 'Narit AI'."
+            },
+            {
+                page: 89,
+                type: "Direct Factual",
+                question: "The Kalai-II hydroelectric project, frequently mentioned in recent news, is associated with which state?",
+                options: ["Arunachal Pradesh", "Himachal Pradesh", "Sikkim", "Uttarakhand"],
+                correct: 1,
+                hint: "An eastern Himalayan state bordering Tibet/China.",
+                explanation: "The Kalai-II hydroelectric project is associated with Arunachal Pradesh."
+            },
+            {
+                page: 89,
+                type: "Factual MCQ",
+                question: "Who became the world's first female cricketer to take 9 wickets in a T20I match on April 10, 2026?",
+                options: ["Laura Cardoso", "Deepti Sharma", "Ellyse Perry", "Smriti Mandhana"],
+                correct: 0,
+                hint: "Represents Brazil in international cricket records.",
+                explanation: "On April 10, 2026, Laura Cardoso of Brazil became the world's first female cricketer to take 9 wickets in a T20I match."
+            },
+            {
+                page: 89,
+                type: "Direct Factual",
+                question: "Who released the latest version of the Constitution of India in the Sindhi language on April 10, 2026?",
+                options: ["Droupadi Murmu", "C.P. Radhakrishnan", "Narendra Modi", "Jagdeep Dhankhar"],
+                correct: 1,
+                hint: "The Vice-President or similar high constitutional authority holding office at the time.",
+                explanation: "On April 10, 2026, Vice-President C.P. Radhakrishnan released the newest version of the Indian Constitution in Sindhi."
+            },
+            {
+                page: 89,
+                type: "Direct Factual",
+                question: "Which country decided to step down from hosting the 'Climate Change Summit' scheduled for 2028?",
+                options: ["India", "Brazil", "South Africa", "Australia"],
+                correct: 0,
+                hint: "Our own nation opted out of hosting this specific 2028 summit.",
+                explanation: "India decided to step down from hosting the Climate Change Summit scheduled for 2028."
+            },
+            {
+                page: 89,
+                type: "Direct Factual",
+                question: "Which state was declared fully 'Naxal-free' on April 11, 2026?",
+                options: ["Telangana", "Chhattisgarh", "Jharkhand", "Bihar"],
+                correct: 0,
+                hint: "A southern state achieving this milestone in April 2026 security updates.",
+                explanation: "On April 11, 2026, Telangana was officially declared completely Naxal-free."
+            },
+            {
+                page: 89,
+                type: "Direct Factual",
+                question: "Who was appointed as the Secretary-General of the Arab League (अरब लीग का महासचिव)?",
+                options: ["Nabil Fahmy", "Ahmed Aboul Gheit", "Amr Moussa", "Hossam Zaki"],
+                correct: 0,
+                hint: "An experienced diplomat named Nabil.",
+                explanation: "Nabil Fahmy was appointed as the Secretary-General of the Arab League."
+            },
+            {
+                page: 89,
+                type: "Direct Factual",
+                question: "Where did ISRO conduct its second Gaganyaan air drop test on April 11, 2026?",
+                options: ["Sriharikota", "Bengaluru", "Thumba", "Mahendragiri"],
+                correct: 0,
+                hint: "ISRO's primary rocket launch station in Andhra Pradesh.",
+                explanation: "On April 11, 2026, ISRO conducted its second Gaganyaan air drop test at Sriharikota."
+            },
+            {
+                page: 89,
+                type: "Factual MCQ",
+                question: "Which port set a record as India's largest automobile export hub by April 2026?",
+                options: ["Mundra Port", "JNPT Port", "Chennai Port", "Paradip Port"],
+                correct: 0,
+                hint: "Located in Gujarat, operated by Adani.",
+                explanation: "Mundra Port recorded itself as India's largest automobile export hub by April 2026."
+            },
+            {
+                page: 89,
+                type: "Direct Factual",
+                question: "Researchers discovered 200 sites spanning 6,000 years in which country during April 2026 archaeological updates?",
+                options: ["Egypt", "Iraq", "Greece", "Jordan"],
+                correct: 0,
+                hint: "Land of the Pyramids and ancient Nile civilizations.",
+                explanation: "Researchers in Egypt discovered 200 historical sites spanning over 6,000 years."
+            },
+            {
+                page: 89,
+                type: "Direct Factual",
+                question: "How many total medals did India win at the Asian Kurash Championship 2026 held in Bishkek, Kyrgyzstan?",
+                options: ["12", "17", "21", "25"],
+                correct: 1,
+                hint: "Prime number between 15 and 20.",
+                explanation: "India won a total of 17 medals at the Asian Kurash Championship 2026 in Bishkek, Kyrgyzstan."
+            },
+            {
+                page: 89,
+                type: "Direct Factual",
+                question: "The short-range missile 'Hwasong-11Ga', frequently in the news, is developed by which nation?",
+                options: ["North Korea", "Iran", "Pakistan", "China"],
+                correct: 0,
+                hint: "A secretive nuclear-armed East Asian state known for Hwasong series missiles.",
+                explanation: "Hwasong-11Ga is a short-range missile developed by North Korea."
+            },
+            {
+                page: 89,
+                type: "Direct Factual",
+                question: "Renowned playback singer Asha Bhosle passed away on April 12, 2026. In which year was she honored with the Padma Vibhushan?",
+                options: ["2001", "2008", "2012", "2015"],
+                correct: 1,
+                hint: "Late 2000s, specifically 2008.",
+                explanation: "Legendary singer Asha Bhosle, who passed away in April 2026, was honored with the Padma Vibhushan in 2008."
+            },
+            {
+                page: 89,
+                type: "Direct Factual",
+                question: "Who was chosen for the prestigious 'Lata Deenanath Mangeshkar Award 2026'?",
+                options: ["Kailash Satyarthi", "Asha Bhosle", "Amitabh Bachchan", "A.R. Rahman"],
+                correct: 0,
+                hint: "A Nobel Peace Prize laureate from India.",
+                explanation: "Kailash Satyarthi was chosen for the Lata Deenanath Mangeshkar Award 2026."
+            },
+            {
+                page: 89,
+                type: "Direct Factual",
+                question: "At the Asian Boxing Championships in Ulaanbaatar, which Indian boxer won a gold medal?",
+                options: ["Vishwanath Sekhush", "Nishant Dev", "Amit Panghal", "Deepak Kumar"],
+                correct: 0,
+                hint: "First name Vishwanath.",
+                explanation: "At the Asian Boxing Championships in Ulaanbaatar, India's Vishwanath Sekhush won the gold medal."
+            },
+            {
+                page: 89,
+                type: "Direct Factual",
+                question: "Under the National Education Policy 2020, what is the title of the new Hindi textbook issued by NCERT for Class 9?",
+                options: ["Ganga", "Kshitij", "Sparsh", "Vasant"],
+                correct: 0,
+                hint: "Named after India's holiest and longest river.",
+                explanation: "Under NEP 2020, the new Class 9 Hindi textbook issued by NCERT is titled 'Ganga'."
+            },
+            {
+                page: 89,
+                type: "Direct Factual",
+                question: "The 9th Indian Ocean Conference was hosted in which country in April 2026?",
+                options: ["Mauritius", "Maldives", "Seychelles", "Sri Lanka"],
+                correct: 0,
+                hint: "An island nation in the Indian Ocean with deep historical ties to India.",
+                explanation: "The 9th Indian Ocean Conference was hosted in Mauritius."
+            },
+            {
+                page: 89,
+                type: "Direct Factual",
+                question: "Where did the Indian Army launch its new 'Border Radio Station' (सीमा रेडियो स्टेशन) to boost communication and outreach?",
+                options: ["Sikkim", "Ladakh", "Arunachal Pradesh", "Rajasthan"],
+                correct: 0,
+                hint: "State where Operation Himsetu was also launched by Trishakti Corps.",
+                explanation: "The Indian Army launched a new 'Border Radio Station' in Sikkim."
+            },
+            {
+                page: 89,
+                type: "Direct Factual",
+                question: "Where in the USA was Swami Vivekananda's first full-scale statue unveiled in April 2026?",
+                options: ["Seattle's downtown area", "New York City (Central Park)", "Houston, Texas", "San Francisco, California"],
+                correct: 0,
+                hint: "Located in the Pacific Northwest, specifically Seattle's downtown.",
+                explanation: "Swami Vivekananda's first full-scale statue in the USA was unveiled in Seattle's downtown area."
+            },
+            {
+                page: 89,
+                type: "Direct Factual",
+                question: "India and which other country conducted the 7th edition of the joint military exercise 'DUSTLIK' in April 2026?",
+                options: ["Uzbekistan", "Kazakhstan", "Kyrgyzstan", "Oman"],
+                correct: 0,
+                hint: "A Central Asian nation starting with 'U'.",
+                explanation: "The 7th edition of the joint military exercise DUSTLIK was held between India and Uzbekistan."
+            },
+            {
+                page: 89,
+                type: "Direct Factual",
+                question: "Where was the Advanced Agriculture Fair 2026 (उन्नत कृषि मेला) organized?",
+                options: ["Madhya Pradesh", "Uttar Pradesh", "Haryana", "Punjab"],
+                correct: 0,
+                hint: "A central Indian state frequently hosting major agricultural meets.",
+                explanation: "The Advanced Agriculture Fair 2026 was organized in Madhya Pradesh."
+            },
+            {
+                page: 89,
+                type: "Direct Factual",
+                question: "Where was the 'Nari Shakti Vandan Sammelan' held on April 13, 2026?",
+                options: ["New Delhi", "Mumbai", "Lucknow", "Bhopal"],
+                correct: 0,
+                hint: "The national capital hosting major women empowerment conclaves.",
+                explanation: "The 'Nari Shakti Vandan Sammelan' was held in New Delhi on April 13, 2026."
+            },
+            {
+                page: 89,
+                type: "Direct Factual",
+                question: "What is the name of the Indian Army's first blue water sailing expedition flagged off from Marve, Mumbai on April 13, 2026?",
+                options: ["Samudra Sahas", "Sagarmala Expedition", "Jal Shakti", "Varuna Vijay"],
+                correct: 0,
+                hint: "Combines the word for ocean with courage (Sahas).",
+                explanation: "The Indian Army's first blue water sailing expedition was named 'Samudra Sahas'."
+            },
+            {
+                page: 89,
+                type: "Direct Factual",
+                question: "In which Uttar Pradesh city was the 'MP Sports Mahakumbh' organized in April 2026?",
+                options: ["Lucknow", "Varanasi", "Gorakhpur", "Prayagraj"],
+                correct: 0,
+                hint: "The capital city of Uttar Pradesh.",
+                explanation: "The MP Sports Mahakumbh was organized in Lucknow, Uttar Pradesh."
+            },
+            {
+                page: 89,
+                type: "Direct Factual",
+                question: "Who won the prestigious Monte Carlo Masters 2026 tennis title?",
+                options: ["Jannik Sinner", "Novak Djokovic", "Carlos Alcaraz", "Daniil Medvedev"],
+                correct: 0,
+                hint: "An Italian tennis powerhouse dominating several 2026 events.",
+                explanation: "Jannik Sinner won the Monte Carlo Masters 2026 title."
+            },
+            {
+                page: 89,
+                type: "Direct Factual",
+                question: "Where did the Indian Army organize a live firing exercise named 'Brahmastra' in April 2026?",
+                options: ["Jaisalmer Sector, Rajasthan", "Pokhran Range", "Ladakh Sector", "Anantnag, J&K"],
+                correct: 0,
+                hint: "Conducted in the desert sector of Rajasthan.",
+                explanation: "The Indian Army organized the live firing exercise 'Brahmastra' in the Jaisalmer sector of Rajasthan."
+            },
+
+            // --- PAGE 90 QUESTIONS (46 to 90) ---
+            {
+                page: 90,
+                type: "Direct Factual",
+                question: "On April 14, 2026, who became the youngest Indian to score 4,000 runs in the IPL?",
+                options: ["Shubman Gill", "Yashasvi Jaiswal", "Rishabh Pant", "Ruturaj Gaikwad"],
+                correct: 0,
+                hint: "A star opening batter and captain who also won the Polly Umrigar award.",
+                explanation: "On April 14, 2026, Shubman Gill became the youngest Indian player to score 4,000 runs in the Indian Premier League (IPL)."
+            },
+            {
+                page: 90,
+                type: "Factual MCQ",
+                question: "Who was named as the 'Leading Cricketers in the World' by the Wisden Cricketers' Almanack Award in April 2026?",
+                options: [
+                    "Mitchell Starc and Deepti Sharma",
+                    "Pat Cummins and Smriti Mandhana",
+                    "Virat Kohli and Ellyse Perry",
+                    "Ben Stokes and Harmanpreet Kaur"
+                ],
+                correct: 0,
+                hint: "Comprises an elite Australian fast bowler and a premier Indian women's all-rounder.",
+                explanation: "Wisden named Mitchell Starc and Deepti Sharma as the leading cricketers in the world."
+            },
+            {
+                page: 90,
+                type: "Direct Factual",
+                question: "Susan Coyne was appointed as the first female Chief of Army Staff of the defense forces of which country on April 14, 2026?",
+                options: ["Australia", "New Zealand", "Canada", "United Kingdom"],
+                correct: 0,
+                hint: "A major Oceanic nation where Susan Coyne took command.",
+                explanation: "Susan Coyne was appointed as the first female Chief of Army Staff for Australia."
+            },
+            {
+                page: 90,
+                type: "Direct Factual",
+                question: "Who was honored with the prestigious 'WWE Fish Award' in April 2026?",
+                options: ["Anita Chaudhary", "Vinesh Phogat", "Sakshi Malik", "Nitu Ghanghas"],
+                correct: 0,
+                hint: "First name Anita.",
+                explanation: "Anita Chaudhary was honored with the prestigious 'WWE Fish Award' in April 2026."
+            },
+            {
+                page: 90,
+                type: "Direct Factual",
+                question: "Nitish Kumar resigned as Bihar Chief Minister and took oath as a Rajya Sabha member on which date?",
+                options: ["April 10, 2026", "April 14, 2026", "April 5, 2026", "April 1, 2026"],
+                correct: 0,
+                hint: "Early April 2026, specifically the 10th.",
+                explanation: "Nitish Kumar officially took oath as a Rajya Sabha member on April 10, 2026."
+            },
+            {
+                page: 90,
+                type: "Direct Factual",
+                question: "Which badminton player announced their retirement on April 15, 2026?",
+                options: ["Viktor Axelsen", "Carolina Marin", "Kento Momota", "Lee Zii Jia"],
+                correct: 0,
+                hint: "A dominant Danish men's singles star.",
+                explanation: "Danish badminton star Viktor Axelsen announced his retirement from professional badminton on April 15, 2026."
+            },
+            {
+                page: 90,
+                type: "Direct Factual",
+                question: "In the financial year 2025-26, what global rank was assigned to India in filing patents?",
+                options: ["Sixth (छठा)", "Fourth", "Eighth", "Tenth"],
+                correct: 0,
+                hint: "The 6th position globally.",
+                explanation: "In FY 2025-26, India was ranked sixth globally in filing patents."
+            },
+            {
+                page: 90,
+                type: "Direct Factual",
+                question: "Which state celebrated its 79th Statehood Day on April 15, 2026?",
+                options: ["Himachal Pradesh", "Manipur", "Tripura", "Meghalaya"],
+                correct: 0,
+                hint: "A scenic northern mountainous state.",
+                explanation: "Himachal Pradesh celebrated its 79th Statehood Day on April 15, 2026."
+            },
+            {
+                page: 90,
+                type: "Direct Factual",
+                question: "Where was Asia's highest elevated wildlife corridor inaugurated on April 16, 2026?",
+                options: ["India", "Malaysia", "Vietnam", "Indonesia"],
+                correct: 0,
+                hint: "Our own country achieved this engineering feat.",
+                explanation: "Asia's highest elevated wildlife corridor was inaugurated in India on April 16, 2026."
+            },
+            {
+                page: 90,
+                type: "Direct Factual",
+                question: "Where was the first edition of the Indian Navy's Biennial Commanders' Conference 2026 held?",
+                options: ["New Delhi", "Visakhapatnam", "Mumbai", "Kochi"],
+                correct: 0,
+                hint: "Hosted at the national capital.",
+                explanation: "The first edition of the Indian Navy's Biennial Commanders' Conference 2026 was held in New Delhi."
+            },
+            {
+                page: 90,
+                type: "Direct Factual",
+                question: "Who became India's top trading partner in the financial year 2026?",
+                options: ["China", "USA", "UAE", "Russia"],
+                correct: 0,
+                hint: "Our northern neighboring giant trading partner.",
+                explanation: "China emerged as India's top trading partner for the financial year 2026."
+            },
+            {
+                page: 90,
+                type: "Direct Factual",
+                question: "Who won the 'FIDE Women's Candidates Tournament 2026' held in Cyprus?",
+                options: ["R. Vaishali", "Koneru Humpy", "Divya Deshmukh", "Harika Dronavalli"],
+                correct: 0,
+                hint: "Sister of Praggnanandhaa, an elite Indian grandmaster.",
+                explanation: "R. Vaishali won the FIDE Women's Candidates Tournament 2026 held in Cyprus."
+            },
+            {
+                page: 90,
+                type: "Direct Factual",
+                question: "Prime Minister Narendra Modi inaugurated the 'Sri Guru Bhairavaikya Temple' in April 2026 in which state?",
+                options: ["Karnataka", "Tamil Nadu", "Kerala", "Andhra Pradesh"],
+                correct: 0,
+                hint: "A southern state known for rich temple architecture and heritage.",
+                explanation: "Prime Minister Narendra Modi inaugurated the Sri Guru Bhairavaikya Temple in Karnataka."
+            },
+            {
+                page: 90,
+                type: "Direct Factual",
+                question: "What was the primary objective of the 131st Constitutional Amendment Bill (2026) introduced in the Lok Sabha?",
+                options: [
+                    "To increase Lok Sabha seats from 543 to 850 and provide 33% reservation for women",
+                    "To introduce simultaneous elections nationwide",
+                    "To restructure Rajya Sabha voting procedures",
+                    "To modify the definition of official state languages"
+                ],
+                correct: 0,
+                hint: "Involves expanding seat count to 850 and women's reservation.",
+                explanation: "The 131st Constitutional Amendment Bill (2026) aimed to increase Lok Sabha seats from 543 to 850 and implement 33% reservation for women (though it could not be passed)."
+            },
+            {
+                page: 90,
+                type: "Direct Factual",
+                question: "Where was the first high-level conference of Central Armed Police Forces (CAPFs) organized in India for the first time on April 17, 2026?",
+                options: ["New Delhi", "Hyderabad", "Chandigarh", "Guwahati"],
+                correct: 0,
+                hint: "The nation's capital.",
+                explanation: "The first high-level conference of Central Armed Police Forces was organized in New Delhi on April 17, 2026."
+            },
+            {
+                page: 90,
+                type: "Direct Factual",
+                question: "Which state's team won the 16th Hockey India Sub-Junior Women National Championship title in 2026?",
+                options: ["Jharkhand", "Odisha", "Haryana", "Punjab"],
+                correct: 0,
+                hint: "An eastern tribal-heartland state noted for hockey excellence.",
+                explanation: "Jharkhand's team won the 16th Hockey India Sub-Junior Women National Championship title in 2026."
+            },
+            {
+                page: 90,
+                type: "Direct Factual",
+                question: "IRCTC announced the launch of the 'Divya South Yatra Train' starting from which city?",
+                options: ["Visakhapatnam", "Chennai", "Bengaluru", "Hyderabad"],
+                correct: 0,
+                hint: "A major port city in Andhra Pradesh.",
+                explanation: "IRCTC announced the launch of the Divya South Yatra Train from Visakhapatnam."
+            },
+            {
+                page: 90,
+                type: "Direct Factual",
+                question: "Who was awarded the 'Harvard South Asian Person of the Year Award 2026'?",
+                options: ["Sayani Gupta", "Deepika Padukone", "Ali Fazal", "Richa Chadha"],
+                correct: 0,
+                hint: "A versatile acclaimed actor/personality named Sayani.",
+                explanation: "Sayani Gupta was honored with the Harvard South Asian Person of the Year Award 2026."
+            },
+            {
+                page: 90,
+                type: "Direct Factual",
+                question: "Which IIT launched the AI-driven 'Vikram Sodhi Centre' for mining systems in April 2026?",
+                options: ["IIT Kharagpur", "IIT Bombay", "IIT Madras", "IIT Roorkee"],
+                correct: 0,
+                hint: "One of the oldest IITs situated in West Bengal.",
+                explanation: "IIT Kharagpur launched the AI-driven 'Vikram Sodhi Centre' for mining systems."
+            },
+            {
+                page: 90,
+                type: "Direct Factual",
+                question: "Who became the first MP to be appointed as the Deputy Chairman of the Rajya Sabha for a third term in April 2026?",
+                options: ["Harivansh Narayan Singh", "P.J. Kurien", "Najma Heptulla", "Harivansh Rai"],
+                correct: 0,
+                hint: "First name Harivansh Narayan Singh.",
+                explanation: "Harivansh Narayan Singh became the first MP to be appointed as Rajya Sabha Deputy Chairman for a third term."
+            },
+            {
+                page: 90,
+                type: "Direct Factual",
+                question: "Where did the ICC launch its first Women's T20I Challenge Trophy 2026?",
+                options: ["Rwanda", "Uganda", "Kenya", "South Africa"],
+                correct: 0,
+                hint: "An East African country hosting this specific ICC women's trophy launch.",
+                explanation: "The ICC launched its first Women's T20I Challenge Trophy 2026 in Rwanda."
+            },
+            {
+                page: 90,
+                type: "Factual MCQ",
+                question: "The Yana Caves, recently granted geo-heritage site status of national importance, are located in which state?",
+                options: ["Karnataka", "Maharashtra", "Kerala", "Odisha"],
+                correct: 0,
+                hint: "A southern state famed for Jog Falls and these unique limestone rock formations.",
+                explanation: "The Yana Caves in Karnataka were designated as a geo-heritage site of national importance."
+            },
+            {
+                page: 90,
+                type: "Direct Factual",
+                question: "Who was recognized as a Young Global Leader for 2026 by the World Economic Forum in April 2026?",
+                options: ["Jay Shah", "Anant Ambani", "Akash Ambani", "Rishad Premji"],
+                correct: 0,
+                hint: "A prominent sports/business administrator from India.",
+                explanation: "Jay Shah was recognized as a Young Global Leader for 2026 by the World Economic Forum."
+            },
+            {
+                page: 90,
+                type: "Direct Factual",
+                question: "Which became the first state cricket association in India to offer formal contracts to domestic players?",
+                options: ["Mumbai Cricket Association", "Delhi & Districts Cricket Association", "Karnataka State Cricket Association", "Tamil Nadu Cricket Association"],
+                correct: 0,
+                hint: "Based in India's financial capital.",
+                explanation: "The Mumbai Cricket Association became the first state cricket association to provide contracts to domestic players."
+            },
+            {
+                page: 90,
+                type: "Direct Factual",
+                question: "The water utility body of which city received the ISO certificate for energy management in April 2026?",
+                options: ["Bengaluru", "Chennai", "Hyderabad", "Ahmedabad"],
+                correct: 0,
+                hint: "Silicon Valley of India in Karnataka.",
+                explanation: "The water utility body of Bengaluru received the ISO certificate for energy management."
+            },
+            {
+                page: 90,
+                type: "Direct Factual",
+                question: "Which state government withdrew its controversial 'Sarthak Campaign' for school children following public disputes?",
+                options: ["Rajasthan", "Madhya Pradesh", "Gujarat", "Haryana"],
+                correct: 0,
+                hint: "A western desert state that rolled back this particular school initiative.",
+                explanation: "The Rajasthan government withdrew its 'Sarthak Campaign' for school children after controversies."
+            },
+            {
+                page: 90,
+                type: "Direct Factual",
+                question: "Which state officially recognized Khasi and Garo as its official languages in April 2026?",
+                options: ["Meghalaya", "Assam", "Nagaland", "Tripura"],
+                correct: 0,
+                hint: "Named after the famous hills located within its borders.",
+                explanation: "Meghalaya officially recognized Khasi and Garo as its official languages."
+            },
+            {
+                page: 90,
+                type: "Direct Factual",
+                question: "Which investigative/security agency recently launched an AI chatbot named 'Abhay'?",
+                options: ["CBI", "NIA", "RAW", "IB"],
+                correct: 0,
+                hint: "India's premier central investigating agency.",
+                explanation: "The Central Bureau of Investigation (CBI) launched an AI chatbot named 'Abhay'."
+            },
+            {
+                page: 90,
+                type: "Direct Factual",
+                question: "Which private aerospace company successfully landed the reused booster of its 'New Glenn' rocket for the first time?",
+                options: ["Blue Origin", "SpaceX", "Rocket Lab", "Virgin Galactic"],
+                correct: 0,
+                hint: "Founded by Jeff Bezos.",
+                explanation: "Blue Origin successfully landed the reused booster of its 'New Glenn' rocket for the first time."
+            },
+            {
+                page: 90,
+                type: "Direct Factual",
+                question: "Who was awarded the 'Prof. M.S. Swaminathan Award 2026' on April 20, 2026?",
+                options: ["Dr. C.H. Srinivas Rao", "Dr. Mangala Rai", "Dr. Trilochan Mohapatra", "Dr. R.S. Paroda"],
+                correct: 0,
+                hint: "Eminent agricultural scientist named Dr. C.H. Srinivas Rao.",
+                explanation: "Dr. C.H. Srinivas Rao received the Prof. M.S. Swaminathan Award 2026."
+            },
+            {
+                page: 90,
+                type: "Direct Factual",
+                question: "Where is India's first petroglyph conservation park for cultural heritage protection being built?",
+                options: ["Indus Ghat, Ladakh", "Spiti Valley, Himachal", "Zanskar Valley", "Leh Main Market"],
+                correct: 0,
+                hint: "Along the Indus Ghat in Ladakh.",
+                explanation: "India's first petroglyph conservation park is being built at the Indus Ghat in Ladakh."
+            },
+            {
+                page: 90,
+                type: "Direct Factual",
+                question: "Who won the title of Femina Miss India World 2026 at the pageant held in Bhubaneswar, Odisha?",
+                options: ["Sadhvi Samish Call", "Nandini Gupta", "Sini Shetty", "Sushmita Sen"],
+                correct: 0,
+                hint: "First name Sadhvi.",
+                explanation: "Sadhvi Samish Call won the title of Femina Miss India World 2026 in Bhubaneswar."
+            },
+            {
+                page: 90,
+                type: "Direct Factual",
+                question: "India and Bhutan held their 7th Joint Customs Meeting in April 2026 at which location?",
+                options: ["Munnar, Kerala", "Gangtok, Sikkim", "Thimphu, Bhutan", "Darjeeling, West Bengal"],
+                correct: 0,
+                hint: "A scenic hill station in Kerala.",
+                explanation: "India and Bhutan held their 7th joint customs meeting in Munnar, Kerala."
+            },
+            {
+                page: 90,
+                type: "Factual MCQ",
+                question: "The 'Colonel Sher Jung National Park', which made news due to the cancellation of its eco-sensitive zone notification, is located in:",
+                options: ["Himachal Pradesh", "Uttarakhand", "Madhya Pradesh", "Assam"],
+                correct: 0,
+                hint: "A northern hilly state known for scenic wildlife sanctuaries.",
+                explanation: "Colonel Sher Jung National Park is located in Himachal Pradesh."
+            },
+            {
+                page: 90,
+                type: "Direct Factual",
+                question: "Where was the 'Cheetah Andolan' launched in protest against the Ken-Betwa river-linking project in April 2026?",
+                options: ["Madhya Pradesh", "Uttar Pradesh", "Rajasthan", "Chhattisgarh"],
+                correct: 0,
+                hint: "State where Panna and Ken-Betwa basin lie.",
+                explanation: "The Cheetah Andolan protesting the Ken-Betwa river-linking project was launched in Madhya Pradesh."
+            },
+            {
+                page: 90,
+                type: "Direct Factual",
+                question: "Which global institution launched the 'Water Forward' initiative for water security?",
+                options: ["World Bank", "IMF", "Asian Development Bank", "UNICEF"],
+                correct: 0,
+                hint: "Washington-based global financial institution.",
+                explanation: "The World Bank launched the 'Water Forward' initiative for water security."
+            },
+            {
+                page: 90,
+                type: "Direct Factual",
+                question: "Which state's Chief Minister announced the dissolution of the State Madrasa Board in April 2026?",
+                options: ["Uttarakhand", "Uttar Pradesh", "Assam", "Madhya Pradesh"],
+                correct: 0,
+                hint: "A northern hill state governed by BJP leadership.",
+                explanation: "The Chief Minister of Uttarakhand announced the dissolution of the State Madrasa Board."
+            },
+            {
+                page: 90,
+                type: "Direct Factual",
+                question: "In which African country was a statue of Maharaja Ranjit Singh unveiled in April 2026?",
+                options: ["Malawi", "South Africa", "Kenya", "Uganda"],
+                correct: 0,
+                hint: "A southeastern African nation starting with 'M'.",
+                explanation: "A statue of Maharaja Ranjit Singh was unveiled in Malawi."
+            },
+            {
+                page: 90,
+                type: "Factual MCQ",
+                question: "The 'Shekha Jheel Bird Sanctuary', declared as India's 99th Ramsar site, is located in which district of Uttar Pradesh?",
+                options: ["Aligarh", "Varanasi", "Mathura", "Agra"],
+                correct: 0,
+                hint: "A western UP district famous for lock-making and AMU.",
+                explanation: "Shekha Jheel Bird Sanctuary in Aligarh, Uttar Pradesh, was declared India's 99th Ramsar site."
+            },
+            {
+                page: 90,
+                type: "Direct Factual",
+                question: "Who became India's 95th Grandmaster in chess?",
+                options: ["Aronyak Ghosh (Kolkata)", "Pranav V.", "V. Praneeth", "Iniyan P."],
+                correct: 0,
+                hint: "Hails from Kolkata with the first name Aronyak.",
+                explanation: "Aronyak Ghosh from Kolkata became India's 95th chess Grandmaster."
+            },
+            {
+                page: 90,
+                type: "Direct Factual",
+                question: "The 'Suvori Festival' is traditionally celebrated in which Indian state?",
+                options: ["Assam", "Manipur", "Mizoram", "Arunachal Pradesh"],
+                correct: 0,
+                hint: "A prominent northeastern state known for Bihu and Suvori festivals.",
+                explanation: "The Suvori Festival is celebrated in the state of Assam."
+            },
+            {
+                page: 90,
+                type: "Direct Factual",
+                question: "The much-discussed R-37M missile, which India is procuring, is developed by which country?",
+                options: ["Russia", "France", "Israel", "USA"],
+                correct: 0,
+                hint: "A major defense supplier historically partnered with India.",
+                explanation: "The R-37M long-range air-to-air missile was developed by Russia."
+            },
+            {
+                page: 90,
+                type: "Factual MCQ",
+                question: "A new snake species named 'Kalmariagaroensis' was discovered in which state?",
+                options: ["Meghalaya", "Kerala", "Arunachal Pradesh", "Sikkim"],
+                correct: 0,
+                hint: "A north-eastern state where Khasi/Garo languages were also officially recognized.",
+                explanation: "A new snake species named *Kalmariagaroensis* was discovered in Meghalaya."
+            },
+            {
+                page: 90,
+                type: "Direct Factual",
+                question: "Which country lifted its ban on the export of lethal weapons on April 22, 2026?",
+                options: ["Japan", "Germany", "South Korea", "Sweden"],
+                correct: 0,
+                hint: "An East Asian economic superpower altering its traditional defense export stance.",
+                explanation: "On April 22, 2026, Japan lifted its ban on the export of lethal weapons."
+            },
+            {
+                page: 90,
+                type: "Direct Factual",
+                question: "Who was honored with the 'Global Green Icon' award at the World Climate Leaders' Summit held in the UK?",
+                options: ["Santosh Kumar", "Piyush Goyal", "Bhupender Yadav", "Atul Kumar"],
+                correct: 0,
+                hint: "First name Santosh Kumar.",
+                explanation: "Santosh Kumar was honored with the 'Global Green Icon' award at the World Climate Leaders' Summit in the UK."
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let userAnswers = new Array(questionsData.length).fill(null);
+
+        const questionText = document.getElementById("question-text");
+        const optionsContainer = document.getElementById("options-container");
+        const currentQNum = document.getElementById("current-q-num");
+        const scoreDisplay = document.getElementById("score-display");
+        const progressBar = document.getElementById("progress-bar");
+        const prevBtn = document.getElementById("prev-btn");
+        const nextBtn = document.getElementById("next-btn");
+        const hintBox = document.getElementById("hint-box");
+        const hintToggleText = document.getElementById("hint-toggle-text");
+        const explanationBox = document.getElementById("explanation-box");
+        const explTitle = document.getElementById("expl-title");
+        const explText = document.getElementById("expl-text");
+        const explIcon = document.getElementById("expl-icon");
+        const qTag = document.getElementById("q-tag");
+        const sourcePageBadge = document.getElementById("source-page-badge");
+        const jumpInput = document.getElementById("jump-input");
+
+        function loadQuestion() {
+            const q = questionsData[currentQuestionIndex];
+            currentQNum.textContent = currentQuestionIndex + 1;
+            questionText.textContent = q.question;
+            qTag.textContent = q.type;
+            sourcePageBadge.textContent = `Source: Page ${q.page}`;
+
+            // Update Progress Bar
+            const progressPercent = ((currentQuestionIndex + 1) / questionsData.length) * 100;
+            progressBar.style.width = `${progressPercent}%`;
+
+            // Reset Hint & Explanation
+            hintBox.classList.add("hidden");
+            hintToggleText.textContent = "Show Exam Hint";
+            explanationBox.classList.add("hidden");
+
+            // Render Options (with randomized/stable display based on initial payload)
+            optionsContainer.innerHTML = "";
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement("button");
+                btn.className = "option-btn w-full text-left p-4 rounded-xl border border-slate-700 bg-slate-900/50 hover:bg-slate-700/50 text-slate-200 text-sm sm:text-base font-medium flex items-center justify-between transition";
+                
+                const spanText = document.createElement("span");
+                spanText.textContent = opt;
+                btn.appendChild(spanText);
+
+                const indicator = document.createElement("span");
+                indicator.className = "text-xs px-2 py-1 rounded bg-slate-800 text-slate-400 font-bold uppercase";
+                indicator.textContent = String.fromCharCode(65 + idx);
+                btn.appendChild(indicator);
+
+                // Check if already answered
+                if (userAnswers[currentQuestionIndex] !== null) {
+                    btn.disabled = true;
+                    if (idx === q.correct) {
+                        btn.classList.remove("bg-slate-900/50", "border-slate-700");
+                        btn.classList.add("bg-emerald-950/60", "border-emerald-600", "text-emerald-200");
+                        indicator.className = "text-xs px-2 py-1 rounded bg-emerald-900 text-emerald-200 font-bold uppercase";
+                    } else if (idx === userAnswers[currentQuestionIndex]) {
+                        btn.classList.remove("bg-slate-900/50", "border-slate-700");
+                        btn.classList.add("bg-rose-950/60", "border-rose-600", "text-rose-200");
+                        indicator.className = "text-xs px-2 py-1 rounded bg-rose-900 text-rose-200 font-bold uppercase";
+                    } else {
+                        btn.classList.add("opacity-50");
+                    }
+                } else {
+                    btn.onclick = () => selectOption(idx);
+                }
+
+                optionsContainer.appendChild(btn);
+            });
+
+            // Show explanation if already answered
+            if (userAnswers[currentQuestionIndex] !== null) {
+                showExplanation(userAnswers[currentQuestionIndex] === q.correct, q.explanation);
+            }
+
+            // Button states
+            prevBtn.disabled = currentQuestionIndex === 0;
+            nextBtn.textContent = currentQuestionIndex === questionsData.length - 1 ? "Finish / Summary" : "Next Question";
+        }
+
+        function selectOption(selectedIndex) {
+            const q = questionsData[currentQuestionIndex];
+            userAnswers[currentQuestionIndex] = selectedIndex;
+
+            const isCorrect = selectedIndex === q.correct;
+            if (isCorrect) {
+                score++;
+                scoreDisplay.textContent = score;
+            }
+
+            // Disable all options and highlight
+            const buttons = optionsContainer.getElementsByTagName("button");
+            for (let i = 0; i < buttons.length; i++) {
+                buttons[i].disabled = true;
+                const ind = buttons[i].lastChild;
+                if (i === q.correct) {
+                    buttons[i].classList.remove("bg-slate-900/50", "border-slate-700");
+                    buttons[i].classList.add("bg-emerald-950/60", "border-emerald-600", "text-emerald-200");
+                    ind.className = "text-xs px-2 py-1 rounded bg-emerald-900 text-emerald-200 font-bold uppercase";
+                } else if (i === selectedIndex && !isCorrect) {
+                    buttons[i].classList.remove("bg-slate-900/50", "border-slate-700");
+                    buttons[i].classList.add("bg-rose-950/60", "border-rose-600", "text-rose-200");
+                    ind.className = "text-xs px-2 py-1 rounded bg-rose-900 text-rose-200 font-bold uppercase";
+                } else {
+                    buttons[i].classList.add("opacity-50");
+                }
+            }
+
+            showExplanation(isCorrect, q.explanation);
+        }
+
+        function showExplanation(isCorrect, text) {
+            explanationBox.classList.remove("hidden");
+            if (isCorrect) {
+                explanationBox.className = "mt-4 p-4 rounded-xl border bg-emerald-950/40 border-emerald-800/60 text-emerald-200";
+                explIcon.textContent = "✔";
+                explIcon.className = "font-bold text-emerald-400 text-sm";
+                explTitle.textContent = "Correct Answer! Exam Rationale:";
+                explTitle.className = "font-bold text-sm tracking-wide text-emerald-300";
+            } else {
+                explanationBox.className = "mt-4 p-4 rounded-xl border bg-rose-950/40 border-rose-800/60 text-rose-200";
+                explIcon.textContent = "✖";
+                explIcon.className = "font-bold text-rose-400 text-sm";
+                explTitle.textContent = "Incorrect. Exam Rationale & Fact Check:";
+                explTitle.className = "font-bold text-sm tracking-wide text-rose-300";
+            }
+            explText.textContent = text;
+        }
+
+        function toggleHint() {
+            const q = questionsData[currentQuestionIndex];
+            if (hintBox.classList.contains("hidden")) {
+                hintBox.textContent = q.hint;
+                hintBox.classList.remove("hidden");
+                hintToggleText.textContent = "Hide Exam Hint";
+            } else {
+                hintBox.classList.add("hidden");
+                hintToggleText.textContent = "Show Exam Hint";
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < questionsData.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion();
+            } else {
+                showCompletionScreen();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion();
+            }
+        }
+
+        function jumpToQuestion() {
+            const val = parseInt(jumpInput.value);
+            if (val >= 1 && val <= questionsData.length) {
+                currentQuestionIndex = val - 1;
+                loadQuestion();
+                jumpInput.value = "";
+            } else {
+                alert(`Please enter a valid question number between 1 and ${questionsData.length}`);
+            }
+        }
+
+        function showCompletionScreen() {
+            const card = document.getElementById("quiz-card");
+            const percentage = Math.round((score / questionsData.length) * 100);
+            
+            let performanceMsg = "Outstanding preparation! You are fully aligned with competitive exam standards.";
+            if (percentage < 50) {
+                performanceMsg = "Good effort! Review Pages 89 and 90 thoroughly to boost your current affairs accuracy.";
+            } else if (percentage < 80) {
+                performanceMsg = "Strong performance! Just a little more revision needed for top-tier government exams.";
+            }
+
+            card.innerHTML = `
+                <div class="text-center py-8">
+                    <h2 class="text-2xl sm:text-3xl font-bold text-slate-100 mb-2">Quiz Completed Successfully!</h2>
+                    <p class="text-slate-400 text-sm mb-6">You have completed all 90 exam-level questions from Pages 89 & 90.</p>
+                    
+                    <div class="inline-block bg-slate-900 border border-slate-700 rounded-2xl p-6 mb-6 shadow-inner">
+                        <div class="text-4xl sm:text-5xl font-extrabold text-cyan-400 mb-2">${score} / 90</div>
+                        <div class="text-sm font-medium text-slate-300">Final Score Percentage: <span class="text-emerald-400 font-bold">${percentage}%</span></div>
+                    </div>
+
+                    <p class="text-slate-300 text-sm max-w-md mx-auto mb-8 leading-relaxed">${performanceMsg}</p>
+
+                    <button onclick="restartQuiz()" class="px-6 py-3 bg-cyan-600 hover:bg-cyan-500 text-white font-semibold rounded-xl transition shadow-lg shadow-cyan-900/40">
+                        Restart Master Quiz
+                    </button>
+                </div>
+            `;
+        }
+
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            userAnswers = new Array(questionsData.length).fill(null);
+            scoreDisplay.textContent = "0";
+            
+            // Rebuild initial card structure if it was overwritten by completion screen
+            location.reload();
+        }
+
+        // Initialize First Question on load
+        window.onload = loadQuestion;
+    </script>
+<script src="../../quiz-app-ui-v2.js"></script></body>
+</html>

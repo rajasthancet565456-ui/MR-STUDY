@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate English Vocabulary Mastery Quiz (SSC & Competitive Exams)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        lavenderBg: '#F0E6FF',
+                        headerBg: '#E5D5FA',
+                        cardBg: '#FBF7FF',
+                        primaryPurple: '#6542C8',
+                        darkPurple: '#30205D',
+                        secondaryPurple: '#7352C9',
+                        lightPurple: '#E9DDF8',
+                        borderPurple: '#DCCBF2',
+                        progressTrack: '#DDD9E8',
+                        hoverBg: '#F0E5FF',
+                        mutedText: '#716782',
+                        accentYellow: '#F3A62A'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-lavenderBg min-h-screen text-darkPurple font-sans flex flex-col justify-between selection:bg-lightPurple selection:text-darkPurple">
+
+    <!-- Sticky Header -->
+    <header class="sticky top-0 z-50 bg-headerBg/90 backdrop-blur-md border-b border-borderPurple shadow-sm px-4 py-3">
+        <div class="max-w-4xl mx-auto flex flex-wrap items-center justify-between gap-3">
+            <div>
+                <h1 class="text-lg md:text-xl font-bold text-darkPurple tracking-tight">English Vocabulary Masterclass</h1>
+                <p class="text-xs text-mutedText">Blackbook OWS (SN 225 - 250) • Comprehensive Exam Quiz</p>
+            </div>
+            <div class="flex items-center gap-2">
+                <div class="bg-cardBg border border-borderPurple px-3 py-1.5 rounded-full text-xs font-semibold shadow-inner flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-primaryPurple animate-pulse"></span>
+                    <span>Score: <span id="score-display">0</span> / <span id="total-score-display">100</span></span>
+                </div>
+                <div class="bg-primaryPurple text-white px-3 py-1.5 rounded-full text-xs font-bold shadow">
+                    Q <span id="current-q-badge">1</span>/<span id="total-q-badge">100</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Quiz Container -->
+    <main class="flex-grow flex items-center justify-center p-4 md:p-6">
+        <div class="w-full max-w-3xl bg-cardBg border border-borderPurple rounded-3xl shadow-xl p-6 md:p-10 transition-all duration-300 relative">
+            
+            <!-- Question Metadata / Header -->
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+                <span id="question-category-badge" class="text-xs font-semibold px-3 py-1 bg-lightPurple text-primaryPurple rounded-full uppercase tracking-wide">One Word Substitution</span>
+                <span id="question-number-label" class="text-xs font-bold text-mutedText">Question 1 of 100</span>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="w-full bg-progressTrack h-2.5 rounded-full overflow-hidden mb-6">
+                <div id="progress-bar" class="bg-primaryPurple h-full transition-all duration-300 rounded-full" style="width: 1%;"></div>
+            </div>
+
+            <!-- Question Text -->
+            <h2 id="question-text" class="text-xl md:text-2xl font-bold text-darkPurple mb-6 leading-snug">
+                Loading question...
+            </h2>
+
+            <!-- Answer Options Container -->
+            <div id="options-container" class="space-y-3 mb-6">
+                <!-- Dynamically injected options -->
+            </div>
+
+            <!-- Hint Section -->
+            <div class="mb-6">
+                <button id="hint-toggle-btn" onclick="toggleHint()" class="text-xs font-semibold text-secondaryPurple hover:text-darkPurple flex items-center gap-1.5 transition-colors focus:outline-none">
+                    <span>💡 Toggle Hint</span>
+                </button>
+                <div id="hint-box" class="hidden mt-2 p-3 bg-lightPurple/50 border border-borderPurple rounded-xl text-xs text-darkPurple italic">
+                    <!-- Hint text -->
+                </div>
+            </div>
+
+            <!-- Explanation / Rationale Box (Revealed on Answer) -->
+            <div id="explanation-box" class="hidden p-4 rounded-2xl bg-lightPurple/70 border border-borderPurple text-sm text-darkPurple mb-6 transition-all duration-300">
+                <div class="font-bold mb-1 flex items-center gap-1.5 text-primaryPurple">
+                    <span>📖 Exam Rationale & Word Deep Dive</span>
+                </div>
+                <p id="explanation-text" class="leading-relaxed"></p>
+            </div>
+
+            <!-- Navigation Controls (In-card) -->
+            <div class="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-borderPurple">
+                <button onclick="prevQuestion()" id="prev-btn" class="px-5 py-2.5 rounded-xl border border-borderPurple bg-white text-darkPurple font-medium text-sm hover:bg-hoverBg disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-sm">
+                    ← Previous
+                </button>
+                <div class="flex items-center gap-2">
+                    <span class="text-xs font-medium text-mutedText hidden sm:inline">Jump to Q:</span>
+                    <input type="number" id="jump-input" min="1" max="100" class="w-16 px-2.5 py-1.5 text-center text-sm bg-white border border-borderPurple rounded-xl focus:outline-none focus:ring-2 focus:ring-primaryPurple" placeholder="1">
+                    <button onclick="jumpToQuestion()" class="px-3 py-1.5 bg-primaryPurple text-white text-xs font-semibold rounded-xl hover:bg-secondaryPurple transition-all shadow">Go</button>
+                </div>
+                <button onclick="nextQuestion()" id="next-btn" class="px-5 py-2.5 rounded-xl bg-primaryPurple text-white font-medium text-sm hover:bg-secondaryPurple transition-all shadow-md">
+                    Next →
+                </button>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Sticky Bottom Navigation Panel -->
+    <nav class="sticky bottom-0 z-40 bg-white/90 backdrop-blur-md border-t border-borderPurple shadow-lg py-3 px-4">
+        <div class="max-w-4xl mx-auto flex flex-wrap items-center justify-between gap-3 text-xs">
+            <div class="flex items-center gap-2">
+                <button onclick="prevQuestion()" class="px-3 py-1.5 rounded-lg border border-borderPurple bg-cardBg hover:bg-hoverBg font-medium text-darkPurple transition">← Prev</button>
+                <button onclick="nextQuestion()" class="px-3 py-1.5 rounded-lg bg-primaryPurple text-white hover:bg-secondaryPurple font-medium transition">Next →</button>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="font-medium text-mutedText">Jump:</span>
+                <input type="number" id="bottom-jump-input" min="1" max="100" class="w-14 px-2 py-1 text-center bg-cardBg border border-borderPurple rounded-lg text-xs focus:ring-1 focus:ring-primaryPurple" placeholder="Q#">
+                <button onclick="bottomJump()" class="px-2.5 py-1 bg-darkPurple text-white rounded-lg font-medium hover:bg-primaryPurple transition">Go</button>
+            </div>
+            <div>
+                <button onclick="resetQuiz()" class="px-3 py-1.5 rounded-lg border border-red-200 bg-red-50 text-red-600 font-medium hover:bg-red-100 transition">Reset Quiz</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Script: Quiz Database & Logic -->
+    <script>
+        const questions = [
+            // --- BONSAI (225) ---
+            {
+                id: 1,
+                category: "One Word Substitution",
+                question: "Choose the correct one-word substitution: Dwarf varieties of trees and shrubs grown in pots.",
+                options: ["Bonsai", "Botanist", "Bouquet", "Bower"],
+                answer: 0,
+                hint: "Originates from Japanese art form of growing miniature trees.",
+                explanation: "Bonsai (N.) refers to dwarf varieties of trees and shrubs grown in pots. Hindi meaning: उथले बर्तन में उगी झाड़ी का किस्म[cite: 9]."
+            },
+            {
+                id: 2,
+                category: "Synonym & Usage",
+                question: "Which of the following terms best describes the practice or art of growing miniature potted trees like 'Bonsai'?",
+                options: ["Horticulture / Potted dwarfing", "Arboriculture", "Silviculture", "Agronomy"],
+                answer: 0,
+                hint: "Focuses on container-grown miniature plants.",
+                explanation: "'Bonsai' specifically denotes the miniature tree cultivated in a shallow container. It tests precise botanical OWS in SSC exams."
+            },
+            {
+                id: 3,
+                category: "Statement Analysis",
+                question: "Consider the following statements regarding 'Bonsai':\n1. It is derived from a technique to keep plants full-sized.\n2. It involves pruning roots and branches.\nWhich statement(s) is/are correct?",
+                options: ["Only 1 is correct", "Only 2 is correct", "Both 1 and 2 are correct", "Neither 1 nor 2 is correct"],
+                answer: 1,
+                hint: "Bonsai keeps plants miniature, not full-sized.",
+                explanation: "Statement 1 is incorrect because Bonsai keeps plants dwarf/miniature. Statement 2 is correct as root and branch pruning are fundamental to Bonsai."
+            },
+            {
+                id: 4,
+                category: "Vocabulary Context",
+                question: "Identify the part of speech and correct contextual definition of 'Bonsai'.",
+                options: ["Noun - Dwarf varieties of trees in pots", "Verb - To prune tree branches", "Adjective - Extremely small plant", "Adverb - Grown in pots"],
+                answer: 0,
+                hint: "It functions as a Noun in English vocabulary lists.",
+                explanation: "Bonsai is a Noun (N.) representing dwarf varieties of trees and shrubs grown in pots[cite: 9]."
+            },
+
+            // --- BONUS (226) ---
+            {
+                id: 5,
+                category: "One Word Substitution",
+                question: "A sum of money added to a person's wages as a reward for good performance is known as:",
+                options: ["Bonus", "Bullion", "Budgeting", "Bounty"],
+                answer: 0,
+                hint: "Often given during festivals or successful financial years.",
+                explanation: "Bonus (N.) means a sum of money added to wages as a reward for good performance. Hindi meaning: अधिलाभ / पारिश्रमिक[cite: 9]."
+            },
+            {
+                id: 6,
+                category: "Synonym & Antonym",
+                question: "What is the closest synonym for 'Bonus' in financial or employment contexts?",
+                options: ["Incentive / Premium", "Penalty", "Deduction", "Liability"],
+                answer: 0,
+                hint: "Something extra given as an incentive.",
+                explanation: "'Incentive' or 'Premium' are synonyms of Bonus. Antonyms include penalty, fine, or deduction."
+            },
+            {
+                id: 7,
+                category: "Error Spotting / Usage",
+                question: "Choose the sentence that correctly uses the word 'Bonus'.",
+                options: [
+                    "The company announced a festival bonus for all hard-working employees.",
+                    "He took a bonus from the bank with the intention of returning it.",
+                    "She studied botany to understand bonus structures.",
+                    "The botanical garden was filled with bonus trees."
+                ],
+                answer: 0,
+                hint: "Look for reward or extra payment context.",
+                explanation: "Option A correctly uses bonus as an extra reward payment. Other options misuse botanical or loan terminology."
+            },
+            {
+                id: 8,
+                category: "Assertion-Reasoning",
+                question: "Assertion (A): A bonus acts as a strong motivator in corporate environments.\nReason (R): It directly links employee performance with financial reward.",
+                options: [
+                    "Both A and R are true and R is the correct explanation of A",
+                    "Both A and R are true but R is NOT the correct explanation of A",
+                    "A is true but R is false",
+                    "A is false but R is true"
+                ],
+                answer: 0,
+                hint: "Financial rewards motivate performance.",
+                explanation: "Both assertion and reason are true, and the reason accurately explains why bonuses motivate workers."
+            },
+
+            // --- BOOKWORM (227) ---
+            {
+                id: 9,
+                category: "One Word Substitution",
+                question: "An avid book reader or one who reads a lot is called a:",
+                options: ["Bookworm", "Botanist", "Brigand", "Brunette"],
+                answer: 0,
+                hint: "Loves spending time buried in pages.",
+                explanation: "Bookworm (N.) means an avid book reader / one who reads a lot. Hindi meaning: किताबी कीड़ा (पुस्तक प्रेमी)[cite: 9]."
+            },
+            {
+                id: 10,
+                category: "Synonym Matching",
+                question: "Which of the following is a direct synonym for 'Bookworm'?",
+                options: ["Bibliophile / Scholar", "Illiterate", "Philistine", "Novice"],
+                answer: 0,
+                hint: "A lover of books.",
+                explanation: "'Bibliophile' is a formal synonym for a bookworm. Philistine is an antonym (hostile to arts/letters)."
+            },
+            {
+                id: 11,
+                category: "Idiomatic & Phrase Analysis",
+                question: "In the expression 'An avid book reader // One who reads a lot', the term 'avid' emphasizes:",
+                options: ["Enthusiastic and dedicated interest", "Reluctant and casual reading", "Reading only textbooks", "Temporary curiosity"],
+                answer: 0,
+                hint: "Avid means having a keen interest or enthusiasm.",
+                explanation: "Avid means showing great enthusiasm or interest, perfectly describing a dedicated bookworm."
+            },
+            {
+                id: 12,
+                category: "Statement Check",
+                question: "Which statement is NOT correct regarding 'Bookworm'?",
+                options: [
+                    "It is used exclusively as a verb in standard English.",
+                    "It describes someone deeply devoted to reading.",
+                    "It can be used metaphorically.",
+                    "Its Hindi equivalent is 'किताबी कीड़ा'."
+                ],
+                answer: 0,
+                hint: "Check the part of speech.",
+                explanation: "Statement A is incorrect because Bookworm is a Noun (N.), not a verb[cite: 9]."
+            },
+
+            // --- BOOMERANG (228) ---
+            {
+                id: 13,
+                category: "One Word Substitution",
+                question: "A hunting weapon which comes back, used by Australian Aborigines:",
+                options: ["Boomerang", "Bridle", "Bullion", "Bundle"],
+                answer: 0,
+                hint: "Throws forward and curves back to the thrower.",
+                explanation: "Boomerang (N.) is a curved hunting weapon that returns to the thrower. Hindi meaning: एक किस्म का मुड़ा हुआ बाण जो फेंकने वाले के पास लौट आता है[cite: 9]."
+            },
+            {
+                id: 14,
+                category: "Idiomatic Application",
+                question: "When someone says 'His plan boomerang-ed on him', they mean:",
+                options: ["The plan rebounded with negative consequences for himself", "The plan was exceptionally successful", "The plan was thrown away", "The plan was kept secret"],
+                answer: 0,
+                hint: "Like the weapon, it returns to hit the creator.",
+                explanation: "Metaphorically, a boomerang effect means an action rebounds upon the doer, causing unintended harm to themselves."
+            },
+            {
+                id: 15,
+                category: "Factual Question",
+                question: "Traditionally, which indigenous community is famously associated with the invention and use of the 'Boomerang'?",
+                options: ["Australian Aborigines", "Native Americans", "Maori tribes", "Inuit communities"],
+                answer: 0,
+                hint: "Mentioned directly in standard OWS definitions.",
+                explanation: "Australian Aborigines are historically renowned for crafting and utilizing boomerangs[cite: 9]."
+            },
+            {
+                id: 16,
+                category: "Grammar & Class",
+                question: "What is the primary grammatical classification of 'Boomerang' in the context of OWS?",
+                options: ["Noun", "Adjective", "Preposition", "Conjunction"],
+                answer: 0,
+                hint: "It names an object/weapon.",
+                explanation: "Boomerang functions as a Noun (N.)[cite: 9]."
+            },
+
+            // --- BORROW (229) ---
+            {
+                id: 17,
+                category: "One Word Substitution",
+                question: "To take something on loan with the intention of returning it:",
+                options: ["Borrow", "Bury", "Breach", "Bridle"],
+                answer: 0,
+                hint: "Opposite of lend.",
+                explanation: "Borrow (V.) means to take something on loan with intention of returning it[cite: 9]. Hindi meaning: उधार लेना[cite: 9]."
+            },
+            {
+                id: 18,
+                category: "Synonym & Antonym",
+                question: "What is the exact antonym of the verb 'Borrow'?",
+                options: ["Lend", "Take", "Acquire", "Obtain"],
+                answer: 0,
+                hint: "To give something on loan.",
+                explanation: "'Lend' is the direct antonym of borrow. Take, acquire, and obtain are synonymous with acquiring."
+            },
+            {
+                id: 19,
+                category: "Grammar Note",
+                question: "Notice the asterisk (*) next to 'Borrow (V.)' in standard Blackbook entries. It often indicates:",
+                options: ["Important frequently-asked SSC exam word", "An obsolete word", "A word without a Hindi translation", "A misspelled term"],
+                answer: 0,
+                hint: "Starred items carry high exam frequency.",
+                explanation: "Asterisks (*) in competitive vocab books highlight words with high recurrence in previous years' exams."
+            },
+            {
+                id: 20,
+                category: "Sentence Completion",
+                question: "Fill in the blank: 'He decided to _____ a book from the public library for his research.'",
+                options: ["borrow", "lend", "breach", "bottleneck"],
+                answer: 0,
+                hint: "Taking an item temporarily with return intent.",
+                explanation: "'Borrow' fits perfectly when taking an item from a library temporarily."
+            },
+
+            // --- BOTANIST (230) ---
+            {
+                id: 21,
+                category: "One Word Substitution",
+                question: "One who is well-versed in the knowledge of plants:",
+                options: ["Botanist", "Zoologist", "Geologist", "Biochemist"],
+                answer: 0,
+                hint: "Expert in flora and plant life.",
+                explanation: "Botanist (N.) is someone skilled in plant science. Hindi meaning: वनस्पति-विज्ञानी[cite: 9]."
+            },
+            {
+                id: 22,
+                category: "Root Word Analysis",
+                question: "The root 'Bot- / Botan-' in Botanist is derived from Greek meaning:",
+                options: ["Plant or herb", "Earth or rock", "Water or river", "Animal or life"],
+                answer: 0,
+                hint: "Relates to greenery and vegetation.",
+                explanation: "Derived from Greek 'botanē', meaning plant or herb."
+            },
+            {
+                id: 23,
+                category: "Distractor Test",
+                question: "Which of the following professionals studies animal life rather than plant life?",
+                options: ["Zoologist", "Botanist", "Horticulturist", "Florist"],
+                answer: 0,
+                hint: "Zoo relates to animals.",
+                explanation: "Zoologists study animals, whereas botanists study plants[cite: 9]."
+            },
+            {
+                id: 24,
+                category: "Statement Evaluation",
+                question: "Which of the following is correct regarding a 'Botanist'?",
+                options: [
+                    "A botanist investigates plant physiology, structure, and ecology.",
+                    "A botanist focuses solely on mechanical engines.",
+                    "A botanist studies deep-sea oceanic trenches.",
+                    "A botanist designs architectural bridges."
+                ],
+                answer: 0,
+                hint: "Plant science expert.",
+                explanation: "A botanist is a scientist specializing in botany (plant study)."
+            },
+
+            // --- BOTANY (231) ---
+            {
+                id: 25,
+                category: "One Word Substitution",
+                question: "The scientific study of plants and their structure:",
+                options: ["Botany", "Zoology", "Astronomy", "Geology"],
+                answer: 0,
+                hint: "Branch of biology dealing with flora.",
+                explanation: "Botany (N.) is the scientific study of plants and their structure[cite: 9]. Hindi meaning: वनस्पति विज्ञान[cite: 9]."
+            },
+            {
+                id: 26,
+                category: "Analogy Question",
+                question: "Botany : Plants :: Zoology : _____?",
+                options: ["Animals", "Rocks", "Stars", "Chemicals"],
+                answer: 0,
+                hint: "Field of study matching counterpart.",
+                explanation: "Botany studies plants just as zoology studies animals."
+            },
+            {
+                id: 27,
+                category: "Comprehensive Check",
+                question: "Which branch of science closely complements Botany in understanding ecological habitats?",
+                options: ["Ecology", "Astrophysics", "Quantum Mechanics", "Metallurgy"],
+                answer: 0,
+                hint: "Study of environment and organisms.",
+                explanation: "Ecology studies interactions between organisms and their environment, closely tied to botanical studies."
+            },
+            {
+                id: 28,
+                category: "Grammar & Form",
+                question: "What part of speech is 'Botany'?",
+                options: ["Noun", "Verb", "Adjective", "Adverb"],
+                answer: 0,
+                hint: "Name of an academic discipline.",
+                explanation: "Botany is a Noun (N.)[cite: 9]."
+            },
+
+            // --- BOTTLENECK (232) ---
+            {
+                id: 29,
+                category: "One Word Substitution",
+                question: "A narrow or busy section of road where the traffic often gets slower and stops:",
+                options: ["Bottleneck", "Boulevard", "Bower", "Boutique"],
+                answer: 0,
+                hint: "Shaped like the narrow neck of a glass bottle restricting flow.",
+                explanation: "Bottleneck (N.) refers to a narrow or congested section causing traffic jams[cite: 9]. Hindi meaning: रास्ते का संकीर्ण भाग[cite: 9]."
+            },
+            {
+                id: 30,
+                category: "Idiomatic Metaphor",
+                question: "In project management, a 'bottleneck' metaphorically represents:",
+                options: ["A point of congestion that slows down the entire process", "A decorative glass container", "A financial bonus", "A legal breach"],
+                answer: 0,
+                hint: "A restriction in workflow capacity.",
+                explanation: "A bottleneck restricts smooth workflow or traffic flow, causing delays."
+            },
+            {
+                id: 31,
+                category: "Synonym Match",
+                question: "Choose the best synonym for 'Bottleneck' in a traffic context:",
+                options: ["Congestion / Gridlock", "Highway / Expressway", "Runway", "Boulevard"],
+                answer: 0,
+                hint: "Traffic standstill or block.",
+                explanation: "Congestion and gridlock are direct synonyms of a traffic bottleneck."
+            },
+            {
+                id: 32,
+                category: "Exam Frequency Check",
+                question: "Why does 'Bottleneck*' have an asterisk in Blackbook OWS lists?",
+                options: ["High importance due to frequent appearance in SSC exams", "It is a rare archaic word", "It has multiple spellings", "It is a slang term"],
+                answer: 0,
+                hint: "Star marks high-yield exam words.",
+                explanation: "Asterisks indicate repeated previous-year exam questions."
+            },
+
+            // --- BOULEVARD (233) ---
+            {
+                id: 33,
+                category: "One Word Substitution",
+                question: "A broad road bordered with trees:",
+                options: ["Boulevard", "Bottleneck", "Bower", "Bungalow"],
+                answer: 0,
+                hint: "Wide avenue lined with trees.",
+                explanation: "Boulevard (N.) means a broad road bordered with trees[cite: 9]. Hindi meaning: मुख्य मार्ग / गुलदस्ता (Note: Boulevard is broad road)[cite: 9]."
+            },
+            {
+                id: 34,
+                category: "Synonym Identification",
+                question: "Which of the following is synonymous with 'Boulevard'?",
+                options: ["Avenue / Thoroughfare", "Narrow alley", "Cul-de-sac", "Bottleneck"],
+                answer: 0,
+                hint: "A wide city street.",
+                explanation: "An avenue or thoroughfare represents a wide, major roadway like a boulevard."
+            },
+            {
+                id: 35,
+                category: "Etymology & Spelling",
+                question: "The word 'Boulevard' originates from which European language?",
+                options: ["French", "Latin", "Greek", "German"],
+                answer: 0,
+                hint: "Often associated with Parisian grand streets.",
+                explanation: "Boulevard entered English from French (ultimately from Germanic terms related to bulwark)."
+            },
+            {
+                id: 36,
+                category: "Contextual Usage",
+                question: "Select the correct sentence using 'Boulevard'.",
+                options: [
+                    "The evening parade marched down the grand tree-lined boulevard.",
+                    "He drank a cold beverage in the traffic boulevard.",
+                    "She studied botany on the busy boulevard.",
+                    "The horse wore a leather boulevard."
+                ],
+                answer: 0,
+                hint: "Refers to a wide street.",
+                explanation: "Option A accurately uses boulevard as a grand tree-lined road."
+            },
+
+            // --- BOUQUET (234) ---
+            {
+                id: 37,
+                category: "One Word Substitution",
+                question: "An arrangement of flowers that is usually given as a present:",
+                options: ["Bouquet", "Bonsai", "Bundle", "Bullion"],
+                answer: 0,
+                hint: "Bunch of flowers tied together for gifting.",
+                explanation: "Bouquet (N.) is an arrangement of flowers given as a present[cite: 9]. Hindi meaning: गुलदस्ता[cite: 9]."
+            },
+            {
+                id: 38,
+                category: "Spelling Test (Frequent SSC Trap)",
+                question: "Identify the correctly spelled word among the following:",
+                options: ["Bouquet", "Bouquett", "Booquet", "Bouqet"],
+                answer: 0,
+                hint: "Ends with -quet and starts with bou-.",
+                explanation: "'Bouquet' is the correct spelling, frequently tested in SSC spelling correction rounds."
+            },
+            {
+                id: 39,
+                category: "Secondary Meaning",
+                question: "In wine tasting terminology, what does 'bouquet' refer to?",
+                options: ["The characteristic aroma or scent of aged wine", "The grape harvesting season", "The bottle neck design", "The price tag"],
+                answer: 0,
+                hint: "Scents and aromas.",
+                explanation: "In oenology (wine tasting), bouquet refers to the complex aromatic profile of wine."
+            },
+            {
+                id: 40,
+                category: "Grammar & Class",
+                question: "What part of speech is 'Bouquet'?",
+                options: ["Noun", "Verb", "Adjective", "Adverb"],
+                answer: 0,
+                hint: "It's a collective or physical object.",
+                explanation: "Bouquet is a Noun (N.)[cite: 9]."
+            },
+
+            // --- BOURGEOIS (235) ---
+            {
+                id: 41,
+                category: "One Word Substitution",
+                question: "Belonging to the middle class:",
+                options: ["Bourgeois", "Brigand", "Botanist", "Brunette"],
+                answer: 0,
+                hint: "Associated with middle-class social strata or conventionality.",
+                explanation: "Bourgeois (N./Adj.) means belonging to the middle class[cite: 9]. Hindi meaning: मध्यम वर्गीय[cite: 9]."
+            },
+            {
+                id: 42,
+                category: "Sociological Context",
+                question: "In sociological and political theory, the 'bourgeoisie' typically contrasts with:",
+                options: ["The proletariat (working class)", "The botanical society", "The athletic club", "The academic faculty"],
+                answer: 0,
+                hint: "Class struggle terminology.",
+                explanation: "In Marxist theory, the bourgeoisie (capitalist/middle class) is contrasted with the proletariat (working class)."
+            },
+            {
+                id: 43,
+                category: "Pronunciation & Spelling Trap",
+                question: "Which silent letters appear in the spelling of 'Bourgeois'?",
+                options: ["'s' at the end and 'ge' sound", "No silent letters", "Silent 'b' at start", "Silent 'r' in middle"],
+                answer: 0,
+                hint: "French origin word with distinctive spelling.",
+                explanation: "Bourgeois has French roots with pronunciation ending in a soft zh sound."
+            },
+            {
+                id: 44,
+                category: "Synonym Match",
+                question: "Which of the following describes a 'bourgeois' mindset in literary contexts?",
+                options: ["Conventional, middle-class, and materialist", "Extremely radical and revolutionary", "Aesthetic and bohemian", "Nomadic and wild"],
+                answer: 0,
+                hint: "Conventional middle-class values.",
+                explanation: "Bourgeois often denotes conventional, middle-class complacency or materialism in literature."
+            },
+
+            // --- BOUTIQUE (236) ---
+            {
+                id: 45,
+                category: "One Word Substitution",
+                question: "A small shop that sells fashionable clothes:",
+                options: ["Boutique", "Brewery", "Bower", "Bottleneck"],
+                answer: 0,
+                hint: "Trendy, chic clothing boutique.",
+                explanation: "Boutique (N.) means a small shop selling fashionable clothes or accessories[cite: 9]. Hindi meaning: वस्त्रालय[cite: 9]."
+            },
+            {
+                id: 46,
+                category: "Synonym Check",
+                question: "Which term is synonymous with a high-end 'Boutique'?",
+                options: ["Designer fashion shop / Specialty store", "Mega supermarket", "Warehouse", "Wholesale depot"],
+                answer: 0,
+                hint: "Small and exclusive clothing store.",
+                explanation: "A specialty store or designer shop is synonymous with boutique."
+            },
+            {
+                id: 47,
+                category: "Exam Note (*)",
+                question: "Why is 'Boutique*' marked with an asterisk in standard vocabulary compilations?",
+                options: ["High frequency in competitive spelling and OWS questions", "It is an archaic medical term", "It has no plural form", "It is a slang word"],
+                answer: 0,
+                hint: "Indicates recurring exam importance.",
+                explanation: "Asterisk (*) highlights important words frequently asked in SSC/competitive examinations."
+            },
+            {
+                id: 48,
+                category: "Grammar & Form",
+                question: "What is the grammatical category of 'Boutique'?",
+                options: ["Noun", "Verb", "Adjective", "Adverb"],
+                answer: 0,
+                hint: "Names a retail establishment.",
+                explanation: "Boutique is a Noun (N.)[cite: 9]."
+            },
+
+            // --- BOVINE (237) ---
+            {
+                id: 49,
+                category: "One Word Substitution",
+                question: "Affecting or relating to cows or cattle:",
+                options: ["Bovine", "Feline", "Canine", "Porcine"],
+                answer: 0,
+                hint: "Relating to the ox/cow family.",
+                explanation: "Bovine (Adj.) means affecting or relating to cows or cattle[cite: 9]. Hindi meaning: गाय से संबंधित[cite: 9]."
+            },
+            {
+                id: 50,
+                category: "Animal Adjective Comparison",
+                question: "Match the animal with its correct adjectival form: Feline is to cats as Canine is to dogs, and Bovine is to:",
+                options: ["Cows / Cattle", "Pigs", "Horses", "Sheep"],
+                answer: 0,
+                hint: "Refers to cattle family.",
+                explanation: "Bovine relates to cattle/cows; feline to cats; canine to dogs; porcine to pigs."
+            },
+            {
+                id: 51,
+                category: "Figurative Meaning",
+                question: "If someone describes a person's demeanor as 'bovine', they imply the person is:",
+                options: ["Sluggish, dull, or ox-like in temperament", "Extremely aggressive and wild", "Cunning and sly", "Quick-witted and agile"],
+                answer: 0,
+                hint: "Slow and placid like cattle.",
+                explanation: "Metaphorically, bovine can describe someone slow, placid, or dull-witted."
+            },
+            {
+                id: 52,
+                category: "Grammar Check",
+                question: "What part of speech is 'Bovine'?",
+                options: ["Adjective (also used as Noun)", "Verb only", "Preposition", "Conjunction"],
+                answer: 0,
+                hint: "Describes a quality or relation.",
+                explanation: "Bovine is primarily an Adjective (Adj.)[cite: 9]."
+            },
+
+            // --- BOWER (238) ---
+            {
+                id: 53,
+                category: "One Word Substitution",
+                question: "A shady place under trees:",
+                options: ["Bower", "Boulevard", "Bottleneck", "Brewery"],
+                answer: 0,
+                hint: "Pleasant shady leafy shelter under tree branches.",
+                explanation: "Bower (N.) means a shady place under trees[cite: 9]. Hindi meaning: पेड़ों के नीचे का छायादार स्थान[cite: 9]."
+            },
+            {
+                id: 54,
+                category: "Literary Usage",
+                question: "In romantic poetry, a 'bower' is frequently depicted as:",
+                options: ["A peaceful, secluded sanctuary of trees and foliage", "A dangerous battlefield", "A crowded urban marketplace", "A dark industrial factory"],
+                answer: 0,
+                hint: "Sheltered garden arbor.",
+                explanation: "Poets like John Keats used 'bower' to signify a quiet, shady sanctuary in nature."
+            },
+            {
+                id: 55,
+                category: "Synonym Match",
+                question: "Which word is synonymous with 'Bower'?",
+                options: ["Arbor / Grotto / Shade", "Boulevard", "Bottleneck", "Bullion"],
+                answer: 0,
+                hint: "A leafy shelter.",
+                explanation: "Arbor or leafy shelter are synonyms for bower."
+            },
+            {
+                id: 56,
+                category: "Grammar & Form",
+                question: "What part of speech is 'Bower'?",
+                options: ["Noun", "Verb", "Adjective", "Adverb"],
+                answer: 0,
+                hint: "Names a physical location.",
+                explanation: "Bower is a Noun (N.)[cite: 9]."
+            },
+
+            // --- BREACH (239) ---
+            {
+                id: 57,
+                category: "One Word Substitution",
+                question: "An act of breaking or failing to observe a law, agreement, or code of conduct:",
+                options: ["Breach", "Borrow", "Bridle", "Brood"],
+                answer: 0,
+                hint: "Violation of rules or contract.",
+                explanation: "Breach (V./N.) means an act of breaking a law or agreement[cite: 9]. Hindi meaning: नियम तोड़ना[cite: 9]."
+            },
+            {
+                id: 58,
+                category: "Legal Context",
+                question: "In legal terminology, 'breach of contract' means:",
+                options: ["Failure to fulfill the terms of a legally binding agreement", "Signing a new contract", "Renewing an agreement", "Canceling a contract by mutual consent"],
+                answer: 0,
+                hint: "Violation of contract terms.",
+                explanation: "Breach of contract occurs when one party fails to perform their legal obligations."
+            },
+            {
+                id: 59,
+                category: "Synonym & Antonym",
+                question: "What is a direct antonym for 'Breach' when used in the context of agreements?",
+                options: ["Compliance / Observance / Fulfillment", "Violation", "Infringement", "Rupture"],
+                answer: 0,
+                hint: "Adhering to rules.",
+                explanation: "Compliance or observance means following rules, whereas breach means breaking them."
+            },
+            {
+                id: 60,
+                category: "Sentence Completion",
+                question: "Fill in the blank: 'The hacker's unauthorized entry into the secure database resulted in a major security _____.'",
+                options: ["breach", "bower", "bouquet", "boulevard"],
+                answer: 0,
+                hint: "Security violation.",
+                explanation: "A security breach refers to a violation of security protocols."
+            },
+
+            // --- BREWERY (240) ---
+            {
+                id: 61,
+                category: "One Word Substitution",
+                question: "A factory where beer is made:",
+                options: ["Brewery", "Boutique", "Bottleneck", "Boulevard"],
+                answer: 0,
+                hint: "Industrial facility for brewing beverages.",
+                explanation: "Brewery (N.) is a factory where beer is made[cite: 9]. Hindi meaning: शराब की भट्ठी[cite: 9]."
+            },
+            {
+                id: 62,
+                category: "Suffix Analysis",
+                question: "The suffix '-ery' in Brewery typically denotes:",
+                options: ["A place or establishment where an activity is conducted", "A small tool", "A medical condition", "A person's title"],
+                answer: 0,
+                hint: "Bakery, fishery, brewery.",
+                explanation: "The suffix '-ery' designates a place of business or production."
+            },
+            {
+                id: 63,
+                category: "Distractor Test",
+                question: "Which of the following is manufactured in a 'brewery'?",
+                options: ["Beer and fermented malt beverages", "Bread and pastries", "Cotton garments", "Gold and silver bullion"],
+                answer: 0,
+                hint: "Alcoholic beverage brewing.",
+                explanation: "Breweries specialize in brewing beer[cite: 9]. Bakeries make bread."
+            },
+            {
+                id: 64,
+                category: "Grammar & Form",
+                question: "What part of speech is 'Brewery'?",
+                options: ["Noun", "Verb", "Adjective", "Adverb"],
+                answer: 0,
+                hint: "Names a manufacturing plant.",
+                explanation: "Brewery is a Noun (N.)[cite: 9]."
+            },
+
+            // --- BRIDLE (241) ---
+            {
+                id: 65,
+                category: "One Word Substitution",
+                question: "Leather straps put around a horse's head to control it:",
+                options: ["Bridle", "Boomerang", "Bundle", "Bullion"],
+                answer: 0,
+                hint: "Headgear used to steer and restrain horses.",
+                explanation: "Bridle (N.) refers to leather straps put around a horse's head to control it[cite: 9]. Hindi meaning: लगाम[cite: 9]."
+            },
+            {
+                id: 66,
+                category: "Figurative Idiom",
+                question: "The idiom 'to rein or bridle one's anger' means:",
+                options: ["To restrain or control one's temper", "To unleash one's fury", "To ride a horse", "To break an agreement"],
+                answer: 0,
+                hint: "Controlling movement.",
+                explanation: "Just as a bridle controls a horse, 'bridling' oneself means exercising restraint."
+            },
+            {
+                id: 67,
+                category: "Spelling Trap",
+                question: "Distinguish between 'Bridle' and 'Bridal'. What does 'Bridal' mean?",
+                options: ["Relating to a bride or wedding", "Leather straps for horses", "A shady place under trees", "A metal bar"],
+                answer: 0,
+                hint: "Wedding vs horse gear.",
+                explanation: "Bridal pertains to weddings/brides, whereas bridle is horse headgear[cite: 9]."
+            },
+            {
+                id: 68,
+                category: "Exam Note (*)",
+                question: "Why does 'Bridle*' carry an asterisk in vocabulary prep books?",
+                options: ["Frequent appearance in SSC synonym/OWS questions", "It has an irregular plural", "It is a foreign phrase", "It is outdated"],
+                answer: 0,
+                hint: "High-yield competitive exam term.",
+                explanation: "Asterisk indicates high examination frequency and potential spelling/meaning confusion."
+            },
+
+            // --- BRIGAND (242) ---
+            {
+                id: 69,
+                category: "One Word Substitution",
+                question: "Member of a band of robbers:",
+                options: ["Brigand", "Botanist", "Bookworm", "Bourgeois"],
+                answer: 0,
+                hint: "Outlaw or highway robber operating in bands.",
+                explanation: "Brigand (N.) means a member of a band of robbers[cite: 9]. Hindi meaning: डाकू[cite: 9]."
+            },
+            {
+                id: 70,
+                category: "Synonym Match",
+                question: "Which of the following is a direct synonym for 'Brigand'?",
+                options: ["Bandit / Outlaw / Marauder", "Police officer", "Philanthropist", "Scholar"],
+                answer: 0,
+                hint: "Criminal marauder.",
+                explanation: "Bandit and outlaw are synonymous with brigand."
+            },
+            {
+                id: 71,
+                category: "Statement Analysis",
+                question: "Consider the statements regarding 'Brigand':\n1. It refers to an individual operating in a gang of thieves.\n2. It is an adjective describing peaceful behavior.\nWhich is correct?",
+                options: ["Only 1 is correct", "Only 2 is correct", "Both 1 and 2 are correct", "Neither 1 nor 2 is correct"],
+                answer: 0,
+                hint: "Brigands are robbers, not peaceful.",
+                explanation: "Statement 1 is correct (robber in a band). Statement 2 is false as brigand is a noun denoting a criminal."
+            },
+            {
+                id: 72,
+                category: "Grammar Check",
+                question: "What part of speech is 'Brigand'?",
+                options: ["Noun", "Verb", "Adjective", "Adverb"],
+                answer: 0,
+                hint: "Names a person/criminal.",
+                explanation: "Brigand is a Noun (N.)[cite: 9]."
+            },
+
+            // --- BRITTLE (243) ---
+            {
+                id: 73,
+                category: "One Word Substitution",
+                question: "Hard but easily broken or liable to break easily:",
+                options: ["Brittle", "Bovine", "Bourgeois", "Bower"],
+                answer: 0,
+                hint: "Glass or dry twigs snap easily under pressure.",
+                explanation: "Brittle (Adj.) means hard but easily broken[cite: 9]. Hindi meaning: भंगुर / आसानी से टूटने योग्य[cite: 9]."
+            },
+            {
+                id: 74,
+                category: "Synonym & Antonym",
+                question: "What is the exact antonym of 'Brittle'?",
+                options: ["Tough / Flexible / Durable", "Fragile", "Frail", "Delicate"],
+                answer: 0,
+                hint: "Opposite of snapping easily.",
+                explanation: "Tough or flexible are antonyms of brittle. Fragile and frail are synonyms."
+            },
+            {
+                id: 75,
+                category: "Contextual Physics",
+                question: "In materials science, a brittle material will fracture when subjected to stress with:",
+                options: ["Very little or no plastic deformation", "Significant stretching before breaking", "Complete melting", "Elastic bounce"],
+                answer: 0,
+                hint: "Snaps without bending.",
+                explanation: "Brittle materials break suddenly under load without bending or stretching significantly."
+            },
+            {
+                id: 76,
+                category: "Exam Frequency (*)",
+                question: "Why is 'Brittle*' starred in competitive word lists?",
+                options: ["Repeatedly tested in SSC antonym/synonym and OWS sections", "It is an acronym", "It is a scientific formula", "It has no synonyms"],
+                answer: 0,
+                hint: "High exam utility.",
+                explanation: "Asterisk (*) highlights its frequent appearance across competitive exams."
+            },
+
+            // --- BROOD (244) ---
+            {
+                id: 77,
+                category: "One Word Substitution",
+                question: "The young of an animal cared for at one time // A family of young birds:",
+                options: ["Brood", "Bullion", "Bundle", "Bower"],
+                answer: 0,
+                hint: "Offspring hatched or cared for together.",
+                explanation: "Brood (N.) means the young of an animal/birds cared for at one time[cite: 9]. Hindi meaning: मादा पक्षी के (एक ही बार में दिए) सब बच्चे[cite: 9]."
+            },
+            {
+                id: 78,
+                category: "Verbal Usage",
+                question: "When used as a verb, what does 'to brood over something' mean?",
+                options: ["To think deeply and unhappily about something", "To feed young birds", "To build a nest", "To fly in circles"],
+                answer: 0,
+                hint: "Dwelling on worries.",
+                explanation: "As a verb, brooding means dwelling gloomily on a subject or grievance."
+            },
+            {
+                id: 79,
+                category: "Synonym Match",
+                question: "Which term is synonymous with 'brood' in the context of animal offspring?",
+                options: ["Offspring / Progeny / Litter", "Adult herd", "Predator pack", "Lone wanderer"],
+                answer: 0,
+                hint: "Young offspring group.",
+                explanation: "Offspring or litter corresponds to a brood of young animals."
+            },
+            {
+                id: 80,
+                category: "Grammar & Class",
+                question: "What part of speech is 'Brood' in the OWS definition 'A family of young birds'?",
+                options: ["Noun", "Verb", "Adjective", "Adverb"],
+                answer: 0,
+                hint: "Acts as a collective noun here.",
+                explanation: "Brood functions as a Noun (N.)[cite: 9]."
+            },
+
+            // --- BRUNCH (245) ---
+            {
+                id: 81,
+                category: "One Word Substitution",
+                question: "A meal that is usually taken late in the morning that combines a breakfast and an early lunch:",
+                options: ["Brunch", "Bullion", "Bundle", "Boutique"],
+                answer: 0,
+                hint: "Portmanteau of Breakfast and Lunch.",
+                explanation: "Brunch (N.) combines breakfast and lunch[cite: 9]. Hindi meaning: नाश्ते और खाने के साथ खाना[cite: 9]."
+            },
+            {
+                id: 82,
+                category: "Linguistic Term (Portmanteau)",
+                question: "Linguistically, 'Brunch' is formed by blending two words. This linguistic device is called a:",
+                options: ["Portmanteau (blend)", "Acronym", "Suffix derivation", "Prefix clipping"],
+                answer: 0,
+                hint: "Breakfast + Lunch = Brunch.",
+                explanation: "A portmanteau combines the sounds and meanings of two different words."
+            },
+            {
+                id: 83,
+                category: "Contextual Timing",
+                question: "At what time of day is a 'brunch' typically consumed?",
+                options: ["Late morning (between breakfast and lunch hours)", "Late midnight", "At dawn before sunrise", "Late evening after dinner"],
+                answer: 0,
+                hint: "Mid-to-late morning meal.",
+                explanation: "Brunch is eaten in the late morning, replacing both breakfast and lunch."
+            },
+            {
+                id: 84,
+                category: "Grammar Check",
+                question: "What part of speech is 'Brunch'?",
+                options: ["Noun (also used as verb)", "Adjective only", "Preposition", "Conjunction"],
+                answer: 0,
+                hint: "Names a meal.",
+                explanation: "Brunch is primarily a Noun (N.)[cite: 9]."
+            },
+
+            // --- BRUNETTE (246) ---
+            {
+                id: 85,
+                category: "One Word Substitution",
+                question: "A woman with dark brown hair:",
+                options: ["Brunette", "Botanist", "Bourgeois", "Brigand"],
+                answer: 0,
+                hint: "Refers to hair coloration in women.",
+                explanation: "Brunette (N.) means a woman with dark brown hair[cite: 9]. Hindi meaning: गहरे भूरे बाल वाली स्त्री[cite: 9]."
+            },
+            {
+                id: 86,
+                category: "Etymology & Gender",
+                question: "In French and English grammar, 'Brunette' specifically denotes a female with dark hair. What is the masculine form?",
+                options: ["Brunet", "Brunette", "Blonde", "Blond male"],
+                answer: 0,
+                hint: "Drop the 'te' for masculine.",
+                explanation: "'Brunet' is the masculine form, while 'brunette' is traditionally feminine."
+            },
+            {
+                id: 87,
+                category: "Synonym / Descriptor",
+                question: "Which hair color classification contrasts with a 'brunette'?",
+                options: ["Blonde or red-haired", "Bald", "Short-cropped", "Curly"],
+                answer: 0,
+                hint: "Fair or golden hair.",
+                explanation: "Blonde (fair-haired) contrasts with brunette (dark-brown-haired)."
+            },
+            {
+                id: 88,
+                category: "Grammar & Form",
+                question: "What part of speech is 'Brunette'?",
+                options: ["Noun (and Adjective)", "Verb", "Preposition", "Conjunction"],
+                answer: 0,
+                hint: "Describes a person's physical appearance.",
+                explanation: "Brunette functions as a Noun (N.) and adjective[cite: 9]."
+            },
+
+            // --- BUDGETING (247) ---
+            {
+                id: 89,
+                category: "One Word Substitution",
+                question: "An itemized summary of estimated expenses for a given period along with proposals for financing them:",
+                options: ["Budgeting", "Bullion", "Bundle", "Borrow"],
+                answer: 0,
+                hint: "Financial planning and estimation.",
+                explanation: "Budgeting (N.) means an itemized summary of estimated expenses and financing proposals[cite: 9]. Hindi meaning: बजट[cite: 9]."
+            },
+            {
+                id: 90,
+                category: "Financial Objective",
+                question: "The primary purpose of financial 'budgeting' is to:",
+                options: ["Control expenses and allocate financial resources effectively", "Increase random spending", "Borrow money indefinitely", "Manufacture currency"],
+                answer: 0,
+                hint: "Planning income and expenditures.",
+                explanation: "Budgeting helps manage income, control expenses, and plan financial allocation."
+            },
+            {
+                id: 91,
+                category: "Synonym Match",
+                question: "Which of the following is synonymous with a financial budget/budgeting plan?",
+                options: ["Financial forecast / Expenditure plan", "Random expense sheet", "Tax breach", "Debts"],
+                answer: 0,
+                hint: "Estimated financial blueprint.",
+                explanation: "A financial forecast or expenditure plan is synonymous with budgeting."
+            },
+            {
+                id: 92,
+                category: "Grammar & Class",
+                question: "What part of speech is 'Budgeting' in this context?",
+                options: ["Noun", "Adjective only", "Interjection", "Pronoun"],
+                answer: 0,
+                hint: "Gerund functioning as a noun.",
+                explanation: "Budgeting functions as a Noun (N.) representing the financial plan[cite: 9]."
+            },
+
+            // --- BULLION (248) ---
+            {
+                id: 93,
+                category: "One Word Substitution",
+                question: "Gold and silver before using for manufacturing ornaments:",
+                options: ["Bullion", "Bottleneck", "Bouquet", "Bower"],
+                answer: 0,
+                hint: "Precious metals in bulk bars or ingots.",
+                explanation: "Bullion (N.) means gold and silver in bulk before being made into ornaments[cite: 9]. Hindi meaning: सोने चाँदी की ईंट[cite: 9]."
+            },
+            {
+                id: 94,
+                category: "Form & Shape",
+                question: "In what physical form is 'bullion' typically stored in central bank reserves?",
+                options: ["Heavy bars or ingots", "Delicate jewelry necklaces", "Tiny glittering dust", "Coin collections"],
+                answer: 0,
+                hint: "Cast blocks/bars of metal.",
+                explanation: "Bullion is cast into standardized bars or ingots for high-value banking reserves."
+            },
+            {
+                id: 95,
+                category: "Economic Context",
+                question: "Why do governments hold gold bullion in national reserves?",
+                options: ["To back currency value and secure financial stability", "To manufacture cheap accessories", "To build bridges", "To decorate botanical gardens"],
+                answer: 0,
+                hint: "Monetary backing.",
+                explanation: "Bullion reserves provide economic security and back sovereign currency values."
+            },
+            {
+                id: 96,
+                category: "Grammar & Form",
+                question: "What part of speech is 'Bullion'?",
+                options: ["Noun", "Verb", "Adjective", "Adverb"],
+                answer: 0,
+                hint: "Names a physical asset/metal.",
+                explanation: "Bullion is a Noun (N.)[cite: 9]."
+            },
+
+            // --- BUNDLE (249) ---
+            {
+                id: 97,
+                category: "One Word Substitution",
+                question: "A collection of sticks or things tied together:",
+                options: ["Bundle", "Boomerang", "Bridle", "Brewery"],
+                answer: 0,
+                hint: "Wrapped or tied package of items.",
+                explanation: "Bundle (N.) means a collection of things tied together. Hindi meaning: गठ्ठा[cite: 9]."
+            },
+            {
+                id: 98,
+                category: "Idiomatic Expression",
+                question: "The idiom 'to cost a bundle' means:",
+                options: ["To be extremely expensive", "To be completely free", "To be worthless", "To be lightweight"],
+                answer: 0,
+                hint: "High monetary cost.",
+                explanation: "Costing a bundle means costing a very large amount of money."
+            },
+            {
+                id: 99,
+                category: "Synonym Match",
+                question: "Which of the following is synonymous with 'Bundle'?",
+                options: ["Package / Parcel / Collection", "Scattered debris", "Single isolated item", "Bottleneck"],
+                answer: 0,
+                hint: "Bound group of items.",
+                explanation: "Package or parcel represents a bundle of goods."
+            },
+            {
+                id: 100,
+                category: "Grammar Check",
+                question: "What part of speech is 'Bundle' in standard vocabulary usage?",
+                options: ["Noun (and Verb)", "Adjective only", "Preposition", "Conjunction"],
+                answer: 0,
+                hint: "Can be both a package (noun) and to wrap (verb).",
+                explanation: "Bundle functions as both a Noun and a Verb[cite: 9]."
+            }
+        ];
+
+        let currentIndex = 0;
+        let score = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+        let answeredState = new Array(questions.length).fill(false);
+
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const scoreDisplay = document.getElementById('score-display');
+        const currentQBadge = document.getElementById('current-q-badge');
+        const totalQBadge = document.getElementById('total-q-badge');
+        const totalScoreDisplay = document.getElementById('total-score-display');
+        const progressBar = document.getElementById('progress-bar');
+        const questionNumberLabel = document.getElementById('question-number-label');
+        const questionCategoryBadge = document.getElementById('question-category-badge');
+        const hintBox = document.getElementById('hint-box');
+        const explanationBox = document.getElementById('explanation-box');
+        const explanationText = document.getElementById('explanation-text');
+        const jumpInput = document.getElementById('jump-input');
+        const bottomJumpInput = document.getElementById('bottom-jump-input');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+
+        totalScoreDisplay.textContent = questions.length;
+        totalQBadge.textContent = questions.length;
+
+        function loadQuestion(index) {
+            if (index < 0 || index >= questions.length) return;
+            currentIndex = index;
+            const q = questions[currentIndex];
+
+            questionNumberLabel.textContent = `Question ${currentIndex + 1} of ${questions.length}`;
+            currentQBadge.textContent = currentIndex + 1;
+            questionCategoryBadge.textContent = q.category;
+            questionText.textContent = q.question;
+
+            // Progress bar update
+            const progressPct = ((currentIndex + 1) / questions.length) * 100;
+            progressBar.style.width = `${progressPct}%`;
+
+            // Hint setup
+            hintBox.textContent = q.hint;
+            hintBox.classList.add('hidden');
+
+            // Explanation setup
+            if (answeredState[currentIndex]) {
+                explanationText.textContent = q.explanation;
+                explanationBox.classList.remove('hidden');
+            } else {
+                explanationBox.classList.add('hidden');
+            }
+
+            // Render Options
+            optionsContainer.innerHTML = '';
+            q.options.forEach((opt, i) => {
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left p-4 rounded-2xl border transition-all flex items-center justify-between font-medium text-sm md:text-base shadow-sm `;
+                
+                const isSelected = userAnswers[currentIndex] === i;
+                const isAnswered = answeredState[currentIndex];
+
+                if (isAnswered) {
+                    if (i === q.answer) {
+                        btn.className += `bg-green-50 border-green-300 text-green-900 shadow-md`;
+                    } else if (isSelected) {
+                        btn.className += `bg-red-50 border-red-300 text-red-900 shadow-md`;
+                    } else {
+                        btn.className += `bg-white/60 border-borderPurple text-darkPurple/60`;
+                    }
+                    btn.disabled = true;
+                } else {
+                    btn.className += `bg-white border-borderPurple text-darkPurple hover:bg-hoverBg hover:border-primaryPurple focus:outline-none focus:ring-2 focus:ring-primaryPurple`;
+                    btn.onclick = () => selectOption(i);
+                }
+
+                btn.innerHTML = `
+                    <span><strong class="mr-2 text-primaryPurple">${String.fromCharCode(65 + i)}.</strong> ${opt}</span>
+                    <span class="text-xs font-bold">${isAnswered && i === q.answer ? '✅ Correct' : (isAnswered && isSelected ? '❌ Your Choice' : '')}</span>
+                `;
+                optionsContainer.appendChild(btn);
+            });
+
+            prevBtn.disabled = currentIndex === 0;
+            nextBtn.textContent = currentIndex === questions.length - 1 ? 'Finish 🏁' : 'Next →';
+            jumpInput.value = currentIndex + 1;
+            bottomJumpInput.value = currentIndex + 1;
+        }
+
+        function selectOption(selectedIndex) {
+            if (answeredState[currentIndex]) return;
+            userAnswers[currentIndex] = selectedIndex;
+            answeredState[currentIndex] = true;
+
+            const q = questions[currentIndex];
+            if (selectedIndex === q.answer) {
+                score++;
+                scoreDisplay.textContent = score;
+            }
+
+            explanationText.textContent = q.explanation;
+            explanationBox.classList.remove('hidden');
+
+            loadQuestion(currentIndex);
+        }
+
+        function nextQuestion() {
+            if (currentIndex < questions.length - 1) {
+                loadQuestion(currentIndex + 1);
+            } else {
+                alert(`Quiz Completed! 🎉 Your final score is ${score} out of ${questions.length}. Excellent work mastering your English Vocabulary!`);
+            }
+        }
+
+        function prevQuestion() {
+            if (currentIndex > 0) {
+                loadQuestion(currentIndex - 1);
+            }
+        }
+
+        function toggleHint() {
+            hintBox.classList.toggle('hidden');
+        }
+
+        function jumpToQuestion() {
+            const val = parseInt(jumpInput.value);
+            if (!isNaN(val) && val >= 1 && val <= questions.length) {
+                loadQuestion(val - 1);
+            } else {
+                alert(`Please enter a valid question number between 1 and ${questions.length}.`);
+            }
+        }
+
+        function bottomJump() {
+            const val = parseInt(bottomJumpInput.value);
+            if (!isNaN(val) && val >= 1 && val <= questions.length) {
+                loadQuestion(val - 1);
+            } else {
+                alert(`Please enter a valid question number between 1 and ${questions.length}.`);
+            }
+        }
+
+        function resetQuiz() {
+            if (confirm("Are you sure you want to reset the quiz? All your progress will be cleared.")) {
+                score = 0;
+                scoreDisplay.textContent = score;
+                userAnswers = new Array(questions.length).fill(null);
+                answeredState = new Array(questions.length).fill(false);
+                loadQuestion(0);
+            }
+        }
+
+        // Keyboard Navigation Support
+        document.addEventListener('keydown', (e) => {
+            if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+                if (e.key === 'Enter') {
+                    if (document.activeElement === jumpInput) jumpToQuestion();
+                    if (document.activeElement === bottomJumpInput) bottomJump();
+                }
+                return;
+            }
+
+            if (e.key === 'ArrowLeft') {
+                prevQuestion();
+            } else if (e.key === 'ArrowRight') {
+                nextQuestion();
+            }
+        });
+
+        // Initialize first question on load
+        window.onload = () => {
+            loadQuestion(0);
+        };
+    </script>
+</body>
+</html>

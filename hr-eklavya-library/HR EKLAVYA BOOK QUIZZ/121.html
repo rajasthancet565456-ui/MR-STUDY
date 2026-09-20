@@ -1,0 +1,1815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR GK Bilingual Interactive Quiz (100 Questions)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .option-btn {
+            transition: all 0.2s ease-in-out;
+        }
+    </style>
+<style id="cosmic-readable-quiz-theme">
+:root{--space:#e8dcff;--panel:#f3eaff;--panel2:#dcc6ff;--edge:#6a45bf;--glow:#d28b28;--accent:#d15f9f;--ink:#2c1b4d;--muted:#66547c;--mist:rgba(106,69,191,.2)}html{background:var(--space)}body{background:radial-gradient(ellipse 62% 45% at 90% -5%,rgba(209,95,159,.28),transparent 62%),radial-gradient(ellipse 55% 40% at 8% 100%,rgba(65,164,207,.26),transparent 64%),var(--space)!important;color:var(--ink)!important;min-height:100vh}body:before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.78;background-image:radial-gradient(circle at 9% 18%,var(--glow) 0 1px,transparent 1.7px),radial-gradient(circle at 26% 69%,var(--edge) 0 .8px,transparent 1.5px),radial-gradient(circle at 68% 24%,var(--accent) 0 1px,transparent 1.8px),radial-gradient(circle at 88% 73%,#47a8d3 0 .8px,transparent 1.5px);background-size:220px 190px,300px 270px,260px 230px,340px 310px;z-index:-1}header{background:linear-gradient(105deg,var(--panel),var(--panel2))!important;border-color:rgba(106,69,191,.25)!important;box-shadow:0 7px 24px rgba(84,48,142,.14)!important}header h1{color:var(--edge)!important;text-shadow:none!important}header p,header .text-slate-400,header .text-indigo-200,header .text-indigo-300{color:var(--muted)!important}main>div,#quiz-card,.bg-slate-800,.bg-slate-900,.bg-indigo-900,.bg-indigo-950{background:linear-gradient(145deg,#f8f0ff,var(--panel))!important;border-color:rgba(106,69,191,.22)!important;color:var(--ink)!important;box-shadow:0 14px 35px rgba(84,48,142,.12)!important}.bg-slate-700,.bg-slate-100,.bg-slate-50{background:#eadffd!important;color:var(--ink)!important}.text-slate-100,.text-slate-200,.text-slate-300,.text-slate-400,.text-white,.text-slate-800,.text-slate-700,.text-slate-600{color:var(--ink)!important}.text-indigo-400,.text-indigo-300,.text-emerald-400,.text-yellow-300{color:var(--edge)!important}.border-slate-700,.border-slate-700\/60,.border-indigo-700,.border-slate-200{border-color:rgba(106,69,191,.25)!important}button:not(.bg-green-600):not(.bg-red-600){background:#f9f2ff!important;color:var(--ink)!important;border:1px solid rgba(106,69,191,.25)!important;box-shadow:0 3px 10px rgba(84,48,142,.09)!important}button.bg-indigo-600,button.bg-slate-800,button.bg-slate-900,button.bg-indigo-900{background:linear-gradient(120deg,var(--edge),var(--accent))!important;color:#fff!important;border:0!important}button.bg-indigo-600 *,button.bg-slate-800 *,button.bg-slate-900 *,button.bg-indigo-900 *{color:#fff!important}button:hover{filter:brightness(1.04);transform:translateY(-1px)}input,select,textarea{background:#f9f2ff!important;border-color:rgba(106,69,191,.35)!important;color:var(--ink)!important}input:focus,select:focus,textarea:focus{outline:none!important;border-color:var(--edge)!important;box-shadow:0 0 0 3px var(--mist)!important}.bg-indigo-500,#progress-bar{background:linear-gradient(90deg,var(--edge),var(--accent),var(--glow))!important}.rounded-2xl{border-radius:1.25rem!important}
+</style></head>
+<body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col justify-between">
+
+    <!-- Header -->
+    <header class="bg-indigo-700 text-white shadow-md py-4 px-6">
+        <div class="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
+            <div>
+                <h1 class="text-2xl font-bold tracking-wide">Haryana GK Master Quiz</h1>
+                <p class="text-xs text-indigo-200">Bilingual (English & Hindi) | 100 Examination-Level Questions</p>
+            </div>
+            <div class="bg-indigo-800 px-4 py-2 rounded-lg text-sm font-semibold border border-indigo-600">
+                Score: <span id="score-display">0</span> / <span id="total-display">100</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Quiz Container -->
+    <main class="max-w-3xl w-full mx-auto p-4 sm:p-6 my-6 bg-white rounded-2xl shadow-xl flex-grow flex flex-col justify-between">
+        
+        <!-- Top Navigation & Progress -->
+        <div>
+            <div class="flex justify-between items-center mb-3 text-sm text-slate-500 font-medium">
+                <span id="question-counter">Question 1 of 100</span>
+                <span id="source-page-tag" class="bg-indigo-50 text-indigo-700 px-2.5 py-0.5 rounded-full text-xs font-semibold border border-indigo-200">Page 1</span>
+            </div>
+            
+            <!-- Progress Bar -->
+            <div class="w-full bg-slate-200 h-2.5 rounded-full mb-6 overflow-hidden">
+                <div id="progress-bar" class="bg-indigo-600 h-2.5 rounded-full transition-all duration-300" style="width: 1%;"></div>
+            </div>
+
+            <!-- Question Card -->
+            <div class="mb-6">
+                <div id="question-text-en" class="text-lg font-semibold text-slate-900 mb-2">Loading English question...</div>
+                <div id="question-text-hi" class="text-base font-medium text-indigo-900 bg-indigo-50/60 p-3 rounded-xl border border-indigo-100">Loading Hindi question...</div>
+            </div>
+
+            <!-- Options Grid -->
+            <div id="options-container" class="grid grid-cols-1 gap-3 mb-6">
+                <!-- Dynamic Options Will Load Here -->
+            </div>
+
+            <!-- Hint Section -->
+            <div class="mb-4">
+                <button onclick="toggleHint()" class="text-xs font-semibold text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition border border-indigo-200 flex items-center gap-1.5">
+                    <span>💡 Toggle Hint</span>
+                </button>
+                <div id="hint-box" class="hidden mt-2 p-3 bg-amber-50 border border-amber-200 text-amber-800 text-sm rounded-xl">
+                    <span class="font-bold">Hint:</span> <span id="hint-text"></span>
+                </div>
+            </div>
+
+            <!-- Explanation Box -->
+            <div id="explanation-box" class="hidden p-4 rounded-xl border text-sm mb-4">
+                <h4 class="font-bold mb-1 flex items-center gap-1.5" id="explanation-title"></h4>
+                <p id="explanation-text" class="text-slate-700"></p>
+            </div>
+        </div>
+
+        <!-- Bottom Controls & Jump Section -->
+        <div class="pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-start">
+                <button id="prev-btn" onclick="prevQuestion()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium rounded-xl transition disabled:opacity-40 disabled:cursor-not-allowed text-sm">
+                    ← Previous
+                </button>
+                <button id="next-btn" onclick="nextQuestion()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl transition text-sm shadow-sm">
+                    Next →
+                </button>
+            </div>
+
+            <!-- Jump to Question -->
+            <div class="flex items-center gap-2 text-sm text-slate-600">
+                <span>Jump to:</span>
+                <input type="number" id="jump-input" min="1" max="100" class="w-16 px-2 py-1 border border-slate-300 rounded-lg text-center focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="1-100">
+                <button onclick="jumpToQuestion()" class="px-3 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium rounded-lg transition border border-slate-300">Go</button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-4 text-xs text-slate-500">
+        Haryana GK Examination Prep Suite &copy; 2026 | Unique 100 Question Architecture
+    </footer>
+
+    <!-- Script Application Logic -->
+    <script>
+        const quizData = [
+            // ================= PAGE 1 QUESTIONS (1 to 40) =================
+            {
+                page: 1,
+                en: "What is the new wheat variety developed by the Indian Institute of Wheat and Barley Research, Karnal, listed as HD-3386?",
+                hi: "भारतीय गेहूं एवं जौं अनुसंधान संस्थान करनाल द्वारा तैयार की गई गेहूं की नई किस्म - एचडी-3386 के साथ अन्य कौन सी शामिल है?",
+                options: [
+                    "WWH-1402, HD-3338, DBW-327, DBW-359",
+                    "HD-2967, PBW-343, WH-147, Kalyan Sona",
+                    "C-306, Sharbati, Lokwan, Pusa 1121",
+                    "DBW-187, HD-2329, UP-262, Raj-3077"
+                ],
+                answer: 0,
+                hint: "Includes WWH-1402, HD-3338, DBW-327, DBW-359.",
+                explanation: "New wheat varieties developed by IIWBR Karnal include HD-3386, WWH-1402, HD-3338, GWB-547, CG-1040, DBW-327, and DBW-359."
+            },
+            {
+                page: 1,
+                en: "What percentage of reservation has been provided by the state government to women in ration depots?",
+                hi: "राज्य सरकार ने राशन डिपो में महिलाओं को कितने प्रतिशत आरक्षण प्रदान किया है?",
+                options: [
+                    "33%",
+                    "50%",
+                    "20%",
+                    "25%"
+                ],
+                answer: 0,
+                hint: "One-third reservation (33%).",
+                explanation: "The state government provided 33% reservation to women in ration depots across Haryana."
+            },
+            {
+                page: 1,
+                en: "According to the Economic Indicator Report 2024, what is the total number of ration depots in the state?",
+                hi: "आर्थिक सांकेतिक रिपोर्ट 2024 के हिसाब से राज्य में कुल कितने राशन डिपो हैं?",
+                options: [
+                    "9481",
+                    "8520",
+                    "10250",
+                    "7640"
+                ],
+                answer: 0,
+                hint: "Total count is 9481.",
+                explanation: "According to the Economic Indicator Report 2024, there are a total of 9481 ration depots in the state."
+            },
+            {
+                page: 1,
+                en: "In which district and village did Haryana Agricultural University establish a new Krishi Vigyan Kendra?",
+                hi: "हरियाणा कृषि विश्वविद्यालय द्वारा राज्य के किस जिले में नया कृषि विज्ञान केंद्र स्थापित किया गया है?",
+                options: [
+                    "Chhapera village, Nuh",
+                    "Bawal village, Rewari",
+                    "Rai village, Sonepat",
+                    "Kalanaur village, Rohtak"
+                ],
+                answer: 0,
+                hint: "Chhapera village, Nuh.",
+                explanation: "Haryana Agricultural University established a new Krishi Vigyan Kendra in Chhapera village, Nuh district."
+            },
+            {
+                page: 1,
+                en: "What is the total number of Krishi Vigyan Kendras under Haryana Agricultural University at present?",
+                hi: "हरियाणा कृषि विश्वविद्यालय के राज्य में वर्तमान में कृषि विज्ञान केंद्रों की संख्या कितनी हो गई है?",
+                options: [
+                    "20",
+                    "15",
+                    "22",
+                    "18"
+                ],
+                answer: 0,
+                hint: "Total is 20.",
+                explanation: "The total number of Krishi Vigyan Kendras under HAU has reached 20."
+            },
+            {
+                page: 1,
+                en: "What was the theme of the school programs celebrated across Haryana on Independence Day 2024?",
+                hi: "राज्य में स्वतंत्रता दिवस 2024 पर स्कूलों में मनाये जाने वाले प्रोग्राम की थीम रखी गई थी -",
+                options: [
+                    "Veeron Ka Vandan (वीरों का वंदन)",
+                    "Azaadi Ka Amrit Mahotsav",
+                    "Mera Bharat Mahan",
+                    "Desh Bhakti Utsav"
+                ],
+                answer: 0,
+                hint: "Veeron Ka Vandan.",
+                explanation: "The theme for Independence Day 2024 celebrations in schools was 'Veeron Ka Vandan'."
+            },
+            {
+                page: 1,
+                en: "When Haryana was formed on November 1, 1966, its borders touched 4 states. On November 1, 2000, Uttarakhand was carved out. Currently, Haryana's border touches how many states, and which are they?",
+                hi: "हरियाणा गठन के समय 1 नवंबर 1966 को सीमा 4 राज्यों से लगती थी लेकिन 1 नवंबर 2000 को उत्तराखंड के गठन के बाद अब वर्तमान में राज्य की सीमा कितने राज्यों से लगती है?",
+                options: [
+                    "5 states (Uttar Pradesh, Uttarakhand, Himachal Pradesh, Punjab, and Rajasthan)",
+                    "4 states (Punjab, Haryana, HP, Rajasthan)",
+                    "6 states including Delhi and J&K",
+                    "3 states only"
+                ],
+                answer: 0,
+                hint: "Five states: UP, Uttarakhand, HP, Punjab, and Rajasthan.",
+                explanation: "Currently, Haryana's border touches 5 states: Uttar Pradesh, Uttarakhand, Himachal Pradesh, Punjab, and Rajasthan."
+            },
+            {
+                page: 1,
+                en: "Which is considered the most ancient river of the state versus the river of maximum importance (Mahatva ki Nadi)?",
+                hi: "राज्य की सबसे प्राचीन नदी सरस्वती है जबकि राज्य की सबसे महत्त्व की नदी कौन सी है?",
+                options: [
+                    "Dohan River (Mahendragarh)",
+                    "Yamuna River",
+                    "Ghaggar River",
+                    "Markanda River"
+                ],
+                answer: 0,
+                hint: "Dohan river in Mahendragarh.",
+                explanation: "The most ancient river is Saraswati, whereas the river of highest importance/significance noted is Dohan (Mahendragarh)."
+            },
+            {
+                page: 1,
+                en: "Which is the most arid district (सर्वाधिक शुष्क जिला) and which is the most semi-arid district (सर्वाधिक अर्द्धशुष्क जिला) in Haryana?",
+                hi: "राज्य का सर्वाधिक शुष्क जिला महेन्द्रगढ़ है जबकि राज्य का सर्वाधिक अर्द्धशुष्क जिला कौन सा है?",
+                options: [
+                    "Hisar",
+                    "Sirsa",
+                    "Bhiwani",
+                    "Rewari"
+                ],
+                answer: 0,
+                hint: "Hisar is the most semi-arid district.",
+                explanation: "Mahendragarh is the most arid district, while Hisar is the most semi-arid district in Haryana."
+            },
+            {
+                page: 1,
+                en: "Where are the most arid forests (शुष्क वन) found versus the most semi-arid Patjhar forests (अर्द्धशुष्क पतझड़ वन) in Haryana?",
+                hi: "राज्य में सर्वाधिक शुष्क वन महेन्द्रगढ़ में पाये जाते हैं जबकि सर्वाधिक अर्द्धशुष्क पतझड़ वन किस जिले में पाये जाते हैं?",
+                options: [
+                    "Jind district",
+                    "Sirsa district",
+                    "Yamunanagar district",
+                    "Gurugram district"
+                ],
+                answer: 0,
+                hint: "Jind district.",
+                explanation: "Arid forests are found mostly in Mahendragarh, while semi-arid deciduous (patjhar) forests are found in Jind district."
+            },
+            {
+                page: 1,
+                en: "What is the festival indicating the onset/arrival of the rainy season (वर्षा ऋतु के पहले आगमन की सूचना का त्यौहार)?",
+                hi: "राज्य में वर्षा ऋतु के पहले आगमन की सूचना का त्यौहार कौन सा है?",
+                options: [
+                    "Bhadaliya Navami (भडलिया नवमी)",
+                    "Teej",
+                    "Gugga Navami",
+                    "Saloni"
+                ],
+                answer: 0,
+                hint: "Bhadaliya Navami.",
+                explanation: "Bhadaliya Navami signifies the impending arrival of the rainy season, whereas Teej is celebrated after the rains begin."
+            },
+            {
+                page: 1,
+                en: "Where are the national/central level archaeological museum and the state-level archaeological museum located respectively?",
+                hi: "पुरातात्विक विभाग का राष्ट्र/देश स्तरीय संग्रहालय पंचकूला में है जबकि पुरातात्विक विभाग का राज्य स्तरीय संग्रहालय कहां है?",
+                options: [
+                    "Rakhigiri (Hisar)",
+                    "Kurukshetra",
+                    "Rohtak",
+                    "Sirsa"
+                ],
+                answer: 0,
+                hint: "Rakhigiri in Hisar.",
+                explanation: "The national-level archaeological museum is in Panchkula, while the state-level archaeological museum is in Rakhigiri (Hisar)."
+            },
+            {
+                page: 1,
+                en: "What is the primary dance form of Haryana versus its primary devotional dance form (भक्ति नृत्य)?",
+                hi: "राज्य का प्रमुख नृत्य धमाल है, लेकिन राज्य का प्रमुख भक्ति नृत्य कौन सा है?",
+                options: [
+                    "Choupaya (चौपाया)",
+                    "Ras Leela",
+                    "Loor",
+                    "Phag"
+                ],
+                answer: 0,
+                hint: "Choupaya dance.",
+                explanation: "Dhamal is the principal dance, but Choupaya is the principal devotional dance of the state."
+            },
+            {
+                page: 1,
+                en: "What is the main folk dance form versus the main folk theatre (लोक नाट्य) form of Haryana?",
+                hi: "राज्य का प्रमुख लोक नृत्य धमाल है लेकिन राज्य का प्रमुख लोक नाट्य क्या है?",
+                options: [
+                    "Swang (स्वांग)",
+                    "Ragni",
+                    "Saang",
+                    "Kharia"
+                ],
+                answer: 0,
+                hint: "Swang.",
+                explanation: "Dhamal is a primary folk dance, whereas Swang is the primary folk theatre form."
+            },
+            {
+                page: 1,
+                en: "Which is the oldest architectural structure (प्राचीन इमारत) vs the oldest Mughal-era structure in Haryana?",
+                hi: "राज्य की सबसे प्राचीन इमारत चनेटी का स्तूप, सुध, जगाधरी है जबकि राज्य की सबसे प्राचीन मुगकालीन इमारत कौन सी है?",
+                options: [
+                    "Kabuli Bagh Mosque, Panipat",
+                    "Sheikh Chilli Tomb, Kurukshetra",
+                    "Lat ki Masjid, Hisar",
+                    "Jami Masjid, Rohtak"
+                ],
+                answer: 0,
+                hint: "Kabuli Bagh Mosque in Panipat.",
+                explanation: "Chaneti Stupa is the oldest structure, while Kabuli Bagh Mosque in Panipat is the oldest Mughal-era building."
+            },
+            {
+                page: 1,
+                en: "What is considered the most ancient city of Haryana versus the city settled using modern planning methods?",
+                hi: "राज्य का सबसे प्राचीन शहर सिरसा है लेकिन नवीनतम पद्धति से बसाया गया शहर कौन सा है?",
+                options: [
+                    "Karnal",
+                    "Faridabad",
+                    "Panchkula",
+                    "Gurugram"
+                ],
+                answer: 0,
+                hint: "Karnal.",
+                explanation: "Sirsa is considered the oldest city, while Karnal was established/planned using modern layout methods."
+            },
+            {
+                page: 1,
+                en: "What is Haryana's rank in mushroom production in India?",
+                hi: "हरियाणा का मशरूम उत्पादन में देश में स्थान है -",
+                options: [
+                    "Third (तीसरा; प्रथम-बिहार, द्वितीय-ओडिशा)",
+                    "First",
+                    "Second",
+                    "Fourth"
+                ],
+                answer: 0,
+                hint: "Third rank.",
+                explanation: "Haryana ranks third in mushroom production in India (Bihar is 1st, Odisha is 2nd)."
+            },
+            {
+                page: 1,
+                en: "Who is the founder of 'India Bulls' from Haryana (current key person being Krishna Gehlaut)?",
+                hi: "'इंडिया बुल्स' का संस्थापक हरियाणवी व्यक्ति कौन है?",
+                options: [
+                    "Sameer Gehlaut",
+                    "Sameer Sharma",
+                    "Krishan Kumar",
+                    "Rajesh Hooda"
+                ],
+                answer: 0,
+                hint: "Sameer Gehlaut.",
+                explanation: "Sameer Gehlaut is the founder of India Bulls."
+            },
+            {
+                page: 1,
+                en: "What is the monthly financial assistance given by the state government to destitute children (निराश्रित बच्चों को)?",
+                hi: "निराश्रित बच्चों को राज्य सरकार द्वारा कितनी वित्तीय सहायता राशि दी जाती है?",
+                options: [
+                    "₹2100 per month",
+                    "₹1500 per month",
+                    "₹2400 per month",
+                    "₹3000 per month"
+                ],
+                answer: 0,
+                hint: "2100 rupees per month.",
+                explanation: "Destitute children receive financial assistance of ₹2100 per month from the state government."
+            },
+            {
+                page: 1,
+                en: "What is the monthly financial assistance given by the state government to out-of-school specially-abled children (स्कूल नहीं जाने वाले दिव्यांग बच्चों को)?",
+                hi: "स्कूल नहीं जाने वाले दिव्यांग बच्चों को राज्य सरकार द्वारा कितनी वित्तीय सहायता राशि दी जाती है?",
+                options: [
+                    "₹2400 per month",
+                    "₹2100 per month",
+                    "₹2500 per month",
+                    "₹3100 per month"
+                ],
+                answer: 0,
+                hint: "₹2400 per month.",
+                explanation: "Out-of-school specially-abled children receive ₹2400 per month."
+            },
+            {
+                page: 1,
+                en: "The state government increased the pension amount for freedom fighters and their dependents from ₹25,000 to how much?",
+                hi: "राज्य सरकार स्वतंत्रता सेनानियों व उनके आश्रितों की पेंशन राशि 25000 से बढ़ाकर कितने रुपये कर दी है?",
+                options: [
+                    "₹40,000",
+                    "₹35,000",
+                    "₹50,000",
+                    "₹30,000"
+                ],
+                answer: 0,
+                hint: "40,000 rupees.",
+                explanation: "Freedom fighter pension was increased from ₹25,000 to ₹40,000."
+            },
+            {
+                page: 1,
+                en: "The state government increased the pension for Hindi Movement 1957 Satyagrahis from ₹15,000 to how much?",
+                hi: "राज्य सरकार हिन्दी आन्दोलन 1957 के मातृभाषा सत्याग्रहियों की पेंशन राशि 15000 से बढ़ाकर कितनी कर दी गई है?",
+                options: [
+                    "₹20,000",
+                    "₹25,000",
+                    "₹30,000",
+                    "₹18,000"
+                ],
+                answer: 0,
+                hint: "20,000 rupees.",
+                explanation: "Hindi Movement 1957 Satyagrahis' pension was increased to ₹20,000."
+            },
+            {
+                page: 1,
+                en: "What is the historical land title given to Rewari versus Jhajjar?",
+                hi: "राज्य में वीर भूमि रेवाड़ी को कहा जाता है जबकि शहीदों की भूमि किसे कहा जाता है?",
+                options: [
+                    "Jhajjar",
+                    "Mahendragarh",
+                    "Kurukshetra",
+                    "Panipat"
+                ],
+                answer: 0,
+                hint: "Jhajjar is known as the land of martyrs.",
+                explanation: "Rewari is known as 'Veer Bhoomi', while Jhajjar is known as the 'Land of Martyrs' (शहीदों की भूमि)."
+            },
+            {
+                page: 1,
+                en: "Where is the Temple of Ghosts (भूतों का मंदिर) located in Haryana versus Mallu Talab?",
+                hi: "भूतों का मंदिर राज्य में, मल्लू तालाब भिवानी में है जबकि भूतेश्वर मंदिर कहां स्थित है?",
+                options: [
+                    "Jind",
+                    "Rohtak",
+                    "Hisar",
+                    "Kaithal"
+                ],
+                answer: 0,
+                hint: "Jind district.",
+                explanation: "Mallu Talab is in Bhiwani, while Bhuteshwar Temple (and Rani Talab) is located in Jind."
+            },
+            {
+                page: 1,
+                en: "Which district has the highest arid soil (सर्वाधिक शुष्क मृदा) versus the highest moist soil (सर्वाधिक आर्द्र मृदा)?",
+                hi: "राज्य का सर्वाधिक शुष्क मृदा वाला जिला महेन्द्रगढ़ है जबकि सर्वाधिक आर्द्र मृदा वाला जिला कौन सा है?",
+                options: [
+                    "Yamunanagar",
+                    "Panchkula",
+                    "Karnal",
+                    "Sirsa"
+                ],
+                answer: 0,
+                hint: "Yamunanagar district.",
+                explanation: "Mahendragarh has the driest soil, whereas Yamunanagar has the most humid/moist soil."
+            },
+            {
+                page: 1,
+                en: "Where were Yaudheya state terracotta coins found versus Kushana period bricks and musical bricks?",
+                hi: "राज्य में मिट्टी की मोहरें, दौलतपूर, कुरुक्षेत्र से मिली है जबकि यौधेयगणराज्य की मोहरें कहां से मिली है?",
+                options: [
+                    "Naurangabad, Bhiwani",
+                    "Agroha, Hisar",
+                    "Pehowa, Kurukshetra",
+                    "Rakhigarhi, Hisar"
+                ],
+                answer: 0,
+                hint: "Naurangabad in Bhiwani.",
+                explanation: "Yaudheya Republic coins/seals were found in Naurangabad, Bhiwani."
+            },
+            {
+                page: 1,
+                en: "Where were unusual shaped bricks found in Daulatpur Kurukshetra, and where were bricks depicting the seven musical notes (sa re ga ma) found?",
+                hi: "राज्य में विचित्र आकार की ईंट दौलतपूर कुरुक्षेत्र से मिली है जबकि संगीत के सातों सुरों की ईंट कहां से मिली है?",
+                options: [
+                    "Agroha",
+                    "Thanesar",
+                    "Pinjore",
+                    "Sugh"
+                ],
+                answer: 0,
+                hint: "Agroha.",
+                explanation: "Bricks with the seven musical notes were discovered in Agroha."
+            },
+            {
+                page: 1,
+                en: "What is called the Taj Mahal of the Sultanate period versus Haryana's Taj Mahal?",
+                hi: "सल्तनत काल का ताजमहल गुजरी महल हिसार को कहा जाता है जबकि हरियाणा का ताजमहल किसे कहा जाता है?",
+                options: [
+                    "Sheikh Chilli Tomb, Thanesar, Kurukshetra",
+                    "Ibrahim Lodi Tomb, Panipat",
+                    "Kablash Fort, Rewari",
+                    "Jal Mahal, Narnaul"
+                ],
+                answer: 0,
+                hint: "Sheikh Chilli Tomb in Thanesar.",
+                explanation: "Gujari Mahal is the Taj Mahal of the Sultanate period, and Sheikh Chilli's Tomb in Thanesar is known as Haryana's Taj Mahal."
+            },
+            {
+                page: 1,
+                en: "Where was Sheikh Chilli born versus where is his mausoleum located?",
+                hi: "शेख चिल्ला का जन्म फतेहाबाद में हुआ है जबकि शेख चिल्लियों का मकबरा कहां स्थित है?",
+                options: [
+                    "Thanesar, Kurukshetra",
+                    "Panipat",
+                    "Hisar",
+                    "Ambala"
+                ],
+                answer: 0,
+                hint: "Thanesar, Kurukshetra.",
+                explanation: "Sheikh Chilli was born in Fatehabad, and his mausoleum is situated in Thanesar, Kurukshetra."
+            },
+            {
+                page: 1,
+                en: "Who authored the newspaper 'Sandesh' versus 'Khair Sandesh'?",
+                hi: "'संदेश' समाचार पत्र पं. नेकीराम शर्मा ने लिखा है जबकि 'खैर संदेश' समाचार पत्र किसने लिखा है?",
+                options: [
+                    "Lala Murli Dhar",
+                    "Sir Chhotu Ram",
+                    "Babu Kanhaiya Lal",
+                    "Mukand Lal"
+                ],
+                answer: 0,
+                hint: "Lala Murli Dhar.",
+                explanation: "'Sandesh' was written/published by Pandit Nekiram Sharma, while 'Khair Sandesh' was by Lala Murli Dhar."
+            },
+            {
+                page: 1,
+                en: "Who authored the newspaper 'Jat Gajat' versus 'Jat Samachar'?",
+                hi: "'जाट गजट' समाचार पत्र सर छोटूराम ने लिखा है जबकि 'जाट समाचार पत्र' किसने लिखा है?",
+                options: [
+                    "Babu Kanhaiya Lal Singh (Gurugram)",
+                    "Devi Lal",
+                    "Baldev Singh",
+                    "Chaudhary Ranbir Singh"
+                ],
+                answer: 0,
+                hint: "Babu Kanhaiya Lal Singh from Gurugram.",
+                explanation: "'Jat Gajat' was by Sir Chhotu Ram, and 'Jat Samachar' was authored by Babu Kanhaiya Lal Singh from Gurugram."
+            },
+            {
+                page: 1,
+                en: "What city is known as the Brass City (Pital Nagri) versus the Brass City (Pital Shahar)?",
+                hi: "राज्य में पीतल नगरी रेवाड़ी को कहा जाता है जबकि पीतल शहर किसे कहा जाता है?",
+                options: [
+                    "Jagadhri",
+                    "Panipat",
+                    "Karnal",
+                    "Sonipat"
+                ],
+                answer: 0,
+                hint: "Jagadhri is known as Pital Shahar.",
+                explanation: "Rewari is called 'Pital Nagri' and Jagadhri is known as 'Pital Shahar'."
+            },
+            {
+                page: 1,
+                en: "Which temple is given the title of Khajuraho of India (Bheema Devi Temple) versus North India's Khajuraho (Bhimeshwari Temple)?",
+                hi: "भारत के खजुराहो मंदिर की संज्ञा भीमा देवी मंदिर पंचकूला को दी गई है जबकि उत्तर भारत के खजुराहो मंदिर की संज्ञा किसे दी जाती है?",
+                options: [
+                    "Bhimeshwari Temple, Beri, Jhajjar",
+                    "Sthaneshwar Mahadev Temple",
+                    "Mansa Devi Temple",
+                    "Kapal Mochan Temple"
+                ],
+                answer: 0,
+                hint: "Bhimeshwari Temple in Beri, Jhajjar.",
+                explanation: "Bheema Devi Temple in Panchkula is India's Khajuraho, and Bhimeshwari Temple in Beri, Jhajjar is North India's Khajuraho."
+            },
+            {
+                page: 1,
+                en: "Who is recognized as the first Gadhya Sahityakar (prose writer) versus Padhya Sahityakar (poet writer) of Haryana?",
+                hi: "राज्य का प्रथम गद्य साहित्यकार शाह मुहम्मद रमजान है जबकि पद्य साहित्यकार कौन है?",
+                options: [
+                    "Rajaram Shastri",
+                    "Hemchandra",
+                    "Tulsi Das",
+                    "Surdas"
+                ],
+                answer: 0,
+                hint: "Rajaram Shastri.",
+                explanation: "Shah Muhammad Ramzan is the first prose writer, and Rajaram Shastri is the first poet/verse writer (Padhya Sahityakar)."
+            },
+            {
+                page: 1,
+                en: "What is the total number of individual Chief Ministers (व्यक्तिगत नामों के कुल मुख्यमंत्री) in Haryana, and what is the cumulative sequence number (क्रम संख्या) of CM terms?",
+                hi: "राज्य में व्यक्तिगत नामों के कुल 11 मुख्यमंत्री बने हैं जबकि क्रम संख्या में अब तक कुल कितने मुख्यमंत्री बने हैं?",
+                options: [
+                    "22",
+                    "15",
+                    "18",
+                    "25"
+                ],
+                answer: 0,
+                hint: "Total count of individual CMs is 11, sequence count is 22.",
+                explanation: "There have been 11 individual Chief Ministers in total, making a cumulative sequence count of 22 terms."
+            },
+            {
+                page: 1,
+                en: "Who holds the longest tenure as Chief Minister of Haryana (Ch. Bhajan Lal with 4315 days) and who has the second longest?",
+                hi: "राज्य में मुख्यमंत्री के रूप में सबसे लम्बा कार्यकाल चौ. भजन लाल कुल दिन 4315 है जबकि दूसरा सबसे लम्बा कार्यकाल किसका है?",
+                options: [
+                    "Ch. Bansi Lal (4300 days)",
+                    "Ch. Devi Lal",
+                    "Bhagwat Dayal Sharma",
+                    "Om Prakash Chautala"
+                ],
+                answer: 0,
+                hint: "Ch. Bansi Lal (4300 days).",
+                explanation: "Bhajan Lal has the longest tenure (4315 days), followed by Bansi Lal (4300 days)."
+            },
+            {
+                page: 1,
+                en: "Who holds the shortest tenure as Chief Minister of Haryana (just 5 days, Om Prakash Chautala)?",
+                hi: "राज्य में मुख्यमंत्री के रूप में सबसे छोटा कार्यकाल मात्र 5 दिन चौ. ओमप्रकाश चौटाला का है, लेकिन वे सबसे अधिक बार मुख्यमंत्री कितनी बार बने हैं?",
+                options: [
+                    "5 times",
+                    "4 times",
+                    "3 times",
+                    "6 times"
+                ],
+                answer: 0,
+                hint: "5 times.",
+                explanation: "Om Prakash Chautala served the shortest single term of 5 days, but holds the record of becoming CM the maximum number of times (5 times)."
+            },
+            {
+                page: 1,
+                en: "Where is 'Pitru Bhoomi' (Lagu Haridwar) located in Haryana, and what is known as 'Gaya Nagri'?",
+                hi: "राज्य में पितृ भूमि/लघु हरिद्वार, सफादो को कहा जाता है जबकि राज्य की गया नगरी किसे कहा जाता है?",
+                options: [
+                    "Pehowa (पेहोवा)",
+                    "Kurukshetra",
+                    "Kaithal",
+                    "Jind"
+                ],
+                answer: 0,
+                hint: "Pehowa.",
+                explanation: "Safidon is Pitru Bhoomi / Lagu Haridwar, and Pehowa is known as the 'Gaya Nagri' of Haryana."
+            },
+            {
+                page: 1,
+                en: "What is the coarse shawl/blanket called versus the fine cotton sheet/bedsheet in traditional Haryanvi terminology?",
+                hi: "राज्य में ओढ़ी जाने वाली मोटी सूत की मोटी चादर खेस कहलाती है जबकि बारीक सूत की बड़ी चादर क्या कहलाती है?",
+                options: [
+                    "Bari Chadar (बड़ी चादर)",
+                    "Loee",
+                    "Khes",
+                    "Dhabla"
+                ],
+                answer: 0,
+                hint: "Bari Chadar.",
+                explanation: "Thick cotton coarse sheet is 'Khes', and the fine cotton large bedsheet is called 'Bari Chadar'."
+            },
+            {
+                page: 1,
+                en: "Which district has the highest Red Soil (लाल मिट्टी) versus the highest Red Chestnut (Neutral reaction) soil?",
+                hi: "राज्य में सर्वाधिक लाल मिट्टी सिरसा जिले में पाई जाती है लेकिन लाल चेस्टनट मिट्टी सर्वाधिक किस जिले में पाई जाती है?",
+                options: [
+                    "Yamunanagar",
+                    "Panchkula",
+                    "Ambala",
+                    "Karnal"
+                ],
+                answer: 0,
+                hint: "Yamunanagar district.",
+                explanation: "Sirsa has the most red soil, while Red Chestnut soil is found maximally in Yamunanagar."
+            },
+
+            // ================= PAGE 2 QUESTIONS (41 to 80) =================
+            {
+                page: 2,
+                en: "Who is the author of Haryanvi Ramayana / Thanesari Ramayana / Kauravi Ramayana?",
+                hi: "हरियाणवी रामायण / थानेसरी रामायण / कौरवी रामायण का रचयिता कौन है?",
+                options: [
+                    "Khuda Ahmad Baksh Khan",
+                    "Ramswaroop Sharma",
+                    "Deep Chand Bahman",
+                    "Kishan Lal Bhatta"
+                ],
+                answer: 0,
+                hint: "Khuda Ahmad Baksh Khan.",
+                explanation: "Khuda Ahmad Baksh Khan wrote the Haryanvi/Thanesari/Kauravi Ramayana."
+            },
+            {
+                page: 2,
+                en: "Who first wrote the Ramayana in the Haryanvi language?",
+                hi: "हरियाणवी भाषा में रामायण सर्वप्रथम किसने लिखी है?",
+                options: [
+                    "Ramswaroop Shastri (Patoudi)",
+                    "Khuda Ahmad Baksh",
+                    "Dayachand Mayana",
+                    "Lakhmichand"
+                ],
+                answer: 0,
+                hint: "Ramswaroop Shastri from Patoudi.",
+                explanation: "Ramswaroop Shastri (Patoudi) first wrote the Ramayana in the Haryanvi language."
+            },
+            {
+                page: 2,
+                en: "What is the first successful Haryanvi film (1982) versus the most successful Haryanvi film (1984)?",
+                hi: "हरियाणा की प्रथम सफल फिल्म बहुरानी (1982) है लेकिन हरियाणा की सर्वाधिक सफल फिल्म कौन सी है?",
+                options: [
+                    "Chandrakanta (1984)",
+                    "Dharti",
+                    "Chora Haryane Ka",
+                    "Sher Singh"
+                ],
+                answer: 0,
+                hint: "Chandrakanta (1984).",
+                explanation: "'Bahurani' (1982) was the first successful film, while 'Chandrakanta' (1984) is the most successful Haryanvi film."
+            },
+            {
+                page: 2,
+                en: "What is the first university of Haryana versus the first private university?",
+                hi: "हरियाणा का प्रथम विश्वविद्यालय कुरुक्षेत्र विश्वविद्यालय (1956) है जबकि हरियाणा का प्रथम निजी विश्वविद्यालय कौन सा है?",
+                options: [
+                    "Maharishi Markandeshwar University, Mullana, Ambala (2009)",
+                    "Lingaya's University, Faridabad",
+                    "O.P. Jindal University, Raigarh",
+                    "Manav Rachna University"
+                ],
+                answer: 0,
+                hint: "MM University, Mullana, Ambala.",
+                explanation: "Kurukshetra University (1956) is the first state university, and Maharishi Markandeshwar University, Mullana (2009) is the first private university."
+            },
+            {
+                page: 2,
+                en: "Who was the first Speaker and first female Speaker of the Haryana Legislative Assembly, and who was the first male Speaker?",
+                hi: "हरियाणा विधानसभा की प्रथम अध्यक्ष व प्रथम महिला अध्यक्ष शन्नो देवी है लेकिन हरियाणा विधानसभा के प्रथम पुरुष अध्यक्ष कौन हैं?",
+                options: [
+                    "Rao Birender Singh",
+                    "Harminder Singh Chatha",
+                    "Ran Singh",
+                    "Col. Ram Singh"
+                ],
+                answer: 0,
+                hint: "Rao Birender Singh.",
+                explanation: "Shanno Devi was the first speaker/female speaker, and Rao Birender Singh was the first male speaker."
+            },
+            {
+                page: 2,
+                en: "Who was the first Chief Minister vs the first non-Congress Chief Minister of Haryana?",
+                hi: "हरियाणा के प्रथम मुख्यमंत्री भगवत दयाल शर्मा हैं लेकिन हरियाणा के प्रथम गैर-कांग्रेसी मुख्यमंत्री कौन हैं?",
+                options: [
+                    "Rao Birender Singh",
+                    "Devi Lal",
+                    "Banarsi Das Gupta",
+                    "Bansi Lal"
+                ],
+                answer: 0,
+                hint: "Rao Birender Singh.",
+                explanation: "Bhagwat Dayal Sharma was the first CM, and Rao Birender Singh was the first non-Congress CM."
+            },
+            {
+                page: 2,
+                en: "Which subdivision of Haryana is surrounded by Rajasthan on three sides (तीन ओर से घिरा कस्बा उपमंडल)?",
+                hi: "हरियाणा का राजस्थान से तीन ओर से घिरा कस्बा उपमंडल फिरोजपुर झिरका है जबकि राजस्थान से तीन ओर से घिरा जिला कौन सा है?",
+                options: [
+                    "Mahendragarh and Nuh",
+                    "Sirsa and Fatehabad",
+                    "Bhiwani and Rewari",
+                    "Narnaul and Jind"
+                ],
+                answer: 0,
+                hint: "Mahendragarh and Nuh.",
+                explanation: "Firozpur Jhirka subdivision is surrounded by Rajasthan on three sides, and Mahendragarh & Nuh are the districts surrounded by Rajasthan on three sides."
+            },
+            {
+                page: 2,
+                en: "Who is the first female Paralympic medalist of the state (Yamunanagar) versus the first woman Paralympic medal winner overall?",
+                hi: "राज्य की प्रथम पैरालम्पियन महिला हीना कल्याण (यमुनानगर) हैं लेकिन पैरालम्पियन खेलों में रजत पदक विजेता राज्य की प्रथम महिला कौन है?",
+                options: [
+                    "Deepa Malik",
+                    "Simran Sharma",
+                    "Ekta Bhyan",
+                    "Karamjyoti Dalal"
+                ],
+                answer: 0,
+                hint: "Deepa Malik.",
+                explanation: "Heena Kalyan is the first female Paralympian, while Deepa Malik is the first woman Paralympic silver medalist from the state."
+            },
+            {
+                page: 2,
+                en: "Where is the place with the highest rainfall (Chhachhrauli, Yamunanagar) vs the lowest rainfall (Loharu, Bhiwani)?",
+                hi: "राज्य में सर्वाधिक वर्षा वाला स्थान (छछरोली) यमुनानगर है जबकि सबसे कम वर्षा वाला स्थान (लोहारू) भिवानी है। जिला स्तर पर सर्वाधिक वर्षा कहाँ होती है?",
+                options: [
+                    "Ambala district (and lowest in Sirsa district)",
+                    "Yamunanagar district",
+                    "Panchkula district",
+                    "Kurukshetra district"
+                ],
+                answer: 0,
+                hint: "Ambala district.",
+                explanation: "Chhachhrauli gets the highest rainfall and Loharu the lowest; at the district level, Ambala receives the highest and Sirsa the lowest rainfall."
+            },
+            {
+                page: 2,
+                en: "King Gajpat Singh belongs to Jind, but in which city did he also have a fort/castle constructed?",
+                hi: "राजा गजपत सिंह जींद के राजा हुए हैं लेकिन उन्होंने दुर्ग/किले का निर्माण और किस जिले में करवाया था?",
+                options: [
+                    "Karnal",
+                    "Panipat",
+                    "Rohtak",
+                    "Hisar"
+                ],
+                answer: 0,
+                hint: "Karnal.",
+                explanation: "Gajpat Singh of Jind had a fort constructed in Karnal as well."
+            },
+            {
+                page: 2,
+                en: "Who is recognized as the country's first Saangi (Kishan Lal Bhatta from Meerut) versus the state's first Saangi (Deepchand Bahman from Sherkhanda, Sonepat)?",
+                hi: "देश का प्रथम सांगी किशनलाल भट्ट (मेरठ) है जबकि राज्य का प्रथम सांगी दीपचंद बहमन (शेरखांडा) (सोनीपत) है। साँग की नींव किसने रखी?",
+                options: [
+                    "Kishan Lal Bhatta",
+                    "Deepchand Bahman",
+                    "Baje Bhagat",
+                    "Lakhmichand"
+                ],
+                answer: 0,
+                hint: "Kishan Lal Bhatta.",
+                explanation: "Kishan Lal Bhatta laid the foundation of Saang, as Haryana was part of Uttar Pradesh at that time."
+            },
+            {
+                page: 2,
+                en: "Where was Pandit Jasraj born versus where does HSSC officially consider his birthplace due to district re-organization?",
+                hi: "राज्य में पं. जसराज का जन्म पीली मन्दौरी गाँव (वर्तमान में फतेहाबाद) में हुआ है, लेकिन HSSC ने इसे किस जिले में माना है?",
+                options: [
+                    "Hisar",
+                    "Sirsa",
+                    "Jind",
+                    "Rohtak"
+                ],
+                answer: 0,
+                hint: "Hisar district.",
+                explanation: "Pandit Jasraj was born in Pili Mandori (Fatehabad), but HSSC marks his birthplace as Hisar because Fatehabad was carved out later."
+            },
+            {
+                page: 2,
+                en: "Where does HSSC consider Pandit Nekiram Sharma's birthplace (Kailanga), and in which district is Kailanga currently located?",
+                hi: "HSSC ने पं. नेकीराम का जन्म कलंगा रोहतक माना है जबकि वर्तमान में कलंगा गाँव किस जिले में पड़ता है?",
+                options: [
+                    "Bhiwani",
+                    "Sonipat",
+                    "Jhajjar",
+                    "Panipat"
+                ],
+                answer: 0,
+                hint: "Bhiwani district.",
+                explanation: "HSSC considers Kailanga as Rohtak, but currently Kailanga falls in Bhiwani district."
+            },
+            {
+                page: 2,
+                en: "Who is the first female Arjuna Award winner from the state in hockey (1976) versus wrestling?",
+                hi: "अर्जुन अवार्ड जीतने वाली राज्य की प्रथम महिला हॉकी में रानी रामपाल / अजीत कौर (या 1976 में) है जबकि कुश्ती में अर्जुन अवार्ड जीतने वाली प्रथम महिला कौन है?",
+                options: [
+                    "Geetika Jakhar",
+                    "Babita Phogat",
+                    "Vinesh Phogat",
+                    "Sakshi Malik"
+                ],
+                answer: 0,
+                hint: "Geetika Jakhar.",
+                explanation: "Geetika Jakhar is the first woman from Haryana to win the Arjuna Award in wrestling."
+            },
+            {
+                page: 2,
+                en: "Where was Kalpana Chawla born, and where is the Kalpana Chawla Auditorium established in her name?",
+                hi: "कल्पना चावला का जन्म करनाल में हुआ है लेकिन इनके नाम से कल्पना चावला ऑडिटोरियम की स्थापना कहाँ की गई है?",
+                options: [
+                    "Kurukshetra University",
+                    "Karnal",
+                    "Panipat",
+                    "Rohtak"
+                ],
+                answer: 0,
+                hint: "Kurukshetra.",
+                explanation: "Kalpana Chawla was born in Karnal, but the Kalpana Chawla Auditorium was established in Kurukshetra."
+            },
+            {
+                page: 2,
+                en: "Where is Karna Talab/Lake located versus Guh Karna Talab and Karna Tilla?",
+                hi: "कर्ण तालाब/झील करनाल में है जबकि गुह कर्ण तालाब रोहतक में है और कर्ण का टिल्ला कहाँ स्थित है?",
+                options: [
+                    "Mirzapur, Kurukshetra",
+                    "Bhattu Kalan, Fatehabad",
+                    "Pehowa, Kurukshetra",
+                    "Ladwa, Karnal"
+                ],
+                answer: 0,
+                hint: "Mirzapur, Kurukshetra.",
+                explanation: "Karna Lake is in Karnal, Guh Karna Talab is in Rohtak, and Karna Tilla is located in Mirzapur, Kurukshetra."
+            },
+            {
+                page: 2,
+                en: "Where is the place named 'Karnakot' located?",
+                hi: "कर्णकोट नामक स्थान कहाँ स्थित है?",
+                options: [
+                    "Bhattu Kalan, Fatehabad",
+                    "Asandh, Karnal",
+                    "Rania, Sirsa",
+                    "Meham, Rohtak"
+                ],
+                answer: 0,
+                hint: "Bhattu Kalan, Fatehabad.",
+                explanation: "Karnakot is located in Bhattu Kalan, Fatehabad district."
+            },
+            {
+                page: 2,
+                en: "What is the first newspaper of Haryana versus the first Hindi newspaper and first weekly newspaper?",
+                hi: "हरियाणा का प्रथम समाचार पत्र हरियाणा (झज्जर) है जबकि हरियाणा का प्रथम हिंदी समाचार पत्र जैन प्रकाश है और प्रथम साप्ताहिक समाचार पत्र कौन सा है?",
+                options: [
+                    "Jain Kesari (जैन केसरी)",
+                    "Haribhoomi",
+                    "Rangila Musafir",
+                    "Sandesh"
+                ],
+                answer: 0,
+                hint: "Jain Kesari.",
+                explanation: "'Haryana' was the first newspaper, 'Jain Prakash' the first Hindi one, and 'Jain Kesari' the first weekly newspaper."
+            },
+            {
+                page: 2,
+                en: "What is the first monthly newspaper/magazine versus the first national daily newspaper of Haryana?",
+                hi: "हरियाणा का प्रथम मासिक समाचार पत्र रंगिला मुसाफिर है जबकि प्रथम राष्ट्रीय दैनिक समाचार पत्र कौन सा है?",
+                options: [
+                    "Haribhoomi (हरिभूमि)",
+                    "Dainik Bhaskar",
+                    "Punjab Kesari",
+                    "Amar Ujala"
+                ],
+                answer: 0,
+                hint: "Haribhoomi.",
+                explanation: "'Rangila Musafir' was the first monthly magazine, and 'Haribhoomi' is the first national daily newspaper of Haryana."
+            },
+            {
+                page: 2,
+                en: "What is the total duration (in days) of Ch. Bansi Lal's tenure as Chief Minister?",
+                hi: "कार्यकारी अवधि के अनुसार चौ. बंसीलाल कुल दिन 4300 तक मुख्यमंत्री रहे। यह उनका कुल कार्यकाल कितने दिन का है?",
+                options: [
+                    "4300 days",
+                    "4315 days",
+                    "3500 days",
+                    "4100 days"
+                ],
+                answer: 0,
+                hint: "4300 days.",
+                explanation: "Ch. Bansi Lal's total tenure recorded was 4300 days."
+            },
+            {
+                page: 2,
+                en: "Which district in Haryana contains the highest concentration of Red Soil (लाल मिट्टी)?",
+                hi: "राज्य में सर्वाधिक लाल मिट्टी किस जिले में पाई जाती है?",
+                options: [
+                    "Sirsa",
+                    "Yamunanagar",
+                    "Mahendragarh",
+                    "Karnal"
+                ],
+                answer: 0,
+                hint: "Sirsa district.",
+                explanation: "Sirsa district contains the highest amount of red soil in Haryana."
+            },
+            {
+                page: 2,
+                en: "Who authored 'Sandesh' as a notable Haryanvi media publication?",
+                hi: "'संदेश' समाचार पत्र के लेखक कौन हैं?",
+                options: [
+                    "Pandit Nekiram Sharma",
+                    "Lala Murli Dhar",
+                    "Sir Chhotu Ram",
+                    "Babu Kanhaiya Lal"
+                ],
+                answer: 0,
+                hint: "Pandit Nekiram Sharma.",
+                explanation: "Pandit Nekiram Sharma authored the 'Sandesh' newspaper."
+            },
+            {
+                page: 2,
+                en: "Which place is identified as the historical site of King Karna's Fort (राजा कर्ण का किला)?",
+                hi: "राजा कर्ण का किला हरियाणा में कहाँ स्थित है?",
+                options: [
+                    "Kurukshetra",
+                    "Karnal",
+                    "Rohtak",
+                    "Panipat"
+                ],
+                answer: 0,
+                hint: "Kurukshetra.",
+                explanation: "King Karna's Fort (राजा कर्ण का किला) is situated in Kurukshetra."
+            },
+            {
+                page: 2,
+                en: "What is the title given to the district Yamunanagar concerning its plywood industry?",
+                hi: "यमुनानगर जिले को प्लाईवुड के संदर्भ में किस रूप में जाना जाता है?",
+                options: [
+                    "Asia's largest plywood market",
+                    "Plywood capital of North India",
+                    "Timber hub of Haryana",
+                    "Forest board center"
+                ],
+                answer: 0,
+                hint: "Asia's largest plywood market.",
+                explanation: "Yamunanagar hosts Asia's largest plywood market."
+            },
+            {
+                page: 2,
+                en: "Who is known as the prominent humorist poet of Haryana (हास्य कवि)?",
+                hi: "हरियाणा राज्य के प्रसिद्ध विनोदी कवि (Humorist) कौन हैं?",
+                options: [
+                    "Surender Sharma",
+                    "Uday Bhanu Hans",
+                    "Kusum Lata",
+                    "Sant Ram Deswal"
+                ],
+                answer: 0,
+                hint: "Surender Sharma.",
+                explanation: "Surender Sharma is a legendary humorous poet from Haryana."
+            },
+            {
+                page: 2,
+                en: "Which law enacted in Haryana targets organized crime and drug-related rackets (HARKOCA)?",
+                hi: "हरियाणा में संगठित अपराध और नशों पर लगाम लगाने के लिए कौन सा नया कानून बनाया गया है - हरकोका?",
+                options: [
+                    "Haryana Control of Organized Crime Act",
+                    "Haryana Anti-Narcotics Act",
+                    "Haryana Public Safety Ordinance",
+                    "Haryana Special Task Act"
+                ],
+                answer: 0,
+                hint: "HARKOCA stands for Haryana Control of Organized Crime Act.",
+                explanation: "HARKOCA refers to the Haryana Control of Organized Crime Act."
+            },
+            {
+                page: 2,
+                en: "Which water body in Kurukshetra was designated as the state's first wetland community reserve?",
+                hi: "प्रदेश का प्रथम आर्द्र भूमि कम्युनिटी रिजर्व कहाँ स्थापित किया गया है?",
+                options: [
+                    "Brahmsarovar, Kurukshetra",
+                    "Sannihit Sarovar",
+                    "Karna Lake",
+                    "Tiliyar Lake"
+                ],
+                answer: 0,
+                hint: "Brahmsarovar, Kurukshetra.",
+                explanation: "Brahmsarovar in Kurukshetra is designated as the state's first wetland community reserve."
+            },
+            {
+                page: 2,
+                en: "Who gave consent for setting up a separate committee for managing Sikh Gurdwaras in Haryana?",
+                hi: "सिख गुरुद्वारों की व्यवस्था के लिए पृथक कमेटी की रचना हेतु किसने सहमति दी थी?",
+                options: [
+                    "Jagannath Pahadia",
+                    "Bhajan Lal",
+                    "Bansi Lal",
+                    "Devi Lal"
+                ],
+                answer: 0,
+                hint: "Jagannath Pahadia.",
+                explanation: "Jagannath Pahadia gave consent for the separate Sikh Gurdwara management committee."
+            },
+            {
+                page: 2,
+                en: "Who is the originator/pioneer of the 'Ek Eint Shaheed ke Naam' campaign?",
+                hi: "'एक ईंट शहीद के नाम' अभियान के जनक कौन हैं?",
+                options: [
+                    "Sanjeev",
+                    "Mukesh Kumar",
+                    "Raman Sharma",
+                    "Kuldeep Singh"
+                ],
+                answer: 0,
+                hint: "Sanjeev.",
+                explanation: "Sanjeev is the pioneer of the 'Ek Eint Shaheed ke Naam' campaign."
+            },
+            {
+                page: 2,
+                en: "What is the historical significance of Chhachhrauli in Yamunanagar?",
+                hi: "यमुनानगर के छछरोली स्थान की क्या विशेषता है?",
+                options: [
+                    "Highest rainfall place in Haryana",
+                    "Lowest rainfall place",
+                    "Largest grain market",
+                    "Oldest Vedic school"
+                ],
+                answer: 0,
+                hint: "Highest rainfall place.",
+                explanation: "Chhachhrauli is recorded as the place with the highest rainfall in Haryana."
+            },
+
+            // ================= PAGE 3 QUESTIONS (61 to 100) =================
+            {
+                page: 3,
+                en: "What is the recorded birthplace of Pandit Jasraj according to general state records before administrative bifurcation?",
+                hi: "राज्य अभिलेखों के अनुसार पं. जसराज का मूल जन्मस्थान कहाँ है?",
+                options: [
+                    "Pili Mandori, Fatehabad",
+                    "Kailanga, Rohtak",
+                    "Bhiwani City",
+                    "Sirsa Town"
+                ],
+                answer: 0,
+                hint: "Pili Mandori.",
+                explanation: "Pandit Jasraj was born in Pili Mandori."
+            },
+            {
+                page: 3,
+                en: "Which village is noted as the birthplace of the state's first Saangi Deepchand Bahman?",
+                hi: "राज्य के प्रथम सांगी दीपचंद बहमन का जन्म किस गाँव में हुआ था?",
+                options: [
+                    "Sherkhanda, Sonepat",
+                    "Garhi Sampla, Rohtak",
+                    "Siwani, Bhiwani",
+                    "Meham, Rohtak"
+                ],
+                answer: 0,
+                hint: "Sherkhanda in Sonepat.",
+                explanation: "Deepchand Bahman was born in Sherkhanda village, Sonepat."
+            },
+            {
+                page: 3,
+                en: "Who is credited with laying the true foundation of Saang art in Haryana?",
+                hi: "हरियाणा में साँग कला की नींव मुख्य रूप से किसने रखी थी?",
+                options: [
+                    "Kishan Lal Bhatta",
+                    "Deepchand Bahman",
+                    "Baje Bhagat",
+                    "Ali Khan"
+                ],
+                answer: 0,
+                hint: "Kishan Lal Bhatta.",
+                explanation: "Kishan Lal Bhatta laid the initial foundation of Saang in the region."
+            },
+            {
+                page: 3,
+                en: "What is the status of Loharu, Bhiwani regarding climate statistics in Haryana?",
+                hi: "भिवानी के लोहारू क्षेत्र की जलवायु विशेषता क्या है?",
+                options: [
+                    "Place with the lowest rainfall in the state",
+                    "Place with the highest soil moisture",
+                    "Most humid forest zone",
+                    "Driest sandy plateau"
+                ],
+                answer: 0,
+                hint: "Lowest rainfall place.",
+                explanation: "Loharu in Bhiwani is recorded as the place receiving the lowest rainfall in Haryana."
+            },
+            {
+                page: 3,
+                en: "Which district registers the maximum annual rainfall on an overall regional basis?",
+                hi: "समग्र जिले के रूप में सर्वाधिक वर्षा किस जिले में दर्ज की जाती है?",
+                options: [
+                    "Ambala",
+                    "Yamunanagar",
+                    "Panchkula",
+                    "Kurukshetra"
+                ],
+                answer: 0,
+                hint: "Ambala district.",
+                explanation: "Ambala district records the highest overall rainfall."
+            },
+            {
+                page: 3,
+                en: "Which district registers the minimum annual rainfall on a regional basis?",
+                hi: "किस जिले में न्यूनतम वार्षिक वर्षा दर्ज की जाती है?",
+                options: [
+                    "Sirsa",
+                    "Mahendragarh",
+                    "Bhiwani",
+                    "Rewari"
+                ],
+                answer: 0,
+                hint: "Sirsa district.",
+                explanation: "Sirsa district registers the minimum annual rainfall."
+            },
+            {
+                page: 3,
+                en: "What is the name of the first Haryanvi monthly magazine publication?",
+                hi: "हरियाणा का प्रथम मासिक समाचार पत्र / पत्रिका कौन सी है?",
+                options: [
+                    "Rangila Musafir (रंगीला मुसाफिर)",
+                    "Jain Prakash",
+                    "Haribhoomi",
+                    "Haryana Kesari"
+                ],
+                answer: 0,
+                hint: "Rangila Musafir.",
+                explanation: "'Rangila Musafir' is the first monthly magazine publication of Haryana."
+            },
+            {
+                page: 3,
+                en: "What was the first weekly newspaper published in Haryana?",
+                hi: "हरियाणा से प्रकाशित होने वाला प्रथम साप्ताहिक समाचार पत्र कौन सा है?",
+                options: [
+                    "Jain Kesari (जैन केसरी)",
+                    "Jain Prakash",
+                    "Sandesh",
+                    "Jat Gajat"
+                ],
+                answer: 0,
+                hint: "Jain Kesari.",
+                explanation: "'Jain Kesari' is the first weekly newspaper from the state."
+            },
+            {
+                page: 3,
+                en: "Which publication marks the first Hindi newspaper of Haryana?",
+                hi: "हरियाणा का प्रथम हिंदी समाचार पत्र कौन सा है?",
+                options: [
+                    "Jain Prakash (जैन प्रकाश)",
+                    "Haribhoomi",
+                    "Jain Kesari",
+                    "Rangila Musafir"
+                ],
+                answer: 0,
+                hint: "Jain Prakash.",
+                explanation: "'Jain Prakash' is recognized as the first Hindi newspaper of Haryana."
+            },
+            {
+                page: 3,
+                en: "What is the distinction held by 'Haribhoomi' in Haryanvi media history?",
+                hi: "समाचार पत्र 'हरिभूमि' को हरियाणा में किस प्रथम गौरव प्राप्त है?",
+                options: [
+                    "First national daily newspaper of Haryana",
+                    "First weekly journal",
+                    "First digital news portal",
+                    "First government gazette"
+                ],
+                answer: 0,
+                hint: "First national daily newspaper.",
+                explanation: "'Haribhoomi' is the first national daily newspaper of Haryana."
+            },
+            {
+                page: 3,
+                en: "Where is the Kalpana Chawla Auditorium located?",
+                hi: "कल्पना चावला ऑडिटोरियम की स्थापना कहाँ की गई है?",
+                options: [
+                    "Kurukshetra",
+                    "Karnal",
+                    "Panipat",
+                    "Rohtak"
+                ],
+                answer: 0,
+                hint: "Kurukshetra University campus.",
+                explanation: "The auditorium named after Kalpana Chawla is located in Kurukshetra."
+            },
+            {
+                page: 3,
+                en: "Who was the first female Arjuna Award winner in wrestling from Haryana?",
+                hi: "कुश्ती में अर्जुन पुरस्कार प्राप्त करने वाली हरियाणा की प्रथम महिला कौन है?",
+                options: [
+                    "Geetika Jakhar",
+                    "Babita Phogat",
+                    "Vinesh Phogat",
+                    "Sakshi Malik"
+                ],
+                answer: 0,
+                hint: "Geetika Jakhar.",
+                explanation: "Geetika Jakhar is the first female wrestler from Haryana to receive the Arjuna Award."
+            },
+            {
+                page: 3,
+                en: "Who was the first female Paralympian from Haryana, hailing from Yamunanagar?",
+                hi: "यमुनानगर से ताल्लुक रखने वाली राज्य की प्रथम महिला पैरालम्पियन कौन हैं?",
+                options: [
+                    "Heena Kalyan",
+                    "Deepa Malik",
+                    "Ekta Bhyan",
+                    "Simran Sharma"
+                ],
+                answer: 0,
+                hint: "Heena Kalyan.",
+                explanation: "Heena Kalyan from Yamunanagar is the state's first female Paralympian."
+            },
+            {
+                page: 3,
+                en: "Who holds the distinction of being the first woman Paralympic medal winner from Haryana?",
+                hi: "पैरालम्पिक खेलों में पदक जीतने वाली राज्य की प्रथम महिला विजेता कौन हैं?",
+                options: [
+                    "Deepa Malik",
+                    "Heena Kalyan",
+                    "Karamjyoti Dalal",
+                    "Sakshi Malik"
+                ],
+                answer: 0,
+                hint: "Deepa Malik.",
+                explanation: "Deepa Malik is the first woman from the state to win a medal in the Paralympic Games."
+            },
+            {
+                page: 3,
+                en: "Which sub-division of Haryana is enclosed by Rajasthan on three separate sides?",
+                hi: "हरियाणा का कौन सा उपमंडल राजस्थान से तीन तरफ से घिरा हुआ है?",
+                options: [
+                    "Firozpur Jhirka",
+                    "Narnaul",
+                    "Bawal",
+                    "Tosham"
+                ],
+                answer: 0,
+                hint: "Firozpur Jhirka.",
+                explanation: "Firozpur Jhirka sub-division is surrounded by Rajasthan on three sides."
+            },
+            {
+                page: 3,
+                en: "Who served as the first non-Congress Chief Minister of Haryana?",
+                hi: "हरियाणा के पहले गैर-कांग्रेसी मुख्यमंत्री कौन थे?",
+                options: [
+                    "Rao Birender Singh",
+                    "Devi Lal",
+                    "Bhajan Lal",
+                    "Banarsi Das Gupta"
+                ],
+                answer: 0,
+                hint: "Rao Birender Singh.",
+                explanation: "Rao Birender Singh was the first non-Congress Chief Minister of Haryana."
+            },
+            {
+                page: 3,
+                en: "Who was the first female Speaker of the Haryana Vidhan Sabha?",
+                hi: "हरियाणा विधानसभा की प्रथम महिला अध्यक्ष कौन थीं?",
+                options: [
+                    "Shanno Devi",
+                    "Kiran Choudhry",
+                    "Kumari Selja",
+                    "Prasanna Devi"
+                ],
+                answer: 0,
+                hint: "Shanno Devi.",
+                explanation: "Shanno Devi served as the first female Speaker of the Haryana Vidhan Sabha."
+            },
+            {
+                page: 3,
+                en: "Which institution is acknowledged as the first private university established in Haryana?",
+                hi: "हरियाणा में स्थापित होने वाला पहला निजी विश्वविद्यालय कौन सा है?",
+                options: [
+                    "Maharishi Markandeshwar University, Mullana (Ambala)",
+                    "Lingaya's University, Faridabad",
+                    "Manav Rachna International University",
+                    "O.P. Jindal Global University"
+                ],
+                answer: 0,
+                hint: "MM University, Mullana.",
+                explanation: "Maharishi Markandeshwar University, Mullana (Ambala) is the state's first private university."
+            },
+            {
+                page: 3,
+                en: "What year saw the establishment of Kurukshetra University, the state's first university?",
+                hi: "राज्य के पहले विश्वविद्यालय कुरुक्षेत्र विश्वविद्यालय की स्थापना किस वर्ष हुई थी?",
+                options: [
+                    "1956",
+                    "1966",
+                    "1970",
+                    "1975"
+                ],
+                answer: 0,
+                hint: "1956.",
+                explanation: "Kurukshetra University was established in 1956."
+            },
+            {
+                page: 3,
+                en: "Which Haryanvi film holds the record for being the most successful Haryanvi movie released in 1984?",
+                hi: "वर्ष 1984 में रिलीज हुई कौन सी हरियाणवी फिल्म सर्वाधिक सफल रही है?",
+                options: [
+                    "Chandrakanta",
+                    "Bahurani",
+                    "Chora Haryane Ka",
+                    "Sher Singh"
+                ],
+                answer: 0,
+                hint: "Chandrakanta.",
+                explanation: "'Chandrakanta' (1984) is the most successful Haryanvi film."
+            },
+            {
+                page: 3,
+                en: "What was the name of the first successful Haryanvi film released in 1982?",
+                hi: "वर्ष 1982 में रिलीज हुई हरियाणा की पहली सफल फिल्म कौन सी थी?",
+                options: [
+                    "Bahurani",
+                    "Chandrakanta",
+                    "Dharti",
+                    "Gharwali"
+                ],
+                answer: 0,
+                hint: "Bahurani.",
+                explanation: "'Bahurani' (1982) was the first successful Haryanvi film."
+            },
+            {
+                page: 3,
+                en: "Who authored the Thanesari / Kauravi Ramayana in poetic verse?",
+                hi: "थानेसरी / कौरवी रामायण के रचनाकार कौन हैं?",
+                options: [
+                    "Khuda Ahmad Baksh Khan",
+                    "Ramswaroop Shastri",
+                    "Dayachand Mayana",
+                    "Baje Bhagat"
+                ],
+                answer: 0,
+                hint: "Khuda Ahmad Baksh Khan.",
+                explanation: "Khuda Ahmad Baksh Khan wrote the Thanesari / Kauravi Ramayana."
+            },
+            {
+                page: 3,
+                en: "Who authored the Ramayana in the Haryanvi language for the very first time?",
+                hi: "हरियाणवी भाषा में रामायण सबसे पहले किसने लिखी थी?",
+                options: [
+                    "Ramswaroop Shastri (Patoudi)",
+                    "Khuda Ahmad Baksh",
+                    "Lakhmichand",
+                    "Hardeva"
+                ],
+                answer: 0,
+                hint: "Ramswaroop Shastri from Patoudi.",
+                explanation: "Ramswaroop Shastri of Patoudi first wrote the Ramayana in Haryanvi."
+            },
+            {
+                page: 3,
+                en: "Which soil type is predominantly found in Sirsa district according to regional geographical surveys?",
+                hi: "भौगोलिक सर्वेक्षण के अनुसार सिरसा जिले में मुख्य रूप से कौन सी मिट्टी पाई जाती है?",
+                options: [
+                    "Red soil (लाल मिट्टी)",
+                    "Red Chestnut soil",
+                    "Alluvial soil",
+                    "Silty clay soil"
+                ],
+                answer: 0,
+                hint: "Red soil.",
+                explanation: "Red soil is predominantly found in Sirsa district."
+            },
+            {
+                page: 3,
+                en: "Where is Red Chestnut soil found in maximum quantity across Haryana?",
+                hi: "हरियाणा में लाल चेस्टनट (उदासीन प्रतिक्रिया वाली) मिट्टी सर्वाधिक कहाँ पाई जाती है?",
+                options: [
+                    "Yamunanagar",
+                    "Sirsa",
+                    "Karnal",
+                    "Panchkula"
+                ],
+                answer: 0,
+                hint: "Yamunanagar.",
+                explanation: "Red Chestnut soil is found in maximum quantity in Yamunanagar district."
+            },
+            {
+                page: 3,
+                en: "What is the traditional name given to coarse wool blankets/shawls in Haryana?",
+                hi: "हरियाणा में ओढ़ी जाने वाली मोटी सूत की चादर को क्या कहा जाता है?",
+                options: [
+                    "Khes",
+                    "Bari Chadar",
+                    "Loee",
+                    "Dhabla"
+                ],
+                answer: 0,
+                hint: "Khes.",
+                explanation: "A coarse thick cotton sheet/blanket is called 'Khes'."
+            },
+            {
+                page: 3,
+                en: "What is the fine large cotton bedsheet traditionally called in Haryanvi culture?",
+                hi: "पारंपरिक हरियाणवी संस्कृति में बारीक सूत की बड़ी चादर क्या कहलाती है?",
+                options: [
+                    "Bari Chadar",
+                    "Khes",
+                    "Chundari",
+                    "Khesa"
+                ],
+                answer: 0,
+                hint: "Bari Chadar.",
+                explanation: "Fine large cotton bedsheet is known as 'Bari Chadar'."
+            },
+            {
+                page: 3,
+                en: "Which location in Haryana is referred to as 'Pitru Bhoomi' or 'Lagu Haridwar'?",
+                hi: "हरियाणा में किस स्थान को 'पितृ भूमि' या 'लघु हरिद्वार' कहा जाता है?",
+                options: [
+                    "Safidon",
+                    "Pehowa",
+                    "Kurukshetra",
+                    "Jind"
+                ],
+                answer: 0,
+                hint: "Safidon.",
+                explanation: "Safidon is known as Pitru Bhoomi / Lagu Haridwar."
+            },
+            {
+                page: 3,
+                en: "Which pilgrimage destination in Haryana is historically recognized as 'Gaya Nagri'?",
+                hi: "हरियाणा में किस नगर को 'गया नगरी' कहा जाता है?",
+                options: [
+                    "Pehowa",
+                    "Safidon",
+                    "Kaithal",
+                    "Panipat"
+                ],
+                answer: 0,
+                hint: "Pehowa.",
+                explanation: "Pehowa is referred to as the 'Gaya Nagri' of Haryana."
+            },
+            {
+                page: 3,
+                en: "Who holds the record for serving as Chief Minister of Haryana for the maximum number of times (5 times)?",
+                hi: "हरियाणा में सबसे अधिक बार (5 बार) मुख्यमंत्री बनने का रिकॉर्ड किसके नाम है?",
+                options: [
+                    "Om Prakash Chautala",
+                    "Bhajan Lal",
+                    "Bansi Lal",
+                    "Devi Lal"
+                ],
+                answer: 0,
+                hint: "Om Prakash Chautala.",
+                explanation: "Om Prakash Chautala became Chief Minister 5 times."
+            },
+            {
+                page: 3,
+                en: "What was the duration of the shortest single term of a Chief Minister in Haryana (Om Prakash Chautala)?",
+                hi: "हरियाणा में मुख्यमंत्री के रूप में सबसे छोटा कार्यकाल (मात्र 5 दिन) किसका रहा है?",
+                options: [
+                    "Om Prakash Chautala",
+                    "Hukam Singh",
+                    "Banarsi Das Gupta",
+                    "Bhagwat Dayal Sharma"
+                ],
+                answer: 0,
+                hint: "Om Prakash Chautala.",
+                explanation: "Om Prakash Chautala served the shortest single term of 5 days."
+            },
+            {
+                page: 3,
+                en: "Who was the first Chief Minister of Haryana state?",
+                hi: "हरियाणा राज्य के प्रथम मुख्यमंत्री कौन थे?",
+                options: [
+                    "Bhagwat Dayal Sharma",
+                    "Rao Birender Singh",
+                    "Bansi Lal",
+                    "Devi Lal"
+                ],
+                answer: 0,
+                hint: "Bhagwat Dayal Sharma.",
+                explanation: "Bhagwat Dayal Sharma was the first Chief Minister of Haryana."
+            },
+            {
+                page: 3,
+                en: "What is the total number of individual Chief Ministers who have held office in Haryana?",
+                hi: "हरियाणा में अब तक कुल कितने व्यक्तिगत नामों के मुख्यमंत्री बने हैं?",
+                options: [
+                    "11",
+                    "10",
+                    "12",
+                    "15"
+                ],
+                answer: 0,
+                hint: "11 individual names.",
+                explanation: "There have been 11 individual Chief Ministers in Haryana."
+            },
+            {
+                page: 3,
+                en: "Who is recognized as the first prose writer (Gadhya Sahityakar) of Haryana?",
+                hi: "हरियाणा के प्रथम गद्य साहित्यकार कौन हैं?",
+                options: [
+                    "Shah Muhammad Ramzan",
+                    "Rajaram Shastri",
+                    "Uday Bhanu Hans",
+                    "Madhav Prasad"
+                ],
+                answer: 0,
+                hint: "Shah Muhammad Ramzan.",
+                explanation: "Shah Muhammad Ramzan is the first prose writer of Haryana."
+            },
+            {
+                page: 3,
+                en: "Who is recognized as the first poet/verse writer (Padhya Sahityakar) of Haryana?",
+                hi: "हरियाणा के प्रथम पद्य साहित्यकार कौन हैं?",
+                options: [
+                    "Rajaram Shastri",
+                    "Shah Muhammad Ramzan",
+                    "Surdas",
+                    "Tulsi Das"
+                ],
+                answer: 0,
+                hint: "Rajaram Shastri.",
+                explanation: "Rajaram Shastri is the first Padhya Sahityakar of Haryana."
+            },
+            {
+                page: 3,
+                en: "Which temple in Beri, Jhajjar is titled as the Khajuraho of North India?",
+                hi: "झज्जर के बेरी स्थित किस मंदिर को उत्तर भारत के खजुराहो की संज्ञा दी गई है?",
+                options: [
+                    "Bhimeshwari Temple",
+                    "Bheema Devi Temple",
+                    "Sthaneshwar Temple",
+                    "Mansa Devi Temple"
+                ],
+                answer: 0,
+                hint: "Bhimeshwari Temple.",
+                explanation: "Bhimeshwari Temple in Beri, Jhajjar is known as the Khajuraho of North India."
+            },
+            {
+                page: 3,
+                en: "Which temple in Panchkula is known as India's Khajuraho?",
+                hi: "पंचकूला के किस मंदिर को भारत के खजुराहो मंदिर की संज्ञा दी गई है?",
+                options: [
+                    "Bheema Devi Temple",
+                    "Bhimeshwari Temple",
+                    "Kali Mata Temple",
+                    "Chandi Devi Temple"
+                ],
+                answer: 0,
+                hint: "Bheema Devi Temple.",
+                explanation: "Bheema Devi Temple in Panchkula is referred to as India's Khajuraho."
+            },
+            {
+                page: 3,
+                en: "What is Rewari famously known as compared to Jhajjar?",
+                hi: "रेवाड़ी को क्या कहा जाता है जबकि झज्जर को क्या कहा जाता है?",
+                options: [
+                    "Rewari: Veer Bhoomi, Jhajjar: Land of Martyrs",
+                    "Rewari: Pital Nagri, Jhajjar: City of Warriors",
+                    "Rewari: Brass City, Jhajjar: Soldier Hub",
+                    "Rewari: Industrial Town, Jhajjar: Martyr Land"
+                ],
+                answer: 0,
+                hint: "Veer Bhoomi versus Land of Martyrs.",
+                explanation: "Rewari is known as Veer Bhoomi and Jhajjar as the Land of Martyrs."
+            },
+            {
+                page: 3,
+                en: "What is the name of the newspaper authored by Lala Murli Dhar?",
+                hi: "लाला मुरलीधर द्वारा लिखित समाचार पत्र कौन सा है?",
+                options: [
+                    "Khair Sandesh",
+                    "Sandesh",
+                    "Jat Gajat",
+                    "Jain Prakash"
+                ],
+                answer: 0,
+                hint: "Khair Sandesh.",
+                explanation: "Lala Murli Dhar authored 'Khair Sandesh'."
+            },
+            {
+                page: 3,
+                en: "Who authored the newspaper 'Jat Gajat'?",
+                hi: "'जाट गजट' समाचार पत्र के लेखक कौन हैं?",
+                options: [
+                    "Sir Chhotu Ram",
+                    "Babu Kanhaiya Lal",
+                    "Lala Murli Dhar",
+                    "Pandit Nekiram Sharma"
+                ],
+                answer: 0,
+                hint: "Sir Chhotu Ram.",
+                explanation: "'Jat Gajat' was written and published by Sir Chhotu Ram."
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let userAnswers = new Array(quizData.length).fill(null);
+        let shuffledOptionsCache = {};
+
+        // DOM Elements
+        const questionCounterEl = document.getElementById('question-counter');
+        const sourcePageTagEl = document.getElementById('source-page-tag');
+        const progressBarEl = document.getElementById('progress-bar');
+        const questionTextEnEl = document.getElementById('question-text-en');
+        const questionTextHiEl = document.getElementById('question-text-hi');
+        const optionsContainerEl = document.getElementById('options-container');
+        const hintBoxEl = document.getElementById('hint-box');
+        const hintTextEl = document.getElementById('hint-text');
+        const explanationBoxEl = document.getElementById('explanation-box');
+        const explanationTitleEl = document.getElementById('explanation-title');
+        const explanationTextEl = document.getElementById('explanation-text');
+        const scoreDisplayEl = document.getElementById('score-display');
+        const totalDisplayEl = document.getElementById('total-display');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const jumpInput = document.getElementById('jump-input');
+
+        totalDisplayEl.textContent = quizData.length;
+
+        // Shuffle options once per question index to keep state stable during navigation
+        function getShuffledOptions(index) {
+            if (shuffledOptionsCache[index]) {
+                return shuffledOptionsCache[index];
+            }
+            const q = quizData[index];
+            let optionsWithIndex = q.options.map((opt, i) => ({ text: opt, originalIndex: i }));
+            
+            // Deterministic pseudo-random shuffle based on index to prevent mismatch bugs on re-render
+            optionsWithIndex.sort((a, b) => {
+                let seedA = Math.sin(index + a.originalIndex * 99) * 10000;
+                let seedB = Math.sin(index + b.originalIndex * 99) * 10000;
+                return (seedA - Math.floor(seedA)) - (seedB - Math.floor(seedB));
+            });
+
+            shuffledOptionsCache[index] = optionsWithIndex;
+            return optionsWithIndex;
+        }
+
+        function loadQuestion(index) {
+            currentQuestionIndex = index;
+            const q = quizData[index];
+
+            // Update header trackers
+            questionCounterEl.textContent = `Question ${index + 1} of ${quizData.length}`;
+            sourcePageTagEl.textContent = `Page ${q.page}`;
+            progressBarEl.style.width = `${((index + 1) / quizData.length) * 100}%`;
+
+            // Set question text
+            questionTextEnEl.textContent = `${index + 1}. ${q.en}`;
+            questionTextHiEl.textContent = q.hi;
+
+            // Hint setup
+            hintTextEl.textContent = q.hint;
+            hintBoxEl.classList.add('hidden');
+
+            // Render Options
+            optionsContainerEl.innerHTML = '';
+            const shuffled = getShuffledOptions(index);
+            const savedAnswer = userAnswers[index];
+
+            shuffled.forEach((item, pos) => {
+                const btn = document.createElement('button');
+                btn.className = `option-btn w-full text-left p-4 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 font-medium text-slate-700 flex items-center justify-between shadow-sm`;
+                
+                const labelSpan = document.createElement('span');
+                labelSpan.textContent = item.text;
+                btn.appendChild(labelSpan);
+
+                const letterSpan = document.createElement('span');
+                letterSpan.className = 'text-xs font-bold uppercase bg-slate-100 text-slate-500 px-2 py-1 rounded-md border border-slate-200';
+                letterSpan.textContent = String.fromCharCode(65 + pos);
+                btn.appendChild(letterSpan);
+
+                if (savedAnswer !== null) {
+                    btn.disabled = true;
+                    if (item.originalIndex === q.answer) {
+                        btn.className = "option-btn w-full text-left p-4 rounded-xl border border-emerald-300 bg-emerald-50 text-emerald-900 font-medium flex items-center justify-between shadow-sm";
+                        letterSpan.className = "text-xs font-bold uppercase bg-emerald-200 text-emerald-800 px-2 py-1 rounded-md";
+                    } else if (savedAnswer === item.originalIndex) {
+                        btn.className = "option-btn w-full text-left p-4 rounded-xl border border-rose-300 bg-rose-50 text-rose-900 font-medium flex items-center justify-between shadow-sm";
+                        letterSpan.className = "text-xs font-bold uppercase bg-rose-200 text-rose-800 px-2 py-1 rounded-md";
+                    }
+                } else {
+                    btn.onclick = () => selectOption(item.originalIndex);
+                }
+
+                optionsContainerEl.appendChild(btn);
+            });
+
+            // Explanation box handling
+            if (savedAnswer !== null) {
+                explanationBoxEl.classList.remove('hidden');
+                if (savedAnswer === q.answer) {
+                    explanationBoxEl.className = "p-4 rounded-xl border bg-emerald-50 border-emerald-200 text-emerald-900 mb-4";
+                    explanationTitleEl.innerHTML = "✅ Correct Answer!";
+                } else {
+                    explanationBoxEl.className = "p-4 rounded-xl border bg-rose-50 border-rose-200 text-rose-900 mb-4";
+                    explanationTitleEl.innerHTML = "❌ Incorrect Answer.";
+                }
+                explanationTextEl.textContent = q.explanation;
+            } else {
+                explanationBoxEl.classList.add('hidden');
+            }
+
+            // Button controls state
+            prevBtn.disabled = index === 0;
+            nextBtn.textContent = index === quizData.length - 1 ? "Finish / Summary" : "Next →";
+            jumpInput.value = index + 1;
+        }
+
+        function selectOption(selectedIndex) {
+            if (userAnswers[currentQuestionIndex] !== null) return; // Already answered
+
+            userAnswers[currentQuestionIndex] = selectedIndex;
+            const q = quizData[currentQuestionIndex];
+
+            if (selectedIndex === q.answer) {
+                score++;
+                scoreDisplayEl.textContent = score;
+            }
+
+            loadQuestion(currentQuestionIndex);
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < quizData.length - 1) {
+                loadQuestion(currentQuestionIndex + 1);
+            } else {
+                alert(`Quiz Completed! Your Final Score is ${score} out of ${quizData.length}`);
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                loadQuestion(currentQuestionIndex - 1);
+            }
+        }
+
+        function jumpToQuestion() {
+            let val = parseInt(jumpInput.value);
+            if (!isNaN(val) && val >= 1 && val <= quizData.length) {
+                loadQuestion(val - 1);
+            } else {
+                alert(`Please enter a valid question number between 1 and ${quizData.length}`);
+            }
+        }
+
+        function toggleHint() {
+            hintBoxEl.classList.toggle('hidden');
+        }
+
+        // Initialize first question on load
+        window.onload = () => {
+            loadQuestion(0);
+        };
+    </script>
+<script src="../../quiz-question-controls.js"></script>
+<script src="../../quiz-app-ui-v2.js"></script></body>
+</html>

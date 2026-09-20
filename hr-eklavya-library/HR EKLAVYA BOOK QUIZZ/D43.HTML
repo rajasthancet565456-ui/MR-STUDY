@@ -1,0 +1,1391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haryana GK Interactive Quiz Application (Sonipat District Special)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+<style id="cosmic-readable-quiz-theme">
+:root{--space:#e8dcff;--panel:#f3eaff;--panel2:#dcc6ff;--edge:#6a45bf;--glow:#d28b28;--accent:#d15f9f;--ink:#2c1b4d;--muted:#66547c;--mist:rgba(106,69,191,.2)}html{background:var(--space)}body{background:radial-gradient(ellipse 62% 45% at 90% -5%,rgba(209,95,159,.28),transparent 62%),radial-gradient(ellipse 55% 40% at 8% 100%,rgba(65,164,207,.26),transparent 64%),var(--space)!important;color:var(--ink)!important;min-height:100vh}body:before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.78;background-image:radial-gradient(circle at 9% 18%,var(--glow) 0 1px,transparent 1.7px),radial-gradient(circle at 26% 69%,var(--edge) 0 .8px,transparent 1.5px),radial-gradient(circle at 68% 24%,var(--accent) 0 1px,transparent 1.8px),radial-gradient(circle at 88% 73%,#47a8d3 0 .8px,transparent 1.5px);background-size:220px 190px,300px 270px,260px 230px,340px 310px;z-index:-1}header{background:linear-gradient(105deg,var(--panel),var(--panel2))!important;border-color:rgba(106,69,191,.25)!important;box-shadow:0 7px 24px rgba(84,48,142,.14)!important}header h1{color:var(--edge)!important;text-shadow:none!important}header p,header .text-slate-400,header .text-indigo-200,header .text-indigo-300{color:var(--muted)!important}main>div,#quiz-card,.bg-slate-800,.bg-slate-900,.bg-indigo-900,.bg-indigo-950{background:linear-gradient(145deg,#f8f0ff,var(--panel))!important;border-color:rgba(106,69,191,.22)!important;color:var(--ink)!important;box-shadow:0 14px 35px rgba(84,48,142,.12)!important}.bg-slate-700,.bg-slate-100,.bg-slate-50{background:#eadffd!important;color:var(--ink)!important}.text-slate-100,.text-slate-200,.text-slate-300,.text-slate-400,.text-white,.text-slate-800,.text-slate-700,.text-slate-600{color:var(--ink)!important}.text-indigo-400,.text-indigo-300,.text-emerald-400,.text-yellow-300{color:var(--edge)!important}.border-slate-700,.border-slate-700\/60,.border-indigo-700,.border-slate-200{border-color:rgba(106,69,191,.25)!important}button:not(.bg-green-600):not(.bg-red-600){background:#f9f2ff!important;color:var(--ink)!important;border:1px solid rgba(106,69,191,.25)!important;box-shadow:0 3px 10px rgba(84,48,142,.09)!important}button.bg-indigo-600,button.bg-slate-800,button.bg-slate-900,button.bg-indigo-900{background:linear-gradient(120deg,var(--edge),var(--accent))!important;color:#fff!important;border:0!important}button.bg-indigo-600 *,button.bg-slate-800 *,button.bg-slate-900 *,button.bg-indigo-900 *{color:#fff!important}button:hover{filter:brightness(1.04);transform:translateY(-1px)}input,select,textarea{background:#f9f2ff!important;border-color:rgba(106,69,191,.35)!important;color:var(--ink)!important}input:focus,select:focus,textarea:focus{outline:none!important;border-color:var(--edge)!important;box-shadow:0 0 0 3px var(--mist)!important}.bg-indigo-500,#progress-bar{background:linear-gradient(90deg,var(--edge),var(--accent),var(--glow))!important}.rounded-2xl{border-radius:1.25rem!important}
+</style></head>
+<body class="bg-slate-50 text-slate-800 min-p-4 flex flex-col justify-between min-h-screen">
+
+    <!-- Top Header -->
+    <header class="bg-indigo-700 text-white shadow-md py-4 px-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div>
+            <h1 class="text-xl font-bold">Haryana District-wise Study: Sonipat Special</h1>
+            <p class="text-xs text-indigo-200">Bilingual (English & Hindi) Quiz App | 90 Unique Exam-Pattern Questions</p>
+        </div>
+        <div class="flex items-center gap-4 bg-indigo-800 px-4 py-2 rounded-lg text-sm">
+            <div>Score: <span id="live-score" class="font-bold text-amber-300">0</span> / <span id="total-q-count">90</span></div>
+            <div>|</div>
+            <div>Progress: <span id="progress-pct" class="font-bold">0%</span></div>
+        </div>
+    </header>
+
+    <!-- Main Quiz Container -->
+    <main class="max-w-4xl w-full mx-auto p-4 sm:p-6 my-auto">
+        <div class="bg-white rounded-2xl shadow-xl p-6 sm:p-8 border border-slate-100 relative">
+            
+            <!-- Quiz Meta / Progress Bar -->
+            <div class="mb-6">
+                <div class="flex justify-between items-center text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
+                    <span id="question-tracker">Question 1 of 90</span>
+                    <span id="question-category" class="bg-indigo-50 text-indigo-700 px-2.5 py-1 rounded-full text-[10px]">Sonipat District GK</span>
+                </div>
+                <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+                    <div id="progress-bar" class="bg-indigo-600 h-2 transition-all duration-300" style="width: 1.11%;"></div>
+                </div>
+            </div>
+
+            <!-- Question Statement Area -->
+            <div class="mb-6">
+                <h2 id="question-text-en" class="text-lg sm:text-xl font-semibold text-slate-900 mb-2">Loading Question...</h2>
+                <h3 id="question-text-hi" class="text-base sm:text-lg font-medium text-indigo-900 bg-indigo-50/50 p-3 rounded-lg border border-indigo-100">लोड हो रहा है...</h3>
+            </div>
+
+            <!-- Options Grid -->
+            <div id="options-container" class="grid grid-cols-1 gap-3 mb-6">
+                <!-- Dynamically injected options -->
+            </div>
+
+            <!-- Hint Section -->
+            <div class="mb-6">
+                <button onclick="toggleHint()" class="text-xs font-semibold text-indigo-600 hover:text-indigo-800 flex items-center gap-1 focus:outline-none">
+                    <span>💡 Toggle Hint / संकेत देखें</span>
+                </button>
+                <div id="hint-box" class="hidden mt-2 p-3 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-900">
+                    <p id="hint-text">No hint available.</p>
+                </div>
+            </div>
+
+            <!-- Explanation Box (Hidden initially) -->
+            <div id="explanation-box" class="hidden mb-6 p-4 rounded-xl bg-slate-50 border border-slate-200 text-sm">
+                <h4 class="font-bold text-slate-900 mb-1 flex items-center gap-1">
+                    <span>📖 Explanation / व्याख्या:</span>
+                </h4>
+                <p id="explanation-text" class="text-slate-700 leading-relaxed"></p>
+            </div>
+
+            <!-- Navigation & Controls Footer -->
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-4 pt-4 border-t border-slate-100">
+                <div class="flex items-center gap-2 w-full sm:w-auto">
+                    <button onclick="prevQuestion()" id="prev-btn" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-medium rounded-lg transition disabled:opacity-55 disabled:cursor-not-allowed w-1/2 sm:w-auto">
+                        ← Previous
+                    </button>
+                    <button onclick="nextQuestion()" id="next-btn" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition w-1/2 sm:w-auto">
+                        Next →
+                    </button>
+                </div>
+
+                <!-- Jump to Question Input -->
+                <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+                    <span class="text-xs text-slate-500 whitespace-nowrap">Jump to Q#:</span>
+                    <input type="number" id="jump-input" min="1" max="90" class="w-16 px-2 py-1.5 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-center" />
+                    <button onclick="jumpToQuestion()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-900 text-white text-xs font-medium rounded-lg">Go</button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-4 text-xs text-slate-400">
+        Haryana Competitive Exams Prep &bull; Sonipat District Edition &bull; 90 Unique Questions Dataset
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // 90 Comprehensive Exam-Level Unique Questions Dataset spanning Sonipat facts from source images (Pages 1 & 2)
+        const quizData = [
+            // Page 1 block (Q1 - Q45)
+            {
+                en: "In which city of Haryana are there two women police stations?",
+                hi: "राज्य के किस शहर में दो महिला पुलिस थाने हैं - सोनीपत",
+                options: [
+                    "Sonipat (सोनीपत)",
+                    "Gurugram",
+                    "Faridabad",
+                    "Hisar"
+                ],
+                answer: 0,
+                hint: "The main focus district of this study set.",
+                explanation: "Sonipat is the city in Haryana that features two women police stations."
+            },
+            {
+                en: "Who is the founder of Jat Educational Institution, Sonipat?",
+                hi: "जाट शिक्षण संस्थान सोनीपत का संस्थापक है - चौ० टीकाराम",
+                options: [
+                    "Chaudhary Tikaram (चौ० टीकाराम)",
+                    "Chaudhary Chhotu Ram",
+                    "Baldev Singh",
+                    "Babu Murlidhar"
+                ],
+                answer: 0,
+                hint: "Chaudhary Tikaram.",
+                explanation: "Chaudhary Tikaram is the founder of Jat Educational Institution in Sonipat."
+            },
+            {
+                en: "Who serves as the brand ambassador of the Haryana Election Commission from Sonipat?",
+                hi: "हरियाणा चुनाव आयोग की ब्रैंड अम्बेसडर है - दीपा मलिक, सोनीपत",
+                options: [
+                    "Deepa Malik (दीपा मलिक)",
+                    "Sakshi Malik",
+                    "Manu Bhaker",
+                    "Vinesh Phogat"
+                ],
+                answer: 0,
+                hint: "Deepa Malik.",
+                explanation: "Para-athlete Deepa Malik, from Sonipat, serves as the brand ambassador for the Haryana Election Commission."
+            },
+            {
+                en: "Where was the 'Sang ki Alibaksh Shreni ka Parimarjan' associated with?",
+                hi: "सांग की अलीबख्श श्रेणी का परिमार्जन किया था - दीपचन्द बहमन, शेरखाण्डा गांव, सोनीपत",
+                options: [
+                    "Deepchand Bahman, Sherkhanda village, Sonipat (दीपचन्द बहमन, शेरखाण्डा गांव, सोनीपत)",
+                    "Pt. Lakhmi Chand, Janti Kalan",
+                    "Dayachand Mayana, Rohtak",
+                    "Bankelal, Jhajjar"
+                ],
+                answer: 0,
+                hint: "Deepchand Bahman from Sherkhanda village.",
+                explanation: "Deepchand Bahman from Sherkhanda village, Sonipat, refined the Alibaksh category of Sang."
+            },
+            {
+                en: "Where is the famous 'Teen Manjila Lal Masjid' located?",
+                hi: "तीन मंजिला लाल मस्जिद स्थित है - सोनीपत",
+                options: [
+                    "Sonipat (सोनीपत)",
+                    "Rohtak",
+                    "Panipat",
+                    "Jhajjar"
+                ],
+                answer: 0,
+                hint: "Sonipat.",
+                explanation: "The three-story Lal Masjid is located in Sonipat."
+            },
+            {
+                en: "Where is Rajiv Gandhi Education City located?",
+                hi: "राजीव गांधी एजुकेशनल सिटी - कुण्डली, सोनीपत",
+                options: [
+                    "Kundli, Sonipat (कुण्डली, सोनीपत)",
+                    "Rai, Sonipat",
+                    "Ganaur, Sonipat",
+                    "Kharkhoda, Sonipat"
+                ],
+                answer: 0,
+                hint: "Kundli.",
+                explanation: "Rajiv Gandhi Education City is located in Kundli, Sonipat."
+            },
+            {
+                en: "Who is known as the composer of satirical and spiritual sangs ('Satvik va Adhyatmik Sangon ke Rachiyata')?",
+                hi: "सात्विक व आध्यात्मिक सांगों का रचयिता - बाजे भगत, सिसाना गांव, सोनीपत",
+                options: [
+                    "Baje Bhagat, Sisana village, Sonipat (बाजे भगत, सिसाना गांव, सोनीपत)",
+                    "Deepchand Bahman",
+                    "Pt. Lakhmi Chand",
+                    "Dayachand Mayana"
+                ],
+                answer: 0,
+                hint: "Baje Bhagat from Sisana village.",
+                explanation: "Baje Bhagat from Sisana village, Sonipat, is known for composing satvik and spiritual sangs."
+            },
+            {
+                en: "Where is 'Narayan Ashram' located in Sonipat district?",
+                hi: "नारायण आश्रम - सिसाना, सोनीपत",
+                options: [
+                    "Sisana, Sonipat (सिसाना, सोनीपत)",
+                    "Kundli, Sonipat",
+                    "Ganaur, Sonipat",
+                    "Rai, Sonipat"
+                ],
+                answer: 0,
+                hint: "Sisana.",
+                explanation: "Narayan Ashram is located in Sisana, Sonipat."
+            },
+            {
+                en: "Where has the Footwear and Marble Park been established in Sonipat district?",
+                hi: "प्रदेश में फुटवेयर व मार्बल पार्क की स्थापना की गई है - खरखौदा, सोनीपत",
+                options: [
+                    "Kharkhoda, Sonipat (खरखौदा, सोनीपत)",
+                    "Kundli, Sonipat",
+                    "Ganaur, Sonipat",
+                    "Rai, Sonipat"
+                ],
+                answer: 0,
+                hint: "Kharkhoda.",
+                explanation: "Footwear and Marble Park has been established in Kharkhoda, Sonipat."
+            },
+            {
+                en: "Where is the holy pilgrimage site 'Sant Kumbha Tirth' located?",
+                hi: "सन्त कुम्भा तीर्थ स्थल स्थित है - खेड़ी गुज्जर गांव, सोनीपत",
+                options: [
+                    "Khedi Gujjar Village, Sonipat (खेड़ी गुज्जर गांव, सोनीपत)",
+                    "Sisana Village, Sonipat",
+                    "Sherkhanda Village, Sonipat",
+                    "Bhuaan Village, Sonipat"
+                ],
+                answer: 0,
+                hint: "Khedi Gujjar village.",
+                explanation: "Sant Kumbha Tirth is located in Khedi Gujjar village, Sonipat."
+            },
+            {
+                en: "Where is the country's largest horticulture market being established?",
+                hi: "देश की सबसे बड़ी हॉर्टिकल्चर मण्डी स्थापित की जाएगी - गन्नौर, सोनीपत",
+                options: [
+                    "Ganaur, Sonipat (गन्नौर, सोनीपत)",
+                    "Kundli, Sonipat",
+                    "Kharkhoda, Sonipat",
+                    "Rai, Sonipat"
+                ],
+                answer: 0,
+                hint: "Ganaur.",
+                explanation: "The country's largest horticulture market is being established in Ganaur, Sonipat."
+            },
+            {
+                en: "Where has North India's first agriculture and food processing center been established over 250 acres?",
+                hi: "उत्तर भारत का प्रथम कृषि एवं खाद्य प्रसंस्करण केन्द्र की स्थापना 250 एकड़ में की गई है - भिवान व कुराड़ गांव, सोनीपत",
+                options: [
+                    "Bhivan and Kurad Village, Sonipat (भिवान व कुराड़ गांव, सोनीपत)",
+                    "Ganaur and Kundli, Sonipat",
+                    "Sisana and Kharkhoda, Sonipat",
+                    "Rai and Khedi Gujjar, Sonipat"
+                ],
+                answer: 0,
+                hint: "Bhivan and Kurad villages.",
+                explanation: "North India's first agriculture and food processing center spanning 250 acres has been set up in Bhivan and Kurad villages, Sonipat."
+            },
+            {
+                en: "Who is the famous writer, intellectual, and editor from Mahmud, Sonipat?",
+                hi: "प्रसिद्ध लेखक एवं बुद्धिजीवी व सम्पादक - कासिम महमूद, सोनीपत",
+                options: [
+                    "Qasim Mahmud, Sonipat (कासिम महमूद, सोनीपत)",
+                    "Deepchand Bahman",
+                    "Baje Bhagat",
+                    "Master Satvir"
+                ],
+                answer: 0,
+                hint: "Qasim Mahmud.",
+                explanation: "Qasim Mahmud is a famous writer, intellectual, and editor from Sonipat."
+            },
+            {
+                en: "Who is referred to as the 'Modern Lakhmichand' (Aadhunik Lakhmichand)?",
+                hi: "आधुनिक लखमीचन्द कहा जाता है - मास्टर सतवीर जमदगिन, सोनीपत",
+                options: [
+                    "Master Satvir Jamdagin, Sonipat (मास्टर सतवीर जमदगिन, सोनीपत)",
+                    "Baje Bhagat",
+                    "Deepchand Bahman",
+                    "Qasim Mahmud"
+                ],
+                answer: 0,
+                hint: "Master Satvir Jamdagin.",
+                explanation: "Master Satvir Jamdagin from Sonipat is known as the Modern Lakhmichand."
+            },
+            {
+                en: "What was the ancient name of Sonipat's Atlas Mandir?",
+                hi: "सोनीपत के एटलस मंदिर का प्राचीन था - राम मन्दिर",
+                options: [
+                    "Ram Mandir (राम मन्दिर)",
+                    "Shiva Mandir",
+                    "Hanuman Mandir",
+                    "Durga Mandir"
+                ],
+                answer: 0,
+                hint: "Ram Mandir.",
+                explanation: "The ancient name of Sonipat's Atlas Mandir was Ram Mandir."
+            },
+            {
+                en: "Which animal is found in the highest numbers in Sonipat district according to regional data?",
+                hi: "सुअर सबसे ज्यादा पाए जाते हैं - सोनीपत",
+                options: [
+                    "Pigs (सुअर)",
+                    "Cows",
+                    "Buffaloes",
+                    "Goats"
+                ],
+                answer: 0,
+                hint: "Pigs.",
+                explanation: "Pigs are found in the highest numbers in Sonipat."
+            },
+            {
+                en: "Where is the memorial site (Samadhi Sthal) of Punjab's former Chief Minister Pratap Singh Kairon located (though he was born in Sirsa)?",
+                hi: "पंजाब के पूर्व मुख्यमंत्री प्रताप सिंह कैरों का समाधि स्थल है - सोनीपत (जन्म - सरसा में हुआ था)",
+                options: [
+                    "Sonipat (सोनीपत)",
+                    "Panipat",
+                    "Karnal",
+                    "Rohtak"
+                ],
+                answer: 0,
+                hint: "Sonipat.",
+                explanation: "Pratap Singh Kairon's samadhi sthal is in Sonipat."
+            },
+            {
+                en: "When and where was Haryana's first male finance minister Mulchand Jain born?",
+                hi: "राज्य के प्रथम पुरुष वित्त मंत्री मुलचन्द जैन का जन्म - 20 अगस्त, 1915, सिन्दरपुर माजरा, सोनीपत",
+                options: [
+                    "20 August 1915, Sinderpur Majra, Sonipat (20 अगस्त, 1915, सिन्दरपुर माजरा, सोनीपत)",
+                    "15 November 1920, Sonipat",
+                    "10 January 1912, Panipat",
+                    "5 December 1918, Rohtak"
+                ],
+                answer: 0,
+                hint: "August 20, 1915 in Sinderpur Majra.",
+                explanation: "Mulchand Jain was born on 20 August 1915 in Sinderpur Majra, Sonipat."
+            },
+            {
+                en: "When was Mulchand Jain made the Finance Minister of the state?",
+                hi: "नोट: इन्हें मार्च 1967 में राज्य का वित्त मंत्री बनाया गया था। (राज्य की प्रथम वित्त मंत्री ओमप्रभा जैन थी)",
+                options: [
+                    "March 1967 (मार्च 1967)",
+                    "January 1966",
+                    "November 1968",
+                    "April 1970"
+                ],
+                answer: 0,
+                hint: "March 1967.",
+                explanation: "He was made the Finance Minister of the state in March 1967."
+            },
+            {
+                en: "Who was the first female Finance Minister of Haryana?",
+                hi: "(राज्य की प्रथम वित्त मंत्री ओमप्रभा जैन थी)",
+                options: [
+                    "Om Prabha Jain (ओमप्रभा जैन)",
+                    "Shanno Devi",
+                    "Chandravati",
+                    "Kiran Choudhry"
+                ],
+                answer: 0,
+                hint: "Om Prabha Jain.",
+                explanation: "Om Prabha Jain was the first female Finance Minister of Haryana."
+            },
+            {
+                en: "What is the birth year and gotra/family background of Bhagat Phool Singh Arya?",
+                hi: "व्यक्ति परिचय - भगत फूल सिंह आर्य, जन्म - 1885 ई., माहरा गांव, सोनीपत (मलिक गौत्र जाट परिवार में)",
+                options: [
+                    "Born 1885, Mahra village, Sonipat (Malik gotra Jat family) (1885 ई., माहरा गांव, सोनीपत)",
+                    "Born 1890, Sisana village",
+                    "Born 1875, Ganaur village",
+                    "Born 1880, Kundli village"
+                ],
+                answer: 0,
+                hint: "1885 in Mahra village.",
+                explanation: "Bhagat Phool Singh Arya was born in 1885 in Mahra village, Sonipat, in a Malik gotra Jat family."
+            },
+            {
+                en: "When did Bhagat Phool Singh Arya pass away and who was his spiritual guru?",
+                hi: "मृत्यु - 14 अगस्त, 1942; गुरु - स्वामी श्रद्धानन्द",
+                options: [
+                    "Died 14 August 1942; Guru: Swami Shraddhanand (14 अगस्त, 1942; गुरु - स्वामी श्रद्धानन्द)",
+                    "Died 15 August 1940; Guru: Dayanand Saraswati",
+                    "Died 26 January 1945; Guru: Swami Satyanand",
+                    "Died 10 October 1938; Guru: Swami Virjanand"
+                ],
+                answer: 0,
+                hint: "August 14, 1942, guru Swami Shraddhanand.",
+                explanation: "He passed away on 14 August 1942, and his guru was Swami Shraddhanand."
+            },
+            {
+                en: "When did Bhagat Phool Singh establish the state's first girls' gurukul at Khanpur Kalan, Sonipat?",
+                hi: "इन्होंने 1936 में खानपुर कलां, सोनीपत में राज्य का प्रथम कन्या गुरुकुल स्थापित किया था।",
+                options: [
+                    "1936 in Khanpur Kalan, Sonipat (1936 में खानपुर कलां, सोनीपत)",
+                    "1920 in Bheswal",
+                    "1940 in Sonipat",
+                    "1930 in Ganaur"
+                ],
+                answer: 0,
+                hint: "1936 in Khanpur Kalan.",
+                explanation: "He established the state's first girls' gurukul in Khanpur Kalan, Sonipat, in 1936."
+            },
+            {
+                en: "When was Gurukul Bheswal established by Bhagat Phool Singh?",
+                hi: "इन्होंने 23 मार्च 1920 को गुरुकुल भैंसवाल की स्थापना की थी।",
+                options: [
+                    "23 March 1920 (23 मार्च 1920)",
+                    "15 August 1925",
+                    "26 January 1918",
+                    "1 April 1922"
+                ],
+                answer: 0,
+                hint: "March 23, 1920.",
+                explanation: "He established Gurukul Bheswal on 23 March 1920."
+            },
+            {
+                en: "Which slaughterhouse did Bhagat Phool Singh manage to get closed down in Lahore during 1937-38?",
+                hi: "इन्होंने 1937-38 में लाहौर में कसाईखाना बंद करवाया था।",
+                options: [
+                    "Slaughterhouse in Lahore (लाहौर में कसाईखाना)",
+                    "Slaughterhouse in Delhi",
+                    "Slaughterhouse in Sonipat",
+                    "Slaughterhouse in Rohtak"
+                ],
+                answer: 0,
+                hint: "Slaughterhouse in Lahore.",
+                explanation: "He got a slaughterhouse closed in Lahore in 1937-38."
+            },
+            {
+                en: "Where did Bhagat Phool Singh run the 'Moth Andolan' (Shuddhi Andolan) and facilitate homecoming of Muslims and Dalits?",
+                hi: "इन्होंने मोठ आन्दोलन (शुद्धि आन्दोलन) मोठ गांव, हिसार में चलाया और मुस्लिमों की घर वापसी कराई व दलितों की घर वापसी करवाई।",
+                options: [
+                    "Moth Village, Hisar (मोठ गांव, हिसार)",
+                    "Khanpur Kalan, Sonipat",
+                    "Bheswal, Sonipat",
+                    "Mahra Village, Sonipat"
+                ],
+                answer: 0,
+                hint: "Moth village in Hisar.",
+                explanation: "He ran the Moth Andolan in Moth village, Hisar."
+            },
+            {
+                en: "How many satyagrahis were sent by Bhagat Phool Singh to Hyderabad State's Arya Satyagraha Movement?",
+                hi: "इन्होंने हैदराबाद रियासत के आर्य सत्याग्रह आन्दोलन में 600 सत्याग्रही हैदराबाद भेजे।",
+                options: [
+                    "600 satyagrahis (600 सत्याग्रही)",
+                    "100 satyagrahis",
+                    "500 satyagrahis",
+                    "1000 satyagrahis"
+                ],
+                answer: 0,
+                hint: "600 satyagrahis.",
+                explanation: "He sent 600 satyagrahis to the Arya Satyagraha Movement in Hyderabad State."
+            },
+            {
+                en: "In which year was Bhagat Phool Singh working as a Patwari in Seenkh Pathri village, Panipat, before resigning in 1918?",
+                hi: "नोट: भगत फूल सिंह राज्य सरकार में 1904 में सीनख पथरी गांव, पानीपत में पटवारी पद पर थे और 1918 में इन्होंने ये पद छोड़ दिया और लोगों की सेवा में लग गये।",
+                options: [
+                    "1904 (1904 में)",
+                    "1900",
+                    "1910",
+                    "1915"
+                ],
+                answer: 0,
+                hint: "1904.",
+                explanation: "He served as a Patwari in 1904 in Seenkh Pathri village, Panipat."
+            },
+            {
+                en: "North India's first women's university and medical college was opened in memory of Bhagat Phool Singh at which place?",
+                hi: "उत्तर भारत का प्रथम महिला विश्वविद्यालय व मेडिकल कॉलेज खानपुर कलां, सोनीपत इसकी स्मृति में खोला गया था।",
+                options: [
+                    "Khanpur Kalan, Sonipat (खानपुर कलां, सोनीपत)",
+                    "Bheswal, Sonipat",
+                    "Kundli, Sonipat",
+                    "Ganaur, Sonipat"
+                ],
+                answer: 0,
+                hint: "Khanpur Kalan.",
+                explanation: "It was opened in Khanpur Kalan, Sonipat."
+            },
+            {
+                en: "When was the Bhagat Phool Singh Mahila Vishwavidyalaya, Khanpur Kalan, Sonipat established?",
+                hi: "भगत फूल सिंह महिला विश्वविद्यालय खानपुर कलां, सोनीपत की स्थापना की गई - 2006",
+                options: [
+                    "2006",
+                    "2003",
+                    "2010",
+                    "1998"
+                ],
+                answer: 0,
+                hint: "2006.",
+                explanation: "Bhagat Phool Singh Mahila Vishwavidyalaya was established in 2006."
+            },
+            {
+                en: "In which year was the Women's Law College (named after Bhagat Phool Singh's daughter Subhashitani Devi) established at Khanpur Kalan, Sonipat?",
+                hi: "भगत फूल सिंह की पुत्री के नाम से सुभाषिनी देवी (चै) महिला लॉ कॉलेज खोला गया - खानपुर कलां, सोनीपत, स्थापना - 2003",
+                options: [
+                    "2003",
+                    "2006",
+                    "2001",
+                    "2008"
+                ],
+                answer: 0,
+                hint: "2003.",
+                explanation: "The Women's Law College was established in 2003."
+            },
+            {
+                en: "Where is Haryana's first armed forces preparation institution scheduled to be established?",
+                hi: "हरियाणा की पहली सशस्त्र बल तैयारी संस्था स्थापित की जाएगी - सोनीपत",
+                options: [
+                    "Sonipat (सोनीपत)",
+                    "Ambala",
+                    "Gurugram",
+                    "Hisar"
+                ],
+                answer: 0,
+                hint: "Sonipat.",
+                explanation: "Haryana's first armed forces preparation institution is to be established in Sonipat."
+            },
+            {
+                en: "Where is the Guru Teg Bahadur Memorial Museum (Barah Khalsa Rai) located?",
+                hi: "गुरु तेगबहादुर स्मारक संग्रहालय, बारह खालसा राय स्थित है - सोनीपत",
+                options: [
+                    "Sonipat (सोनीपत)",
+                    "Panipat",
+                    "Karnal",
+                    "Rohtak"
+                ],
+                answer: 0,
+                hint: "Sonipat.",
+                explanation: "Guru Teg Bahadur Memorial Museum in Barah Khalsa Rai is located in Sonipat."
+            },
+            {
+                en: "Who is known as the 'Tree Man of Haryana' from Sonipat?",
+                hi: "ट्री मैन ऑफ़ हरियाणा कहलाता है - देवेन्द्र सूरा, सोनीपत",
+                options: [
+                    "Devendra Sura, Sonipat (देवेन्द्र सूरा, सोनीपत)",
+                    "Darshan Lal",
+                    "Jadav Payeng",
+                    "Ram Kishan"
+                ],
+                answer: 0,
+                hint: "Devendra Sura.",
+                explanation: "Devendra Sura from Sonipat is known as the Tree Man of Haryana."
+            },
+            {
+                en: "Where are juvenile/delinquent children aged 0 to 7 kept in Haryana?",
+                hi: "राज्य में 0 से 7 साल के अपराधी बच्चों को रखा जाता है - बालग्राम, राई, सोनीपत",
+                options: [
+                    "Balgram, Rai, Sonipat (बालग्राम, राई, सोनीपत)",
+                    "Bal Bhawan, Panchkula",
+                    "Juvenile Home, Faridabad",
+                    "Correction Home, Hisar"
+                ],
+                answer: 0,
+                hint: "Balgram, Rai, Sonipat.",
+                explanation: "Children aged 0 to 7 years are kept at Balgram, Rai, Sonipat."
+            },
+            {
+                en: "Where is Amaltas Vatika Herbal Park located?",
+                hi: "अमलतास वाटिका हर्बल पार्क - सोनीपत",
+                options: [
+                    "Sonipat (सोनीपत)",
+                    "Yamunanagar",
+                    "Kurukshetra",
+                    "Panchkula"
+                ],
+                answer: 0,
+                hint: "Sonipat.",
+                explanation: "Amaltas Vatika Herbal Park is located in Sonipat."
+            },
+            {
+                en: "To which district does the famous shooter Ankur Mittal belong?",
+                hi: "प्रसिद्ध निशानेबाज अंकुर मित्तल - सोनीपत",
+                options: [
+                    "Sonipat (सोनीपत)",
+                    "Faridabad",
+                    "Jhajjar",
+                    "Panipat"
+                ],
+                answer: 0,
+                hint: "Sonipat.",
+                explanation: "Renowned shooter Ankur Mittal belongs to Sonipat."
+            },
+            {
+                en: "Where is the Central Institute of Plastics Engineering and Technology (CIPET) located?",
+                hi: "केन्द्रीय प्लास्टिक अभियांत्रिकी एवं तकनीकी संस्थान स्थित है - मुरथल, सोनीपत",
+                options: [
+                    "Murthal, Sonipat (मुरथल, सोनीपत)",
+                    "Kundli, Sonipat",
+                    "Rai, Sonipat",
+                    "Ganaur, Sonipat"
+                ],
+                answer: 0,
+                hint: "Murthal.",
+                explanation: "CIPET is located in Murthal, Sonipat."
+            },
+            {
+                en: "Where is the National Institute of Food Technology Entrepreneurship and Management (NIFTEM / Rashtriya Khadh Prodyogiki Sanstha) located?",
+                hi: "राष्ट्रीय खाद्य प्रौद्योगिक संख्या स्थित है - कुण्डली, सोनीपत",
+                options: [
+                    "Kundli, Sonipat (कुण्डली, सोनीपत)",
+                    "Murthal, Sonipat",
+                    "Rai, Sonipat",
+                    "Kharkhoda, Sonipat"
+                ],
+                answer: 0,
+                hint: "Kundli.",
+                explanation: "The National Institute of Food Technology is located in Kundli, Sonipat."
+            },
+            {
+                en: "Where is the statue of Bhai Kushal Singh established?",
+                hi: "भाई कुशाल सिंह की प्रतिमा स्थापित की गई है - बढ़खालसा गांव, सोनीपत",
+                options: [
+                    "Badhkhalsa Village, Sonipat (बढ़खालसा गांव, सोनीपत)",
+                    "Sisana Village, Sonipat",
+                    "Mahra Village, Sonipat",
+                    "Khedi Gujjar Village, Sonipat"
+                ],
+                answer: 0,
+                hint: "Badhkhalsa village.",
+                explanation: "The statue of Bhai Kushal Singh is established in Badhkhalsa village, Sonipat."
+            },
+            {
+                en: "Where is Dabar Lake (Dabar Jheel) located?",
+                hi: "डाबर झील स्थित है - मुरथल, सोनीपत",
+                options: [
+                    "Murthal, Sonipat (मुरथल, सोनीपत)",
+                    "Kundli, Sonipat",
+                    "Rai, Sonipat",
+                    "Ganaur, Sonipat"
+                ],
+                answer: 0,
+                hint: "Murthal.",
+                explanation: "Dabar Lake is located in Murthal, Sonipat."
+            },
+            {
+                en: "In which year did the invader Najibuddaula set fire to which village of Sonipat?",
+                hi: "1765 ई. में आक्रमणकारी निजामुद्दौला ने सोनीपत के किस गाँव में आग लगा दी थी? - बुआन गाँव",
+                options: [
+                    "Bhuaan Village (बुआन गाँव)",
+                    "Sisana Village",
+                    "Badhkhalsa Village",
+                    "Mahra Village"
+                ],
+                answer: 0,
+                hint: "Bhuaan village.",
+                explanation: "In 1765, invader Najibuddaula set fire to Bhuaan village in Sonipat."
+            },
+            {
+                en: "Serp Company Maiden Pharmaceuticals Limited is located in which district of Haryana?",
+                hi: "सीरप कंपनी मेडन फार्मास्युटिकल्स लिमिटेड राज्य के किस जिले में स्थित है? - सोनीपत",
+                options: [
+                    "Sonipat (सोनीपत)",
+                    "Gurugram",
+                    "Faridabad",
+                    "Ambala"
+                ],
+                answer: 0,
+                hint: "Sonipat.",
+                explanation: "Maiden Pharmaceuticals Limited is located in Sonipat district."
+            },
+            {
+                en: "Which district in Haryana has the highest number (71) of sports nurseries?",
+                hi: "राज्य के किस जिले में सर्वाधिक (71) खेल नर्सरियां हैं? - सोनीपत",
+                options: [
+                    "Sonipat (सोनीपत)",
+                    "Bhiwani",
+                    "Hisar",
+                    "Rohtak"
+                ],
+                answer: 0,
+                hint: "Sonipat.",
+                explanation: "Sonipat has the highest number (71) of sports nurseries in the state."
+            },
+            {
+                en: "Who is the current Lok Sabha MP representing Sonipat?",
+                hi: "सोनीपत से वर्तमान में लोकसभा सांसद हैं - सतपाल ब्रह्मचारी",
+                options: [
+                    "Satpal Brahmachari (सतपाल ब्रह्मचारी)",
+                    "Ramesh Chander Kaushik",
+                    "Deep Hooda",
+                    "Arvind Sharma"
+                ],
+                answer: 0,
+                hint: "Satpal Brahmachari.",
+                explanation: "Satpal Brahmachari is the current Lok Sabha MP from Sonipat."
+            },
+
+            // Page 2 block (Q46 - Q90)
+            {
+                en: "Where is the 21-foot-tall statue of Lord Parashurama made of Ashta-dhatu installed?",
+                hi: "अष्ट धातु से निर्मित भगवान परशुराम की 21 फुट ऊँची मूर्ति स्थापित की गई है - गन्नौर",
+                options: [
+                    "Ganaur, Sonipat (गन्नौर)",
+                    "Murthal, Sonipat",
+                    "Kundli, Sonipat",
+                    "Rai, Sonipat"
+                ],
+                answer: 0,
+                hint: "Ganaur.",
+                explanation: "A 21-foot-tall Ashta-dhatu statue of Lord Parashurama is installed in Ganaur."
+            },
+            {
+                en: "Which specially-abled person from Sonipat won a gold medal in the INA Delhi National Cup Bodybuilding Championship and earned the title 'Indian Icon'?",
+                hi: "राज्य के किस दिव्यांग ने आईएनएफ दिल्ली नेशनल कप बॉडी बिल्डिंग चैम्पियनशिप में गोल्ड मेडल जीतकर इंडियन आइकन का खिताब हासिल किया है - मोहित, सोनीपत",
+                options: [
+                    "Mohit, Sonipat (मोहित, सोनीपत)",
+                    "Rahul",
+                    "Vikash",
+                    "Amit"
+                ],
+                answer: 0,
+                hint: "Mohit.",
+                explanation: "Mohit from Sonipat won the gold medal and the Indian Icon title."
+            },
+            {
+                en: "Where was the Prithviraj Chauhan Bhavan built?",
+                hi: "पृथ्वीराज चौहान भवन का निर्माण किया गया है - अड़ेरना",
+                options: [
+                    "Aderna (अड़ेरना)",
+                    "Sisana",
+                    "Ganaur",
+                    "Kundli"
+                ],
+                answer: 0,
+                hint: "Aderna.",
+                explanation: "Prithviraj Chauhan Bhavan was constructed in Aderna."
+            },
+            {
+                en: "Sonipat is the top district in the state for promoting which population policy measure?",
+                hi: "परिवार नियोजन को बढ़ावा देने में राज्य का प्रथम जिला है - सोनीपत",
+                options: [
+                    "Family Planning / Parivar Niyojan (परिवार नियोजन)",
+                    "Literacy campaigns",
+                    "Solar energy adoption",
+                    "Water conservation"
+                ],
+                answer: 0,
+                hint: "Family planning.",
+                explanation: "Sonipat is the first district in the state for promoting family planning."
+            },
+            {
+                en: "Which place in Haryana ranks first in the state for manufacturing cotton niwar for charpai weaving?",
+                hi: "राज्य के किस स्थान का चारपाई बुनाई का सूती निवार देश में प्रथम स्थान रखता है - गोहाना",
+                options: [
+                    "Gohana (गोहाना)",
+                    "Ganaur",
+                    "Kharkhoda",
+                    "Murthal"
+                ],
+                answer: 0,
+                hint: "Gohana.",
+                explanation: "Gohana ranks first in the country for cotton niwar used in charpai weaving."
+            },
+            {
+                en: "Where has Maruti Company's new manufacturing plant been established?",
+                hi: "मारुति कंपनी का नया कारखाना स्थापित किया गया है - आई.एम.टी. खरखौदा।",
+                options: [
+                    "IMT Kharkhoda (आई.एम.टी. खरखौदा)",
+                    "Kundli",
+                    "Rai",
+                    "Ganaur"
+                ],
+                answer: 0,
+                hint: "IMT Kharkhoda.",
+                explanation: "Maruti's new manufacturing plant has been established in IMT Kharkhoda."
+            },
+            {
+                en: "When was the Maruti plant in Kharkhoda inaugurated, and by whom?",
+                hi: "उद्घाटन - 28 अगस्त 2022, प्रधानमंत्री श्री नरेन्द्र मोदी",
+                options: [
+                    "28 August 2022 by PM Narendra Modi (28 अगस्त 2022, प्रधानमंत्री श्री नरेन्द्र मोदी)",
+                    "15 August 2021 by Manohar Lal",
+                    "26 January 2023 by Amit Shah",
+                    "2 October 2020 by Nirmala Sitharaman"
+                ],
+                answer: 0,
+                hint: "August 28, 2022 by PM Narendra Modi.",
+                explanation: "It was inaugurated on 28 August 2022 by Prime Minister Narendra Modi."
+            },
+            {
+                en: "What vehicles are scheduled to be manufactured at the new Maruti plant in Kharkhoda?",
+                hi: "नोट: इस प्लांट में मारुति कंपनी द्वारा इलेक्ट्रिक स्कूटर, बाईक व कारों का निर्माण भी करवाया जायेगा।",
+                options: [
+                    "Electric scooters, bikes, and cars (इलेक्ट्रिक स्कूटर, बाईक व कारें)",
+                    "Only heavy commercial trucks",
+                    "Diesel tractors only",
+                    "Railway coaches"
+                ],
+                answer: 0,
+                hint: "Electric scooters, bikes, and cars.",
+                explanation: "Electric scooters, bikes, and cars will be manufactured at this plant."
+            },
+            {
+                en: "What is the name of Haryana's sole museum dedicated to films/cinema?",
+                hi: "राज्य में फिल्मों से संबंधित एकमात्र संग्रहालय है - स्वर्णप्रस्थ संग्रहालय, सोनीपत",
+                options: [
+                    "Swarnaprastha Museum, Sonipat (स्वर्णप्रस्थ संग्रहालय, सोनीपत)",
+                    "Hryana Film Museum, Rohtak",
+                    "Chaudhary Devi Lal Museum",
+                    "Panipat Heritage Museum"
+                ],
+                answer: 0,
+                hint: "Swarnaprastha Museum.",
+                explanation: "Swarnaprastha Museum in Sonipat is the state's sole museum dedicated to films."
+            },
+            {
+                en: "Which artists made a painting depicting Arjuna and Lord Krishna during the Mahabharata period from wheat and mustard crops in Sonipat?",
+                hi: "राज्य के किस पेंटिंग कलाकार ने गेहूँ व सरसों की फसल से महाभारत काल में अर्जुन व श्रीकृष्ण की पेंटिंग बनाई है - ह्नी मोर, लडसैली गांव, गन्नौर",
+                options: [
+                    "Hani Mor, Ladsaili Village, Ganaur (ह्नी मोर, लडसैली गांव, गन्नौर)",
+                    "Ankur Mittal",
+                    "Devendra Sura",
+                    "Qasim Mahmud"
+                ],
+                answer: 0,
+                hint: "Hani Mor from Ladsaili village.",
+                explanation: "Hani Mor from Ladsaili village, Ganaur, created a crop painting of Arjuna and Krishna."
+            },
+            {
+                en: "What is the primary objective of creating the crop paintings using wheat and mustard?",
+                hi: "नोट: इस पेंटिंग को बनाने का उद्देश्य राज्य में एग्रीकल्वर टूरिज्म को बढ़ावा देना है।",
+                options: [
+                    "To promote agricultural tourism in the state (एग्रीकल्वर टूरिज्म को बढ़ावा देना)",
+                    "To set a Guinness world record",
+                    "To celebrate harvest festivals",
+                    "To map agricultural yields"
+                ],
+                answer: 0,
+                hint: "Promoting agricultural tourism.",
+                explanation: "The purpose is to promote agricultural tourism in the state."
+            },
+            {
+                en: "Where was the country's first Archery High Performance Center inaugurated in Haryana?",
+                hi: "देश के पहले तीरंदाजी के हाई परफॉर्मेस सेंटर का राज्य में उद्घाटन कहाँ पर किया गया है - साई केन्द्र, बहालगढ़, सोनीपत",
+                options: [
+                    "SAI Centre, Bahalgarh, Sonipat (साई केन्द्र, बहालगढ़, सोनीपत)",
+                    "Kundli, Sonipat",
+                    "Rai, Sonipat",
+                    "Ganaur, Sonipat"
+                ],
+                answer: 0,
+                hint: "SAI Centre, Bahalgarh.",
+                explanation: "The country's first Archery High Performance Center was inaugurated at the SAI Centre, Bahalgarh, Sonipat."
+            },
+            {
+                en: "Where is the country's first military training center scheduled to be established?",
+                hi: "देश का प्रथम मिलिट्री सैनिक सेंटर बनाया जाएगा - खांडा गांव, सोनीपत",
+                options: [
+                    "Khanda Village, Sonipat (खांडा गांव, सोनीपत)",
+                    "Sisana Village, Sonipat",
+                    "Kharkhoda, Sonipat",
+                    "Murthal, Sonipat"
+                ],
+                answer: 0,
+                hint: "Khanda village.",
+                explanation: "The country's first military training center will be built in Khanda village, Sonipat."
+            },
+            {
+                en: "Where is the Indian Institute of Information Technology (IIIT) located in Sonipat?",
+                hi: "आई.आई.टी. (IIIT) स्थित है - सोनीपत",
+                options: [
+                    "Sonipat (सोनीपत)",
+                    "Gurugram",
+                    "Kurukshetra",
+                    "Hisar"
+                ],
+                answer: 0,
+                hint: "Sonipat.",
+                explanation: "IIIT is located in Sonipat."
+            },
+            {
+                en: "In which district of Haryana has the fourth Metropolitan Development Authority been established?",
+                hi: "हरियाणा के किस जिले में चौथा मेट्रोपोलिटन डेवलपमेंट अथॉरिटी स्थापित किया गया है? - सोनीपत",
+                options: [
+                    "Sonipat (सोनीपत)",
+                    "Gurugram",
+                    "Faridabad",
+                    "Panchkula"
+                ],
+                answer: 0,
+                hint: "Sonipat.",
+                explanation: "The fourth Metropolitan Development Authority has been established in Sonipat."
+            },
+            {
+                en: "Where is the country's second and the state's largest gaushala constructed in Haryana?",
+                hi: "देश की दूसरी व राज्य की सबसे बड़ी गौशाला का निर्माण राज्य में कहाँ पर किया जायेगा? - सोनीपत",
+                options: [
+                    "Sonipat (सोनीपत)",
+                    "Karnal",
+                    "Hisar",
+                    "Sirsa"
+                ],
+                answer: 0,
+                hint: "Sonipat.",
+                explanation: "The country's second and the state's largest gaushala is being built in Sonipat."
+            },
+            {
+                en: "Who founded the Jat High School/Institution in Sonipat as mentioned across syllabus entries?",
+                hi: "सोनीपत में जाट शिक्षण संस्थान के संस्थापक कौन थे?",
+                options: [
+                    "Chaudhary Tikaram",
+                    "Baldev Singh",
+                    "Chaudhary Chhotu Ram",
+                    "Babu Murlidhar"
+                ],
+                answer: 0,
+                hint: "Chaudhary Tikaram.",
+                explanation: "Chaudhary Tikaram."
+            },
+            {
+                en: "Which village in Sonipat is associated with the composer of spiritual and satvik sangs, Baje Bhagat?",
+                hi: "बाजे भगत किस गाँव से संबंधित हैं?",
+                options: [
+                    "Sisana Village",
+                    "Sherkhanda Village",
+                    "Mahra Village",
+                    "Khedi Gujjar Village"
+                ],
+                answer: 0,
+                hint: "Sisana village.",
+                explanation: "Sisana village."
+            },
+            {
+                en: "What is the name of the modern-day title given to Master Satvir Jamdagin in Haryanvi folk arts?",
+                hi: "मास्टर सतवीर जमदगिन को किस उपनाम से जाना जाता है?",
+                options: [
+                    "Aadhunik Lakhmichand (आधुनिक लखमीचन्द)",
+                    "John Milton of Haryana",
+                    "Surdas of Haryana",
+                    "Kalidas of Haryana"
+                ],
+                answer: 0,
+                hint: "Aadhunik Lakhmichand.",
+                explanation: "Aadhunik Lakhmichand."
+            },
+            {
+                en: "Which village is the birthplace of the great social reformer Bhagat Phool Singh Arya?",
+                hi: "भगत फूल सिंह आर्य का जन्म किस गाँव में हुआ था?",
+                options: [
+                    "Mahra Village, Sonipat",
+                    "Sisana Village, Sonipat",
+                    "Khanda Village, Sonipat",
+                    "Ganaur Village, Sonipat"
+                ],
+                answer: 0,
+                hint: "Mahra village.",
+                explanation: "Mahra village, Sonipat."
+            },
+            {
+                en: "Who was the spiritual mentor (Guru) of Bhagat Phool Singh Arya?",
+                hi: "भगत फूल सिंह के गुरु कौन थे?",
+                options: [
+                    "Swami Shraddhanand",
+                    "Swami Dayanand",
+                    "Swami Virjanand",
+                    "Swami Vivekananda"
+                ],
+                answer: 0,
+                hint: "Swami Shraddhanand.",
+                explanation: "Swami Shraddhanand."
+            },
+            {
+                en: "In which year was the state's first girls' gurukul established by Bhagat Phool Singh at Khanpur Kalan?",
+                hi: "खानपुर कलां में कन्या गुरुकुल किस वर्ष स्थापित हुआ था?",
+                options: [
+                    "1936",
+                    "1920",
+                    "1942",
+                    "1904"
+                ],
+                answer: 0,
+                hint: "1936.",
+                explanation: "1936."
+            },
+            {
+                en: "What was the previous occupation of Bhagat Phool Singh before he resigned in 1918 to serve society?",
+                hi: "समाज सेवा में आने से पहले भगत फूल सिंह किस पद पर कार्यरत थे?",
+                options: [
+                    "Patwari in Seenkh Pathri, Panipat",
+                    "Tehsildar in Sonipat",
+                    "Clerk in Lahore",
+                    "Teacher in Rohtak"
+                ],
+                answer: 0,
+                hint: "Patwari.",
+                explanation: "Patwari."
+            },
+            {
+                en: "Who is celebrated as the 'Tree Man of Haryana' from Sonipat?",
+                hi: "'ट्री मैन ऑफ़ हरियाणा' किसे कहा जाता है?",
+                options: [
+                    "Devendra Sura",
+                    "Ankur Mittal",
+                    "Mohit",
+                    "Qasim Mahmud"
+                ],
+                answer: 0,
+                hint: "Devendra Sura.",
+                explanation: "Devendra Sura."
+            },
+            {
+                en: "Where are juvenile children aged 0-7 housed in Sonipat district?",
+                hi: "0 से 7 वर्ष के अपराधी बच्चों को सोनीपत में कहाँ रखा जाता है?",
+                options: [
+                    "Balgram, Rai",
+                    "Kundli Shelter",
+                    "Murthal Home",
+                    "Ganaur Center"
+                ],
+                answer: 0,
+                hint: "Balgram, Rai.",
+                explanation: "Balgram, Rai."
+            },
+            {
+                en: "What lake is located in Murthal, Sonipat according to the source material?",
+                hi: "मुरथल, सोनीपत में कौन सी झील स्थित है?",
+                options: [
+                    "Dabar Jheel (डाबर झील)",
+                    "Blue Bird Lake",
+                    "Sannihit Lake",
+                    "Badkhal Lake"
+                ],
+                answer: 0,
+                hint: "Dabar Jheel.",
+                explanation: "Dabar Jheel (Dabar Lake)."
+            },
+            {
+                en: "Which invader set fire to Bhuaan village in Sonipat in 1765?",
+                hi: "1765 में बुआन गाँव में किसने आग लगाई थी?",
+                options: [
+                    "Najibuddaula (निजामुद्दौला / नजीबुद्दौला)",
+                    "Ahmad Shah Abdali",
+                    "Nadir Shah",
+                    "Timur"
+                ],
+                answer: 0,
+                hint: "Najibuddaula.",
+                explanation: "Najibuddaula."
+            },
+            {
+                en: "Which district in Haryana features 71 sports nurseries, the highest in the state?",
+                hi: "किस जिले में सर्वाधिक 71 खेल नर्सरियां हैं?",
+                options: [
+                    "Sonipat",
+                    "Bhiwani",
+                    "Hisar",
+                    "Rohtak"
+                ],
+                answer: 0,
+                hint: "Sonipat.",
+                explanation: "Sonipat."
+            },
+            {
+                en: "Where is the Swarnaprastha Museum, Haryana's sole film museum, located?",
+                hi: "स्वर्णप्रस्थ संग्रहालय कहाँ स्थित है?",
+                options: [
+                    "Sonipat",
+                    "Panipat",
+                    "Karnal",
+                    "Gurugram"
+                ],
+                answer: 0,
+                hint: "Sonipat.",
+                explanation: "Sonipat."
+            },
+            {
+                en: "Which artist created a portrait of Arjuna and Krishna out of wheat and mustard crops in Ganaur?",
+                hi: "गेहूँ और सरसों से महाभारत कालीन पेंटिंग किसने बनाई है?",
+                options: [
+                    "Hani Mor",
+                    "Ankur Mittal",
+                    "Devendra Sura",
+                    "Satvir Jamdagin"
+                ],
+                answer: 0,
+                hint: "Hani Mor.",
+                explanation: "Hani Mor."
+            },
+            {
+                en: "Where was the country's first Archery High Performance Center inaugurated?",
+                hi: "तीरंदाजी का हाई परफॉरमेंस सेंटर कहाँ खुला है?",
+                options: [
+                    "SAI Centre, Bahalgarh, Sonipat",
+                    "Kundli, Sonipat",
+                    "Rai, Sonipat",
+                    "Ganaur, Sonipat"
+                ],
+                answer: 0,
+                hint: "Bahalgarh, Sonipat.",
+                explanation: "SAI Centre, Bahalgarh, Sonipat."
+            },
+            {
+                en: "Where is the military training center proposed to be built in Sonipat?",
+                hi: "मिलिट्री सैनिक सेंटर कहाँ बनाया जाएगा?",
+                options: [
+                    "Khanda Village",
+                    "Sisana Village",
+                    "Mahra Village",
+                    "Aderna Village"
+                ],
+                answer: 0,
+                hint: "Khanda village.",
+                explanation: "Khanda Village."
+            },
+            {
+                en: "What manufacturing major established its new facility at IMT Kharkhoda, inaugurated in 2022?",
+                hi: "आई.एम.टी. खरखौदा में किस कंपनी का नया संयंत्र स्थापित हुआ है?",
+                options: [
+                    "Maruti Company",
+                    "Honda Company",
+                    "Hero Cycles",
+                    "Escorts Tractors"
+                ],
+                answer: 0,
+                hint: "Maruti Company.",
+                explanation: "Maruti Company."
+            },
+            {
+                en: "Which product from Gohana holds the top spot in India for charpai weaving components?",
+                hi: "गोहाना का कौन सा उत्पाद देश में प्रथम स्थान रखता है?",
+                options: [
+                    "Cotton Niwar for charpai (चारपाई बुनाई का सूती निवार)",
+                    "Jalebi",
+                    "Wooden legs for beds",
+                    "Brass utensils"
+                ],
+                answer: 0,
+                hint: "Cotton niwar.",
+                explanation: "Cotton Niwar for charpai weaving."
+            },
+            {
+                en: "Who is the first male finance minister of Haryana, born in Sinderpur Majra, Sonipat?",
+                hi: "हरियाणा के प्रथम पुरुष वित्त मंत्री कौन थे?",
+                options: [
+                    "Mulchand Jain",
+                    "Om Prabha Jain",
+                    "Chaudhary Tikaram",
+                    "Pratap Singh Kairon"
+                ],
+                answer: 0,
+                hint: "Mulchand Jain.",
+                explanation: "Mulchand Jain."
+            },
+            {
+                en: "Who was the first female Finance Minister of Haryana mentioned alongside Mulchand Jain?",
+                hi: "हरियाणा की प्रथम महिला वित्त मंत्री कौन थीं?",
+                options: [
+                    "Om Prabha Jain",
+                    "Shanno Devi",
+                    "Chandravati",
+                    "Kiran Choudhry"
+                ],
+                answer: 0,
+                hint: "Om Prabha Jain.",
+                explanation: "Om Prabha Jain."
+            },
+            {
+                en: "Where is the Rajiv Gandhi Education City situated within Sonipat?",
+                hi: "राजीव गांधी एजुकेशनल सिटी कहाँ स्थित है?",
+                options: [
+                    "Kundli, Sonipat",
+                    "Murthal, Sonipat",
+                    "Rai, Sonipat",
+                    "Ganaur, Sonipat"
+                ],
+                answer: 0,
+                hint: "Kundli.",
+                explanation: "Kundli, Sonipat."
+            },
+            {
+                en: "What was the ancient name of the Atlas Mandir in Sonipat?",
+                hi: "सोनीपत के एटलस मंदिर का पुराना नाम क्या था?",
+                options: [
+                    "Ram Mandir",
+                    "Shiva Mandir",
+                    "Hanuman Mandir",
+                    "Vishnu Mandir"
+                ],
+                answer: 0,
+                hint: "Ram Mandir.",
+                explanation: "Ram Mandir."
+            },
+            {
+                en: "Which animal population is reported to be highest in Sonipat district?",
+                hi: "सोनीपत जिले में कौन से जानवर सबसे अधिक संख्या में पाए जाते हैं?",
+                options: [
+                    "Pigs (सुअर)",
+                    "Cows",
+                    "Buffaloes",
+                    "Dogs"
+                ],
+                answer: 0,
+                hint: "Pigs.",
+                explanation: "Pigs."
+            },
+            {
+                en: "Where is the Footwear and Marble Park located in Sonipat?",
+                hi: "फुटवेयर व मार्बल पार्क सोनीपत में कहाँ बनाया गया है?",
+                options: [
+                    "Kharkhoda",
+                    "Kundli",
+                    "Ganaur",
+                    "Murthal"
+                ],
+                answer: 0,
+                hint: "Kharkhoda.",
+                explanation: "Kharkhoda."
+            },
+            {
+                en: "Where is the holy shrine 'Sant Kumbha Tirth' situated?",
+                hi: "सन्त कुम्भा तीर्थ स्थल कहाँ स्थित है?",
+                options: [
+                    "Khedi Gujjar Village",
+                    "Sisana Village",
+                    "Mahra Village",
+                    "Bhuaan Village"
+                ],
+                answer: 0,
+                hint: "Khedi Gujjar village.",
+                explanation: "Khedi Gujjar Village."
+            },
+            {
+                en: "Where is North India's first agriculture and food processing center set up over 250 acres?",
+                hi: "250 एकड़ में कृषि एवं खाद्य प्रसंस्करण केंद्र कहाँ बना है?",
+                options: [
+                    "Bhivan and Kurad Village, Sonipat",
+                    "Ganaur and Kundli, Sonipat",
+                    "Rai and Kharkhoda, Sonipat",
+                    "Murthal and Sisana, Sonipat"
+                ],
+                answer: 0,
+                hint: "Bhivan and Kurad villages.",
+                explanation: "Bhivan and Kurad Village, Sonipat."
+            },
+            {
+                en: "Who served as the election commission brand ambassador from Sonipat?",
+                hi: "सोनीपत से हरियाणा चुनाव आयोग की ब्रांड एंबेसडर कौन हैं?",
+                options: [
+                    "Deepa Malik",
+                    "Sakshi Malik",
+                    "Vinesh Phogat",
+                    "Manu Bhaker"
+                ],
+                answer: 0,
+                hint: "Deepa Malik.",
+                explanation: "Deepa Malik."
+            },
+            {
+                en: "Where is the three-story Lal Masjid located?",
+                hi: "तीन मंजिला लाल मस्जिद कहाँ स्थित है?",
+                options: [
+                    "Sonipat",
+                    "Rohtak",
+                    "Panipat",
+                    "Jhajjar"
+                ],
+                answer: 0,
+                hint: "Sonipat.",
+                explanation: "Sonipat."
+            }
+        ];
+
+        let currentIndex = 0;
+        let score = 0;
+        let answeredQuestions = new Array(quizData.length).fill(false);
+        let userSelections = new Array(quizData.length).fill(null);
+
+        // DOM Elements
+        const questionTracker = document.getElementById('question-tracker');
+        const questionCategory = document.getElementById('question-category');
+        const progressBar = document.getElementById('progress-bar');
+        const progressPct = document.getElementById('progress-pct');
+        const liveScore = document.getElementById('live-score');
+        const totalQCount = document.getElementById('total-q-count');
+        const questionTextEn = document.getElementById('question-text-en');
+        const questionTextHi = document.getElementById('question-text-hi');
+        const optionsContainer = document.getElementById('options-container');
+        const hintBox = document.getElementById('hint-box');
+        const hintText = document.getElementById('hint-text');
+        const explanationBox = document.getElementById('explanation-box');
+        const explanationText = document.getElementById('explanation-text');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const jumpInput = document.getElementById('jump-input');
+
+        totalQCount.textContent = quizData.length;
+
+        function loadQuestion(index) {
+            const q = quizData[index];
+            questionTracker.textContent = `Question ${index + 1} of ${quizData.length}`;
+            const pct = Math.round(((index + 1) / quizData.length) * 100);
+            progressBar.style.width = `${pct}%`;
+            progressPct.textContent = `${pct}%`;
+
+            questionTextEn.textContent = `${index + 1}. ${q.en}`;
+            questionTextHi.textContent = q.hi;
+
+            hintText.textContent = q.hint;
+            hintBox.classList.add('hidden');
+
+            explanationText.textContent = q.explanation;
+            if (answeredQuestions[index]) {
+                explanationBox.classList.remove('hidden');
+            } else {
+                explanationBox.classList.add('hidden');
+            }
+
+            optionsContainer.innerHTML = '';
+            q.options.forEach((opt, optIndex) => {
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left p-3.5 rounded-xl border text-sm font-medium transition flex items-center justify-between ${
+                    userSelections[index] !== null
+                        ? optIndex === q.answer
+                            ? 'bg-indigo-50 border-indigo-300 text-indigo-900'
+                            : userSelections[index] === optIndex
+                            ? 'bg-rose-50 border-rose-300 text-rose-900'
+                            : 'bg-white border-slate-200 text-slate-700 opacity-60'
+                        : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300'
+                }`;
+
+                btn.innerHTML = `<span>${String.fromCharCode(65 + optIndex)}. ${opt}</span>`;
+                
+                if (userSelections[index] === null) {
+                    btn.onclick = () => selectOption(index, optIndex);
+                } else {
+                    btn.disabled = true;
+                }
+
+                optionsContainer.appendChild(btn);
+            });
+
+            prevBtn.disabled = index === 0;
+            nextBtn.textContent = index === quizData.length - 1 ? 'Finish Quiz' : 'Next →';
+            jumpInput.value = index + 1;
+        }
+
+        function selectOption(qIndex, optIndex) {
+            if (answeredQuestions[qIndex]) return;
+
+            userSelections[qIndex] = optIndex;
+            answeredQuestions[qIndex] = true;
+
+            const q = quizData[qIndex];
+            if (optIndex === q.answer) {
+                score++;
+                liveScore.textContent = score;
+            }
+
+            loadQuestion(qIndex);
+        }
+
+        function nextQuestion() {
+            if (currentIndex < quizData.length - 1) {
+                currentIndex++;
+                loadQuestion(currentIndex);
+            } else {
+                alert(`Quiz Completed! Your Final Score is ${score} out of ${quizData.length}`);
+            }
+        }
+
+        function prevQuestion() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                loadQuestion(currentIndex);
+            }
+        }
+
+        function toggleHint() {
+            hintBox.classList.toggle('hidden');
+        }
+
+        function jumpToQuestion() {
+            const val = parseInt(jumpInput.value);
+            if (!isNaN(val) && val >= 1 && val <= quizData.length) {
+                currentIndex = val - 1;
+                loadQuestion(currentIndex);
+            } else {
+                alert(`Please enter a valid question number between 1 and ${quizData.length}`);
+            }
+        }
+
+        // Initialize first question
+        loadQuestion(currentIndex);
+    </script>
+<script src="../../quiz-question-controls.js"></script>
+<script src="../../quiz-app-ui-v2.js"></script></body>
+</html>

@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animal Husbandry - Sheep Breeds & Management Interactive Quiz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+<style id="cosmic-readable-quiz-theme">
+:root{--space:#e8dcff;--panel:#f3eaff;--panel2:#dcc6ff;--edge:#6a45bf;--glow:#d28b28;--accent:#d15f9f;--ink:#2c1b4d;--muted:#66547c;--mist:rgba(106,69,191,.2)}html{background:var(--space)}body{background:radial-gradient(ellipse 62% 45% at 90% -5%,rgba(209,95,159,.28),transparent 62%),radial-gradient(ellipse 55% 40% at 8% 100%,rgba(65,164,207,.26),transparent 64%),var(--space)!important;color:var(--ink)!important;min-height:100vh}body:before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.78;background-image:radial-gradient(circle at 9% 18%,var(--glow) 0 1px,transparent 1.7px),radial-gradient(circle at 26% 69%,var(--edge) 0 .8px,transparent 1.5px),radial-gradient(circle at 68% 24%,var(--accent) 0 1px,transparent 1.8px),radial-gradient(circle at 88% 73%,#47a8d3 0 .8px,transparent 1.5px);background-size:220px 190px,300px 270px,260px 230px,340px 310px;z-index:-1}header{background:linear-gradient(105deg,var(--panel),var(--panel2))!important;border-color:rgba(106,69,191,.25)!important;box-shadow:0 7px 24px rgba(84,48,142,.14)!important}header h1{color:var(--edge)!important;text-shadow:none!important}header p,header .text-slate-400,header .text-indigo-200,header .text-indigo-300{color:var(--muted)!important}main>div,#quiz-card,.bg-slate-800,.bg-slate-900,.bg-indigo-900,.bg-indigo-950{background:linear-gradient(145deg,#f8f0ff,var(--panel))!important;border-color:rgba(106,69,191,.22)!important;color:var(--ink)!important;box-shadow:0 14px 35px rgba(84,48,142,.12)!important}.bg-slate-700,.bg-slate-100,.bg-slate-50{background:#eadffd!important;color:var(--ink)!important}.text-slate-100,.text-slate-200,.text-slate-300,.text-slate-400,.text-white,.text-slate-800,.text-slate-700,.text-slate-600{color:var(--ink)!important}.text-indigo-400,.text-indigo-300,.text-emerald-400,.text-yellow-300{color:var(--edge)!important}.border-slate-700,.border-slate-700\/60,.border-indigo-700,.border-slate-200{border-color:rgba(106,69,191,.25)!important}button:not(.bg-green-600):not(.bg-red-600){background:#f9f2ff!important;color:var(--ink)!important;border:1px solid rgba(106,69,191,.25)!important;box-shadow:0 3px 10px rgba(84,48,142,.09)!important}button.bg-indigo-600,button.bg-slate-800,button.bg-slate-900,button.bg-indigo-900{background:linear-gradient(120deg,var(--edge),var(--accent))!important;color:#fff!important;border:0!important}button.bg-indigo-600 *,button.bg-slate-800 *,button.bg-slate-900 *,button.bg-indigo-900 *{color:#fff!important}button:hover{filter:brightness(1.04);transform:translateY(-1px)}input,select,textarea{background:#f9f2ff!important;border-color:rgba(106,69,191,.35)!important;color:var(--ink)!important}input:focus,select:focus,textarea:focus{outline:none!important;border-color:var(--edge)!important;box-shadow:0 0 0 3px var(--mist)!important}.bg-indigo-500,#progress-bar{background:linear-gradient(90deg,var(--edge),var(--accent),var(--glow))!important}.rounded-2xl{border-radius:1.25rem!important}
+</style></head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between">
+
+    <!-- Header -->
+    <header class="bg-indigo-700 text-white shadow-md py-4 px-6">
+        <div class="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center">
+            <div>
+                <h1 class="text-xl sm:text-2xl font-bold">Animal Husbandry Quiz (बेंड़ पालन / Sheep)</h1>
+                <p class="text-xs sm:text-sm text-indigo-200">Bilingual Exam Prep: SSC, RRB, HSSC, State PCS (125 Unique Questions across 7 Pages)</p>
+            </div>
+            <div class="mt-2 sm:mt-0 bg-indigo-800 px-4 py-2 rounded-lg text-sm font-semibold border border-indigo-600">
+                Score: <span id="score" class="text-emerald-400">0</span> / <span id="total-questions">125</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Quiz Container -->
+    <main class="max-w-3xl mx-auto w-full p-4 sm:p-6 my-6 bg-white rounded-2xl shadow-lg border border-slate-100 flex-grow">
+        
+        <!-- Progress Bar & Page Indicator -->
+        <div class="mb-6">
+            <div class="flex justify-between items-center text-sm font-medium text-slate-500 mb-2">
+                <span id="page-badge" class="bg-indigo-100 text-indigo-800 px-2.5 py-1 rounded-md text-xs font-bold">Page 1 (15 Questions)</span>
+                <span>Question <span id="current-q-num">1</span> of <span id="total-q-num">125</span></span>
+            </div>
+            <div class="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
+                <div id="progress-bar" class="bg-indigo-600 h-2.5 transition-all duration-300" style="width: 0%;"></div>
+            </div>
+        </div>
+
+        <!-- Question Box -->
+        <div class="mb-6">
+            <h2 id="question-text" class="text-lg sm:text-xl font-bold text-slate-900 mb-4 leading-relaxed">
+                <!-- Question content injected via JS -->
+            </h2>
+            <div id="options-container" class="space-y-3">
+                <!-- Options injected via JS -->
+            </div>
+        </div>
+
+        <!-- Hint & Explanation Section -->
+        <div class="mb-6 space-y-3">
+            <button onclick="toggleHint()" class="text-xs font-semibold text-indigo-600 hover:text-indigo-800 bg-indigo-50 px-3 py-1.5 rounded-lg border border-indigo-200 transition-colors">
+                💡 View Hint / संकेत देखें
+            </button>
+            <div id="hint-box" class="hidden p-3 bg-amber-50 border border-amber-200 text-amber-900 text-sm rounded-lg">
+                <!-- Hint injected -->
+            </div>
+
+            <div id="explanation-box" class="hidden p-4 bg-emerald-50 border border-emerald-200 text-emerald-900 text-sm rounded-lg">
+                <h4 class="font-bold mb-1">Explanation / व्याख्या:</h4>
+                <p id="explanation-text"></p>
+            </div>
+        </div>
+
+        <!-- Navigation Controls -->
+        <div class="flex flex-col sm:flex-row justify-between items-center gap-4 pt-4 border-t border-slate-100">
+            <div class="flex items-center gap-2 w-full sm:w-auto">
+                <button onclick="prevQuestion()" id="prev-btn" class="px-4 py-2 bg-slate-200 text-slate-700 font-medium rounded-lg hover:bg-slate-300 transition disabled:opacity-50 disabled:cursor-not-allowed text-sm w-1/2 sm:w-auto">
+                    ← Previous
+                </button>
+                <button onclick="nextQuestion()" id="next-btn" class="px-4 py-2 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition text-sm w-1/2 sm:w-auto">
+                    Next →
+                </button>
+            </div>
+
+            <!-- Jump to Question Input -->
+            <div class="flex items-center gap-2 text-sm text-slate-600 w-full sm:w-auto justify-end">
+                <span>Jump to Q#:</span>
+                <input type="number" id="jump-input" min="1" max="125" class="w-16 px-2 py-1 border border-slate-300 rounded-lg text-center focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <button onclick="jumpToQuestion()" class="px-3 py-1 bg-slate-700 text-white rounded-lg hover:bg-slate-800 text-xs">Go</button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-800 text-slate-400 py-4 text-center text-xs">
+        <p>Animal Husbandry Interactive Quiz Application &bull; Total 125 Unique Questions across 7 Pages</p>
+    </footer>
+
+    <script>
+        // Complete dataset of 125 unique questions spanning 7 source pages (15 + 15 + 15 + 20 + 25 + 25 + 10)
+        const quizData = [
+            // --- PAGE 1: 15 Questions ---
+            {
+                page: 1, pageDesc: "Page 1: Kingdom to Breed Taxonomy & Chokla Characteristics",
+                q_en: "What is the biological Kingdom classification for sheep (भेड़ का वैज्ञानिक वर्गीकरण - जगत)?",
+                q_hi: "भेड़ का वैज्ञानिक वर्गीकरण के अनुसार जगत (Kingdom) क्या है?",
+                options: ["पशु (Animalia)", "रज्जुकी (Chordata)", "स्तनधारी (Mammalia)", "बोविडी (Bovidae)"],
+                answer: 0,
+                hint: "Refers to the animal kingdom classification in the taxonomy list.",
+                explanation: "Kingdom is पशु (Animalia) as shown under the taxonomic classification of sheep."
+            },
+            {
+                page: 1, pageDesc: "Page 1: Kingdom to Breed Taxonomy & Chokla Characteristics",
+                q_en: "Under sheep biological classification, what is the Phylum (संघ)?",
+                q_hi: "भेड़ के वैज्ञानिक वर्गीकरण के अनुसार संघ (Phylum) कौन सा है?",
+                options: ["रज्जुकी (Chordata)", "स्तनधारी (Mammalia)", "द्विखुरीयगण (Artiodactyla)", "ओविस (Ovis)"],
+                answer: 0,
+                hint: "Vertebrates phylum category.",
+                explanation: "Phylum / संघ is रज्जुकी (Chordata)."
+            },
+            {
+                page: 1, pageDesc: "Page 1: Kingdom to Breed Taxonomy & Chokla Characteristics",
+                q_en: "What is the Class (वर्ग) of sheep according to its scientific classification?",
+                q_hi: "वैज्ञानिक वर्गीकरण के अनुसार भेड़ का वर्ग (Class) क्या है?",
+                options: ["स्तनधारी (Mammalia)", "बोविडी (Bovidae)", "काप्रिनी (Caprinae)", "पशु (Animalia)"],
+                answer: 0,
+                hint: "Warm-blooded vertebrate animals that feed milk to young ones.",
+                explanation: "Class / वर्ग is स्तनधारी (Mammalia)."
+            },
+            {
+                page: 1, pageDesc: "Page 1: Kingdom to Breed Taxonomy & Chokla Characteristics",
+                q_en: "What is the Order (गण) of sheep in scientific classification?",
+                q_hi: "वैज्ञानिक वर्गीकरण में भेड़ का गण (Order) क्या है?",
+                options: ["द्विखुरीयगण (Artiodactyla)", "रज्जुकी (Chordata)", "काप्रिनी (Caprinae)", "ओविस (Ovis)"],
+                answer: 0,
+                hint: "Even-toed ungulates order.",
+                explanation: "Order / गण is द्विखुरीयगण (Artiodactyla)."
+            },
+            {
+                page: 1, pageDesc: "Page 1: Kingdom to Breed Taxonomy & Chokla Characteristics",
+                q_en: "What is the Family (कुल) classification of sheep?",
+                q_hi: "भेड़ का कुल (Family) वर्गीकरण क्या है?",
+                options: ["बोविडी (Bovidae)", "काप्रिनी (Caprinae)", "ओविस (Ovis)", "स्तनधारी (Mammalia)"],
+                answer: 0,
+                hint: "Family comprising cloven-hoofed ruminants including cattle, sheep, goats.",
+                explanation: "Family / कुल is बोविडी (Bovidae)."
+            },
+            {
+                page: 1, pageDesc: "Page 1: Kingdom to Breed Taxonomy & Chokla Characteristics",
+                q_en: "What is the Subfamily (उपकुल) of sheep?",
+                q_hi: "भेड़ का उपकुल (Subfamily) क्या है?",
+                options: ["काप्रिनी (Caprinae)", "ओविस (Ovis)", "बोविडी (Bovidae)", "आर्टiodactyla"],
+                answer: 0,
+                hint: "Subfamily under Bovidae containing goats and sheep.",
+                explanation: "Subfamily / उपकुल is काप्रिनी (Caprinae)."
+            },
+            {
+                page: 1, pageDesc: "Page 1: Kingdom to Breed Taxonomy & Chokla Characteristics",
+                q_en: "What is the Genus (वंश) of sheep?",
+                q_hi: "भेड़ का वंश (Genus) कौन सा है?",
+                options: ["ओविस (Ovis)", "काप्रिनी (Caprinae)", "बोविडी (Bovidae)", "पशु (Animalia)"],
+                answer: 0,
+                hint: "Genus name for sheep.",
+                explanation: "Genus / वंश is ओविस (Ovis)."
+            },
+            {
+                page: 1, pageDesc: "Page 1: Kingdom to Breed Taxonomy & Chokla Characteristics",
+                q_en: "How many total sheep breeds are officially noted to exist in India?",
+                q_hi: "भारत देश में कुल कितनी भेड़ की नस्लें पाई जाती हैं?",
+                options: ["42 नस्लें", "25 नस्लें", "15 नस्लें", "50 नस्लें"],
+                answer: 0,
+                hint: "Mentioned under introductory paragraphs of sheep section.",
+                explanation: "देश में 42 भेड़ की नस्लें हैं जिनमें अधिकांश गलीचा किस्म की ऊन का उत्पादन करती हैं."
+            },
+            {
+                page: 1, pageDesc: "Page 1: Kingdom to Breed Taxonomy & Chokla Characteristics",
+                q_en: "Which Indian sheep breed is considered the best carpet-wool breed in the world (विश्व में सर्वोत्तम गलीचा नस्ल)?",
+                q_hi: "विश्व में सर्वोत्तम गलीचा नस्ल की भेड़ किसे माना जाता है?",
+                options: ["चोकला (Chokla)", "मारवाड़ी (Marwari)", "मालपुरा (Malpura)", "पुगल (Pugal)"],
+                answer: 0,
+                hint: "Also known as Rajasthan Merino.",
+                explanation: "भारत में पाई जाने वाली चोकला नस्ल विश्व में सर्वोत्तम गलीचा नस्ल की भेड़ मानी जाती है."
+            },
+            {
+                page: 1, pageDesc: "Page 1: Kingdom to Breed Taxonomy & Chokla Characteristics",
+                q_en: "According to livestock data, how many sheep were recorded in Haryana state?",
+                q_hi: "हरियाणा प्रदेश में कुल कितनी भेड़ पाई जाती हैं?",
+                options: ["2,88,768 भेड़", "1,88,768 भेड़", "3,88,768 भेड़", "98,768 भेड़"],
+                answer: 0,
+                hint: "State livestock census statistic for Haryana.",
+                explanation: "हरियाणा प्रदेश में 2,88,768 भेड़ पाई जाती हैं."
+            },
+            {
+                page: 1, pageDesc: "Page 1: Kingdom to Breed Taxonomy & Chokla Characteristics",
+                q_en: "Which district in Haryana has the maximum sheep population?",
+                q_hi: "हरियाणा के किस जिले में सर्वाधिक भेड़ें पाई जाती हैं?",
+                options: ["भिवानी", "गुरुग्राम", "हिसार", "सिरसा"],
+                answer: 0,
+                hint: "District with highest sheep count in Haryana.",
+                explanation: "हरियाणा प्रदेश में सर्वाधिक भेड़ भिवानी जिले में पाई जाती हैं."
+            },
+            {
+                page: 1, pageDesc: "Page 1: Kingdom to Breed Taxonomy & Chokla Characteristics",
+                q_en: "Which district in Haryana has the minimum sheep population?",
+                q_hi: "हरियाणा के किस जिले में सबसे कम भेड़ें पाई जाती हैं?",
+                options: ["गुरुग्राम", "भिवानी", "हिसार", "जींद"],
+                answer: 0,
+                hint: "District with lowest sheep count in Haryana.",
+                explanation: "सबसे कम भेड़ें गुरुग्राम जिले में पाई जाती हैं."
+            },
+            {
+                page: 1, pageDesc: "Page 1: Kingdom to Breed Taxonomy & Chokla Characteristics",
+                q_en: "Where is the Central Sheep Breeding Farm / Centre located in Haryana?",
+                q_hi: "हरियाणा में केंद्रीय भेड़ प्रजनन केंद्र कहाँ स्थित है?",
+                options: ["हिसार", "भिवानी", "गुरुग्राम", "रोहतक"],
+                answer: 0,
+                hint: "Major research hub in Haryana.",
+                explanation: "राज्य में केंद्रीय भेड़ प्रजनन केन्द्र हिसार में स्थित है."
+            },
+            {
+                page: 1, pageDesc: "Page 1: Kingdom to Breed Taxonomy & Chokla Characteristics",
+                q_en: "What is the origin and distribution region of the Chokla sheep breed?",
+                q_hi: "चोकला नस्ल का उत्पत्ति स्थान (Origin) कौन सा क्षेत्र है?",
+                options: ["राजस्थान का शेखावाटी क्षेत्र (चुरू, झुंझुनू, सीकर)", "मारवाड़ी क्षेत्र", "बाड़मेर व जोधपुर", "अजमेर व टोंक"],
+                answer: 0,
+                hint: "Includes Churu, Jhunjhunu, Sikar.",
+                explanation: "इस नस्ल का उत्पत्ति स्थल राजस्थान का शेखावाटी क्षेत्र है जिसमें चुरू, झुंझुनू, सीकर जिले हैं."
+            },
+            {
+                page: 1, pageDesc: "Page 1: Kingdom to Breed Taxonomy & Chokla Characteristics",
+                q_en: "What is another popular nickname for the Chokla sheep breed?",
+                q_hi: "चोकला भेड़ को अन्य किस नाम से जाना जाता है?",
+                options: ["राजस्थान की मैरिनो", "भारत की सबसे बड़ी भेड़", "पेलट नस्ल", "अविस्त्र"],
+                answer: 0,
+                hint: "Called Merino of a specific state.",
+                explanation: "चोकला नस्ल को 'राजस्थान की मैरिनो' भी कहते हैं."
+            },
+
+            // --- PAGE 2: 15 Questions ---
+            {
+                page: 2, pageDesc: "Page 2: Marwari, Malpura, & Merino Sheep Characteristics",
+                q_en: "What are the facial color characteristics of the Marwari sheep breed?",
+                q_hi: "मारवाड़ी भेड़ नस्ल की क्या विशेषता है?",
+                options: ["चेहरा काले रंग का होता है जो गर्दन के निचले भाग तक फैला होता है", "चेहरा सफेद और सिर गोल होता है", "चेहरा भूरा और कान बड़े होते हैं", "चेहरा पूरी तरह ऊन रहित होता है"],
+                answer: 0,
+                hint: "Check face and lower neck color details for Marwari.",
+                explanation: "शरीर मध्यम आकार एवं चेहरा काले रंग का होता है तथा रंग गर्दन के निचले भाग तक फैला रहता है."
+            },
+            {
+                page: 2, pageDesc: "Page 2: Marwari, Malpura, & Merino Sheep Characteristics",
+                q_en: "Which Marwari breed characteristic provides high disease resistance?",
+                q_hi: "मारवाड़ी भेड़ की कौन सी विशेषता इसे विशिष्ट बनाती है?",
+                options: ["ठण्डे व गर्म मौसम को सहन करने की शक्ति अधिक होती है व रोग प्रतिरोधक क्षमता सर्वाधिक होती है", "यह सबसे भारी नस्ल है", "इसमें सींग पाए जाते हैं", "इनका दूध उत्पादन सबसे अधिक होता है"],
+                answer: 0,
+                hint: "Resistance and hardiness against weather and diseases.",
+                explanation: "ठण्डे व गर्म मौसम को सहन करने की शक्ति अधिक होती है। इस नस्ल के रेवड़ में वार्षिक जीवित दर 90% से अधिक होती है."
+            },
+            {
+                page: 2, pageDesc: "Page 2: Marwari, Malpura, & Merino Sheep Characteristics",
+                q_en: "What is the primary utility status of Marwari sheep?",
+                q_hi: "मारवाड़ी भेड़ की उपयोगिता किस रूप में है?",
+                options: ["तिहरी उपयोगिता (ऊन + मांस + दूध) की नस्ल", "केवल ऊन उत्पादन", "केवल मांस उत्पादन", "पेलट उत्पादन"],
+                answer: 0,
+                hint: "Three utility types combined.",
+                explanation: "यह तिहरी उपयोगिता (ऊन + मांस + दूध) की नस्ल है."
+            },
+            {
+                page: 2, pageDesc: "Page 2: Marwari, Malpura, & Merino Sheep Characteristics",
+                q_en: "After which region/tehsil is the Malpura sheep breed named?",
+                q_hi: "मालपुरा भेड़ का नाम किस जिले की तहसील के नाम पर पड़ा है?",
+                options: ["टोंक जिले की मालपुरा तहसील", "जयपुर जिले की तहसील", "अजमेर जिले की तहसील", "जोधपुर जिले की तहसील"],
+                answer: 0,
+                hint: "Named after Malpura tehsil in Tonk district.",
+                explanation: "इस नस्ल का नाम टोंक जिले की मालपुरा तहसील के नाम पर पड़ा है."
+            },
+            {
+                page: 2, pageDesc: "Page 2: Marwari, Malpura, & Merino Sheep Characteristics",
+                q_en: "What is the primary production focus of Malpura sheep?",
+                q_hi: "मालपुरा भेड़ मुख्य रूप से किस उत्पादन के लिए जानी जाती है?",
+                options: ["मांस उत्पादन नस्ल", "सर्वोत्तम ऊन उत्पादन", "पेलट उत्पादन", "दूध उत्पादन"],
+                answer: 0,
+                hint: "Meat production breed.",
+                explanation: "यह मुख्य रूप से मांस उत्पादन नस्ल है."
+            },
+            {
+                page: 2, pageDesc: "Page 2: Marwari, Malpura, & Merino Sheep Characteristics",
+                q_en: "What is the native origin country of the Merino sheep breed?",
+                q_hi: "मैरिनो (Merino) भेड़ का मूल उत्पत्ति स्थान (Origin) कौन सा देश है?",
+                options: ["स्पेन (Spain)", "इंग्लैंड", "फ्रांस", "मध्य एशिया"],
+                answer: 0,
+                hint: "European country famous for fine wool sheep.",
+                explanation: "इस नस्ल का मूल उत्पत्ति स्थान स्पेन है। वहां से यह नस्ल पूरे विश्व में पहुँच गई है."
+            },
+            {
+                page: 2, pageDesc: "Page 2: Marwari, Malpura, & Merino Sheep Characteristics",
+                q_en: "What is a prominent body feature of male Merino sheep?",
+                q_hi: "नर मैरिनो भेड़ की मुख्य शारीरिक विशेषता क्या होती है?",
+                options: ["घुमावदार सींग होते हैं", "सींग रहित होते हैं", "लंबी लटकी हुई पूंछ होती है", "काले रंग का चेहरा होता है"],
+                answer: 0,
+                hint: "Curved horns in rams.",
+                explanation: "नर में घुमावदार सींग होते हैं जबकि मादा भेड़ें सींग रहित होती हैं."
+            },
+            {
+                page: 2, pageDesc: "Page 2: Marwari, Malpura, & Merino Sheep Characteristics",
+                q_en: "What is the body weight of a mature male Merino sheep?",
+                q_hi: "वयस्क नर मैरिनो भेड़ का शरीर का भार कितना होता है?",
+                options: ["90 कि.ग्रा.", "70 कि.ग्रा.", "40 कि.ग्रा.", "30 कि.ग्रा."],
+                answer: 0,
+                hint: "Heavier weight parameter for Merino ram.",
+                explanation: "इसमें नर शरीर का भार 90 कि.ग्रा. तथा मादा भेड़ का भार 70 कि.ग्रा. होता है."
+            },
+            {
+                page: 2, pageDesc: "Page 2: Marwari, Malpura, & Merino Sheep Characteristics",
+                q_en: "How much annual wool is produced by a single Merino sheep?",
+                q_hi: "एक मैरिनो भेड़ से प्रतिवर्ष कितनी ऊन प्राप्त होती है?",
+                options: ["5 से 9 कि.ग्रा.", "1 से 2 कि.ग्रा.", "10 से 15 कि.ग्रा.", "0.5 कि.ग्रा."],
+                answer: 0,
+                hint: "High wool yield parameter.",
+                explanation: "उत्पत्ति एवं वितरण - एक मैरिनो भेड़ से प्रतिवर्ष 5-9 कि.ग्रा. तक ऊन प्राप्त होती है."
+            },
+            {
+                page: 2, pageDesc: "Page 2: Marwari, Malpura, & Merino Sheep Characteristics",
+                q_en: "Which sheep breed is universally considered the best fine wool breed in the world?",
+                q_hi: "विश्व की सर्वोत्तम 'Fine Wool' देने वाली भेड़ की नस्ल कौन सी है?",
+                options: ["मैरिनो (Merino)", "चोकला", "कराजुल", "अविस्त्र"],
+                answer: 0,
+                hint: "Merino utility notes.",
+                explanation: "उत्तम नस्ल तथा अधिक ऊन के लिए यह भेड़ की सर्वोत्तम नस्ल है."
+            },
+            {
+                page: 2, pageDesc: "Page 2: Marwari, Malpura, & Merino Sheep Characteristics",
+                q_en: "What type of skin folds are characteristic of Merino sheep?",
+                q_hi: "मैरिनो भेड़ की त्वचा पर किस प्रकार की संरचना पाई जाती है?",
+                options: ["झुर्रियां व सलवटें (Wrinkles & folds)", "चिकनी त्वचा", "काले धब्बे", "घने बाल"],
+                answer: 0,
+                hint: "Skin characteristic description.",
+                explanation: "इसकी गर्दन पर तथा कंधों की त्वचा में झुर्रियां व सलवटें होती हैं."
+            },
+            {
+                page: 2, pageDesc: "Page 2: Marwari, Malpura, & Merino Sheep Characteristics",
+                q_en: "What is the average body weight of a male Malpura sheep?",
+                q_hi: "नर मालपुरा भेड़ का औसत भार कितना होता है?",
+                options: ["28-35 कि.ग्रा.", "90 कि.ग्रा.", "60 कि.ग्रा.", "45 कि.ग्रा."],
+                answer: 0,
+                hint: "Refer to Malpura utility/characteristics section.",
+                explanation: "नर भेड़ का औसत भार क्रमशः 28-35 कि.ग्रा. व मादा का भार लगभग 25-30 कि.ग्रा. तक होता है."
+            },
+            {
+                page: 2, pageDesc: "Page 2: Marwari, Malpura, & Merino Sheep Characteristics",
+                q_en: "How much wool is obtained annually from a Malpura sheep?",
+                q_hi: "मालपुरा भेड़ द्वारा प्रतिवर्ष कितनी ऊन प्राप्त होती है?",
+                options: ["1.5 से 2.3 कि.ग्रा.", "5 से 9 कि.ग्रा.", "0.5 कि.ग्रा.", "3.5 कि.ग्रा."],
+                answer: 0,
+                hint: "Annual wool yield for Malpura.",
+                explanation: "प्रतिवर्ष 1.5 से 2.3 कि.ग्रा. सफेद व अधिक मोटी श्रेणी की ऊन प्राप्त होती है."
+            },
+            {
+                page: 2, pageDesc: "Page 2: Marwari, Malpura, & Merino Sheep Characteristics",
+                q_en: "What is the facial and body color description of Malpura sheep?",
+                q_hi: "मालपुरा भेड़ का चेहरा एवं शरीर की बनावट कैसी होती है?",
+                options: ["चेहरा हल्के भूरे रंग का, कान छोटे व मुड़े हुए", "चेहरा काला", "चेहरा पूरी तरह सफेद और सींग बड़े", "शरीर लाल रंग का"],
+                answer: 0,
+                hint: "Characteristics of Malpura.",
+                explanation: "चेहरा हल्के भूरे रंग का, कान छोटे व मुड़े हुए तथा पूंछ पतली और मध्यम लम्बाई की होती है."
+            },
+            {
+                page: 2, pageDesc: "Page 2: Marwari, Malpura, & Merino Sheep Characteristics",
+                q_en: "In which districts of Rajasthan is Malpura primarily distributed?",
+                q_hi: "मालपुरा भेड़ मुख्य रूप से राजस्थान के किन जिलों में पाई जाती है?",
+                options: ["जयपुर, टोंक, अजमेर, बूंदी", "चूरू, झुंझुनू, सीकर", "जोधपुर, पाली, नागौर", "जैसलमेर व बाड़मेर"],
+                answer: 0,
+                hint: "Jaipur, Tonk, Ajmer, Bundi distribution.",
+                explanation: "यह भेड़ मुख्य रूप से राजस्थान के जयपुर, टोंक, अजमेर, बूंदी इत्यादि जिलों में पाई जाती है."
+            },
+
+            // --- PAGE 3: 15 Questions ---
+            {
+                page: 3, pageDesc: "Page 3: Karagul, Avikalin, Avivastra & Jaisalmeri Breeds",
+                q_en: "What is the original native place of the Karagul (Karakul) sheep breed?",
+                q_hi: "कराजुल (Karagul) भेड़ की मूल उत्पत्ति किस क्षेत्र को माना जाता है?",
+                options: ["मध्य एशिया (इरान, इराक, अफगानिस्तान)", "स्पेन", "इंग्लैंड", "फ्रांस"],
+                answer: 0,
+                hint: "Central Asia origin.",
+                explanation: "इस नस्ल की भेड़ का मूल उत्पत्ति स्थान मध्य एशिया को माना जाता है। यह ईरान, इराक, अफगानिस्तान में पाई जाती है."
+            },
+            {
+                page: 3, pageDesc: "Page 3: Karagul, Avikalin, Avivastra & Jaisalmeri Breeds",
+                q_en: "What is the primary utility of the Karagul sheep breed?",
+                q_hi: "कराजुल (Karagul) भेड़ मुख्य रूप से किसके लिए उपयोगी है?",
+                options: ["मांस के लिए (उत्तम पेलट / Pelt उत्पादन)", "केवल उत्कृष्ट ऊन", "दूध उत्पादन", "भार ढोने के लिए"],
+                answer: 0,
+                hint: "Pelt and meat utility.",
+                explanation: "यह नस्ल मांस के लिए उपयोगी है। इस नस्ल के मेमनों को कम उम्र में ही मार कर उन से घुंघराले ऊन वाली खाल प्राप्त की जाती है."
+            },
+            {
+                page: 3, pageDesc: "Page 3: Karagul, Avikalin, Avivastra & Jaisalmeri Breeds",
+                q_en: "How is the Avivastra sheep breed developed?",
+                q_hi: "अविवस्त्र (Avivastra) भेड़ की नस्ल कैसे विकसित की गई है?",
+                options: ["रेम्बूले नस्ल के मैरिनो मेढ़ों तथा राजस्थान की चोकला नस्ल की भेड़ के संकरण से", "मालपुरा नस्ल के संकरण से", "बीकानेरी नस्ल से", "मारवाड़ी नस्ल से"],
+                answer: 0,
+                hint: "Rambouillet Merino x Chokla cross.",
+                explanation: "यह भेड़ एवं ऊन अनुसंधान संस्थान द्वारा रेम्बूले नस्ल के मैरिनो मेढ़ों तथा राजस्थान की चोकला नस्ल की भेड़ के संकरण से विकसित की गई है."
+            },
+            {
+                page: 3, pageDesc: "Page 3: Karagul, Avikalin, Avivastra & Jaisalmeri Breeds",
+                q_en: "How is the Avikalin sheep breed developed?",
+                q_hi: "अविकालिन (Avikalin) भेड़ की नस्ल किस संस्थान या संकरण से तैयार की गई है?",
+                options: ["मालपुरा नस्ल की भेड़ों (मादा) के संकरण से केंद्रीय भेड़ एवं ऊन अनुसंधान संस्थान द्वारा", "चोकला और मैरिनो से", "बीकानेरी और पूगल से", "नली और मारवाड़ी से"],
+                answer: 0,
+                hint: "Malpura cross developed at CSWRI.",
+                explanation: "मालपुरा नस्ल की भेड़ों (मादा) के संकरण से केंद्रीय भेड़ एवं ऊन अनुसंधान संस्थान द्वारा तैयार की गई है."
+            },
+            {
+                page: 3, pageDesc: "Page 3: Karagul, Avikalin, Avivastra & Jaisalmeri Breeds",
+                q_en: "What is the birth origin district of the Jaisalmeri sheep breed?",
+                q_hi: "जैसलमेर नस्ल की भेड़ का जन्म स्थान कौन सा जिला है?",
+                options: ["जैसलमेर जिला (राजस्थान)", "बीकानेर जिला", "जोधपुर जिला", "बाड़मेर जिला"],
+                answer: 0,
+                hint: "Named after Jaisalmer.",
+                explanation: "इस नस्ल का जन्म स्थान जैसलमेर जिला राजस्थान होने के कारण जैसलमेरमेरी भेड़ के नाम से जाना जाता है."
+            },
+            {
+                page: 3, pageDesc: "Page 3: Karagul, Avikalin, Avivastra & Jaisalmeri Breeds",
+                q_en: "What is the physical size and nose characteristic of Jaisalmeri sheep?",
+                q_hi: "जैसलमेररी भेड़ के आकार और नाक की बनावट की क्या विशेषता है?",
+                options: ["बड़े आकार की तथा नाक रोमन प्रकार की होती है", "छोटे आकार की तथा चपटी नाक", "मध्यम आकार और सीधी नाक", "बौने आकार की"],
+                answer: 0,
+                hint: "Large size with Roman nose.",
+                explanation: "यह भेड़ आकार में बड़े आकार की होती है। सिर बड़ा व नाक रोमन प्रकार की होती है."
+            },
+            {
+                page: 3, pageDesc: "Page 3: Karagul, Avikalin, Avivastra & Jaisalmeri Breeds",
+                q_en: "What are the facial characteristics of Jaisalmeri sheep?",
+                q_hi: "जैसलमेररी भेड़ का चेहरा किस रंग का होता है?",
+                options: ["चेहरा काला या गहरे भूरे रंग का जो गर्दन के नीचे आधे भाग तक फैला होता है", "सफेद चेहरा", "पीला चेहरा", "चित्कबला चेहरा"],
+                answer: 0,
+                hint: "Black/dark brown face extending to neck.",
+                explanation: "चेहरा काला या गहरे भूरे रंग का होता है तथा यह रंग गर्दन के नीचे आधे भाग तक फैला रहता है."
+            },
+            {
+                page: 3, pageDesc: "Page 3: Karagul, Avikalin, Avivastra & Jaisalmeri Breeds",
+                q_en: "Are horns present in Jaisalmeri sheep?",
+                q_hi: "क्या जैसलमेररी भेदों में सींग पाए जाते हैं?",
+                options: ["इन भेदों में सींग नहीं होते", "नर में बड़े सींग होते हैं", "मादा में सींग होते हैं", "सभी में सींग होते हैं"],
+                answer: 0,
+                hint: "Polled condition in Jaisalmeri.",
+                explanation: "इन भेदों में सींग नहीं होते तथा पूंछ मध्यम से लम्बे आकार की होती है."
+            },
+            {
+                page: 3, pageDesc: "Page 3: Karagul, Avikalin, Avivastra & Jaisalmeri Breeds",
+                q_en: "Which foreign sheep breed is known as the world's best Fine Wool producer?",
+                q_hi: "विदेशी नस्ल 'मेरिनो' का उत्पत्ति देश और मुख्य विशेषता क्या है?",
+                options: ["स्पेन - विश्व की सबसे अच्छी Fine Wool प्राप्त होती है", "फ्रांस - सबसे भारी नस्ल", "इंग्लैंड - सबसे लंबी नस्ल", "उज्बेकिस्तान - पेलट नस्ल"],
+                answer: 0,
+                hint: "Merino details from foreign breed table.",
+                explanation: "मेरिनो - स्पेन - विश्व की सबसे अच्छी Fine Wool प्राप्त होती है."
+            },
+            {
+                page: 3, pageDesc: "Page 3: Karagul, Avikalin, Avivastra & Jaisalmeri Breeds",
+                q_en: "Which foreign sheep breed is the heaviest and longest?",
+                q_hi: "भेड़ की सबसे भारी एवं सबसे लम्बी विदेशी नस्ल कौन सी है?",
+                options: ["लिंकन (Lincoln - इंग्लैंड)", "डोरसेट", "सफोक", "लिसस्टर"],
+                answer: 0,
+                hint: "Lincoln breed from England.",
+                explanation: "लिंकन - इंग्लैंड - भेड़ की सबसे भारी एवं सबसे लम्बी नस्ल."
+            },
+            {
+                page: 3, pageDesc: "Page 3: Karagul, Avikalin, Avivastra & Jaisalmeri Breeds",
+                q_en: "Which foreign sheep breed is known as 'Best Mutton Breed'?",
+                q_hi: "किस विदेशी भेड़ नस्ल को 'Best Mutton Breed' कहा जाता है?",
+                options: ["सफोक (Suffolk - इंग्लैंड)", "लिंकन", "साउथ डाऊन", "डोरसेट"],
+                answer: 0,
+                hint: "Suffolk breed.",
+                explanation: "सफोक - इंग्लैंड - Best Mutton Breed."
+            },
+            {
+                page: 3, pageDesc: "Page 3: Karagul, Avikalin, Avivastra & Jaisalmeri Breeds",
+                q_en: "Which foreign sheep breed is noted for having a mouse-like face (चूहे जैसा मुँह)?",
+                q_hi: "किस विदेशी भेड़ नस्ल का मुँह चूहे जैसा होता है?",
+                options: ["साउथ डाऊन (Southdown)", "लिंकन", "लिसस्टर", "डोरसेट"],
+                answer: 0,
+                hint: "Southdown characteristics.",
+                explanation: "साउथ डाऊन - इंग्लैंड - चूहे जैसा मुँह."
+            },
+            {
+                page: 3, pageDesc: "Page 3: Karagul, Avikalin, Avivastra & Jaisalmeri Breeds",
+                q_en: "Which foreign sheep breed is recognized as the best Pelt breed?",
+                q_hi: "कौन सी विदेशी भेड़ नस्ल सबसे अच्छी Pelt breed मानी जाती है?",
+                options: ["कराजुल (Karagul - उज्बेकिस्तान)", "मेरिनो", "रेम्बूले", "लिंकन"],
+                answer: 0,
+                hint: "Karakul from Bukhara/Uzbekistan.",
+                explanation: "कराजुल - बुखारा प्रान्त, उज्बेकिस्तान - सबसे अच्छी Pelt breed."
+            },
+            {
+                page: 3, pageDesc: "Page 3: Karagul, Avikalin, Avivastra & Jaisalmeri Breeds",
+                q_en: "What is the origin country of the Rambouillet sheep breed listed in foreign breeds?",
+                q_hi: "विदेशी नस्ल 'रेम्बूले' का उत्पत्ति देश कौन सा है?",
+                options: ["फ्रांस", "स्पेन", "इंग्लैंड", "उज्बेकिस्तान"],
+                answer: 0,
+                hint: "France origin for Rambouillet.",
+                explanation: "रेम्बूले - फ्रांस - इसकी उत्पत्ति स्पेनिश मैरिनो से मानी जाती है."
+            },
+            {
+                page: 3, pageDesc: "Page 3: Karagul, Avikalin, Avivastra & Jaisalmeri Breeds",
+                q_en: "Which Indian regional category lists Gaddi and Rampur-Bushair under North Himalayan region?",
+                q_hi: "देशी नस्लों के वर्गीकरण में उत्तरी हिमालय क्षेत्र के अंतर्गत कौन सी नस्लें आती हैं?",
+                options: ["गद्दी तथा रामपुर-बुशैर", "चोकला तथा नाली", "जैसलमेर तथा मारवाड़ी", "नेल्लोर तथा मांड्या"],
+                answer: 0,
+                hint: "Gaddi and Rampur-Bushair.",
+                explanation: "उत्तरी हिमालय क्षेत्र की नस्लें: गद्दी, रामपुर-बुशैर, बखरवाल आदि."
+            },
+
+            // --- PAGE 4: 20 Questions ---
+            {
+                page: 4, pageDesc: "Page 4: Indigenous Breeds Distribution Table & Key Questions",
+                q_en: "Which is noted as the largest domestic sheep breed found in India (भारत में पाई जाने वाली सबसे बड़ी देशी नस्ल)?",
+                q_hi: "भारत में पाई जाने वाली सबसे बड़ी देशी भेड़ नस्ल कौन सी है?",
+                options: ["नेल्लोर (Nellore - आंध्र प्रदेश)", "मांड्या", "चोकला", "गद्दी"],
+                answer: 0,
+                hint: "Nellore from Andhra Pradesh.",
+                explanation: "नेल्लोर (आंध्र प्रदेश) - 1. सबसे अच्छा Mutton, 2. भेड़ की सबसे बड़ी देशी नस्ल, 3. इसे 'बकरी' जैसी भेड़ कहते हैं."
+            },
+            {
+                page: 4, pageDesc: "Page 4: Indigenous Breeds Distribution Table & Key Questions",
+                q_en: "Which is the smallest sheep breed found in India (भारत में पाई जाने वाली सबसे छोटी नस्ल)?",
+                q_hi: "भारत में पाई जाने वाली सबसे छोटी भेड़ की नस्ल कौन सी है?",
+                options: ["मांड्या (Mandya - कर्नाटक)", "नेल्लोर", "नali", "गैरोल"],
+                answer: 0,
+                hint: "Mandya from Karnataka.",
+                explanation: "मांड्या (कर्नाटक) - भेड़ की सबसे छोटी नस्ल."
+            },
+            {
+                page: 4, pageDesc: "Page 4: Indigenous Breeds Distribution Table & Key Questions",
+                q_en: "Which sheep breed gives the maximum number of lambs because of 'Fec-B' gene?",
+                q_hi: "कौन सी भेड़ सबसे ज्यादा बच्चे पैदा करती है क्योंकि इसमें 'Fec-B' जीन पाई जाती है?",
+                options: ["गैरोल (Garole - प. बंगाल, सुंदरवन)", "नेल्लोर", "चोकला", "मारवाड़ी"],
+                answer: 0,
+                hint: "Garol from West Bengal with prolific gene.",
+                explanation: "गैरोल (सुंदरवन, प. बंगाल) - यह भेड़ सबसे ज्यादा बच्चे पैदा करती है (क्योंकि इसमें 'Fec-B' जीन पाई जाती है)."
+            },
+            {
+                page: 4, pageDesc: "Page 4: Indigenous Breeds Distribution Table & Key Questions",
+                q_en: "Which Indian sheep breed is famous for having a Roman nose?",
+                q_hi: "किस भेड़ की नस्ल में रोमन नाक (Roman Nose) पाई जाती है?",
+                options: ["चोकला तथा जैसलमेर", "मांड्या", "गैरोल", "सोनाडी"],
+                answer: 0,
+                hint: "Chokla and Jaisalmeri feature.",
+                explanation: "चोकला (सीकर, चुरू आदि) तथा जैसलमेर में रोमन नाक पाई जाती है."
+            },
+            {
+                page: 4, pageDesc: "Page 4: Indigenous Breeds Distribution Table & Key Questions",
+                q_en: "Which sheep breed produces yellow-colored wool (पीले रंग की ऊन)?",
+                q_hi: "किस भेड़ की नस्ल में पीले रंग की ऊन पाई जाती है?",
+                options: ["नाली (Nali)", "चोकला", "मारवाड़ी", "पुगल"],
+                answer: 0,
+                hint: "Nali distribution area in Sri Ganganagar, Churu.",
+                explanation: "नाली (श्रीगंगानगर, चुरू, झुंझुनू आदि) - पीले रंग की ऊन पाई जाती है."
+            },
+            {
+                page: 4, pageDesc: "Page 4: Indigenous Breeds Distribution Table & Key Questions",
+                q_en: "'Kullu Shawl' is prepared from the wool of which sheep breed?",
+                q_hi: "'कुल्लू शॉल' किस भेड़ की ऊन से तैयार की जाती है?",
+                options: ["गद्दी (Gaddi)", "बखरवाल", "नali", "लोही"],
+                answer: 0,
+                hint: "Gaddi sheep wool usage.",
+                explanation: "'कुल्लू शॉल' गद्दी भेड़ की ऊन से तैयार की जाती है."
+            },
+            {
+                page: 4, pageDesc: "Page 4: Indigenous Breeds Distribution Table & Key Questions",
+                q_en: "'Loi' (लोई) is prepared from the wool of which sheep breed?",
+                q_hi: "किस भेड़ की ऊन से 'लोई' (Loi) तैयार की जाती है?",
+                options: ["बखरवाल (Bakharwal)", "गद्दी", "चोकला", "मारवाड़ी"],
+                answer: 0,
+                hint: "Bakharwal wool utility.",
+                explanation: "बखरवाल भेड़ की ऊन से 'लोई' तैयार की जाती है."
+            },
+            {
+                page: 4, pageDesc: "Page 4: Indigenous Breeds Distribution Table & Key Questions",
+                q_en: "What is the dental formula of sheep?",
+                q_hi: "भेड़ का दन्त सूत्र (Dental Formula) क्या है?",
+                options: ["[0.0.3.3 / 4.0.3.3] x 2 = 32", "[2.1.2.3 / 3.1.2.3] x 2", "[0.0.4.3 / 3.1.3.3] x 2", "[1.0.3.3 / 3.0.3.3] x 2"],
+                answer: 0,
+                hint: "Incisors, canines, premolars, molars formula with total 32 teeth.",
+                explanation: "भेड़ का दन्त सूत्र - (1/0, C 0/0, Pm 3/3, m 3/3) x 2 = 32 कुल दांत पाए जाते हैं."
+            },
+            {
+                page: 4, pageDesc: "Page 4: Indigenous Breeds Distribution Table & Key Questions",
+                q_en: "What is the total number of teeth found in an adult sheep?",
+                q_hi: "वयस्क भेड़ में कुल कितने दांत पाए जाते हैं?",
+                options: ["32 दांत", "28 दांत", "34 दांत", "30 दांत"],
+                answer: 0,
+                hint: "Total count from dental formula.",
+                explanation: "भेड़ में कुल दांत 32 पाए जाते हैं."
+            },
+            {
+                page: 4, pageDesc: "Page 4: Indigenous Breeds Distribution Table & Key Questions",
+                q_en: "What method is used to separate one sheep flock from another?",
+                q_hi: "भेड़ के एक झुण्ड को दूसरे से अलग करने का तरीका क्या कहलाता है?",
+                options: ["Wool Marking", "Tattooing", "Ringing", "Tagging"],
+                answer: 0,
+                hint: "Marking on wool.",
+                explanation: "भेड़ के एक झुण्ड को दूसरे से अलग करने का तरीका - Wool Marking."
+            },
+            {
+                page: 4, pageDesc: "Page 4: Indigenous Breeds Distribution Table & Key Questions",
+                q_en: "How many total teats (थनों की संख्या) does a sheep have?",
+                q_hi: "भेड़ में थनों की संख्या कितनी होती है?",
+                options: ["2 थन", "4 थन", "1 थन", "6 थन"],
+                answer: 0,
+                hint: "Ewe teat count.",
+                explanation: "भेड़ में थनों की संख्या 2 होती है."
+            },
+            {
+                page: 4, pageDesc: "Page 4: Indigenous Breeds Distribution Table & Key Questions",
+                q_en: "How many Teat Canals are present in each teat of a sheep?",
+                q_hi: "भेड़ के प्रत्येक थन में Teat Canal की संख्या कितनी होती है?",
+                options: ["एक (1)", "दो (2)", "चार (4)", "तीन (3)"],
+                answer: 0,
+                hint: "Single teat canal per teat in sheep.",
+                explanation: "भेड़ के प्रत्येक थन में Teat Canal की संख्या एक (1) होती है."
+            },
+            {
+                page: 4, pageDesc: "Page 4: Indigenous Breeds Distribution Table & Key Questions",
+                q_en: "What is the recommended animal unit to start a sheep farm?",
+                q_hi: "भेड़ फार्म शुरू करने के लिए जानवरों की इकाई (Unit) क्या है?",
+                options: ["30 Ewe + 1 Ram", "50 Ewe + 2 Ram", "10 Ewe + 1 Ram", "100 Ewe + 5 Ram"],
+                answer: 0,
+                hint: "Standard breeding unit size.",
+                explanation: "भेड़ फार्म शुरू करने के लिए जानवरों की इकाई है - 30 Ewe + 1 Ram."
+            },
+            {
+                page: 4, pageDesc: "Page 4: Indigenous Breeds Distribution Table & Key Questions",
+                q_en: "What is the daily drinking water requirement for a single sheep?",
+                q_hi: "एक भेड़ को प्रतिदिन पीने के पानी की कितनी आवश्यकता होती है?",
+                options: ["5-10 लीटर", "1-2 लीटर", "15-20 लीटर", "30 लीटर"],
+                answer: 0,
+                hint: "Water intake per day.",
+                explanation: "एक भेड़ को प्रतिदिन पीने के पानी की आवश्यकता 5-10 लीटर होती है."
+            },
+            {
+                page: 4, pageDesc: "Page 4: Indigenous Breeds Distribution Table & Key Questions",
+                q_en: "How much dung (गोबर) is produced daily by a single sheep?",
+                q_hi: "एक भेड़ प्रतिदिन लगभग कितना गोबर उत्पादन करती है?",
+                options: ["1.75 कि.ग्रा.", "0.5 कि.ग्रा.", "5 कि.ग्रा.", "3.5 कि.ग्रा."],
+                answer: 0,
+                hint: "Daily dung production quantity.",
+                explanation: "एक भेड़ प्रतिदिन गोबर उत्पादन करती है - 1.75 कि.ग्रा.."
+            },
+            {
+                page: 4, pageDesc: "Page 4: Indigenous Breeds Distribution Table & Key Questions",
+                q_en: "What is the average lifespan (जीवनकाल) of a sheep?",
+                q_hi: "एक भेड़ का औसत जीवनकाल कितना होता है?",
+                options: ["12 वर्ष", "5 वर्ष", "20 वर्ष", "25 वर्ष"],
+                answer: 0,
+                hint: "Typical years of sheep life.",
+                explanation: "एक भेड़ का जीवनकाल 12 वर्ष होता है."
+            },
+            {
+                page: 4, pageDesc: "Page 4: Indigenous Breeds Distribution Table & Key Questions",
+                q_en: "At what age does puberty (यौनावस्था) occur in sheep?",
+                q_hi: "एक भेड़ में यौनावस्था (Puberty) की उम्र कितनी होती है?",
+                options: ["7-10 माह", "12-15 माह", "3-4 माह", "18 माह"],
+                answer: 0,
+                hint: "Months for onset of puberty.",
+                explanation: "एक भेड़ में यौनावस्था की उम्र 7-10 माह होती है."
+            },
+            {
+                page: 4, pageDesc: "Page 4: Indigenous Breeds Distribution Table & Key Questions",
+                q_en: "Which sheep breed produces the maximum milk in India?",
+                q_hi: "भेड़ की सर्वाधिक दूध देने वाली नस्ल कौन सी है?",
+                options: ["लोही (Lohi)", "चोकला", "मारवाड़ी", "नेल्लोर"],
+                answer: 0,
+                hint: "Lohi breed milk production.",
+                explanation: "भेड़ की सर्वाधिक दूध देने वाली नस्ल - लोही."
+            },
+            {
+                page: 4, pageDesc: "Page 4: Indigenous Breeds Distribution Table & Key Questions",
+                q_en: "Which dual-purpose sheep breeds are noted in the summary points?",
+                q_hi: "भेड़ की द्विकाजी नस्लें (Dual purpose breeds) कौन सी हैं?",
+                options: ["लोही एवं कच्छी", "चोकला एवं नali", "मारवाड़ी एवं पुगल", "गद्दी एवं बखरवाल"],
+                answer: 0,
+                hint: "Lohi and Kachhi.",
+                explanation: "भेड़ की द्विकाजी नस्लें - लोही एवं कच्छी."
+            },
+            {
+                page: 4, pageDesc: "Page 4: Indigenous Breeds Distribution Table & Key Questions",
+                q_en: "Which sheep breed produces the maximum wool in India?",
+                q_hi: "भेड़ की सर्वाधिक ऊन प्रदान करने वाली नस्ल कौन सी है?",
+                options: ["मैरिनो (स्पेन)", "चोकला", "लिंकन", "लोही"],
+                answer: 0,
+                hint: "Merino wool yield maximum.",
+                explanation: "भेड़ की सर्वाधिक ऊन प्रदान करने वाली नस्ल - मैरिनो (स्पेन)."
+            },
+
+            // --- PAGE 5: 25 Questions ---
+            {
+                page: 5, pageDesc: "Page 5: Physiological Norms, Management & Terminology",
+                q_en: "What is the name of India's first cloned sheep developed by SKUAST?",
+                q_hi: "भेड़ का प्रथम क्लोन कौन सा है?",
+                options: ["नूरी (Noori)", "गरिमा", "हिसार गौरव", "प्रथम"],
+                answer: 0,
+                hint: "Noori cloned sheep.",
+                explanation: "भेड़ का प्रथम क्लोन है - नूरी (Noori), जिसे जम्मू कश्मीर विश्वविद्यालय के वैज्ञानिकों द्वारा तैयार किया गया था."
+            },
+            {
+                page: 5, pageDesc: "Page 5: Physiological Norms, Management & Terminology",
+                q_en: "Which exotic sheep wool breeds are noted for having extremely fine wool?",
+                q_hi: "किन विदेशी नस्लों की भेड़ की ऊन अत्यंत बारीक होती है?",
+                options: ["मैरिनो, रेम्बुली, टार्डी व पोलबर्थ", "लिंकन व डोरसेट", "सफोक व साउथ डाऊन", "कराजुल"],
+                answer: 0,
+                hint: "Merino, Rambouillet, Tardy & Polwarth.",
+                explanation: "किन-किन विदेशी नस्लों की भेड़ की ऊन अत्यंत बारीक होती है - मैरिनो, रेम्बुली, टार्डी व पोलबर्थ."
+            },
+            {
+                page: 5, pageDesc: "Page 5: Physiological Norms, Management & Terminology",
+                q_en: "From which animal's hair is 'Shahtoosh' (शहतूत) - a warm woolen shawl - prepared?",
+                q_hi: "'शहतूत' (Shahtoosh) जो एक प्रकार का गर्म ऊनी शॉल है, किसके बालों से तैयार होता है?",
+                options: ["तिब्बती एंटीलोप अथवा चिरू (Chiru)", "भेड़", "बकरी (पश्मीना)", "याक"],
+                answer: 0,
+                hint: "Chiru Tibetan antelope hair.",
+                explanation: "शहतूत - एक प्रकार का गर्म ऊनी शॉल है, जो तिब्बती एंटीलोप अथवा चिरू (Chiru) के बालों से तैयार होता है."
+            },
+            {
+                page: 5, pageDesc: "Page 5: Physiological Norms, Management & Terminology",
+                q_en: "Which sheep breed's ears touch the ground while grazing?",
+                q_hi: "किस नस्ल की भेड़ के कान चरते समय जमीन को स्पर्श करते हैं?",
+                options: ["सोनाडी (Sonadi - चिनोथ्र)", "चोकला", "मारवाड़ी", "जैसलमेर"],
+                answer: 0,
+                hint: "Sonadi breed trait.",
+                explanation: "किस नस्ल की भेड़ के कान चरते समय जमीन को स्पर्श करते हैं? - सोनाडी (चिनोथ्र)."
+            },
+            {
+                page: 5, pageDesc: "Page 5: Physiological Norms, Management & Terminology",
+                q_en: "Where is the Wool Analysis Laboratory (ऊन विश्लेषण प्रयोगशाला) located in India?",
+                q_hi: "देश में ऊन विश्लेषण प्रयोगशाला (Wool Analysis Lab) कहाँ स्थित है?",
+                options: ["बीकानेर", "जोधपुर", "जयपुर", "हिसार"],
+                answer: 0,
+                hint: "Bikaner location.",
+                explanation: "देश में ऊन विश्लेषण प्रयोगशाला स्थित है - बीकानेर."
+            },
+            {
+                page: 5, pageDesc: "Page 5: Physiological Norms, Management & Terminology",
+                q_en: "Where is the Central Wool Development Board (केंद्रीय ऊन विकास बोर्ड) located?",
+                q_hi: "केंद्रीय ऊन विकास बोर्ड (Central Wool Development Board) कहाँ स्थित है?",
+                options: ["जोधपुर", "बीकानेर", "जयपुर", "उदयपुर"],
+                answer: 0,
+                hint: "Jodhpur headquarters.",
+                explanation: "केंद्रीय ऊन विकास बोर्ड स्थित है - जोधपुर."
+            },
+            {
+                page: 5, pageDesc: "Page 5: Physiological Norms, Management & Terminology",
+                q_en: "Which state in India has the highest wool production (सर्वाधिक ऊन उत्पादन वाला राज्य)?",
+                q_hi: "भारत में सर्वाधिक ऊन उत्पादन वाला राज्य कौन सा है?",
+                options: ["राजस्थान", "हरियाणा", "आंध्र प्रदेश", "गुजरात"],
+                answer: 0,
+                hint: "Rajasthan top in wool.",
+                explanation: "सर्वाधिक ऊन उत्पादन वाला राज्य - राजस्थान."
+            },
+            {
+                page: 5, pageDesc: "Page 5: Physiological Norms, Management & Terminology",
+                q_en: "In which farm animal's milk is protein content found to be the maximum?",
+                q_hi: "किस पशु के दूध में सर्वाधिक प्रोटीन पाया जाता है?",
+                options: ["भेड़ (Sheep)", "गाय", "भैंस", "बकरी"],
+                answer: 0,
+                hint: "Sheep milk protein level.",
+                explanation: "किस पशु के दूध में सर्वाधिक प्रोटीन पाया जाता है? - भेड़."
+            },
+            {
+                page: 5, pageDesc: "Page 5: Physiological Norms, Management & Terminology",
+                q_en: "What is the correct time for shearing wool from sheep?",
+                q_hi: "भेड़ से ऊन उतारने का सही समय कौन सा होता है?",
+                options: ["सर्दी के बाद (After winter)", "बरसात के मौसम में", "गर्मी की शुरुआत में", "मानसून से पहले"],
+                answer: 0,
+                hint: "Post-winter shearing.",
+                explanation: "भेड़ से ऊन उतारने का सही समय होता है - सर्दी के बाद."
+            },
+            {
+                page: 5, pageDesc: "Page 5: Physiological Norms, Management & Terminology",
+                q_en: "What is a baby sheep (lamb) called?",
+                q_hi: "भेड़ का बच्चा क्या कहलाता है?",
+                options: ["मेमना (Lamb)", "किड", "बछड़ा", "शावक"],
+                answer: 0,
+                hint: "Lamb terminology.",
+                explanation: "भेड़ का बच्चा कहलाता है - मेमना."
+            },
+            {
+                page: 5, pageDesc: "Page 5: Physiological Norms, Management & Terminology",
+                q_en: "Which sheep breed is famous for making shawls (शॉल)?",
+                q_hi: "शॉल बनाने के लिए प्रसिद्ध भेड़ की नस्ल कौन सी है?",
+                options: ["बखरवाल", "नाली", "पाटनवाड़ी", "गैरोल"],
+                answer: 0,
+                hint: "Bakharwal shawls.",
+                explanation: "शॉल बनाने के लिए प्रसिद्ध भेड़ की नस्ल है - बखरवाल."
+            },
+            {
+                page: 5, pageDesc: "Page 5: Physiological Norms, Management & Terminology",
+                q_en: "Which sheep breed is famous for carpet wool (गलीचे की ऊन)?",
+                q_hi: "गलीचे की ऊन के लिए प्रसिद्ध भेड़ की नस्ल कौन सी है?",
+                options: ["नाली नस्ल", "पाटनवाड़ी", "बखरवाल", "गैरोल"],
+                answer: 0,
+                hint: "Nali breed for carpet wool.",
+                explanation: "गलीचे की ऊन के लिए प्रसिद्ध भेड़ की नस्ल है - नाली नस्ल."
+            },
+            {
+                page: 5, pageDesc: "Page 5: Physiological Norms, Management & Terminology",
+                q_en: "Which sheep breed is famous for hosiery (होजरी)?",
+                q_hi: "होजरी के लिए प्रसिद्ध भेड़ की नस्ल कौन सी है?",
+                options: ["पाटनवाड़ी नस्ल", "नाली", "बखरवाल", "चोकला"],
+                answer: 0,
+                hint: "Patanwadi breed.",
+                explanation: "होजरी के लिए प्रसिद्ध भेड़ की नस्ल है - पाटनवाड़ी नस्ल."
+            },
+            {
+                page: 5, pageDesc: "Page 5: Physiological Norms, Management & Terminology",
+                q_en: "What is the percentage share of sheep in India's total milk production?",
+                q_hi: "देश के कुल दुग्ध उत्पादन में भेड़ का हिस्सा कितना है?",
+                options: ["1.5%", "5%", "10%", "0.5%"],
+                answer: 0,
+                hint: "Milk share percentage.",
+                explanation: "देश के कुल दुग्ध उत्पादन में भेड़ का हिस्सा है - 1.5%."
+            },
+            {
+                page: 5, pageDesc: "Page 5: Physiological Norms, Management & Terminology",
+                q_en: "What is the correct sequence of steps for shearing wool in sheep?",
+                q_hi: "भेड़ की ऊन निकालने के चरण (Steps) का सही क्रम क्या है?",
+                options: ["कटाई → अभिमार्जन → छटाई → रंगाई → कटाई", "छटाई → रंगाई → कटाई", "अभिमार्जन → कटाई", "रंगाई → छटाई"],
+                answer: 0,
+                hint: "Shearing sequence steps.",
+                explanation: "भेड़ की ऊन निकालने के चरण - कटाई → अभिमार्जन → छटाई → रंगाई → कटाई."
+            },
+            {
+                page: 5, pageDesc: "Page 5: Physiological Norms, Management & Terminology",
+                q_en: "Which sheep breed produces the maximum number of lambs (सबसे ज्यादा बच्चे देने वाली भेड़)?",
+                q_hi: "सबसे ज्यादा बच्चे देने वाली भेड़ की नस्ल कौन सी है?",
+                options: ["गैरोल (Garole)", "मारवाड़ी", "लोही", "चोकला"],
+                answer: 0,
+                hint: "Garole prolific breed.",
+                explanation: "सबसे ज्यादा बच्चे देने वाली भेड़ की नस्ल है - गैरोल."
+            },
+            {
+                page: 5, pageDesc: "Page 5: Physiological Norms, Management & Terminology",
+                q_en: "Which sheep breed has the highest disease resistance (रोग प्रतिरोधक क्षमता)?",
+                q_hi: "सबसे ज्यादा रोग प्रतिरोधक क्षमता किस भेड़ में पाई जाती है?",
+                options: ["मारवाड़ी (Marwari)", "चोकला", "मैरिनो", "लिंकन"],
+                answer: 0,
+                hint: "Marwari hardiness.",
+                explanation: "सबसे ज्यादा रोग प्रतिरोधक क्षमता किस भेड़ में पाई जाती है? - मारवाड़ी."
+            },
+            {
+                page: 5, pageDesc: "Page 5: Physiological Norms, Management & Terminology",
+                q_en: "In which sheep breed do yellow-colored wool fibers occur?",
+                q_hi: "किस भेड़ में पीले रंग की ऊन पाई जाती है?",
+                options: ["नाली (Nali)", "चोकला", "मालपुरा", "पुगल"],
+                answer: 0,
+                hint: "Nali yellow wool.",
+                explanation: "किस भेड़ में पीले रंग की ऊन पाई जाती है? - नाली."
+            },
+            {
+                page: 5, pageDesc: "Page 5: Physiological Norms, Management & Terminology",
+                q_en: "Due to the presence of which gene does the Garole sheep produce multiple lambs?",
+                q_hi: "किस जीन के पाए जाने के कारण गैरोल भेड़ में सबसे ज्यादा बच्चे पैदा होते हैं?",
+                options: ["Feb-B जीन (Fec-B gene)", "A-gene", "X-factor", "Growth gene"],
+                answer: 0,
+                hint: "Feb-B gene.",
+                explanation: "किस जीन के पाए जाने के कारण गैरोल भेड़ में सबसे ज्यादा बच्चे पैदा होते हैं? - Feb-B जीन."
+            },
+            {
+                page: 5, pageDesc: "Page 5: Physiological Norms, Management & Terminology",
+                q_en: "Which sheep breed provides the best quality fine wool in the world?",
+                q_hi: "विश्व में सबसे अच्छी ऊन किस भेड़ से प्राप्त होती है?",
+                options: ["मैरिनो (Merino)", "चोकला", "लिंकन", "सफोक"],
+                answer: 0,
+                hint: "Merino world best wool.",
+                explanation: "विश्व में सबसे अच्छी ऊन किस भेड़ से प्राप्त होती है? - मैरिनो."
+            },
+            {
+                page: 5, pageDesc: "Page 5: Physiological Norms, Management & Terminology",
+                q_en: "Which sheep breed is known with a Roman nose and referred to as Indian Merino?",
+                q_hi: "इंडियन मैरिनो के नाम से प्रसिद्ध नस्ल जिसमें रोमन नाक पाई जाती है, वह कौन सी है?",
+                options: ["चोकला (Chokla)", "मारवाड़ी", "जैसलमेर", "पुगल"],
+                answer: 0,
+                hint: "Chokla Indian Merino.",
+                explanation: "इंडियन मैरिनो के नाम से प्रसिद्ध नस्ल जिसमें रोमन नाक पाई जाती है - चोकला."
+            },
+            {
+                page: 5, pageDesc: "Page 5: Physiological Norms, Management & Terminology",
+                q_en: "Which sheep breed is famous for Pelt production?",
+                q_hi: "भेड़ की कौन सी नस्ल Pelt उत्पादन के लिए प्रसिद्ध है?",
+                options: ["कराजुल (Karagul)", "नेल्लोर", "मांड्या", "गद्दी"],
+                answer: 0,
+                hint: "Karagul pelt.",
+                explanation: "भेड़ की कौन सी नस्ल Pelt उत्पादन के लिए प्रसिद्ध है? - कराजुल."
+            },
+            {
+                page: 5, pageDesc: "Page 5: Physiological Norms, Management & Terminology",
+                q_en: "In which sheep breed are horns present in rams while ewes are in Polled condition?",
+                q_hi: "भेड़ की किस नस्ल के नर में सींग पाए जाते हैं जबकि मादा में Polled Condition पाई जाती है?",
+                options: ["गद्दी (Gaddi)", "मारवाड़ी", "चोकला", "नाली"],
+                answer: 0,
+                hint: "Gaddi horns/polled condition.",
+                explanation: "भेड़ की किस नस्ल के नर में सींग पाए जाते हैं जबकि मादा में Polled Condition पाई जाती है? - गद्दी."
+            },
+            {
+                page: 5, pageDesc: "Page 5: Physiological Norms, Management & Terminology",
+                q_en: "What is the mating act in sheep called?",
+                q_hi: "भेड़ में समागम की क्रिया क्या कहलाती है?",
+                options: ["ट्विपिंग (Tuping)", "सर्विंग", "कवरिंग", "मैटिंग"],
+                answer: 0,
+                hint: "Tuping terminology.",
+                explanation: "भेड़ में समागम की क्रिया कहलाती है - ट्विपिंग (Tuping)."
+            },
+            {
+                page: 5, pageDesc: "Page 5: Physiological Norms, Management & Terminology",
+                q_en: "What is the process of removing wool from a sheep's body called?",
+                q_hi: "भेड़ के शरीर से ऊन उतारना क्या कहलाता है?",
+                options: ["सीयरिंग (Shearing)", "डार्किंग", "टैगिंग", "रिंगिंग"],
+                answer: 0,
+                hint: "Shearing term.",
+                explanation: "भेड़ के शरीर से ऊन उतारना कहलाता है - सीयरिंग (Shearing)."
+            },
+
+            // --- PAGE 6: 25 Questions ---
+            {
+                page: 6, pageDesc: "Page 6: Detailed Physiological Parameters & Management Practice",
+                q_en: "What is the hemoglobin (Hb) range found in sheep (g/dl)?",
+                q_hi: "भेड़ में हीमोग्लोबिन (g/dl) कितनी पाई जाती है?",
+                options: ["9–15 g/dl", "5–8 g/dl", "16–20 g/dl", "4–6 g/dl"],
+                answer: 0,
+                hint: "Hb range in sheep physiology.",
+                explanation: "भेड़ में हीमोग्लोबिन (g/dl) पाई जाती है - 9–15."
+            },
+            {
+                page: 6, pageDesc: "Page 6: Detailed Physiological Parameters & Management Practice",
+                q_en: "What is the Packed Cell Volume (PCV %) range in sheep?",
+                q_hi: "भेड़ में PCV (%) कितने प्रतिशत पाई जाती है?",
+                options: ["27–45 %", "10–20 %", "50–60 %", "65–75 %"],
+                answer: 0,
+                hint: "PCV normal percentage range.",
+                explanation: "भेड़ में PCV (%) में पाई जाती है - 27–45."
+            },
+            {
+                page: 6, pageDesc: "Page 6: Detailed Physiological Parameters & Management Practice",
+                q_en: "What is the Blood Glucose level range in sheep (mg/dl)?",
+                q_hi: "भेड़ के Blood में ग्लूकोज (mg/dl) कितना होता है?",
+                options: ["40–80 mg/dl", "10–20 mg/dl", "100–150 mg/dl", "200 mg/dl"],
+                answer: 0,
+                hint: "Blood sugar range for sheep.",
+                explanation: "भेड़ के Blood में ग्लूकोज (Mg/dl) होता है - 40–80."
+            },
+            {
+                page: 6, pageDesc: "Page 6: Detailed Physiological Parameters & Management Practice",
+                q_en: "What is the normal urine pH value for cattle, sheep, and goats?",
+                q_hi: "गाय, भेड़ व बकरी के पेशाब का 'pH' मान कितना होता है?",
+                options: ["7.5–8.5", "5.0–6.0", "6.5–7.0", "9.0–10.0"],
+                answer: 0,
+                hint: "Alkaline urine pH range.",
+                explanation: "गाय, भेड़ व बकरी के पेशाब का 'pH' मान होता है - 7.5–8.5."
+            },
+            {
+                page: 6, pageDesc: "Page 6: Detailed Physiological Parameters & Management Practice",
+                q_en: "What is the normal body temperature of a sheep?",
+                q_hi: "भेड़ का सामान्य तापमान (Normal Body Temperature) कितना होता है?",
+                options: ["102°F", "98.6°F", "104°F", "100°F"],
+                answer: 0,
+                hint: "Fahrenheit temperature for sheep.",
+                explanation: "भेड़ का सामान्य तापमान होता है - 102°F."
+            },
+            {
+                page: 6, pageDesc: "Page 6: Detailed Physiological Parameters & Management Practice",
+                q_en: "What is the normal respiration rate (श्वसन दर) of a sheep per minute?",
+                q_hi: "भेड़ का सामान्य श्वसन दर (Respiration Rate) प्रति मिनट कितना होता है?",
+                options: ["12–20 (प्रति मिनट)", "30–40", "50–60", "70–80"],
+                answer: 0,
+                hint: "Breaths per minute.",
+                explanation: "भेड़ का सामान्य श्वसन दर होता है - 12–20 (प्रति मिनट)."
+            },
+            {
+                page: 6, pageDesc: "Page 6: Detailed Physiological Parameters & Management Practice",
+                q_en: "What is the normal pulse rate (नाड़ी दर) of a sheep per minute?",
+                q_hi: "भेड़ की सामान्य नाड़ी दर (Pulse Rate) प्रति मिनट कितनी होती है?",
+                options: ["70–80 (प्रति मिनट)", "40–50", "90–100", "110–120"],
+                answer: 0,
+                hint: "Heart/pulse beats per minute.",
+                explanation: "भेड़ की सामान्य नाड़ी दर होती है - 70–80 (प्रति मिनट)."
+            },
+            {
+                page: 6, pageDesc: "Page 6: Detailed Physiological Parameters & Management Practice",
+                q_en: "What percentage of sulfur is found in sheep wool?",
+                q_hi: "भेड़ की ऊन में कितने प्रतिशत सल्फर (Sulfur) पाया जाता है?",
+                options: ["4%", "1%", "10%", "15%"],
+                answer: 0,
+                hint: "Sulfur content in wool keratin.",
+                explanation: "भेड़ की ऊन में कितने प्रतिशत सल्फर पाया जाता है? - 4%."
+            },
+            {
+                page: 6, pageDesc: "Page 6: Detailed Physiological Parameters & Management Practice",
+                q_en: "Which permanent method is most commonly used for identification in sheep and goats?",
+                q_hi: "भेड़-बकरियों में सबसे ज्यादा काम में लिया जाने वाला पहचान का स्थायी तरीका कौन सा है?",
+                options: ["Tattooing", "Ear Notching", "Branding", "Tagging"],
+                answer: 0,
+                hint: "Permanent ID marking method.",
+                explanation: "भेड़-बकरियों में सबसे ज्यादा काम में लिया जाने वाला पहचान का स्थायी तरीका है - Tattooing."
+            },
+            {
+                page: 6, pageDesc: "Page 6: Detailed Physiological Parameters & Management Practice",
+                q_en: "What is the length of the estrus cycle (मदचक्र की लंबाई) in sheep?",
+                q_hi: "भेड़ में मदचक्र (Estrus Cycle) की लंबाई कितने दिनों की होती है?",
+                options: ["17 दिन", "21 दिन", "5 दिन", "28 दिन"],
+                answer: 0,
+                hint: "Cycle duration in days.",
+                explanation: "भेड़ में मदचक्र की लंबाई होती है - 17 दिन."
+            },
+            {
+                page: 6, pageDesc: "Page 6: Detailed Physiological Parameters & Management Practice",
+                q_en: "What is the duration of estrus (मदकाल) in sheep?",
+                q_hi: "भेड़ में मदकाल (Estrus duration) की अवधि कितनी होती है?",
+                options: ["36 घण्टे", "12 घण्टे", "72 घण्टे", "6 घण्टे"],
+                answer: 0,
+                hint: "Hours of heat.",
+                explanation: "भेड़ में मदकाल की लंबाई होती है - 36 घण्टे."
+            },
+            {
+                page: 6, pageDesc: "Page 6: Detailed Physiological Parameters & Management Practice",
+                q_en: "Which method of pregnancy diagnosis is used in sheep?",
+                q_hi: "भेड़ में प्रयुक्त गर्भ परीक्षण की विधि कौन सी है?",
+                options: ["Abdominal Palpation", "Rectal Palpation", "Blood Test", "Ultrasonic Scan"],
+                answer: 0,
+                hint: "Abdominal feeling.",
+                explanation: "भेड़ में प्रयुक्त गर्भ परीक्षण की विधि है - Abdominal Palpation."
+            },
+            {
+                page: 6, pageDesc: "Page 6: Detailed Physiological Parameters & Management Practice",
+                q_en: "What method of artificial insemination is used in sheep?",
+                q_hi: "भेड़ में कृत्रिम गर्भाधान की विधि कौन सी है?",
+                options: ["Vaginal Speculum Method", "Rectal Method", "Vaginal Mirror Method", "Cervical Method"],
+                answer: 0,
+                hint: "Speculum technique.",
+                explanation: "भेड़ में कृत्रिम गर्भाधान की विधि है - Vaginal Speculum Method."
+            },
+            {
+                page: 6, pageDesc: "Page 6: Detailed Physiological Parameters & Management Practice",
+                q_en: "What is the shape of the ovary (अंडाशय की आकृति) in sheep?",
+                q_hi: "भेड़ में अंडाशय की आकृति कैसी होती है?",
+                options: ["बादाम आकार (Almond shape)", "गोलाकार", "अंडाकार", "किडनी आकार"],
+                answer: 0,
+                hint: "Almond-like shape.",
+                explanation: "भेड़ में अंडाशय की आकृति होती है - बादाम आकार."
+            },
+            {
+                page: 6, pageDesc: "Page 6: Detailed Physiological Parameters & Management Practice",
+                q_en: "Abortion Storm (गर्भपात का तूफान) is typically associated with which disease in sheep?",
+                q_hi: "Abortion Storm किस बीमारी में होता है?",
+                options: ["विब्रियोसिस (Vibriosis)", "ब्रूसुलोसिस", "एंथ्रेक्स", "ब्लैक क्वार्टर"],
+                answer: 0,
+                hint: "Vibriosis infection.",
+                explanation: "Abortion Storm किस बीमारी से होता है? - विब्रियोसिस."
+            },
+            {
+                page: 6, pageDesc: "Page 6: Detailed Physiological Parameters & Management Practice",
+                q_en: "What is the mating act in sheep called?",
+                q_hi: "भेड़ में समागम की क्रिया क्या कहलाती है?",
+                options: ["ट्विपिंग (Tuping)", "सर्विंग", "कवरिंग", "मैटिंग"],
+                answer: 0,
+                hint: "Tuping act.",
+                explanation: "भेड़ में समागम की क्रिया कहलाती है - ट्विपिंग."
+            },
+            {
+                page: 6, pageDesc: "Page 6: Detailed Physiological Parameters & Management Practice",
+                q_en: "What is the process of shearing wool from a sheep's body called?",
+                q_hi: "भेड़ के शरीर से ऊन उतारना क्या कहलाता है?",
+                    options: ["सीयरिंग (Shearing)", "डार्किंग", "टैगिंग", "रिंगिंग"],
+                answer: 0,
+                hint: "Shearing wool.",
+                explanation: "भेड़ के शरीर से ऊन उतारना कहलाता है - सीयरिंग."
+            },
+            {
+                page: 6, pageDesc: "Page 6: Detailed Physiological Parameters & Management Practice",
+                q_en: "What is 'Flushing' in sheep management?",
+                q_hi: "भेड़ के प्रबंधन से संबंधित 'Flushing' से क्या तात्पर्य है?",
+                options: ["प्रजनन मौसम शुरू होने से 2-3 सप्ताह पूर्व भेड़ को प्रतिदिन 250 ग्राम अतिरिक्त दाना देना", "गर्भावस्था के अंतिम सप्ताह में दाना देना", "आँखों के पास से ऊन हटाना", "पूंछ के पास से ऊन काटना"],
+                answer: 0,
+                hint: "Extra feed before breeding season.",
+                explanation: "Flushing: प्रजनन मौसम शुरू होने से 2-3 सप्ताह पूर्व भेड़ को प्रतिदिन 250 ग्राम अतिरिक्त दाना देना."
+            },
+            {
+                page: 6, pageDesc: "Page 6: Detailed Physiological Parameters & Management Practice",
+                q_en: "What is the primary objective of Flushing in sheep management?",
+                q_hi: "Flushing कराने का मुख्य उद्देश्य क्या है?",
+                options: ["Multiple ovulation कराने के लिए (ताकि ज्यादा बच्चे पैदा हो सकें)", "दूध उत्पादन बढ़ाने के लिए", "अंधेपन से बचाने के लिए", "संभोग आसान बनाने के लिए"],
+                answer: 0,
+                hint: "Multiple ovulation objective.",
+                explanation: "उद्देश्य: Multiple ovulation कराने के लिए (ताकि ज्यादा बच्चे पैदा हो सकें)."
+            },
+            {
+                page: 6, pageDesc: "Page 6: Detailed Physiological Parameters & Management Practice",
+                q_en: "What is 'Steaming Up' in sheep management?",
+                q_hi: "भेड़ के प्रबंधन में 'Steaming Up' का क्या अर्थ है?",
+                options: ["गर्भधारण के अंतिम 6-8 सप्ताह में भेड़ को प्रतिदिन 250 ग्राम अतिरिक्त दाना देना", "प्रजनन से पहले दाना देना", "ऊन की कटाई करना", "पूंछ काटना"],
+                answer: 0,
+                hint: "Late pregnancy extra feed.",
+                explanation: "Steaming Up: भेड़ में गर्भावस्था के अंतिम 6-8 सप्ताह में भेड़ को प्रतिदिन 250 ग्राम अतिरिक्त दाना देना."
+            },
+            {
+                page: 6, pageDesc: "Page 6: Detailed Physiological Parameters & Management Practice",
+                q_en: "What are the key objectives of Steaming Up?",
+                q_hi: "Steaming Up का मुख्य उद्देश्य क्या होता है?",
+                options: ["1. जीवित मेमनों की संख्या में वृद्धि देना, 2. मेमनों की वृद्धि दर तेज करने के लिए", "केवल दूध बढ़ाने के लिए", "ऊन की गुणवत्ता सुधारने के लिए", "अंधेपन से बचाव के लिए"],
+                answer: 0,
+                hint: "Lamb survival and growth rate.",
+                explanation: "उद्देश्य: 1) जीवित मेमनों की संख्या में वृद्धि देना, 2) मेमनों की वृद्धि दर तेज करने के लिए."
+            },
+            {
+                page: 6, pageDesc: "Page 6: Detailed Physiological Parameters & Management Practice",
+                q_en: "What is the purpose of 'Eyeig' practice in sheep management?",
+                q_hi: "भेड़ प्रबंधन में 'Eyeig' प्रक्रिया का क्या उद्देश्य है?",
+                options: ["ऊन से होने वाले अंधेपन से भेड़ को बचाना (आँखों के चारों ओर से ऊन हटाना)", "दूध उत्पादन बढ़ाना", "संभोग आसान करना", "गर्भ परीक्षण करना"],
+                answer: 0,
+                hint: "Removing wool around eyes to prevent blindness.",
+                explanation: "Eyeig: भेड़ की आँखों के चारों ओर से ऊन हटाना। उद्देश्य: ऊन से होने वाले अंधेपन से भेड़ को बचाना."
+            },
+            {
+                page: 6, pageDesc: "Page 6: Detailed Physiological Parameters & Management Practice",
+                q_en: "What is 'Ringing' in sheep management?",
+                q_hi: "भेड़ प्रबंधन में 'Ringing' से क्या तात्पर्य है?",
+                options: ["Ram के शिशन के चारों ओर से ऊन को हटाना", "पूरे शरीर से ऊन हटाना", "पैरों की ऊन काटना", "सिर की ऊन साफ करना"],
+                answer: 0,
+                hint: "Wool removal around ram's penis.",
+                explanation: "Ringing: Ram के शिशन के चारों ओर से ऊन को हटाना। उद्देश्य: संभोग को आसान बनाने के लिए."
+            },
+            {
+                page: 6, pageDesc: "Page 6: Detailed Physiological Parameters & Management Practice",
+                q_en: "What is 'Tagging' in sheep management?",
+                q_hi: "भेड़ प्रबंधन में 'Tagging' प्रक्रिया का क्या उद्देश्य है?",
+                options: ["भेड़ के पिछले हिस्से से ऊन को हटाना (संभोग आसान बनाने के लिए)", "कान में टैग लगाना", "आँखों के पास से ऊन काटना", "पूंछ काटना"],
+                answer: 0,
+                hint: "Rear wool removal.",
+                explanation: "Tagging: भेड़ के पिछले हिस्से से ऊन को हटाना। उद्देश्य: सम्भोग को आसान बनाने के लिए."
+            },
+            {
+                page: 6, pageDesc: "Page 6: Detailed Physiological Parameters & Management Practice",
+                q_en: "What is the purpose of increasing sheep milk production management practices?",
+                q_hi: "भेड़ का दूध उत्पादन बढ़ाने के लिए कौन सी प्रबंधन प्रक्रिया अपनाई जाती है?",
+                options: ["उचित आहार व Steaming Up", "केवल टैगिंग", "केवल रिंगिंग", "आँखों के पास से ऊन हटाना"],
+                answer: 0,
+                hint: "Management for milk production.",
+                explanation: "भेड़ का दूध उत्पादन बढ़ाने के लिए उचित पोषण प्रबंधन किया जाता है."
+            },
+
+            // --- PAGE 7: 10 Questions ---
+            {
+                page: 7, pageDesc: "Page 7: Contact Info & Support Channels",
+                q_en: "What is the official contact WhatsApp number listed for ordering books/materials?",
+                q_hi: "पुस्तकें मंगाने के लिए कौन सा WhatsApp संपर्क नंबर दिया गया है?",
+                options: ["8168244200", "9992070554", "9876543210", "9123456789"],
+                answer: 0,
+                hint: "WhatsApp number from contact banner.",
+                explanation: "बुक मंगवाने के लिए संपर्क करें WhatsApp: 8168244200."
+            },
+            {
+                page: 7, pageDesc: "Page 7: Contact Info & Support Channels",
+                q_en: "What is the payment number listed for Paytm / PhonePe?",
+                q_hi: "राशि भुगतान के लिए कौन सा Paytm / PhonePe नंबर दिया गया है?",
+                options: ["9992070554", "8168244200", "9876543211", "9000000000"],
+                answer: 0,
+                hint: "Payment number for Paytm/PhonePe.",
+                explanation: "राशि भुगतान के लिए: Paytm / PhonePe 9992070554."
+            },
+            {
+                page: 7, pageDesc: "Page 7: Contact Info & Support Channels",
+                q_en: "What is the official coaching center name associated with the study material?",
+                q_hi: "अध्ययन सामग्री से संबंधित आधिकारिक कोचिंग सेंटर का नाम क्या है?",
+                options: ["Eklavya Coaching Centre, Behal (Bhiwani)", "Apex Coaching Institute", "Target Coaching Centre", "Haryana Academy"],
+                answer: 0,
+                hint: "Eklavya Coaching Centre, Behal.",
+                explanation: "Eklavya Coaching Centre..behal..bhiwani."
+            },
+            {
+                page: 7, pageDesc: "Page 7: Contact Info & Support Channels",
+                q_en: "What is the official YouTube channel handle provided for visiting?",
+                q_hi: "विजिट करने के लिए कौन सा YouTube चैनल हैंडल दिया गया है?",
+                options: ["E.C.C.behal.bhiwani", "Eklavya Study", "Bhiwani Coaching", "Animal Husbandry Hub"],
+                answer: 0,
+                hint: "YouTube handle from footer.",
+                explanation: "YouTube: E.C.C.behal.bhiwani."
+            },
+            {
+                page: 7, pageDesc: "Page 7: Contact Info & Support Channels",
+                q_en: "Where is Eklavya Coaching Centre geographically located according to the notes header?",
+                q_hi: "नोट्स के अनुसार एकलव्य क्लासेज कहाँ स्थित है?",
+                options: ["बहल (भिवानी)", "हिसार", "रोहतक", "सिरसा"],
+                answer: 0,
+                hint: "Behal (Bhiwani).",
+                explanation: "एकलव्य क्लासेज, बहल (भिवानी)."
+            },
+            {
+                page: 7, pageDesc: "Page 7: Contact Info & Support Channels",
+                q_en: "Through which digital platform can students connect for book orders via message?",
+                q_hi: "छात्र किस मैसेजिंग ऐप के माध्यम से बुक आर्डर कर सकते हैं?",
+                options: ["WhatsApp", "Telegram", "Instagram", "Twitter"],
+                answer: 0,
+                hint: "WhatsApp icon shown on page.",
+                explanation: "WhatsApp logo with number 8168244200 is provided."
+            },
+            {
+                page: 7, pageDesc: "Page 7: Contact Info & Support Channels",
+                q_en: "Which payment apps are accepted for fee/book payments as per the banner?",
+                q_hi: "बैनर के अनुसार किन भुगतान ऐप्स का उल्लेख किया गया है?",
+                options: ["Paytm & PhonePe", "Google Pay only", "Paytm only", "Cash only"],
+                answer: 0,
+                hint: "Paytm and PhonePe logos.",
+                explanation: "Paytm & PhonePe 9992070554."
+            },
+            {
+                page: 7, pageDesc: "Page 7: Contact Info & Support Channels",
+                q_en: "What is the Facebook visit link prefix provided on the last page?",
+                q_hi: "अंतिम पृष्ठ पर कौन सा Facebook पेज नाम दिया गया है?",
+                options: ["Eklavya Coaching Centre..behal..bhiwani", "Eklavya Official", "Bhiwani Classes", "ECC Behal"],
+                answer: 0,
+                hint: "Facebook page link.",
+                explanation: "Visit us: Facebook - Eklavya Coaching Centre..behal..bhiwani."
+            },
+            {
+                page: 7, pageDesc: "Page 7: Contact Info & Support Channels",
+                q_en: "What type of study material is this quiz application based upon?",
+                q_hi: "यह क्विज एप्लीकेशन किस अध्ययन सामग्री पर आधारित है?",
+                options: ["पशुपालन - भेड़ (Animal Husbandry - Sheep) हस्तलिखित नोट्स", "गाय और भैंस नोट्स", "पोल्ट्री फार्मिंग नोट्स", "कृषि विज्ञान नोट्स"],
+                answer: 0,
+                hint: "Sheep animal husbandry notes.",
+                explanation: "पशुपालन - भेड़ (Sheep) हस्तलिखित नोट्स."
+            },
+            {
+                page: 7, pageDesc: "Page 7: Contact Info & Support Channels",
+                q_en: "How many total unique questions are featured across all pages in this complete exam prep quiz?",
+                q_hi: "इस संपूर्ण क्विज में कुल कितने विशिष्ट प्रश्न शामिल किए गए हैं?",
+                options: ["125 प्रश्न (15+15+15+20+25+25+10)", "100 प्रश्न", "50 प्रश्न", "200 प्रश्न"],
+                answer: 0,
+                hint: "Total sum across 7 pages.",
+                explanation: "कुल 125 विशिष्ट प्रश्न."
+            }
+        ];
+
+        let currentIndex = 0;
+        let score = 0;
+        let answered = new Array(quizData.length).fill(false);
+        let userSelections = new Array(quizData.length).fill(null);
+
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const scoreDisplay = document.getElementById('score');
+        const currentQNum = document.getElementById('current-q-num');
+        const totalQNum = document.getElementById('total-q-num');
+        const progressBar = document.getElementById('progress-bar');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const pageBadge = document.getElementById('page-badge');
+        const hintBox = document.getElementById('hint-box');
+        const explanationBox = document.getElementById('explanation-box');
+        const explanationText = document.getElementById('explanation-text');
+        const jumpInput = document.getElementById('jump-input');
+
+        totalQNum.innerText = quizData.length;
+        jumpInput.max = quizData.length;
+
+        function loadQuestion() {
+            const currentQ = quizData[currentIndex];
+            currentQNum.innerText = currentIndex + 1;
+            pageBadge.innerText = currentQ.pageDesc;
+            
+            // Progress bar update
+            const progress = ((currentIndex + 1) / quizData.length) * 100;
+            progressBar.style.width = `${progress}%`;
+
+            // Bilingual Question Display
+            questionText.innerHTML = `
+                <span class="text-indigo-700 font-semibold block mb-1">Q${currentIndex + 1}. ${currentQ.q_en}</span>
+                <span class="text-slate-600 text-base font-normal block">${currentQ.q_hi}</span>
+            `;
+
+            optionsContainer.innerHTML = '';
+            hintBox.classList.add('hidden');
+            hintBox.innerText = currentQ.hint;
+            explanationBox.classList.add('hidden');
+            explanationText.innerText = currentQ.explanation;
+
+            currentQ.options.forEach((option, idx) => {
+                const button = document.createElement('button');
+                button.className = `w-full text-left p-3.5 rounded-xl border transition-all font-medium text-sm sm:text-base flex items-center justify-between ${
+                    answered[currentIndex]
+                        ? idx === currentQ.answer
+                            ? 'bg-emerald-100 border-emerald-500 text-emerald-900 font-bold'
+                            : userSelections[currentIndex] === idx
+                                ? 'bg-rose-100 border-rose-500 text-rose-900'
+                                : 'bg-white border-slate-200 text-slate-600 opacity-60'
+                        : 'bg-white border-slate-200 hover:border-indigo-500 hover:bg-indigo-50/50 text-slate-700'
+                }`;
+                
+                button.innerHTML = `<span>${String.fromCharCode(65 + idx)}. ${option}</span>`;
+                button.disabled = answered[currentIndex];
+                button.onclick = () => selectOption(idx);
+                optionsContainer.appendChild(button);
+            });
+
+            if (answered[currentIndex]) {
+                explanationBox.classList.remove('hidden');
+            }
+
+            prevBtn.disabled = currentIndex === 0;
+            nextBtn.innerText = currentIndex === quizData.length - 1 ? 'Finish' : 'Next →';
+        }
+
+        function selectOption(selectedIdx) {
+            if (answered[currentIndex]) return;
+            answered[currentIndex] = true;
+            userSelections[currentIndex] = selectedIdx;
+
+            const currentQ = quizData[currentIndex];
+            if (selectedIdx === currentQ.answer) {
+                score++;
+                scoreDisplay.innerText = score;
+            }
+
+            loadQuestion();
+        }
+
+        function nextQuestion() {
+            if (currentIndex < quizData.length - 1) {
+                currentIndex++;
+                loadQuestion();
+            } else {
+                alert(`Quiz Completed! Your Final Score is ${score} out of ${quizData.length}`);
+            }
+        }
+
+        function prevQuestion() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                loadQuestion();
+            }
+        }
+
+        function toggleHint() {
+            hintBox.classList.toggle('hidden');
+        }
+
+        function jumpToQuestion() {
+            let target = parseInt(jumpInput.value) - 1;
+            if (target >= 0 && target < quizData.length) {
+                currentIndex = target;
+                loadQuestion();
+            } else {
+                alert(`Please enter a valid question number between 1 and ${quizData.length}`);
+            }
+        }
+
+        // Initial load
+        loadQuestion();
+    </script>
+<script src="../../quiz-question-controls.js"></script>
+<script src="../../quiz-app-ui-v2.js"></script></body>
+</html>

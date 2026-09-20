@@ -1,0 +1,1502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Vocabulary Mastery Quiz - Blackbook OWS</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(135deg, #F0E6FF 0%, #E5D5FA 100%);
+            color: #30205D;
+        }
+        .quiz-card {
+            background-color: #FBF7FF;
+            border: 1px solid #DCCBF2;
+        }
+        .option-btn {
+            background-color: #FBF7FF;
+            border: 1.5px solid #DCCBF2;
+            transition: all 0.2s ease;
+        }
+        .option-btn:hover:not(:disabled) {
+            background-color: #F0E5FF;
+            border-color: #6542C8;
+        }
+        .option-selected {
+            background-color: #E9DDF8 !important;
+            border-color: #6542C8 !important;
+            color: #30205D;
+            font-weight: 600;
+        }
+        .option-correct {
+            background-color: #E6F4EA !important;
+            border-color: #34A853 !important;
+            color: #137333 !important;
+        }
+        .option-incorrect {
+            background-color: #FCE8E6 !important;
+            border-color: #EA4335 !important;
+            color: #C5221F !important;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F0E6FF;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #DCCBF2;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #7352C9;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between pb-24 selection:bg-[#E9DDF8] selection:text-[#30205D]">
+
+    <!-- Sticky Header -->
+    <header class="sticky top-0 z-50 bg-[#E5D5FA]/90 backdrop-blur-md border-b border-[#DCCBF2] shadow-sm px-4 py-3">
+        <div class="max-w-4xl mx-auto flex flex-wrap items-center justify-between gap-4">
+            <div>
+                <h1 class="text-xl sm:text-2xl font-extrabold text-[#30205D] tracking-tight flex items-center gap-2">
+                    <span>📖</span> Blackbook Vocab Master
+                </h1>
+                <p class="text-xs sm:text-sm text-[#716782] font-medium">One-Word Substitutions & Synonyms Mastery (Exams: SSC, RRB, State PCS)</p>
+            </div>
+            <div class="flex items-center gap-3">
+                <div class="bg-[#FBF7FF] border border-[#DCCBF2] px-3 py-1.5 rounded-full shadow-xs flex items-center gap-2">
+                    <span class="text-xs text-[#716782] font-semibold uppercase">Score:</span>
+                    <span id="score-display" class="text-sm font-bold text-[#6542C8]">0 / 0</span>
+                </div>
+                <div class="bg-[#FBF7FF] border border-[#DCCBF2] px-3 py-1.5 rounded-full shadow-xs flex items-center gap-2">
+                    <span class="text-xs text-[#716782] font-semibold uppercase">Progress:</span>
+                    <span id="progress-text" class="text-sm font-bold text-[#30205D]">0%</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Quiz Container -->
+    <main class="max-w-3xl w-full mx-auto px-4 py-6 flex-1 flex flex-col justify-center">
+        <div class="quiz-card rounded-3xl shadow-xl p-6 sm:p-8 relative overflow-hidden transition-all duration-300">
+            
+            <!-- Question Header / Metadata -->
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+                <div class="flex items-center gap-2">
+                    <span id="question-number-badge" class="bg-[#6542C8] text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Question 1 of 100</span>
+                    <span id="question-category-badge" class="bg-[#E9DDF8] text-[#30205D] text-xs font-semibold px-2.5 py-1 rounded-full">Direct OWS</span>
+                </div>
+                <span id="exam-tag" class="text-xs font-bold text-[#F3A62A] bg-[#FFF8EE] border border-[#F3A62A]/30 px-2.5 py-1 rounded-full">SSC / RRB High Yield</span>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="w-full bg-[#DDD9E8] rounded-full h-2.5 mb-6 overflow-hidden">
+                <div id="progress-bar" class="bg-[#6542C8] h-2.5 rounded-full transition-all duration-300" style="width: 1%;"></div>
+            </div>
+
+            <!-- Question Prompt -->
+            <div class="mb-6">
+                <h2 id="question-text" class="text-lg sm:text-xl font-bold text-[#30205D] leading-relaxed">
+                    Loading question...
+                </h2>
+            </div>
+
+            <!-- Options Container -->
+            <div id="options-container" class="space-y-3 mb-6">
+                <!-- Options injected dynamically -->
+            </div>
+
+            <!-- Hint Section -->
+            <div class="mb-6">
+                <button onclick="toggleHint()" class="inline-flex items-center gap-1.5 text-xs font-bold text-[#7352C9] hover:text-[#6542C8] bg-[#E9DDF8]/60 hover:bg-[#E9DDF8] px-3 py-1.5 rounded-lg transition-colors cursor-pointer">
+                    <span>💡</span> <span id="hint-btn-text">Show Hint / Root Word Clue</span>
+                </button>
+                <div id="hint-box" class="hidden mt-2 p-3 bg-[#FFF8EE] border border-[#F3A62A]/40 rounded-xl text-xs text-[#523B12] font-medium leading-relaxed">
+                    <!-- Hint text injected -->
+                </div>
+            </div>
+
+            <!-- Explanation Box (Revealed on Answer) -->
+            <div id="explanation-box" class="hidden mt-4 p-4 rounded-2xl border transition-all">
+                <!-- Explanation injected -->
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Sticky Bottom Navigation -->
+    <nav aria-label="Quiz Navigation" class="fixed bottom-0 left-0 right-0 z-40 bg-[#FBF7FF]/95 backdrop-blur-md border-t border-[#DCCBF2] shadow-lg px-4 py-3">
+        <div class="max-w-4xl mx-auto flex flex-wrap items-center justify-between gap-3">
+            
+            <div class="flex items-center gap-2">
+                <button onclick="prevQuestion()" id="prev-btn" class="px-4 py-2 bg-[#E9DDF8] hover:bg-[#DCCBF2] text-[#30205D] font-bold rounded-xl text-sm transition disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1 cursor-pointer">
+                    <span>←</span> <span class="hidden sm:inline">Previous</span>
+                </button>
+                <button onclick="nextQuestion()" id="next-btn" class="px-4 py-2 bg-[#6542C8] hover:bg-[#5233A5] text-white font-bold rounded-xl text-sm transition flex items-center gap-1 shadow-sm cursor-pointer">
+                    <span class="hidden sm:inline">Next</span> <span>→</span>
+                </button>
+            </div>
+
+            <!-- Jump to Question -->
+            <div class="flex items-center gap-2 bg-[#F0E6FF] px-3 py-1.5 rounded-xl border border-[#DCCBF2]">
+                <label for="jump-input" class="text-xs font-semibold text-[#716782]">Jump Q:</label>
+                <input type="number" id="jump-input" min="1" max="100" class="w-14 bg-white border border-[#DCCBF2] rounded-lg px-2 py-1 text-xs font-bold text-center text-[#30205D] focus:outline-none focus:border-[#6542C8]" placeholder="1">
+                <button onclick="jumpToQuestion()" class="px-2.5 py-1 bg-[#6542C8] hover:bg-[#5233A5] text-white rounded-lg text-xs font-bold transition cursor-pointer">Go</button>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <button onclick="resetQuiz()" class="px-3 py-2 bg-transparent hover:bg-[#FCE8E6] text-[#C5221F] font-bold rounded-xl text-xs transition border border-[#EA4335]/30 cursor-pointer flex items-center gap-1" title="Reset Quiz">
+                    <span>🔄</span> <span class="hidden sm:inline">Reset</span>
+                </button>
+            </div>
+
+        </div>
+    </nav>
+
+    <script>
+        // Complete 100 Unique Exam-Grade Questions extracted meticulously from Blackbook OWS Syllabus (Page 15)
+        const quizData = [
+            // 358: Compere
+            {
+                id: 1,
+                type: "Direct OWS",
+                exam: "SSC CGL / RRB NTPC",
+                question: "Choose the correct One-Word Substitution for: 'A person who introduces the performers or contestants in a variety show.'",
+                options: ["Compere", "Compositor", "Connoisseur", "Curator"],
+                correct: 0,
+                hint: "Latin origin related to sharing or presenting a master of ceremonies.",
+                explanation: "<strong>Compere (N.)</strong>: A person who introduces performers or contestants in a variety show (Hindi: कार्यक्रम-ट्रीफीक).<br><em>Synonyms</em>: Emcee, host, master of ceremonies.<br><em>Distractors</em>: Compositor (one who sets type for books/newspapers), Connoisseur (an expert judge in matters of taste)."
+            },
+            {
+                id: 2,
+                type: "Synonym & Meaning",
+                exam: "SSC CHSL",
+                question: "Identify the correct meaning of the word 'Compere' as used in stage performances and media shows:",
+                options: [
+                    "An announcer or master of ceremonies who guides the show and introduces guests",
+                    "A person who types manuscripts for publishing houses",
+                    "A technician responsible for lighting and sound mixing",
+                    "A judge who evaluates musical competition scores"
+                ],
+                correct: 0,
+                hint: "Think of award show hosts or television event anchors.",
+                explanation: "A compere acts as the public face and host of a live program, keeping the audience engaged and introducing acts sequentially."
+            },
+            {
+                id: 3,
+                type: "Statement Matching",
+                exam: "State PCS / HSSC",
+                question: "Match List I (Role) with List II (Term):\n(a) Variety show host -> (1) Compositor\n(b) Printing press type setter -> (2) Compere\nCorrect code:",
+                options: ["(a)-(2), (b)-(1)", "(a)-(1), (b)-(2)", "(a)-(2), (b)-(2)", "(a)-(1), (b)-(1)"],
+                correct: 0,
+                hint: "Review item 358 and 362 from syllabus.",
+                explanation: "Compere corresponds to variety show host, while compositor refers to setting type for books and newspapers."
+            },
+            {
+                id: 4,
+                type: "Not Correct Statement",
+                exam: "SSC CGL Tier-2",
+                question: "Which of the following statements is NOT correct regarding the term 'Compere'?",
+                options: [
+                    "It is exclusively used for people who set type in printing presses.",
+                    "It functions as a noun.",
+                    "It refers to an emcee or master of ceremonies.",
+                    "It is commonly featured in stage shows and televised programs."
+                ],
+                correct: 0,
+                hint: "Type-setting is performed by a compositor, not a compere.",
+                explanation: "Statement A is incorrect because setting type belongs to a 'compositor', whereas 'compere' refers to an MC."
+            },
+            {
+                id: 5,
+                type: "Root / Analogy",
+                exam: "RRB Group D",
+                question: "If a 'Compositor' deals with setting type for books and newspapers, what does a 'Compere' deal with?",
+                options: ["Stage performances and introducing acts", "Confectionery and sweets", "Legal pardoning of offenses", "Drafting architectural designs"],
+                correct: 0,
+                hint: "Relate to entertainment and show business.",
+                explanation: "A compere is directly associated with live show anchoring and introducing performers."
+            },
+
+            // 359: Complacent
+            {
+                id: 6,
+                type: "Direct OWS",
+                exam: "SSC CGL",
+                question: "Choose the correct One-Word Substitution: 'Satisfied, with no desire to change or improve.'",
+                options: ["Complacent", "Complaisant", "Competent", "Compulsory"],
+                correct: 0,
+                hint: "Often implies a smug or uncritical satisfaction with oneself or one's achievements (Hindi: आत्मसंतुष्ट).",
+                explanation: "<strong>Complacent (Adj.)</strong>: Uncritically satisfied with oneself or achievements, showing smugness.<br><em>Synonyms</em>: Smug, self-satisfied, unwary.<br><em>Antonyms</em>: Dissatisfied, ambitious, concerned."
+            },
+            {
+                id: 7,
+                type: "Synonym & Usage",
+                exam: "SSC MTS",
+                question: "Which of the following is the closest SYNONYM for 'Complacent'?",
+                options: ["Smug", "Industrious", "Anxious", "Vigilant"],
+                correct: 0,
+                hint: "Someone who is too comfortable and stops trying hard.",
+                explanation: "'Smug' shares the exact negative connotation of unearned self-satisfaction and laziness in self-improvement."
+            },
+            {
+                id: 8,
+                type: "Antonym Focus",
+                exam: "RRB NTPC",
+                question: "What is the primary ANTONYM of the adjective 'Complacent'?",
+                options: ["Dissatisfied / Ambitious", "Satisfied", "Pompous", "Arrogant"],
+                correct: 0,
+                hint: "Someone striving for constant improvement is not complacent.",
+                explanation: "An ambitious or dissatisfied person constantly seeks growth, directly opposing complacency."
+            },
+            {
+                id: 9,
+                type: "Assertion-Reasoning",
+                exam: "State PCS",
+                question: "Assertion (A): Becoming complacent after initial success often leads to future failure.\nReason (R): Complacency breeds negligence and kills the drive for continuous improvement.\nChoose the correct option:",
+                options: [
+                    "Both (A) and (R) are true and (R) is the correct explanation of (A)",
+                    "Both (A) and (R) are true but (R) is NOT the correct explanation of (A)",
+                    "(A) is true but (R) is false",
+                    "(A) is false but (R) is true"
+                ],
+                correct: 0,
+                hint: "Does lack of desire to improve cause downfall?",
+                explanation: "Both statements are logically sound and interconnected in competitive English idioms and behavioral psychology."
+            },
+            {
+                id: 10,
+                type: "Error Spotting context",
+                exam: "HSSC",
+                question: "Identify the sentence where 'Complacent' is used correctly:",
+                options: [
+                    "After winning three gold medals consecutively, the champion became complacent and lost his final match.",
+                    "She was complacent about her terminal illness and sought immediate medical treatment.",
+                    "The engineers were complacent in designing a foolproof bridge with rigorous stress testing.",
+                    "His complacent attitude towards studying resulted in him topping the university board."
+                ],
+                correct: 0,
+                hint: "Complacency leads to slipping standards due to overconfidence.",
+                explanation: "Option A correctly uses complacent to show dangerous overconfidence and lack of further effort."
+            },
+
+            // 360: Complement
+            {
+                id: 11,
+                type: "Direct OWS",
+                exam: "SSC CGL",
+                question: "Choose the correct One-Word Substitution for: 'To make perfect or complete.'",
+                options: ["Complement", "Compliment", "Comply", "Compensate"],
+                correct: 0,
+                hint: "Spelled with an 'e' in the middle, meaning adding something to enhance or complete.",
+                explanation: "<strong>Complement (N./V.)</strong>: Something that completes or enhances something else; to make perfect or complete (Hindi: पूरक)."
+            },
+            {
+                id: 12,
+                type: "Homophone Differentiation",
+                exam: "SSC CHSL",
+                question: "Differentiate between 'Complement' (with an 'e') and 'Compliment' (with an 'i'):",
+                options: [
+                    "Complement means to complete/enhance; Compliment means an expression of praise or admiration.",
+                    "Complement means praise; Compliment means mathematical calculation.",
+                    "Both mean exact identical things in grammar.",
+                    "Complement is a verb only; Compliment is never used as a noun."
+                ],
+                correct: 0,
+                hint: "I 'i' love compliments (praise).",
+                explanation: "Complement (complete) vs. Compliment (praise/admiration - item 361)."
+            },
+            {
+                id: 13,
+                type: "Contextual Filler",
+        exam: "RRB NTPC",
+        question: "Fill in the blank: 'The bold tie served as a perfect ______ to his navy blue suit.'",
+        options: ["complement", "compliment", "complacent", "compeller"],
+        correct: 0,
+        hint: "It completes or enhances the outfit.",
+        explanation: "'Complement' is used when items enhance or complete each other harmoniously."
+    },
+    {
+        id: 14,
+        type: "Synonym Matching",
+        exam: "State PCS",
+        question: "Which of the following verbs is synonymous with 'Complement' when used in the sense of perfecting a combination?",
+        options: ["Cap off / Round out", "Criticize", "Diminish", "Separate"],
+        correct: 0,
+        hint: "To round out or finish harmoniously.",
+        explanation: "To round out or cap off means to complement and fulfill a set."
+    },
+    {
+        id: 15,
+        type: "True/False Statement",
+        exam: "SSC CPO",
+        question: "Consider the statement: 'A complement can function as both a noun and a verb.' Is this statement true?",
+        options: [
+            "True, it can be a noun (a thing that completes) and a verb (to add in a way that enhances).",
+            "False, it is strictly an adverb in English grammar.",
+            "False, it is exclusively a proper noun.",
+            "True, but only in mathematical contexts."
+        ],
+        correct: 0,
+        hint: "Check parts of speech in standard dictionaries.",
+        explanation: "Complement functions fluidly as both noun and verb in standard English syntax."
+    },
+
+    // 361: Compliment
+    {
+        id: 16,
+        type: "Direct OWS",
+        exam: "SSC CGL",
+        question: "Choose the correct One-Word Substitution for: 'A remark that expresses approval or admiration.'",
+        options: ["Compliment", "Complement", "Complaint", "Compunction"],
+        correct: 0,
+                hint: "Praising someone's work or appearance (Hindi: प्रशंसा).",
+                explanation: "<strong>Compliment (N./V.)</strong>: A polite expression of praise or admiration.<br><em>Synonyms</em>: Accolade, praise, tribute, commendation.<br><em>Antonyms</em>: Insult, criticism, censure."
+            },
+            {
+                id: 17,
+                type: "Synonym Focus",
+                exam: "SSC MTS",
+                question: "Which term is the exact SYNONYM of 'Compliment' in the context of praise?",
+                options: ["Accolade", "Calumny", "Invective", "Reproach"],
+                correct: 0,
+                hint: "An award or expression of praise.",
+                explanation: "'Accolade' means an award or privilege granted as a special honor or as an acknowledgment of merit, matching compliment."
+            },
+            {
+                id: 18,
+                type: "Antonym Question",
+                exam: "RRB Group D",
+                question: "What is the direct ANTONYM of 'Compliment'?",
+                options: ["Insult / Censure", "Flattery", "Tribute", "Appreciation"],
+                correct: 0,
+                hint: "Harsh criticism or derogatory remarks.",
+                explanation: "Censure and insult represent severe criticism or disapproval, opposing a compliment."
+            },
+            {
+                id: 19,
+                type: "Idiomatic Usage",
+                exam: "HSSC",
+                question: "What does the idiom 'Backhanded compliment' mean?",
+                options: [
+                    "An insult disguised as a compliment or a compliment that contains an underlying insult",
+                    "A very sincere and genuine praise from a friend",
+                    "A physical gesture of clapping behind someone's back",
+                    "A formal written award presented at a ceremony"
+                ],
+                correct: 0,
+                hint: "Double-edged remark.",
+                explanation: "A backhanded compliment is an insult or criticism masquerading as praise (e.g., 'You look great considering your age!')."
+            },
+            {
+                id: 20,
+                type: "Sentence Correction",
+                exam: "SSC CHSL",
+                question: "Identify the error in usage: 'She took his remarks as a compliment, even though everyone else realized it was meant to be sarcastic.'",
+                options: [
+                    "No error; the usage of compliment is correct here.",
+                    "Replace 'compliment' with 'complement'.",
+                    "Replace 'remarks' with 'remorse'.",
+                    "Grammatically incorrect preposition usage."
+                ],
+                correct: 0,
+                hint: "Praise or perceived praise.",
+                explanation: "The sentence is grammatically and semantically correct."
+            },
+
+            // 362: Compositor
+            {
+                id: 21,
+                type: "Direct OWS",
+                exam: "SSC CGL",
+                question: "Choose the correct One-Word Substitution for: 'One who sets type for books, newspapers, etc.'",
+                options: ["Compositor", "Compere", "Confectioner", "Curator"],
+                correct: 0,
+                hint: "Associated with printing presses and typography (Hindi: प्रिंटिंग प्रेस में शब्दों को व्यवस्थित करने वाला).",
+                explanation: "<strong>Compositor (N.)</strong>: A person who sets and arranges types for printing books, newspapers, etc."
+            },
+            {
+                id: 22,
+                type: "Historical / Technical Context",
+                exam: "RRB NTPC",
+                question: "In traditional publishing and typography, what was the primary job of a 'Compositor'?",
+                options: [
+                    "Setting movable type by hand or machine into galley trays for printing presses",
+                    "Composing musical symphonies for orchestras",
+                    "Writing editorials and political columns for newspapers",
+                    "Binding finished book covers with leather and glue"
+                ],
+                correct: 0,
+                hint: "Think of Gutenberg press and metal types.",
+                explanation: "Compositors assembled individual letters and spacing elements in composing sticks before modern digital typesetting."
+            },
+            {
+                id: 23,
+                type: "Analogy Question",
+                exam: "State PCS",
+                question: "Compositor : Printing Press :: _______ : Kitchen",
+                options: ["Chef / Confectioner", "Carpenter", "Blacksmith", "Sculptor"],
+                correct: 0,
+                hint: "Where does a compositor work vs where does a culinary expert work?",
+                explanation: "A compositor operates within a printing press environment just as a chef works in a kitchen."
+            },
+            {
+                id: 24,
+                type: "Word Roots",
+                exam: "SSC CPO",
+                question: "The root 'compose' in 'Compositor' fundamentally means:",
+                options: ["To put together or arrange elements", "To destroy or break apart", "To run quickly", "To sing melodiously"],
+                correct: 0,
+                hint: "Putting parts together into a whole.",
+                explanation: "'Compose' comes from Latin *componere* (to put together), which explains why a compositor puts letters together."
+            },
+            {
+                id: 25,
+                type: "Multiple Statement Review",
+                exam: "HSSC",
+                question: "Consider the following: \n1. A compositor sets type for printing.\n2. A compere hosts variety shows.\nWhich of these definitions from Blackbook OWS are correct?",
+                options: ["Both 1 and 2 are correct", "Only 1 is correct", "Only 2 is correct", "Neither is correct"],
+                correct: 0,
+                hint: "Both match items 358 and 362.",
+                explanation: "Both statements accurately reflect standard lexicography."
+            },
+
+            // 363: Compunction
+            {
+                id: 26,
+                type: "Direct OWS",
+                exam: "SSC CGL",
+                question: "Choose the correct One-Word Substitution for: 'A feeling of guilt or moral scruple that prevents or follows the doing of something bad.'",
+                options: ["Compunction", "Complacency", "Configuration", "Conflagration"],
+                correct: 0,
+                hint: "A pricking of conscience (Hindi: पश्चाताप / संकोच).",
+                explanation: "<strong>Compunction (N.)</strong>: A feeling of guilt or moral scruple.<br><em>Synonyms</em>: Remorse, qualm, contrition, penitence.<br><em>Antonyms</em>: Impenitence, ruthlessness, shamelessness."
+            },
+            {
+                id: 27,
+                type: "Synonym Match",
+                exam: "SSC CHSL",
+                question: "Which of the following is an exact SYNONYM for 'Compunction'?",
+                options: ["Qualm", "Arrogance", "Audacity", "Indifference"],
+                correct: 0,
+                hint: "An uneasy feeling of doubt or misgiving.",
+                explanation: "'Qualm' is a feeling of misgiving or slight pang of conscience, synonymous with compunction."
+            },
+            {
+                id: 28,
+                type: "Antonym Identification",
+                exam: "RRB NTPC",
+                question: "What is the ANTONYM of 'Compunction'?",
+                options: ["Shamelessness / Remorselessness", "Guilt", "Regret", "Hesitation"],
+                correct: 0,
+                hint: "Acting without any moral hesitation or guilt.",
+                explanation: "Remorselessness or shamelessness means committing acts without moral hesitation."
+            },
+            {
+                id: 29,
+                type: "Usage in Sentence",
+                exam: "State PCS",
+                question: "Complete the sentence: 'He cheated the elderly investors out of their life savings without a single stroke of ______.'",
+                options: ["compunction", "compliment", "confluence", "concord"],
+                correct: 0,
+                hint: "Without any feeling of guilt or moral scruple.",
+                explanation: "Without compunction indicates total lack of conscience or remorse."
+            },
+            {
+                id: 30,
+                type: "Root Etymology",
+                exam: "SSC CPO",
+                question: "The Latin root *compungere* in 'Compunction' literally translates to:",
+                options: ["To prick sharply or sting (the conscience)", "To soothe or comfort", "To build bridges", "To decorate gardens"],
+                correct: 0,
+                hint: "A pricking sensation in the chest or mind.",
+                explanation: "It derives from Latin meaning to prick, reflecting the mental sting of guilt."
+            },
+
+            // 364: Conceited
+            {
+                id: 31,
+                type: "Direct OWS",
+                exam: "SSC CGL",
+                question: "Choose the correct One-Word Substitution for: 'Having too much pride in yourself and what you do.'",
+                options: ["Conceited", "Congenital", "Conformist", "Complaisant"],
+                correct: 0,
+                hint: "Excessively proud of oneself (Hindi: अभिमानी / घमंडी).",
+                explanation: "<strong>Conceited (Adj.)</strong>: Excessively proud of oneself; vain.<br><em>Synonyms</em>: Vain, egotistical, narcissistic, arrogant.<br><em>Antonyms</em>: Humble, modest, unassuming."
+            },
+            {
+                id: 32,
+                type: "Synonym Challenge",
+                exam: "SSC MTS",
+                question: "Which of these words is synonymous with 'Conceited'?",
+                options: ["Vain", "Altruistic", "Diffident", "Stoic"],
+                correct: 0,
+                hint: "Focusing too much on one's own mirror image or status.",
+                explanation: "'Vain' means having or showing an excessively high opinion of one's appearance, abilities, or worth."
+            },
+            {
+                id: 33,
+                type: "Antonym Mastery",
+                exam: "RRB Group D",
+                question: "Select the correct ANTONYM for 'Conceited':",
+                options: ["Humble / Modest", "Proud", "Arrogant", "Pompous"],
+                correct: 0,
+                hint: "Someone who does not boast or brag.",
+                explanation: "Humble and modest represent unassuming behavior that opposes conceit."
+            },
+            {
+                id: 34,
+                type: "Idiom / Phrase link",
+                exam: "HSSC",
+                question: "Which idiom best describes a 'Conceited' person?",
+                options: ["Full of oneself", "Down to earth", "Wet behind the ears", "Salt of the earth"],
+                correct: 0,
+                hint: "So absorbed in their own greatness.",
+                explanation: "'Full of oneself' is an idiomatic expression for being excessively conceited and arrogant."
+            },
+            {
+                id: 35,
+                type: "Contextual Spotting",
+                exam: "SSC CGL Tier-2",
+                question: "Identify the correct sentence using 'Conceited':",
+                options: [
+                    "His conceited behavior alienated all his colleagues, as he constantly bragged about his IQ.",
+                    "She was so conceited that she always volunteered anonymously at the local shelter.",
+                    "The teacher praised his conceited efforts in solving the humble math equation.",
+                    "A conceited leader always listens patiently to constructive criticism."
+                ],
+                correct: 0,
+                hint: "Conceit involves bragging and arrogance.",
+                explanation: "Option A accurately reflects arrogance and alienation due to self-absorption."
+            },
+
+            // 365: Conceivable
+            {
+                id: 36,
+                type: "Direct OWS",
+                exam: "SSC CGL",
+                question: "Choose the correct One-Word Substitution for: 'Capable of being imagined or grasped mentally.'",
+                options: ["Conceivable", "Congenital", "Conflagrant", "Combustible"],
+                correct: 0,
+                hint: "Able to be conceived (Hindi: कल्पनीय).",
+                explanation: "<strong>Conceivable (Adj.)</strong>: Capable of being imagined or grasped mentally.<br><em>Synonyms</em>: Imaginable, plausible, possible, feasible.<br><em>Antonyms</em>: Inconceivable, impossible, unthinkable."
+            },
+            {
+                id: 37,
+                type: "Synonym Check",
+                exam: "SSC CHSL",
+                question: "What is a close SYNONYM for 'Conceivable'?",
+                options: ["Plausible", "Absurd", "Impossible", "Fantastic"],
+                correct: 0,
+                hint: "Seeming reasonable or probable.",
+                explanation: "'Plausible' and conceivable both deal with logical possibility and mental grasp."
+            },
+            {
+                id: 38,
+                type: "Prefix / Antonym Test",
+                exam: "RRB NTPC",
+                question: "What prefix is added to 'Conceivable' to form its direct opposite (meaning impossible to imagine)?",
+                options: ["In- (Inconceivable)", "Un- (Unconceivable)", "Dis- (Disconceivable)", "Mis- (Misconceivable)"],
+                correct: 0,
+                hint: "Standard English negative prefix for this root.",
+                explanation: "'Inconceivable' is the standard accepted form for something beyond imagination."
+            },
+            {
+                id: 39,
+                type: "Sentence Usage",
+                exam: "State PCS",
+                question: "Complete: 'It is entirely ______ that technology will advance beyond our current comprehension within a decade.'",
+                options: ["conceivable", "conceited", "compunctious", "concentric"],
+                correct: 0,
+                hint: "Within the realm of imagination or possibility.",
+                explanation: "Conceivable fits logically as something that can be imagined or thought of."
+            },
+            {
+                id: 40,
+                type: "Logical Distinction",
+                exam: "SSC CPO",
+                question: "Differentiate between 'Conceivable' and 'Inconceivable':",
+                options: [
+                    "Conceivable means imaginable/possible; Inconceivable means impossible to comprehend or imagine.",
+                    "Conceivable means arrogant; Inconceivable means humble.",
+                    "Both mean exactly the same thing.",
+                    "Conceivable refers to printing; Inconceivable refers to stage acting."
+                ],
+                correct: 0,
+                hint: "The prefix 'in-' reverses the meaning.",
+                explanation: "The prefix creates the exact antonym regarding mental grasp."
+            },
+
+            // 366: Concentric
+            {
+                id: 41,
+                type: "Direct OWS",
+                exam: "SSC CGL",
+                question: "Choose the correct One-Word Substitution for: 'Having a common centre, as circles or spheres.'",
+                options: ["Concentric", "Confluent", "Congenital", "Concordant"],
+                correct: 0,
+                hint: "Sharing the exact same center point (Hindi: संकेंद्री).",
+                explanation: "<strong>Concentric (Adj.)</strong>: Having a common center, as circles or spheres.<br><em>Synonyms</em>: Co-centered.<br><em>Antonyms</em>: Eccentric."
+            },
+            {
+                id: 42,
+                type: "Geometric / Visual Question",
+                exam: "RRB Group D",
+                question: "In geometry, if two or more circles share the exact same center point but have different radii, they are called:",
+                options: ["Concentric circles", "Eccentric circles", "Parallel lines", "Intersecting chords"],
+                correct: 0,
+                hint: "Ripple effect in water forms these circles.",
+                explanation: "Concentric circles nest inside one another sharing the identical center."
+            },
+            {
+                id: 43,
+                type: "Antonym Focus",
+                exam: "SSC MTS",
+                question: "What is the geometric ANTONYM of 'Concentric'?",
+                options: ["Eccentric (having different centers or unconventional)", "Symmetrical", "Equidistant", "Coaxial"],
+                correct: 0,
+                hint: "Out of center or off-center.",
+                explanation: "'Eccentric' means not placed away from a central point or having a different center."
+            },
+            {
+                id: 44,
+                type: "Real-world Analogy",
+                exam: "HSSC",
+                question: "Dropping a pebble into a calm pond creates expanding ripples that are best described as:",
+                options: ["Concentric rings", "Conjugate vectors", "Consequential loops", "Confluent streams"],
+                correct: 0,
+                hint: "Ripples spreading out from one impact point.",
+                explanation: "The ripples spread outward from the single point of impact as concentric circles."
+            },
+            {
+                id: 45,
+                type: "Etymology breakdown",
+                exam: "State PCS",
+                question: "The prefix 'con-' in 'Concentric' signifies:",
+                options: ["Together or with", "Against or opposing", "Before in time", "Below the surface"],
+                correct: 0,
+                hint: "Coming together around a center.",
+                explanation: "'Con-' means together, combining with 'centric' (center) to mean sharing a center."
+            },
+
+            // 367: Concubinage
+            {
+                id: 46,
+                type: "Direct OWS",
+                exam: "SSC CGL",
+                question: "Choose the correct One-Word Substitution for: 'Living together of a man and woman without being married to each other.'",
+                options: ["Concubinage", "Condominium", "Congregation", "Confluence"],
+                correct: 0,
+                hint: "Cohabitation without formal legal marriage (Hindi: बिना विवाह के साथ रहना).",
+                explanation: "<strong>Concubinage (N.)</strong>: The state of living together as man and wife without being legally married."
+            },
+            {
+                id: 47,
+                type: "Sociological / Legal Definition",
+                exam: "SSC CPO",
+                question: "In historical and legal terminology, 'Concubinage' specifically denotes:",
+                options: [
+                    "An interpersonal and sexual relationship between a couple without formal marriage sanctions",
+                    "A formal religious wedding ceremony in a cathedral",
+                    "A business partnership between co-founders",
+                    "A legal contract for shared apartment ownership"
+                ],
+                correct: 0,
+                hint: "Unmarried domestic partnership.",
+                explanation: "It historically refers to cohabitation without the legal status of marriage."
+            },
+            {
+                id: 48,
+                type: "Synonym Context",
+                exam: "RRB NTPC",
+                question: "Which term is closest in modern sociological parlance to 'Concubinage'?",
+                options: ["Cohabitation / Domestic partnership", "Matrimony", "Celibacy", "Monogamy"],
+                correct: 0,
+                hint: "Living together unwed.",
+                explanation: "Cohabitation is the modern equivalent term for unmarried couples living together."
+            },
+            {
+                id: 49,
+                type: "Spotting Error in Options",
+                exam: "HSSC",
+                question: "Which of the following terms from Blackbook OWS refers to living together without marriage?",
+                options: ["Concubinage", "Condominium", "Compositor", "Confectioner"],
+                correct: 0,
+                hint: "Item 367 in syllabus.",
+                explanation: "Concubinage is item 367; Condominium is a shared apartment building (item 368)."
+            },
+            {
+                id: 50,
+                type: "True/False Statement",
+                exam: "State PCS",
+                question: "Consider: 'Concubinage implies a legal marriage certificate.' Is this true?",
+                options: [
+                    "False, it specifically denotes living together without being married.",
+                    "True, it is another word for registered marriage.",
+                    "False, it refers exclusively to commercial property leases.",
+                    "True, under ancient Roman civil codes."
+                ],
+                correct: 0,
+                hint: "Read the exact OWS definition carefully.",
+                explanation: "By definition, concubinage is without formal marriage."
+            },
+
+            // 368: Condominium
+            {
+                id: 51,
+                type: "Direct OWS",
+                exam: "SSC CGL",
+                question: "Choose the correct One-Word Substitution for: 'An apartment building in which each apartment is owned separately by the people living in it, but also containing shared areas.'",
+                options: ["Condominium", "Concubinage", "Congregation", "Confluence"],
+                correct: 0,
+                hint: "Often abbreviated as 'condo' (Hindi: फ्लैट की तरह का घर).",
+                explanation: "<strong>Condominium (N.)</strong>: A building or complex of buildings containing a number of individually owned apartments or houses with shared common grounds."
+            },
+            {
+                id: 52,
+                type: "Real Estate Context",
+                exam: "SSC CHSL",
+                question: "What distinguishes a 'Condominium' from a standard rental apartment?",
+                options: [
+                    "Individual ownership of each unit combined with joint ownership of common facilities",
+                    "The entire building is owned by a single landlord who rents out all units",
+                    "It is constructed exclusively for commercial office spaces",
+                    "It has no shared facilities whatsoever"
+                ],
+                correct: 0,
+                hint: "Owned separately, shared common areas.",
+                explanation: "Condominiums involve individual unit deeds coupled with shared maintenance of lobbies, pools, and grounds."
+            },
+            {
+                id: 53,
+                type: "Synonym Match",
+                exam: "RRB Group D",
+                question: "What is the common abbreviation used globally for a 'Condominium'?",
+                options: ["Condo", "Con", "Dom", "Minium"],
+                correct: 0,
+                hint: "Short form used in real estate ads.",
+                explanation: "'Condo' is the universally accepted colloquial shortening of condominium."
+            },
+            {
+                id: 54,
+                type: "Matching List",
+                exam: "State PCS",
+                question: "Match correctly:\n(a) Condominium -> (1) Unmarried cohabitation\n(b) Concubinage -> (2) Separately owned apartments with shared areas\nCode:",
+                options: ["(a)-(2), (b)-(1)", "(a)-(1), (b)-(2)", "(a)-(2), (b)-(2)", "(a)-(1), (b)-(1)"],
+                correct: 0,
+                hint: "Check syllabus items 367 and 368.",
+                explanation: "Condominium matches individually owned apartments; concubinage matches unmarried living."
+            },
+            {
+                id: 55,
+                type: "Contextual Fill-in",
+                exam: "HSSC",
+                question: "Complete: 'They purchased a luxury ______ overlooking the ocean with shared access to the swimming pool and gym.'",
+                options: ["condominium", "compere", "compositor", "confectioner"],
+                correct: 0,
+                hint: "A residential building with individually owned apartments and shared areas.",
+                explanation: "Condominium fits the real estate context of shared amenities and individual unit ownership."
+            },
+
+            // 369: Condone
+            {
+                id: 56,
+                type: "Direct OWS",
+                exam: "SSC CGL",
+                question: "Choose the correct One-Word Substitution for: 'Forgive or pardon some wrongdoing or an offence.'",
+                options: ["Condone", "Confiscate", "Confess", "Conflagrate"],
+                correct: 0,
+                hint: "To overlook or accept bad behavior (Hindi: माफ़ करना).",
+                explanation: "<strong>Condone (V.)</strong>: Accept and allow (behavior that is considered morally wrong or offensive) to continue; to forgive or pardon.<br><em>Synonyms</em>: Overlook, excuse, pardon, sanction.<br><em>Antonyms</em>: Condemn, punish, forbid."
+            },
+            {
+                id: 57,
+                type: "Synonym Identification",
+                exam: "SSC MTS",
+                question: "Which of the following is an exact SYNONYM for 'Condone'?",
+                options: ["Overlook / Excuse", "Punish", "Prosecute", "Condemn"],
+                correct: 0,
+                hint: "Turning a blind eye to minor infractions.",
+                explanation: "'Overlook' or 'excuse' means disregarding or forgiving bad behavior, matching condone."
+            },
+            {
+                id: 58,
+                type: "Antonym Challenge",
+                exam: "RRB NTPC",
+                question: "What is the direct ANTONYM of 'Condone'?",
+                options: ["Condemn / Punish", "Pardon", "Forgive", "Ignore"],
+                correct: 0,
+                hint: "Expressing complete disapproval.",
+                explanation: "Condemn means expressing complete disapproval, opposing the overlooking or pardoning of an offense."
+            },
+            {
+                id: 59,
+                type: "Sentence Correction",
+                exam: "SSC CPO",
+                question: "Identify the correct usage of 'Condone':",
+                options: [
+                    "The administration stated that they would not condone cheating under any circumstances during examinations.",
+                    "The judge decided to condone the serial killer with a life sentence in prison.",
+                    "She refused to condone her birthday cake with chocolate frosting.",
+                    "The police officer decided to condone the stolen vehicle into evidence."
+                ],
+                correct: 0,
+                hint: "Institutions do not condon (tolerate/forgive) malpractice.",
+                explanation: "Option A correctly demonstrates refusing to overlook or tolerate wrongdoing."
+            },
+            {
+                id: 60,
+                type: "Etymology Note",
+                exam: "State PCS",
+                question: "The Latin root *condonare* means:",
+                options: ["To give away or remit / pardon", "To build together", "To burn down", "To set type"],
+                correct: 0,
+                hint: "Giving up one's claim to punish.",
+                explanation: "Derived from *con-* (intensifier) + *donare* (to give/grant), meaning to remit punishment."
+            },
+
+            // 370: Confectioner
+            {
+                id: 61,
+                type: "Direct OWS",
+                exam: "SSC CGL",
+                question: "Choose the correct One-Word Substitution for: 'A company or person that makes or sells sweets or chocolate.'",
+                options: ["Confectioner", "Compositor", "Compere", "Curator"],
+                correct: 0,
+                hint: "Someone who deals in candies and pastries (Hindi: मिठाई बेचने वाला).",
+                explanation: "<strong>Confectioner (N.)</strong>: A person or company that makes or sells sweets, chocolates, and pastries."
+            },
+            {
+                id: 62,
+                type: "Synonym / Trade Association",
+                exam: "SSC CHSL",
+                question: "A shop run by a 'Confectioner' is typically known as a:",
+                options: ["Confectionery / Sweet shop", "Blacksmith workshop", "Printing press", "Condominium lobby"],
+                correct: 0,
+                hint: "Where chocolates and candies are sold.",
+                explanation: "A confectionery is the establishment where a confectioner creates and sells sweet goods."
+            },
+            {
+                id: 63,
+                type: "Analogy Test",
+                exam: "RRB Group D",
+                question: "Confectioner : Sweets :: Blacksmith : _______",
+                options: ["Iron / Metal", "Books", "Clothing", "Software"],
+                correct: 0,
+                hint: "What material does a blacksmith work with?",
+                explanation: "A confectioner works with sweets, just as a blacksmith works with iron."
+            },
+            {
+                id: 64,
+                type: "Spotting Error in Definitions",
+                exam: "HSSC",
+                question: "Which of the following definitions is accurate according to item 370?",
+                options: [
+                    "Confectioner: A person who makes or sells sweets or chocolate.",
+                    "Confectioner: One who sets type for newspapers.",
+                    "Confectioner: A person who introduces variety show acts.",
+                    "Confectioner: A person living together without marriage."
+                ],
+                correct: 0,
+                hint: "Review Blackbook item 370.",
+                explanation: "Option A is the exact official definition from the syllabus."
+            },
+            {
+                id: 65,
+                type: "Root / Suffix Analysis",
+                exam: "State PCS",
+                question: "The suffix '-er' in 'Confectioner' denotes:",
+                options: ["A person who performs a specific trade or profession", "The place where goods are stored", "The plural form of a noun", "An abstract scientific concept"],
+                correct: 0,
+                hint: "Actor suffix (e.g., baker, teacher, confectioner).",
+                explanation: "'-er' designates the person engaged in that occupation."
+            },
+
+            // 371: Confess
+            {
+                id: 66,
+                type: "Direct OWS",
+                exam: "SSC CGL",
+                question: "Choose the correct One-Word Substitution for: 'To own up to something as true.'",
+                options: ["Confess", "Confiscate", "Condone", "Conflagrate"],
+                correct: 0,
+                hint: "Admitting guilt or fault (Hindi: कबूल करना).",
+                explanation: "<strong>Confess (V.)</strong>: To admit or state that one has committed a crime or done something wrong; to own up to something as true.<br><em>Synonyms</em>: Admit, acknowledge, concede, disclose.<br><em>Antonyms</em>: Deny, conceal, disavow."
+            },
+            {
+                id: 67,
+                type: "Synonym Match",
+                exam: "SSC MTS",
+                question: "What is the closest SYNONYM for 'Confess'?",
+                options: ["Admit / Acknowledge", "Deny", "Fabricate", "Conceal"],
+                correct: 0,
+                hint: "To make a clean breast of things.",
+                explanation: "'Admit' means confessing or recognizing truth or validity."
+            },
+            {
+                id: 68,
+                type: "Antonym Test",
+                exam: "RRB NTPC",
+                question: "Select the direct ANTONYM of 'Confess':",
+                options: ["Deny / Conceal", "Acknowledge", "Disclose", "Reveal"],
+                correct: 0,
+                hint: "Refusing to admit truth or hiding facts.",
+                explanation: "Deny and conceal represent hiding the truth rather than confessing."
+            },
+            {
+                id: 69,
+                type: "Legal / Religious Context",
+                exam: "SSC CPO",
+                question: "In legal and religious contexts, a formal statement of confession is often made to:",
+                options: ["A magistrate or a priest", "A confectioner", "A compere", "A compositor"],
+                correct: 0,
+                hint: "Who hears confessions in court or church?",
+                explanation: "Confessions are legally given to authorities or religiously to clergy."
+            },
+            {
+                id: 70,
+                type: "Sentence Completion",
+                exam: "State PCS",
+                question: "Complete: 'Under intense police interrogation, the suspect finally decided to ______ to the robbery.'",
+                options: ["confess", "condone", "conflagrate", "confer"],
+                correct: 0,
+                hint: "To own up to a crime.",
+                explanation: "Confess is the exact verb used when admitting to criminal acts."
+            },
+
+            // 372: Configuration
+            {
+                id: 71,
+                type: "Direct OWS",
+                exam: "SSC CGL",
+                question: "Choose the correct One-Word Substitution for: 'An arrangement of parts or elements in a particular form or figure.'",
+                options: ["Configuration", "Confluence", "Congregation", "Condominium"],
+                correct: 0,
+                hint: "How components are set up or laid out (Hindi: एक विशेष आकृति में तर्ज़ की व्यवस्था).",
+                explanation: "<strong>Configuration (N.)</strong>: An arrangement of parts or elements in a particular form, figure, or combination.<br><em>Synonyms</em>: Arrangement, layout, formation, disposition."
+            },
+            {
+                id: 72,
+                type: "Technical / Computing Context",
+                exam: "SSC CHSL",
+                question: "In computer hardware and software, what does 'Configuration' refer to?",
+                options: [
+                    "The arrangement of hardware and software components that make up a computer system",
+                    "The electrical wiring of printing press type sets",
+                    "The recipe used by a confectioner for baking sweets",
+                    "The architectural floor plan of a condominium"
+                ],
+                correct: 0,
+                hint: "System settings and component layout.",
+                explanation: "Configuration specifies how hardware and software are set up and structured together."
+            },
+            {
+                id: 73,
+                type: "Synonym Match",
+                exam: "RRB Group D",
+                question: "Which of the following is a direct SYNONYM for 'Configuration'?",
+                options: ["Layout / Arrangement", "Disorder", "Chaos", "Destruction"],
+                correct: 0,
+                hint: "The spatial arrangement of parts.",
+                explanation: "'Layout' or 'arrangement' matches the structural setup of a configuration."
+            },
+            {
+                id: 74,
+                type: "Matching List",
+                exam: "HSSC",
+                question: "Match the following items from syllabus page 15:\n(a) Configuration -> (1) Arrangement of parts in a form\n(b) Confiscate -> (2) To officially take something away\nCode:",
+                options: ["(a)-(1), (b)-(2)", "(a)-(2), (b)-(1)", "(a)-(1), (b)-(1)", "(a)-(2), (b)-(2)"],
+                correct: 0,
+                hint: "Verify items 372 and 373.",
+                explanation: "Both pairings correctly reflect their dictionary definitions."
+            },
+            {
+                id: 75,
+                type: "Sentence Usage",
+                exam: "State PCS",
+                question: "Identify the correct sentence using 'Configuration':",
+                options: [
+                    "The new star constellation has an unusual geometrical configuration resembling a triangle.",
+                    "He decided to configuration his car engine by painting it blue.",
+                    "She confessed her configuration to the confectioner.",
+                    "The compere maintained a strict configuration during the talent show."
+                ],
+                correct: 0,
+                hint: "Arrangement of parts or celestial formations.",
+                explanation: "Option A correctly uses configuration for geometric layout."
+            },
+
+            // 373: Confiscate
+            {
+                id: 76,
+                type: "Direct OWS",
+                exam: "SSC CGL",
+                question: "Choose the correct One-Word Substitution for: 'To officially take something away from somebody.'",
+                options: ["Confiscate", "Condone", "Confess", "Conflagrate"],
+                correct: 0,
+                hint: "Authority seizing illegal or prohibited items (Hindi: जब्त करना).",
+                explanation: "<strong>Confiscate (V.)</strong>: To take or seize (property) with authority; to officially take something away from somebody.<br><em>Synonyms</em>: Seize, expropriate, commandeer, impound.<br><em>Antonyms</em>: Return, restore, give back."
+            },
+            {
+                id: 77,
+                type: "Synonym Focus",
+                exam: "SSC MTS",
+                question: "What is a close SYNONYM for 'Confiscate'?",
+                options: ["Seize / Impound", "Donate", "Bestow", "Surrender"],
+                correct: 0,
+                hint: "Taking possession by legal authority.",
+                explanation: "'Impound' or 'seize' means taking property legally, synonymous with confiscation."
+            },
+            {
+                id: 78,
+                type: "Antonym Test",
+                exam: "RRB NTPC",
+                question: "What is the direct ANTONYM of 'Confiscate'?",
+                options: ["Restore / Return", "Seize", "Confiscate", "Appropriate"],
+                correct: 0,
+                hint: "Giving seized property back to its owner.",
+                explanation: "Restoring or returning property is the direct opposite of confiscating it."
+            },
+            {
+                id: 79,
+                type: "Legal Context",
+                exam: "SSC CPO",
+                question: "When customs officials find smuggled goods at an airport, they have the legal right to:",
+                options: ["Confiscate them", "Condone them", "Conflagrate them", "Complement them"],
+                correct: 0,
+                hint: "Official seizure of contraband.",
+                explanation: "Customs officers officially seize and confiscate illegal contraband."
+            },
+            {
+                id: 80,
+                type: "Root Etymology",
+                exam: "State PCS",
+                question: "The Latin root *confiscare* literally translates to:",
+                options: ["To put into the public treasury (fiscus)", "To burn to ashes", "To speak in secret", "To set type by hand"],
+                correct: 0,
+                hint: "Derived from 'fiscus' meaning state treasury/purse.",
+                explanation: "Property taken away was historically placed into the imperial treasury (*fiscus*)."
+            },
+
+            // 374: Conflagrant / Combustible
+            {
+                id: 81,
+                type: "Direct OWS",
+                exam: "SSC CGL",
+                question: "Choose the correct One-Word Substitution for: 'Combustibles – flammable / Burning, on fire (Conflagrant).'",
+                options: ["Conflagrant", "Confluent", "Concentric", "Congenital"],
+                correct: 0,
+                hint: "Catching fire easily or blazing (Hindi: जलता हुआ / प्रज्वलनशील).",
+                explanation: "<strong>Conflagrant (Adj.)</strong> / <strong>Combustible</strong>: Burning fiercely, on fire, or easily catching fire.<br><em>Synonyms</em>: Flammable, blazing, incendiary.<br><em>Antonyms</em>: Fireproof, nonflammable."
+            },
+            {
+                id: 82,
+                type: "Synonym Check",
+                exam: "SSC CHSL",
+                question: "What is a direct SYNONYM for 'Combustible' or 'Conflagrant'?",
+                options: ["Flammable", "Incombustible", "Fireproof", "Damp"],
+                correct: 0,
+                hint: "Materials like gasoline or dry wood.",
+                explanation: "'Flammable' means easily set on fire, matching combustible substances."
+            },
+            {
+                id: 83,
+                type: "Safety Sign Context",
+                exam: "RRB Group D",
+                question: "On industrial chemical tankers, a label reading 'Combustible Material' indicates that the cargo is:",
+                options: ["Capable of catching fire and burning easily", "Completely fireproof and safe near open flames", "Frozen at sub-zero temperatures", "Soluble in water instantly"],
+                correct: 0,
+                hint: "Fire hazard warning.",
+                explanation: "Combustible indicates high risk of ignition and burning."
+            },
+            {
+                id: 84,
+                type: "Antonym Question",
+                exam: "HSSC",
+                question: "What is the ANTONYM of 'Combustible'?",
+                options: ["Non-flammable / Fireproof", "Inflammable", "Volatile", "Combustible"],
+                correct: 0,
+                hint: "Materials that cannot burn.",
+                explanation: "Fireproof or non-flammable substances resist burning entirely."
+            },
+            {
+                id: 85,
+                type: "Syllabus Note Verification",
+                exam: "State PCS",
+                question: "According to the Blackbook entry 374, 'Combustibles' are synonymous with:",
+                options: ["Flammable materials", "Confectionery items", "Concentric circles", "Condominium apartments"],
+                correct: 0,
+                hint: "Check syllabus text: 'Combustibles – flammable'.",
+                explanation: "Combustibles directly equate to flammable materials."
+            },
+
+            // 375: Confluence
+            {
+                id: 86,
+                type: "Direct OWS",
+                exam: "SSC CGL",
+                question: "Choose the correct One-Word Substitution for: 'Place where two or more rivers meet.'",
+                options: ["Confluence", "Congregation", "Configuration", "Concentric"],
+                correct: 0,
+                hint: "Like Triveni Sangam in Prayagraj (Hindi: संगम).",
+                explanation: "<strong>Confluence (N.)</strong>: The junction of two or more rivers; an act or process of merging.<br><em>Synonyms</em>: Junction, convergence, meeting, union.<br><em>Antonyms</em>: Separation, divergence."
+            },
+            {
+                id: 87,
+                type: "Geographical Context",
+                exam: "RRB NTPC",
+                question: "In Indian geography, Prayagraj is famous as the holy ______ of the Ganges, Yamuna, and mythical Saraswati rivers.",
+                options: ["confluence", "condominium", "confectionery", "compere"],
+                correct: 0,
+                hint: "Meeting point of rivers.",
+                explanation: "Confluence is the precise geographic term for river meeting points."
+            },
+            {
+                id: 88,
+                type: "Synonym Match",
+                exam: "SSC MTS",
+                question: "Which term is the closest SYNONYM for 'Confluence'?",
+                options: ["Convergence / Junction", "Divergence", "Separation", "Isolation"],
+                correct: 0,
+                hint: "Coming together at one point.",
+                explanation: "'Convergence' means coming together from different directions, matching confluence."
+            },
+            {
+                id: 89,
+                type: "Metaphorical Usage",
+                exam: "State PCS",
+                question: "In economic analysis, 'a confluence of global crises' means:",
+                options: ["Several independent crises coming together simultaneously", "A single crisis happening in isolation", "Rivers overflowing their banks", "Printing press type setting errors"],
+                correct: 0,
+                hint: "Multiple streams flowing together.",
+                explanation: "Metaphorically, confluence describes multiple factors merging together."
+            },
+            {
+                id: 90,
+                type: "Root Etymology",
+                exam: "SSC CPO",
+                question: "The Latin root *fluere* in 'Confluence' translates to:",
+                options: ["To flow", "To burn", "To set type", "To build"],
+                correct: 0,
+                hint: "Fluid, fluent, flow.",
+                explanation: "Derived from *con-* (together) + *fluere* (to flow), meaning flowing together."
+            },
+
+            // 376: Conformist
+            {
+                id: 91,
+                type: "Direct OWS",
+                exam: "SSC CGL",
+                question: "Choose the correct One-Word Substitution for: 'A person who conforms to accepted behaviour or established practices.'",
+                options: ["Conformist", "Conflagrant", "Congenital", "Concentric"],
+                correct: 0,
+                hint: "Someone who follows society's rules and norms (Hindi: स्थापित प्रथाओं के अनुरूप चलने वाला).",
+                explanation: "<strong>Conformist (N.)</strong>: A person who conforms to traditional standards or accepted behavior.<br><em>Synonyms</em>: Traditionalist, conventionalist.<br><em>Antonyms</em>: Rebel, maverick, nonconformist."
+            },
+            {
+                id: 92,
+                type: "Synonym Identification",
+                exam: "SSC CHSL",
+                question: "What is a direct SYNONYM for 'Conformist'?",
+                options: ["Traditionalist / Conventionalist", "Rebel", "Maverick", "Iconoclast"],
+                correct: 0,
+                hint: "Someone following established conventions.",
+                explanation: "'Traditionalist' matches the adherence to established customs and norms."
+            },
+            {
+                id: 93,
+                type: "Antonym Test",
+                exam: "RRB Group D",
+                question: "What is the direct ANTONYM of 'Conformist'?",
+                options: ["Nonconformist / Maverick", "Conventionalist", "Follower", "Traditionalist"],
+                correct: 0,
+                hint: "Someone who breaks away from societal norms.",
+                explanation: "A nonconformist or maverick refuses to be bound by conventional rules."
+            },
+            {
+                id: 94,
+                type: "Sentence Usage",
+                exam: "HSSC",
+                question: "Identify the correct sentence using 'Conformist':",
+                options: [
+                    "As a rigid conformist, he refused to adopt any modern unconventional working hours or dress codes.",
+                    "The conformist artist broke all traditional painting rules to invent abstract cubism.",
+                    "She was such a conformist that she constantly protested against government laws.",
+                    "A conformist is someone who sets type for printing newspapers."
+                ],
+                correct: 0,
+                hint: "Strict adherence to traditional standards.",
+                explanation: "Option A accurately reflects strict adherence to traditional societal standards."
+            },
+            {
+                id: 95,
+                type: "Multiple Choice Comparison",
+                exam: "State PCS",
+                question: "Differentiate between 'Conformist' and 'Nonconformist':",
+                options: [
+                    "Conformist follows established societal rules; Nonconformist disregards or rejects them.",
+                    "Conformist makes sweets; Nonconformist designs condominiums.",
+                    "Both mean someone who lives without marriage.",
+                    "Both mean setting type in printing presses."
+                ],
+                correct: 0,
+                hint: "The prefix 'non-' flips the behavioral stance.",
+                explanation: "Conformity is adherence to norms; nonconformity is independence from them."
+            },
+
+            // 377: Congenital
+            {
+                id: 96,
+                type: "Direct OWS",
+                exam: "SSC CGL",
+                question: "Choose the correct One-Word Substitution for: 'Pertaining to an individual from birth.'",
+                options: ["Congenital", "Concentric", "Confluent", "Conflagrant"],
+                correct: 0,
+                hint: "Present from birth (Hindi: जन्मजात).",
+                explanation: "<strong>Congenital (Adj.)</strong>: (Of a disease or physical abnormality) present from birth.<br><em>Synonyms</em>: Innate, hereditary, inborn, native.<br><em>Antonyms</em>: Acquired, contracted."
+            },
+            {
+                id: 97,
+                type: "Medical Context",
+                exam: "SSC CPO",
+                question: "In medical terminology, a 'congenital heart defect' means the condition was present:",
+                options: ["Since birth", "As a result of smoking in adulthood", "Due to a printing press error", "After a sports injury at age 30"],
+                correct: 0,
+                hint: "Existing at or dating from birth.",
+                explanation: "Congenital conditions originate during prenatal development and are present at birth."
+            },
+            {
+                id: 98,
+                type: "Synonym Match",
+                exam: "RRB NTPC",
+                question: "Which of the following is an exact SYNONYM for 'Congenital'?",
+                options: ["Inborn / Innate", "Acquired", "Learned", "Accidental"],
+                correct: 0,
+                hint: "Natural traits present from the start.",
+                explanation: "'Inborn' or 'innate' means existing from birth, matching congenital."
+            },
+            {
+                id: 99,
+                type: "Antonym Check",
+                exam: "HSSC",
+                question: "What is the correct ANTONYM of 'Congenital'?",
+                options: ["Acquired (developed after birth)", "Inborn", "Hereditary", "Congenital"],
+                correct: 0,
+                hint: "Traits picked up later in life.",
+                explanation: "Acquired traits are developed postnatally through environment or experience, opposing congenital."
+            },
+            {
+                id: 100,
+                type: "Comprehensive Revision",
+                exam: "SSC CGL Tier-2",
+                question: "Review Blackbook OWS syllabus items 358 to 379: Which term denotes 'An assembly of worshippers / A group of people who have come together in a religious building for worship' (Item 379)?",
+                options: ["Congregation", "Confluence", "Concubinage", "Condominium"],
+                correct: 0,
+                hint: "Religious gathering in a church or temple (धार्मिक सभा).",
+                explanation: "<strong>Congregation (N.)</strong>: An assembly of worshippers or people gathered for religious worship (Item 379)."
+            }
+        ];
+
+        // Quiz Application State
+        let currentIdx = 0;
+        let score = 0;
+        let selectedAnswers = new Array(quizData.length).fill(null);
+        let answeredStatus = new Array(quizData.length).fill(false);
+
+        // DOM Elements
+        const questionNumberBadge = document.getElementById('question-number-badge');
+        const questionCategoryBadge = document.getElementById('question-category-badge');
+        const examTag = document.getElementById('exam-tag');
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const hintBtnText = document.getElementById('hint-btn-text');
+        const hintBox = document.getElementById('hint-box');
+        const explanationBox = document.getElementById('explanation-box');
+        const scoreDisplay = document.getElementById('score-display');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const jumpInput = document.getElementById('jump-input');
+
+        function loadQuestion() {
+            const q = quizData[currentIdx];
+            
+            // Header updates
+            questionNumberBadge.textContent = `Question ${currentIdx + 1} of ${quizData.length}`;
+            questionCategoryBadge.textContent = q.type;
+            examTag.textContent = q.exam;
+
+            // Progress Bar update
+            const progressPct = ((currentIdx + 1) / quizData.length) * 100;
+            progressBar.style.width = `${progressPct}%`;
+            progressText.textContent = `${Math.round(progressPct)}%`;
+
+            // Question Text
+            questionText.textContent = q.question;
+
+            // Hint Reset
+            hintBox.classList.add('hidden');
+            hintBox.textContent = q.hint;
+            hintBtnText.textContent = "Show Hint / Root Word Clue";
+
+            // Options Rendering
+            optionsContainer.innerHTML = '';
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = `option-btn w-full text-left p-4 rounded-2xl text-sm sm:text-base font-medium flex items-center justify-between transition-all cursor-pointer`;
+                
+                const isSelected = selectedAnswers[currentIdx] === idx;
+                const isAnswered = answeredStatus[currentIdx];
+
+                if (isAnswered) {
+                    btn.disabled = true;
+                    if (idx === q.correct) {
+                        btn.classList.add('option-correct');
+                    } else if (isSelected && idx !== q.correct) {
+                        btn.classList.add('option-incorrect');
+                    } else {
+                        btn.style.opacity = "0.6";
+                    }
+                } else {
+                    if (isSelected) {
+                        btn.classList.add('option-selected');
+                    }
+                }
+
+                btn.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="w-7 h-7 rounded-xl bg-[#E9DDF8] text-[#30205D] text-xs font-bold flex items-center justify-center shrink-0 border border-[#DCCBF2]">
+                            ${String.fromCharCode(65 + idx)}
+                        </span>
+                        <span>${opt}</span>
+                    </div>
+                    ${isAnswered && idx === q.correct ? '<span class="text-xs font-bold px-2 py-1 bg-white/80 rounded-md">Correct ✓</span>' : ''}
+                    ${isAnswered && isSelected && idx !== q.correct ? '<span class="text-xs font-bold px-2 py-1 bg-white/80 rounded-md">Your Answer ✗</span>' : ''}
+                `;
+
+                if (!isAnswered) {
+                    btn.onclick = () => selectOption(idx);
+                }
+
+                optionsContainer.appendChild(btn);
+            });
+
+            // Explanation Box
+            if (answeredStatus[currentIdx]) {
+                explanationBox.classList.remove('hidden');
+                const isCorrect = selectedAnswers[currentIdx] === q.correct;
+                explanationBox.className = `mt-4 p-4 rounded-2xl border transition-all ${isCorrect ? 'bg-[#E6F4EA]/60 border-[#34A853]/40 text-[#137333]' : 'bg-[#FCE8E6]/60 border-[#EA4335]/40 text-[#C5221F]'}`;
+                explanationBox.innerHTML = `
+                    <div class="flex items-center gap-2 font-bold mb-1">
+                        <span>${isCorrect ? '🎉 Correct!' : '❌ Incorrect!'}</span>
+                    </div>
+                    <div class="text-xs sm:text-sm leading-relaxed text-[#30205D]">
+                        ${q.explanation}
+                    </div>
+                `;
+            } else {
+                explanationBox.classList.add('hidden');
+            }
+
+            // Navigation button states
+            prevBtn.disabled = currentIdx === 0;
+            nextBtn.textContent = currentIdx === quizData.length - 1 ? 'Finish 🏁' : 'Next →';
+            scoreDisplay.textContent = `${score} / ${quizData.length}`;
+            jumpInput.value = currentIdx + 1;
+        }
+
+        function selectOption(optionIndex) {
+            if (answeredStatus[currentIdx]) return;
+
+            selectedAnswers[currentIdx] = optionIndex;
+            answeredStatus[currentIdx] = true;
+
+            const q = quizData[currentIdx];
+            if (optionIndex === q.correct) {
+                score++;
+            }
+
+            scoreDisplay.textContent = `${score} / ${quizData.length}`;
+            loadQuestion();
+        }
+
+        function nextQuestion() {
+            if (currentIdx < quizData.length - 1) {
+                currentIdx++;
+                loadQuestion();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                alert(`Quiz Completed! Your Final Score: ${score} out of ${quizData.length}. You are now well-prepared for Indian competitive exams!`);
+            }
+        }
+
+        function prevQuestion() {
+            if (currentIdx > 0) {
+                currentIdx--;
+                loadQuestion();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function jumpToQuestion() {
+            const val = parseInt(jumpInput.value);
+            if (!isNaN(val) && val >= 1 && val <= quizData.length) {
+                currentIdx = val - 1;
+                loadQuestion();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                alert(`Please enter a valid question number between 1 and ${quizData.length}.`);
+            }
+        }
+
+        function toggleHint() {
+            hintBox.classList.toggle('hidden');
+            if (!hintBox.classList.contains('hidden')) {
+                hintBtnText.textContent = "Hide Hint";
+            } else {
+                hintBtnText.textContent = "Show Hint / Root Word Clue";
+            }
+        }
+
+        function resetQuiz() {
+            if (confirm("Are you sure you want to reset the quiz? All progress and scores will be cleared.")) {
+                currentIdx = 0;
+                score = 0;
+                selectedAnswers = new Array(quizData.length).fill(null);
+                answeredStatus = new Array(quizData.length).fill(false);
+                loadQuestion();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // Keyboard Navigation Support
+        document.addEventListener('keydown', (e) => {
+            // Do not trigger if typing in input fields
+            if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
+                if (e.key === 'Enter') {
+                    jumpToQuestion();
+                }
+                return;
+            }
+
+            if (e.key === 'ArrowLeft') {
+                prevQuestion();
+            } else if (e.key === 'ArrowRight') {
+                nextQuestion();
+            }
+        });
+
+        // Initialize Quiz on load
+        window.onload = () => {
+            loadQuestion();
+        };
+    </script>
+</body>
+</html>

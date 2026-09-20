@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haryana GK Interactive Quiz - 80 Questions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+<style id="cosmic-readable-quiz-theme">
+:root{--space:#e8dcff;--panel:#f3eaff;--panel2:#dcc6ff;--edge:#6a45bf;--glow:#d28b28;--accent:#d15f9f;--ink:#2c1b4d;--muted:#66547c;--mist:rgba(106,69,191,.2)}html{background:var(--space)}body{background:radial-gradient(ellipse 62% 45% at 90% -5%,rgba(209,95,159,.28),transparent 62%),radial-gradient(ellipse 55% 40% at 8% 100%,rgba(65,164,207,.26),transparent 64%),var(--space)!important;color:var(--ink)!important;min-height:100vh}body:before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.78;background-image:radial-gradient(circle at 9% 18%,var(--glow) 0 1px,transparent 1.7px),radial-gradient(circle at 26% 69%,var(--edge) 0 .8px,transparent 1.5px),radial-gradient(circle at 68% 24%,var(--accent) 0 1px,transparent 1.8px),radial-gradient(circle at 88% 73%,#47a8d3 0 .8px,transparent 1.5px);background-size:220px 190px,300px 270px,260px 230px,340px 310px;z-index:-1}header{background:linear-gradient(105deg,var(--panel),var(--panel2))!important;border-color:rgba(106,69,191,.25)!important;box-shadow:0 7px 24px rgba(84,48,142,.14)!important}header h1{color:var(--edge)!important;text-shadow:none!important}header p,header .text-slate-400,header .text-indigo-200,header .text-indigo-300{color:var(--muted)!important}main>div,#quiz-card,.bg-slate-800,.bg-slate-900,.bg-indigo-900,.bg-indigo-950{background:linear-gradient(145deg,#f8f0ff,var(--panel))!important;border-color:rgba(106,69,191,.22)!important;color:var(--ink)!important;box-shadow:0 14px 35px rgba(84,48,142,.12)!important}.bg-slate-700,.bg-slate-100,.bg-slate-50{background:#eadffd!important;color:var(--ink)!important}.text-slate-100,.text-slate-200,.text-slate-300,.text-slate-400,.text-white,.text-slate-800,.text-slate-700,.text-slate-600{color:var(--ink)!important}.text-indigo-400,.text-indigo-300,.text-emerald-400,.text-yellow-300{color:var(--edge)!important}.border-slate-700,.border-slate-700\/60,.border-indigo-700,.border-slate-200{border-color:rgba(106,69,191,.25)!important}button:not(.bg-green-600):not(.bg-red-600){background:#f9f2ff!important;color:var(--ink)!important;border:1px solid rgba(106,69,191,.25)!important;box-shadow:0 3px 10px rgba(84,48,142,.09)!important}button.bg-indigo-600,button.bg-slate-800,button.bg-slate-900,button.bg-indigo-900{background:linear-gradient(120deg,var(--edge),var(--accent))!important;color:#fff!important;border:0!important}button.bg-indigo-600 *,button.bg-slate-800 *,button.bg-slate-900 *,button.bg-indigo-900 *{color:#fff!important}button:hover{filter:brightness(1.04);transform:translateY(-1px)}input,select,textarea{background:#f9f2ff!important;border-color:rgba(106,69,191,.35)!important;color:var(--ink)!important}input:focus,select:focus,textarea:focus{outline:none!important;border-color:var(--edge)!important;box-shadow:0 0 0 3px var(--mist)!important}.bg-indigo-500,#progress-bar{background:linear-gradient(90deg,var(--edge),var(--accent),var(--glow))!important}.rounded-2xl{border-radius:1.25rem!important}
+</style></head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between">
+    <!-- Header -->
+    <header class="bg-indigo-700 text-white shadow-md py-4 px-6">
+        <div class="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center">
+            <h1 class="text-xl font-bold">हरियाणा सामान्य ज्ञान (HR GK) - Mega Quiz (80 Qs)</h1>
+            <div id="score-display" class="mt-2 sm:mt-0 bg-indigo-800 px-3 py-1 rounded-full text-sm font-semibold">
+                Score: 0 / 80
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Quiz Container -->
+    <main class="max-w-2xl w-full mx-auto p-4 sm:p-6 my-auto">
+        <!-- Progress Bar -->
+        <div class="w-full bg-slate-200 rounded-full h-2.5 mb-6">
+            <div id="progress-bar" class="bg-indigo-600 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+        </div>
+
+        <div id="quiz-card" class="bg-white rounded-xl shadow-lg p-6 relative border border-slate-100">
+            <!-- Question Meta -->
+            <div class="flex justify-between items-center text-xs text-slate-500 mb-3 font-semibold uppercase tracking-wider">
+                <span id="question-counter">Question 1 of 80</span>
+                <span id="source-tag" class="bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded">Page 1</span>
+            </div>
+
+            <!-- Question Text -->
+            <h2 id="question-text" class="text-lg sm:text-xl font-bold text-slate-900 mb-4"></h2>
+
+            <!-- Options List -->
+            <div id="options-container" class="space-y-3 mb-6"></div>
+
+            <!-- Hint Section -->
+            <div class="mb-4">
+                <button onclick="toggleHint()" class="text-xs text-indigo-600 hover:text-indigo-800 font-medium underline focus:outline-none">
+                    💡 संकेत देखें / View Hint
+                </button>
+                <div id="hint-box" class="hidden mt-2 p-3 bg-amber-50 border border-amber-200 text-amber-800 text-sm rounded-lg"></div>
+            </div>
+
+            <!-- Explanation Section -->
+            <div id="explanation-box" class="hidden mb-6 p-4 bg-emerald-50 border border-emerald-200 text-emerald-900 text-sm rounded-lg">
+                <h4 class="font-bold mb-1">व्याख्या / Rationale:</h4>
+                <p id="explanation-text"></p>
+            </div>
+
+            <!-- Navigation Controls -->
+            <div class="flex flex-wrap justify-between items-center gap-2 pt-4 border-t border-slate-100">
+                <button id="prev-btn" onclick="prevQuestion()" class="px-4 py-2 bg-slate-200 text-slate-700 rounded-lg font-medium hover:bg-slate-300 transition disabled:opacity-50">
+                    ← पिछला / Prev
+                </button>
+                
+                <div class="flex items-center space-x-2">
+                    <span class="text-xs text-slate-500">Jump to:</span>
+                    <input type="number" id="jump-input" min="1" max="80" class="w-16 px-2 py-1 text-center border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" onchange="jumpToQuestion(this.value)">
+                </div>
+
+                <button id="next-btn" onclick="nextQuestion()" class="px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition">
+                    अगला / Next →
+                </button>
+            </div>
+        </div>
+
+        <!-- Completion Modal / Screen -->
+        <div id="completion-screen" class="hidden bg-white rounded-xl shadow-lg p-8 text-center">
+            <h2 class="text-2xl font-bold text-slate-900 mb-2">🎉 Quiz Completed!</h2>
+            <p id="final-score-text" class="text-lg text-slate-600 mb-6"></p>
+            <button onclick="restartQuiz()" class="px-6 py-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition">
+                पुनः आरंभ करें / Restart Quiz
+            </button>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-4 text-xs text-slate-400">
+        Interactive Haryana GK Quiz Application &copy; 2026
+    </footer>
+
+    <script>
+        // 80 Unique Questions Dataset (40 from Page 1, 40 from Page 2)
+        const questions = [
+            // --- PAGE 1 QUESTIONS (1 to 40) ---
+            {
+                page: "Page 1",
+                question: "भूपेन्द्र सीमेंट्स उद्योग हरियाणा में कहाँ पर स्थित है और इसकी स्थापना किस वर्ष हुई थी? / Where is Bhupendra Cement Industry located in Haryana and in which year was it established?",
+                options: ["सूरजपुर, पंचकूला (1937)", "बल्लभगढ़, फरीदाबाद (1945)", "राई, सोनीपत (1951)", "बावल, रेवाड़ी (1960)"],
+                answer: 0,
+                hint: "इसकी स्थापना पटियाला के राजा भूपेन्द्र सिंह द्वारा की गई थी।",
+                explanation: "भूपेन्द्र सीमेंट्स उद्योग सूरजपुर, पंचकूला में 1937 में पटियाला के राजा भूपेन्द्र सिंह द्वारा स्थापित किया गया था।"
+            },
+            {
+                page: "Page 1",
+                question: "भूपेन्द्र सीमेंट्स उद्योग, सूरजपुर (पंचकूला) की स्थापना किसके द्वारा की गई थी? / Bhupendra Cements Industry, Surajpur (Panchkula) was established by whom?",
+                options: ["राजा नाहर सिंह", "पटियाला के राजा भूपेन्द्र सिंह", "राव तुलाराम", "चौधरी छोटू राम"],
+                answer: 1,
+                hint: "उनके नाम पर ही उद्योग का नाम रखा गया है।",
+                explanation: "इस उद्योग की स्थापना पटियाला के राजा भूपेन्द्र सिंह द्वारा 1937 में की गई थी।"
+            },
+            {
+                page: "Page 1",
+                question: "इनमें से कौन सा उद्योग महेन्द्रगढ़ जिले से संबंधित **नहीं** है? / Which of the following industries is NOT related to Mahendragarh district?",
+                options: ["गैर ब्रांडेड चप्पल उद्योग", "लाख की चूड़ी उद्योग", "एटलस साइकिल उद्योग", "सबमर्सिबल पम्प उद्योग"],
+                answer: 2,
+                hint: "एटलस उद्योग सोनीपत जिले से संबंधित है।",
+                explanation: "एटलस उद्योग सोनीपत में स्थित है, जबकि गैर ब्रांडेड चप्पल, लाख की चूड़ी और सबमर्सिबल पम्प उद्योग महेन्द्रगढ़ के प्रमुख उद्योग हैं।"
+            },
+            {
+                page: "Page 1",
+                question: "राज्य के किस जिले में चन्द्रयान के उपकरणों का निर्माण किया गया है? / In which district of the state has Chandrayaan equipment been manufactured?",
+                options: ["गुरुग्राम", "महेन्द्रगढ़", "फरीदाबाद", "रोहतक"],
+                answer: 1,
+                hint: "यह जिला दक्षिण हरियाणा में स्थित है और इसके प्रमुख उद्योगों में मिक्सी-कम-ग्राइंडर शामिल है।",
+                explanation: "नोट के अनुसार, चन्द्रयान के उपकरणों का निर्माण महेन्द्रगढ़ जिले में किया गया है।"
+            },
+            {
+                page: "Page 1",
+                question: "महेन्द्रगढ़ जिले के संबंध में निम्नलिखित में से कौन सा उद्योग सत्य है? / Which of the following industries is true regarding Mahendragarh district?",
+                options: ["सिलाई मशीन उद्योग", "गलीचा व दरी उद्योग", "डबल रोटी इकाइयां", "उपर्युक्त सभी"],
+                answer: 3,
+                hint: "महेन्द्रगढ़ में कई छोटे और मध्यम उद्योग हैं।",
+                explanation: "महेन्द्रगढ़ में सिलाई मशीन, गलीचा व दरी, डबल रोटी इकाइयां, मिक्सी-कम-ग्राइंडर और सबमर्सिबल पम्प उद्योग संचालित हैं।"
+            },
+            {
+                page: "Page 1",
+                question: "प्रसिद्ध एटलस उद्योग हरियाणा में कहाँ स्थापित किया गया था और कब? / Where was the famous Atlas industry established in Haryana and when?",
+                options: ["सोनीपत - 1951", "फरीदाबाद - 1960", "गुरुग्राम - 1984", "अम्बाला - 1970"],
+                answer: 0,
+                hint: "यह जिला परांठे और शिक्षा के लिए भी प्रसिद्ध है, यहाँ 1951 में एटलस उद्योग लगा।",
+                explanation: "सोनीपत में एटलस उद्योग की स्थापना 1951 में की गई थी।"
+            },
+            {
+                page: "Page 1",
+                question: "मिल्टन उद्योग हरियाणा के किस जिले में स्थित है? / Milton industry is located in which district of Haryana?",
+                options: ["पानीपत", "सोनीपत", "कुरुक्षेत्र", "जिंद"],
+                answer: 1,
+                hint: "यह एटलस उद्योग वाले जिले में ही स्थित है।",
+                explanation: "मिल्टन उद्योग सोनीपत जिले में स्थित है।"
+            },
+            {
+                page: "Page 1",
+                question: "हॉर्लिक्स का कारखाना हरियाणा में कहाँ स्थित है? / Where is the Horlicks factory located in Haryana?",
+                options: ["खेड़ा गांव, सोनीपत", "साहा गांव, अम्बाला", "मानेसर, गुरुग्राम", "बरही, गन्नौर"],
+                answer: 0,
+                hint: "यह सोनीपत जिले के एक विशिष्ट ग्राम में है।",
+                explanation: "हॉर्लिक्स का कारखाना सोनीपत के खेड़ा गांव में स्थित है।"
+            },
+            {
+                page: "Page 1",
+                question: "भार तोलने वाली मशीन (Weighing Machine) उद्योग हरियाणा में कहाँ स्थित है? / Weighing machine industry is located where in Haryana?",
+                options: ["सोनीपत", "फरीदाबाद", "रेवाड़ी", "पंचकूला"],
+                answer: 0,
+                hint: "यह सोनीपत के प्रमुख औद्योगिक उपक्रमों में शामिल है।",
+                explanation: "भार तोलने वाली मशीन उद्योग सोनीपत जिले में स्थित है।"
+            },
+            {
+                page: "Page 1",
+                question: "प्रसिद्ध शराब उद्योग (Liquor Industry) मूरथल हरियाणा के किस जिले के अंतर्गत आता है? / The famous liquor industry Murthal falls under which district of Haryana?",
+                options: ["पानीपत", "सोनीपत", "करनाल", "रोहतक"],
+                answer: 1,
+                hint: "मूरथल अपने ढाबों के लिए भी दुनियाभर में प्रसिद्ध है जो सोनीपत में है।",
+                explanation: "मूरथल सोनीपत जिले के अंतर्गत आता है जहाँ शराब उद्योग भी स्थित है।"
+            },
+            {
+                page: "Page 1",
+                question: "याकुल्ट डानोने इण्डिया प्रा. लि. हरियाणा में कहाँ स्थित है? / Yakult Danone India Pvt. Ltd. is located where in Haryana?",
+                options: ["साहा गांव", "खेड़ा गांव", "बरही", "मूरथल"],
+                answer: 0,
+                hint: "यह अंबाला जिले के अंतर्गत आने वाला साहा गांव है।",
+                explanation: "याकुल्ट डानोने इण्डिया प्रा. लि. साहा गांव में स्थित है।"
+            },
+            {
+                page: "Page 1",
+                question: "रेल कोच फैक्ट्री हरियाणा में कहाँ स्थापित की गई है? / Where has the Rail Coach Factory been established in Haryana?",
+                options: ["बराही, गन्नौर (सोनीपत)", "मानेसर (गुरुग्राम)", "बावल (रेवाड़ी)", "सूरजपुर (पंचकूला)"],
+                answer: 0,
+                hint: "यह सोनीपत जिले के गन्नौर क्षेत्र के अंतर्गत बराही में है।",
+                explanation: "रेल कोच फैक्ट्री बराही, गन्नौर (सोनीपत) में स्थापित की गई है।"
+            },
+            {
+                page: "Page 1",
+                question: "ब्रअरिज और बीएमटी औद्योगिक इकाई हरियाणा में कहाँ स्थित है? / Where are the breweries and BMT industrial units located in Haryana?",
+                options: ["गन्नौर", "फर्रुखनगर", "बल्लभगढ़", "मानेसर"],
+                answer: 0,
+                hint: "यह सोनीपत जिले के अंतर्गत गन्नौर तहसील में आती है।",
+                explanation: "ब्रअरिज और बीएमटी औद्योगिक इकाई गन्नौर में स्थित हैं।"
+            },
+            {
+                page: "Page 1",
+                question: "एस्कॉर्ट उद्योग (1960-61) की स्थापना हरियाणा में किसके द्वारा की गई थी? / Escorts industry (1960-61) was established in Haryana by whom?",
+                options: ["के.सी. लखानी", "हरि नन्दा व यूडी नन्दा", "राजा भूपेन्द्र सिंह", "राजेश जैन"],
+                answer: 1,
+                hint: "इन्होंने फरीदाबाद में एस्कॉर्ट्स की नींव रखी थी।",
+                explanation: "एस्कॉर्ट उद्योग की स्थापना 1960-61 में हरि नन्दा व यूडी नन्दा द्वारा फरीदाबाद में की गई थी।"
+            },
+            {
+                page: "Page 1",
+                question: "जेसीबी इण्डिया लि. (JCB India Ltd.) मुख्य रूप से हरियाणा के किस जिले में स्थित है? / JCB India Ltd. is primarily located in which district of Haryana?",
+                options: ["फरीदाबाद", "गुरुग्राम", "सोनीपत", "रेवाड़ी"],
+                answer: 0,
+                hint: "यह औद्योगिक नगरी फरीदाबाद में स्थित है।",
+                explanation: "जेसीबी इण्डिया लि. फरीदाबाद जिले में स्थित है।"
+            },
+            {
+                page: "Page 1",
+                question: "प्लास्टिक उद्योग और कृषि यन्त्र उद्योग के लिए हरियाणा का कौन सा जिला प्रमुख है? / Which district of Haryana is prominent for plastic industry and agricultural equipment industry?",
+                options: ["फरीदाबाद", "अम्बाला", "जींद", "सिरसा"],
+                answer: 0,
+                hint: "यहाँ एस्कॉर्ट्स और जेसीबी जैसे उद्योग भी हैं।",
+                explanation: "प्लास्टिक उद्योग और कृषि यन्त्र उद्योग फरीदाबाद जिले के प्रमुख उद्योग हैं।"
+            },
+            {
+                page: "Page 1",
+                question: "लखानी जूता उद्योग की स्थापना 1966 में किसके द्वारा की गई थी? / Lakhani shoe industry was established in 1966 by whom?",
+                options: ["के.सी. लखानी", "यूडी नन्दा", "राजेश जैन", "हरि नन्दा"],
+                answer: 0,
+                hint: "उनके नाम पर ही लखानी ब्रांड बना है।",
+                explanation: "लखानी जूता उद्योग की स्थापना 1966 में के.सी. लखानी द्वारा फरीदाबाद में की गई थी।"
+            },
+            {
+                page: "Page 1",
+                question: "प्रसिद्ध बाटा जूता उद्योग की स्थापना फरीदाबाद में किस वर्ष हुई थी? / In which year was the famous Bata shoe industry established in Faridabad?",
+                options: ["1951", "1966", "1978", "1984"],
+                answer: 0,
+                hint: "यह सोनीपत के एटलस उद्योग (1951) के स्थापना वर्ष के समान है।",
+                explanation: "बाटा जूता उद्योग की स्थापना 1951 में फरीदाबाद में हुई थी।"
+            },
+            {
+                page: "Page 1",
+                question: "यामाहा बाइक और राजदूत मोटरसाइकिल उद्योग हरियाणा में कहाँ स्थित हैं? / Yamaha bike and Rajdoot motorcycle industries are located where in Haryana?",
+                options: ["फरीदाबाद", "गुरुग्राम", "रेवाड़ी", "रोहतक"],
+                answer: 0,
+                hint: "यह जिला एनसीआर के तहत भारी उद्योगों के लिए जाना जाता है।",
+                explanation: "यामाहा बाइक और राजदूत मोटरसाइकिल उद्योग फरीदाबाद में स्थित हैं।"
+            },
+            {
+                page: "Page 1",
+                question: "मंगलयान के उपकरणों का निर्माण राज्य के किस जिले में किया गया था? / The equipment for Mangalyaan was manufactured in which district of the state?",
+                options: ["फरीदाबाद", "महेन्द्रगढ़", "पंचकूला", "गुरुग्राम"],
+                answer: 0,
+                hint: "चन्द्रयान का निर्माण महेन्द्रगढ़ में हुआ, जबकि मंगलयान का फरीदाबाद में।",
+                explanation: "नोट के अनुसार, मंगलयान के उपकरणों का निर्माण फरीदाबाद जिले में किया गया था।"
+            },
+            {
+                page: "Page 1",
+                question: "देश के कुल वैज्ञानिक उपकरणों का कितना प्रतिशत अकेला अम्बाला जिला निर्मित करता है? / What percentage of the country's total scientific instruments are manufactured by Ambala district alone?",
+                options: ["30-35%", "10-15%", "50-55%", "70-75%"],
+                answer: 0,
+                hint: "इसे 'साइंटिफिक सिटी' भी कहा जाता है और यहाँ 30-35% उपकरण बनते हैं।",
+                explanation: "अम्बाला जिला देश के कुल वैज्ञानिक उपकरणों का 30-35% निर्माण करता है, इसीलिए इसे वैज्ञानिक उपकरण उद्योग के लिए जाना जाता है।"
+            },
+            {
+                page: "Page 1",
+                question: "वैज्ञानिक उपकरण उद्योग के अलावा अम्बाला में कौन सा अन्य उद्योग पाया जाता है? / Apart from scientific instrument industry, which other industry is found in Ambala?",
+                options: ["गैस स्टोव उद्योग", "मिक्सी-कम-ग्राइंडर उद्योग", "सिलाई मशीन उद्योग", "उपर्युक्त सभी"],
+                answer: 3,
+                hint: "अम्बाला में कई छोटे घरेलू उपकरण उद्योग भी हैं।",
+                explanation: "अम्बाला में गैस स्टोव, मिक्सी-कम-ग्राइंडर, सबमर्सिबल पम्प, सिलाई मशीन और गलीचा व दरी उद्योग भी पाए जाते हैं।"
+            },
+            {
+                page: "Page 1",
+                question: "रेवाड़ी जिले का कौन सा जूता/जूती उद्योग बहुत प्रसिद्ध है? / Which shoe/jooti industry of Rewari district is very famous?",
+                options: ["टिल्ला जूता/जूती उद्योग", "लखानी जूता उद्योग", "बाटा जूता उद्योग", "नन-ब्रांडेड चप्पल उद्योग"],
+                answer: 0,
+                hint: "यह रेवाड़ी की पारंपरिक शिल्पकला से जुड़ा है।",
+                explanation: "रेवाड़ी का टिल्ला जूता/जूती उद्योग बहुत प्रसिद्ध है।"
+            },
+            {
+                page: "Page 1",
+                question: "कांस्य व पीतल बर्तन उद्योग के लिए हरियाणा का कौन सा जिला प्रसिद्ध है? / Which district of Haryana is famous for bronze and brass utensils industry?",
+                options: ["रेवाड़ी", "अम्बाला", "सोनीपत", "महेन्द्रगढ़"],
+                answer: 0,
+                hint: "इसे 'पीतल नगरी' भी कहा जाता है।",
+                explanation: "कांस्य व पीतल बर्तन उद्योग रेवाड़ी जिले का प्रमुख उद्योग है।"
+            },
+            {
+                page: "Page 1",
+                question: "हर्ले डेविसन बाइक उद्योग हरियाणा में कहाँ से संबंधित है? / Harley Davidson bike industry is related to where in Haryana?",
+                options: ["रेवाड़ी", "गुरुग्राम", "फरीदाबाद", "सोनीपत"],
+                answer: 0,
+                hint: "यह रेवाड़ी के औद्योगिक परिदृश्य में उल्लेखित है।",
+                explanation: "हर्ले डेविसन बाईक उद्योग रेवाड़ी जिले से संबंधित है।"
+            },
+            {
+                page: "Page 1",
+                question: "हीरो होंडा मोटर्स लिमिटेड, मालपुरा (रेवाड़ी) की स्थापना किस वर्ष हुई थी? / Hero MotoCorp Ltd., Malpura (Rewari) was established in which year?",
+                options: ["1986-87", "1991-92", "1978-79", "2001-02"],
+                answer: 0,
+                hint: "इस प्लांट में 100 मिलियन से अधिक बाइकों का निर्माण हुआ है।",
+                explanation: "हीरो होंडा मोटर्स लि. की स्थापना मालपुरा (रेवाड़ी) में 1986-87 में हुई थी, जहाँ 100 मिलियन बाइकों का निर्माण हुआ।"
+            },
+            {
+                page: "Page 1",
+                question: "हीरो होंडा गुरुग्राम की स्थापना किस तिथि को हुई थी? / Hero MotoCorp Gurugram was established on which date?",
+                options: ["19 जनवरी, 1984", "14 दिसंबर, 1983", "28 फरवरी, 1978", "19 फरवरी, 1981"],
+                answer: 0,
+                hint: "यह वर्ष 1984 का जनवरी माह है।",
+                explanation: "हीरो होंडा गुरुग्राम की स्थापना 19 जनवरी, 1984 को हुई थी।"
+            },
+            {
+                page: "Page 1",
+                question: "मारुति सूज़ुकी उद्योग गुरुग्राम में कब स्थापित हुआ और इसकी प्रथम कार की बिक्री कब हुई? / When was Maruti Suzuki industry established in Gurugram and when was its first car sold?",
+                options: ["स्थापना: फरवरी 1981, बिक्री: 14 दिसंबर 1983", "स्थापना: जनवरी 1984, बिक्री: 19 जनवरी 1986", "स्थापना: 1978, बिक्री: 1980", "स्थापना: 1994, बिक्री: 1996"],
+                answer: 0,
+                hint: "स्थापना 1981 में हुई और बिक्री दिसंबर 1983 में।",
+                explanation: "मारुति सूज़ुकी उद्योग की स्थापना फरवरी 1981 में हुई तथा इसकी प्रथम कार की बिक्री 14 दिसंबर, 1983 को हुई।"
+            },
+            {
+                page: "Page 1",
+                question: "ओरियंट कम्पनी उद्योग गुरुग्राम में कब स्थापित किया गया था? / Orient Company industry was established in Gurugram when?",
+                options: ["28 फरवरी, 1978", "19 जनवरी, 1984", "1994-95", "1997"],
+                answer: 0,
+                hint: "यह 1970 के दशक के अंत का है (फरवरी माह)।",
+                explanation: "ओरियंट कम्पनी उद्योग की स्थापना गुरुग्राम में 28 फरवरी, 1978 को की गई थी।"
+            },
+            {
+                page: "Page 1",
+                question: "विप्रो लिमिटेड (Wipro Ltd.) का उद्योग गुरुग्राम में किस वर्ष स्थापित हुआ? / Wipro Ltd. industry was established in Gurugram in which year?",
+                options: ["1994-95", "2001-02", "1961", "1976"],
+                answer: 0,
+                hint: "यह नब्बे के दशक के मध्य का काल है।",
+                explanation: "विप्रो लि. उद्योग गुरुग्राम में 1994-95 में स्थापित हुआ।"
+            },
+            {
+                page: "Page 1",
+                question: "गुरुग्राम में सॉफ्टवेयर उद्योग मुख्य रूप से किस प्रमुख अमेरिकी कंपनी द्वारा स्थापित किया गया है? / Software industry in Gurugram is primarily established by which major company?",
+                options: ["आईबीएम (IBM)", "माइक्रोसॉफ्ट", "गूगल", "ओरेकल"],
+                answer: 0,
+                hint: "यह दुनिया की दिग्गज आईटी कंपनियों में से एक है जिसका शॉर्टकट IBM है।",
+                explanation: "गुरुग्राम में सॉफ्टवेयर उद्योग आईबीएम (IBM) कम्पनी द्वारा स्थापित किया गया है।"
+            },
+            {
+                page: "Page 1",
+                question: "जेनपैवट (Genpact) कम्पनी उद्योग गुरुग्राम में किस वर्ष स्थापित हुआ? / Genpact company industry was established in Gurugram in which year?",
+                options: ["1997", "1961", "1976", "2001"],
+                answer: 0,
+                hint: "यह विप्रो (1994-95) के कुछ वर्ष बाद का है।",
+                explanation: "जेनपैवट कम्पनी उद्योग गुरुग्राम में 1997 में स्थापित हुआ था।"
+            },
+            {
+                page: "Page 1",
+                question: "टीसीएस (TCS) और कैनन (Canon) कम्पनियों के प्रमुख उद्योग हरियाणा में कहाँ स्थित हैं? / Major industries of TCS and Canon companies are located where in Haryana?",
+                options: ["गुरुग्राम", "फरीदाबाद", "सोनीपत", "अम्बाला"],
+                answer: 0,
+                hint: "यह हरियाणा का फाइनेंशियल और आईटी हब है।",
+                explanation: "टीसीएस और कैनन कम्पनियों के उद्योग गुरुग्राम में स्थित हैं।"
+            },
+            {
+                page: "Page 1",
+                question: "रेनबेक्सी लैबोरेट्रीज कम्पनी उद्योग गुरुग्राम में किस वर्ष स्थापित हुआ? / Ranbaxy Laboratories company industry was established in Gurugram in which year?",
+                options: ["1961", "1976", "1997", "1981"],
+                answer: 0,
+                hint: "यह साठ के दशक (1961) का है।",
+                explanation: "रेनबेक्सी लैबोरेट्रीज कम्पनी उद्योग गुरुग्राम में 1961 में स्थापित हुआ था।"
+            },
+            {
+                page: "Page 1",
+                question: "इली-लिली इण्डिया प्रा. लि. उद्योग गुरुग्राम में किस वर्ष स्थापित किया गया? / Eli Lilly India Pvt. Ltd. industry was established in Gurugram in which year?",
+                options: ["1976", "1961", "1994", "2002"],
+                answer: 0,
+                hint: "यह सत्तर के दशक का मध्यम वर्ष है।",
+                explanation: "इली-लिली इण्डिया प्रा. लि. उद्योग गुरुग्राम में 1976 में स्थापित किया गया था।"
+            },
+            {
+                page: "Page 1",
+                question: "सोना कोयो (Sona Koyo) उद्योग गुरुग्राम में किस मुख्य ऑटो पार्ट्स के लिए प्रसिद्ध है? / Sona Koyo industry in Gurugram is famous for which main auto part?",
+                options: ["स्टेयरिंग गेयर (Steering Gear)", "शॉक आब्जर्वर (Shock Absorber)", "नट-बोल्ट", "टायर और ट्यूब"],
+                answer: 0,
+                hint: "यह वाहनों को मोड़ने की प्रणाली से जुड़ा है।",
+                explanation: "सोना कोयो उद्योग स्टेयरिंग गेयर बनाने वाली एक प्रमुख कम्पनी है।"
+            },
+            {
+                page: "Page 1",
+                question: "मित्सुबिशी इलैक्ट्रॉनिक ऑटोमोटिव उद्योग गुरुग्राम में किस वर्ष स्थापित हुआ? / Mitsubishi Electronic Automotive industry was established in Gurugram in which year?",
+                options: ["2001-02", "1994-95", "1986-87", "1978-79"],
+                answer: 0,
+                hint: "यह इक्कीसवीं सदी की शुरुआत का है।",
+                explanation: "मित्सुबिशी इलैक्ट्रॉनिक ऑटोमोटिव उद्योग गुरुग्राम में 2001-02 में स्थापित हुआ।"
+            },
+            {
+                page: "Page 1",
+                question: "मुंजाल शोवा लि. (Munjal Showa Ltd.) उद्योग गुरुग्राम में क्या निर्माण करता है? / What does Munjal Showa Ltd. industry manufacture in Gurugram?",
+                options: ["शॉक आब्जर्वर (Shock Absorber)", "स्टेयरिंग गेयर", "वैज्ञानिक उपकरण", "टिल्ला जूतियाँ"],
+                answer: 0,
+                hint: "यह वाहनों में झटकों को रोकने के लिए प्रयोग होता है।",
+                explanation: "मुंजाल शोवा लि. उद्योग टू व्हीलर व फोर व्हीलर वाहनों में प्रयुक्त शॉक आब्जर्वर का निर्माण करता है।"
+            },
+            {
+                page: "Page 1",
+                question: "नमक उद्योग हरियाणा में मुख्य रूप से कहाँ स्थित है? / Salt industry is mainly located where in Haryana?",
+                options: ["फर्रुखनगर (गुरुग्राम)", "मूरथल (सोनीपत)", "बावल (रेवाड़ी)", "साहा (अम्बाला)"],
+                answer: 0,
+                hint: "यह गुरुग्राम जिले के अंतर्गत आने वाला ऐतिहासिक कस्बा है।",
+                explanation: "नमक उद्योग फर्रुखनगर (गुरुग्राम) में स्थित है।"
+            },
+            {
+                page: "Page 1",
+                question: "इनमें से कौन सा उद्योग गुरुग्राम जिले में स्थित **नहीं** है? / Which of the following industries is NOT located in Gurugram district?",
+                options: ["एटलस उद्योग", "मारुति सुजुकी उद्योग", "विप्रो लिमिटेड", "सोना कोयो उद्योग"],
+                answer: 0,
+                hint: "एटलस उद्योग सोनीपत में स्थित है।",
+                explanation: "एटलस उद्योग सोनीपत में है, जबकि मारुति, विप्रो और सोना कोयो गुरुग्राम में स्थित हैं।"
+            },
+
+            // --- PAGE 2 QUESTIONS (41 to 80) ---
+            {
+                page: "Page 2",
+                question: "चीनी मिट्टी उद्योग हरियाणा में कहाँ पर स्थित है? / Chinni Mitti industry is located where in Haryana?",
+                options: ["सिकंदपुर", "मूरथल", "बरही", "मालपुरा"],
+                answer: 0,
+                hint: "यह पृष्ठ 2 की शुरुआत में उल्लिखित स्थान है।",
+                explanation: "चीनी मिट्टी उद्योग सिकंदपुर में स्थित है।"
+            },
+            {
+                page: "Page 2",
+                question: "बनेटन समूह (Baneton Group) गुरुग्राम में किसके उत्पादन के लिए प्रसिद्ध है? / Baneton Group in Gurugram is famous for the production of what?",
+                options: ["जूते, बैग एवं कपड़े", "टायर और ट्यूब", "नट और बोल्ट", "वैज्ञानिक उपकरण"],
+                answer: 0,
+                hint: "यह पहनने और ले जाने की वस्तुओं से जुड़ा है।",
+                explanation: "बनेटन समूह गुरुग्राम में जूते, बैग एवं कपड़ों के उत्पादन के लिए प्रसिद्ध है।"
+            },
+            {
+                page: "Page 2",
+                question: "राज्य में ग्रामीण उद्योग जूट एवं कैन फर्नीचर की स्थापना कहाँ की गई है? / Rural industry jute & cane furniture has been established in the state at:",
+                options: ["फर्रुखनगर, गुरुग्राम", "राई, सोनीपत", "बावल, रेवाड़ी", "साहा, अम्बाला"],
+                answer: 0,
+                hint: "यह गुरुग्राम के नमक उद्योग वाले क्षेत्र में स्थापित है।",
+                explanation: "राज्य में ग्रामीण उद्योग जूट एवं कैन फर्नीचर की स्थापना फर्रुखनगर, गुरुग्राम में की गई है।"
+            },
+            {
+                page: "Page 2",
+                question: "विस्फोटक पदार्थ काला पाउडर बनाने का कारखाना गुरुग्राम में कब और किसके द्वारा स्थापित किया गया था? / The explosive black powder manufacturing factory in Gurugram was established when and by whom?",
+                options: ["1802 - डुपोंट इण्डिया द्वारा", "1951 - एटलस द्वारा", "1966 - लखानी द्वारा", "1984 - हीरो होंडा द्वारा"],
+                answer: 0,
+                hint: "यह बहुत पुराना कारखाना है जो 19वीं शताब्दी की शुरुआत (1802) में बना।",
+                explanation: "विस्फोटक पदार्थ काला पाउडर बनाने का कारखाना गुरुग्राम में 1802 में डुपोंट इण्डिया द्वारा स्थापित किया गया था।"
+            },
+            {
+                page: "Page 2",
+                question: "रोज का मेव औद्योगिक एस्टेट हरियाणा में कहाँ स्थित है? / Roz-ka-Meo Industrial Estate is located where in Haryana?",
+                options: ["गुरुग्राम", "फरीदाबाद", "सोनीपत", "रोहतक"],
+                answer: 0,
+                hint: "यह गुरुग्राम जिले के अंतर्गत आता है।",
+                explanation: "रोज का मेव औद्योगिक एस्टेट गुरुग्राम में स्थित है।"
+            },
+            {
+                page: "Page 2",
+                question: "उत्तर भारत की पहली रिफाइंड चीनी का निर्माण करने वाली चीनी मिल कौन सी है? / Which is North India's first sugar mill manufacturing refined sugar?",
+                options: ["सहकारी चीनी मिल, भाली, आनन्दपुर (रोहतक)", "पानीपत सहकारी चीनी मिल", "कुरुक्षेत्र चीनी मिल", "सोनीपत चीनी मिल"],
+                answer: 0,
+                hint: "यह रोहतक जिले के भाली, आनन्दपुर में स्थित है।",
+                explanation: "रिफाइंड चीनी का निर्माण करने वाली उत्तर भारत की पहली चीनी मिल सहकारी चीनी मिल, भाली, आनन्दपुर, रोहतक है।"
+            },
+            {
+                page: "Page 2",
+                question: "गुड ईयर कम्पनी ने टायर व ट्यूव का कारखाना हरियाणा में कहाँ स्थापित किया है? / Good Year company has established its tyre and tube factory in Haryana at:",
+                options: ["बलरामगढ़ व फरीदाबाद", "खरखौदा व सोनीपत", "बावल व रेवाड़ी", "मानेसर व गुरुग्राम"],
+                answer: 0,
+                hint: "यह फरीदाबाद के अंतर्गत बलरामगढ़ क्षेत्र है।",
+                explanation: "गुड ईयर कम्पनी ने टायर व ट्यूव का कारखाना बलरामगढ़ व फरीदाबाद में स्थापित किया है।"
+            },
+            {
+                page: "Page 2",
+                question: "दुनिया का सबसे बड़ा फुटवीयर पार्क हरियाणा में कहाँ स्थापित किया गया है? / The world's largest footwear park has been established in Haryana at:",
+                options: ["खरखौदा, सोनीपत", "बावल, रेवाड़ी", "मानेसर, गुरुग्राम", "सुपरजपुर, पंचकूला"],
+                answer: 0,
+                hint: "यह सोनीपत जिले का एक प्रमुख औद्योगिक क्षेत्र है।",
+                explanation: "दुनिया का सबसे बड़ा फुटवीयर पार्क खरखौदा, सोनीपत में स्थापित किया गया है।"
+            },
+            {
+                page: "Page 2",
+                question: "हरियाणा के किस जिले में दोपहिया वाहनों का निर्माण सर्वाधिक होता है? / In which district of Haryana is the manufacturing of two-wheelers the highest?",
+                options: ["रेवाड़ी", "गुरुग्राम", "फरीदाबाद", "सोनीपत"],
+                answer: 0,
+                hint: "यहाँ हीरो होंडा का बड़ा प्लांट मालपुरा में है।",
+                explanation: "दोपहिया वाहनों का निर्माण हरियाणा में सर्वाधिक रेवाड़ी जिले में होता है।"
+            },
+            {
+                page: "Page 2",
+                question: "हरियाणा के किस जिले में चारपहिया वाहनों का निर्माण सर्वाधिक होता है? / In which district of Haryana is the manufacturing of four-wheelers the highest?",
+                options: ["गुरुग्राम", "रेवाड़ी", "फरीदाबाद", "सोनीपत"],
+                answer: 0,
+                hint: "मारुति सुजुकी का मुख्य केंद्र यहीं है।",
+                explanation: "चारपहिया वाहनों का निर्माण हरियाणा में सर्वाधिक गुरुग्राम जिले में होता है।"
+            },
+            {
+                page: "Page 2",
+                question: "राज्य की सबसे बड़ी औद्योगिक टाउनशिप 'ताउरू देवीलाल औद्योगिक टाउनशिप' (जहाँ 5000 घर बने हैं) कहाँ स्थापित है? / The state's largest industrial township 'Tawru Devilal Industrial Township' is established at:",
+                options: ["गुरुग्राम", "रेवाड़ी", "सोनीपत", "फरीदाबाद"],
+                answer: 0,
+                hint: "यह गुरुग्राम में स्थित विशाल टाउनशिप है।",
+                explanation: "राज्य की सबसे बड़ी औद्योगिक टाउनशिप ताउरू देवीलाल औद्योगिक टाउनशिप गुरुग्राम में स्थापित की गई है।"
+            },
+            {
+                page: "Page 2",
+                question: "रेवाड़ी के प्रमुख औद्योगिक क्षेत्र कौन से हैं? / What are the major industrial areas of Rewari?",
+                options: ["बावल व धारूहेड़ा", "राई व गन्नौर", "मानेसर व उद्योग विहार", "सूरजपुर व बरोली"],
+                answer: 0,
+                hint: "ये दोनों क्षेत्र रेवाड़ी के औद्योगिक विकास की रीढ़ हैं।",
+                explanation: "रेवाड़ी के प्रमुख औद्योगिक क्षेत्र बावल व धारूहेड़ा हैं।"
+            },
+            {
+                page: "Page 2",
+                question: "हॉर्लिक्स का उत्पादन हरियाणा में किस स्थान पर किया जाता है? / Horlicks production is done in Haryana at which place?",
+                options: ["खेड़ा ग्राम, सोनीपत", "साहा ग्राम, अम्बाला", "मानेसर, गुरुग्राम", "बरही, गन्नौर"],
+                answer: 0,
+                hint: "यह सोनीपत का खेड़ा ग्राम है।",
+                explanation: "हॉर्लिक्स का उत्पादन राज्य में खेड़ा ग्राम, सोनीपत में किया जाता है।"
+            },
+            {
+                page: "Page 2",
+                question: "सेंटर फ्रेश का कारखाना हरियाणा में कहाँ स्थित है और इसकी स्थापना कब हुई? / Center Fresh factory is located in Haryana where and was established when?",
+                options: ["मानेसर, 1992 (परफेटी वानमेल इण्डिया)", "सोनीपत, 1951 (एटलस)", "फरीदाबाद, 1960 (एस्कॉर्ट्स)", "गुरुग्राम, 1981 (मारुति)"],
+                answer: 0,
+                hint: "यह मानेसर में है और परफेटी वानमेल द्वारा 1992 में स्थापित हुआ।",
+                explanation: "सेंटर फ्रेश का कारखाना मानेसर में स्थित है जिसकी स्थापना 1992 में परफेटी वानमेल इण्डिया द्वारा की गई।"
+            },
+            {
+                page: "Page 2",
+                question: "राज्य में मारुति का तीसरा कारखाना कहाँ स्थापित किया जाएगा? / The third factory of Maruti in the state will be established at:",
+                options: ["खरखौदा (सोनीपत)", "मानेसर (गुरुग्राम)", "बावल (रेवाड़ी)", "बल्लभगढ़ (फरीदाबाद)"],
+                answer: 0,
+                hint: "पहला गुरुग्राम, दूसरा मानेसर और तीसरा खरखौदा में।",
+                explanation: "राज्य में मारुति का तीसरा कारखाना खरखौदा (सोनीपत) में स्थापित किया जाएगा (प्रथम गुरुग्राम, द्वितीय मानेसर)।"
+            },
+            {
+                page: "Page 2",
+                question: "राज्य में नट-बोल्ट बनाने वाली प्रसिद्ध एलपीपीएस बोसार्ड कम्पनी (LPS Bossard Company) कहाँ स्थित है और इसकी स्थापना कब हुई थी? / The famous nut-bolt manufacturing LPS Bossard Company is located where and established when?",
+                options: ["रोहतक, स्थापना - 1966 (नव भारत उद्योग के नाम से)", "गुरुग्राम, स्थापना - 1981", "फरीदाबाद, स्थापना - 1960", "सोनीपत, स्थापना - 1951"],
+                answer: 0,
+                hint: "यह रोहतक में स्थित है और पहले 'नव भारत उद्योग' थी।",
+                explanation: "एलपीपीएस बोसार्ड कम्पनी रोहतक में स्थित है जिसकी स्थापना 1966 में 'नव भारत उद्योग' के नाम से हुई थी।"
+            },
+            {
+                page: "Page 2",
+                question: "नव भारत उद्योग का नाम बदलकर 1969 में क्या कर दिया गया था? / Nav Bharat industry was renamed to what in 1969?",
+                options: ["एलपीपीएस बोसार्ड कम्पनी", "सोना कोयो कम्पनी", "माश ब्रेक्स उद्योग", "मुंजाल शोवा लि."],
+                answer: 0,
+                hint: "यह वर्तमान में रोहतक की प्रमुख नट-बोल्ट निर्माता है।",
+                explanation: "नव भारत उद्योग का नाम बदलकर 1969 में एलपीपीएस बोसार्ड कम्पनी कर दिया गया था।"
+            },
+            {
+                page: "Page 2",
+                question: "रोहतक की एलपीपीएस बोसार्ड कम्पनी के नट-बोल्ट का उपयोग मुख्य रूप से किस सेक्टर में 80 प्रतिशत होता है? / In which sector is 80 percent of the nuts and bolts of Rohtak's LPS Bossard Company used?",
+                options: ["ऑटो मोबाइल सेक्टर", "कपड़ा उद्योग", "कृषि उपकरण", "वैज्ञानिक उपकरण"],
+                answer: 0,
+                hint: "यह गाड़ियों और वाहनों के निर्माण से जुड़ा है।",
+                explanation: "रोहतक के नट-बोल्ट का उपयोग 80 प्रतिशत ऑटो मोबाइल सेक्टर में होता है।"
+            },
+            {
+                page: "Page 2",
+                question: "वर्तमान में एलपीपीएस बोसार्ड कम्पनी (रोहतक) का कारोबार कितने से अधिक का है? / Currently, the business of LPS Bossard Company (Rohtak) is more than how much?",
+                options: ["700 करोड़", "100 करोड़", "500 करोड़", "1000 करोड़"],
+                answer: 0,
+                hint: "यह सात सौ करोड़ रुपये से अधिक है।",
+                explanation: "वर्तमान में इस कम्पनी का कारोबार 700 करोड़ से अधिक का है।"
+            },
+            {
+                page: "Page 2",
+                question: "चान्द्रयान-3 के लिए डेढ़ लाख नट-बोल्ट हरियाणा के किस जिले की कम्पनी द्वारा निर्मित किए गए थे? / One and a half lakh nuts and bolts for Chandrayaan-3 were manufactured by a company in which district of Haryana?",
+                options: ["रोहतक (एलपीपीएस बोसार्ड)", "गुरुग्राम (सोना कोयो)", "फरीदाबाद (एस्कॉर्ट्स)", "सोनीपत (मिल्टन)"],
+                answer: 0,
+                hint: "यह रोहतक की नट-बोल्ट निर्माण कम्पनी है।",
+                explanation: "चान्द्रयान-3 के डेढ़ लाख नट-बोल्ट रोहतक स्थित एलपीपीएस बोसार्ड कम्पनी द्वारा निर्मित किए गए थे।"
+            },
+            {
+                page: "Page 2",
+                question: "रोहतक की कौन सी कम्पनी इजराइल के रक्षा और सैन्य क्षेत्र के लिए नट-बोल्ट की आपूर्ति करती है? / Which company of Rohtak supplies nuts and bolts for Israel's defense and military sector?",
+                options: ["एलपीपीएस बोसार्ड कम्पनी", "माश ब्रेक्स उद्योग", "धर्मों कैम्प्स कम्पनी", "जीको एयरफोन"],
+                answer: 0,
+                hint: "यह वही कंपनी है जो चंद्रयान-3 के लिए भी पुर्जे बनाती है।",
+                explanation: "यह कम्पनी (एलपीपीएस बोसार्ड कम्पनी, रोहतक) इजराइल के रक्षा और सैन्य क्षेत्र के लिए नट-बोल्ट की आपूर्ति भी करती है।"
+            },
+            {
+                page: "Page 2",
+                question: "भारतीय रेल के लिए ब्रेक बनाने वाली कम्पनी 'माश ब्रेक्स उद्योग' का सम्बन्ध राज्य के किस शहर से है? / The brake manufacturing company for Indian Railways 'Mash Brake industry' is related to which city of the state?",
+                options: ["बहादुरगढ़", "रोहतक", "रेवाड़ी", "सोनीपत"],
+                answer: 0,
+                hint: "यह झज्जर जिले के अंतर्गत आने वाला प्रमुख औद्योगिक शहर है।",
+                explanation: "भारतीय रेल के लिए ब्रेक बनाने वाली कम्पनी माश ब्रेक्स उद्योग का सम्बन्ध बहादुरगढ़ शहर से है।"
+            },
+            {
+                page: "Page 2",
+                question: "जीको एयरफोन, पुरी ऑइल मिल, स्वास्तिक पाइप, सुमंगला, सोमानी टाईल्स, सूर्या रोशनी उद्योग का सम्बन्ध हरियाणा के किस शहर से है? / Geeco Airfoil, Puri Oil Mill, Swastik Pipe, Sumangalam, Somany Tiles, Surya Roshni industry belong to which city of Haryana?",
+                options: ["बहादुरगढ़", "पानीपत", "अम्बाला", "करनाल"],
+                answer: 0,
+                hint: "इसे हरियाणा का प्रवेश द्वार भी कहा जाता है और यह बहादुरगढ़ है।",
+                explanation: "जीको एयरफोन, पुरी ऑइल मिल, स्वास्तिक पाइप, सुमंगला, सोमानी टाईल्स, सूर्या रोशनी उद्योग का सम्बन्ध बहादुरगढ़ शहर से है।"
+            },
+            {
+                page: "Page 2",
+                question: "चान्द्रयान-3 में प्रयुक्त बिजली की केबल का निर्माण कोसली (रेवाड़ी) में स्थित किस कम्पनी द्वारा किया गया था? / The electricity cable used in Chandrayaan-3 was manufactured by which company located in Kosli (Rewari)?",
+                options: ["धर्मों कैम्प्स कम्पनी", "माश ब्रेक्स उद्योग", "एलपीपीएस बोसार्ड कम्पनी", "सोना कोयो कम्पनी"],
+                answer: 0,
+                hint: "इस कम्पनी के नाम में 'धर्मों' शब्द आता है।",
+                explanation: "चान्द्रयान-3 में प्रयुक्त बिजली की केबल का निर्माण कोसली, रेवाड़ी में स्थित धर्मों कैम्प्स कम्पनी द्वारा किया गया था।"
+            },
+            {
+                page: "Page 2",
+                question: "आईटी पार्क (IT Park) हरियाणा में कहाँ स्थित है? / Where is the IT Park located in Haryana?",
+                options: ["गुरुग्राम", "पंचकूला", "मानेसर", "करनाल"],
+                answer: 0,
+                hint: "यह राज्य के प्रमुख नियोजित पार्कों में गुरुग्राम में है।",
+                explanation: "आईटी पार्क गुरुग्राम में स्थित है।"
+            },
+            {
+                page: "Page 2",
+                question: "प्रसिद्ध 'टेक्नोलॉजी पार्क' हरियाणा के किस शहर में स्थित है? / The famous 'Technology Park' is located in which city of Haryana?",
+                options: ["पंचकूला", "गुरुग्राम", "सोनीपत", "हिसार"],
+                answer: 0,
+                hint: "यह भूपेंद्र सीमेंट्स वाले पंचकूला जिले में है।",
+                explanation: "टेक्नोलॉजी पार्क पंचकूला में स्थित है।"
+            },
+            {
+                page: "Page 2",
+                question: "बायोटेक्नोलॉजी पार्क हरियाणा में कहाँ स्थित है? / Biotechnology Park is located where in Haryana?",
+                options: ["मानेसर", "साहा", "राई", "डबवाली"],
+                answer: 0,
+                hint: "यह मानेसर, गुरुग्राम के अंतर्गत आता है।",
+                explanation: "बायोटेक्नोलॉजी पार्क मानेसर में स्थित है।"
+            },
+            {
+                page: "Page 2",
+                question: "फुटवियर पार्क (Footwear Park) हरियाणा में कहाँ स्थापित किया गया है? / Footwear Park is established where in Haryana?",
+                options: ["करनाल", "सोनीपत", "रोहतक", "सिरसा"],
+                answer: 0,
+                hint: "यह करनाल जिले का प्रमुख नियोजित पार्क है।",
+                explanation: "फुटवियर पार्क करनाल में स्थित है (ध्यान दें: दुनिया का सबसे बड़ा फुटवीयर पार्क खरखौदा, सोनीपत में है)।"
+            },
+            {
+                page: "Page 2",
+                question: "ज्वैलरी पार्क हरियाणा में कहाँ स्थित है? / Jewellery Park is located where in Haryana?",
+                options: ["गढ़ी हसरू, गुरुग्राम", "साहा, अम्बाला", "राई, सोनीपत", "बावल, रेवाड़ी"],
+                answer: 0,
+                hint: "यह गुरुग्राम के गढ़ी हसरू क्षेत्र में है।",
+                explanation: "ज्वैलरी पार्क गढ़ी हसरू, गुरुग्राम में स्थित है।"
+            },
+            {
+                page: "Page 2",
+                question: "इनमें से किस स्थान पर फूड पार्क (Food Park) स्थित **नहीं** है? / At which of the following places is a Food Park NOT located?",
+                options: ["गुरुग्राम", "साहा (अम्बाला)", "राई (सोनीपत)", "डबवाली (सिरसा)"],
+                answer: 0,
+                hint: "फूड पार्क साहा, राई, नरवाना और डबवाली में हैं, गुरुग्राम में नहीं।",
+                explanation: "फूड पार्क साहा (अम्बाला), राई (सोनीपत), नरवाना (जींद) और डबवाली (सिरसा) में स्थित हैं, गुरुग्राम में फूड पार्क नहीं है।"
+            },
+            {
+                page: "Page 2",
+                question: "लेदर पार्क (Leather Park) हरियाणा में कहाँ स्थापित है? / Leather Park is established where in Haryana?",
+                options: ["खरखौदा", "बहादुरगढ़", "करनाल", "हिसार"],
+                answer: 0,
+                hint: "यह खरखौदा (सोनीपत) में है।",
+                explanation: "लेदर पार्क खरखौदा में स्थापित है।"
+            },
+            {
+                page: "Page 2",
+                question: "प्रस्तावित लेदर गार्मेंट पार्क हरियाणा में कहाँ बनाया जाना प्रस्तावित है? / Where is the proposed Leather Garment Park proposed to be built in Haryana?",
+                options: ["बहादुरगढ़", "खरखौदा", "गुरुग्राम", "पंचकूला"],
+                answer: 0,
+                hint: "यह बहादुरगढ़ शहर से संबंधित प्रस्तावित पार्क है।",
+                explanation: "लेदर गार्मेंट पार्क बहादुरगढ़ में प्रस्तावित है।"
+            },
+            {
+                page: "Page 2",
+                question: "फार्मा पार्क (Pharma Park) हरियाणा में कहाँ प्रस्तावित हैं? / Pharma Parks are proposed where in Haryana?",
+                options: ["करनाल व हिसार", "गुरुग्राम व फरीदाबाद", "सोनीपत व रोहतक", "अम्बाला व पंचकूला"],
+                answer: 0,
+                hint: "यह करनाल और हिसार जिलों के लिए प्रस्तावित है।",
+                explanation: "फार्मा पार्क करनाल व हिसार में प्रस्तावित हैं।"
+            },
+            {
+                page: "Page 2",
+                question: "रेडीमेड गार्मेंट पार्क हरियाणा में कहाँ स्थित है? / Ready-made Garment Park is located where in Haryana?",
+                options: ["गुरुग्राम", "बराही (सोनीपत)", "साहा (अम्बाला)", "डबवाली (सिरसा)"],
+                answer: 0,
+                hint: "यह गुरुग्राम का रेडीमेड गार्मेंट पार्क है।",
+                explanation: "रेडीमेड गार्मेंट पार्क गुरुग्राम में स्थित है।"
+            },
+            {
+                page: "Page 2",
+                question: "रेडीमेड गार्मेंट (परिधान) पार्क हरियाणा में कहाँ स्थित है? / Ready-made Garment (Apparel) Park is located where in Haryana?",
+                options: ["बराही (सोनीपत)", "गुरुग्राम", "करनाल", "हिसार"],
+                answer: 0,
+                hint: "यह सोनीपत के बराही क्षेत्र में है।",
+                explanation: "रेडीमेड गार्मेंट (परिधान) पार्क बराही (सोनीपत) में स्थित है।"
+            },
+            {
+                page: "Page 2",
+                question: "इनमें से कौन सा औद्योगिक पार्क और उसका स्थान सुमेलित **नहीं** है? / Which of the following industrial parks and its location is NOT correctly matched?",
+                options: ["टेक्नोलॉजी पार्क - गुरुग्राम", "बायोटेक्नोलॉजी पार्क - मानेसर", "आईटी पार्क - गुरुग्राम", "फुटवियर पार्क - करनाल"],
+                answer: 0,
+                hint: "टेक्नोलॉजी पार्क पंचकूला में है न कि गुरुग्राम में।",
+                explanation: "टेक्नोलॉजी पार्क पंचकूला में स्थित है, जबकि आईटी पार्क गुरुग्राम में, बायोटेक्नोलॉजी पार्क मानेसर में और फुटवियर पार्क करनाल में है।"
+            },
+            {
+                page: "Page 2",
+                question: "हरियाणा राज्य में नियोजित प्रमुख औद्योगिक पार्कों में से 'नारवाना' और 'डबवाली' में किसकी स्थापना की गई है? / Among the planned major industrial parks in Haryana, what has been established in 'Narwana' and 'Dabwali'?",
+                options: ["फूड पार्क (Food Park)", "लेदर पार्क", "फार्मा पार्क", "आईटी पार्क"],
+                answer: 0,
+                hint: "नारवाना (जींद) और डबवाली (सिरसा) में खाद्य प्रसंस्कृत पार्क हैं।",
+                explanation: "नारवाना (जींद) और डबवाली (सिरसा) में फूड पार्क स्थापित किए गए हैं।"
+            },
+            {
+                page: "Page 2",
+                question: "इनमें से कौन सा शहर हरियाणा में रेलवे के ब्रेक और कई प्रसिद्ध पाइप/टाइल्स उद्योगों के लिए जाना जाता है? / Which of these cities in Haryana is known for railway brakes and several famous pipe/tile industries?",
+                options: ["बहादुरगढ़", "फर्रुखनगर", "मूरथल", "साहा"],
+                answer: 0,
+                hint: "यह माश ब्रेक्स और सोमानी टाइल्स का केंद्र है।",
+                explanation: "बहादुरगढ़ शहर रेलवे के ब्रेक (माश ब्रेक्स) तथा सोमानी टाइल्स, सूर्या रोशनी आदि उद्योगों के लिए जाना जाता है।"
+            },
+            {
+                page: "Page 2",
+                question: "हरियाणा के किस जिले में ग्रामीण उद्योग के तहत जूट एवं कैन फर्नीचर की स्थापना की गई थी? / In which district of Haryana was jute and cane furniture established under rural industry?",
+                options: ["गुरुग्राम (फर्रुखनगर)", "सोनीपत (खरखौदा)", "रेवाड़ी (बावल)", "रोहतक (भाली)"],
+                answer: 0,
+                hint: "यह फर्रुखनगर, गुरुग्राम में स्थापित है।",
+                explanation: "गुरुग्राम के फर्रुखनगर में ग्रामीण उद्योग के तहत जूट एवं कैन फर्नीचर की स्थापना की गई है।"
+            },
+            {
+                page: "Page 2",
+                question: "हरियाणा के औद्योगिक परिदृश्य के संदर्भ में 'राजेश जैन' किस कम्पनी के मैनेजिंग डायरेक्टर (एमडी) के रूप में उल्लेखित हैं? / In the context of Haryana's industrial landscape, 'Rajesh Jain' is mentioned as the Managing Director (MD) of which company?",
+                options: ["एलपीपीएस बोसार्ड कम्पनी, रोहतक", "सोना कोयो उद्योग, गुरुग्राम", "एस्कॉर्ट्स उद्योग, फरीदाबाद", "एटलस उद्योग, सोनीपत"],
+                answer: 0,
+                hint: "यह रोहतक की नट-बोल्ट निर्माता कंपनी है।",
+                explanation: "श्री राजेश जैन रोहतक की एलपीपीएस बोसार्ड कम्पनी (पूर्व में नव भारत उद्योग) के मैनेजिंग डायरेक्टर (एमडी) हैं।"
+            }
+        ];
+
+        let currentIdx = 0;
+        let score = 0;
+        let answered = new Array(questions.length).fill(false);
+        let userAnswers = new Array(questions.length).fill(null);
+
+        const questionCounter = document.getElementById('question-counter');
+        const sourceTag = document.getElementById('source-tag');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const hintBox = document.getElementById('hint-box');
+        const explanationBox = document.getElementById('explanation-box');
+        const explanationText = document.getElementById('explanation-text');
+        const scoreDisplay = document.getElementById('score-display');
+        const progressBar = document.getElementById('progress-bar');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const jumpInput = document.getElementById('jump-input');
+        const quizCard = document.getElementById('quiz-card');
+        const completionScreen = document.getElementById('completion-screen');
+
+        function loadQuestion() {
+            const q = questions[currentIdx];
+            questionCounter.innerText = `Question ${currentIdx + 1} of ${questions.length}`;
+            sourceTag.innerText = q.page;
+            questionText.innerText = q.question;
+            jumpInput.value = currentIdx + 1;
+
+            // Reset hint and explanation
+            hintBox.classList.add('hidden');
+            hintBox.innerText = q.hint;
+            explanationBox.classList.add('hidden');
+            explanationText.innerText = q.explanation;
+
+            // Render options
+            optionsContainer.innerHTML = '';
+            q.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left p-3.5 rounded-lg border text-sm sm:text-base font-medium transition flex justify-between items-center ${getOptionStyle(index, q.answer)}`;
+                btn.innerText = `${String.fromCharCode(65 + index)}. ${opt}`;
+                
+                if (answered[currentIdx]) {
+                    btn.disabled = true;
+                } else {
+                    btn.onclick = () => selectOption(index);
+                }
+                optionsContainer.appendChild(btn);
+            });
+
+            // Update navigation buttons
+            prevBtn.disabled = currentIdx === 0;
+            nextBtn.innerText = currentIdx === questions.length - 1 ? 'समाप्त / Finish →' : 'अगला / Next →';
+
+            // Update Progress Bar
+            const progress = ((currentIdx + 1) / questions.length) * 100;
+            progressBar.style.width = `${progress}%`;
+            scoreDisplay.innerText = `Score: ${score} / ${questions.length}`;
+        }
+
+        function getOptionStyle(index, correctIndex) {
+            if (!answered[currentIdx]) {
+                return 'bg-white border-slate-200 hover:bg-slate-50 text-slate-700 cursor-pointer';
+            }
+            if (index === correctIndex) {
+                return 'bg-emerald-100 border-emerald-400 text-emerald-900 font-semibold';
+            }
+            if (index === userAnswers[currentIdx] && index !== correctIndex) {
+                return 'bg-rose-100 border-rose-400 text-rose-900';
+            }
+            return 'bg-white border-slate-200 text-slate-400 opacity-60';
+        }
+
+        function selectOption(index) {
+            if (answered[currentIdx]) return;
+            answered[currentIdx] = true;
+            userAnswers[currentIdx] = index;
+
+            if (index === questions[currentIdx].answer) {
+                score++;
+            }
+
+            explanationBox.classList.remove('hidden');
+            loadQuestion();
+        }
+
+        function toggleHint() {
+            hintBox.classList.toggle('hidden');
+        }
+
+        function nextQuestion() {
+            if (currentIdx < questions.length - 1) {
+                currentIdx++;
+                loadQuestion();
+            } else {
+                showCompletion();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentIdx > 0) {
+                currentIdx--;
+                loadQuestion();
+            }
+        }
+
+        function jumpToQuestion(val) {
+            let num = parseInt(val);
+            if (num >= 1 && num <= questions.length) {
+                currentIdx = num - 1;
+                loadQuestion();
+            } else {
+                jumpInput.value = currentIdx + 1;
+            }
+        }
+
+        function showCompletion() {
+            quizCard.classList.add('hidden');
+            completionScreen.classList.remove('hidden');
+            document.getElementById('final-score-text').innerText = `You scored ${score} out of ${questions.length} (${Math.round((score/questions.length)*100)}%)`;
+        }
+
+        function restartQuiz() {
+            currentIdx = 0;
+            score = 0;
+            answered.fill(false);
+            userAnswers.fill(null);
+            completionScreen.classList.add('hidden');
+            quizCard.classList.remove('hidden');
+            loadQuestion();
+        }
+
+        // Initialize quiz on load
+        loadQuestion();
+    </script>
+<script src="../../quiz-question-controls.js"></script>
+<script src="../../quiz-app-ui-v2.js"></script></body>
+</html>

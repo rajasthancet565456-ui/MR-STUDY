@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Haryana GK Interactive Quiz (Bilingual)</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+<style id="cosmic-readable-quiz-theme">
+:root{--space:#e8dcff;--panel:#f3eaff;--panel2:#dcc6ff;--edge:#6a45bf;--glow:#d28b28;--accent:#d15f9f;--ink:#2c1b4d;--muted:#66547c;--mist:rgba(106,69,191,.2)}html{background:var(--space)}body{background:radial-gradient(ellipse 62% 45% at 90% -5%,rgba(209,95,159,.28),transparent 62%),radial-gradient(ellipse 55% 40% at 8% 100%,rgba(65,164,207,.26),transparent 64%),var(--space)!important;color:var(--ink)!important;min-height:100vh}body:before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.78;background-image:radial-gradient(circle at 9% 18%,var(--glow) 0 1px,transparent 1.7px),radial-gradient(circle at 26% 69%,var(--edge) 0 .8px,transparent 1.5px),radial-gradient(circle at 68% 24%,var(--accent) 0 1px,transparent 1.8px),radial-gradient(circle at 88% 73%,#47a8d3 0 .8px,transparent 1.5px);background-size:220px 190px,300px 270px,260px 230px,340px 310px;z-index:-1}header{background:linear-gradient(105deg,var(--panel),var(--panel2))!important;border-color:rgba(106,69,191,.25)!important;box-shadow:0 7px 24px rgba(84,48,142,.14)!important}header h1{color:var(--edge)!important;text-shadow:none!important}header p,header .text-slate-400,header .text-indigo-200,header .text-indigo-300{color:var(--muted)!important}main>div,#quiz-card,.bg-slate-800,.bg-slate-900,.bg-indigo-900,.bg-indigo-950{background:linear-gradient(145deg,#f8f0ff,var(--panel))!important;border-color:rgba(106,69,191,.22)!important;color:var(--ink)!important;box-shadow:0 14px 35px rgba(84,48,142,.12)!important}.bg-slate-700,.bg-slate-100,.bg-slate-50{background:#eadffd!important;color:var(--ink)!important}.text-slate-100,.text-slate-200,.text-slate-300,.text-slate-400,.text-white,.text-slate-800,.text-slate-700,.text-slate-600{color:var(--ink)!important}.text-indigo-400,.text-indigo-300,.text-emerald-400,.text-yellow-300{color:var(--edge)!important}.border-slate-700,.border-slate-700\/60,.border-indigo-700,.border-slate-200{border-color:rgba(106,69,191,.25)!important}button:not(.bg-green-600):not(.bg-red-600){background:#f9f2ff!important;color:var(--ink)!important;border:1px solid rgba(106,69,191,.25)!important;box-shadow:0 3px 10px rgba(84,48,142,.09)!important}button.bg-indigo-600,button.bg-slate-800,button.bg-slate-900,button.bg-indigo-900{background:linear-gradient(120deg,var(--edge),var(--accent))!important;color:#fff!important;border:0!important}button.bg-indigo-600 *,button.bg-slate-800 *,button.bg-slate-900 *,button.bg-indigo-900 *{color:#fff!important}button:hover{filter:brightness(1.04);transform:translateY(-1px)}input,select,textarea{background:#f9f2ff!important;border-color:rgba(106,69,191,.35)!important;color:var(--ink)!important}input:focus,select:focus,textarea:focus{outline:none!important;border-color:var(--edge)!important;box-shadow:0 0 0 3px var(--mist)!important}.bg-indigo-500,#progress-bar{background:linear-gradient(90deg,var(--edge),var(--accent),var(--glow))!important}.rounded-2xl{border-radius:1.25rem!important}
+</style></head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col font-sans">
+
+  <!-- Header -->
+  <header class="bg-slate-800 border-b border-slate-700 p-4 sticky top-0 z-50 shadow-md">
+    <div class="max-w-4xl mx-auto flex flex-wrap justify-between items-center gap-2">
+      <div>
+        <h1 class="text-xl font-bold text-amber-400">Haryana GK Exam Quiz / हरियाणा जी.के. क्विज</h1>
+        <p class="text-xs text-slate-400">Based on Source Images 1 & 2 (Questions 1112 to 1199)</p>
+      </div>
+      <div class="flex items-center gap-3">
+        <span class="text-sm bg-slate-700 px-3 py-1 rounded-full border border-slate-600">
+          Score: <strong id="score-counter" class="text-emerald-400">0</strong> / <span id="total-answered">0</span>
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="flex-1 max-w-4xl w-full mx-auto p-4 flex flex-col justify-between">
+    
+    <!-- Top Progress & Controls Bar -->
+    <div class="mb-4 bg-slate-800 p-3 rounded-lg border border-slate-700 flex flex-wrap justify-between items-center gap-3">
+      <div class="flex items-center gap-2">
+        <span class="text-sm font-semibold text-slate-300">Question <span id="current-q-num">1</span> of <span id="total-q-num">88</span></span>
+      </div>
+
+      <!-- Jump to Question Input -->
+      <div class="flex items-center gap-2">
+        <label for="jump-input" class="text-xs text-slate-400">Jump to:</label>
+        <input type="number" id="jump-input" min="1" max="88" placeholder="#" class="w-16 bg-slate-900 border border-slate-600 rounded px-2 py-1 text-xs text-center text-white focus:outline-none focus:border-amber-400">
+        <button id="jump-btn" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-semibold px-2 py-1 rounded text-xs transition">Go</button>
+      </div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="w-full bg-slate-700 h-2 rounded-full mb-6 overflow-hidden">
+      <div id="progress-bar" class="bg-amber-400 h-full w-0 transition-all duration-300"></div>
+    </div>
+
+    <!-- Question Card -->
+    <div class="bg-slate-800 border border-slate-700 rounded-xl p-5 md:p-6 shadow-xl mb-6 flex-1 flex flex-col justify-between">
+      
+      <div>
+        <!-- Bilingual Question Statement -->
+        <div class="mb-6">
+          <div id="q-text-en" class="text-lg md:text-xl font-medium text-slate-100 mb-2">Loading question...</div>
+          <div id="q-text-hi" class="text-base md:text-lg text-amber-300 font-sans">लोड हो रहा है...</div>
+        </div>
+
+        <!-- Hint Button & Box -->
+        <div class="mb-4">
+          <button id="hint-btn" class="text-xs text-amber-400 hover:text-amber-300 underline focus:outline-none flex items-center gap-1">
+            <span>💡 Show Hint / संकेत देखें</span>
+          </button>
+          <div id="hint-box" class="hidden mt-2 p-3 bg-amber-950/40 border border-amber-800/50 rounded-lg text-xs text-amber-200">
+            <!-- Dynamic Hint -->
+          </div>
+        </div>
+
+        <!-- Options Grid -->
+        <div id="options-container" class="grid grid-cols-1 gap-3 my-4">
+          <!-- Dynamic Options rendered via JavaScript -->
+        </div>
+      </div>
+
+      <!-- Rationale / Explanation Box -->
+      <div id="explanation-box" class="hidden mt-6 p-4 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300">
+        <div class="font-bold text-amber-400 mb-1 flex items-center gap-1">
+          <span>📚 Rationale / विस्तृत व्याख्या:</span>
+        </div>
+        <p id="explanation-text"></p>
+      </div>
+
+    </div>
+
+    <!-- Bottom Navigation Controls -->
+    <div class="flex justify-between items-center gap-4">
+      <button id="prev-btn" class="bg-slate-700 hover:bg-slate-600 disabled:opacity-40 disabled:cursor-not-allowed text-white font-medium px-5 py-2.5 rounded-lg transition flex items-center gap-1">
+        ‹ Previous
+      </button>
+      <button id="next-btn" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-6 py-2.5 rounded-lg transition flex items-center gap-1">
+        Next ›
+      </button>
+    </div>
+
+  </main>
+
+  <!-- JavaScript Codebase -->
+  <script>
+    // Exhaustive Question Dataset extracted from Image 1 (Q1112 to Q1155) and Image 2 (Q1156 to Q1199)
+    const rawDataset = [
+      // PAGE 1 (44 Questions: 1112 - 1155)
+      {
+        id: 1112,
+        en: "What is the name of the Anti-Romeo squad organized in Haryana?",
+        hi: "हरियाणा में आयोजित एंटी-रोमियो दस्ते का नाम क्या है?",
+        opts: ["Operation Durga", "Operation Shakti", "Operation Lakshmi", "Operation Beti"],
+        ans: "Operation Durga",
+        hint_en: "Named after the goddess of courage.",
+        hint_hi: "देवी दुर्गा के नाम पर आधारित।",
+        exp: "Operation Durga was launched by Haryana Police to prevent harassment against women."
+      },
+      {
+        id: 1113,
+        en: "Which district in Haryana receives the minimum rainfall?",
+        hi: "सबसे कम वर्षा प्राप्त करने वाला हरियाणा का जिला कौन-सा है?",
+        opts: ["Sirsa", "Ambala", "Panchkula", "Yamunanagar"],
+        ans: "Sirsa",
+        hint_en: "Westernmost district of Haryana.",
+        hint_hi: "हरियाणा का सबसे पश्चिमी जिला।",
+        exp: "Sirsa district receives the lowest annual rainfall in the state of Haryana."
+      },
+      {
+        id: 1114,
+        en: "In which district of Haryana was the new Plastic Park established?",
+        hi: "नया प्लास्टिक पार्क हरियाणा के किस जिले में स्थापित किया गया?",
+        opts: ["Panipat", "Karnal", "Sonipat", "Faridabad"],
+        ans: "Panipat",
+        hint_en: "City of weavers.",
+        hint_hi: "बुनकरों का शहर।",
+        exp: "The new Plastic Park in Haryana has been established in Panipat."
+      },
+      {
+        id: 1115,
+        en: "In which year was Dr. Raghuvendra Tanwar awarded the Padma Shri?",
+        hi: "'डॉ. रघुवेन्द्र तंवर' को पद्मश्री कब दिया गया?",
+        opts: ["2022", "2020", "2021", "2023"],
+        ans: "2022",
+        hint_en: "Honored in the year 2022.",
+        hint_hi: "वर्ष 2022 में सम्मानित।",
+        exp: "Historian Dr. Raghuvendra Tanwar received the Padma Shri award in 2022."
+      },
+      {
+        id: 1116,
+        en: "In which year did weightlifter Karnam Malleswari win a Bronze medal in the Olympics?",
+        hi: "भारोत्तोलन में मल्लेश्वरी ने किस वर्ष सिडनी ओलम्पिक में कांस्य पदक जीता था?",
+        opts: ["2000", "1996", "2004", "2008"],
+        ans: "2000",
+        hint_en: "Sydney Olympic Games year.",
+        hint_hi: "सिडनी ओलंपिक का वर्ष।",
+        exp: "Karnam Malleswari won the Bronze medal at the Sydney Olympics in 2000."
+      },
+      {
+        id: 1117,
+        en: "Who built the garden named Aaram-e-Kausar in Narnaul?",
+        hi: "नारनौल के आराम-ए-कौसर नामक गार्डन का निर्माण ..... ने करवाया था?",
+        opts: ["Shah Quli Khan", "Ibrahim Khan", "Shah Jahan", "Balban"],
+        ans: "Shah Quli Khan",
+        hint_en: "Governor of Narnaul during Mughal rule.",
+        hint_hi: "मुगल काल में नारनौल का गवर्नर।",
+        exp: "Shah Quli Khan constructed the Aaram-e-Kausar garden in Narnaul."
+      },
+      {
+        id: 1118,
+        en: "Where is Shaheed Hasan Khan Mewati Medical College located?",
+        hi: "शहीद हसन खान मेवाती मेडिकल कॉलेज कहाँ स्थित है?",
+        opts: ["Nalhar (Mewat)", "Mandikhera", "Palwal", "Nuh"],
+        ans: "Nalhar (Mewat)",
+        hint_en: "Situated in Nalhar valley.",
+        hint_hi: "नलहड़ घाटी में स्थित।",
+        exp: "Shaheed Hasan Khan Mewati Government Medical College is located at Nalhar, Mewat."
+      },
+      {
+        id: 1119,
+        en: "Which Haryanvi city was historically named Jaintapuri (Jayantipuri)?",
+        hi: "हरियाणा के किस शहर का नाम जैनतापुरी (जयंतीपुरी) था?",
+        opts: ["Jind", "Jagadhri", "Jhajjar", "Jindabad"],
+        ans: "Jind",
+        hint_en: "Heart of Haryana.",
+        hint_hi: "जयंती देवी के नाम से बसा शहर।",
+        exp: "Jind was originally called Jayantipuri after the temple of Goddess Jayanti."
+      },
+      {
+        id: 1120,
+        en: "Where was India's first synthetic rubber plant established?",
+        hi: "देश का पहला कृत्रिम रबड़ संयंत्र कहाँ स्थापित किया गया?",
+        opts: ["Panipat", "Gurugram", "Faridabad", "Hisar"],
+        ans: "Panipat",
+        hint_en: "Set up in Panipat Petrochemical hub.",
+        hint_hi: "पानीपत में।",
+        exp: "India's first synthetic rubber plant was set up at Panipat, Haryana."
+      },
+      {
+        id: 1121,
+        en: "In which state is the Kalyanpur-Badalpara coal block located, which supplies coal to Haryana power plants?",
+        hi: "हरियाणा राज्य के शक्ति संयंत्रों को कोयला आपूर्ति हेतु आबंटित कल्याणपुर-बादलपरा कोयला ब्लॉक किस राज्य में हैं?",
+        opts: ["Jharkhand", "Chhattisgarh", "Odisha", "Bihar"],
+        ans: "Jharkhand",
+        hint_en: "Mineral-rich eastern Indian state.",
+        hint_hi: "झारखंड राज्य।",
+        exp: "The Kalyanpur-Badalpara coal block allocated to Haryana thermal plants is in Jharkhand."
+      },
+      {
+        id: 1122,
+        en: "Surajkund is believed to have been built in which century?",
+        hi: "यह माना जाता है कि सूरजकुंड ..... शताब्दी में बनाया गया था।",
+        opts: ["10th Century", "8th Century", "12th Century", "14th Century"],
+        ans: "10th Century",
+        hint_en: "Built by Tomar ruler Surajpal.",
+        hint_hi: "दसवीं शताब्दी।",
+        exp: "Surajkund reservoir was built in the 10th century by Tomar King Surajpal."
+      },
+      {
+        id: 1123,
+        en: "In which part of Haryana are the flood plains (Baad ke Maidan) located?",
+        hi: "हरियाणा के ........ भाग में बाढ़ का मैदान स्थित है?",
+        opts: ["Eastern Part (Purvi Bhag)", "Western Part", "Southern Part", "Central Part"],
+        ans: "Eastern Part (Purvi Bhag)",
+        hint_en: "Along the Yamuna river basin.",
+        hint_hi: "पूर्वी भाग (यमुना क्षेत्र)।",
+        exp: "The flood plains in Haryana are primarily located in the eastern region along the Yamuna river."
+      },
+      {
+        id: 1124,
+        en: "Who led the 1857 revolt in Pataudi?",
+        hi: "1857 के विद्रोह दौरान पटौदी को नेतृत्व कौन कर रहा था?",
+        opts: ["Akbar Ali", "Nahar Singh", "Rao Tula Ram", "Ahmed Ali"],
+        ans: "Akbar Ali",
+        hint_en: "Leader named Akbar Ali.",
+        hint_hi: "अकबर अली।",
+        exp: "Akbar Ali led the uprising against British forces in Pataudi during the 1857 Revolt."
+      },
+      {
+        id: 1125,
+        en: "What was the ancient name of Narnaul?",
+        hi: "नारनौल का प्राचीन नगर का नाम ............ था।",
+        opts: ["Nandigram", "Nardhak", "Narnagr", "Navrashtra"],
+        ans: "Nandigram",
+        hint_en: "Also associated with Nanrashtra / Nandigram.",
+        hint_hi: "नंदीग्राम।",
+        exp: "Nandigram is documented as the ancient name of Narnaul."
+      },
+      {
+        id: 1126,
+        en: "Captain Hawa Singh, Asian Games gold medalist in 1966 & 1970, was associated with which sport?",
+        hi: "एशियाई खेलों 1966 और 1970 के स्वर्ण पदक विजेता कैप्टन हवा सिंह का सम्बन्ध किस खेल से है?",
+        opts: ["Boxing", "Wrestling", "Athletics", "Kabaddi"],
+        ans: "Boxing",
+        hint_en: "Heavyweight ring combat.",
+        hint_hi: "मुक्केबाजी (बॉक्सिंग)।",
+        exp: "Captain Hawa Singh was a legendary Indian boxer from Bhiwani."
+      },
+      {
+        id: 1127,
+        en: "Dhamtan Sahib Gurdwara is located in which district?",
+        hi: "धमतान साहिब गुरुद्वारा किस जिले में स्थित है?",
+        opts: ["Jind", "Kaithal", "Sirsa", "Ambala"],
+        ans: "Jind",
+        hint_en: "Located in Narwana tehsil of Jind.",
+        hint_hi: "जींद जिले में स्थित।",
+        exp: "Gurdwara Dhamtan Sahib is located at Dhamtan Sahib village in Jind district."
+      },
+      {
+        id: 1128,
+        en: "What is the name of the Bhiwani poet who authored 'Shyam Satsai'?",
+        hi: "श्याम सतसई लिखने वाले भिवानी के कवि का नाम क्या है?",
+        opts: ["Tulsidas Sharma Dinesh", "Udaybhanu Hans", "Pandit Neki Ram", "Madhav Kaushik"],
+        ans: "Tulsidas Sharma Dinesh",
+        hint_en: "Poet Dinesh.",
+        hint_hi: "तुलसीदास शर्मा 'दिनेश'।",
+        exp: "'Shyam Satsai' was authored by the renowned poet Tulsidas Sharma Dinesh from Bhiwani."
+      },
+      {
+        id: 1129,
+        en: "Who is the author of the short story collection 'Jin Khoja Tin Paaiya'?",
+        hi: "लघु कथाओं के एक संग्रह 'जिन खोजा तिन पाईया' पुस्तक के लेखक का नाम क्या है?",
+        opts: ["Ayodhya Prasad Goyaliya", "Jainarayan Verma", "Bhim Sen", "Raghunath Sharma"],
+        ans: "Ayodhya Prasad Goyaliya",
+        hint_en: "Famous Haryanvi writer Goyaliya.",
+        hint_hi: "अयोध्या प्रसाद गोलिया।",
+        exp: "Ayodhya Prasad Goyaliya wrote the short story compilation 'Jin Khoja Tin Paaiya'."
+      },
+      {
+        id: 1130,
+        en: "Which assembly term is ongoing in Haryana in 2025/2026?",
+        hi: "हरियाणा में अब 2025 में विधानसभा का कौन सा कार्यकाल चल रहा है?",
+        opts: ["15th Legislative Assembly", "14th Legislative Assembly", "16th Legislative Assembly", "13th Legislative Assembly"],
+        ans: "15th Legislative Assembly",
+        hint_en: "15th Assembly.",
+        hint_hi: "15वीं विधानसभा।",
+        exp: "The 15th Haryana Legislative Assembly was constituted following the state elections."
+      },
+      {
+        id: 1131,
+        en: "Relics of which empire's existence were found at Sugh archaeological site?",
+        hi: "सुघ पुरातात्विक स्थल में कौन से काल के अस्तित्व का प्रमाण मिला है?",
+        opts: ["Mauryan Period", "Gupta Period", "Vedic Period", "Harappan Period"],
+        ans: "Mauryan Period",
+        hint_en: "Era of King Ashoka.",
+        hint_hi: "मौर्य काल।",
+        exp: "Archaeological excavations at Sugh (Yamunanagar) confirmed evidence from the Mauryan period."
+      },
+      {
+        id: 1132,
+        en: "Which three cities are collectively known as the 'Tricity'?",
+        hi: "किन तीन को ट्राईसिटी कहा जाता है?",
+        opts: ["Panchkula, Chandigarh, Mohali", "Ambala, Panchkula, Chandigarh", "Gurugram, Delhi, Noida", "Hisar, Sirsa, Fatehabad"],
+        ans: "Panchkula, Chandigarh, Mohali",
+        hint_en: "Panchkula (HR), Chandigarh (UT), Mohali (PB).",
+        hint_hi: "पंचकुला, चंडीगढ़, मोहाली।",
+        exp: "The urban agglomeration of Chandigarh, Panchkula, and Mohali is called the Tricity."
+      },
+      {
+        id: 1133,
+        en: "Which scholar called Maharaja Surajmal the 'Plato of the Jat Tribe'?",
+        hi: "किस विद्वान ने महाराज सूरजमल को जाट जनजाति का प्लेटो कहा था?",
+        opts: ["J.N. Sarkar", "Vincent Smith", "Dasharatha Sharma", "R.C. Majumdar"],
+        ans: "J.N. Sarkar",
+        hint_en: "Historian Sir J.N. Sarkar.",
+        hint_hi: "जे.एन. सरकार।",
+        exp: "Jadunath Sarkar (J.N. Sarkar) described Maharaja Surajmal as the 'Plato of the Jat Tribe'."
+      },
+      {
+        id: 1134,
+        en: "Who wrote the romantic Sufi poem 'Vikat Kahani'?",
+        hi: "बिकट कहानी सूफी कार्य की एक रोमांटिक कविता किसके द्वारा लिखी गयी थी?",
+        opts: ["Muhammad Afzal", "Ghulam Qadir", "Shah Qamis", "Sheikh Chilli"],
+        ans: "Muhammad Afzal",
+        hint_en: "Poet Afzal of Panipat.",
+        hint_hi: "मोहम्मद अफजल।",
+        exp: "The Sufi work 'Vikat Kahani' was written by the 17th-century poet Muhammad Afzal."
+      },
+      {
+        id: 1135,
+        en: "The name of which town was changed to Ballabgarh by the Haryana Environment Department?",
+        hi: "हरियाणा पर्यावरण विभाग किस शहर का नाम बदलकर बलरामगढ़ कर दिया गया?",
+        opts: ["Ballabhgarh", "Bahadurgarh", "Gurugram", "Yamunanagar"],
+        ans: "Ballabhgarh",
+        hint_en: "Industrial town in Faridabad.",
+        hint_hi: "बल्लभगढ़।",
+        exp: "The town of Ballabhgarh in Faridabad was officially renamed Balramgarh."
+      },
+      {
+        id: 1136,
+        en: "Who wrote the ghazal collection 'Aainon ke Shehar mein'?",
+        hi: "गजल संग्रह 'आईनों के शहर में' किसने लिखा है?",
+        opts: ["Madhav Kaushik", "Udaybhanu Hans", "Neki Ram", "Alhadi Bikaneri"],
+        ans: "Madhav Kaushik",
+        hint_en: "Written by Madhav Kaushik.",
+        hint_hi: "माधव कौशिक।",
+        exp: "The ghazal anthology 'Aainon ke Shehar mein' was authored by Madhav Kaushik."
+      },
+      {
+        id: 1137,
+        en: "Who wrote the short story collection 'Bikhre Sapne' and 'Antardwand'?",
+        hi: "लघुकथा पुस्तक 'बिखरे सपने' और 'अन्तर्द्वन्द' के लेखक हैं?",
+        opts: ["Shakuntala Brijmohan", "Mamta Kalia", "Anita Verma", "Sarojini Sharma"],
+        ans: "Shakuntala Brijmohan",
+        hint_en: "Female Haryanvi writer Shakuntala.",
+        hint_hi: "शकुंतला बृजमोहन।",
+        exp: "'Bikhre Sapne' and 'Antardwand' were written by Shakuntala Brijmohan."
+      },
+      {
+        id: 1138,
+        en: "When was the Haryana Janhit Congress formed by former Chief Minister Bhajan Lal?",
+        hi: "हरियाणा के पूर्व मुख्यमंत्री भजनलाल द्वारा हरियाणा जनहित कांग्रेस का गठन कब किया गया था?",
+        opts: ["2007", "2005", "2009", "2000"],
+        ans: "2007",
+        hint_en: "Formed in 2007.",
+        hint_hi: "वर्ष 2007 में।",
+        exp: "Chaudhary Bhajan Lal formed the Haryana Janhit Congress (BL) in the year 2007."
+      },
+      {
+        id: 1139,
+        en: "When was the Mango Mela (Aam Mela) at Pinjore Gardens celebrated for the very first time?",
+        hi: "आम मेला जो हर वर्ष पिंजौर के उद्यान में मनाया जाता है, सबसे पहले कब आयोजित किया गया था?",
+        opts: ["1992", "1985", "1995", "2001"],
+        ans: "1992",
+        hint_en: "First started in 1992.",
+        hint_hi: "वर्ष 1992 में।",
+        exp: "The annual Mango Festival at Yadavindra Gardens, Pinjore was launched in 1992."
+      },
+      {
+        id: 1140,
+        en: "US tech giant Cisco launched its Global Cyber Range Lab in which Haryanvi city?",
+        hi: "अमेरिकी टेक जिंट सिस्को ने ...... में अपनी 5वीं वैश्विक साइबर रेंज प्रयोगशाला शुरू की है।",
+        opts: ["Gurugram", "Faridabad", "Panchkula", "Karnal"],
+        ans: "Gurugram",
+        hint_en: "Cyber Hub of Haryana.",
+        hint_hi: "गुरुग्राम।",
+        exp: "Cisco established its 5th Global Cyber Range Lab in Gurugram."
+      },
+      {
+        id: 1141,
+        en: "Who plundered Shah Jahan's Peacock Throne (Mayur Sinhasan)?",
+        hi: "किसने शाहजहां का मयूर सिंहासन लूटा?",
+        opts: ["Nadir Shah", "Ahmad Shah Abdali", "Taimur", "Babur"],
+        ans: "Nadir Shah",
+        hint_en: "Persian invader who fought Battle of Karnal 1739.",
+        hint_hi: "नादिरशाह।",
+        exp: "Nadir Shah looted the Peacock Throne (Mayur Sinhasan) after defeating the Mughals in 1739."
+      },
+      {
+        id: 1142,
+        en: "According to the Ministry of Chemicals and Fertilizers, in which district of Haryana will the Plastic Park be set up?",
+        hi: "रसायन और उर्वरक मंत्रालय की घोषणा के अनुसार प्लास्टिक पार्क हरियाणा के किस जिले में स्थापित किया जाएगा?",
+        opts: ["Panipat", "Sonipat", "Hisar", "Rewari"],
+        ans: "Panipat",
+        hint_en: "Panipat hub.",
+        hint_hi: "पानीपत।",
+        exp: "The Ministry announced setting up a specialized Plastic Park in Panipat."
+      },
+      {
+        id: 1143,
+        en: "Who wrote the humorous poem 'Ab toh Aansoo Pochh'?",
+        hi: "कविता 'अब तो आंसू पोंछ' इन्होंने लिखी है:",
+        opts: ["Alhadi Bikaneri", "Surendra Sharma", "Jaimini Haryanvi", "Daya Chand Mayna"],
+        ans: "Alhadi Bikaneri",
+        hint_en: "Famous satire poet Alhadi.",
+        hint_hi: "अल्हड़ बीकानेरी।",
+        exp: "The comic poem 'Ab toh Aansoo Pochh' was written by Alhadi Bikaneri."
+      },
+      {
+        id: 1144,
+        en: "Which Haryanvi festival is directly associated with Chhath Nritya?",
+        hi: "निम्नलिखित में सम कौन-सा त्यौहार हरियाणा के छठी नृत्य से सम्बंधित है?",
+        opts: ["Goga Navami", "Holi", "Teej", "Janmashtami"],
+        ans: "Goga Navami",
+        hint_en: "Goga Navami festival.",
+        hint_hi: "गोगा नौमी।",
+        exp: "Goga Navami celebration is associated with ritualistic Chhath performance in Haryana."
+      },
+      {
+        id: 1145,
+        en: "Which Haryanvi city is the largest centre for synthetic yarn / artificial thread in the world?",
+        hi: "........ शहर विश्व में नकली सूत का सबसे बड़ा केंद्र है।",
+        opts: ["Panipat", "Bhiwani", "Faridabad", "Hisar"],
+        ans: "Panipat",
+        hint_en: "Known as Cast-Off Capital / Textile Hub.",
+        hint_hi: "पानीपत।",
+        exp: "Panipat is globally renowned as the largest recycling and synthetic yarn production hub."
+      },
+      {
+        id: 1146,
+        en: "How many protected wildlife sanctuaries (Sanrakshit Vanyajeev Abhayaranya) were there in Haryana?",
+        hi: "हरियाणा में अधिकतम ........ संरक्षित वन्यजीव अभयारण्य थे।",
+        opts: ["07", "05", "08", "10"],
+        ans: "07",
+        hint_en: "Number 7.",
+        hint_hi: "संख्या 07।",
+        exp: "According to the specified source record, Haryana listed 07 protected wildlife sanctuaries."
+      },
+      {
+        id: 1147,
+        en: "In which district/town of Haryana was the Vintage Car Rally organized?",
+        hi: "विंटेज कार रैली हरियाणा के ........ जिले में आयोजित की गयी थी।",
+        opts: ["Sohna (Gurugram)", "Panchkula", "Surajkund", "Pinjore"],
+        ans: "Sohna (Gurugram)",
+        hint_en: "Hot springs town in Gurugram.",
+        hint_hi: "सोहना (गुरुग्राम)।",
+        exp: "The famous Vintage Car Rally in Haryana was held at Sohna in Gurugram."
+      },
+      {
+        id: 1148,
+        en: "Which place in Haryana is famous for Sandalwood Carving (Chandan ki Nakkashi)?",
+        hi: "निम्न में से कौन सा स्थान हरियाणा में चन्दन की नक्काशी के लिए प्रसिद्ध है?",
+        opts: ["Jhajjar", "Rewari", "Ambala", "Karnal"],
+        ans: "Jhajjar",
+        hint_en: "City of Martyrs.",
+        hint_hi: "झज्जर।",
+        exp: "Jhajjar is noted for traditional sandalwood carving craftsmanship."
+      },
+      {
+        id: 1149,
+        en: "Who is the author of 'Rubaiyat' in Haryanvi literature?",
+        hi: "रुबाइयात के रचयिता हैं:",
+        opts: ["Khwaja Altaf Hussain Hali", "Udaybhanu Hans", "Mehar Singh", "Deenbandhu Gupta"],
+        ans: "Khwaja Altaf Hussain Hali",
+        hint_en: "Famous Urdu scholar from Panipat.",
+        hint_hi: "ख्वाजा अल्ताफ हुसैन हाली।",
+        exp: "Khwaja Altaf Hussain Hali composed the famous 'Rubaiyat'."
+      },
+      {
+        id: 1150,
+        en: "Who is the author of the epic 'Yuddh Charit'?",
+        hi: "युद्ध चरित के रचयिता हैं:",
+        opts: ["Khushiram Sharma", "Tulsi Das", "Alhadi Bikaneri", "Bhim Sen"],
+        ans: "Khushiram Sharma",
+        hint_en: "Poet Khushiram.",
+        hint_hi: "खुशीराम शर्मा।",
+        exp: "Khushiram Sharma authored the heroic poetic text 'Yuddh Charit'."
+      },
+      {
+        id: 1151,
+        en: "What is the height of the Aravalli mountains in Haryana?",
+        hi: "हरियाणा में अरावली पर्वत की ऊंचाई है:",
+        opts: ["200 to 500 meters", "500 to 1000 meters", "100 to 200 meters", "1000 to 1500 meters"],
+        ans: "200 to 500 meters",
+        hint_en: "Range between 200m and 500m.",
+        hint_hi: "200 से 500 मीटर।",
+        exp: "The general elevation of the Aravalli hills in southern Haryana ranges from 200 to 500 meters."
+      },
+      {
+        id: 1152,
+        en: "What center is established in Santoor of Yamunanagar district?",
+        hi: "यमुनानगर जिले के वन संतूर में क्या स्थित है?",
+        opts: ["Elephant Rescue and Research Centre", "Deer Park", "Vulture Breeding Center", "Peacock Centre"],
+        ans: "Elephant Rescue and Research Centre",
+        hint_en: "Hathi Punarvas Kendra.",
+        hint_hi: "हाथी पुनर्वास और अनुसन्धान केंद्र।",
+        exp: "Ban Santoor in Yamunanagar houses the Elephant Rescue and Research Centre."
+      },
+      {
+        id: 1153,
+        en: "Who holds the credit for becoming the first captain of the Indian cricket team at just 21 years of age?",
+        hi: "केवल 21 वर्ष की आयु में भारत की क्रिकेट टीम का पहला कप्तान बनने का श्रेय किसे है?",
+        opts: ["Mansoor Ali Khan Pataudi", "Kapil Dev", "C.K. Nayudu", "Lala Amarnath"],
+        ans: "Mansoor Ali Khan Pataudi",
+        hint_en: "Tiger Pataudi.",
+        hint_hi: "मंसूर अली पटौदी।",
+        exp: "Mansoor Ali Khan Pataudi became India's youngest Test captain at age 21."
+      },
+      {
+        id: 1154,
+        en: "The Battle of Karnal was fought between whom?",
+        hi: "करनाल का युद्ध ...... के बीच लड़ा गया।",
+        opts: ["Nadir Shah and Muhammad Shah", "Babur and Ibrahim Lodi", "Akbar and Hemu", "Marathas and Abdali"],
+        ans: "Nadir Shah and Muhammad Shah",
+        hint_en: "Fought in February 1739.",
+        hint_hi: "नादिरशाह और मोहम्मद शाह।",
+        exp: "The Battle of Karnal (1739) was fought between Nadir Shah of Persia and Mughal Emperor Muhammad Shah."
+      },
+      {
+        id: 1155,
+        en: "The Second Battle of Panipat was fought between Hemu and whom?",
+        hi: "पानीपत का दूसरा युद्ध हेमू और ...... के बीच लड़ा गया।",
+        opts: ["Akbar", "Babar", "Humayun", "Nadir Shah"],
+        ans: "Akbar",
+        hint_en: "Mughal Emperor in 1556 (commanded by Bairam Khan).",
+        hint_hi: "अकबर।",
+        exp: "The Second Battle of Panipat (1556) was fought between Samrat Hemchandra (Hemu) and Akbar's forces."
+      },
+
+      // PAGE 2 (44 Questions: 1156 - 1199)
+      {
+        id: 1156,
+        en: "Meghna Malik is associated with which art field?",
+        hi: "मेघना मालिक का सम्बन्ध किस विधा से है?",
+        opts: ["Acting (Abhinay)", "Classical Singing", "Painting", "Dancing"],
+        ans: "Acting (Abhinay)",
+        hint_en: "Famous TV & Film actress from Sonepat.",
+        hint_hi: "अभिनय।",
+        exp: "Meghna Malik is a renowned Indian film and television actress."
+      },
+      {
+        id: 1157,
+        en: "In which sacred text is Kurukshetra described as Dharmakshetra?",
+        hi: "कुरुक्षेत्र को धर्मक्षेत्र किस ग्रन्थ में बताया गया है?",
+        opts: ["Bhagavad Gita", "Ramayana", "Rigveda", "Mahabharata Sabha Parva"],
+        ans: "Bhagavad Gita",
+        hint_en: "First verse: Dharmakshetre Kurukshetre...",
+        hint_hi: "भगवद्गीता।",
+        exp: "The opening verse of Bhagavad Gita describes Kurukshetra as 'Dharmakshetra'."
+      },
+      {
+        id: 1158,
+        en: "In which year was strict cow protection law enacted in Haryana?",
+        hi: "गो संरक्षण के लिए हरियाणा में कठोर कानून किस वर्ष बनाया गया?",
+        opts: ["2015", "2017", "2014", "2018"],
+        ans: "2015",
+        hint_en: "Gau Samrakshan Act passed in 2015.",
+        hint_hi: "वर्ष 2015।",
+        exp: "The Haryana Gauvansh Sanrakshan and Gausamvardhan Act was passed in 2015."
+      },
+      {
+        id: 1159,
+        en: "Who was the main lead actor in the TV series 'Bharat Ek Khoj'?",
+        hi: "भारत-एक खोज धारावाहिक में मुख्य भूमिका में कौन कलाकार थे?",
+        opts: ["Om Puri", "Naseeruddin Shah", "Pankaj Kapur", "Anupam Kher"],
+        ans: "Om Puri",
+        hint_en: "Veteran actor Om Puri from Ambala.",
+        hint_hi: "ओम पुरी।",
+        exp: "Om Puri played key narrations/roles in Shyam Benegal's 'Bharat Ek Khoj'."
+      },
+      {
+        id: 1160,
+        en: "Which of the following measures were taken to improve school education quality in Haryana?",
+        hi: "हरियाणा में स्कूली शिक्षा की गुणवत्ता वृद्धि के लिए कौन से उपाय किया गया है?",
+        opts: ["All of the above (Monthly Test, Teacher Training, Teacher Diary)", "Monthly Examinations", "Teacher Training", "Teacher Diary maintenance"],
+        ans: "All of the above (Monthly Test, Teacher Training, Teacher Diary)",
+        hint_en: "Includes all three options mentioned in the page.",
+        hint_hi: "उपरोक्त सभी उपाय।",
+        exp: "Monthly tests, teacher training, and teacher diaries were implemented for quality improvement in schools."
+      },
+      {
+        id: 1161,
+        en: "In Haryana, the phrase 'Jotta Marna' (जोट्टा मारना) refers to what?",
+        hi: "हरियाणा में जोट्टा मारना का सम्बन्ध किस से है?",
+        opts: ["Working hard in agricultural fields", "Plowing with oxen", "Riding a bullock cart", "Wrestling match"],
+        ans: "Working hard in agricultural fields",
+        hint_en: "Field work.",
+        hint_hi: "खेत में खूब काम करना।",
+        exp: "'Jotta Marna' in local dialect means putting in intense physical labor in fields."
+      },
+      {
+        id: 1162,
+        en: "At which level is the CM Window established in Haryana?",
+        hi: "सी. एम. विंडो किस स्तर पर स्थापित की गयी है?",
+        opts: ["At every District Headquarters", "At Block Level", "At Tehsil Level", "At State Capital only"],
+        ans: "At every District Headquarters",
+        hint_en: "Har Zila Mukhyalaya.",
+        hint_hi: "हर जिला मुख्यालय पर।",
+        exp: "CM Window grievance portals are set up at all District Headquarters in Haryana."
+      },
+      {
+        id: 1163,
+        en: "Which transparent system portal was launched by Haryana government for PGT teacher transfers?",
+        hi: "हरियाणा सरकार ने शिक्षा विभाग में किस पारदर्शी प्रणाली से PGT के स्थानान्तरण किये हैं?",
+        opts: ["MIS Portal", "HRMS Portal", "Shiksha Portal", "Transfer Mitra"],
+        ans: "MIS Portal",
+        hint_en: "Management Information System portal.",
+        hint_hi: "एम.आई.एस. पोर्टल।",
+        exp: "Haryana government utilized the MIS Portal for online transparent teacher transfers."
+      },
+      {
+        id: 1164,
+        en: "At which location in Haryana was a mint (Taksal) present during Akbar's reign for minting Jalali coins?",
+        hi: "अकबर के समय में हरियाणा के किस स्थान पर टकसाल थी, जहाँ जलाली सिक्का बनाया जाता था?",
+        opts: ["Narnaul", "Hansi", "Panipat", "Thanesar"],
+        ans: "Narnaul",
+        hint_en: "Historic town in Mahendragarh.",
+        hint_hi: "नारनौल।",
+        exp: "Akbar established a royal mint at Narnaul where square Jalali coins were produced."
+      },
+      {
+        id: 1165,
+        en: "In which district was Haryanvi TV artist Kunal Kumar born?",
+        hi: "हरियाणा के टी. वी. कलाकार कुणाल कुमार का जन्म हरियाणा के किस जिले में हुआ था?",
+        opts: ["Faridabad", "Gurugram", "Rohtak", "Hisar"],
+        ans: "Faridabad",
+        hint_en: "Faridabad birth.",
+        hint_hi: "फरीदाबाद।",
+        exp: "Actor Kunal Kumar hails from Faridabad district."
+      },
+      {
+        id: 1166,
+        en: "Dhamal/Ghoomar dance is associated with which state region?",
+        hi: "........ नृत्य हरियाणा से सम्बंधित है।",
+        opts: ["Ghoomar", "Garba", "Bhangra", "Bihu"],
+        ans: "Ghoomar",
+        hint_en: "Traditional Haryanvi/Rajasthani folk dance.",
+        hint_hi: "घूमर।",
+        exp: "Ghoomar is a classic traditional dance performed in Haryana."
+      },
+      {
+        id: 1167,
+        en: "Which district of Haryana does NOT share its border with Uttar Pradesh?",
+        hi: "हरियाणा का कौन सा जिला उत्तर प्रदेश के साथ अपनी सीमा साझा नहीं करता?",
+        opts: ["Rohtak", "Karnal", "Panipat", "Yamunanagar"],
+        ans: "Rohtak",
+        hint_en: "Landlocked internal district of Haryana.",
+        hint_hi: "रोहतक।",
+        exp: "Rohtak is an inland district and does not share borders with Uttar Pradesh or any other state."
+      },
+      {
+        id: 1168,
+        en: "Panchayat elections in Haryana are conducted under the supervision of which body?",
+        hi: "पंचायत चुनाव किसकी देख-रेख में होते हैं?",
+        opts: ["State Election Commission", "Central Election Commission", "District Collector", "State Legislative Assembly"],
+        ans: "State Election Commission",
+        hint_en: "Rajya Chunav Aayog.",
+        hint_hi: "राज्य चुनाव आयोग।",
+        exp: "Panchayati Raj elections are organized and overseen by the State Election Commission."
+      },
+      {
+        id: 1169,
+        en: "Tulika Ganguly from Faridabad is associated with which profession?",
+        hi: "फरीदाबाद, हरियाणा की तुलिका गांगुली ........ व्यवसाय के साथ जुडी हुई है?",
+        opts: ["Playback Singing (Parshv Gayaki)", "Acting", "Journalism", "Sports"],
+        ans: "Playback Singing (Parshv Gayaki)",
+        hint_en: "Vocal music.",
+        hint_hi: "पार्श्व गायकी।",
+        exp: "Tulika Ganguly is a renowned playback singer from Faridabad."
+      },
+      {
+        id: 1170,
+        en: "Which two places were the chief centers of Kanphara Sect (Kanphara Sampraday) in Haryana?",
+        hi: "हरियाणा में कनफारा सम्प्रदाय के मुख्य केंद्र थे?",
+        opts: ["Pehowa and Asthal Bohar", "Kurukshetra and Thanesar", "Agroha and Hansi", "Narnaul and Rewari"],
+        ans: "Pehowa and Asthal Bohar",
+        hint_en: "Associated with Nath Yogi tradition.",
+        hint_hi: "पेहोवा और स्थल बोहर दोनों।",
+        exp: "Pehowa and Asthal Bohar (Rohtak) were the key monasteries of the Kanphara Nath sect."
+      },
+      {
+        id: 1171,
+        en: "By what name was Grasim Bhiwani Textile Limited formerly known?",
+        hi: "ग्रेसिम भिवानी टेक्सटाइल लिमिटेड को पहले किस नाम से जाना जाता था?",
+        opts: ["Punjab Cotton Mills", "Bhiwani Textile Mills", "Haryana Thread Industry", "Standard Cotton Mills"],
+        ans: "Punjab Cotton Mills",
+        hint_en: "Punjab Cotton Mills.",
+        hint_hi: "पंजाब कॉटन मिल।",
+        exp: "Grasim Bhiwani Textile Ltd was originally called Punjab Cotton Mills."
+      },
+      {
+        id: 1172,
+        en: "Palaces in Rewari and Ballabhgarh reflect specimens of which architecture style?",
+        hi: "रेवाड़ी व बल्लभगढ़ के महल किस वास्तुकला के नमूने हैं?",
+        opts: ["Rajputana Architecture", "Mughal Architecture", "Gothic Architecture", "Dravidian Architecture"],
+        ans: "Rajputana Architecture",
+        hint_en: "Rajputana style.",
+        hint_hi: "राजपूताना वास्तुकला।",
+        exp: "The architectural designs of Rewari and Ballabhgarh palaces feature Rajputana elements."
+      },
+      {
+        id: 1173,
+        en: "What is the famous folk song genre of Haryana?",
+        hi: "........ हरियाणा साहित्य के प्रसिद्ध लोक गीत हैं।",
+        opts: ["Ragini", "Lavani", "Kajri", "Tappa"],
+        ans: "Ragini",
+        hint_en: "Signature musical folk style of Haryana.",
+        hint_hi: "रागिनी।",
+        exp: "Ragini is the most celebrated folk music tradition of Haryana."
+      },
+      {
+        id: 1174,
+        en: "In which district is the Chuharpur Reserved Forest Herbal Nature Park located?",
+        hi: "चुहाड़पुर आरक्षित वन का हर्बल नेचर पार्क ...... जिले में है।",
+        opts: ["Yamunanagar", "Panchkula", "Karnal", "Ambala"],
+        ans: "Yamunanagar",
+        hint_en: "Chuharpur Herbal Park in Yamunanagar.",
+        hint_hi: "यमुनानगर।",
+        exp: "Chuharpur Herbal Nature Park (Ch. Devi Lal Herbal Park) is in Yamunanagar."
+      },
+      {
+        id: 1175,
+        en: "Who wrote the literary work 'Amanat Ek Shaheed Ki'?",
+        hi: "'अमानत एक शहीद की' के लेखक ...... हैं।",
+        opts: ["Krishan Bachel", "Udaybhanu Hans", "Deepchand Bahman", "Bansi Lal"],
+        ans: "Krishan Bachel",
+        hint_en: "Author Krishan Bachel.",
+        hint_hi: "कृष्ण बाछल।",
+        exp: "'Amanat Ek Shaheed Ki' was authored by Krishan Bachel."
+      },
+      {
+        id: 1176,
+        en: "On which date does Haryana observe 'Vriksh Divas' (Tree Day)?",
+        hi: "हरियाणा ...... को 'वृक्ष दिवस' मनाता है।",
+        opts: ["15 July", "5 June", "22 April", "1 November"],
+        ans: "15 July",
+        hint_en: "Middle of July.",
+        hint_hi: "15 जुलाई।",
+        exp: "Haryana observes Tree Day (Vriksh Divas) annually on 15th July."
+      },
+      {
+        id: 1177,
+        en: "By whom can the State Election Commissioner be removed from office?",
+        hi: "चुनाव आयुक्त को ...... के द्वारा हटाया जा सकता है?",
+        opts: ["Parliament (Sansad)", "Governor", "Chief Minister", "High Court Chief Justice"],
+        ans: "Parliament (Sansad)",
+        hint_en: "Same process as High Court Judge by Parliament.",
+        hint_hi: "संसद।",
+        exp: "The State Election Commissioner can be removed only by Parliament through impeachment procedures similar to a High Court Judge."
+      },
+      {
+        id: 1178,
+        en: "In which year did the Jind Revolt (Jind Vidroh) take place?",
+        hi: "जींद विद्रोह किस वर्ष हुआ था?",
+        opts: ["1814", "1857", "1803", "1824"],
+        ans: "1814",
+        hint_en: "Led by Pratap Singh in 1814.",
+        hint_hi: "1814 ई।",
+        exp: "The Jind rebellion against British rule broke out in 1814 under Prince Pratap Singh."
+      },
+      {
+        id: 1179,
+        en: "Who led the 1857 revolution in Hisar?",
+        hi: "हिसार में 1857 के विद्रोह का नेतृत्व किसने किया था?",
+        opts: ["Mohammad Azam", "Rao Tula Ram", "Nahar Singh", "General Van Cortlandt"],
+        ans: "Mohammad Azam",
+        hint_en: "Prince Mohammad Azam.",
+        hint_hi: "मोहम्मद आज़म।",
+        exp: "Mohammad Azam led the anti-British 1857 uprising in Hisar district."
+      },
+      {
+        id: 1180,
+        en: "Famous archaeologist Ravindra Singh Bisht conducted excavations at Banawali in Hisar during which period?",
+        hi: "प्रसिद्ध पुरातत्वविद रविन्द्र सिंह बिष्ट ने हिसार के बनावली में ...... सभ्यता का काम किया।",
+        opts: ["Persian Inscription / Harappan Site Excavation", "Greek Civilization", "Roman Empire", "Chinese Era"],
+        ans: "Persian Inscription / Harappan Site Excavation",
+        hint_en: "R.S. Bisht excavation at Banawali.",
+        hint_hi: "फारसी / बनावली खुदाई।",
+        exp: "R.S. Bisht led major Harappan site archaeological excavations at Banawali."
+      },
+      {
+        id: 1181,
+        en: "Indus Valley Civilization was an era of which metal/age?",
+        hi: "सिन्धु घाटी सभ्यता एक ...... सभ्यता है।",
+        opts: ["Bronze Age (Kasya Yug)", "Iron Age", "Copper Age", "Stone Age"],
+        ans: "Bronze Age (Kasya Yug)",
+        hint_en: "Bronze Age.",
+        hint_hi: "कांस्य युग।",
+        exp: "The Indus Valley Civilization is historically classified as a Bronze Age civilization."
+      },
+      {
+        id: 1182,
+        en: "Which book is the autobiography of legendary cricketer Kapil Dev?",
+        hi: "कौन-सी किताब, कपिल देव की एक आत्मकथा है?",
+        opts: ["Straight from the Heart", "Playing It My Way", "Sunny Days", "281 and Beyond"],
+        ans: "Straight from the Heart",
+        hint_en: "Title starts with 'Straight...'",
+        hint_hi: "स्ट्रेट फ्रॉम द हार्ट।",
+        exp: "'Straight from the Heart' is the autobiography of India's World Cup winning captain Kapil Dev."
+      },
+      {
+        id: 1183,
+        en: "In which district is Jakhal Railway Junction located?",
+        hi: "जाखल जंक्शन किस जिले में स्थित है?",
+        opts: ["Fatehabad", "Sirsa", "Jind", "Hisar"],
+        ans: "Fatehabad",
+        hint_en: "Fatehabad district.",
+        hint_hi: "फतेहाबाद।",
+        exp: "Jakhal Junction is a major railway junction in Fatehabad district."
+      },
+      {
+        id: 1184,
+        en: "What is the renamed new name of Ganda village in Haryana?",
+        hi: "हरियाणा के गन्दा गांव का नया नाम क्या होगा?",
+        opts: ["Ajit Nagar", "Pavitra Nagar", "Sunder Nagar", "Gandhi Nagar"],
+        ans: "Ajit Nagar",
+        hint_en: "Renamed to Ajit Nagar.",
+        hint_hi: "अजित नगर।",
+        exp: "Ganda village in Fatehabad district was officially renamed Ajit Nagar."
+      },
+      {
+        id: 1185,
+        en: "Which breeding center comes under the Forest Department of Kurukshetra?",
+        hi: "हरियाणा का वन विभाग कुरुक्षेत्र में कौन-सा प्रजनन केंद्र आता है?",
+        opts: ["Crocodile Breeding Centre (Magarmachh Prajanan Kendra)", "Peacock Centre", "Chinkara Centre", "Blackbuck Centre"],
+        ans: "Crocodile Breeding Centre (Magarmachh Prajanan Kendra)",
+        hint_en: "Bhoor Saidam site.",
+        hint_hi: "मगरमच्छ प्रजनन केंद्र (भोर सैदां)।",
+        exp: "Bhoor Saidam Crocodile Breeding Centre in Kurukshetra is managed by Haryana Forest Department."
+      },
+      {
+        id: 1186,
+        en: "In which century did Prithviraj Chauhan reconstruct the Asigarh Fort of Hansi?",
+        hi: "हंसी के असिगढ़ किले का पुननिर्माण पृथ्वीराज चौहान ने किस शताब्दी में किया था?",
+        opts: ["12th Century", "10th Century", "14th Century", "16th Century"],
+        ans: "12th Century",
+        hint_en: "12th Century.",
+        hint_hi: "12वीं शताब्दी।",
+        exp: "Prithviraj Chauhan renovated and fortified Asigarh Fort in Hansi in the 12th century."
+      },
+      {
+        id: 1187,
+        en: "In which district is the Parakeet Tourist Complex located?",
+        hi: "पैराकीट पर्यटन स्थल किस नगर में है?",
+        opts: ["Kurukshetra (Pipli)", "Karnal", "Panchkula", "Rohtak"],
+        ans: "Kurukshetra (Pipli)",
+        hint_en: "Located at Pipli near GT Road in Kurukshetra.",
+        hint_hi: "कुरुक्षेत्र।",
+        exp: "Parakeet Tourist Resort is situated at Pipli in Kurukshetra district."
+      },
+      {
+        id: 1188,
+        en: "On which festival occasion do women in Haryana perform Ghoomar folk dance and sing folk songs?",
+        hi: "किस त्यौहार पर महिलाएं घूमर लोक गीत गाती हैं?",
+        opts: ["Holi festival", "Teej", "Diwali", "Ganga Navami"],
+        ans: "Holi festival",
+        hint_en: "Festival of colors.",
+        hint_hi: "होली के अवसर पर।",
+        exp: "Women perform Ghoomar dance and traditional songs during Holi festivities in Haryana."
+      },
+      {
+        id: 1189,
+        en: "Under which act was the High Court established in Lahore in 1919?",
+        hi: "लाहौर में उच्च न्यायालय की स्थापना किस अधिनियम के तहत हुई?",
+        opts: ["GOI Act 1915", "GOI Act 1935", "Indian Councils Act 1909", "Charter Act 1853"],
+        ans: "GOI Act 1915",
+        hint_en: "Government of India Act 1915.",
+        hint_hi: "जी.ओ.आई. अधिनियम 1915।",
+        exp: "Lahore High Court was established under the provisions of the Government of India Act 1915."
+      },
+      {
+        id: 1190,
+        en: "How many sub-divisions (Upmandal) are currently present in Haryana state administrative structure according to text?",
+        hi: "हरियाणा प्रदेश में वर्तमान समय में कितने उपमंडल हैं?",
+        opts: ["80 Sub-divisions (94 Tehsils, 49 Sub-Tehsils)", "74 Sub-divisions", "62 Sub-divisions", "85 Sub-divisions"],
+        ans: "80 Sub-divisions (94 Tehsils, 49 Sub-Tehsils)",
+        hint_en: "80 Upmandal.",
+        hint_hi: "80 उपमंडल (94 तहसील, 49 उप-तहसील)।",
+        exp: "As recorded in the study material text, Haryana is listed with 80 Sub-divisions."
+      },
+      {
+        id: 1191,
+        en: "Ichhapuri village is located in which district of Haryana?",
+        hi: "इच्छापुरी गांव हरियाणा के किस जिले में स्थित है?",
+        opts: ["Gurugram", "Rewari", "Faridabad", "Jhajjar"],
+        ans: "Gurugram",
+        hint_en: "Gurugram district.",
+        hint_hi: "गुरुग्राम।",
+        exp: "Ichhapuri village is situated in Gurugram district."
+      },
+      {
+        id: 1192,
+        en: "In addition to Ambala, where else is the Indian Air Force (IAF) base situated in Haryana?",
+        hi: "भारतीय वायु सेना का ...... बेस फरीदाबाद भी है।",
+        opts: ["Raja Nahar Singh Air Base (Faridabad)", "Sirsa", "Hisar", "Karnal"],
+        ans: "Raja Nahar Singh Air Base (Faridabad)",
+        hint_en: "Named after King Nahar Singh.",
+        hint_hi: "राजा नाहर सिंह।",
+        exp: "An Air Force logistics base station is located in Faridabad."
+      },
+      {
+        id: 1193,
+        en: "In which year was the Nahar Singh Stadium for international cricket built in Faridabad?",
+        hi: "अंतर्राष्ट्रीय क्रिकेट के लिए फरीदाबाद में नाहर सिंह स्टेडियम कब बनाया गया?",
+        opts: ["1981", "1985", "1975", "1991"],
+        ans: "1981",
+        hint_en: "Constructed in 1981.",
+        hint_hi: "वर्ष 1981।",
+        exp: "Nahar Singh Stadium (Mayur Stadium) in Faridabad was built in 1981."
+      },
+      {
+        id: 1194,
+        en: "Whose famous quote is: 'Mujhe toh Sampurna Bharat ki Bhoomi Chahiye' (I want the land of whole India)?",
+        hi: "'मुझे तो सम्पूर्ण भारत की भूमि चाहिए' किसका कथन है?",
+        opts: ["Neki Ram Sharma", "Lala Lajpat Rai", "Ch. Devi Lal", "Bhagatsingh"],
+        ans: "Neki Ram Sharma",
+        hint_en: "Pandit Neki Ram Sharma.",
+        hint_hi: "नेकी राम शर्मा।",
+        exp: "Pandit Neki Ram Sharma famously proclaimed 'Mujhe toh Sampurna Bharat ki Bhoomi Chahiye'."
+      },
+      {
+        id: 1195,
+        en: "From which university did Dr. Raghuvendra Tanwar retire?",
+        hi: "डॉ. रघुवेन्द्र तंवर किस विश्वविद्यालय से सेवानिवृत्त हुए?",
+        opts: ["Kurukshetra University, Kurukshetra", "MDU Rohtak", "HAU Hisar", "CDLU Sirsa"],
+        ans: "Kurukshetra University, Kurukshetra",
+        hint_en: "KUK.",
+        hint_hi: "कुरुक्षेत्र विश्वविद्यालय, कुरुक्षेत्र।",
+        exp: "Padma Shri Dr. Raghuvendra Tanwar retired as Professor from Kurukshetra University."
+      },
+      {
+        id: 1196,
+        en: "Where is Central Scientific Instruments Organisation (CSIO) located?",
+        hi: "भारत का केन्द्रीय वैज्ञानिक उपकरण संगठन कहाँ है?",
+        opts: ["Chandigarh", "Panchkula", "Delhi", "Ambala"],
+        ans: "Chandigarh",
+        hint_en: "Capital City Chandigarh.",
+        hint_hi: "चंडीगढ़।",
+        exp: "The Central Scientific Instruments Organisation (CSIO) laboratory is headquartered in Chandigarh."
+      },
+      {
+        id: 1197,
+        en: "When was the Haryana Khadi and Village Industries Board (Khadi evam Gramodyog Board) established?",
+        hi: "हरियाणा खादी एवं ग्रामोद्योग बोर्ड की स्थापना कब की गई थी?",
+        opts: ["1 February 1969", "1 November 1966", "15 August 1971", "26 January 1975"],
+        ans: "1 February 1969",
+        hint_en: "1st Feb 1969.",
+        hint_hi: "1 फरवरी 1969।",
+        exp: "The Haryana Khadi and Village Industries Board was established on 1st February 1969."
+      },
+      {
+        id: 1198,
+        en: "When did former Prime Minister Dr. Manmohan Singh inaugurate the Rajiv Gandhi Chandigarh Technology Park?",
+        hi: "पूर्व प्रधानमंत्री डॉ मनमोहन सिंह ने राजीव गांधी चंडीगढ़ टेक्नोलॉजी पार्क का उद्घाटन कब किया था?",
+        opts: ["25 September 2005", "15 August 2004", "2 October 2006", "14 November 2008"],
+        ans: "25 September 2005",
+        hint_en: "25th Sep 2005.",
+        hint_hi: "25 सितम्बर 2005।",
+        exp: "Dr. Manmohan Singh inaugurated the Rajiv Gandhi Chandigarh Technology Park on September 25, 2005."
+      },
+      {
+        id: 1199,
+        en: "A mosque from the period of which Muslim ruler exists at Sarai Alawardi village near Gurgaon?",
+        hi: "गुडगांव के समीप स्थित सरायं अलावरदी नामक गांव में किस मुस्लिम शासक के काल की मस्जिद विद्यमान है?",
+        opts: ["Alauddin Khilji", "Balban", "Firoz Shah Tughlaq", "Iltutmish"],
+        ans: "Alauddin Khilji",
+        hint_en: "Khilji dynasty ruler.",
+        hint_hi: "अलाउद्दीन खिलजी।",
+        exp: "The ancient mosque at Sarai Alawardi in Gurugram dates back to the reign of Sultan Alauddin Khilji."
+      }
+    ];
+
+    // State Variables
+    let currentIdx = 0;
+    let userAnswers = new Array(rawDataset.length).fill(null);
+    let shuffledOptions = [];
+
+    // Utility: Fisher-Yates Shuffle
+    function shuffleArray(arr) {
+      const array = [...arr];
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    // Pre-shuffle option positions for all questions to guarantee dynamic variation
+    function initializeQuizData() {
+      shuffledOptions = rawDataset.map(q => shuffleArray(q.opts));
+    }
+
+    // UI Rendering
+    function renderQuestion() {
+      const q = rawDataset[currentIdx];
+      const opts = shuffledOptions[currentIdx];
+
+      // Update Header & Progress
+      document.getElementById('current-q-num').innerText = currentIdx + 1;
+      document.getElementById('total-q-num').innerText = rawDataset.length;
+      
+      const pct = ((currentIdx + 1) / rawDataset.length) * 100;
+      document.getElementById('progress-bar').style.width = `${pct}%`;
+
+      // Update Texts
+      document.getElementById('q-text-en').innerText = `Q${currentIdx + 1} (Ref #${q.id}). ${q.en}`;
+      document.getElementById('q-text-hi').innerText = `प्रश्न ${currentIdx + 1}: ${q.hi}`;
+
+      // Update Hint
+      const hintBox = document.getElementById('hint-box');
+      hintBox.classList.add('hidden');
+      hintBox.innerHTML = `<strong>Hint (English):</strong> ${q.hint_en}<br><strong>संकेत (हिंदी):</strong> ${q.hint_hi}`;
+
+      // Options Rendering
+      const container = document.getElementById('options-container');
+      container.innerHTML = '';
+
+      const userSelected = userAnswers[currentIdx];
+
+      opts.forEach((optText, index) => {
+        const optionBtn = document.createElement('button');
+        optionBtn.className = "w-full text-left p-4 rounded-lg border transition-all duration-200 flex items-start justify-between font-medium text-sm md:text-base cursor-pointer ";
+        
+        const optionLabel = String.fromCharCode(65 + index); // A, B, C, D
+
+        if (userSelected === null) {
+          // Unanswered State
+          optionBtn.className += "bg-slate-700/50 hover:bg-slate-700 border-slate-600 text-slate-200";
+          optionBtn.onclick = () => selectOption(optText);
+        } else {
+          // Answered State
+          optionBtn.disabled = true;
+          if (optText === q.ans) {
+            // Correct answer
+            optionBtn.className += "bg-emerald-950/80 border-emerald-500 text-emerald-200 font-semibold";
+          } else if (optText === userSelected) {
+            // Incorrectly picked answer
+            optionBtn.className += "bg-rose-950/80 border-rose-500 text-rose-200 font-semibold";
+          } else {
+            // Neutral unselected options
+            optionBtn.className += "bg-slate-800 border-slate-700 text-slate-400 opacity-60";
+          }
+        }
+
+        optionBtn.innerHTML = `
+          <span><strong class="text-amber-400 mr-2">${optionLabel}.</strong> ${optText}</span>
+          ${userSelected !== null && optText === q.ans ? '<span class="text-emerald-400 font-bold ml-2">✓</span>' : ''}
+          ${userSelected !== null && optText === userSelected && optText !== q.ans ? '<span class="text-rose-400 font-bold ml-2">✗</span>' : ''}
+        `;
+
+        container.appendChild(optionBtn);
+      });
+
+      // Explanation / Rationale Box
+      const expBox = document.getElementById('explanation-box');
+      if (userSelected !== null) {
+        expBox.classList.remove('hidden');
+        document.getElementById('explanation-text').innerText = q.exp;
+      } else {
+        expBox.classList.add('hidden');
+      }
+
+      // Update Nav Buttons
+      document.getElementById('prev-btn').disabled = (currentIdx === 0);
+      document.getElementById('next-btn').innerText = (currentIdx === rawDataset.length - 1) ? "Finish Quiz" : "Next ›";
+
+      // Update Score Card
+      calculateScore();
+    }
+
+    // Handle Option Selection
+    function selectOption(selectedOpt) {
+      if (userAnswers[currentIdx] !== null) return; // Prevent double clicks
+      userAnswers[currentIdx] = selectedOpt;
+      renderQuestion();
+    }
+
+    // Score Calculation
+    function calculateScore() {
+      let score = 0;
+      let answered = 0;
+      userAnswers.forEach((ans, idx) => {
+        if (ans !== null) {
+          answered++;
+          if (ans === rawDataset[idx].ans) {
+            score++;
+          }
+        }
+      });
+      document.getElementById('score-counter').innerText = score;
+      document.getElementById('total-answered').innerText = answered;
+    }
+
+    // Event Listeners
+    document.getElementById('prev-btn').addEventListener('click', () => {
+      if (currentIdx > 0) {
+        currentIdx--;
+        renderQuestion();
+      }
+    });
+
+    document.getElementById('next-btn').addEventListener('click', () => {
+      if (currentIdx < rawDataset.length - 1) {
+        currentIdx++;
+        renderQuestion();
+      } else {
+        alert(`Quiz Finished!\nYour final score is ${document.getElementById('score-counter').innerText} out of ${rawDataset.length}.`);
+      }
+    });
+
+    document.getElementById('jump-btn').addEventListener('click', () => {
+      const val = parseInt(document.getElementById('jump-input').value);
+      if (val >= 1 && val <= rawDataset.length) {
+        currentIdx = val - 1;
+        renderQuestion();
+      } else {
+        alert(`Please enter a valid question number between 1 and ${rawDataset.length}`);
+      }
+    });
+
+    document.getElementById('hint-btn').addEventListener('click', () => {
+      const hintBox = document.getElementById('hint-box');
+      hintBox.classList.toggle('hidden');
+    });
+
+    // Initialize Quiz
+    initializeQuizData();
+    renderQuestion();
+  </script>
+<script src="../../quiz-question-controls.js"></script>
+<script src="../../quiz-app-ui-v2.js"></script></body>
+</html>

@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Competitive Exam Quiz - CA (Pages 68 & 69)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+<style id="cosmic-readable-quiz-theme">
+:root{--space:#e8dcff;--panel:#f3eaff;--panel2:#dcc6ff;--edge:#6a45bf;--glow:#d28b28;--accent:#d15f9f;--ink:#2c1b4d;--muted:#66547c;--mist:rgba(106,69,191,.2)}html{background:var(--space)}body{background:radial-gradient(ellipse 62% 45% at 90% -5%,rgba(209,95,159,.28),transparent 62%),radial-gradient(ellipse 55% 40% at 8% 100%,rgba(65,164,207,.26),transparent 64%),var(--space)!important;color:var(--ink)!important;min-height:100vh}body:before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.78;background-image:radial-gradient(circle at 9% 18%,var(--glow) 0 1px,transparent 1.7px),radial-gradient(circle at 26% 69%,var(--edge) 0 .8px,transparent 1.5px),radial-gradient(circle at 68% 24%,var(--accent) 0 1px,transparent 1.8px),radial-gradient(circle at 88% 73%,#47a8d3 0 .8px,transparent 1.5px);background-size:220px 190px,300px 270px,260px 230px,340px 310px;z-index:-1}header{background:linear-gradient(105deg,var(--panel),var(--panel2))!important;border-color:rgba(106,69,191,.25)!important;box-shadow:0 7px 24px rgba(84,48,142,.14)!important}header h1{color:var(--edge)!important;text-shadow:none!important}header p,header .text-slate-400,header .text-indigo-200,header .text-indigo-300{color:var(--muted)!important}main>div,#quiz-card,.bg-slate-800,.bg-slate-900,.bg-indigo-900,.bg-indigo-950{background:linear-gradient(145deg,#f8f0ff,var(--panel))!important;border-color:rgba(106,69,191,.22)!important;color:var(--ink)!important;box-shadow:0 14px 35px rgba(84,48,142,.12)!important}.bg-slate-700,.bg-slate-100,.bg-slate-50{background:#eadffd!important;color:var(--ink)!important}.text-slate-100,.text-slate-200,.text-slate-300,.text-slate-400,.text-white,.text-slate-800,.text-slate-700,.text-slate-600{color:var(--ink)!important}.text-indigo-400,.text-indigo-300,.text-emerald-400,.text-yellow-300{color:var(--edge)!important}.border-slate-700,.border-slate-700\/60,.border-indigo-700,.border-slate-200{border-color:rgba(106,69,191,.25)!important}button:not(.bg-green-600):not(.bg-red-600){background:#f9f2ff!important;color:var(--ink)!important;border:1px solid rgba(106,69,191,.25)!important;box-shadow:0 3px 10px rgba(84,48,142,.09)!important}button.bg-indigo-600,button.bg-slate-800,button.bg-slate-900,button.bg-indigo-900{background:linear-gradient(120deg,var(--edge),var(--accent))!important;color:#fff!important;border:0!important}button.bg-indigo-600 *,button.bg-slate-800 *,button.bg-slate-900 *,button.bg-indigo-900 *{color:#fff!important}button:hover{filter:brightness(1.04);transform:translateY(-1px)}input,select,textarea{background:#f9f2ff!important;border-color:rgba(106,69,191,.35)!important;color:var(--ink)!important}input:focus,select:focus,textarea:focus{outline:none!important;border-color:var(--edge)!important;box-shadow:0 0 0 3px var(--mist)!important}.bg-indigo-500,#progress-bar{background:linear-gradient(90deg,var(--edge),var(--accent),var(--glow))!important}.rounded-2xl{border-radius:1.25rem!important}
+</style></head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col justify-between selection:bg-cyan-500 selection:text-white">
+
+    <!-- Header / Navigation Bar -->
+    <header class="bg-slate-800 border-b border-slate-700 sticky top-0 z-50 shadow-md">
+        <div class="max-w-5xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-4">
+            <div>
+                <h1 class="text-xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">ExamMaster Pro: CA Quiz</h1>
+                <p class="text-xs text-slate-400">Pages 68 & 69 Strict Syllabus Assessment (90 Unique Quality Questions)</p>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <div class="bg-slate-700/60 px-3 py-1.5 rounded-lg border border-slate-600 flex items-center gap-2">
+                    <span class="text-xs text-slate-300 font-medium">Score:</span>
+                    <span id="score-display" class="text-cyan-400 font-bold text-sm">0 / 90</span>
+                </div>
+                <button id="reset-quiz-btn" class="text-xs bg-rose-600 hover:bg-rose-700 text-white px-3 py-1.5 rounded-lg transition font-medium shadow-sm">
+                    Reset Quiz
+                </button>
+            </div>
+        </div>
+        <!-- Progress Bar -->
+        <div class="w-full bg-slate-700 h-1.5">
+            <div id="progress-bar" class="bg-cyan-500 h-1.5 transition-all duration-300" style="width: 1.11%;"></div>
+        </div>
+    </header>
+
+    <!-- Main Quiz Container -->
+    <main class="max-w-3xl w-full mx-auto px-4 py-8 flex-grow flex flex-col justify-center">
+        
+        <!-- Question Card Wrapper -->
+        <div class="bg-slate-800 border border-slate-700 rounded-2xl shadow-xl overflow-hidden p-6 md:p-8 relative">
+            
+            <!-- Card Header: Number & Hint Toggle -->
+            <div class="flex justify-between items-center mb-6">
+                <span id="question-counter" class="text-xs font-semibold uppercase tracking-wider text-cyan-400 bg-cyan-950/60 px-3 py-1 rounded-full border border-cyan-800/50">
+                    Question 1 of 90
+                </span>
+                <button id="toggle-hint-btn" class="text-xs text-slate-300 hover:text-white bg-slate-700 hover:bg-slate-600 px-3 py-1 rounded-lg transition flex items-center gap-1.5 border border-slate-600">
+                    💡 <span id="hint-btn-text">Show Hint</span>
+                </button>
+            </div>
+
+            <!-- Hint Box (Hidden by default) -->
+            <div id="hint-box" class="hidden mb-4 p-3.5 bg-amber-950/40 border border-amber-800/50 rounded-xl text-amber-200 text-xs leading-relaxed">
+                <strong class="font-semibold block mb-0.5 text-amber-300">Exam Hint:</strong>
+                <span id="hint-text"></span>
+            </div>
+
+            <!-- Question Statement -->
+            <h2 id="question-text" class="text-lg md:text-xl font-semibold text-slate-100 mb-6 leading-snug">
+                <!-- Question text injected dynamically -->
+            </h2>
+
+            <!-- Options Container -->
+            <div id="options-container" class="space-y-3 mb-6">
+                <!-- Options injected dynamically -->
+            </div>
+
+            <!-- Explanation / Rationale Box (Hidden until answered) -->
+            <div id="explanation-box" class="hidden mt-6 p-4 rounded-xl border text-sm transition-all duration-300">
+                <div class="font-bold mb-1 flex items-center gap-2" id="explanation-title">
+                    <!-- Correct/Incorrect badge injected here -->
+                </div>
+                <p id="explanation-text" class="text-slate-300 text-xs md:text-sm leading-relaxed"></p>
+            </div>
+
+        </div>
+
+        <!-- Navigation Controls Panel -->
+        <div class="flex flex-wrap justify-between items-center mt-6 gap-4">
+            <button id="prev-btn" class="bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white px-5 py-2.5 rounded-xl border border-slate-700 font-medium text-sm transition disabled:opacity-40 disabled:cursor-not-allowed shadow-sm">
+                ← Previous
+            </button>
+
+            <!-- Jump to Question Control -->
+            <div class="flex items-center gap-2 bg-slate-800 px-3 py-1.5 rounded-xl border border-slate-700 shadow-sm">
+                <span class="text-xs text-slate-400">Jump to:</span>
+                <input type="number" id="jump-input" min="1" max="90" class="w-14 bg-slate-900 border border-slate-700 rounded-lg px-2 py-1 text-center text-xs font-bold text-cyan-400 focus:outline-none focus:border-cyan-500" value="1">
+                <span class="text-xs text-slate-500">/ 90</span>
+                <button id="jump-btn" class="bg-cyan-600 hover:bg-cyan-500 text-white text-xs px-2.5 py-1 rounded-lg font-medium transition">Go</button>
+            </div>
+
+            <button id="next-btn" class="bg-cyan-600 hover:bg-cyan-500 text-white px-6 py-2.5 rounded-xl font-medium text-sm transition shadow-md shadow-cyan-950/40">
+                Next →
+            </button>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-4 text-xs text-slate-500 border-t border-slate-800 mt-8">
+        Interactive Assessment App &bull; Pages 68-69 Target Source Material &bull; Built with Tailwind CSS
+    </footer>
+
+    <!-- Application Script -->
+    <script>
+        // 90 Unique Quality Exam-Oriented Questions sourced strictly from Pages 68 and 69.
+        // Options are randomized on load. Index tracking ensures zero repetition and full compliance.
+        const quizData = [
+            // Page 68 Questions (1 to 45)
+            {
+                q: "In October 2025, which company acquired the Kedarnath ropeway project contract?",
+                options: ["Reliance Industries", "Adani Group", "Tata Projects", "L&T Infrastructure"],
+                correct: "Adani Group",
+                hint: "A major multinational conglomerate headed by Gautam Adani.",
+                explanation: "The Kedarnath ropeway project contract was officially secured by the Adani Group, aiming to enhance pilgrimage infrastructure."
+            },
+            {
+                q: "What was the official milestone edition celebrated by the All India Institute of Ayurveda (AIIA) on October 17, 2025?",
+                options: ["7th Foundation Day", "8th Foundation Day", "9th Foundation Day", "10th Foundation Day"],
+                correct: "9th Foundation Day",
+                hint: "Less than a decade of establishment, falling right before the tenth anniversary.",
+                explanation: "On October 17, 2025, the All India Institute of Ayurveda celebrated its 9th establishment anniversary."
+            },
+            {
+                q: "Which state women's football team emerged victorious by winning the 30th Senior Women's National Football Championship on October 17, 2025?",
+                options: ["Manipur", "Kerala", "West Bengal", "Odisha"],
+                correct: "Manipur",
+                hint: "A northeastern state known as a powerhouse of Indian football talent.",
+                explanation: "Manipur clinched the title of the 30th Senior Women's National Football Championship held on October 17, 2025."
+            },
+            {
+                q: "India and which country conducted their 5th bilateral naval exercise named 'Samudra Shakti' in mid-October 2025?",
+                options: ["Vietnam", "Malaysia", "Indonesia", "Philippines"],
+                correct: "Indonesia",
+                hint: "An archipelago nation in Southeast Asia with maritime boundaries near the Andaman Sea.",
+                explanation: "The 5th edition of the 'Samudra Shakti' naval exercise was conducted between the navies of India and Indonesia in October 2025."
+            },
+            {
+                q: "Who was appointed as the first Asian Chairperson of the IUCN Species Survival Commission in October 2025?",
+                options: ["Dr. K. VijayRaghavan", "Vivek Menon", "Madhav Gadgil", "Sunita Narain"],
+                correct: "Vivek Menon",
+                hint: "A noted Indian wildlife conservationist and author.",
+                explanation: "Vivek Menon assumed office as the first Asian chairperson of the IUCN Species Survival Commission in October 2025."
+            },
+            {
+                q: "Which legendary music composer signed a landmark pact with Google Cloud for AI-driven music avatars in October 2025?",
+                options: ["Ilaiyaraaja", "A.R. Rahman", "Hansa Bhardwaj", "Vishal Dadlani"],
+                correct: "A.R. Rahman",
+                hint: "Academy Award-winning maestro from India, famously known as the Isai Puyal.",
+                explanation: "A.R. Rahman partnered with Google Cloud to pioneer AI music avatar development in October 2025."
+            },
+            {
+                q: "Which Indian state has been selected to host the upcoming 5th Khelo India University Games?",
+                options: ["Madhya Pradesh", "Haryana", "Rajasthan", "Uttar Pradesh"],
+                correct: "Rajasthan",
+                hint: "The land of royals, known for the Thar Desert and historical forts.",
+                explanation: "Rajasthan was announced as the host state for the 5th edition of the Khelo India University Games."
+            },
+            {
+                q: "Who became the first transgender member to be appointed to a Supreme Court committee in October 2025?",
+                options: ["Akai Padmashali", "Manabi Bandopadhyay", "Laxmi Narayan Tripathi", "Zoya Lobo"],
+                correct: "Akai Padmashali",
+                hint: "An activist hailing from Karnataka.",
+                explanation: "Akai Padmashali from Karnataka made history by becoming the first transgender member of a Supreme Court committee in October 2025."
+            },
+            {
+                q: "Russia recently offered to manufacture which advanced stealth fighter jet locally inside India?",
+                options: ["Su-35", "Su-57", "MiG-35", "Su-75 Checkmate"],
+                correct: "Su-57",
+                hint: "A fifth-generation multirole fighter jet designation starting with Su.",
+                explanation: "Russia extended an official offer to manufacture its advanced Su-57 stealth fighter jets within India under bilateral defense cooperation."
+            },
+            {
+                q: "Who assumed office as the new Deputy Chief Minister of Gujarat in October 2025?",
+                options: ["Harsh Sanghvi", "Jitu Vaghani", "Rishikesh Patel", "Kanubhai Desai"],
+                correct: "Harsh Sanghvi",
+                hint: "A prominent young BJP leader from Gujarat handling home portfolios.",
+                explanation: "Harsh Sanghvi took charge as the Deputy Chief Minister of Gujarat in October 2025."
+            },
+            {
+                q: "Where is the 11th India International Science Festival (IISF) scheduled to be hosted?",
+                options: ["New Delhi", "Chandigarh", "Bengaluru", "Pune"],
+                correct: "Chandigarh",
+                hint: "The planned union territory city designed by Le Corbusier in northern India.",
+                explanation: "The 11th India International Science Festival was scheduled to be held in Chandigarh."
+            },
+            {
+                q: "Which company plans to launch the world's first multi-sensor Earth Observation (EO) satellite in the first quarter of 2026?",
+                options: ["Pixxel", "GalaxyEye", "Bellatrix Aerospace", "Agnikul Cosmos"],
+                correct: "GalaxyEye",
+                hint: "A private space-tech enterprise focusing on advanced imaging payloads.",
+                explanation: "Space tech enterprise GalaxyEye announced plans to launch the world's first multi-sensor EO satellite in early 2026."
+            },
+            {
+                q: "Which asset management company (AMC) pioneered 'Mutual Fund payments via UPI' in October 2025?",
+                options: ["SBI Mutual Fund", "ICICI Prudential AMC", "Bajaj Finserv AMC", "HDFC Mutual Fund"],
+                correct: "Bajaj Finserv AMC",
+                hint: "Part of the diversified financial services group founded by Sanjiv Bajaj.",
+                explanation: "Bajaj Finserv AMC introduced the facility enabling investments and payments for mutual funds directly via UPI in October 2025."
+            },
+            {
+                q: "What medal did Indian archer Jyothi Surekha Vennam secure at the Archery World Cup Final held in Nanjing, China?",
+                options: ["Gold Medal", "Silver Medal", "Bronze Medal", "No Medal"],
+                correct: "Bronze Medal",
+                hint: "The third-place podium finish equivalent medal.",
+                explanation: "Jyothi Surekha Vennam clinched the bronze medal at the Archery World Cup Final in Nanjing, China."
+            },
+            {
+                q: "Which legendary football player clinched the prestigious Golden Boot award for the 2025 season?",
+                options: ["Kylian Mbappe", "Erling Haaland", "Lionel Messi", "Cristiano Ronaldo"],
+                correct: "Lionel Messi",
+                hint: "An iconic Argentine forward who has won multiple Ballon d'Or titles.",
+                explanation: "Lionel Messi was awarded the Golden Boot for his stellar performance in October 2025."
+            },
+            {
+                q: "Where did India's indigenous Tejas Mk1A fighter aircraft successfully execute its maiden official flight in October 2025?",
+                options: ["Bengaluru", "Nasik", "Hyderabad", "Ozar"],
+                correct: "Nasik",
+                hint: "A historical city in Maharashtra known for HAL's aircraft division facility.",
+                explanation: "The indigenous Tejas Mk1A combat aircraft completed its first official flight from the production facility in Nasik in October 2025."
+            },
+            {
+                q: "India and Brazil held high-level discussions in October 2025 to reinforce which bilateral trade framework?",
+                options: ["MERCOSUR-India Trade Agreement", "BRICS Bilateral Pact", "IBSA Free Trade Treaty", "South-South Economic Corridor"],
+                correct: "MERCOSUR-India Trade Agreement",
+                hint: "Named after the South American trade bloc consisting of Brazil, Argentina, Paraguay, and Uruguay.",
+                explanation: "India and Brazil issued a joint declaration to strengthen the Mercosur-India Preferential Trade Agreement in October 2025."
+            },
+            {
+                q: "How much financial outlay was sanctioned by the Union Government for the newly launched 'Cotton Kranti Yojana' in October 2025?",
+                options: ["Rs. 400 Crore", "Rs. 500 Crore", "Rs. 600 Crore", "Rs. 1,000 Crore"],
+                correct: "Rs. 600 Crore",
+                hint: "Equivalent to six hundred crores of Indian rupees.",
+                explanation: "The Central Government rolled out the Cotton Kranti Yojana with an initial allocation of Rs. 600 crore to boost cotton farming."
+            },
+            {
+                q: "Which Latin American country became the first to legally codify and legalize euthanasia?",
+                options: ["Colombia", "Argentina", "Uruguay", "Chile"],
+                correct: "Uruguay",
+                hint: "A nation in the southern cone of South America bordered by Brazil and Argentina.",
+                explanation: "Uruguay officially became the first Latin American nation to legalize euthanasia through parliamentary legislation in October 2025."
+            },
+            {
+                q: "Where was the 3rd meeting of the India-Central Asia Security Council convened in October 2025?",
+                options: ["Tashkent", "Astana", "Bishkek", "Ashgabat"],
+                correct: "Bishkek",
+                hint: "The capital city of Kyrgyzstan.",
+                explanation: "The third meeting of the India-Central Asia Security Council took place in Bishkek, Kyrgyzstan, in October 2025."
+            },
+            {
+                q: "Which Indian state made history by launching a mandatory menstrual leave policy for both government and private sectors in October 2025?",
+                options: ["Kerala", "Karnataka", "Tamil Nadu", "Odisha"],
+                correct: "Karnataka",
+                hint: "Southern state whose capital is Bengaluru.",
+                explanation: "Karnataka became India's pioneering state to mandate monthly menstrual leave policies across public and private employment sectors."
+            },
+            {
+                q: "The traditional 'Kati Bihu' festival was celebrated with enthusiasm in which Indian state?",
+                options: ["Assam", "Tripura", "Manipur", "Nagaland"],
+                correct: "Assam",
+                hint: "State famous for Kamakhya Temple, Brahmaputra river, and tea gardens.",
+                explanation: "The Kati Bihu festival was prominently observed across Assam in October 2025."
+            },
+            {
+                q: "What was the prize money announced by UIDAI for its official mascot design competition in October 2025?",
+                options: ["Rs. 50,000", "Rs. 75,000", "Rs. 1,00,000", "Rs. 2,00,000"],
+                correct: "Rs. 1,00,000",
+                hint: "Exactly one lakh rupees.",
+                explanation: "UIDAI set a prize purse of Rs. 1,00,000 for the winner of its national mascot design competition in October 2025."
+            },
+            {
+                q: "What medal did Tanvi Sharma win at the BWF World Junior Badminton Championships in October 2025?",
+                options: ["Gold Medal", "Silver Medal", "Bronze Medal", "Gold & Bronze"],
+                correct: "Silver Medal",
+                hint: "Finished as the runner-up in the singles category.",
+                explanation: "Tanvi Sharma delivered a commendable performance to secure the silver medal at the BWF World Junior Badminton Championships."
+            },
+            {
+                q: "What is the official name given to India's upcoming fourth Antarctic research station, scheduled for operational launch by 2029?",
+                options: ["Dakshin Gangotri", "Maitri-II", "Maitri", "Bharati-II"],
+                correct: "Maitri",
+                hint: "Shares its name with an existing historical Indian station on the white continent.",
+                explanation: "India named its upcoming fourth Antarctic scientific research station 'Maitri', targeting full operational status by 2029."
+            },
+            {
+                q: "Where did India stand in the Sustainable Trade Index 2025 released in October 2025?",
+                options: ["15th Rank", "19th Rank", "23rd Rank", "28th Rank"],
+                correct: "23rd Rank",
+                hint: "Indicated by the number twenty-three.",
+                explanation: "India was positioned at the 23rd spot in the Sustainable Trade Index 2025 report published in October."
+            },
+            {
+                q: "Which state emerged at the top position in the Ministry of Mines' State Mining Readiness Index 2025?",
+                options: ["Odisha", "Madhya Pradesh", "Jharkhand", "Chhattisgarh"],
+                correct: "Madhya Pradesh",
+                hint: "The heart state of India, known for rich mineral reserves and tiger sanctuaries.",
+                explanation: "Madhya Pradesh secured the top rank in the State Mining Readiness Index released by the Ministry of Mines in October 2025."
+            },
+            {
+                q: "Where was the pre-summit AI Impact Summit organized ahead of India AI 2026?",
+                options: ["New Delhi", "Uttarakhand", "Bengaluru", "Hyderabad"],
+                correct: "Uttarakhand",
+                hint: "A northern hilly state known as Devbhoomi.",
+                explanation: "An AI Impact Summit leading up to India AI 2026 was organized in Uttarakhand in October 2025."
+            },
+            {
+                q: "What medal did Zorawar Singh Sandhu claim at the ISSF Shotgun World Cup 2025?",
+                options: ["Gold Medal", "Silver Medal", "Bronze Medal", "Gold and Silver"],
+                correct: "Bronze Medal",
+                hint: "Secured a third-place finish in shooting events.",
+                explanation: "Zorawar Singh Sandhu bagged a bronze medal for India at the ISSF Shotgun World Cup 2025."
+            },
+            {
+                q: "What medal did India secure at the Sultan Johor Cup 2025 hockey tournament?",
+                options: ["Gold Medal", "Silver Medal", "Bronze Medal", "Fourth Place"],
+                correct: "Silver Medal",
+                hint: "Finished as runner-up in the prestigious junior international hockey tournament.",
+                explanation: "The Indian junior men's hockey team finished as runners-up, winning the silver medal at the Sultan Johor Cup 2025."
+            },
+            {
+                q: "In October 2025, the Union Law Ministry increased the number of notaries across how many states?",
+                options: ["Two States", "Three States", "Four States", "Five States"],
+                correct: "Four States",
+                hint: "Gujarat, Tamil Nadu, Rajasthan, and Nagaland.",
+                explanation: "The Ministry of Law and Justice expanded the quantum of notaries across four states: Gujarat, Tamil Nadu, Rajasthan, and Nagaland."
+            },
+            {
+                q: "Where was the five-day traditional 'Tihar Festival' celebrated in October 2025?",
+                options: ["Bhutan", "Nepal", "Sikkim", "Darjeeling"],
+                correct: "Nepal",
+                hint: "India's northern Himalayan neighbor celebrating festivals closely resembling Diwali.",
+                explanation: "The five-day Tihar festival of lights and animals was celebrated extensively in Nepal."
+            },
+            {
+                q: "The active 'Taftan' volcano, which recently drew international attention in geological reports, is located in which country?",
+                options: ["Indonesia", "Japan", "Iran", "Chile"],
+                correct: "Iran",
+                hint: "A West Asian nation historically known as Persia.",
+                explanation: "The Taftan stratovolcano, which featured prominently in recent news reports, is situated in Iran."
+            },
+            {
+                q: "Which Indian state successfully implemented the Blackbuck Reintroduction Scheme in October 2025?",
+                options: ["Rajasthan", "Gujarat", "Chhattisgarh", "Punjab"],
+                correct: "Chhattisgarh",
+                hint: "A central Indian state carved out of Madhya Pradesh.",
+                explanation: "Chhattisgarh successfully rolled out its state-level blackbuck reintroduction program in October 2025."
+            },
+            {
+                q: "Which state government mandated the inclusion of chess in school and college academic curricula in October 2025?",
+                options: ["Tamil Nadu", "Goa", "Maharashtra", "Karnataka"],
+                correct: "Goa",
+                hint: "India's smallest state by area, famous for its coastal beaches.",
+                explanation: "The Government of Goa officially integrated chess into educational curricula across schools and colleges in October 2025."
+            },
+            {
+                q: "India and which Latin American country signed a strategic partnership pact for trade and emerging technologies in October 2025?",
+                options: ["Mexico", "Chile", "Brazil", "Argentina"],
+                correct: "Brazil",
+                hint: "The largest nation in South America and a key BRICS partner.",
+                explanation: "India and Brazil entered into a strategic trade and technology alliance in October 2025."
+            },
+            {
+                q: "Former French President Nicolas Sarkozy was sentenced to a prison term of how many years in late 2025?",
+                options: ["3 Years", "5 Years", "7 Years", "10 Years"],
+                correct: "5 Years",
+                hint: "Equivalent to half a decade behind bars.",
+                explanation: "Former French President Nicolas Sarkozy was handed a five-year prison sentence following a court ruling in October 2025."
+            },
+            {
+                q: "What medal did 15-year-old Khushi win for India at the Asian Youth Games?",
+                options: ["Gold Medal", "Silver Medal", "Bronze Medal", "Gold and Bronze"],
+                correct: "Bronze Medal",
+                hint: "Secured a third-place podium finish for the Indian contingent.",
+                explanation: "Fifteen-year-old Indian athlete Khushi secured a bronze medal at the Asian Youth Games."
+            },
+            {
+                q: "Which country officially abolished its 50-year-old 'Kafala' sponsorship system in October 2025?",
+                options: ["UAE", "Qatar", "Saudi Arabia", "Oman"],
+                correct: "Saudi Arabia",
+                hint: "The largest country on the Arabian Peninsula.",
+                explanation: "Saudi Arabia officially dismantled its decades-old Kafala labor sponsorship system in October 2025."
+            },
+            {
+                q: "Which nation attained membership status as the 90th member of the International Union for Conservation of Nature (IUCN) in October 2025?",
+                options: ["Tuvalu", "Vanuatu", "Fiji", "Palau"],
+                correct: "Tuvalu",
+                hint: "A Polynesian island nation located in the Pacific Ocean.",
+                explanation: "Tuvalu was inducted as the 90th member country of the IUCN in October 2025."
+            },
+            {
+                q: "India and Britain launched which collaborative research grant program to boost scientific cooperation in October 2025?",
+                options: ["Newton-Bhabha Fellowship", "Ramanujan-Junior Researchers Program", "Curie-Raman Initiative", "Indo-UK Tech Bridge"],
+                correct: "Ramanujan-Junior Researchers Program",
+                hint: "Named in honor of the legendary Indian mathematician Srinivasa Ramanujan.",
+                explanation: "India and Britain initiated the Ramanujan Junior Researchers Program to foster collaborative scientific research."
+            },
+            {
+                q: "According to the Global Forest Resources Assessment 2025 report, what is India's global rank in terms of total forest area?",
+                options: ["5th Rank", "7th Rank", "9th Rank", "12th Rank"],
+                correct: "9th Rank",
+                hint: "Ranked right below the top eight nations.",
+                explanation: "India was ranked 9th globally in terms of total forest area according to the Global Forest Resources Assessment 2025."
+            },
+            {
+                q: "Which company launched the artificial intelligence browser named 'Atlas' in October 2025?",
+                options: ["Google", "OpenAI", "Microsoft", "Anthropic"],
+                correct: "OpenAI",
+                hint: "The creator of ChatGPT and advanced generative AI models.",
+                explanation: "OpenAI unveiled its new web browser named 'Atlas' featuring native AI capabilities in October 2025."
+            },
+            {
+                q: "Which Gujarati New Year festival was celebrated across Gujarat under the traditional title 'Bestu Varsh' in October 2025?",
+                options: ["Kartak Sud Ekam", "Vikram Samvat New Year", "Gujarati Nav varsh", "Bestu Varsh"],
+                correct: "Bestu Varsh",
+                hint: "Traditional greeting for the regional calendar New Year.",
+                explanation: "The regional New Year celebrations known as 'Bestu Varsh' were observed with traditional fervor in Gujarat."
+            },
+            {
+                q: "Which star Indian athlete was formally conferred with the honorary rank of Lieutenant Colonel in the Indian Army in October 2025?",
+                options: ["Abhinav Bindra", "Neeraj Chopra", "PV Sindhu", "Bajrang Punia"],
+                correct: "Neeraj Chopra",
+                hint: "Olympic gold medalist javelin thrower from Haryana.",
+                explanation: "Olympic javelin champion Neeraj Chopra was honored with the honorary rank of Lieutenant Colonel in the Indian Army."
+            },
+
+            // Page 69 Questions (46 to 90)
+            {
+                q: "Which country emerged victorious by winning the Under-20 FIFA World Cup 2025?",
+                options: ["Argentina", "Morocco", "France", "Brazil"],
+                correct: "Morocco",
+                hint: "A North African nation whose football team has made historic global strides.",
+                explanation: "Morocco clinched the Under-20 FIFA World Cup 2025 title."
+            },
+            {
+                q: "Which Indian naval ship arrived in Japan in October 2025 to participate in the 'JIMEX-2025' maritime exercise?",
+                options: ["INS Shivalik", "INS Sahyadri", "INS Visakhapatnam", "INS Kochi"],
+                correct: "INS Sahyadri",
+                hint: "A Shivalik-class stealth multi-role frigate of the Indian Navy.",
+                explanation: "INS Sahyadri reached Japan to participate in the bilateral maritime exercise JIMEX-2025."
+            },
+            {
+                q: "Who clinched the Formula One United States Grand Prix title in October 2025?",
+                options: ["Lewis Hamilton", "Charles Leclerc", "Max Verstappen", "Lando Norris"],
+                correct: "Max Verstappen",
+                hint: "Red Bull Racing's star Dutch driver and multi-time world champion.",
+                explanation: "Max Verstappen won the Formula One US Grand Prix in October 2025."
+            },
+            {
+                q: "Who made history as the first President of India to offer prayers at the historic Sabarimala Ayyappa Temple?",
+                options: ["Pratibha Patil", "Droupadi Murmu", "Ram Nath Kovind", "Meira Kumar"],
+                correct: "Droupadi Murmu",
+                hint: "The current incumbent President of India.",
+                explanation: "President Droupadi Murmu became the nation's first sitting head of state to worship at the Sabarimala Ayyappa Temple."
+            },
+            {
+                q: "What was the name of the operation launched by India in October 2025 to curb illegal cross-border smuggling of firecrackers from China?",
+                options: ["Operation Thunder", "Operation Fire Trail", "Operation Clean Sweep", "Operation Border Shield"],
+                correct: "Operation Fire Trail",
+                hint: "Refers directly to tracks and trails used for illegal logistics.",
+                explanation: "India initiated 'Operation Fire Trail' to clamp down on illegal firecracker smuggling originating from China."
+            },
+            {
+                q: "What medal did Vishwajit More secure at the Under-23 World Wrestling Championships in October 2025?",
+                options: ["Gold Medal", "Silver Medal", "Bronze Medal", "Gold and Bronze"],
+                correct: "Bronze Medal",
+                hint: "Finished on the podium with a third-place medal.",
+                explanation: "Vishwajit More won a bronze medal for India at the Under-23 Wrestling World Championships."
+            },
+            {
+                q: "Which southern state was officially set to be declared India's first absolute extreme-poverty-free state on November 1, 2025?",
+                options: ["Tamil Nadu", "Kerala", "Karnataka", "Telangana"],
+                correct: "Kerala",
+                hint: "A state known for high human development indices in southwest India.",
+                explanation: "Kerala was scheduled to be officially declared India's first extreme-poverty-free state on November 1, 2025."
+            },
+            {
+                q: "In which Indian state was the cultural festival 'Ningol Chakkouba' celebrated in October 2025?",
+                options: ["Assam", "Manipur", "Meghalaya", "Mizoram"],
+                correct: "Manipur",
+                hint: "A traditional festival celebrating the special bond between married women and their maternal families.",
+                explanation: "The traditional festival 'Ningol Chakkouba' was celebrated with great fervor in Manipur."
+            },
+            {
+                q: "Who was appointed as the Chief Product and Business Officer at Google Cloud in October 2025?",
+                options: ["Karthik Narayan", "Shantanu Narayen", "Nikesh Arora", "Thomas Kurian"],
+                correct: "Karthik Narayan",
+                hint: "An executive holding a prominent South Asian name in cloud computing leadership.",
+                explanation: "Karthik Narayan assumed office as the Chief Product and Business Officer at Google Cloud in October 2025."
+            },
+            {
+                q: "Where was India's first real-time flood forecasting system launched in October 2025?",
+                options: ["Mumbai", "Guwahati", "Chennai", "Kolkata"],
+                correct: "Chennai",
+                hint: "Capital city of Tamil Nadu, prone to coastal monsoonal flooding.",
+                explanation: "India's pioneering real-time flood forecasting system was launched in Chennai."
+            },
+            {
+                q: "Where was the 16th summit of UNCTAD convened in October 2025?",
+                options: ["New York, USA", "Geneva, Switzerland", "Vienna, Austria", "Nairobi, Kenya"],
+                correct: "Geneva, Switzerland",
+                hint: "The global hub hosting international organizations in the Swiss Alps.",
+                explanation: "The 16th UNCTAD summit was hosted in Geneva, Switzerland."
+            },
+            {
+                q: "Who won the prestigious British Academy Book Prize for 2025 for his environmental history work?",
+                options: ["Amitav Ghosh", "Sunil Amrith", "Ramachandra Guha", "Pankaj Mishra"],
+                correct: "Sunil Amrith",
+                hint: "Author of 'The Burning Earth: An Environmental History of the Last 500 Years'.",
+                explanation: "Sunil Amrith won the 2025 British Academy Book Prize for his book 'The Burning Earth'."
+            },
+            {
+                q: "What milestone establishment anniversary did the Indo-Tibetan Border Police (ITBP) celebrate on October 24, 2025?",
+                options: ["60th Anniversary", "62nd Anniversary", "64th Anniversary", "65th Anniversary"],
+                correct: "64th Anniversary",
+                hint: "Marked sixty-four years of safeguarding India's high-altitude borders.",
+                explanation: "The Indo-Tibetan Border Police observed its 64th raising day anniversary on October 24, 2025."
+            },
+            {
+                q: "Where did Union Defence Minister Rajnath Singh inaugurate 'Shaurya Van' in October 2025?",
+                options: ["Rajasthan", "Gujarat", "Uttarakhand", "Punjab"],
+                correct: "Rajasthan",
+                hint: "The desert state of India.",
+                explanation: "Union Defence Minister Rajnath Singh inaugurated 'Shaurya Van' in Rajasthan."
+            },
+            {
+                q: "What medal did the Indian contingent win in kabaddi at the Asian Youth Games in October 2025?",
+                options: ["Gold Medal", "Silver Medal", "Bronze Medal", "No Medal Awarded"],
+                correct: "Gold Medal",
+                hint: "The top podium finish in the sport originated in India.",
+                explanation: "India secured the gold medal in kabaddi at the Asian Youth Games in October 2025."
+            },
+            {
+                q: "Who was honored with the Sakharov Prize 2025 alongside Andrzej Poczobut?",
+                options: ["Sviatlana Tsikhanouskaya", "Mazhyia Amaglobeli", "Maria Ressa", "Oksana Zabuzhko"],
+                correct: "Mazhyia Amaglobeli",
+                hint: "A prominent civil rights advocate.",
+                explanation: "Mazhyia Amaglobeli was awarded the Sakharov Prize 2025 alongside Andrzej Poczobut."
+            },
+            {
+                q: "Which Indian scientist/researcher was honored with the BRICS International Award 2025 in the field of science and peace?",
+                options: ["Shabbir Hassan", "K. Sivan", "Nambi Narayanan", "Sameer V. Kamat"],
+                correct: "Shabbir Hassan",
+                hint: "Recognized internationally for scientific contributions under BRICS frameworks.",
+                explanation: "Shabbir Hassan received the BRICS International Award 2025 for science and peace."
+            },
+            {
+                q: "The 'Bathou' religion belongs to which ethnic tribal community that was recently granted a separate census code?",
+                options: ["Santhal", "Bodo", "Garo", "Khasi"],
+                correct: "Bodo",
+                hint: "An indigenous ethnic group residing primarily in Assam.",
+                explanation: "The Bathou religion is practiced by the Bodo tribe, which was allocated a distinct census code."
+            },
+            {
+                q: "What is the name of the first indigenous antibiotic developed by Indian scientists?",
+                options: ["Nafithromycin", "Ceftaroline", "Zidebactam", "Supramycin"],
+                correct: "Nafithromycin",
+                hint: "An indigenously formulated macrolide antibiotic designation starting with N.",
+                explanation: "Indian scientists developed the breakthrough indigenous antibiotic named 'Nafithromycin'."
+            },
+            {
+                q: "Where was the 14th India-Bhutan Border Management and Security meeting held in October 2025?",
+                options: ["New Delhi", "Thimphu", "Guwahati", "Siliguri"],
+                correct: "Thimphu",
+                hint: "The picturesque capital city of Bhutan.",
+                explanation: "The 14th India-Bhutan border management talks were convened in Thimphu, Bhutan."
+            },
+            {
+                q: "Who authored the book titled 'Modi's Mission' released in October 2025?",
+                options: ["Ashok Tandon", "Berjis Desai", "Arundhati Roy", "C.P. Radhakrishnan"],
+                correct: "Berjis Desai",
+                hint: "A prominent author and legal expert.",
+                explanation: "The book 'Modi's Mission' authored by Berjis Desai was officially released in October 2025."
+            },
+            {
+                q: "Who was appointed as the first female president of the Indian Cricketers' Association (ICA) in October 2025?",
+                options: ["Anjum Chopra", "Shanta Rangaswamy", "Jhulan Goswami", "Mithali Raj"],
+                correct: "Shanta Rangaswamy",
+                hint: "A pioneer of women's cricket in India who captained the national side in the 1970s and 80s.",
+                explanation: "Shanta Rangaswamy was appointed as the inaugural female president of the Indian Cricketers' Association."
+            },
+            {
+                q: "Which legendary Indian sports personality was named torchbearer for the Milano Cortina 2026 Winter Olympics?",
+                options: ["Neeraj Chopra", "Abhinav Bindra", "Viswanathan Anand", "Gagan Narang"],
+                correct: "Abhinav Bindra",
+                hint: "India's first individual Olympic gold medalist in shooting.",
+                explanation: "Abhinav Bindra was designated as a torchbearer for the Milano Cortina 2026 Winter Olympic Games."
+            },
+            {
+                q: "A 4,000-year-old Harappan 'highway hotel' was discovered at which archaeological site in Gujarat?",
+                options: ["Dholavira", "Lothal", "Kotada Bhadli", "Surkotada"],
+                correct: "Kotada Bhadli",
+                hint: "An archaeological excavation site located in the Kutch district.",
+                explanation: "A 4,000-year-old ancient roadside rest structure or 'highway hotel' was excavated at Kotada Bhadli in Kutch."
+            },
+            {
+                q: "Which country named the tropical cyclone 'Montha' that drew significant attention in October 2025?",
+                options: ["India", "Thailand", "Myanmar", "Sri Lanka"],
+                correct: "Thailand",
+                hint: "Southeast Asian nation known for the Land of Smiles.",
+                explanation: "The tropical cyclone 'Montha' was officially named by Thailand."
+            },
+            {
+                q: "Which region in India resumed the historical administrative migration tradition known as 'Darbar Move' in October 2025?",
+                options: ["Himachal Pradesh", "Jammu and Kashmir", "Ladakh", "Uttarakhand"],
+                correct: "Jammu and Kashmir",
+                hint: "A union territory where government offices alternated between Srinagar and Jammu.",
+                explanation: "The traditional bi-annual 'Darbar Move' administrative migration was restarted in Jammu and Kashmir."
+            },
+            {
+                q: "Where was the 22nd ASEAN-India Summit conducted in October 2025?",
+                options: ["Jakarta, Indonesia", "Kuala Lumpur, Malaysia", "Bangkok, Thailand", "Manila, Philippines"],
+                correct: "Kuala Lumpur, Malaysia",
+                hint: "The capital of Malaysia featuring the iconic Petronas Twin Towers.",
+                explanation: "The 22nd ASEAN-India Summit was successfully hosted in Kuala Lumpur, Malaysia."
+            },
+            {
+                q: "Prime Minister Narendra Modi declared which year as the 'Year of ASEAN-India Maritime Cooperation'?",
+                options: ["2025", "2026", "2027", "2030"],
+                correct: "2026",
+                hint: "The calendar year immediately following 2025.",
+                explanation: "PM Modi announced 2026 as the official 'Year of ASEAN-India Maritime Cooperation'."
+            },
+            {
+                q: "Where is India's first glass suspension bridge, named 'Bajrang Setu', being constructed?",
+                options: ["Manali, Himachal Pradesh", "Rishikesh, Uttarakhand", "Pahalgam, Jammu & Kashmir", "Gangtok, Sikkim"],
+                correct: "Rishikesh, Uttarakhand",
+                hint: "Built across the holy Ganges river in a prominent spiritual hub.",
+                explanation: "India's pioneering glass suspension bridge 'Bajrang Setu' is being constructed across the Ganga river in Rishikesh."
+            },
+            {
+                q: "Which country announced the successful test firing of its nuclear-powered cruise missile named 'Burevestnik' in October 2025?",
+                options: ["United States", "China", "Russia", "North Korea"],
+                correct: "Russia",
+                hint: "A Eurasian superpower spanning eleven time zones.",
+                explanation: "Russia announced the successful test of its nuclear-powered 'Burevestnik' cruise missile in late October 2025."
+            },
+            {
+                q: "What was the core theme for Vigilance Awareness Week observed from October 27 to November 2, 2025?",
+                options: ["Corruption-Free India, Developed India", "Vigilance our shared responsibility", "Integrity for Nation Building", "Ethics in Public Governance"],
+                correct: "Vigilance our shared responsibility",
+                hint: "Emphasizes collective duty towards ethical administration.",
+                explanation: "The theme for Vigilance Awareness Week 2025 was 'Vigilance our shared responsibility'."
+            },
+            {
+                q: "Which country topped the medal tally at the 4th South Asian Athletics Championships 2025?",
+                options: ["Pakistan", "Sri Lanka", "India", "Bangladesh"],
+                correct: "India",
+                hint: "The host nation dominating regional athletic disciplines with 58 total medals.",
+                explanation: "India dominated the 4th South Asian Athletics Championships 2025, topping the medal table with 58 medals."
+            },
+            {
+                q: "Where was the 47th ASEAN Summit concluded under the theme of 'Inclusivity and Sustainability'?",
+                options: ["Singapore", "Kuala Lumpur, Malaysia", "Vientiane, Laos", "Hanoi, Vietnam"],
+                correct: "Kuala Lumpur, Malaysia",
+                hint: "The Malaysian capital hosting high-level diplomatic blocks.",
+                explanation: "The 47th ASEAN Summit focusing on inclusivity and sustainability took place in Kuala Lumpur, Malaysia."
+            },
+            {
+                q: "Which country was officially inducted as the 11th member state of ASEAN?",
+                options: ["East Timor (Timor-Leste)", "Papua New Guinea", "Bangladesh", "Fiji"],
+                correct: "East Timor (Timor-Leste)",
+                hint: "An island nation in Southeast Asia sharing an island with Indonesia.",
+                explanation: "Timor-Leste was officially integrated as the 11th member country of ASEAN."
+            },
+            {
+                q: "Which e-commerce major launched the 'India Travel Card' for public transport integration in October 2025?",
+                options: ["Amazon India", "Flipkart", "Myntra", "Reliance Retail"],
+                correct: "Flipkart",
+                hint: "A homegrown Indian e-commerce giant owned by Walmart.",
+                explanation: "Flipkart introduced the 'India Travel Card' to facilitate public transportation payments."
+            },
+            {
+                q: "Which Indian city was declared the cleanest city in India according to the Air Quality Index report released in late October 2025?",
+                options: ["Indore", "Pune", "Surat", "Chandigarh"],
+                correct: "Pune",
+                hint: "A major cultural and educational hub in Maharashtra.",
+                explanation: "Pune secured the top spot as India's cleanest city according to the AQI assessment report in October 2025."
+            },
+            {
+                q: "What was the new official name given to Aurangabad railway station in Maharashtra in October 2025?",
+                options: ["Dharashiv Railway Station", "Chhatrapati Sambhajinagar Railway Station", "Ahilyanagar Railway Station", "Raigad Railway Station"],
+                correct: "Chhatrapati Sambhajinagar Railway Station",
+                hint: "Renamed after the Maratha king Chhatrapati Sambhaji.",
+                explanation: "Aurangabad railway station was officially renamed as Chhatrapati Sambhajinagar railway station in Maharashtra."
+            },
+            {
+                q: "Where was the international dance festival 'Udbhav Utsav 2025' concluded in late October 2025?",
+                options: ["Bhopal", "Gwalior", "Indore", "Khajuraho"],
+                correct: "Gwalior",
+                hint: "A historic city in Madhya Pradesh known for its massive hilltop fort.",
+                explanation: "The international dance festival 'Udbhav Utsav 2025' concluded successfully in Gwalior, Madhya Pradesh."
+            },
+            {
+                q: "Who was conferred with India's highest scientific honor, the 'Vigyan Ratna Award', in October 2025?",
+                options: ["K. Sivan", "Jayant Vishnu Narlikar", "A.S. Kiran Kumar", "Ajit Kumar Mohanty"],
+                correct: "Jayant Vishnu Narlikar",
+                hint: "A renowned Indian astrophysicist and cosmologist.",
+                explanation: "Distinguished astrophysicist Jayant Vishnu Narlikar was honored with the Vigyan Ratna Award."
+            },
+            {
+                q: "Which country launched the world's first yen-backed stablecoin named 'JYPC' in October 2025?",
+                options: ["Singapore", "Japan", "South Korea", "UAE"],
+                correct: "Japan",
+                hint: "An East Asian island nation whose currency is the Yen.",
+                explanation: "Japan introduced the world's inaugural yen-denominated stablecoin, 'JYPC', in October 2025."
+            },
+            {
+                q: "Who was designated as the 53rd Chief Justice of India in October 2025?",
+                options: ["Justice Sanjiv Khanna", "Justice Surya Kant", "Justice B.R. Gavai", "Justice Aniruddha Bose"],
+                correct: "Justice Surya Kant",
+                hint: "A senior judge of the Supreme Court of India.",
+                explanation: "Justice Surya Kant was nominated and appointed as the 53rd Chief Justice of India."
+            },
+            {
+                q: "Who secured the number one position among women's batters in the ICC Women's ODI Rankings released in October 2025?",
+                options: ["Harmanpreet Kaur", "Smriti Mandhana", "Ellyse Perry", "Laura Wolvaardt"],
+                correct: "Smriti Mandhana",
+                hint: "Star Indian opening batswoman known for elegant left-handed strokeplay.",
+                explanation: "Smriti Mandhana claimed the top spot in the ICC Women's ODI Batting Rankings in October 2025."
+            },
+            {
+                q: "The Reserve Bank of India permitted which neighboring country to borrow in Indian Rupees in October 2025?",
+                options: ["Bhutan", "Nepal", "Sri Lanka", "Bangladesh"],
+                correct: "Nepal",
+                hint: "A landlocked Himalayan country sharing open borders with India.",
+                explanation: "RBI granted formal permission to Nepal to borrow in Indian currency units in October 2025."
+            },
+            {
+                q: "Which country unveiled its massive 'Hyunmu-5 Monster Missile' in October 2025?",
+                options: ["North Korea", "South Korea", "Taiwan", "Japan"],
+                correct: "South Korea",
+                hint: "An East Asian nation bounded by the Yellow Sea and the Sea of Japan.",
+                explanation: "South Korea unveiled its powerful conventional Hyunmu-5 'Monster Missile'."
+            },
+            {
+                q: "What medal did Indian Grandmaster D. Gukesh win at the 2025 European Chess Club Cup?",
+                options: ["Gold Medal", "Silver Medal", "Bronze Medal", "No Medal"],
+                correct: "Gold Medal",
+                hint: "The highest podium finish in competitive chess events.",
+                explanation: "Indian chess prodigy D. Gukesh won the gold medal at the 2025 European Chess Club Cup."
+            }
+        ];
+
+        // State Management
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let userAnswers = new Array(quizData.length).fill(null);
+        let shuffledOptionsCache = new Array(quizData.length).fill(null);
+
+        // DOM Elements
+        const questionCounterEl = document.getElementById('question-counter');
+        const questionTextEl = document.getElementById('question-text');
+        const optionsContainerEl = document.getElementById('options-container');
+        const hintBoxEl = document.getElementById('hint-box');
+        const hintTextEl = document.getElementById('hint-text');
+        const toggleHintBtn = document.getElementById('toggle-hint-btn');
+        const hintBtnText = document.getElementById('hint-btn-text');
+        const explanationBoxEl = document.getElementById('explanation-box');
+        const explanationTitleEl = document.getElementById('explanation-title');
+        const explanationTextEl = document.getElementById('explanation-text');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const jumpInput = document.getElementById('jump-input');
+        const jumpBtn = document.getElementById('jump-btn');
+        const scoreDisplay = document.getElementById('score-display');
+        const progressBar = document.getElementById('progress-bar');
+        const resetQuizBtn = document.getElementById('reset-quiz-btn');
+
+        // Fisher-Yates Shuffle Utility for options randomization
+        function shuffleArray(array) {
+            let arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        // Initialize / Load Question
+        function loadQuestion(index) {
+            const qData = quizData[index];
+            questionCounterEl.textContent = `Question ${index + 1} of 90`;
+            questionTextEl.textContent = qData.q;
+            
+            // Hide hint box by default on new question
+            hintBoxEl.classList.add('hidden');
+            hintBtnText.textContent = "Show Hint";
+            hintTextEl.textContent = qData.hint;
+
+            // Generate or retrieve shuffled options
+            if (!shuffledOptionsCache[index]) {
+                shuffledOptionsCache[index] = shuffleArray(qData.options);
+            }
+            const currentOptions = shuffledOptionsCache[index];
+
+            // Render Options
+            optionsContainerEl.innerHTML = '';
+            const selectedAnswer = userAnswers[index];
+
+            currentOptions.forEach((option, optIdx) => {
+                const button = document.createElement('button');
+                button.className = `w-full text-left p-4 rounded-xl border text-sm font-medium transition-all flex items-center justify-between shadow-sm ${
+                    selectedAnswer !== null 
+                        ? (option === qData.correct 
+                            ? 'bg-emerald-950/60 border-emerald-500/80 text-emerald-200' 
+                            : (selectedAnswer === option 
+                                ? 'bg-rose-950/60 border-rose-500/80 text-rose-200' 
+                                : 'bg-slate-900/60 border-slate-700/80 text-slate-400 opacity-60'))
+                        : 'bg-slate-900 hover:bg-slate-700/70 border-slate-700 hover:border-slate-500 text-slate-200'
+                }`;
+                
+                button.innerHTML = `
+                    <span><strong class="text-cyan-400 mr-2">${String.fromCharCode(65 + optIdx)}.</strong> ${option}</span>
+                    ${selectedAnswer !== null && option === qData.correct ? '<span class="text-emerald-400 text-xs font-bold bg-emerald-900/50 px-2 py-0.5 rounded border border-emerald-700">Correct Answer</span>' : ''}
+                    ${selectedAnswer !== null && selectedAnswer === option && option !== qData.correct ? '<span class="text-rose-400 text-xs font-bold bg-rose-900/50 px-2 py-0.5 rounded border border-rose-700">Your Choice</span>' : ''}
+                `;
+
+                if (selectedAnswer === null) {
+                    button.addEventListener('click', () => selectOption(option, qData));
+                } else {
+                    button.disabled = true;
+                }
+
+                optionsContainerEl.appendChild(button);
+            });
+
+            // Render Explanation if answered
+            if (selectedAnswer !== null) {
+                showExplanationBox(selectedAnswer === qData.correct, qData.explanation);
+            } else {
+                explanationBoxEl.classList.add('hidden');
+            }
+
+            // Update Nav Controls
+            prevBtn.disabled = index === 0;
+            nextBtn.textContent = index === quizData.length - 1 ? 'Finish Quiz' : 'Next →';
+            jumpInput.value = index + 1;
+            progressBar.style.width = `${((index + 1) / quizData.length) * 100}%`;
+        }
+
+        // Handle Option Selection
+        function selectOption(selectedOption, qData) {
+            userAnswers[currentQuestionIndex] = selectedOption;
+            
+            const isCorrect = selectedOption === qData.correct;
+            if (isCorrect) {
+                score++;
+                scoreDisplay.textContent = `${score} / 90`;
+            }
+
+            loadQuestion(currentQuestionIndex);
+        }
+
+        // Show Explanation Box
+        function showExplanationBox(isCorrect, explanation) {
+            explanationBoxEl.classList.remove('hidden');
+            if (isCorrect) {
+                explanationBoxEl.className = "mt-6 p-4 rounded-xl border bg-emerald-950/40 border-emerald-800/80 text-emerald-200 text-sm transition-all duration-300";
+                explanationTitleEl.innerHTML = `✅ Correct! Excellent exam preparation.`;
+            } else {
+                explanationBoxEl.className = "mt-6 p-4 rounded-xl border bg-rose-950/40 border-rose-800/80 text-rose-200 text-sm transition-all duration-300";
+                explanationTitleEl.innerHTML = `❌ Incorrect. Review the rationale below:`;
+            }
+            explanationTextEl.textContent = explanation;
+        }
+
+        // Toggle Hint Visibility
+        toggleHintBtn.addEventListener('click', () => {
+            const isHidden = hintBoxEl.classList.contains('hidden');
+            if (isHidden) {
+                hintBoxEl.classList.remove('hidden');
+                hintBtnText.textContent = "Hide Hint";
+            } else {
+                hintBoxEl.classList.add('hidden');
+                hintBtnText.textContent = "Show Hint";
+            }
+        });
+
+        // Navigation Button Listeners
+        prevBtn.addEventListener('click', () => {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion(currentQuestionIndex);
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            if (currentQuestionIndex < quizData.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion(currentQuestionIndex);
+            } else {
+                alert(`Quiz Completed! Final Score: ${score} / 90 (${((score/90)*100).toFixed(1)}%)`);
+            }
+        });
+
+        jumpBtn.addEventListener('click', () => {
+            const target = parseInt(jumpInput.value) - 1;
+            if (target >= 0 && target < quizData.length) {
+                currentQuestionIndex = target;
+                loadQuestion(currentQuestionIndex);
+            } else {
+                alert(`Please enter a valid question number between 1 and ${quizData.length}.`);
+            }
+        });
+
+        jumpInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                jumpBtn.click();
+            }
+        });
+
+        // Reset Quiz Listener
+        resetQuizBtn.addEventListener('click', () => {
+            if (confirm("Are you sure you want to reset your quiz progress and start over?")) {
+                currentQuestionIndex = 0;
+                score = 0;
+                userAnswers = new Array(quizData.length).fill(null);
+                shuffledOptionsCache = new Array(quizData.length).fill(null);
+                scoreDisplay.textContent = `0 / 90`;
+                loadQuestion(0);
+            }
+        });
+
+        // Initial Load
+        loadQuestion(0);
+    </script>
+<script src="../../quiz-question-controls.js"></script>
+<script src="../../quiz-app-ui-v2.js"></script></body>
+</html>

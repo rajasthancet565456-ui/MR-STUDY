@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haryana GK - Kurukshetra District Interactive Quiz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', 'Noto Sans Devanagari', sans-serif;
+        }
+    </style>
+<style id="cosmic-readable-quiz-theme">
+:root{--space:#e8dcff;--panel:#f3eaff;--panel2:#dcc6ff;--edge:#6a45bf;--glow:#d28b28;--accent:#d15f9f;--ink:#2c1b4d;--muted:#66547c;--mist:rgba(106,69,191,.2)}html{background:var(--space)}body{background:radial-gradient(ellipse 62% 45% at 90% -5%,rgba(209,95,159,.28),transparent 62%),radial-gradient(ellipse 55% 40% at 8% 100%,rgba(65,164,207,.26),transparent 64%),var(--space)!important;color:var(--ink)!important;min-height:100vh}body:before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.78;background-image:radial-gradient(circle at 9% 18%,var(--glow) 0 1px,transparent 1.7px),radial-gradient(circle at 26% 69%,var(--edge) 0 .8px,transparent 1.5px),radial-gradient(circle at 68% 24%,var(--accent) 0 1px,transparent 1.8px),radial-gradient(circle at 88% 73%,#47a8d3 0 .8px,transparent 1.5px);background-size:220px 190px,300px 270px,260px 230px,340px 310px;z-index:-1}header{background:linear-gradient(105deg,var(--panel),var(--panel2))!important;border-color:rgba(106,69,191,.25)!important;box-shadow:0 7px 24px rgba(84,48,142,.14)!important}header h1{color:var(--edge)!important;text-shadow:none!important}header p,header .text-slate-400,header .text-indigo-200,header .text-indigo-300{color:var(--muted)!important}main>div,#quiz-card,.bg-slate-800,.bg-slate-900,.bg-indigo-900,.bg-indigo-950{background:linear-gradient(145deg,#f8f0ff,var(--panel))!important;border-color:rgba(106,69,191,.22)!important;color:var(--ink)!important;box-shadow:0 14px 35px rgba(84,48,142,.12)!important}.bg-slate-700,.bg-slate-100,.bg-slate-50{background:#eadffd!important;color:var(--ink)!important}.text-slate-100,.text-slate-200,.text-slate-300,.text-slate-400,.text-white,.text-slate-800,.text-slate-700,.text-slate-600{color:var(--ink)!important}.text-indigo-400,.text-indigo-300,.text-emerald-400,.text-yellow-300{color:var(--edge)!important}.border-slate-700,.border-slate-700\/60,.border-indigo-700,.border-slate-200{border-color:rgba(106,69,191,.25)!important}button:not(.bg-green-600):not(.bg-red-600){background:#f9f2ff!important;color:var(--ink)!important;border:1px solid rgba(106,69,191,.25)!important;box-shadow:0 3px 10px rgba(84,48,142,.09)!important}button.bg-indigo-600,button.bg-slate-800,button.bg-slate-900,button.bg-indigo-900{background:linear-gradient(120deg,var(--edge),var(--accent))!important;color:#fff!important;border:0!important}button.bg-indigo-600 *,button.bg-slate-800 *,button.bg-slate-900 *,button.bg-indigo-900 *{color:#fff!important}button:hover{filter:brightness(1.04);transform:translateY(-1px)}input,select,textarea{background:#f9f2ff!important;border-color:rgba(106,69,191,.35)!important;color:var(--ink)!important}input:focus,select:focus,textarea:focus{outline:none!important;border-color:var(--edge)!important;box-shadow:0 0 0 3px var(--mist)!important}.bg-indigo-500,#progress-bar{background:linear-gradient(90deg,var(--edge),var(--accent),var(--glow))!important}.rounded-2xl{border-radius:1.25rem!important}
+</style></head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col justify-between">
+
+    <!-- Header Section -->
+    <header class="bg-slate-800 border-b border-slate-700 shadow-md py-4 px-6">
+        <div class="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div>
+                <h1 class="text-xl sm:text-2xl font-bold text-amber-400">Haryana GK: Kurukshetra District</h1>
+                <p class="text-sm text-slate-400">Bilingual Interactive Exam Practice (SSC / HSSC / State Exams)</p>
+            </div>
+            <div class="flex items-center gap-4 bg-slate-900 px-4 py-2 rounded-lg border border-slate-700">
+                <div class="text-sm">
+                    Score: <span id="score-display" class="font-bold text-green-400">0</span> / <span id="total-questions-display">0</span>
+                </div>
+                <div class="h-4 w-px bg-slate-700"></div>
+                <div class="text-sm">
+                    Q: <span id="current-q-num" class="font-bold text-amber-400">1</span> / <span id="total-q-num">0</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Quiz Container -->
+    <main class="max-w-3xl w-full mx-auto p-4 sm:p-6 my-auto">
+        <!-- Progress Bar -->
+        <div class="w-full bg-slate-800 rounded-full h-2.5 mb-6 overflow-hidden border border-slate-700">
+            <div id="progress-bar" class="bg-amber-500 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+        </div>
+
+        <!-- Quiz Card -->
+        <div id="quiz-card" class="bg-slate-800 border border-slate-700 rounded-2xl shadow-xl p-6 sm:p-8 relative">
+            <!-- Question Header -->
+            <div class="flex justify-between items-start gap-4 mb-4">
+                <span id="question-tag" class="bg-amber-500/10 text-amber-400 text-xs font-semibold px-3 py-1 rounded-full border border-amber-500/20">
+                    Sub-topic
+                </span>
+                <button id="hint-btn" onclick="toggleHint()" class="text-xs bg-slate-700 hover:bg-slate-600 text-slate-300 px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5 border border-slate-600">
+                    💡 <span id="hint-text-label">Show Hint</span>
+                </button>
+            </div>
+
+            <!-- Hint Box -->
+            <div id="hint-box" class="hidden mb-4 p-3 bg-amber-950/40 border border-amber-700/50 text-amber-200 text-sm rounded-lg">
+                <strong>Hint / संकेत:</strong> <span id="hint-content"></span>
+            </div>
+
+            <!-- Question Text (Bilingual) -->
+            <div class="mb-6 space-y-2">
+                <h2 id="question-en" class="text-lg sm:text-xl font-semibold text-white"></h2>
+                <h3 id="question-hi" class="text-base sm:text-lg font-medium text-amber-200/90 font-hindi"></h3>
+            </div>
+
+            <!-- Options Container -->
+            <div id="options-container" class="space-y-3 mb-6">
+                <!-- Dynamically injected options -->
+            </div>
+
+            <!-- Explanation Box (Revealed on choice) -->
+            <div id="explanation-box" class="hidden mt-6 p-4 rounded-xl border transition-all">
+                <div class="font-semibold text-sm mb-1 flex items-center gap-2" id="explanation-title">
+                    <!-- Correct/Incorrect Status -->
+                </div>
+                <p id="explanation-text" class="text-sm text-slate-300 leading-relaxed"></p>
+            </div>
+        </div>
+
+        <!-- Navigation Controls -->
+        <div class="flex flex-col sm:flex-row justify-between items-center gap-4 mt-6">
+            <div class="flex items-center gap-2 w-full sm:w-auto">
+                <button onclick="prevQuestion()" id="prev-btn" class="flex-1 sm:flex-none px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium rounded-xl border border-slate-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                    ← Previous
+                </button>
+                <button onclick="nextQuestion()" id="next-btn" class="flex-1 sm:flex-none px-6 py-2 bg-amber-500 hover:bg-amber-600 text-slate-950 font-semibold rounded-xl transition-colors shadow-lg shadow-amber-500/10">
+                    Next →
+                </button>
+            </div>
+
+            <!-- Jump to Question -->
+            <div class="flex items-center gap-2 text-sm text-slate-400 w-full sm:w-auto justify-end">
+                <span>Jump to Q:</span>
+                <input type="number" id="jump-input" min="1" class="w-16 bg-slate-800 border border-slate-700 rounded-lg px-2 py-1 text-center text-white focus:outline-none focus:border-amber-500" onchange="jumpToQuestion(this.value)">
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-4 text-xs text-slate-500 border-t border-slate-800 mt-8">
+        Kurukshetra District Special Quiz Application &bull; Designed for Competitive Exams
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        const quizData = [
+            {
+                tag: "Archaeology & Monuments",
+                en: "Harsha Mound is situated at which of the following historical places in Kurukshetra?",
+                hi: "हर्ष का टीला कुरुक्षेत्र के निम्नलिखित में से किस ऐतिहासिक स्थान पर स्थित है?",
+                options: [
+                    { text: "Thanesar / थानेसर", correct: true },
+                    { text: "Pehowa / पेहवा", correct: false },
+                    { text: "Ladwa / लाडवा", correct: false },
+                    { text: "Shahabad / शाहबाद", correct: false }
+                ],
+                hint: "It is an ancient site in the historic town famous for Sannihit Sarovar and Sheikh Chilli's Tomb.",
+                explanation: "Harsha Mound (हर्ष का टीला) is located at Thanesar in Kurukshetra district. (Source: Page 369)"
+            },
+            {
+                tag: "Institutes & Laboratories",
+                en: "Where is the Poultry Disease Testing Laboratory (कुक्कुट रोग जांच प्रयोगशाला) located in Kurukshetra district?",
+                hi: "कुरुक्षेत्र जिले में कुक्कुट रोग जांच प्रयोगशाला कहाँ स्थित है?",
+                options: [
+                    { text: "Pehowa / पेहवा", correct: false },
+                    { text: "Thanesar / थानेसर", correct: true },
+                    { text: "Shahabad / शाहबाद", correct: false },
+                    { text: "Ladwa / लाडवा", correct: false }
+                ],
+                hint: "Located in the same town where Harsha Mound is found.",
+                explanation: "The Poultry Disease Testing Laboratory is situated at Thanesar. (Source: Page 369)"
+            },
+            {
+                tag: "Literature & Authors",
+                en: "Who is the author of 'Thanesari Ramayana' (थानेसरी रामायण)?",
+                hi: "'थानेसरी रामायण' के रचयिता कौन हैं?",
+                options: [
+                    { text: "Ahmad Bakhsh Khan / अहमद बक्श खाँ", correct: true },
+                    { text: "Rameshwar Dayal Shastri / रामेश्वर दयाल शास्त्री", correct: false },
+                    { text: "Joginder Singh / जोगिन्दर सिंह", correct: false },
+                    { text: "Surdas / सूरदास", correct: false }
+                ],
+                hint: "He shares his name with traditional Urdu/Persian poetic backgrounds.",
+                explanation: "Thanesari Ramayana was authored by Ahmad Bakhsh Khan. (Source: Page 369)"
+            },
+            {
+                tag: "Literature & Authors",
+                en: "Who authored the Ramayana in the Haryanvi language, belonging to Pataudi, Gurugram?",
+                hi: "हरियाणवी भाषा में रामायण के रचयिता कौन हैं, जो पटौदी, गुरुग्राम से संबंधित हैं?",
+                options: [
+                    { text: "Rameshwar Dayal Shastri / रामेश्वर दयाल शास्त्री", correct: true },
+                    { text: "Ahmad Bakhsh Khan / अहमद बक्श खाँ", correct: false },
+                    { text: "Madhu Sharma / मधु शर्मा", correct: false },
+                    { text: "Darashikoh / दाराशिकोह", correct: false }
+                ],
+                hint: "Rameshwar Dayal Shastri from Pataudi.",
+                explanation: "The Ramayana in Haryanvi language was authored by Rameshwar Dayal Shastri, Pataudi, Gurugram. (Source: Page 369)"
+            },
+            {
+                tag: "Archaeological Artifacts",
+                en: "At which place was 'Solar' नामक कठोर चौका (square hearth/floor) discovered?",
+                hi: "किस स्थान पर 'सोलर' नामक कठोर चौका मिला है?",
+                options: [
+                    { text: "Thanesar / थानेसर", correct: true },
+                    { text: "Umri / उमरी", correct: false },
+                    { text: "Pehowa / पेहवा", correct: false },
+                    { text: "Ladwa / लाडवा", correct: false }
+                ],
+                hint: "An archaeological finding in Thanesar.",
+                explanation: "'Solar' namak kathor chauka has been found at Thanesar. (Source: Page 369)"
+            },
+            {
+                tag: "Archaeological Artifacts",
+                en: "An idol built on a Sun Pillar (सूर्य-स्तम्भ पर बनी मूर्ति) was found at which place in Thanesar?",
+                hi: "थानेसर में सूर्य-स्तम्भ पर बनी मूर्ति कहाँ से मिली है?",
+                options: [
+                    { text: "Amir (Thanesar) / अमीर (थानेसर)", correct: true },
+                    { text: "Mirzapur / मिर्जापुर", correct: false },
+                    { text: "Pipli / पीपली", correct: false },
+                    { text: "Anark / अनरक", correct: false }
+                ],
+                hint: "Discovered specifically in Amir village/locality of Thanesar.",
+                explanation: "The idol on the Sun Pillar was found at Amir (Thanesar). (Source: Page 369)"
+            },
+            {
+                tag: "Mughal Architecture",
+                en: "Sheikh Chilli's Tomb in Thanesar was constructed by whom and in which year?",
+                hi: "थानेसर में स्थित शेख चिल्की के मकबरे का निर्माण किसने और किस वर्ष करवाया था?",
+                options: [
+                    { text: "Darashikoh (Son of Shah Jahan), in 1650 AD / दाराशिकोह (शाहजहां का पुत्र), 1650 ई. में", correct: true },
+                    { text: "Akbar, in 1580 AD / अकबर, 1580 ई. में", correct: false },
+                    { text: "Aurangzeb, in 1665 AD / औरंगजेब, 1665 ई. में", correct: false },
+                    { text: "Shah Jahan, in 1630 AD / शाहजहां, 1630 ई. में", correct: false }
+                ],
+                hint: "Built by Shah Jahan's eldest son in 1650 AD. Also known as Haryana's Taj Mahal.",
+                explanation: "Sheikh Chilli's Tomb was built by Shah Jahan's son Darashikoh in 1650 AD. (Source: Page 369, 370)"
+            },
+            {
+                tag: "Mounds & Ancient Sites",
+                en: "Karna Mound (कर्ण का टीला) is located at which village in Kurukshetra?",
+                hi: "कर्ण का टीला कुरुक्षेत्र के किस गाँव में स्थित है?",
+                options: [
+                    { text: "Mirzapur Village / मिर्जापुर गाँव", correct: true },
+                    { text: "Bhagwanpur / भगवानपुर", correct: false },
+                    { text: "Daulatpur / दौलतपुर", correct: false },
+                    { text: "Umri / उमरी", correct: false }
+                ],
+                hint: "Located near Mirzapur village.",
+                explanation: "Karna Mound is situated at Mirzapur village in Kurukshetra. (Source: Page 369)"
+            },
+            {
+                tag: "Ancient Geography",
+                en: "Ancient region situated between Saraswati and Drishadvati rivers was known as:",
+                hi: "प्राचीन सरस्वती व दृषद्वती नदियों के मध्य में स्थित क्षेत्र क्या कहलाता था?",
+                options: [
+                    { text: "Kurukshetra / कुरुक्षेत्र", correct: true },
+                    { text: "Pehowa / पेहवा", correct: false },
+                    { text: "Panipat / पानीपत", correct: false },
+                    { text: "Karnal / करनाल", correct: false }
+                ],
+                hint: "The central subject of this chapter is this district.",
+                explanation: "The region between ancient Saraswati and Drishadvati rivers was Kurukshetra. (Source: Page 369)"
+            },
+            {
+                tag: "Vedic Literature",
+                en: "Kurukshetra is described in which of the following ancient texts mentioned in the source?",
+                hi: "कुरुक्षेत्र का वर्णन निम्नलिखित में से किस प्राचीन ग्रंथ में मिलता है?",
+                options: [
+                    { text: "Rigveda, Yajurveda, and Vaman Purana / ऋग्वेद, यजुर्वेद और वामन पुराण", correct: true },
+                    { text: "Mahabharata only / केवल महाभारत", correct: false },
+                    { text: "Arthashastra only / केवल अर्थशास्त्र", correct: false },
+                    { text: "Ramayana only / केवल रामायण", correct: false }
+                ],
+                hint: "Mentioned across Rigveda, Yajurveda, and Vaman Purana.",
+                explanation: "Kurukshetra is mentioned in Rigveda, Yajurveda, and Vaman Purana. (Source: Page 369)"
+            },
+            {
+                tag: "Wildlife Sanctuaries",
+                en: "Which is the smallest wildlife sanctuary in Haryana, located in Kurukshetra?",
+                hi: "हरियाणा का सबसे छोटा वन्य-जीव अभ्यारण्य कौन सा है जो कुरुक्षेत्र में स्थापित किया गया है?",
+                options: [
+                    { text: "Chhilchhila Wildlife Sanctuary / छिलछिला वन्य-जीव अभ्यारण", correct: true },
+                    { text: "Sultanpur Sanctuary / सुल्तानपुर अभ्यारण", correct: false },
+                    { text: "Bhindawas Sanctuary / भिंडावास अभ्यारण", correct: false },
+                    { text: "Kalesar Sanctuary / कलेसर अभ्यारण", correct: false }
+                ],
+                hint: "Chhilchhila.",
+                explanation: "Chhilchhila Wildlife Sanctuary is established in Kurukshetra and is the state's smallest sanctuary. (Source: Page 369)"
+            },
+            {
+                tag: "Sports & Training Hubs",
+                en: "Shahabad in Kurukshetra is famously known as the 'Nursery of Hockey' (हॉकी की नर्सरी) in Haryana because:",
+                hi: "कुरुक्षेत्र का शाहबाद हरियाणा में 'हॉकी की नर्सरी' क्यों कहलाता है?",
+                options: [
+                    { text: "It has maximum women hockey players in the Indian Women's Hockey Team & Markandeshwar Stadium / भारतीय महिला हॉकी टीम में सर्वाधिक महिला खिलाड़ी एवं मारकण्डेश्वर स्टेडियम यहीं है", correct: true },
+                    { text: "It hosted the Olympic Games / इसने ओलंपिक खेलों की मेजबानी की", correct: false },
+                    { text: "It was founded by hockey legends / इसकी स्थापना हॉकी दिग्गजों ने की", correct: false },
+                    { text: "It is the capital of hockey in India / यह भारत की हॉकी राजधानी है", correct: false }
+                ],
+                hint: "Markandeshwar Hockey Stadium and highest number of women players.",
+                explanation: "Shahabad is called the nursery of hockey as it has produced numerous national players and features the Markandeshwar Hockey Stadium. (Source: Page 369)"
+            },
+            {
+                tag: "Famous Personalities",
+                en: "Famous hockey player Poonam Rani belongs to which place in Kurukshetra district?",
+                hi: "प्रसिद्ध हॉकी प्लेयर पूनम रानी कुरुक्षेत्र जिले के किस स्थान से संबंधित हैं?",
+                options: [
+                    { text: "Shahabad / शाहबाद", correct: true },
+                    { text: "Pehowa / पेहवा", correct: false },
+                    { text: "Thanesar / थानेसर", correct: false },
+                    { text: "Ladwa / लाडवा", correct: false }
+                ],
+                hint: "The hockey nursery of Haryana.",
+                explanation: "Poonam Rani, the famous hockey player, is from Shahabad (Kurukshetra). (Source: Page 369)"
+            },
+            {
+                tag: "Haryanvi Culture",
+                en: "The earliest description of Haryanvi Sang (हरियाणवी सांग का सबसे पहला वर्णन) is found in which 14th-century text/work?",
+                hi: "हरियाणवी सांग का सबसे पहला वर्णन 14वीं शताब्दी के किस ग्रंथ से मिलता है?",
+                options: [
+                    { text: "Sang Raja Ratna Sen Ladwa / सांग राजा रत्न सेन लाडवा", correct: true },
+                    { text: "Kitab-ul-Hind / किताब उल हिन्द", correct: false },
+                    { text: "Vaman Purana / वामन पुराण", correct: false },
+                    { text: "Thanesari Ramayana / थानेसरी रामायण", correct: false }
+                ],
+                hint: "Sang Raja Ratna Sen from Ladwa.",
+                explanation: "The earliest description of Haryanvi Sang is found in the 14th-century text 'Sang Raja Ratna Sen Ladwa'. (Source: Page 369)"
+            },
+            {
+                tag: "Famous Singers",
+                en: "Famous Haryanvi singer Madhu Sharma belongs to which place?",
+                hi: "प्रसिद्ध हरियाणवी गायिका मधु शर्मा कहाँ से संबंधित हैं?",
+                options: [
+                    { text: "Pehowa / पेहवा", correct: true },
+                    { text: "Shahabad / शाहबाद", correct: false },
+                    { text: "Umri / उमरी", correct: false },
+                    { text: "Thanesar / थानेसर", correct: false }
+                ],
+                hint: "Pehowa in Kurukshetra.",
+                explanation: "Famous Haryanvi singer Madhu Sharma is from Pehowa (Kurukshetra). (Source: Page 369)"
+            },
+            {
+                tag: "Institutes",
+                en: "Where is the National Institute of Design (राष्ट्रीय डिजाईन संस्थान) located in Kurukshetra?",
+                hi: "राष्ट्रीय डिजाईन संस्थान कुरुक्षेत्र में कहाँ स्थित है?",
+                options: [
+                    { text: "Umri / उमरी", correct: true },
+                    { text: "Pipli / पीपली", correct: false },
+                    { text: "Thanesar / थानेसर", correct: false },
+                    { text: "Pehowa / पेहवा", correct: false }
+                ],
+                hint: "Umri village on the highway.",
+                explanation: "The National Institute of Design is located at Umri (Kurukshetra). (Source: Page 369)"
+            },
+            {
+                tag: "Historical Libraries",
+                en: "Kurukshetra Library, originally established in 1921 by the Maharaja of Rewa (Madhya Pradesh), was previously known as:",
+                hi: "कुरुक्षेत्र पुस्तकालय (जिसे 1921 में रीवा मध्य प्रदेश के महाराज द्वारा स्थापित किया गया था) का पुराना नाम क्या था?",
+                options: [
+                    { text: "Purana Naam - Kurukshetra Pustakalaya / पुराना नाम - कुरुक्षेत्र पुस्तकालय", correct: true },
+                    { text: "Brahma Sarovar Library / ब्रह्म सरोवर पुस्तकालय", correct: false },
+                    { text: "Thanesar Oriental Library / थानेसर ओरिएंटल लाइब्रेरी", correct: false },
+                    { text: "Geeta Bhawan Library / गीता भवन पुस्तकालय", correct: false }
+                ],
+                hint: "Its older name is mentioned directly as Kurukshetra Pustakalaya.",
+                explanation: "Its old name is Kurukshetra Pustakalaya, established in 1921 by the Maharaja of Rewa, Madhya Pradesh. (Source: Page 369)"
+            },
+            {
+                tag: "Religious Sites",
+                en: "Who is the builder (निर्माता) of 'Baba Kala Kamli ka Dera' in Kurukshetra?",
+                hi: "कुरुक्षेत्र में 'बाबा काला कमली का डेरा' के निर्माता कौन हैं?",
+                options: [
+                    { text: "Swami Vishuddhanand / स्वामी विशुद्धानन्द", correct: true },
+                    { text: "Swami Vivekananda / स्वामी विवेकानंद", correct: false },
+                    { text: "Maharaja Kuru / राजा कुरु", correct: false },
+                    { text: "Darashikoh / दाराशिकोह", correct: false }
+                ],
+                hint: "Swami Vishuddhanand.",
+                explanation: "Baba Kala Kamli ka Dera was built by Swami Vishuddhanand in Kurukshetra. (Source: Page 369)"
+            },
+            {
+                tag: "Brahma Sarovar",
+                en: "According to the Matsya Purana, Brahma Sarovar was constructed by:",
+                hi: "मत्स्य पुराण के अनुसार ब्रह्म सरोवर का निर्माण किसके द्वारा किया गया था?",
+                options: [
+                    { text: "King Kuru / राजा कुरु", correct: true },
+                    { text: "King Harsha / राजा हर्षवर्धन", correct: false },
+                    { text: "Akbar / अकबर", correct: false },
+                    { text: "Mihir Bhoj / मिहिर भोज", correct: false }
+                ],
+                hint: "Named after the legendary king associated with Kurukshetra.",
+                explanation: "Brahma Sarovar's construction is described in Matsya Purana as being done by King Kuru. (Source: Page 369)"
+            },
+            {
+                tag: "Brahma Sarovar",
+                en: "Which Mughal ruler bathed in the Brahma Sarovar, and from where does it receive its water supply today?",
+                hi: "किस मुगल शासक ने ब्रह्म सरोवर में स्नान किया था और वर्तमान में इसे किस नहर से पानी मिलता है?",
+                options: [
+                    { text: "Akbar; Bhakra Canal / अकबर; भाखड़ा नहर", correct: true },
+                    { text: "Aurangzeb; Western Yamuna Canal / औरंगजेब; पश्चिमी यमुना नहर", correct: false },
+                    { text: "Jahangir; Agra Canal / जहांगीर; आगरा नहर", correct: false },
+                    { text: "Shah Jahan; Indira Gandhi Canal / शाहजहां; इंदिरा गांधी नहर", correct: false }
+                ],
+                hint: "Akbar bathed here; water comes from Bhakra Canal.",
+                explanation: "Mughal ruler Akbar bathed in Brahma Sarovar, and it receives water from the Bhakra Canal. (Source: Page 369)"
+            },
+            {
+                tag: "Historical Accounts",
+                en: "In which historical book by Al-Biruni is Brahma Sarovar described as 'Mahasagar' (Ocean)?",
+                hi: "अल बरूनी की किस पुस्तक में ब्रह्म सरोवर को 'महासागर' के रूप में वर्णित किया गया है?",
+                options: [
+                    { text: "Kitab-ul-Hind / किताब उल हिन्द", correct: true },
+                    { text: "Tarikh-i-Firuz Shahi / तारीख-ए-फिरोज शाही", correct: false },
+                    { text: "Ain-i-Akbari / आइन-ए-अकबरी", correct: false },
+                    { text: "Rihla / रिहला", correct: false }
+                ],
+                hint: "Kitab-ul-Hind.",
+                explanation: "Al-Biruni's book 'Kitab-ul-Hind' describes Brahma Sarovar. (Source: Page 370)"
+            },
+            {
+                tag: "Temples & Pilgrimages",
+                en: "Dukh Bhanjeshwar Temple (दुःख भंजेश्वर मंदिर) is located at:",
+                hi: "दुःख भंजेश्वर मंदिर कहाँ स्थित है?",
+                options: [
+                    { text: "Kurukshetra / कुरुक्षेत्र", correct: true },
+                    { text: "Pehowa / पेहवा", correct: false },
+                    { text: "Shahabad / शाहबाद", correct: false },
+                    { text: "Ladwa / लाडवा", correct: false }
+                ],
+                hint: "Kurukshetra.",
+                explanation: "Dukh Bhanjeshwar Temple is located in Kurukshetra. (Source: Page 370)"
+            },
+            {
+                tag: "Zoos & Wildlife",
+                en: "Pipli Zoo in Kurukshetra was established in which year and spans what area?",
+                hi: "कुरुक्षेत्र में पिपली चिड़ियाघर किस वर्ष स्थापित किया गया था और इसका क्षेत्रफल कितना है?",
+                options: [
+                    { text: "Established in 1982; Area: 27 acres / निर्मित - 1982 ई., क्षेत्रफल - 27 एकड़", correct: true },
+                    { text: "Established in 1975; Area: 50 acres / निर्मित - 1975 ई., क्षेत्रफल - 50 एकड़", correct: false },
+                    { text: "Established в 1990; Area: 15 acres / निर्मित - 1990 ई., क्षेत्रफल - 15 एकड़", correct: false },
+                    { text: "Established in 1985; Area: 40 acres / निर्मित - 1985 ई., क्षेत्रफल - 40 एकड़", correct: false }
+                ],
+                hint: "1982 and 27 acres.",
+                explanation: "Pipli Zoo was established in 1982 and spans 27 acres in Kurukshetra. (Source: Page 370)"
+            },
+            {
+                tag: "Breeding Centres",
+                en: "Black Partridge Breeding Centre (काला-तीतर प्रजनन केन्द्र) and Blackbuck Breeding Centre are located at:",
+                hi: "काला-तीतर प्रजनन केन्द्र और ब्लैक बक प्रजनन केन्द्र कहाँ स्थित हैं?",
+                options: [
+                    { text: "Pipli (Kurukshetra) / पीपली (कुरुक्षेत्र)", correct: true },
+                    { text: "Thanesar (Kurukshetra) / थानेसर (कुरुक्षेत्र)", correct: false },
+                    { text: "Pehowa (Kurukshetra) / पेहवा (कुरुक्षेत्र)", correct: false },
+                    { text: "Umri (Kurukshetra) / उमरी (कुरुक्षेत्र)", correct: false }
+                ],
+                hint: "Pipli.",
+                explanation: "Both Black Partridge and Blackbuck breeding centres are located at Pipli, Kurukshetra. (Source: Page 370)"
+            },
+            {
+                tag: "Historical Loot",
+                en: "The golden pinnacle (सोने का कलश) on the Lakshminarayanan Temple in Kurukshetra was looted by which Mughal emperor?",
+                hi: "कुरुक्षेत्र स्थित लक्ष्मीनारायण मंदिर पर स्थित सोने के कलश को किस मुगल सम्राट ने लूटा था?",
+                options: [
+                    { text: "Aurangzeb / औरंगजेब", correct: true },
+                    { text: "Alauddin Khilji / अलाउद्दीन खिलजी", correct: false },
+                    { text: "Nadir Shah / नादिर शाह", correct: false },
+                    { text: "Mahmud of Ghazni / महमूद गजनवी", correct: false }
+                ],
+                hint: "Aurangzeb.",
+                explanation: "The golden pinnacle on the Lakshminarayanan Temple was looted by Aurangzeb. (Source: Page 370)"
+            },
+            {
+                tag: "Mahabharata Associations",
+                en: "Banganga (बाणगंगा) is located at Narkatasari village in Kurukshetra. According to legend, water/Ganga was brought out here by:",
+                hi: "कुरुक्षेत्र के नरकाटासरी गाँव में स्थित 'बाणगंगा' नामक स्थान पर अर्जुन ने क्या किया था?",
+                options: [
+                    { text: "Arjun shot an arrow to bring out Ganga / अर्जुन ने बाण मारकर गंगा निकाली थी", correct: true },
+                    { text: "Bhishma took his final bath / भीष्म ने अंतिम स्नान किया था", correct: false },
+                    { text: "Yudhishthira performed a yajna / युधिष्ठिर ने यज्ञ किया था", correct: false },
+                    { text: "Lord Krishna gave the Geeta sermon / भगवान कृष्ण ने गीता उपदेश दिया था", correct: false }
+                ],
+                hint: "Arjun shooting an arrow.",
+                explanation: "At Banganga (Narkatasari village), Arjun brought out Ganga by shooting an arrow. (Source: Page 370)"
+            },
+            {
+                tag: "Museums & Records",
+                en: "Where is the world's largest hookah (विश्व का सबसे बड़ा हुक्का) kept in Kurukshetra?",
+                hi: "विश्व का सबसे बड़ा हुक्का कुरुक्षेत्र में कहाँ रखा गया है?",
+                options: [
+                    { text: "Kurukshetra Museum / कुरुक्षेत्र संग्रहालय", correct: true },
+                    { text: "Pipli Zoo / पिपली चिड़ियाघर", correct: false },
+                    { text: "Geeta Bhawan / गीता भवन", correct: false },
+                    { text: "Sheikh Chilli Tomb / शेख चिल्की का मकबरा", correct: false }
+                ],
+                hint: "Kurukshetra Museum.",
+                explanation: "The world's largest hookah is kept in the Kurukshetra Museum. (Source: Page 370)"
+            },
+            {
+                tag: "Ancient Trade Centres",
+                en: "During the reign of Mihir Bhoj, Pehowa (Kurukshetra) served as a major commercial center for:",
+                hi: "मिहिर भोज के शासन काल में पेहवा (कुरुक्षेत्र) किस क्षेत्र का प्रमुख व्यापारिक केंद्र था?",
+                options: [
+                    { text: "Northern India / उत्तरी भारत", correct: true },
+                    { text: "Southern India / दक्षिणी भारत", correct: false },
+                    { text: "Western India / पश्चिमी भारत", correct: false },
+                    { text: "Eastern India / पूर्वी भारत", correct: false }
+                ],
+                hint: "Northern India trade center.",
+                explanation: "During Mihir Bhoj's reign, Pehowa was a major commercial center of Northern India. (Source: Page 370)"
+            },
+            {
+                tag: "Sages & Hermitages",
+                en: "Which of the following sages are historically associated with Pehowa in Kurukshetra according to the text?",
+                hi: "पाठ के अनुसार निम्नलिखित में से कौन से ऋषि पेहवा, कुरुक्षेत्र से संबंधित हैं?",
+                options: [
+                    { text: "Vishwamitra, Vashistha, and Yayati Rishis / विश्वामित्र, वशिष्ठ और ययाति ऋषि", correct: true },
+                    { text: "Agastya and Dadhyach Rishis only / केवल अगस्त्य और दधीचि ऋषि", correct: false },
+                    { text: "Vedavyasa only / केवल वेदव्यास", correct: false },
+                    { text: "Markandeya Rishi only / केवल मार्कण्डेय ऋषि", correct: false }
+                ],
+                hint: "Vishwamitra, Vashistha, and Yayati are listed for Pehowa.",
+                explanation: "Vishwamitra Rishi, Vashistha Rishi, and Yayati Rishi are associated with Pehowa, Kurukshetra. (Source: Page 370)"
+            },
+            {
+                tag: "Sacred Kunds",
+                en: "Where is the famous Naghad Kund (नागहद कुण्ड) located?",
+                hi: "प्रसिद्ध नागहद कुण्ड कहाँ स्थित है?",
+                options: [
+                    { text: "Pundrik Sarovar (Kurukshetra) / पुण्डरीक सरोवर (कुरुक्षेत्र)", correct: true },
+                    { text: "Brahma Sarovar (Kurukshetra) / ब्रह्म सरोवर (कुरुक्षेत्र)", correct: false },
+                    { text: "Sannihit Lake (Kurukshetra) / सन्निहित झील (कुरुक्षेत्र)", correct: false },
+                    { text: "Jyotisar (Kurukshetra) / ज्योतिष सरोवर (कुरुक्षेत्र)", correct: false }
+                ],
+                hint: "Pundrik Sarovar.",
+                explanation: "The famous Naghad Kund is located at Pundrik Sarovar in Kurukshetra. (Source: Page 370)"
+            },
+            {
+                tag: "Princely States",
+                en: "The famous Ladwa Princely State (लाडवा रियासत) was located in Kurukshetra. Who was its famous ruler?",
+                hi: "प्रसिद्ध लाडवा रियासत कुरुक्षेत्र में स्थित थी। इसके प्रसिद्ध शासक कौन थे?",
+                options: [
+                    { text: "Ajit Singh / अजीत सिंह", correct: true },
+                    { text: "Raja Kuru / राजा कुरु", correct: false },
+                    { text: "Mihir Bhoj / मिहिर भोज", correct: false },
+                    { text: "Darashikoh / दाराशिकोह", correct: false }
+                ],
+                hint: "Ruler Ajit Singh.",
+                explanation: "Ajit Singh was the famous ruler of the Ladwa Princely State in Kurukshetra. (Source: Page 370)"
+            },
+            {
+                tag: "Journalism & Newspapers",
+                en: "In which year was the newspaper 'Dharmakshetra' (धर्मक्षेत्र समाचार पत्र) published from Kurukshetra?",
+                hi: "कुरुक्षेत्र से 'धर्मक्षेत्र समाचार पत्र' का प्रकाशन किस वर्ष हुआ था?",
+                options: [
+                    { text: "1943 / 1943 में", correct: true },
+                    { text: "1950 / 1950 में", correct: false },
+                    { text: "1921 / 1921 में", correct: false },
+                    { text: "1966 / 1966 में", correct: false }
+                ],
+                hint: "1943.",
+                explanation: "The newspaper 'Dharmakshetra' was published in 1943 from Kurukshetra. (Source: Page 370)"
+            },
+            {
+                tag: "Epigraphy & Inscriptions",
+                en: "Gurjara-Pratihara era inscriptions and Raja Bhojraj's inscription have been found at which place in Kurukshetra?",
+                hi: "गुर्जर प्रतिहार कालीन अभिलेख तथा राजा भोजराज का अभिलेख कुरुक्षेत्र में कहाँ से मिला है?",
+                options: [
+                    { text: "Pehowa / पेहवा", correct: true },
+                    { text: "Thanesar / थानेसर", correct: false },
+                    { text: "Ladwa / लाडवा", correct: false },
+                    { text: "Shahabad / शाहबाद", correct: false }
+                ],
+                hint: "Pehowa.",
+                explanation: "Gurjara-Pratihara period inscriptions and Raja Bhojraj's inscription were found at Pehowa. (Source: Page 370)"
+            },
+            {
+                tag: "Ancient Inscriptions",
+                en: "In the inscription of King Dev of Laos (लाओस देश के राजा देव का अभिलेख), praise is given to which district of Haryana?",
+                hi: "लाओस देश के राजा देव के अभिलेख में हरियाणा के किस शहर की प्रशंसा की गई है?",
+                options: [
+                    { text: "Kurukshetra / कुरुक्षेत्र", correct: true },
+                    { text: "Panipat / पानीपत", correct: false },
+                    { text: "Ambala / अंबाला", correct: false },
+                    { text: "Rohtak / रोहतक", correct: false }
+                ],
+                hint: "Kurukshetra.",
+                explanation: "The inscription of King Dev of Laos praises Kurukshetra. (Source: Page 370)"
+            },
+            {
+                tag: "Sacred Water Bodies",
+                en: "Which pilgrimage site is known as the meeting place of 7 rivers (7 नदियों का मिलन स्थल)?",
+                hi: "किस तीर्थ स्थल को 7 नदियों का मिलन स्थल कहा जाता है?",
+                options: [
+                    { text: "Sannihit Lake / सन्निहित झील (तीर्थ स्थल)", correct: true },
+                    { text: "Brahma Sarovar / ब्रह्म सरोवर", correct: false },
+                    { text: "Jyotisar / ज्योतिषार", correct: false },
+                    { text: "Anark Tirtha / अनरक तीर्थ", correct: false }
+                ],
+                hint: "Sannihit Jheel.",
+                explanation: "Sannihit Lake is known as the meeting place of 7 rivers. (Source: Page 370)"
+            },
+            {
+                tag: "Agriculture & Production",
+                en: "Which crop has the maximum production in Kurukshetra according to the source?",
+                hi: "स्रोत के अनुसार कुरुक्षेत्र में किस फसल/कंद का सर्वाधिक उत्पादन होता है?",
+                options: [
+                    { text: "Sweet Potato (शकरकंद - ShankarKand) / शकरकंद", correct: true },
+                    { text: "Potato (आलू) / आलू", correct: false },
+                    { text: "Wheat (गेहूं) / गेहूं", correct: false },
+                    { text: "Rice (धान) / धान", correct: false },
+                ],
+                hint: "Shankarkand (Sweet potato).",
+                explanation: "Shankarkand (sweet potato) has the highest production in Kurukshetra. (Source: Page 370)"
+            },
+            {
+                tag: "Monuments & Architecture",
+                en: "Which monument is famously known as the 'Taj Mahal of Haryana' (हरियाणा का ताजमहल)?",
+                hi: "किस मकबरे/स्मारक को 'हरियाणा का ताजमहल' कहा जाता है?",
+                options: [
+                    { text: "Sheikh Chilli's Tomb, Thanesar / शेख चिल्की का मकबरा, थानेसर", correct: true },
+                    { text: "Ibrahim Lodhi Tomb, Panipat / इब्राहिम लोदी का मकबरा, पानीपत", correct: false },
+                    { text: "Bu Ali Shah Qalandar, Panipat / बू अली शाह कलंदर, पानीपत", correct: false },
+                    { text: "Feroz Shah Tomb, Hissar / फिरोज शाह का मकबरा, हिसार", correct: false }
+                ],
+                hint: "Sheikh Chilli's Tomb in Thanesar.",
+                explanation: "Sheikh Chilli's Tomb in Thanesar is called the Taj Mahal of Haryana. (Source: Page 370)"
+            },
+            {
+                tag: "Monuments & Architecture",
+                en: "According to David Ross, Sheikh Chilli's Tomb is described as which of the following?",
+                hi: "डेविड रॉस ने शेख चिल्की के मकबरे के बारे में क्या कहा है?",
+                options: [
+                    { text: "The most beautiful building after the Taj Mahal / ताजमहल के बाद सबसे सुंदर इमारत", correct: true },
+                    { text: "The grandest fort in North India / उत्तर भारत का सबसे भव्य किला", correct: false },
+                    { text: "The finest mosque in Haryana / हरियाणा की सबसे बेहतरीन मस्जिद", correct: false },
+                    { text: "The oldest mausoleum in India / भारत का सबसे पुराना मकबरा", correct: false }
+                ],
+                hint: "Most beautiful building after Taj Mahal.",
+                explanation: "David Ross described it as the most beautiful building after the Taj Mahal. (Source: Page 370)"
+            },
+            {
+                tag: "Geographical Sites",
+                en: "Where is the pilgrimage site 'Anark' (अनरक तीर्थ स्थल) located relative to Kurukshetra?",
+                hi: "कुरुक्षेत्र के उत्तर पश्चिम में कौन सा प्रसिद्ध तीर्थ स्थल स्थित है?",
+                options: [
+                    { text: "Anark Pilgrimage Site / अनरक तीर्थ स्थल", correct: true },
+                    { text: "Pehowa / पेहवा", correct: false },
+                    { text: "Ladwa / लाडवा", correct: false },
+                    { text: "Shahabad / शाहबाद", correct: false }
+                ],
+                hint: "Anark pilgrimage site to the north-west.",
+                explanation: "Anark pilgrimage site is located in the north-west of Kurukshetra. (Source: Page 370)"
+            },
+            {
+                tag: "Industrial Units",
+                en: "Where is the Honey Factory (मधु-मक्खी की फैक्ट्री) located in Kurukshetra district?",
+                hi: "कुरुक्षेत्र जिले में मधु-मक्खी की फैक्ट्री कहाँ स्थित है?",
+                options: [
+                    { text: "Pehowa / पेहवा", correct: true },
+                    { text: "Pipli / पीपली", correct: false },
+                    { text: "Umri / उमरी", correct: false },
+                    { text: "Thanesar / थानेसर", correct: false }
+                ],
+                hint: "Pehowa.",
+                explanation: "The honey factory is located at Pehowa in Kurukshetra. (Source: Page 370)"
+            },
+            {
+                tag: "Sages & Hermitages",
+                en: "Vedavyasa Rishi's hermitage/site is located at which place in Kurukshetra?",
+                hi: "वेदव्यास ऋषि का स्थान/वनस्थली कुरुक्षेत्र में कहाँ स्थित है?",
+                options: [
+                    { text: "Vanasthali / वनस्थली", correct: true },
+                    { text: "Pehowa / पेहवा", correct: false },
+                    { text: "Markandeya Tirtha / मार्कण्डेय तीर्थ", correct: false },
+                    { text: "Thanesar / थानेसर", correct: false }
+                ],
+                hint: "Vanasthali.",
+                explanation: "Vedavyasa Rishi's site is at Vanasthali, Kurukshetra. (Source: Page 370)"
+            },
+            {
+                tag: "Sages & Hermitages",
+                en: "Markandeya Rishi is associated with Markandeya Tirtha, which is located in:",
+                hi: "मार्कण्डेय ऋषि से संबंधित मार्कण्डेय तीर्थ कहाँ स्थित है?",
+                options: [
+                    { text: "Kurukshetra / कुरुक्षेत्र", correct: true },
+                    { text: "Panipat / पानीपत", correct: false },
+                    { text: "Karnal / करनाल", correct: false },
+                    { text: "Kaithal / कैथल", correct: false }
+                ],
+                hint: "Kurukshetra.",
+                explanation: "Markandeya Tirtha is located in Kurukshetra. (Source: Page 370)"
+            },
+            {
+                tag: "Literary Associations",
+                en: "Joginder Singh, known for prominent literary and devotional songs in three languages (Hindi, Punjabi, and Urdu), is associated with:",
+                hi: "हिन्दी, पंजाबी व उर्दू तीनों भाषाओं में साहित्यिक व भक्ति गीतों के लिए प्रसिद्ध जोगिन्दर सिंह का सम्बन्ध किससे है?",
+                options: [
+                    { text: "Shahabad (Kurukshetra) / शाहबाद (कुरुक्षेत्र)", correct: true },
+                    { text: "Pehowa (Kurukshetra) / पेहवा (कुरुक्षेत्र)", correct: false },
+                    { text: "Thanesar (Kurukshetra) / थानेसर (कुरुक्षेत्र)", correct: false },
+                    { text: "Ladwa (Kurukshetra) / लाडवा (कुरुक्षेत्र)", correct: false }
+                ],
+                hint: "Shahabad.",
+                explanation: "Joginder Singh is associated with Shahabad, Kurukshetra. (Source: Page 369)"
+            },
+            {
+                tag: "Pilgrimage & Temples",
+                en: "Which famous pilgrimage route contains Birla Mandir, Sannihit Tirtha, and Jyotisar Sarovar?",
+                hi: "कुरुक्षेत्र-पेहवा मार्ग पर कौन से प्रसिद्ध तीर्थ स्थल स्थित हैं?",
+                options: [
+                    { text: "Birla Mandir, Sannihit Tirtha, Jyotisar Sarovar / बिरला मंदिर, सन्निहित तीर्थ, ज्योतिष सरोवर", correct: true },
+                    { text: "Dukh Bhanjeshwar, Brahma Sarovar / दुःख भंजेश्वर, ब्रह्म सरोवर", correct: false },
+                    { text: "Karna Mound, Harsha Mound / कर्ण का टीला, हर्ष का टीला", correct: false },
+                    { text: "Pipli Zoo, Black Partridge Centre / पिपली चिड़ियाघर, काला तीतर केन्द्र", correct: false }
+                ],
+                hint: "Birla Mandir, Sannihit Tirtha, Jyotisar Sarovar on Kurukshetra-Pehowa route.",
+                explanation: "Birla Mandir, Sannihit Tirtha, and Jyotisar Sarovar are located on the Kurukshetra-Pehowa route. (Source: Page 370)"
+            },
+            {
+                tag: "Ancient Origin",
+                en: "According to ancient traditions mentioned in the text, where is considered the birthplace of Indian philosophy (भारतीय विचार धारा की जन्मस्थली)?",
+                hi: "भारतीय विचार धारा की जन्मस्थली किसे कहा जाता है?",
+                options: [
+                    { text: "Kurukshetra / कुरुक्षेत्र", correct: true },
+                    { text: "Pehowa / पेहवा", correct: false },
+                    { text: "Thanesar / थानेसर", correct: false },
+                    { text: "Panipat / पानीपत", correct: false }
+                ],
+                hint: "Kurukshetra.",
+                explanation: "Kurukshetra is called the birthplace of Indian philosophy. (Source: Page 369)"
+            },
+            {
+                tag: "Museums & Culture",
+                en: "Where is the 'Haryana Civilization and Culture Museum' (हरियाणा सभ्यता व संस्कृति संग्रहालय) established?",
+                hi: "हरियाणा सभ्यता व संस्कृति संग्रहालय कहाँ स्थापित किया गया है?",
+                options: [
+                    { text: "Kurukshetra / कुरुक्षेत्र", correct: true },
+                    { text: "Karnal / करनाल", correct: false },
+                    { text: "Hisar / हिसार", correct: false },
+                    { text: "Gurugram / गुरुग्राम", correct: false }
+                ],
+                hint: "Kurukshetra.",
+                explanation: "Haryana Civilization and Culture Museum is established in Kurukshetra. (Source: Page 369)"
+            }
+        ];
+
+        let currentIndex = 0;
+        let score = 0;
+        let answered = new Array(quizData.length).fill(false);
+        let userSelections = new Array(quizData.length).fill(null);
+
+        function shuffleOptions(options) {
+            for (let i = options.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [options[i], options[j]] = [options[j], options[i]];
+            }
+            return options;
+        }
+
+        // Shuffle options for each question on load
+        quizData.forEach(q => {
+            shuffleOptions(q.options);
+        });
+
+        const totalQuestions = quizData.length;
+        document.getElementById('total-questions-display').textContent = totalQuestions;
+        document.getElementById('total-q-num').textContent = totalQuestions;
+        document.getElementById('jump-input').max = totalQuestions;
+
+        function loadQuestion(index) {
+            const q = quizData[index];
+            document.getElementById('current-q-num').textContent = index + 1;
+            document.getElementById('jump-input').value = index + 1;
+            document.getElementById('question-tag').textContent = q.tag;
+            document.getElementById('question-en').textContent = `${index + 1}. ${q.en}`;
+            document.getElementById('question-hi').textContent = q.hi;
+
+            // Progress bar
+            const progress = ((index + 1) / totalQuestions) * 100;
+            document.getElementById('progress-bar').style.width = `${progress}%`;
+
+            // Hint
+            document.getElementById('hint-content').textContent = q.hint;
+            document.getElementById('hint-box').classList.add('hidden');
+            document.getElementById('hint-text-label').textContent = "Show Hint";
+
+            // Options
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+
+            q.options.forEach((opt, i) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 rounded-xl border border-slate-700 bg-slate-900/50 hover:bg-slate-700/50 text-slate-200 transition-all font-medium flex items-center justify-between group";
+                
+                let optionLetter = String.fromCharCode(65 + i);
+                btn.innerHTML = `<span><strong class="text-amber-400 mr-2">${optionLetter}.</strong> ${opt.text}</span>`;
+
+                if (answered[index]) {
+                    btn.disabled = true;
+                    if (opt.correct) {
+                        btn.className = "w-full text-left p-4 rounded-xl border border-green-500/50 bg-green-500/10 text-green-200 font-medium flex items-center justify-between";
+                    } else if (userSelections[index] === i) {
+                        btn.className = "w-full text-left p-4 rounded-xl border border-red-500/50 bg-red-500/10 text-red-200 font-medium flex items-center justify-between";
+                    }
+                } else {
+                    btn.onclick = () => selectOption(index, i);
+                }
+                container.appendChild(btn);
+            });
+
+            // Explanation box
+            const expBox = document.getElementById('explanation-box');
+            if (answered[index]) {
+                expBox.classList.remove('hidden');
+                const isCorrect = q.options[userSelections[index]].correct;
+                expBox.className = `mt-6 p-4 rounded-xl border ${isCorrect ? 'bg-green-950/40 border-green-700/50 text-green-200' : 'bg-red-950/40 border-red-700/50 text-red-200'}`;
+                document.getElementById('explanation-title').innerHTML = isCorrect ? '✅ Correct Answer! / सही उत्तर!' : '❌ Incorrect Answer! / गलत उत्तर!';
+                document.getElementById('explanation-text').textContent = q.explanation;
+            } else {
+                expBox.classList.add('hidden');
+            }
+
+            // Buttons state
+            document.getElementById('prev-btn').disabled = index === 0;
+            document.getElementById('next-btn').textContent = index === totalQuestions - 1 ? 'Finish / View Summary' : 'Next →';
+        }
+
+        function selectOption(qIndex, optIndex) {
+            if (answered[qIndex]) return;
+            answered[qIndex] = true;
+            userSelections[qIndex] = optIndex;
+
+            const selectedOpt = quizData[qIndex].options[optIndex];
+            if (selectedOpt.correct) {
+                score++;
+                document.getElementById('score-display').textContent = score;
+            }
+
+            loadQuestion(qIndex);
+        }
+
+        function nextQuestion() {
+            if (currentIndex < totalQuestions - 1) {
+                currentIndex++;
+                loadQuestion(currentIndex);
+            } else {
+                showSummary();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                loadQuestion(currentIndex);
+            }
+        }
+
+        function jumpToQuestion(val) {
+            const qNum = parseInt(val) - 1;
+            if (qNum >= 0 && qNum < totalQuestions) {
+                currentIndex = qNum;
+                loadQuestion(currentIndex);
+            } else {
+                document.getElementById('jump-input').value = currentIndex + 1;
+            }
+        }
+
+        function toggleHint() {
+            const box = document.getElementById('hint-box');
+            const label = document.getElementById('hint-text-label');
+            if (box.classList.contains('hidden')) {
+                box.classList.remove('hidden');
+                label.textContent = "Hide Hint";
+            } else {
+                box.classList.add('hidden');
+                label.textContent = "Show Hint";
+            }
+        }
+
+        function showSummary() {
+            const card = document.getElementById('quiz-card');
+            const percentage = Math.round((score / totalQuestions) * 100);
+            card.innerHTML = `
+                <div class="text-center py-8 space-y-4">
+                    <h2 class="text-2xl sm:text-3xl font-bold text-amber-400">Quiz Completed! / क्विज़ समाप्त!</h2>
+                    <p class="text-slate-300">You have successfully completed the Kurukshetra District Haryana GK practice set.</p>
+                    <div class="text-4xl font-extrabold text-white my-4">
+                        ${score} / ${totalQuestions} <span class="text-lg font-normal text-slate-400">(${percentage}%)</span>
+                    </div>
+                    <p class="text-sm text-slate-400">Review your answers using the Previous button or restart below.</p>
+                    <button onclick="restartQuiz()" class="mt-4 px-6 py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-semibold rounded-xl transition-colors shadow-lg">
+                        Restart Quiz / पुनः आरंभ करें
+                    </button>
+                </div>
+            `;
+            document.getElementById('progress-bar').style.width = '100%';
+        }
+
+        function restartQuiz() {
+            currentIndex = 0;
+            score = 0;
+            answered.fill(false);
+            userSelections.fill(null);
+            document.getElementById('score-display').textContent = score;
+            quizData.forEach(q => shuffleOptions(q.options));
+            loadQuestion(currentIndex);
+        }
+
+        // Initialize first question
+        loadQuestion(0);
+    </script>
+<script src="../../quiz-question-controls.js"></script>
+<script src="../../quiz-app-ui-v2.js"></script></body>
+</html>

@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haryana GK Interactive Quiz (Kurukshetra & Rohtak)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;700&display=swap');
+        body {
+            font-family: 'Inter', 'Noto Sans Devanagari', sans-serif;
+        }
+    </style>
+<style id="cosmic-readable-quiz-theme">
+:root{--space:#e8dcff;--panel:#f3eaff;--panel2:#dcc6ff;--edge:#6a45bf;--glow:#d28b28;--accent:#d15f9f;--ink:#2c1b4d;--muted:#66547c;--mist:rgba(106,69,191,.2)}html{background:var(--space)}body{background:radial-gradient(ellipse 62% 45% at 90% -5%,rgba(209,95,159,.28),transparent 62%),radial-gradient(ellipse 55% 40% at 8% 100%,rgba(65,164,207,.26),transparent 64%),var(--space)!important;color:var(--ink)!important;min-height:100vh}body:before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.78;background-image:radial-gradient(circle at 9% 18%,var(--glow) 0 1px,transparent 1.7px),radial-gradient(circle at 26% 69%,var(--edge) 0 .8px,transparent 1.5px),radial-gradient(circle at 68% 24%,var(--accent) 0 1px,transparent 1.8px),radial-gradient(circle at 88% 73%,#47a8d3 0 .8px,transparent 1.5px);background-size:220px 190px,300px 270px,260px 230px,340px 310px;z-index:-1}header{background:linear-gradient(105deg,var(--panel),var(--panel2))!important;border-color:rgba(106,69,191,.25)!important;box-shadow:0 7px 24px rgba(84,48,142,.14)!important}header h1{color:var(--edge)!important;text-shadow:none!important}header p,header .text-slate-400,header .text-indigo-200,header .text-indigo-300{color:var(--muted)!important}main>div,#quiz-card,.bg-slate-800,.bg-slate-900,.bg-indigo-900,.bg-indigo-950{background:linear-gradient(145deg,#f8f0ff,var(--panel))!important;border-color:rgba(106,69,191,.22)!important;color:var(--ink)!important;box-shadow:0 14px 35px rgba(84,48,142,.12)!important}.bg-slate-700,.bg-slate-100,.bg-slate-50{background:#eadffd!important;color:var(--ink)!important}.text-slate-100,.text-slate-200,.text-slate-300,.text-slate-400,.text-white,.text-slate-800,.text-slate-700,.text-slate-600{color:var(--ink)!important}.text-indigo-400,.text-indigo-300,.text-emerald-400,.text-yellow-300{color:var(--edge)!important}.border-slate-700,.border-slate-700\/60,.border-indigo-700,.border-slate-200{border-color:rgba(106,69,191,.25)!important}button:not(.bg-green-600):not(.bg-red-600){background:#f9f2ff!important;color:var(--ink)!important;border:1px solid rgba(106,69,191,.25)!important;box-shadow:0 3px 10px rgba(84,48,142,.09)!important}button.bg-indigo-600,button.bg-slate-800,button.bg-slate-900,button.bg-indigo-900{background:linear-gradient(120deg,var(--edge),var(--accent))!important;color:#fff!important;border:0!important}button.bg-indigo-600 *,button.bg-slate-800 *,button.bg-slate-900 *,button.bg-indigo-900 *{color:#fff!important}button:hover{filter:brightness(1.04);transform:translateY(-1px)}input,select,textarea{background:#f9f2ff!important;border-color:rgba(106,69,191,.35)!important;color:var(--ink)!important}input:focus,select:focus,textarea:focus{outline:none!important;border-color:var(--edge)!important;box-shadow:0 0 0 3px var(--mist)!important}.bg-indigo-500,#progress-bar{background:linear-gradient(90deg,var(--edge),var(--accent),var(--glow))!important}.rounded-2xl{border-radius:1.25rem!important}
+</style></head>
+<body class="bg-slate-50 text-slate-800 min-p-4 flex flex-col items-center justify-center min-h-screen">
+
+    <div class="w-full max-w-3xl bg-white shadow-xl rounded-2xl p-6 md:p-8 my-6 border border-slate-100">
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row justify-between items-center border-b pb-4 mb-6 gap-4">
+            <div>
+                <h1 class="text-2xl font-bold text-indigo-600">Haryana GK Master Quiz</h1>
+                <p class="text-sm text-slate-500">Kurukshetra & Rohtak District Special (Bilingual)</p>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="bg-indigo-50 text-indigo-700 px-4 py-2 rounded-lg font-semibold text-sm">
+                    Score: <span id="score">0</span> / <span id="total-questions">65</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="w-full bg-slate-200 h-2.5 rounded-full mb-6 overflow-hidden">
+            <div id="progress-bar" class="bg-indigo-600 h-2.5 rounded-full transition-all duration-300" style="width: 0%;"></div>
+        </div>
+
+        <!-- Navigation Jump Bar -->
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-6 bg-slate-50 p-3 rounded-xl border border-slate-200">
+            <div class="text-sm font-medium text-slate-600">
+                Question <span id="current-q-num">1</span> of <span id="total-q-num">65</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <label for="jump-input" class="text-xs text-slate-500">Jump to:</label>
+                <input type="number" id="jump-input" min="1" max="65" class="w-16 px-2 py-1 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="1-65">
+                <button onclick="jumpToQuestion()" class="bg-indigo-600 text-white px-3 py-1 text-sm rounded-lg hover:bg-indigo-700 transition">Go</button>
+            </div>
+        </div>
+
+        <!-- Question Container -->
+        <div id="quiz-container" class="mb-6">
+            <!-- Bilingual Question Text -->
+            <div class="mb-4">
+                <h2 id="question-text-en" class="text-lg font-semibold text-slate-900 mb-2"></h2>
+                <h2 id="question-text-hi" class="text-base font-medium text-indigo-900 bg-indigo-50/50 p-3 rounded-lg border border-indigo-100"></h2>
+            </div>
+
+            <!-- Hint Section -->
+            <div class="mb-4">
+                <button onclick="toggleHint()" class="text-xs font-semibold text-amber-600 bg-amber-50 hover:bg-amber-100 border border-amber-200 px-3 py-1.5 rounded-lg transition flex items-center gap-1">
+                    💡 Show Hint / संकेत देखें
+                </button>
+                <div id="hint-box" class="hidden mt-2 p-3 bg-amber-50 border border-amber-200 text-amber-800 text-xs rounded-lg">
+                    <span id="hint-text"></span>
+                </div>
+            </div>
+
+            <!-- Options Grid -->
+            <div id="options-container" class="space-y-3 mb-6">
+                <!-- Dynamically generated options -->
+            </div>
+
+            <!-- Explanation Box -->
+            <div id="explanation-box" class="hidden p-4 rounded-xl border transition-all duration-300">
+                <h3 id="explanation-title" class="font-bold text-sm mb-1"></h3>
+                <p id="explanation-text" class="text-sm"></p>
+            </div>
+        </div>
+
+        <!-- Footer Navigation Controls -->
+        <div class="flex justify-between items-center border-t pt-4">
+            <button id="prev-btn" onclick="prevQuestion()" class="px-5 py-2.5 bg-slate-200 text-slate-700 font-medium text-sm rounded-xl hover:bg-slate-300 transition disabled:opacity-50 disabled:cursor-not-allowed">
+                ← Previous
+            </button>
+            <button id="next-btn" onclick="nextQuestion()" class="px-5 py-2.5 bg-indigo-600 text-white font-medium text-sm rounded-xl hover:bg-indigo-700 transition">
+                Next →
+            </button>
+        </div>
+    </div>
+
+    <!-- Application Script -->
+    <script>
+        const quizData = [
+            // Kurukshetra Questions (1 to 20)
+            {
+                en: "At which pilgrimage site in Kurukshetra did the Kurukshetra Development Board decide to construct 30 sadariyan?",
+                hi: "कुरुक्षेत्र विकास बोर्ड ने राज्य के किस तीर्थ स्थल पर 30 सदरियां बनाने का फैसला किया है?",
+                options: [
+                    "Saraswati Tirth Sthal / सरस्वती तीर्थ स्थल",
+                    "Brahma Sarovar / ब्रह्म सरोवर",
+                    "Sannhit Sarovar / सान्निहित सरोवर",
+                    "Jyotisar Tirth / ज्योतिसर तीर्थ"
+                ],
+                answer: 0,
+                hint: "Named after a sacred river associated with the region.",
+                explanation: "Correct Answer: Saraswati Tirth Sthal. Kurukshetra Vikas Board decided to build 30 sadariyan here."
+            },
+            {
+                en: "Where was India's first BMX (Bicycle Motocross) cycling track built?",
+                hi: "पहला देश का माउंटेन बाइक के लिए BMX (Bicycle Motocross) साइक्लिंग ट्रैक कहाँ बनाया गया है?",
+                options: ["Rohtak", "Kurukshetra", "Karnal", "Panchkula"],
+                answer: 1,
+                hint: "It is the major district covered in the first source image famous for Mahabharata battle.",
+                explanation: "Correct Answer: Kurukshetra. The first BMX cycling track in the country was established in Kurukshetra."
+            },
+            {
+                en: "Punjab Chief Minister Bhagwant Mann was married to Dr. Gurpreet Kaur, who was born in which village?",
+                hi: "पंजाब के मुख्यमंत्री श्री भगवत मान से विवाह किया है - डॉ. गुरप्रीत कौर, जन्म -",
+                options: ["Gumthala Garhu, Pehowa, Kurukshetra", "Ladwa, Kurukshetra", "Thana, Kurukshetra", "Nilokheri, Karnal"],
+                answer: 0,
+                hint: "Located in Pehowa tehsil of Kurukshetra district.",
+                explanation: "Correct Answer: Gumthala Garhu, Pehowa, Kurukshetra."
+            },
+            {
+                en: "Which is recognized as Asia's largest dharamshala located in Kurukshetra?",
+                hi: "ऐशिया की सबसे बड़ी धर्मशाला है -",
+                options: ["Birla Dharamshala", "Jat Dharamshala, Kurukshetra", "Aggarwal Dharamshala", "Punjab Dharamshala"],
+                answer: 1,
+                hint: "Named after a prominent community.",
+                explanation: "Correct Answer: Jat Dharamshala, Kurukshetra."
+            },
+            {
+                en: "Who was the main poet/writer of the court of Dhanik Tika, Nihal Singh of Ladwa (Kurukshetra), whose major work was 'Ramkatha'?",
+                hi: "लाडवा (कुरुक्षेत्र) के दरबार धनिक टीका, निहाल सिंह के दरबार का प्रमुख कवि था - बंगा सिंह, प्रमुख रचना- रामकथा।",
+                options: ["Banga Singh / बंगा सिंह", "Surdas", "Birbal", "Tulsidas"],
+                answer: 0,
+                hint: "His major work was Ramkatha.",
+                explanation: "Correct Answer: Banga Singh."
+            },
+            {
+                en: "In which district is the 12th-century 124 feet high Lakshmi Narayan temple built by the Chola dynasty located?",
+                hi: "12वीं शताब्दी में चोल वंश द्वारा निर्मित 124 फुट ऊंचा लक्ष्मी नारायण मंदिर राज्य में कहां स्थित है?",
+                options: ["Rohtak", "Kaithal", "Kurukshetra", "Ambala"],
+                answer: 2,
+                hint: "Its golden dome was looted by Aurangzeb on his way to Delhi.",
+                explanation: "Correct Answer: Kurukshetra."
+            },
+            {
+                en: "At which archaeological site in Haryana with clay seals was the 'Swastika' symbol found along with Karn ka Tila?",
+                hi: "'स्वास्तिक' का चिह्न मिला है? - कर्ण का टीला, मिर्जापुर।",
+                options: ["Karn ka Tila, Mirzapur / कर्ण का टीला, मिर्जापुर", "Khokrakot, Rohtak", "Bohramajra", "Asthal Bohar"],
+                answer: 0,
+                hint: "Its first excavation was done in 1909 by the British.",
+                explanation: "Correct Answer: Karn ka Tila, Mirzapur (Kurukshetra)."
+            },
+            {
+                en: "In which year was 'Karn ka Tila' excavated for the second time by Kurukshetra University?",
+                hi: "कर्ण का टीला पुरातात्विक स्थल की दूसरी बार खुदाई 1972-1973 में किस विश्वविद्यालय द्वारा की गई थी?",
+                options: ["Maharshi Dayanand University", "Kurukshetra University / कुरुक्षेत्र विश्वविद्यालय", "Panjab University", "JNU"],
+                answer: 1,
+                hint: "Done by the university situated in the same district.",
+                explanation: "Correct Answer: Kurukshetra University."
+            },
+            {
+                en: "Where will the state's first Saraswati River Front be constructed?",
+                hi: "राज्य का प्रथम सरस्वती रिवर फ्रंट कहां पर बनाया जाएगा?",
+                options: ["Pehowa, Kurukshetra / पिहोवा, कुरुक्षेत्र", "Ladwa, Kurukshetra", "Thanesar", "Shahabad"],
+                answer: 0,
+                hint: "An ancient historical town in Kurukshetra.",
+                explanation: "Correct Answer: Pehowa, Kurukshetra."
+            },
+            {
+                en: "Where is the famous Swami Kartikeya Temple located in the state?",
+                hi: "राज्य में प्रसिद्ध स्वामी कार्तिकेय मंदिर कहां स्थित है?",
+                options: ["Pehowa, Kurukshetra / पिहोवा, कुरुक्षेत्र", "Rohtak", "Sonipat", "Jind"],
+                answer: 0,
+                hint: "Same location as the upcoming Saraswati River Front.",
+                explanation: "Correct Answer: Pehowa, Kurukshetra."
+            },
+            {
+                en: "Which individual from the state established a record of 1 lakh, 1 thousand recorded songs in the India Book of Records?",
+                hi: "राज्य के किस व्यक्ति ने 1 लाख, 1 हजार गाने रिकॉर्ड कर इंडिया बुक ऑफ रिकॉर्ड्स में स्थापित किया है?",
+                options: ["Dr. Rajroop Phoolia / डॉ. राजरूप फूलिया", "Bhagwant Mann", "Chouranginath", "Totanath"],
+                answer: 0,
+                hint: "He is a senior former IAS officer.",
+                explanation: "Correct Answer: Senior former IAS officer Dr. Rajroop Phoolia."
+            },
+            {
+                en: "At which sarovar in the state is the statue of Maharishi Dadhichi installed?",
+                hi: "राज्य के किस सरोवर पर महर्षि दधिची की प्रतिमा स्थापित की गई है?",
+                options: ["Sannhit Sarovar, Kurukshetra / सान्निहित सरोवर, कुरुक्षेत्र", "Brahma Sarovar", "Karna Lake", "Tilyar Lake"],
+                answer: 0,
+                hint: "A sacred sarovar in Kurukshetra.",
+                explanation: "Correct Answer: Sannhit Sarovar, Kurukshetra."
+            },
+            {
+                en: "Which village has been declared as Haryana's first community reserve containing a 100-acre pond?",
+                hi: "हरियाणा का पहला सामुदायिक आरक्षित स्थल घोषित किया गया है - थाना गांव, कुरुक्षेत्र में स्थित 100 एकड़ के तालाब को।",
+                options: ["Thana Village, Kurukshetra / थाना गांव, कुरुक्षेत्र", "Gumthala Garhu", "Ladwa", "Amin"],
+                answer: 0,
+                hint: "Thana village with a 100-acre pond.",
+                explanation: "Correct Answer: Thana village, Kurukshetra."
+            },
+            {
+                en: "The golden dome of the 12th-century Lakshmi Narayan Temple in Kurukshetra was looted by which Mughal ruler while going to Delhi?",
+                hi: "कुरुक्षेत्र के लक्ष्मी नारायण मंदिर के सोने से बना कलश किस मुगल शासक औरंगजेब ने दिल्ली जाते समय लूट लिया था?",
+                options: ["Akbar", "Aurangzeb / औरंगजेब", "Babur", "Shah Jahan"],
+                answer: 1,
+                hint: "The sixth Mughal emperor.",
+                explanation: "Correct Answer: Aurangzeb."
+            },
+            {
+                en: "In which year was Karn ka Tila first excavated by the British?",
+                hi: "कर्ण का टीला पुरातात्विक स्थल की सर्वप्रथम खुदाई 1909 में किसके द्वारा की गई थी?",
+                options: ["British / अंग्रेजों द्वारा", "French", "Mughals", "Local Rulers"],
+                answer: 0,
+                hint: "Conducted during the British colonial period in 1909.",
+                explanation: "Correct Answer: Englishmen / अंग्रेजों द्वारा in 1909."
+            },
+            {
+                en: "Which holy site in Kurukshetra features the Sannhit Sarovar?",
+                hi: "सान्निहित सरोवर राज्य के किस ऐतिहासिक शहर में स्थित है?",
+                options: ["Kurukshetra / कुरुक्षेत्र", "Rohtak", "Hisar", "Panipat"],
+                answer: 0,
+                hint: "Associated with Kurukshetra district facts.",
+                explanation: "Correct Answer: Kurukshetra."
+            },
+            {
+                en: "Pehowa in Kurukshetra is famous for which of the following religious/historical sites mentioned in the text?",
+                hi: "कुरुक्षेत्र के पिहोवा में निम्नलिखित में से कौन सा स्थल स्थित है?",
+                options: [
+                    "Swami Kartikeya Temple / स्वामी कार्तिकेय मंदिर",
+                    "Asthal Bohar Math",
+                    "Tilyar Lake",
+                    "Khokrakot"
+                ],
+                answer: 0,
+                hint: "Dedicated to Lord Shiva's son.",
+                explanation: "Correct Answer: Swami Kartikeya Temple."
+            },
+            {
+                en: "Dr. Rajroop Phoolia, who set a record in the India Book of Records, holds which administrative background?",
+                hi: "इंडिया बुक ऑफ रिकॉर्ड्स में नाम दर्ज कराने वाले डॉ. राजरूप फूलिया का पूर्व पद क्या था?",
+                options: [
+                    "Senior former IAS Officer / वरिष्ठ पूर्व आईएएस अधिकारी",
+                    "IPS Officer",
+                    "Chief Minister",
+                    "University Vice Chancellor"
+                ],
+                answer: 0,
+                hint: "He was a senior bureaucrat.",
+                explanation: "Correct Answer: Senior former IAS officer."
+            },
+            {
+                en: "What was the main literary work of Banga Singh, the court poet of Ladwa?",
+                hi: "लाडवा के दरबार के कवि बंगा सिंह की प्रमुख रचना क्या थी?",
+                options: ["Ramkatha / रामकथा", "Pranasankali", "Vayu", "Divyavadana"],
+                answer: 0,
+                hint: "An epic narrative related to Lord Rama.",
+                explanation: "Correct Answer: Ramkatha."
+            },
+            {
+                en: "The first community reserve of Haryana features a 100-acre pond located in which district?",
+                hi: "हरियाणा का पहला सामुदायिक आरक्षित स्थल 100 एकड़ तालाब वाला किस जिले में स्थित है?",
+                options: ["Kurukshetra / कुरुक्षेत्र", "Rohtak", "Karnal", "Jind"],
+                answer: 0,
+                hint: "Covered in the Kurukshetra section.",
+                explanation: "Correct Answer: Kurukshetra."
+            },
+
+            // Rohtak Questions (21 to 65)
+            {
+                en: "When was Rohtak district formed?",
+                hi: "रोहतक जिले का गठन कब हुआ था?",
+                options: ["1 November 1966 / 1 नवम्बर, 1966", "15 August 1947", "1 November 1973", "26 January 1950"],
+                answer: 0,
+                hint: "Same date as the formation of Haryana state.",
+                explanation: "Correct Answer: 1 November 1966."
+            },
+            {
+                en: "Rohtak division has the distinction of having which feature among all divisions in Haryana?",
+                hi: "रोहतक मंडल की क्या विशेषता है?",
+                options: [
+                    "Maximum 5 districts / सर्वाधिक पांच जिलों वाला मंडल",
+                    "Minimum districts",
+                    "Largest area",
+                    "Smallest population"
+                ],
+                answer: 0,
+                hint: "It contains the highest number of districts.",
+                explanation: "Correct Answer: Division with the maximum five districts (सर्वाधिक पांच जिलों वाला मंडल)."
+            },
+            {
+                en: "Which of the following sub-divisions are under Rohtak district?",
+                hi: "रोहतक जिले के अंतर्गत आने वाले उपमंडल कौन-से हैं?",
+                options: [
+                    "Rohtak, Sampla & Meham / रोहतक, सांपला व महम",
+                    "Rohtak, Kalanaur, Gohana",
+                    "Meham, Beri, Jhajjar",
+                    "Sampla, Meham, Bahadurgarh"
+                ],
+                answer: 0,
+                hint: "Rohtak, Sampla and Meham.",
+                explanation: "Correct Answer: Rohtak, Sampla & Meham."
+            },
+            {
+                en: "What is the sub-tehsil of Rohtak district?",
+                hi: "रोहतक जिले की उपतहसील कौन-सी है?",
+                options: ["Lakhanmajra / लाखनमाजरा", "Kalanaur", "Meham", "Sampla"],
+                answer: 0,
+                hint: "Starts with 'L'.",
+                explanation: "Correct Answer: Lakhanmajra."
+            },
+            {
+                en: "How many Vidhan Sabha constituencies are there in Rohtak district?",
+                hi: "रोहतक जिले में विधानसभा क्षेत्र कितने हैं?",
+                options: ["4 (Rohtak, Meham, Kalanaur, Garhi Sampla-Kiloi) / 4", "2", "6", "5"],
+                answer: 0,
+                hint: "The number is four.",
+                explanation: "Correct Answer: 4 (Rohtak, Meham, Kalanaur, Garhi Sampla-Kiloi)."
+            },
+            {
+                en: "What is the population density of Rohtak district as per the data?",
+                hi: "रोहतक जिले का जनसंख्या घनत्व कितना है?",
+                options: [
+                    "608 persons/sq km / 608 व्यक्ति/वर्ग कि.मी.",
+                    "500 persons/sq km",
+                    "867 persons/sq km",
+                    "1061204 persons/sq km"
+                ],
+                answer: 0,
+                hint: "608",
+                explanation: "Correct Answer: 608 persons/sq km."
+            },
+            {
+                en: "What is the sex ratio (linganupat) of Rohtak district?",
+                hi: "रोहतक जिले का लिंगानुपात कितना है?",
+                options: ["867", "882", "900", "914"],
+                answer: 0,
+                hint: "It is 867.",
+                explanation: "Correct Answer: 867."
+            },
+            {
+                en: "What is the literacy rate of Rohtak district?",
+                hi: "रोहतक जिले की साक्षरता दर कितनी है?",
+                options: ["80.22%", "75.50%", "85.10%", "78.40%"],
+                answer: 0,
+                hint: "Around 80 percent.",
+                explanation: "Correct Answer: 80.22%."
+            },
+            {
+                en: "What is the nickname (upnaam) of Rohtak district?",
+                hi: "रोहतक जिले का उपनाम क्या है?",
+                options: ["Sugar City / शुगर सिटी", "Pink City", "Cotton City", "Brass City"],
+                answer: 0,
+                hint: "Related to sugar.",
+                explanation: "Correct Answer: Sugar City."
+            },
+            {
+                en: "Which city was founded by King Rohtash Bhrum?",
+                hi: "पंवार राजा रोहताश भ्रुम द्वारा किस शहर की स्थापना की गई थी?",
+                options: ["Rohtak / रोहतक", "Hisar", "Sirsa", "Rewari"],
+                answer: 0,
+                hint: "Named after King Rohtash.",
+                explanation: "Correct Answer: Rohtak."
+            },
+            {
+                en: "King Kartikeya is related to which district of the state?",
+                hi: "राजा कार्तिकेय का सम्बन्ध राज्य के किस जिले से है?",
+                options: ["Rohtak / रोहतक", "Kurukshetra", "Karnal", "Ambala"],
+                answer: 0,
+                hint: "Rohtak district.",
+                explanation: "Correct Answer: Rohtak."
+            },
+            {
+                en: "What was the ancient name of Rohtak in Mahabharata?",
+                hi: "महाभारत में रोहतक का पुराना नाम क्या है?",
+                options: ["Rohtika / रोहितिका", "Prithudaka", "Sirhind", "Indraprastha"],
+                answer: 0,
+                hint: "Rohtika.",
+                explanation: "Correct Answer: Rohtika."
+            },
+            {
+                en: "Where is Tilyar Lake located?",
+                hi: "तिलियार झील स्थित है -",
+                options: ["Rohtak / रोहतक", "Gurugram", "Faridabad", "Karnal"],
+                answer: 0,
+                hint: "Located in Rohtak.",
+                explanation: "Correct Answer: Rohtak."
+            },
+            {
+                en: "In ancient times, which city was described as 12 yojanas long, 6 yojanas wide, and having 62 gates?",
+                hi: "प्राचीन समय में 12 योजन लम्बा, 6 योजन चौड़ा व 62 दरवाजों वाला शहर था -",
+                options: ["Rohtak / रोहतक", "Panipat", "Sonipat", "Jind"],
+                answer: 0,
+                hint: "Rohtak.",
+                explanation: "Correct Answer: Rohtak."
+            },
+            {
+                en: "According to ancient accounts, people known as 'Matamyur' lived in which city?",
+                hi: "प्राचीन समय में मतम्युर नामक लोग रहते थे -",
+                options: ["Rohtak / रोहतक", "Hisar", "Bhiwani", "Narnaul"],
+                answer: 0,
+                hint: "Rohtak.",
+                explanation: "Correct Answer: Rohtak."
+            },
+            {
+                en: "Which city's description is found in Nakul Digvijay of Mahabharata?",
+                hi: "महाभारत के नकुल दिग्विजय में राज्य के किस शहर का वर्णन है -",
+                options: ["Rohtak / रोहतक", "Kurukshetra", "Panchkula", "Yamunanagar"],
+                answer: 0,
+                hint: "Rohtak.",
+                explanation: "Correct Answer: Rohtak."
+            },
+            {
+                en: "Which Buddhist text mentions Rohtak district?",
+                hi: "बौद्ध ग्रंथ दिव्यावदान में राज्य के किस जिले का वर्णन है -",
+                options: ["Rohtak / रोहतक", "Ambala", "Kaithal", "Jhajjar"],
+                answer: 0,
+                hint: "Divyavadana mentions Rohtak.",
+                explanation: "Correct Answer: Rohtak."
+            },
+            {
+                en: "Coins of Indo-Greek rulers have been found from which place in Rohtak?",
+                hi: "इण्डो ग्रीक शासकों के सिक्के मिले हैं - खोखरा कोट, रोहतक से।",
+                options: ["Khokrakot, Rohtak / खोखरा कोट, रोहतक", "Asthal Bohar", "Bohramajra", "Meham"],
+                answer: 0,
+                hint: "Khokrakot mound.",
+                explanation: "Correct Answer: Khokrakot, Rohtak."
+            },
+            {
+                en: "Where is the Khokrakot mound located?",
+                hi: "खोखरा कोट का टीला स्थित है -",
+                options: ["Rohtak / रोहतक", "Hisar", "Sirsa", "Jind"],
+                answer: 0,
+                hint: "Rohtak.",
+                explanation: "Correct Answer: Rohtak."
+            },
+            {
+                en: "Molds for casting coins (sikke dhalne ke sanche) were found in Rohtak at which site?",
+                hi: "राज्य में सिक्के ढालने के सांचे मिले हैं -",
+                options: ["Khokrakot, Rohtak / खोखरा कोट, रोहतक", "Bohr Majra", "Kalanaur", "Sampla"],
+                answer: 0,
+                hint: "Khokrakot.",
+                explanation: "Correct Answer: Khokrakot, Rohtak."
+            },
+            {
+                en: "Molds for making currency (mudra banane ke sanche) were obtained from which place in Rohtak?",
+                hi: "राज्य में मुद्रा बनाने के सांचे प्राप्त हुए हैं -",
+                options: ["Bohr Majra, Rohtak / बोहर माजरा, रोहतक", "Khokrakot", "Asthal Bohar", "Kiloi"],
+                answer: 0,
+                hint: "Bohr Majra.",
+                explanation: "Correct Answer: Bohr Majra, Rohtak."
+            },
+            {
+                en: "Where is the famous Gokarn Tank (Gookarn Talab) located?",
+                hi: "प्रसिद्ध गऊकर्ण तालाब स्थित है -",
+                options: ["Rohtak / रोहतक", "Kurukshetra", "Karnal", "Panipat"],
+                answer: 0,
+                hint: "Rohtak.",
+                explanation: "Correct Answer: Rohtak."
+            },
+            {
+                en: "Gateway pillars built in Kushan style have been found in which district?",
+                hi: "कुषाण शैली में निर्मित द्वार स्तम्भ मिले हैं -",
+                options: ["Rohtak / रोहतक", "Hisar", "Faridabad", "Palwal"],
+                answer: 0,
+                hint: "Rohtak.",
+                explanation: "Correct Answer: Rohtak."
+            },
+            {
+                en: "Where were the maximum Gupta period coins found in the state?",
+                hi: "राज्य में सर्वाधिक गुप्त कालिन मुद्राएं मिली हैं -",
+                options: ["Rohtak / रोहतक", "Gurugram", "Sirsa", "Rewari"],
+                answer: 0,
+                hint: "Rohtak.",
+                explanation: "Correct Answer: Rohtak."
+            },
+            {
+                en: "Where were the maximum idols (moortiyan) found in the state?",
+                hi: "राज्य में सर्वाधिक मूर्तियां प्राप्त हुई हैं -",
+                options: ["Kiloi village, Rohtak / किलोई गांव, रोहतक", "Khokrakot", "Asthal Bohar", "Meham"],
+                answer: 0,
+                hint: "Kiloi village in Rohtak.",
+                explanation: "Correct Answer: Kiloi village, Rohtak."
+            },
+            {
+                en: "When was the state's first college established in Rohtak (presently known as Pandit Neki Ram College)?",
+                hi: "राज्य का प्रथम कॉलेज 1926 में स्थापित किया गया था - वर्तमान नाम - पण्डित नेकीराम कॉलेज, रोहतक।",
+                options: ["1926", "1947", "1966", "1976"],
+                answer: 0,
+                hint: "Established in 1926.",
+                explanation: "Correct Answer: 1926."
+            },
+            {
+                en: "What is the present name of the state's first college established in Rohtak in 1926?",
+                hi: "1926 में स्थापित राज्य के प्रथम कॉलेज का वर्तमान नाम क्या है?",
+                options: [
+                    "Pandit Neki Ram College / पण्डित नेकीराम कॉलेज",
+                    "Maharshi Dayanand University",
+                    "Hindu College",
+                    "Vaish College"
+                ],
+                answer: 0,
+                hint: "Named after Pandit Neki Ram.",
+                explanation: "Correct Answer: Pandit Neki Ram College."
+            },
+            {
+                en: "What was a major center for Kushan period idols in the state?",
+                hi: "कुषाणकालिन मूर्तियों का राज्य में प्रमुख केन्द्र -",
+                options: ["Rohtak / रोहतक", "Kurukshetra", "Jind", "Bhiwani"],
+                answer: 0,
+                hint: "Rohtak.",
+                explanation: "Correct Answer: Rohtak."
+            },
+            {
+                en: "When was the state's oldest All India Radio (AIR) station established in Rohtak?",
+                hi: "राज्य का सबसे पुराना आकाशवाणी केन्द्र है - रोहतक, स्थापना - 8 मई 1976",
+                options: ["8 May 1976 / 8 मई 1976", "1 November 1966", "15 August 1950", "26 January 1980"],
+                answer: 0,
+                hint: "May 8, 1976.",
+                explanation: "Correct Answer: 8 May 1976."
+            },
+            {
+                en: "Rohtak AIR station is unique because it is the only AIR station in the state that provides broadcast on which bands?",
+                hi: "राज्य का यह एकमात्र ऐसा आकाशवाणी केन्द्र है जो MW, FM व SW प्रसारण पर उपलब्ध है।",
+                options: [
+                    "MW, FM & SW / MW, FM व SW प्रसारण",
+                    "Only FM",
+                    "Only AM",
+                    "FM & AM only"
+                ],
+                answer: 0,
+                hint: "MW, FM and SW.",
+                explanation: "Correct Answer: MW, FM & SW."
+            },
+            {
+                en: "Where is the ancient Asthal Bohar Math located?",
+                hi: "प्राचीन स्थल बोहर मठ स्थित है -",
+                options: ["Rohtak / रोहतक", "Sonipat", "Panipat", "Karnal"],
+                answer: 0,
+                hint: "Rohtak.",
+                explanation: "Correct Answer: Rohtak."
+            },
+            {
+                en: "In which century was the Asthal Bohar Math established by Saint Chouranginath?",
+                hi: "प्राचीन स्थल बोहर मठ स्थित है - स्थापना - 8वीं शताब्दी में संत चौरंगीनाथ द्वारा।",
+                options: ["8th Century / 8वीं शताब्दी", "12th Century", "15th Century", "19th Century"],
+                answer: 0,
+                hint: "8th Century.",
+                explanation: "Correct Answer: 8th Century (8वीं शताब्दी)."
+            },
+            {
+                en: "The Asthal Bohar Math is associated with which religious sects/traditions?",
+                hi: "यह मठ सम्बन्धित है - नाथ धर्म से, दर्शनी साधुओं से, कनपटे साधुओं से, गुरुगोरख नाथ समुदाय से।",
+                options: [
+                    "Nath Sect, Darshani & Kanpate Sadhus, Guru Gorakhnath Sect / नाथ धर्म, दर्शनी, कनपटे साधु, गुरुगोरखनाथ",
+                    "Buddhist Sect",
+                    "Jain Sect",
+                    "Sufi Tradition"
+                ],
+                answer: 0,
+                hint: "Nath and Gorakhnath traditions.",
+                explanation: "Correct Answer: Nath sect, darshani sadhus, kanpate sadhus, Guru Gorakhnath sect."
+            },
+            {
+                en: "Who was the first Mahant of Asthal Bohar Math in 1864?",
+                hi: "स्थल बोहर मठ के प्रथम महंत - 1864 महंत तोतानाथ",
+                options: ["Mahant Totanath / महंत तोतानाथ", "Mahant Chandranath Yogi", "Baba Balaknath", "Saint Chouranginath"],
+                answer: 0,
+                hint: "Mahant Totanath.",
+                explanation: "Correct Answer: Mahant Totanath (1864)."
+            },
+            {
+                en: "Who was the 8th and present Mahant of Asthal Bohar Math?",
+                hi: "8वें वर्तमान महंत - बाबा बालकनाथ",
+                options: ["Baba Balaknath / बाबा बालकनाथ", "Mahant Totanath", "Chandranath Yogi", "Chouranginath"],
+                answer: 0,
+                hint: "Baba Balaknath.",
+                explanation: "Correct Answer: Baba Balaknath."
+            },
+            {
+                en: "Who is recognized as the first litterateur to use Haryanvi in Hindi?",
+                hi: "ठेठ हरियाणवी का हिन्दी में प्रयोग करने वाले प्रथम साहित्यकार हैं - संत चौरंगीनाथ",
+                options: ["Saint Chouranginath / संत चौरंगीनाथ", "Mahant Totanath", "Banga Singh", "Dr. Rajroop Phoolia"],
+                answer: 0,
+                hint: "Saint Chouranginath.",
+                explanation: "Correct Answer: Saint Chouranginath."
+            },
+            {
+                en: "What are the major literary works of Saint Chouranginath?",
+                hi: "संत चौरंगीनाथ की प्रमुख रचनायें - प्राणासांकली, वायु",
+                options: [
+                    "Pranasankali, Vayu / प्राणासांकली, वायु",
+                    "Ramkatha",
+                    "Divyavadana",
+                    "Harshacharita"
+                ],
+                answer: 0,
+                hint: "Pranasankali and Vayu.",
+                explanation: "Correct Answer: Pranasankali, Vayu."
+            },
+            {
+                en: "What is the population of Rohtak district approximately?",
+                hi: "रोहतक जिले की कुल जनसंख्या कितनी है?",
+                options: ["1061204", "850000", "1250000", "950000"],
+                answer: 0,
+                hint: "1061204",
+                explanation: "Correct Answer: 1061204."
+            },
+            {
+                en: "Which of the following blocks are located in Rohtak district?",
+                hi: "रोहतक जिले के खंड (Blocks) निम्नलिखित में से कौन-से हैं?",
+                options: [
+                    "Kalanaur, Lakhanmajra, Meham, Rohtak, Sampla / कलानौर, लाखनमाजरा, महम, रोहतक, सांपला",
+                    "Gohana, Kharkhoda, Meham",
+                    "Beri, Salhawas, Nahar",
+                    "Tosham, Siwani, Badhra"
+                ],
+                answer: 0,
+                hint: "Kalanaur, Lakhanmajra, Meham, Rohtak, Sampla.",
+                explanation: "Correct Answer: Kalanaur, Lakhanmajra, Meham, Rohtak, Sampla."
+            },
+            {
+                en: "King Rohtash Bhrum established which prominent city of Haryana?",
+                hi: "पंवार राजा रोहतास भ्रुम द्वारा किस शहर की स्थापना की गई थी?",
+                options: ["Rohtak / रोहतक", "Jind", "Sonipat", "Panipat"],
+                answer: 0,
+                hint: "Chapter heading district - Rohtak.",
+                explanation: "Correct Answer: Rohtak."
+            },
+            {
+                en: "The ancient name 'Rohtika' refers to which modern district?",
+                hi: "'रोहितिका' किस आधुनिक जिले का प्राचीन नाम है?",
+                options: ["Rohtak / रोहतक", "Roorkee", "Rewari", "Ratia"],
+                answer: 0,
+                hint: "Rohtak.",
+                explanation: "Correct Answer: Rohtak."
+            },
+            {
+                en: "Which district in Haryana is famously referred to as 'Sugar City'?",
+                hi: "हरियाणा के किस जिले को 'शुगर सिटी' कहा जाता है?",
+                options: ["Rohtak / रोहतक", "Yamunanagar", "Karnal", "Sonipat"],
+                answer: 0,
+                hint: "Rohtak nickname.",
+                explanation: "Correct Answer: Rohtak."
+            },
+            {
+                en: "Where were coins casting molds (sikke dhalne ke sanche) discovered in Rohtak?",
+                hi: "रोहतक में सिक्के ढालने के सांचे कहाँ से मिले हैं?",
+                options: ["Khokrakot / खोखरा कोट", "Asthal Bohar", "Bohr Majra", "Kiloi"],
+                answer: 0,
+                hint: "Khokrakot.",
+                explanation: "Correct Answer: Khokrakot."
+            },
+            {
+                en: "The 7th Mahant of Asthal Bohar Math who passed away was:",
+                hi: "स्थल बोहर मठ के 7वें महंत जिनका निधन हो गया -",
+                options: ["Chandranath Yogi / चांदनाथ योगी", "Mahant Totanath", "Baba Balaknath", "Chouranginath"],
+                answer: 0,
+                hint: "Chandranath Yogi.",
+                explanation: "Correct Answer: Chandranath Yogi."
+            },
+            {
+                en: "When was the Rohtak All India Radio station established?",
+                hi: "रोहतक आकाशवाणी केंद्र की स्थापना कब हुई थी?",
+                options: ["8 May 1976 / 8 मई 1976", "1 November 1966", "15 January 1982", "26 August 1975"],
+                answer: 0,
+                hint: "May 8, 1976.",
+                explanation: "Correct Answer: 8 May 1976."
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let answered = new Array(quizData.length).fill(false);
+        let userSelections = new Array(quizData.length).fill(null);
+
+        function loadQuestion() {
+            const q = quizData[currentQuestion];
+            document.getElementById('current-q-num').innerText = currentQuestion + 1;
+            document.getElementById('total-q-num').innerText = quizData.length;
+            document.getElementById('total-questions').innerText = quizData.length;
+            
+            document.getElementById('question-text-en').innerText = `${currentQuestion + 1}. ${q.en}`;
+            document.getElementById('question-text-hi').innerText = q.hi;
+
+            // Hint
+            document.getElementById('hint-text').innerText = q.hint;
+            document.getElementById('hint-box').classList.add('hidden');
+
+            // Options
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            q.options.forEach((opt, index) => {
+                const button = document.createElement('button');
+                button.className = `w-full text-left p-3.5 rounded-xl border text-sm font-medium transition flex items-center justify-between ${
+                    answered[currentQuestion]
+                        ? index === q.answer
+                            ? 'bg-emerald-50 border-emerald-300 text-emerald-900 font-semibold'
+                            : userSelections[currentQuestion] === index
+                                ? 'bg-rose-50 border-rose-300 text-rose-900'
+                                : 'bg-white border-slate-200 text-slate-600 opacity-60'
+                        : 'bg-white border-slate-200 hover:border-indigo-400 hover:bg-indigo-50/30 text-slate-700'
+                }`;
+                button.innerHTML = `<span>${opt}</span>`;
+                button.disabled = answered[currentQuestion];
+                button.onclick = () => selectOption(index);
+                optionsContainer.appendChild(button);
+            });
+
+            // Explanation Box
+            const expBox = document.getElementById('explanation-box');
+            if (answered[currentQuestion]) {
+                showExplanationUI(userSelections[currentQuestion] === q.answer);
+            } else {
+                expBox.classList.add('hidden');
+            }
+
+            // Progress bar
+            const progress = ((currentQuestion + 1) / quizData.length) * 100;
+            document.getElementById('progress-bar').style.width = `${progress}%`;
+
+            // Buttons state
+            document.getElementById('prev-btn').disabled = currentQuestion === 0;
+            document.getElementById('next-btn').innerText = currentQuestion === quizData.length - 1 ? 'Finish / Score' : 'Next →';
+        }
+
+        function selectOption(index) {
+            if (answered[currentQuestion]) return;
+            answered[currentQuestion] = true;
+            userSelections[currentQuestion] = index;
+
+            const q = quizData[currentQuestion];
+            const isCorrect = index === q.answer;
+            if (isCorrect) {
+                score++;
+                document.getElementById('score').innerText = score;
+            }
+
+            loadQuestion();
+            showExplanationUI(isCorrect);
+        }
+
+        function showExplanationUI(isCorrect) {
+            const q = quizData[currentQuestion];
+            const expBox = document.getElementById('explanation-box');
+            const expTitle = document.getElementById('explanation-title');
+            const expText = document.getElementById('explanation-text');
+
+            expBox.classList.remove('hidden');
+            if (isCorrect) {
+                expBox.className = 'p-4 rounded-xl border bg-emerald-50 border-emerald-200 text-emerald-900';
+                expTitle.innerText = '✅ Correct Answer / सही उत्तर!';
+            } else {
+                expBox.className = 'p-4 rounded-xl border bg-rose-50 border-rose-200 text-rose-900';
+                expTitle.innerText = '❌ Incorrect Answer / गलत उत्तर!';
+            }
+            expText.innerText = q.explanation;
+        }
+
+        function toggleHint() {
+            const hintBox = document.getElementById('hint-box');
+            hintBox.classList.toggle('hidden');
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < quizData.length - 1) {
+                currentQuestion++;
+                loadQuestion();
+            } else {
+                alert(`Quiz Completed! Your Final Score is ${score} out of ${quizData.length}.`);
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                loadQuestion();
+            }
+        }
+
+        function jumpToQuestion() {
+            const input = document.getElementById('jump-input');
+            const val = parseInt(input.value) - 1;
+            if (val >= 0 && val < quizData.length) {
+                currentQuestion = val;
+                loadQuestion();
+                input.value = '';
+            } else {
+                alert(`Please enter a valid question number between 1 and ${quizData.length}.`);
+            }
+        }
+
+        // Initial Load
+        window.onload = loadQuestion;
+    </script>
+<script src="../../quiz-question-controls.js"></script>
+<script src="../../quiz-app-ui-v2.js"></script></body>
+</html>

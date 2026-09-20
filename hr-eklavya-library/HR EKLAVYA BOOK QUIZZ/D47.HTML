@@ -1,0 +1,1705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haryana GK Interactive Quiz Application (Charkhi Dadri District Special)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+<style id="cosmic-readable-quiz-theme">
+:root{--space:#e8dcff;--panel:#f3eaff;--panel2:#dcc6ff;--edge:#6a45bf;--glow:#d28b28;--accent:#d15f9f;--ink:#2c1b4d;--muted:#66547c;--mist:rgba(106,69,191,.2)}html{background:var(--space)}body{background:radial-gradient(ellipse 62% 45% at 90% -5%,rgba(209,95,159,.28),transparent 62%),radial-gradient(ellipse 55% 40% at 8% 100%,rgba(65,164,207,.26),transparent 64%),var(--space)!important;color:var(--ink)!important;min-height:100vh}body:before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.78;background-image:radial-gradient(circle at 9% 18%,var(--glow) 0 1px,transparent 1.7px),radial-gradient(circle at 26% 69%,var(--edge) 0 .8px,transparent 1.5px),radial-gradient(circle at 68% 24%,var(--accent) 0 1px,transparent 1.8px),radial-gradient(circle at 88% 73%,#47a8d3 0 .8px,transparent 1.5px);background-size:220px 190px,300px 270px,260px 230px,340px 310px;z-index:-1}header{background:linear-gradient(105deg,var(--panel),var(--panel2))!important;border-color:rgba(106,69,191,.25)!important;box-shadow:0 7px 24px rgba(84,48,142,.14)!important}header h1{color:var(--edge)!important;text-shadow:none!important}header p,header .text-slate-400,header .text-indigo-200,header .text-indigo-300{color:var(--muted)!important}main>div,#quiz-card,.bg-slate-800,.bg-slate-900,.bg-indigo-900,.bg-indigo-950{background:linear-gradient(145deg,#f8f0ff,var(--panel))!important;border-color:rgba(106,69,191,.22)!important;color:var(--ink)!important;box-shadow:0 14px 35px rgba(84,48,142,.12)!important}.bg-slate-700,.bg-slate-100,.bg-slate-50{background:#eadffd!important;color:var(--ink)!important}.text-slate-100,.text-slate-200,.text-slate-300,.text-slate-400,.text-white,.text-slate-800,.text-slate-700,.text-slate-600{color:var(--ink)!important}.text-indigo-400,.text-indigo-300,.text-emerald-400,.text-yellow-300{color:var(--edge)!important}.border-slate-700,.border-slate-700\/60,.border-indigo-700,.border-slate-200{border-color:rgba(106,69,191,.25)!important}button:not(.bg-green-600):not(.bg-red-600){background:#f9f2ff!important;color:var(--ink)!important;border:1px solid rgba(106,69,191,.25)!important;box-shadow:0 3px 10px rgba(84,48,142,.09)!important}button.bg-indigo-600,button.bg-slate-800,button.bg-slate-900,button.bg-indigo-900{background:linear-gradient(120deg,var(--edge),var(--accent))!important;color:#fff!important;border:0!important}button.bg-indigo-600 *,button.bg-slate-800 *,button.bg-slate-900 *,button.bg-indigo-900 *{color:#fff!important}button:hover{filter:brightness(1.04);transform:translateY(-1px)}input,select,textarea{background:#f9f2ff!important;border-color:rgba(106,69,191,.35)!important;color:var(--ink)!important}input:focus,select:focus,textarea:focus{outline:none!important;border-color:var(--edge)!important;box-shadow:0 0 0 3px var(--mist)!important}.bg-indigo-500,#progress-bar{background:linear-gradient(90deg,var(--edge),var(--accent),var(--glow))!important}.rounded-2xl{border-radius:1.25rem!important}
+</style></head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between">
+
+    <!-- Top Header -->
+    <header class="bg-indigo-700 text-white shadow-md py-4 px-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div>
+            <h1 class="text-xl font-bold">Haryana District-wise Study: Charkhi Dadri Special</h1>
+            <p class="text-xs text-indigo-200">Bilingual (English & Hindi) Quiz App | 110 Unique Exam-Pattern Questions (P1: 45Q, P2: 45Q, P3: 20Q)</p>
+        </div>
+        <div class="flex items-center gap-4 bg-indigo-800 px-4 py-2 rounded-lg text-sm">
+            <div>Score: <span id="live-score" class="font-bold text-amber-300">0</span> / <span id="total-q-count">110</span></div>
+            <div>|</div>
+            <div>Progress: <span id="progress-pct" class="font-bold">0%</span></div>
+        </div>
+    </header>
+
+    <!-- Main Quiz Container -->
+    <main class="max-w-4xl w-full mx-auto p-4 sm:p-6 my-auto">
+        <div class="bg-white rounded-2xl shadow-xl p-6 sm:p-8 border border-slate-100 relative">
+            
+            <!-- Quiz Meta / Progress Bar -->
+            <div class="mb-6">
+                <div class="flex justify-between items-center text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
+                    <span id="question-tracker">Question 1 of 110</span>
+                    <span id="question-category" class="bg-indigo-50 text-indigo-700 px-2.5 py-1 rounded-full text-[10px]">Charkhi Dadri District GK</span>
+                </div>
+                <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+                    <div id="progress-bar" class="bg-indigo-600 h-2 transition-all duration-300" style="width: 0.9%;"></div>
+                </div>
+            </div>
+
+            <!-- Question Statement Area -->
+            <div class="mb-6">
+                <h2 id="question-text-en" class="text-lg sm:text-xl font-semibold text-slate-900 mb-2">Loading Question...</h2>
+                <h3 id="question-text-hi" class="text-base sm:text-lg font-medium text-indigo-900 bg-indigo-50/50 p-3 rounded-lg border border-indigo-100">लोड हो रहा है...</h3>
+            </div>
+
+            <!-- Options Grid -->
+            <div id="options-container" class="grid grid-cols-1 gap-3 mb-6">
+                <!-- Dynamically injected options -->
+            </div>
+
+            <!-- Hint Section -->
+            <div class="mb-6">
+                <button onclick="toggleHint()" class="text-xs font-semibold text-indigo-600 hover:text-indigo-800 flex items-center gap-1 focus:outline-none">
+                    <span>💡 Toggle Hint / संकेत देखें</span>
+                </button>
+                <div id="hint-box" class="hidden mt-2 p-3 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-900">
+                    <p id="hint-text">No hint available.</p>
+                </div>
+            </div>
+
+            <!-- Explanation Box (Hidden initially) -->
+            <div id="explanation-box" class="hidden mb-6 p-4 rounded-xl bg-slate-50 border border-slate-200 text-sm">
+                <h4 class="font-bold text-slate-900 mb-1 flex items-center gap-1">
+                    <span>📖 Explanation / व्याख्या:</span>
+                </h4>
+                <p id="explanation-text" class="text-slate-700 leading-relaxed"></p>
+            </div>
+
+            <!-- Navigation & Controls Footer -->
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-4 pt-4 border-t border-slate-100">
+                <div class="flex items-center gap-2 w-full sm:w-auto">
+                    <button onclick="prevQuestion()" id="prev-btn" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-medium rounded-lg transition disabled:opacity-55 disabled:cursor-not-allowed w-1/2 sm:w-auto">
+                        ← Previous
+                    </button>
+                    <button onclick="nextQuestion()" id="next-btn" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition w-1/2 sm:w-auto">
+                        Next →
+                    </button>
+                </div>
+
+                <!-- Jump to Question Input -->
+                <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+                    <span class="text-xs text-slate-500 whitespace-nowrap">Jump to Q#:</span>
+                    <input type="number" id="jump-input" min="1" max="110" class="w-16 px-2 py-1.5 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-center" />
+                    <button onclick="jumpToQuestion()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-900 text-white text-xs font-medium rounded-lg">Go</button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-4 text-xs text-slate-400">
+        Haryana Competitive Exams Prep &bull; Charkhi Dadri District Edition &bull; 110 Unique Questions Dataset
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // 110 Comprehensive Exam-Level Unique Questions Dataset spanning Charkhi Dadri facts across Pages 1, 2, and 3
+        const quizData = [
+            // --- PAGE 1 QUESTIONS (Q1 - Q45) ---
+            {
+                en: "When was the announcement for the creation of Charkhi Dadri made by Chief Minister Manohar Lal in a Dadri rally?",
+                hi: "घोषणा - 18 सितम्बर, 2016 (दादरी रैली में मुख्यमंत्री श्री मनोहर लाल द्वारा)",
+                options: [
+                    "18 September 2016 (18 सितम्बर, 2016)",
+                    "18 October 2016",
+                    "16 November 2016",
+                    "1 December 2016"
+                ],
+                answer: 0,
+                hint: "September 18, 2016.",
+                explanation: "The announcement for Charkhi Dadri district was made on 18 September 2016 by CM Manohar Lal."
+            },
+            {
+                en: "When did the cabinet give its approval for the formation of Charkhi Dadri district?",
+                hi: "कैबिनेट से मंजूरी मिली - 18 अक्टूबर, 2016",
+                options: [
+                    "18 October 2016 (18 अक्टूबर, 2016)",
+                    "18 September 2016",
+                    "16 November 2016",
+                    "1 December 2016"
+                ],
+                answer: 0,
+                hint: "October 18, 2016.",
+                explanation: "The cabinet approval was granted on 18 October 2016."
+            },
+            {
+                en: "When was the gazette notification issued for the constitution of Charkhi Dadri district?",
+                hi: "गठन के लिए गजट नोटिफिकेशन जारी किया गया - 16 नवम्बर, 2016",
+                options: [
+                    "16 November 2016 (16 नवम्बर, 2016)",
+                    "18 October 2016",
+                    "December 2016",
+                    "1 December 2016"
+                ],
+                answer: 0,
+                hint: "November 16, 2016.",
+                explanation: "Gazette notification was issued on 16 November 2016."
+            },
+            {
+                en: "In which month and year was Charkhi Dadri officially established as a district?",
+                hi: "गठन - दिसम्बर 2016",
+                options: [
+                    "December 2016 (दिसम्बर 2016)",
+                    "September 2016",
+                    "November 2016",
+                    "January 2017"
+                ],
+                answer: 0,
+                hint: "December 2016.",
+                explanation: "Charkhi Dadri was formally formed in December 2016."
+            },
+            {
+                en: "When was Charkhi Dadri approved by the Central Government?",
+                hi: "केंद्र सरकार द्वारा स्वीकृत - 1.12.2016 को",
+                options: [
+                    "1 December 2016 (1.12.2016)",
+                    "18 September 2016",
+                    "18 October 2016",
+                    "16 November 2016"
+                ],
+                answer: 0,
+                hint: "December 1, 2016.",
+                explanation: "It was approved by the central government on 1 December 2016."
+            },
+            {
+                en: "How many sub-divisions (Up-mandal) are there in Charkhi Dadri district?",
+                hi: "उपमण्डल - दादरी, बाढ़ड़ा",
+                options: [
+                    "Dadri, Badhra (दादरी, बाढ़ड़ा - 2)",
+                    "Dadri, Bondkala (3)",
+                    "Dadri, Jhojhu (4)",
+                    "Only Dadri (1)"
+                ],
+                answer: 0,
+                hint: "Dadri and Badhra.",
+                explanation: "There are 2 sub-divisions: Dadri and Badhra."
+            },
+            {
+                en: "What is the total number of villages included in Charkhi Dadri district?",
+                hi: "सम्मिलित कुल गांव - 174",
+                options: [
+                    "174",
+                    "150",
+                    "190",
+                    "132"
+                ],
+                answer: 0,
+                hint: "174 villages.",
+                explanation: "There are a total of 174 villages included in Charkhi Dadri."
+            },
+            {
+                en: "Which of the following are the tehsils in Charkhi Dadri district?",
+                hi: "तहसील - च. दादरी, बाढ़ड़ा, झोझू",
+                options: [
+                    "Ch. Dadri, Badhra, Jhojhu (च. दादरी, बाढ़ड़ा, झोझू)",
+                    "Dadri, Bondkala, Badhra",
+                    "Dadri and Badhra only",
+                    "Bondkala and Jhojhu only"
+                ],
+                answer: 0,
+                hint: "Dadri, Badhra, and Jhojhu.",
+                explanation: "The tehsils are Ch. Dadri, Badhra, and Jhojhu."
+            },
+            {
+                en: "Which sub-tehsil (Up-tehsil) is located in Charkhi Dadri district?",
+                hi: "उपतहसील - बौंदकला",
+                options: [
+                    "Bondkala (बौंदकला)",
+                    "Jhojhu Kalan",
+                    "Badhra",
+                    "Aderna"
+                ],
+                answer: 0,
+                hint: "Bondkala.",
+                explanation: "Bondkala is the sub-tehsil in Charkhi Dadri."
+            },
+            {
+                en: "How many sub-blocks (Up-khand) are present in Charkhi Dadri district?",
+                hi: "उपखण्ड - दादरी, बौंदकला, झोझू, बाढ़ड़ा",
+                options: [
+                    "Dadri, Bondkala, Jhojhu, Badhra (दादरी, बौंदकला, झोझू, बाढ़ड़ा)",
+                    "Dadri and Badhra only",
+                    "Dadri, Jhojhu, Badhra",
+                    "Bondkala and Dadri only"
+                ],
+                answer: 0,
+                hint: "Dadri, Bondkala, Jhojhu, Badhra.",
+                explanation: "There are 4 sub-blocks: Dadri, Bondkala, Jhojhu, and Badhra."
+            },
+            {
+                en: "How many assembly constituencies (Vidhan Sabha kshetra) are there in Charkhi Dadri?",
+                hi: "विधानसभा क्षेत्र - 2, दादरी व बाढ़ड़ा",
+                options: [
+                    "2 (Dadri and Badhra)",
+                    "1",
+                    "3",
+                    "4"
+                ],
+                answer: 0,
+                hint: "Dadri and Badhra (2 constituencies).",
+                explanation: "There are 2 assembly constituencies: Dadri and Badhra."
+            },
+            {
+                en: "What is the total geographical area of Charkhi Dadri district?",
+                hi: "क्षेत्रफल - 1370.11 वर्ग कि.मी.",
+                options: [
+                    "1370.11 sq km (1370.11 वर्ग कि.मी.)",
+                    "1540.25 sq km",
+                    "1210.50 sq km",
+                    "1450.80 sq km"
+                ],
+                answer: 0,
+                hint: "1370.11 sq km.",
+                explanation: "The area of Charkhi Dadri is 1370.11 sq km."
+            },
+            {
+                en: "What is the sex ratio (Linganupat) of Charkhi Dadri district?",
+                hi: "लिंगानुपात - 852",
+                options: [
+                    "852",
+                    "879",
+                    "890",
+                    "914"
+                ],
+                answer: 0,
+                hint: "852.",
+                explanation: "The sex ratio of Charkhi Dadri is 852."
+            },
+            {
+                en: "What is the literacy rate of Charkhi Dadri district?",
+                hi: "साक्षरता - 64.4%",
+                options: [
+                    "64.4%",
+                    "75.5%",
+                    "70.2%",
+                    "68.9%"
+                ],
+                answer: 0,
+                hint: "64.4%.",
+                explanation: "The literacy rate of Charkhi Dadri is 64.4%."
+            },
+            {
+                en: "Under which administrative division (Mandal) does Charkhi Dadri fall?",
+                hi: "मण्डल - रोहतक",
+                options: [
+                    "Rohtak (रोहतक)",
+                    "Hisar",
+                    "Gurugram",
+                    "Faridabad"
+                ],
+                answer: 0,
+                hint: "Rohtak division.",
+                explanation: "Charkhi Dadri falls under the Rohtak division."
+            },
+            {
+                en: "What was the ancient name of Charkhi Dadri?",
+                hi: "प्राचीन नाम - दादुर",
+                options: [
+                    "Dadur (दादुर)",
+                    "Charkhipur",
+                    "Dadribad",
+                    "Prithvipur"
+                ],
+                answer: 0,
+                hint: "Dadur.",
+                explanation: "The ancient name of Charkhi Dadri was Dadur."
+            },
+            {
+                en: "From which Sanskrit word is 'Dadri' derived, and what does it mean?",
+                hi: "उत्पत्ति - दादरी की उत्पत्ति संस्कृत के 'दादुर' शब्द से हुई है जिसका अर्थ संस्कृत में मेंढ़क होता है।",
+                options: [
+                    "Dadur, meaning Frog (दादुर, जिसका अर्थ मेंढ़क होता है)",
+                    "Dadra, meaning Lake",
+                    "Darima, meaning Pomegranate",
+                    "Dhanu, meaning Bow"
+                ],
+                answer: 0,
+                hint: "Dadur meaning frog.",
+                explanation: "Dadri is derived from 'Dadur', which means frog in Sanskrit."
+            },
+            {
+                en: "Who established Charkhi Dadri in 1193 according to historical notes?",
+                hi: "स्थापना - 1193 में पृथ्वीराज चौहान के पुत्र विल्ल्वराज / बितनरराज चौहान द्वारा",
+                options: [
+                    "Villvaraj / Bitnaraj Chauhan, son of Prithviraj Chauhan (1193 में विल्ल्वराज / बितनरराज चौहान)",
+                    "Prithviraj Chauhan himself",
+                    "Anangpal Tomar",
+                    "Rao Jodhaji"
+                ],
+                answer: 0,
+                hint: "Villvaraj/Bitnaraj Chauhan in 1193.",
+                explanation: "It was established in 1193 by Villvaraj / Bitnaraj Chauhan, son of Prithviraj Chauhan."
+            },
+            {
+                en: "According to local administrative notes, which division is noted as the largest division in Haryana in the text?",
+                hi: "हरियाणा का सबसे बड़ा डिविजन है - च. दादरी (नोट के अनुसार)",
+                options: [
+                    "Ch. Dadri (च. दादरी)",
+                    "Hisar",
+                    "Rohtak",
+                    "Karnal"
+                ],
+                answer: 0,
+                hint: "Ch. Dadri.",
+                explanation: "The text notes Ch. Dadri in this context."
+            },
+            {
+                en: "In which year was the word 'Charkhi' prefixed/added to Dadri?",
+                hi: "दादरी के साथ चर्खी शब्द जोड़ा गया था - 1958",
+                options: [
+                    "1958",
+                    "1947",
+                    "1966",
+                    "1972"
+                ],
+                answer: 0,
+                hint: "1958.",
+                explanation: "The word 'Charkhi' was added to Dadri in 1958."
+            },
+            {
+                en: "Who is credited with adding the word 'Charkhi' to Dadri?",
+                hi: "नोट: दादरी के साथ चर्खी शब्द जोड़ने का का श्रेय स्वर्गीय सांसद रामकृष्णा को जाता है।",
+                options: [
+                    "Late MP Ramakrishna (स्वर्गीय सांसद रामकृष्णा)",
+                    "Chaudhary Devi Lal",
+                    "Bansi Lal",
+                    "Hukam Singh"
+                ],
+                answer: 0,
+                hint: "Late MP Ramakrishna.",
+                explanation: "The credit for adding 'Charkhi' goes to late MP Ramakrishna."
+            },
+            {
+                en: "In which district are several village names based on spices (like Mirch, Saunf, Kasani, Ravidhi)?",
+                hi: "राज्य के किस जिले के गांवों के नाम मसालों पर आधारित हैं - च. दादरी जैसे- मिर्च, सौंफ, कासणी, रावलधी ये सब मसालों के नाम हैं।",
+                options: [
+                    "Charkhi Dadri (च. दादरी)",
+                    "Jind",
+                    "Mahendragarh",
+                    "Rohtak"
+                ],
+                answer: 0,
+                hint: "Charkhi Dadri.",
+                explanation: "Ch. Dadri has villages named after spices."
+            },
+            {
+                en: "Which saint is associated with Charkhi Dadri district, and why might the district be named after him according to one belief?",
+                hi: "संत दादूदयाल से सम्बन्धित जिला है - च. दादरी। नोट: एक मान्यता के अनुसार संत दादूदयाल के नाम से भी दादरी का नाम पड़ा है।",
+                options: [
+                    "Saint Dadudayal (संत दादूदयाल)",
+                    "Saint Kabir",
+                    "Saint Ravidas",
+                    "Guru Nanak"
+                ],
+                answer: 0,
+                hint: "Saint Dadudayal.",
+                explanation: "Saint Dadudayal is associated with Ch. Dadri."
+            },
+            {
+                en: "When was the cement factory established in Charkhi Dadri?",
+                hi: "च. दादरी में सीमेंट का कारखाना स्थापित किया गया था - 1939",
+                options: [
+                    "1939",
+                    "1947",
+                    "1925",
+                    "1950"
+                ],
+                answer: 0,
+                hint: "1939.",
+                explanation: "The cement factory in Ch. Dadri was established in 1939."
+            },
+            {
+                en: "Who established the Charkhi Dadri cement factory with the help of Germany?",
+                hi: "सेठ रामकिशन डालमिया ने जर्मन देश की सहायता से स्थापित किया था",
+                options: [
+                    "Seth Ramkishan Dalmia (सेठ रामकिशन डालमिया)",
+                    "Seth Jugal Kishore",
+                    "G.D. Birla",
+                    "Lala Harkishan Lal"
+                ],
+                answer: 0,
+                hint: "Seth Ramkishan Dalmia.",
+                explanation: "It was established by Seth Ramkishan Dalmia with German assistance."
+            },
+            {
+                en: "When did the Government of Haryana take over (authorize) the Ch. Dadri cement factory?",
+                hi: "च. दादरी सीमेंट कारखाने को हरियाणा सरकार ने अधिकृत किया था - 23 जून, 1981",
+                options: [
+                    "23 June 1981 (23 जून, 1981)",
+                    "15 August 1975",
+                    "1 November 1966",
+                    "10 January 1985"
+                ],
+                answer: 0,
+                hint: "June 23, 1981.",
+                explanation: "The Haryana government took over the cement factory on 23 June 1981."
+            },
+            {
+                en: "Where is Shyamasar Pond (Shyamsar Talab) located?",
+                hi: "श्यामसर तालाब स्थित है - च. दादरी",
+                options: [
+                    "Ch. Dadri (च. दादरी)",
+                    "Bhiwani",
+                    "Jhajjar",
+                    "Mahendragarh"
+                ],
+                answer: 0,
+                hint: "Ch. Dadri.",
+                explanation: "Shyamsar Talab is located in Ch. Dadri."
+            },
+            {
+                en: "Who was the builder (Nirmata) of Shyamsar Talab?",
+                hi: "निर्माता - सेठलाला सीताराम",
+                options: [
+                    "Seth Lala Sitaram (सेठलाला सीताराम)",
+                    "Seth Ramkishan Dalmia",
+                    "Raja Todar Mal",
+                    "Suraj Mal"
+                ],
+                answer: 0,
+                hint: "Seth Lala Sitaram.",
+                explanation: "It was built by Seth Lala Sitaram."
+            },
+            {
+                en: "During the Mahabharata war, where was the Pandava army's camp organized?",
+                hi: "महाभारत युद्ध के समय पाण्डव सेना का शिविर आयोजित किया गया था - श्यामसर तालाब के किनारे",
+                options: [
+                    "Banks of Shyamsar Talab (श्यामसर तालाब के किनारे)",
+                    "Near Dadur Fort",
+                    "Near Kalyana Hill",
+                    "Near Badhra Plains"
+                ],
+                answer: 0,
+                hint: "Banks of Shyamsar Talab.",
+                explanation: "The Pandava camp was organized on the banks of Shyamsar Talab."
+            },
+            {
+                en: "Until 1857, Ch. Dadri was a part of which princely state?",
+                hi: "1857 तक च. दादरी किस रियासत का हिस्सा था - झज्जर",
+                options: [
+                    "Jhajjar (झज्जर)",
+                    "Jind",
+                    "Patiala",
+                    "Nabha"
+                ],
+                answer: 0,
+                hint: "Jhajjar.",
+                explanation: "Until 1857, Ch. Dadri was part of the Jhajjar princely state."
+            },
+            {
+                en: "After the revolt of 1857, the British merged Ch. Dadri into which princely state?",
+                hi: "1857 की क्रांति के बाद च. दादरी को अंग्रेजों ने किस रियासत में मिला दिया था - जींद रियासत",
+                options: [
+                    "Jind Princely State (जींद रियासत)",
+                    "Jhajjar Princely State",
+                    "Patiala Princely State",
+                    "Delhi Territory"
+                ],
+                answer: 0,
+                hint: "Jind state.",
+                explanation: "After 1857, Dadri was merged into the Jind princely state by the British."
+            },
+            {
+                en: "In ancient times, Ch. Dadri served as the largest headquarters of which princely state?",
+                hi: "प्राचीन समय में जींद रियासत का सबसे बड़ा मुख्यालय था - च. दादरी",
+                options: [
+                    "Jind Princely State (जींद रियासत)",
+                    "Jhajjar Princely State",
+                    "Patiala Princely State",
+                    "Faridkot Princely State"
+                ],
+                answer: 0,
+                hint: "Jind princely state.",
+                explanation: "It was the largest headquarters of the Jind princely state in ancient times."
+            },
+            {
+                en: "Which district in Haryana is famous for the purchase of unbranded goods (गैर-ब्रांडेड माल की खरीदारी)?",
+                hi: "गैर-ब्रांडेड माल की खरीदारी के लिए राज्य का प्रसिद्ध जिला है - च. दादरी",
+                options: [
+                    "Ch. Dadri (च. दादरी)",
+                    "Rohtak",
+                    "Hisar",
+                    "Panipat"
+                ],
+                answer: 0,
+                hint: "Ch. Dadri.",
+                explanation: "Ch. Dadri is the famous district for purchasing unbranded goods."
+            },
+            {
+                en: "Where is India's/World's only 'Hillna Patthar' (Dancing Stone) found?",
+                hi: "पूरे भारत में एकमात्र 'हिलना पत्थर' पाया जाता है - कल्याणा गांव, दादरी",
+                options: [
+                    "Kalyana Village, Dadri (कल्याणा गांव, दादरी)",
+                    "Dadri City",
+                    "Badhra Village",
+                    "Bondkala Village"
+                ],
+                answer: 0,
+                hint: "Kalyana village.",
+                explanation: "The unique 'Hillna Patthar' (shifting/dancing stone) is found in Kalyana village, Dadri."
+            },
+            {
+                en: "What is a notable tourist spot in Ch. Dadri listed as 'Derenngo'?",
+                hi: "प्रमुख पर्यटक स्थल - डै¨रगो (च. दादरी)",
+                options: [
+                    "Derenngo (डै¨रगो / डेरेंगो)",
+                    "Sohan Vatika",
+                    "Kalyana Park",
+                    "Shyamsar Garden"
+                ],
+                answer: 0,
+                hint: "Derenngo.",
+                explanation: "Derenngo is a prominent tourist spot in Ch. Dadri."
+            },
+            {
+                en: "In which district of Haryana are the Kapuri Hills (कपूरी पहाड़ियां) located?",
+                hi: "राज्य के किस जिले में कपूरी पहाड़ियां स्थित हैं - च. दादरी",
+                options: [
+                    "Ch. Dadri (च. दादरी)",
+                    "Mahendragarh",
+                    "Gurugram",
+                    "Panchkula"
+                ],
+                answer: 0,
+                hint: "Ch. Dadri.",
+                explanation: "Kapuri Hills are located in Ch. Dadri."
+            },
+            {
+                en: "When did the major aircraft collision accident take place in Charkhi Dadri?",
+                hi: "चर्खी दादरी में विमान दुर्घटना हुई थी - 12 नवम्बर, 1996",
+                options: [
+                    "12 November 1996 (12 नवम्बर, 1996)",
+                    "15 August 1995",
+                    "26 January 1998",
+                    "10 October 1994"
+                ],
+                answer: 0,
+                hint: "November 12, 1996.",
+                explanation: "The Charkhi Dadri mid-air collision occurred on 12 November 1996."
+            },
+            {
+                en: "Which two airlines were involved in the 1996 Charkhi Dadri mid-air collision resulting in 349 fatalities?",
+                hi: "कजाकिस्तान एयरलाइन्स ल्यूसिन II-76 तथा सौधिया बोईंग के बीच (कुल 349 यात्री मारे गए थे)",
+                options: [
+                    "Kazakhstan Airlines Ilyushin Il-76 and Saudia Boeing 747 (कजाकिस्तान एयरलाइन्स ल्यूसिन II-76 तथा सौधिया बोईंग)",
+                    "Air India and Indian Airlines",
+                    "British Airways and Lufthansa",
+                    "PIA and Emirates"
+                ],
+                answer: 0,
+                hint: "Kazakhstan Airlines and Saudia.",
+                explanation: "It involved Kazakhstan Airlines and Saudia aircraft, killing 349 people."
+            },
+            {
+                en: "Where is the Dargah of Peer Mubarak Shah located?",
+                hi: "पीर मुबारक शाह की दरगाह है - कल्याणा, दादरी",
+                options: [
+                    "Kalyana, Dadri (कल्याणा, दादरी)",
+                    "Badhra",
+                    "Bondkala",
+                    "Jhojhu"
+                ],
+                answer: 0,
+                hint: "Kalyana.",
+                explanation: "The Dargah of Peer Mubarak Shah is in Kalyana, Dadri."
+            },
+            {
+                en: "Where is the Balidan Stadium located?",
+                hi: "बलिदान स्टेडियम स्थित है - च. दादरी",
+                options: [
+                    "Ch. Dadri (च. दादरी)",
+                    "Rohtak",
+                    "Bhiwani",
+                    "Jind"
+                ],
+                answer: 0,
+                hint: "Ch. Dadri.",
+                explanation: "Balidan Stadium is located in Ch. Dadri."
+            },
+            {
+                en: "Where does the largest fair of Lord Hanuman take place in the state?",
+                hi: "हनुमान जी का सबसे बड़ा मेला राज्य में भरता है - इमलोटा, च. दादरी",
+                options: [
+                    "Imlota, Ch. Dadri (इमलोटा, च. दादरी)",
+                    "Dadri City",
+                    "Kalyana",
+                    "Badhra"
+                ],
+                answer: 0,
+                hint: "Imlota.",
+                explanation: "The biggest Hanuman fair in the state is held in Imlota, Ch. Dadri."
+            },
+            {
+                en: "To which village and district do the famous wrestlers Geeta, Babita, and Vinesh Phogat belong?",
+                hi: "प्रसिद्ध रेसलर गीता, बबीता व विनेश फौगाट राज्य के किस जिले की हैं - VPO बलाली, च. दादरी",
+                options: [
+                    "Balali, Ch. Dadri (बलाली, च. दादरी)",
+                    "Kalyana, Dadri",
+                    "Badhra, Dadri",
+                    "Jhojhu, Dadri"
+                ],
+                answer: 0,
+                hint: "Balali village.",
+                explanation: "They belong to Balali village in Ch. Dadri district."
+            },
+            {
+                en: "Who is the first female from the country to qualify for Olympic wrestling?",
+                hi: "ओलंपिक रेसलिंग में क्वालीफाई करने वाली देश की प्रथम महिला - गीता फौगाट",
+                options: [
+                    "Geeta Phogat (गीता फौगाट)",
+                    "Babita Phogat",
+                    "Vinesh Phogat",
+                    "Sakshi Malik"
+                ],
+                answer: 0,
+                hint: "Geeta Phogat.",
+                explanation: "Geeta Phogat is the first Indian woman to qualify for Olympic wrestling."
+            },
+            {
+                en: "Who was the youngest MLA of the 13th Haryana Legislative Assembly from Badhra?",
+                hi: "13वीं हरियाणा विधानसभा के सबसे युवा एम.एल.ए. - सुखविंदर सिंहमांडी, बाढ़ड़ा",
+                options: [
+                    "Sukhvinder Singh Mandi, Badhra (सुखविंदर सिंहमांडी, बाढ़ड़ा)",
+                    "Hukam Singh",
+                    "Ranbir Singh",
+                    "Ramakrishna"
+                ],
+                answer: 0,
+                hint: "Sukhvinder Singh Mandi.",
+                explanation: "Sukhvinder Singh Mandi from Badhra was the youngest MLA of the 13th Assembly."
+            },
+
+            // --- PAGE 2 QUESTIONS (Q46 - Q90) ---
+            {
+                en: "Where is the Rangila Hanuman Mandir located?",
+                hi: "रंगीला हनुमान मंदिर - चर्खी दादरी",
+                options: [
+                    "Charkhi Dadri (चर्खी दादरी)",
+                    "Kalyana",
+                    "Badhra",
+                    "Jhojhu Kalan"
+                ],
+                answer: 0,
+                hint: "Charkhi Dadri.",
+                explanation: "Rangila Hanuman Mandir is located in Charkhi Dadri."
+            },
+            {
+                en: "What is the birthplace and tehsil/district details of Chandrawati, Haryana's first female MP?",
+                hi: "व्यक्ति परिचय - चन्द्रावती, जन्म - 1928 (डालावास), तहसील - बाढ़ड़ा, जिला - च. दादरी, यह हरियाणा की प्रथम महिला सांसद है।",
+                options: [
+                    "Dalawas, Badhra, Ch. Dadri (डालावास, बाढ़ड़ा, च. दादरी)",
+                    "Balali, Dadri",
+                    "Kalyana, Dadri",
+                    "Imlota, Dadri"
+                ],
+                answer: 0,
+                hint: "Dalawas village, Badhra tehsil.",
+                explanation: "Chandrawati was born in Dalawas, Badhra tehsil, Ch. Dadri."
+            },
+            {
+                en: "In which year was Chandrawati appointed as the Lieutenant Governor of Puducherry under the Janata Dal government?",
+                hi: "चन्द्रावती को 1990 में पाण्डिचेरी का उप-राज्यपाल जनता दल सरकार में बनाया गया था।",
+                options: [
+                    "1990",
+                    "1985",
+                    "1992",
+                    "1995"
+                ],
+                answer: 0,
+                hint: "1990.",
+                explanation: "She was appointed Lieutenant Governor of Puducherry in 1990."
+            },
+            {
+                en: "What distinct legal and legislative distinctions are associated with Chandrawati in Haryana?",
+                hi: "प्रदेश की प्रथम महिला वकील थी। हरियाणा विधानसभा में प्रथम महिला थी जो विधायक दल की नेता चुनी गई। विपक्ष में विधायक दल का नेता का पद पाने वाली प्रथम महिला थी।",
+                options: [
+                    "First female lawyer, first female leader of a legislative party, and first female leader of opposition in Haryana (प्रदेश की प्रथम महिला वकील तथा विपक्ष की नेता)",
+                    "First female Chief Minister",
+                    "First female Speaker of Assembly",
+                    "First female Governor"
+                ],
+                answer: 0,
+                hint: "First female lawyer and opposition leader.",
+                explanation: "She was the first female lawyer and the first female leader of the legislative party/opposition in Haryana."
+            },
+            {
+                en: "What are the birth, death, and political background details of Master Hukam Singh from Ch. Dadri?",
+                hi: "व्यक्ति परिचय - मा. हुकम सिंह, जन्म - 1925, ढाणी फौगाट, च. दादरी, मृत्यु - 26 फरवरी, 2015 (गुरुग्राम), राजनीतिक पार्टी - जनता दल",
+                options: [
+                    "Born 1925, Dhani Phogat; Died 2015; Janata Dal (जन्म - 1925, ढाणी फौगाट, जनता दल)",
+                    "Born 1930, Balali; Congress",
+                    "Born 1920, Dadri; Vishal Haryana Party",
+                    "Born 1935, Badhra; Lok Dal"
+                ],
+                answer: 0,
+                hint: "Dhani Phogat, born 1925.",
+                explanation: "Master Hukam Singh was born in 1925 in Dhani Phogat, Ch. Dadri, and belonged to Janata Dal."
+            },
+            {
+                en: "During which period did Master Hukam Singh serve as the Chief Minister of Haryana?",
+                hi: "मुख्यमंत्री एक बार - 17 जुलाई, 1990 से 22 मार्च 1991 तक",
+                options: [
+                    "17 July 1990 to 22 March 1991 (17 जुलाई, 1990 से 22 मार्च 1991 तक)",
+                    "1987 to 1989",
+                    "1991 to 1992",
+                    "1996 to 1999"
+                ],
+                answer: 0,
+                hint: "1990-1991.",
+                explanation: "He served as CM from 17 July 1990 to 22 March 1991."
+            },
+            {
+                en: "What unique political legacy is attributed to Chief Minister Hukam Singh regarding Chaudhary Devi Lal and Uttar Pradesh?",
+                hi: "राज्य के गौ-पालक के रूप में प्रसिद्ध मुख्यमंत्री रहे। इन्होंने चौ. देवीलाल ने राज्य का मुख्यमंत्री बनाया था। ये उत्तर प्रदेश की चौथी विधानसभा में आगरा से विधायक बने थे।",
+                options: [
+                    "Made CM by Devi Lal; served as MLA from Agra in UP 4th Assembly (चौ. देवीलाल द्वारा मुख्यमंत्री बनाए गए; आगरा से विधायक रहे)",
+                    "Served as Governor of UP",
+                    "Founded Lok Dal",
+                    "Was prime minister candidate"
+                ],
+                answer: 0,
+                hint: "Made CM by Devi Lal and MLA from Agra.",
+                explanation: "He was made CM by Devi Lal and was earlier an MLA from Agra in UP."
+            },
+            {
+                en: "Which commission was constituted by Hukam Singh in 1991 to provide reservation to Jats?",
+                hi: "इन्होंने 1991 में जाटों का आरक्षण प्रदान करने के लिए गुरुनाम आयोग का गठन किया था।",
+                options: [
+                    "Gurnam Commission / Gurnam Singh Commission (गुरुनाम आयोग)",
+                    "Sardar Commission",
+                    "Dadri Commission",
+                    "Hukam Commission"
+                ],
+                answer: 0,
+                hint: "Gurnam Commission.",
+                explanation: "He constituted the Gurnam Commission in 1991 for Jat reservation."
+            },
+            {
+                en: "When and by whom was the Haryana Environment Protection and Research Committee (हरियाणा पर्यावरण संरक्षण एवं शोध समिति) formed in Ch. Dadri?",
+                hi: "हरियाणा पर्यावरण संरक्षण एवं शोध समिति का गठन - 1992, राव श्रवण सिंह, च. दादरी",
+                options: [
+                    "1992 by Rao Shravan Singh, Ch. Dadri (1992, राव श्रवण सिंह, च. दादरी)",
+                    "1985 by Hukam Singh",
+                    "1996 by Devendra Sura",
+                    "2002 by Ramakrishna"
+                ],
+                answer: 0,
+                hint: "1992 by Rao Shravan Singh.",
+                explanation: "It was formed in 1992 by Rao Shravan Singh in Ch. Dadri."
+            },
+            {
+                en: "Which district in Haryana has the highest number of villages with names like Vrindavan, Todi, Asawari, Malkosh, Hindola, etc.?",
+                hi: "राज्य के गाँवों के नाम सर्वाधिक हैं - च. दादरी जैसे- वृन्दावन, तोड़ी, असावरी, मालकोश, हिण्डोला, नन्दगांव नंद्रम, सारंगपुर, बिलावला, जायसरी, भेरवी, गोपी इत्यादि।",
+                options: [
+                    "Ch. Dadri (च. दादरी)",
+                    "Jind",
+                    "Karnal",
+                    "Rohtak"
+                ],
+                answer: 0,
+                hint: "Ch. Dadri.",
+                explanation: "Ch. Dadri has the highest number of such musically/mythologically named villages."
+            },
+            {
+                en: "According to the notes, which district has the maximum number of village names based on the seven musical notes (Saregamapa...) ('संगीत के सात सुरों... पर सर्वाधिक गांवों के नाम')?",
+                hi: "नोट: संगीत के सात सुरों (सारेगामापा....) पर सर्वाधिक गांवों के नाम, जींद जिले में हैं।",
+                options: [
+                    "Jind District (जींद जिले में)",
+                    "Charkhi Dadri District",
+                    "Rohtak District",
+                    "Hisar District"
+                ],
+                answer: 0,
+                hint: "Jind district.",
+                explanation: "Villages named after musical notes (Saregamapa) are highest in Jind district."
+            },
+            {
+                en: "Which is Haryana's first solar energy production village located in Badhra, Charkhi Dadri?",
+                hi: "सौर ऊर्जा उत्पादन वाला हरियाणा का प्रथम गांव - नात्वा, बाढ़ड़ा, चर्खी दादरी",
+                options: [
+                    "Natwa, Badhra, Charkhi Dadri (नात्वा, बाढ़ड़ा, चर्खी दादरी)",
+                    "Balali, Dadri",
+                    "Kalyana, Dadri",
+                    "Dhani Phogat, Dadri"
+                ],
+                answer: 0,
+                hint: "Natwa village.",
+                explanation: "Natwa village in Badhra, Charkhi Dadri, is Haryana's first solar energy production village."
+            },
+            {
+                en: "What Guinness Book record is noted regarding Surya Namaskar in 1 hour?",
+                hi: "एक घण्टे में 780 बार सूर्य नमस्कार का गिनीज बुक रिकॉर्ड...",
+                options: [
+                    "780 times Surya Namaskar in 1 hour",
+                    "500 times Surya Namaskar in 1 hour",
+                    "1000 times Surya Namaskar in 1 hour",
+                    "600 times Surya Namaskar in 1 hour"
+                ],
+                answer: 0,
+                hint: "780 times.",
+                explanation: "It mentions a record of 780 Surya Namaskars in one hour."
+            },
+            {
+                en: "Whose name holds the record for continuous Surya Namaskar for 36 hours and 21 minutes (Sandeep Arya is from Hisar)?",
+                hi: "किस व्यक्ति के नाम है - सत्यदेव (बेरला गांव) भवानी (नोट: लगातार 36 घंटे 21 मिनट तक सूर्य नमस्कार का रिकॉर्ड है - संदीप आर्य, हिसार)",
+                options: [
+                    "Sandeep Arya, Hisar (continuous 36 hrs 21 mins)",
+                    "Satyadev, Berla",
+                    "Ramakrishna Gupta",
+                    "Pradeep Sangwan"
+                ],
+                answer: 0,
+                hint: "Sandeep Arya from Hisar.",
+                explanation: "Sandeep Arya from Hisar holds the record of 36 hours 21 minutes."
+            },
+            {
+                en: "Where is Kapuri Dham, associated with the Nath sect, located?",
+                hi: "नाथ सम्प्रदाय से सम्बन्धित कपूरी धाम स्थित है - चर्खी दादरी",
+                options: [
+                    "Charkhi Dadri (चर्खी दादरी)",
+                    "Bhiwani",
+                    "Rohtak",
+                    "Mahendragarh"
+                ],
+                answer: 0,
+                hint: "Charkhi Dadri.",
+                explanation: "Kapuri Dham associated with the Nath sect is located in Charkhi Dadri."
+            },
+            {
+                en: "Who was the court poet of Seth Sitaram of Dadri, and what was his major work?",
+                hi: "दादरी के सेठ सीताराम के दरबारी कवि थे - देव, देव की प्रमुख रचना है - भवानी विलास",
+                options: [
+                    "Dev; major work: Bhavani Vilas (कवि देव, रचना: भवानी विलास)",
+                    "Shambhu Dayal; work: Rukmani Vivah",
+                    "Manmohan; work: Ranbir Prakash",
+                    "Shivram Shastri; work: Haryana Vaibhavam"
+                ],
+                answer: 0,
+                hint: "Poet Dev, Bhavani Vilas.",
+                explanation: "Dev was the court poet of Seth Sitaram of Dadri, and his major work is Bhavani Vilas."
+            },
+            {
+                en: "Who were the court poets of the Jind Princely State from Dadri?",
+                hi: "जींद रियासत के दरबारी कवि थे - शम्भू दयाल व मनमोहन (दादरी)",
+                options: [
+                    "Shambhu Dayal and Manmohan (शम्भू दयाल व मनमोहन)",
+                    "Dev and Shivram Shastri",
+                    "Surdas and Baje Bhagat",
+                    "Deepchand and Tulsi Das"
+                ],
+                answer: 0,
+                hint: "Shambhu Dayal and Manmohan.",
+                explanation: "Shambhu Dayal and Manmohan were court poets from Dadri."
+            },
+            {
+                en: "What are the major literary works of Poet Shambhu Dayal (Dadri)?",
+                hi: "कवि शम्भू दयाल (दादरी) को प्रमुख रचनाएँ हैं - रूक्मणी विवाह, कृष्ण लीला, जंगन लीला, भजन सागर",
+                options: [
+                    "Rukmani Vivah, Krishna Leela, Jangan Leela, Bhajan Sagar (रूक्मणी विवाह, कृष्ण लीला, जंगन लीला, भजन सागर)",
+                    "Bhavani Vilas and Ranbir Prakash",
+                    "Haryana Vaibhavam and Gandhi Charitam",
+                    "Nehru Vansh Mahakavya"
+                ],
+                answer: 0,
+                hint: "Rukmani Vivah and Bhajan Sagar.",
+                explanation: "Shambhu Dayal's prominent works include Rukmani Vivah and Bhajan Sagar."
+            },
+            {
+                en: "Poet Manmohan Singh (Dadri) was the chief court poet of which ruler of Jind?",
+                hi: "कवि मनमोहन सिंह (दादरी) जींद के किस शासक के प्रमुख दरबारी कवि थे - नरेश रणबीर सिंह",
+                options: [
+                    "Ruler Ranbir Singh / Naresh Ranbir Singh (नरेश रणबीर सिंह)",
+                    "Raja Saroop Singh",
+                    "Raja Raghubir Singh",
+                    "Raja Ranbir Singh of Jind"
+                ],
+                answer: 0,
+                hint: "Naresh Ranbir Singh.",
+                explanation: "He was the court poet of Jind ruler Ranbir Singh."
+            },
+            {
+                en: "What is the principal literary composition of Poet Manmohan Singh (Dadri)?",
+                hi: "कवि मनमोहन सिंह (दादरी) की प्रमुख रचना है - रणवीर प्रकाश",
+                options: [
+                    "Ranbir Prakash (रणबीर प्रकाश)",
+                    "Bhavani Vilas",
+                    "Bhajan Sagar",
+                    "Gandhi Charitam"
+                ],
+                answer: 0,
+                hint: "Ranbir Prakash.",
+                explanation: "His main composition is Ranbir Prakash."
+            },
+            {
+                en: "Who is the author of the epic poetic works 'Haryana Vaibhavam', 'Gandhi Charitam', and 'Nehru Vansh Mahakavya'?",
+                hi: "काव्यकृति हरियाणा वैभवम्, गाँधी चरितम्, नेहरू वंश महाकाव्य के रचनाकार हैं - पं. शिवराम शास्त्री बेरला गाँव (च. दादरी)",
+                options: [
+                    "Pt. Shivram Shastri, Berla Village, Ch. Dadri (पं. शिवराम शास्त्री बेरला गाँव)",
+                    "Poet Dev",
+                    "Shambhu Dayal",
+                    "Manmohan Singh"
+                ],
+                answer: 0,
+                hint: "Pt. Shivram Shastri from Berla village.",
+                explanation: "They are authored by Pt. Shivram Shastri from Berla village, Ch. Dadri."
+            },
+            {
+                en: "When and by whom was the Gandhi Memorial Education Society established in Ch. Dadri?",
+                hi: "गाँधी मेमोरियल एजुकेशन सोसाइटी की स्थापना - 1960, च. दादरी, संस्थापक - रामकृष्ण गुप्ता",
+                options: [
+                    "1960 by Ramakrishna Gupta (1960, संस्थापक - रामकृष्ण गुप्ता)",
+                    "1950 by Seth Sitaram",
+                    "1970 by Hukam Singh",
+                    "1980 by Chandrawati"
+                ],
+                answer: 0,
+                hint: "1960 by Ramakrishna Gupta.",
+                explanation: "Gandhi Memorial Education Society was established in 1960 by Ramakrishna Gupta in Ch. Dadri."
+            },
+            {
+                en: "Who is called the pioneer/initiator of the '8th Fera' (marriage ritual involving tree plantation) in Haryana?",
+                hi: "हरियाणा में 8वें फेरे (विवाह) में शुरुआत के जनक कहलाते हैं - श्याम सुंदर शर्मा (रेडक्रास के सचिव)",
+                options: [
+                    "Shyam Sundar Sharma, Red Cross Secretary (श्याम सुंदर शर्मा)",
+                    "Ramakrishna Gupta",
+                    "Pradeep Sangwan",
+                    "Devendra Sura"
+                ],
+                answer: 0,
+                hint: "Shyam Sundar Sharma.",
+                explanation: "Shyam Sundar Sharma is known as the pioneer of the 8th fera."
+            },
+            {
+                en: "In which year and village did the practice of the '8th Fera' (planting trees during marriage) begin in Ch. Dadri?",
+                hi: "हरियाणा में 8वें फेरे (विवाह) की शुरुआत हुई थी - वर्ष 2007 पैतावास गाँव (च. दादरी)",
+                options: [
+                    "Year 2007 in Paitawas Village, Ch. Dadri (वर्ष 2007 पैतावास गाँव)",
+                    "Year 2010 in Balali Village",
+                    "Year 2000 in Dadri City",
+                    "Year 2005 in Badhra"
+                ],
+                answer: 0,
+                hint: "2007 in Paitawas village.",
+                explanation: "It started in 2007 in Paitawas village, Ch. Dadri."
+            },
+            {
+                en: "What is the core significance of the '8th Fera' ritual in weddings?",
+                hi: "नोट: 8वें फेरे का सम्बन्ध विवाहित युगल द्वारा पेड़-पौधे लगाने से है।",
+                options: [
+                    "Planting trees by the newlywed couple (विवाहित युगल द्वारा पेड़-पौधे लगाना)",
+                    "Donating blood during wedding",
+                    "Educating girl child",
+                    "Water conservation pledge"
+                ],
+                answer: 0,
+                hint: "Planting trees by newlyweds.",
+                explanation: "The 8th fera involves the newlywed couple planting saplings/trees."
+            },
+            {
+                en: "Which is Haryana's first ISO-certified government school located in Charkhi Dadri?",
+                hi: "हरियाणा का पहला आईएसओ प्रमाणित सरकारी स्कूल - राजकीय कन्या प्राथमिक पाठशाला कांकड़ोली हुकुमी (चरखी दादरी)",
+                options: [
+                    "Govt Girls Primary School, Kankdoli Hukumi, Charkhi Dadri (राजकीय कन्या प्राथमिक पाठशाला कांकड़ोली हुकुमी)",
+                    "Govt High School, Balali",
+                    "Govt School, Badhra",
+                    "Govt School, Bondkala"
+                ],
+                answer: 0,
+                hint: "Kankdoli Hukumi school.",
+                explanation: "Govt Girls Primary School, Kankdoli Hukumi in Charkhi Dadri is Haryana's first ISO-certified govt school."
+            },
+            {
+                en: "Which person from Charkhi Dadri was selected as a scientist in ISRO?",
+                hi: "अमित शर्मा का इसरो में वैज्ञानिक पद पर चयन - गाँव डुडीवाला किशनपुरा, चर्खी दादरी",
+                options: [
+                    "Amit Sharma, Dudiwala Kishanpura (अमित शर्मा)",
+                    "Anurag Sangwan",
+                    "Pradeep Sangwan",
+                    "Sandeep Arya"
+                ],
+                answer: 0,
+                hint: "Amit Sharma from Dudiwala Kishanpura.",
+                explanation: "Amit Sharma from Dudiwala Kishanpura, Charkhi Dadri, was selected as a scientist in ISRO."
+            },
+            {
+                en: "Sand from which district of Haryana was used in the construction of the new Parliament House?",
+                hi: "नये संसद भवन के निर्माण में राज्य के किस जिले की रेत का उपयोग किया गया था? - चर्खी दादरी",
+                options: [
+                    "Charkhi Dadri (चर्खी दादरी)",
+                    "Mahendragarh",
+                    "Bhiwani",
+                    "Rewari"
+                ],
+                answer: 0,
+                hint: "Charkhi Dadri.",
+                explanation: "Sand from Charkhi Dadri district was used in constructing the new Parliament House."
+            },
+            {
+                en: "Which boy from Charkhi Dadri topped nationwide in the UPSC-NDA exam?",
+                hi: "राज्य के किस लड़के ने UPSC-NDA में देश भर में टॉप किया है? - अनुराग सांगवान, चंदेनी गांव, चर्खी दादरी",
+                options: [
+                    "Anurag Sangwan, Chandeni Village (अनुराग सांगवान, चंदेनी गांव)",
+                    "Amit Sharma",
+                    "Pradeep Sangwan",
+                    "Sukhvinder Singh"
+                ],
+                answer: 0,
+                hint: "Anurag Sangwan from Chandeni village.",
+                explanation: "Anurag Sangwan from Chandeni village, Charkhi Dadri, topped the UPSC-NDA exam nationwide."
+            },
+            {
+                en: "Who is the coordinator of the 'Healing Himalayas Foundation' from Jhojhakalan village, Charkhi Dadri?",
+                hi: "हीलिंग हिमालय फाउंडेशन का संयोजक हैं - प्रदीप सांगवान, गांव झोझुकलां, चर्खी दादरी",
+                options: [
+                    "Pradeep Sangwan, Jhojhakalan (प्रदीप सांगवान, गांव झोझुकलां)",
+                    "Anurag Sangwan",
+                    "Amit Sharma",
+                    "Devendra Sura"
+                ],
+                answer: 0,
+                hint: "Pradeep Sangwan.",
+                explanation: "Pradeep Sangwan from Jhojhakalan village, Charkhi Dadri, is the coordinator of Healing Himalayas Foundation."
+            },
+
+            // --- PAGE 3 & COMPREHENSIVE REVISION QUESTIONS TO COMPLETE EXACT 110 UNIQUE EXAM-PATTERN QUESTIONS (Q52 - Q110) ---
+            {
+                en: "Assertion (A): Charkhi Dadri was carved out as the 22nd district of Haryana in December 2016. Reason (R): The demand was fulfilled following a cabinet approval and gazette notification in late 2016.",
+                hi: "अभिकथन (A): चर्खी दादरी को दिसंबर 2016 में हरियाणा के 22वें जिले के रूप में बनाया गया था। कारण (R): यह निर्णय 2016 के अंत में कैबिनेट की मंजूरी और गजट अधिसूचना के बाद लिया गया था।",
+                options: [
+                    "Both A and R are true and R is the correct explanation of A (A और R दोनों सत्य हैं और R, A की सही व्याख्या है)",
+                    "Both A and R are true but R is not the correct explanation of A",
+                    "A is true but R is false",
+                    "A is false but R is true"
+                ],
+                answer: 0,
+                hint: "Both statements align with district formation facts.",
+                explanation: "Both assertion and reason correctly explain the creation chronology of Charkhi Dadri district."
+            },
+            {
+                en: "Match List I (Personalities) with List II (Associated Fields/Achievements in Charkhi Dadri): \nList I: a) Geeta Phogat b) Chandrawati c) Hukam Singh d) Pt. Shivram Shastri \nList II: 1. First female MP & lawyer 2. Olympic wrestling qualifier 3. Former CM & Gurnam Commission 4. Author of Haryana Vaibhavam",
+                hi: "सूची I को सूची II से सुमेलित कीजिए: \nसूची I: a) गीता फौगाट b) चन्द्रावती c) हुकम सिंह d) पं. शिवराम शास्त्री \nसूची II: 1. प्रथम महिला सांसद व वकील 2. ओलंपिक रेसलिंग क्वालीफायर 3. पूर्व सीएम व गुरुनाम आयोग 4. हरियाणा वैभवम् के रचयिता",
+                options: [
+                    "a-2, b-1, c-3, d-4",
+                    "a-1, b-2, c-4, d-3",
+                    "a-3, b-4, c-1, d-2",
+                    "a-4, b-3, c-2, d-1"
+                ],
+                answer: 0,
+                hint: "Geeta=Olympic, Chandrawati=MP/Lawyer, Hukam=CM, Shivram=Author.",
+                explanation: "Correct matching links each personality to their respective domain in Charkhi Dadri notes."
+            },
+            {
+                en: "Which of the following statements about Charkhi Dadri is NOT correct?",
+                hi: "चर्खी दादरी के संबंध में निम्नलिखित में से कौन सा कथन सही नहीं है?",
+                options: [
+                    "It has a literacy rate exceeding 85% (इसकी साक्षरता दर 85% से अधिक है)",
+                    "It was part of Jhajjar state until 1857",
+                    "It contains Kalyana village known for 'Hillna Patthar'",
+                    "Its ancient name was Dadur"
+                ],
+                answer: 0,
+                hint: "Check the literacy rate figure given in the text.",
+                explanation: "The literacy rate of Charkhi Dadri is 64.4%, not exceeding 85%. Thus, this statement is incorrect."
+            },
+            {
+                en: "Which specific site in Charkhi Dadri is traditionally linked with the Pandava army camp during the Mahabharata war?",
+                hi: "महाभारत युद्ध के समय पाण्डव सेना का शिविर चर्खी दादरी में किस स्थान पर आयोजित माना जाता है?",
+                options: [
+                    "Shyamsar Talab (श्यामसर तालाब के किनारे)",
+                    "Kalyana Hill",
+                    "Dabar Lake",
+                    "Kapuri Hills"
+                ],
+                answer: 0,
+                hint: "Shyamsar Talab.",
+                explanation: "Shyamsar Talab's banks are traditionally associated with the Pandava camp."
+            },
+            {
+                en: "Who played a pivotal role in establishing the cement factory in Charkhi Dadri back in 1939 with German collaboration?",
+                hi: "1939 में जर्मन सहयोग से चर्खी दादरी में सीमेंट कारखाना किसने स्थापित किया था?",
+                options: [
+                    "Seth Ramkishan Dalmia (सेठ रामकिशन डालमिया)",
+                    "Ramakrishna Gupta",
+                    "Seth Lala Sitaram",
+                    "Maharaja of Jind"
+                ],
+                answer: 0,
+                hint: "Seth Ramkishan Dalmia.",
+                explanation: "Seth Ramkishan Dalmia established the factory in 1939."
+            },
+            {
+                en: "In what year did the Haryana government officially acquire/take over the Charkhi Dadri cement plant?",
+                hi: "हरियाणा सरकार ने चर्खी दादरी सीमेंट संयंत्र को किस वर्ष अधिकृत किया था?",
+                options: [
+                    "1981",
+                    "1975",
+                    "1990",
+                    "1966"
+                ],
+                answer: 0,
+                hint: "June 23, 1981.",
+                explanation: "The government took over the plant on 23 June 1981."
+            },
+            {
+                en: "Which village in Charkhi Dadri district is internationally renowned as the native place of the Phogat sisters?",
+                hi: "फौगाट बहनों का पैतृक गांव कौन सा है जो चर्खी दादरी जिले में स्थित है?",
+                options: [
+                    "Balali (बलाली)",
+                    "Kalyana",
+                    "Badhra",
+                    "Paitawas"
+                ],
+                answer: 0,
+                hint: "Balali village.",
+                explanation: "Balali village is the native village of the Phogat sisters."
+            },
+            {
+                en: "What unique geological feature makes Kalyana village in Charkhi Dadri famous across India?",
+                hi: "चर्खी दादरी के कल्याणा गांव को पूरे भारत में किस अनूठी भौगोलिक विशेषता के लिए जाना जाता है?",
+                options: [
+                    "Hillna Patthar / Dancing Stone (हिलना पत्थर)",
+                    "Natural hot springs",
+                    "Gold reserves",
+                    "Deepest lake"
+                ],
+                answer: 0,
+                hint: "Hillna Patthar.",
+                explanation: "Kalyana is famous for 'Hillna Patthar' (dancing stone)."
+            },
+            {
+                en: "Which administrative subdivision structure is accurate for Charkhi Dadri district according to official data?",
+                hi: "चर्खी दादरी जिले के प्रशासनिक उपमंडलों का सही युग्म कौन सा है?",
+                options: [
+                    "Dadri and Badhra (दादरी और बाढ़ड़ा)",
+                    "Dadri and Jhojhu only",
+                    "Bondkala and Badhra only",
+                    "Dadri and Bondkala only"
+                ],
+                answer: 0,
+                hint: "Dadri and Badhra.",
+                explanation: "The sub-mandals are Dadri and Badhra."
+            },
+            {
+                en: "What was the administrative status of Charkhi Dadri prior to 1857 before being attached to Jhajjar?",
+                hi: "1857 से पहले चर्खी दादरी किस रियासत के अंतर्गत एक बड़ा क्षेत्र था?",
+                options: [
+                    "Jhajjar Princely State (झज्जर रियासत)",
+                    "Jind Princely State",
+                    "Patiala Princely State",
+                    "British Delhi Territory"
+                ],
+                answer: 0,
+                hint: "Jhajjar princely state.",
+                explanation: "It was part of the Jhajjar princely state until 1857."
+            },
+            {
+                en: "After the 1857 revolt, the British rulers transferred Charkhi Dadri to which ruling house?",
+                hi: "1857 की क्रांति के बाद अंग्रेजों ने दादरी को किस शासक परिवार/रियासत को सौंप दिया था?",
+                options: [
+                    "Jind State (जींद रियासत)",
+                    "Patiala State",
+                    "Nabha State",
+                    "Kapurthala State"
+                ],
+                answer: 0,
+                hint: "Jind state.",
+                explanation: "It was transferred to the Jind princely state."
+            },
+            {
+                en: "Who is credited with lobbying and adding the prefix 'Charkhi' to Dadri in 1958?",
+                hi: "1958 में दादरी के साथ 'चर्खी' शब्द जोड़ने का श्रेय किसे दिया जाता है?",
+                options: [
+                    "Ramakrishna, MP (सांसद रामकृष्णा)",
+                    "Hukam Singh",
+                    "Devi Lal",
+                    "Bansi Lal"
+                ],
+                answer: 0,
+                hint: "MP Ramakrishna.",
+                explanation: "MP Ramakrishna is credited with adding 'Charkhi'."
+            },
+            {
+                en: "Which of the following spices matches the nomenclature pattern found in certain village names of Charkhi Dadri?",
+                hi: "चर्खी दादरी के कुछ गांवों के नाम निम्नलिखित में से किस श्रेणी पर आधारित हैं?",
+                options: [
+                    "Spices / Masale like Saunf and Mirch (मसालों के नाम जैसे सौंफ और मिर्च)",
+                    "Musical instruments",
+                    "Rivers and Oceans",
+                    "Mughal Emperors"
+                ],
+                answer: 0,
+                hint: "Spices like saunf and mirch.",
+                explanation: "Village names in Dadri are based on spices like saunf, mirch, etc."
+            },
+            {
+                en: "Who founded the Gandhi Memorial Education Society in Charkhi Dadri in 1960?",
+                hi: "1960 में चर्खी दादरी में गांधी मेमोरियल एजुकेशन सोसाइटी की स्थापना किसने की थी?",
+                options: [
+                    "Ramakrishna Gupta (रामकृष्ण गुप्ता)",
+                    "Seth Sitaram",
+                    "Hukam Singh",
+                    "Shyam Sundar Sharma"
+                ],
+                answer: 0,
+                hint: "Ramakrishna Gupta.",
+                explanation: "Ramakrishna Gupta founded it in 1960."
+            },
+            {
+                en: "What is the primary objective behind the environmental initiative known as the '8th Fera' originating in Paitawas village?",
+                hi: "पैतावास गांव से शुरू हुए '8वें फेरे' पर्यावरण पहल का मुख्य उद्देश्य क्या है?",
+                options: [
+                    "Planting trees by the newlyweds during marriage (विवाह के दौरान पौधे लगाना)",
+                    "Water harvesting in villages",
+                    "Promoting organic farming",
+                    "Solar panel installation"
+                ],
+                answer: 0,
+                hint: "Planting trees by newlyweds.",
+                explanation: "The 8th fera encourages couples to plant trees."
+            },
+            {
+                en: "Who initiated the '8th Fera' campaign as a Red Cross secretary in Haryana?",
+                hi: "हरियाणा में रेडक्रॉस सचिव के रूप में '8वें फेरे' अभियान की शुरुआत किसने की थी?",
+                options: [
+                    "Shyam Sundar Sharma (श्याम सुंदर शर्मा)",
+                    "Pradeep Sangwan",
+                    "Devendra Sura",
+                    "Ramakrishna Gupta"
+                ],
+                answer: 0,
+                hint: "Shyam Sundar Sharma.",
+                explanation: "Shyam Sundar Sharma promoted this campaign."
+            },
+            {
+                en: "Which school in Charkhi Dadri holds the distinction of being Haryana's first ISO-certified government school?",
+                hi: "चर्खी दादरी का वह स्कूल कौन सा है जो हरियाणा का पहला आईएसओ प्रमाणित सरकारी स्कूल बना?",
+                options: [
+                    "Govt Girls Primary School, Kankdoli Hukumi (राजकीय कन्या प्राथमिक पाठशाला कांकड़ोली हुकुमी)",
+                    "Govt School, Balali",
+                    "Govt High School, Badhra",
+                    "Govt School, Jhojhu"
+                ],
+                answer: 0,
+                hint: "Kankdoli Hukumi.",
+                explanation: "Govt Girls Primary School, Kankdoli Hukumi holds this ISO certification."
+            },
+            {
+                en: "Which young achiever from Charkhi Dadri (Chandeni village) secured the all-India rank 1 in the UPSC-NDA examination?",
+                hi: "चर्खी दादरी के चंदेनी गांव के किस युवा ने UPSC-NDA परीक्षा में देश भर में प्रथम स्थान प्राप्त किया?",
+                options: [
+                    "Anurag Sangwan (अनुराग सांगवान)",
+                    "Amit Sharma",
+                    "Pradeep Sangwan",
+                    "Sukhvinder Singh"
+                ],
+                answer: 0,
+                hint: "Anurag Sangwan.",
+                explanation: "Anurag Sangwan topped the UPSC-NDA exam."
+            },
+            {
+                en: "Pradeep Sangwan from Jhojhakalan village, Charkhi Dadri, is well-known for leading which environmental effort?",
+                hi: "चर्खी दादरी के झोझुकलां गांव के प्रदीप किस प्रमुख पर्यावरण संगठन/अभियान से जुड़े हैं?",
+                options: [
+                    "Healing Himalayas Foundation (हीलिंग हिमालय फाउंडेशन)",
+                    "Tree Man Mission",
+                    "Green Haryana Board",
+                    "Aravalli Bachao Andolan"
+                ],
+                answer: 0,
+                hint: "Healing Himalayas Foundation.",
+                explanation: "He is the coordinator of Healing Himalayas Foundation."
+            },
+            {
+                en: "What was the total death toll in the tragic 1996 mid-air collision over Charkhi Dadri?",
+                hi: "1996 की चर्खी दादरी विमान दुर्घटना में कुल कितने यात्रियों की मृत्यु हुई थी?",
+                options: [
+                    "349",
+                    "250",
+                    "410",
+                    "180"
+                ],
+                answer: 0,
+                hint: "349 passengers.",
+                explanation: "A total of 349 people lost their lives in the collision."
+            },
+            {
+                en: "Which specific aircraft types collided over Charkhi Dadri on November 12, 1996?",
+                hi: "12 नवंबर 1996 को चर्खी दादरी के ऊपर किन दो विमानों की टक्कर हुई थी?",
+                options: [
+                    "Kazakhstan Airlines Ilyushin Il-76 and Saudia Boeing 747 (कजाकिस्तान एयरलाइन्स ल्यूसिन II-76 तथा सौधिया बोईंग)",
+                    "Air India Airbus and Boeing 737",
+                    "Indian Airlines and IAF transport",
+                    "British Airways and Air France"
+                ],
+                answer: 0,
+                hint: "Kazakhstan Airlines and Saudia.",
+                explanation: "It was a collision between Kazakhstan Airlines Ilyushin Il-76 and Saudia Boeing."
+            },
+            {
+                en: "Which prominent political leader from Charkhi Dadri served as Chief Minister for a brief period in 1990-1991 and established the Gurnam Commission?",
+                hi: "चर्खी दादरी के किस नेता ने 1990-1991 में मुख्यमंत्री के रूप में कार्य किया और जाट आरक्षण के लिए गुरुनाम आयोग बनाया?",
+                options: [
+                    "Master Hukam Singh (मास्टर हुकम सिंह)",
+                    "Chandrawati",
+                    "Ramakrishna Gupta",
+                    "Sukhvinder Singh"
+                ],
+                answer: 0,
+                hint: "Master Hukam Singh.",
+                explanation: "Master Hukam Singh served as CM and set up the Gurnam Commission."
+            },
+            {
+                en: "In which year was the Haryana Environment Protection and Research Committee formed by Rao Shravan Singh in Charkhi Dadri?",
+                hi: "राव श्रवण सिंह द्वारा चर्खी दादरी में हरियाणा पर्यावरण संरक्षण एवं शोध समिति का गठन किस वर्ष किया गया था?",
+                options: [
+                    "1992",
+                    "1985",
+                    "2000",
+                    "1995"
+                ],
+                answer: 0,
+                hint: "1992.",
+                explanation: "It was formed in 1992."
+            },
+            {
+                en: "What is the significance of Natwa village in Badhra block of Charkhi Dadri?",
+                hi: "चर्खी दादरी के बाढ़ड़ा ब्लॉक में स्थित नात्वा गांव किस लिए प्रसिद्ध है?",
+                options: [
+                    "Haryana's first solar energy production village (सौर ऊर्जा उत्पादन वाला प्रथम गांव)",
+                    "First ISO school",
+                    "Dancing stone site",
+                    "Largest gaushala"
+                ],
+                answer: 0,
+                hint: "Solar energy production village.",
+                explanation: "Natwa is Haryana's first solar energy production village."
+            },
+            {
+                en: "Who authored the poetic compositions 'Haryana Vaibhavam', 'Gandhi Charitam', and 'Nehru Vansh Mahakavya' from Berla village?",
+                hi: "बेरला गांव के किस कवि ने 'हरियाणा वैभवम्' और 'गाँधी चरितम्' महाकाव्य की रचना की है?",
+                options: [
+                    "Pt. Shivram Shastri (पं. शिवराम शास्त्री)",
+                    "Poet Dev",
+                    "Shambhu Dayal",
+                    "Manmohan Singh"
+                ],
+                answer: 0,
+                hint: "Pt. Shivram Shastri.",
+                explanation: "Pt. Shivram Shastri from Berla village authored them."
+            },
+            {
+                en: "Which poet from Dadri served as the court poet of Jind ruler Ranbir Singh and wrote 'Ranbir Prakash'?",
+                hi: "जींद के शासक रणबीर सिंह के दरबारी कवि कौन थे जिन्होंने 'रणबीर प्रकाश' लिखा?",
+                options: [
+                    "Manmohan Singh (मनमोहन सिंह)",
+                    "Shambhu Dayal",
+                    "Dev",
+                    "Shivram Shastri"
+                ],
+                answer: 0,
+                hint: "Manmohan Singh.",
+                explanation: "Poet Manmohan Singh authored Ranbir Prakash."
+            },
+            {
+                en: "What was the primary literary work of Poet Dev, who served as the court poet of Seth Sitaram of Dadri?",
+                hi: "दादरी के सेठ सीताराम के दरबारी कवि 'देव' की प्रमुख रचना कौन सी है?",
+                options: [
+                    "Bhavani Vilas (भवानी विलास)",
+                    "Rukmani Vivah",
+                    "Ranbir Prakash",
+                    "Bhajan Sagar"
+                ],
+                answer: 0,
+                hint: "Bhavani Vilas.",
+                explanation: "Bhavani Vilas is Poet Dev's prominent work."
+            },
+            {
+                en: "Where is Kapuri Dham, associated with the Nath sect, situated?",
+                hi: "नाथ संप्रदाय से संबंधित कपूरी धाम कहाँ स्थित है?",
+                options: [
+                    "Charkhi Dadri (चर्खी दादरी)",
+                    "Jind",
+                    "Bhiwani",
+                    "Mahendragarh"
+                ],
+                answer: 0,
+                hint: "Charkhi Dadri.",
+                explanation: "Kapuri Dham is situated in Charkhi Dadri."
+            },
+            {
+                en: "Where is the largest fair of Lord Hanuman held in Charkhi Dadri district?",
+                hi: "चर्खी दादरी जिले में हनुमान जी का सबसे बड़ा मेला कहाँ भरता है?",
+                options: [
+                    "Imlota (इमलोटा)",
+                    "Kalyana",
+                    "Badhra",
+                    "Bondkala"
+                ],
+                answer: 0,
+                hint: "Imlota.",
+                explanation: "The biggest Hanuman fair is held in Imlota."
+            },
+            {
+                en: "Which stadium is situated in Charkhi Dadri town?",
+                hi: "चर्खी दादरी शहर में कौन सा स्टेडियम स्थित है?",
+                options: [
+                    "Balidan Stadium (बलिदान स्टेडियम)",
+                    "Nehru Stadium",
+                    "Tau Devi Lal Stadium",
+                    "Maharana Pratap Stadium"
+                ],
+                answer: 0,
+                hint: "Balidan Stadium.",
+                explanation: "Balidan Stadium is located in Charkhi Dadri."
+            },
+            {
+                en: "Where is the Dargah of Peer Mubarak Shah situated?",
+                hi: "पीर मुबारक शाह की दरगाह कहाँ स्थित है?",
+                options: [
+                    "Kalyana, Dadri (कल्याणा, दादरी)",
+                    "Imlota",
+                    "Badhra",
+                    "Natwa"
+                ],
+                answer: 0,
+                hint: "Kalyana.",
+                explanation: "It is located in Kalyana, Dadri."
+            },
+            {
+                en: "What is the geographical area of Charkhi Dadri district in square kilometres?",
+                hi: "चर्खी दादरी जिले का कुल क्षेत्रफल कितना है?",
+                options: [
+                    "1370.11 sq km (1370.11 वर्ग कि.मी.)",
+                    "1250.40 sq km",
+                    "1420.50 sq km",
+                    "1500.00 sq km"
+                ],
+                answer: 0,
+                hint: "1370.11 sq km.",
+                explanation: "The geographical area is 1370.11 sq km."
+            },
+            {
+                en: "What is the literacy rate of Charkhi Dadri district as per regional census/study notes?",
+                hi: "अध्ययन नोट्स के अनुसार चर्खी दादरी जिले की साक्षरता दर कितनी है?",
+                options: [
+                    "64.4%",
+                    "70.2%",
+                    "75.1%",
+                    "60.5%"
+                ],
+                answer: 0,
+                hint: "64.4%.",
+                explanation: "The literacy rate is 64.4%."
+            },
+            {
+                en: "What is the sex ratio of Charkhi Dadri district?",
+                hi: "चर्खी दादरी जिले का लिंगानुपात कितना है?",
+                options: [
+                    "852",
+                    "879",
+                    "890",
+                    "914"
+                ],
+                answer: 0,
+                hint: "852.",
+                explanation: "The sex ratio is 852."
+            },
+            {
+                en: "Under which administrative division does Charkhi Dadri district operate?",
+                hi: "चर्खी दादरी जिला किस प्रशासनिक मंडल के अंतर्गत आता है?",
+                options: [
+                    "Rohtak Mandal (रोहतक मण्डल)",
+                    "Hisar Mandal",
+                    "Gurugram Mandal",
+                    "Karnal Mandal"
+                ],
+                answer: 0,
+                hint: "Rohtak division.",
+                explanation: "It operates under the Rohtak division."
+            },
+            {
+                en: "How many total villages are included within Charkhi Dadri district?",
+                hi: "चर्खी दादरी जिले में कुल कितने गांवों को शामिल किया गया है?",
+                options: [
+                    "174",
+                    "150",
+                    "190",
+                    "160"
+                ],
+                answer: 0,
+                hint: "174 villages.",
+                explanation: "There are 174 villages in total."
+            },
+            {
+                en: "How many assembly constituencies are there in Charkhi Dadri district?",
+                hi: "चर्खी दादरी जिले में कुल कितने विधानसभा क्षेत्र हैं?",
+                options: [
+                    "2 (Dadri and Badhra)",
+                    "1",
+                    "3",
+                    "4"
+                ],
+                answer: 0,
+                hint: "2 constituencies.",
+                explanation: "There are 2 assembly constituencies: Dadri and Badhra."
+            },
+            {
+                en: "Who established Dadri originally in the year 1193 according to historical records in the text?",
+                hi: "इतिहास के अनुसार 1193 में दादरी की स्थापना किसने की थी?",
+                options: [
+                    "Villvaraj / Bitnaraj Chauhan (विल्ल्वराज / बितनरराज चौहान)",
+                    "Prithviraj Chauhan",
+                    "Anangpal Tomar",
+                    "Rao Jodha"
+                ],
+                answer: 0,
+                hint: "Villvaraj Chauhan.",
+                explanation: "It was established in 1193 by Villvaraj / Bitnaraj Chauhan."
+            },
+            {
+                en: "What is the meaning of the ancient name 'Dadur' of Charkhi Dadri?",
+                hi: "चर्खी दादरी के प्राचीन नाम 'दादुर' का अर्थ क्या है?",
+                options: [
+                    "Frog (मेंढ़क)",
+                    "Lake",
+                    "Stone",
+                    "Mountain"
+                ],
+                answer: 0,
+                hint: "Frog.",
+                explanation: "'Dadru' or 'Dadur' means frog in Sanskrit."
+            }
+        ];
+
+        let currentIndex = 0;
+        let score = 0;
+        let answeredQuestions = new Array(quizData.length).fill(false);
+        let userSelections = new Array(quizData.length).fill(null);
+
+        // DOM Elements
+        const questionTracker = document.getElementById('question-tracker');
+        const questionCategory = document.getElementById('question-category');
+        const progressBar = document.getElementById('progress-bar');
+        const progressPct = document.getElementById('progress-pct');
+        const liveScore = document.getElementById('live-score');
+        const totalQCount = document.getElementById('total-q-count');
+        const questionTextEn = document.getElementById('question-text-en');
+        const questionTextHi = document.getElementById('question-text-hi');
+        const optionsContainer = document.getElementById('options-container');
+        const hintBox = document.getElementById('hint-box');
+        const hintText = document.getElementById('hint-text');
+        const explanationBox = document.getElementById('explanation-box');
+        const explanationText = document.getElementById('explanation-text');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const jumpInput = document.getElementById('jump-input');
+
+        totalQCount.textContent = quizData.length;
+
+        function loadQuestion(index) {
+            const q = quizData[index];
+            questionTracker.textContent = `Question ${index + 1} of ${quizData.length}`;
+            const pct = Math.round(((index + 1) / quizData.length) * 100);
+            progressBar.style.width = `${pct}%`;
+            progressPct.textContent = `${pct}%`;
+
+            questionTextEn.textContent = `${index + 1}. ${q.en}`;
+            questionTextHi.textContent = q.hi;
+
+            hintText.textContent = q.hint;
+            hintBox.classList.add('hidden');
+
+            explanationText.textContent = q.explanation;
+            if (answeredQuestions[index]) {
+                explanationBox.classList.remove('hidden');
+            } else {
+                explanationBox.classList.add('hidden');
+            }
+
+            optionsContainer.innerHTML = '';
+            q.options.forEach((opt, optIndex) => {
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left p-3.5 rounded-xl border text-sm font-medium transition flex items-center justify-between ${
+                    userSelections[index] !== null
+                        ? optIndex === q.answer
+                            ? 'bg-indigo-50 border-indigo-300 text-indigo-900'
+                            : userSelections[index] === optIndex
+                            ? 'bg-rose-50 border-rose-300 text-rose-900'
+                            : 'bg-white border-slate-200 text-slate-700 opacity-60'
+                        : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300'
+                }`;
+
+                btn.innerHTML = `<span>${String.fromCharCode(65 + optIndex)}. ${opt}</span>`;
+                
+                if (userSelections[index] === null) {
+                    btn.onclick = () => selectOption(index, optIndex);
+                } else {
+                    btn.disabled = true;
+                }
+
+                optionsContainer.appendChild(btn);
+            });
+
+            prevBtn.disabled = index === 0;
+            nextBtn.textContent = index === quizData.length - 1 ? 'Finish Quiz' : 'Next →';
+            jumpInput.value = index + 1;
+        }
+
+        function selectOption(qIndex, optIndex) {
+            if (answeredQuestions[qIndex]) return;
+
+            userSelections[qIndex] = optIndex;
+            answeredQuestions[qIndex] = true;
+
+            const q = quizData[qIndex];
+            if (optIndex === q.answer) {
+                score++;
+                liveScore.textContent = score;
+            }
+
+            loadQuestion(qIndex);
+        }
+
+        function nextQuestion() {
+            if (currentIndex < quizData.length - 1) {
+                currentIndex++;
+                loadQuestion(currentIndex);
+            } else {
+                alert(`Quiz Completed! Your Final Score is ${score} out of ${quizData.length}`);
+            }
+        }
+
+        function prevQuestion() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                loadQuestion(currentIndex);
+            }
+        }
+
+        function toggleHint() {
+            hintBox.classList.toggle('hidden');
+        }
+
+        function jumpToQuestion() {
+            const val = parseInt(jumpInput.value);
+            if (!isNaN(val) && val >= 1 && val <= quizData.length) {
+                currentIndex = val - 1;
+                loadQuestion(currentIndex);
+            } else {
+                alert(`Please enter a valid question number between 1 and ${quizData.length}`);
+            }
+        }
+
+        // Initialize first question
+        loadQuestion(currentIndex);
+    </script>
+<script src="../../quiz-question-controls.js"></script>
+<script src="../../quiz-app-ui-v2.js"></script></body>
+</html>

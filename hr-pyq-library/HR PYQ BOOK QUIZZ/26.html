@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haryana GK Interactive Quiz (हरियाणा सामान्य ज्ञान)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+<style id="cosmic-readable-quiz-theme">
+:root{--space:#e8dcff;--panel:#f3eaff;--panel2:#dcc6ff;--edge:#6a45bf;--glow:#d28b28;--accent:#d15f9f;--ink:#2c1b4d;--muted:#66547c;--mist:rgba(106,69,191,.2)}html{background:var(--space)}body{background:radial-gradient(ellipse 62% 45% at 90% -5%,rgba(209,95,159,.28),transparent 62%),radial-gradient(ellipse 55% 40% at 8% 100%,rgba(65,164,207,.26),transparent 64%),var(--space)!important;color:var(--ink)!important;min-height:100vh}body:before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.78;background-image:radial-gradient(circle at 9% 18%,var(--glow) 0 1px,transparent 1.7px),radial-gradient(circle at 26% 69%,var(--edge) 0 .8px,transparent 1.5px),radial-gradient(circle at 68% 24%,var(--accent) 0 1px,transparent 1.8px),radial-gradient(circle at 88% 73%,#47a8d3 0 .8px,transparent 1.5px);background-size:220px 190px,300px 270px,260px 230px,340px 310px;z-index:-1}header{background:linear-gradient(105deg,var(--panel),var(--panel2))!important;border-color:rgba(106,69,191,.25)!important;box-shadow:0 7px 24px rgba(84,48,142,.14)!important}header h1{color:var(--edge)!important;text-shadow:none!important}header p,header .text-slate-400,header .text-indigo-200,header .text-indigo-300{color:var(--muted)!important}main>div,#quiz-card,.bg-slate-800,.bg-slate-900,.bg-indigo-900,.bg-indigo-950{background:linear-gradient(145deg,#f8f0ff,var(--panel))!important;border-color:rgba(106,69,191,.22)!important;color:var(--ink)!important;box-shadow:0 14px 35px rgba(84,48,142,.12)!important}.bg-slate-700,.bg-slate-100,.bg-slate-50{background:#eadffd!important;color:var(--ink)!important}.text-slate-100,.text-slate-200,.text-slate-300,.text-slate-400,.text-white,.text-slate-800,.text-slate-700,.text-slate-600{color:var(--ink)!important}.text-indigo-400,.text-indigo-300,.text-emerald-400,.text-yellow-300{color:var(--edge)!important}.border-slate-700,.border-slate-700\/60,.border-indigo-700,.border-slate-200{border-color:rgba(106,69,191,.25)!important}button:not(.bg-green-600):not(.bg-red-600){background:#f9f2ff!important;color:var(--ink)!important;border:1px solid rgba(106,69,191,.25)!important;box-shadow:0 3px 10px rgba(84,48,142,.09)!important}button.bg-indigo-600,button.bg-slate-800,button.bg-slate-900,button.bg-indigo-900{background:linear-gradient(120deg,var(--edge),var(--accent))!important;color:#fff!important;border:0!important}button.bg-indigo-600 *,button.bg-slate-800 *,button.bg-slate-900 *,button.bg-indigo-900 *{color:#fff!important}button:hover{filter:brightness(1.04);transform:translateY(-1px)}input,select,textarea{background:#f9f2ff!important;border-color:rgba(106,69,191,.35)!important;color:var(--ink)!important}input:focus,select:focus,textarea:focus{outline:none!important;border-color:var(--edge)!important;box-shadow:0 0 0 3px var(--mist)!important}.bg-indigo-500,#progress-bar{background:linear-gradient(90deg,var(--edge),var(--accent),var(--glow))!important}.rounded-2xl{border-radius:1.25rem!important}
+</style></head>
+<body class="bg-slate-100 min-h-screen text-slate-800 font-sans flex flex-col justify-between">
+
+    <!-- Header -->
+    <header class="bg-indigo-700 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-bold tracking-wide">Haryana GK Exam Quiz</h1>
+                <p class="text-xs text-indigo-200">Bilingual (English & हिन्दी) • Questions 2370 – 2444</p>
+            </div>
+            <div class="bg-indigo-800 px-3 py-1.5 rounded-lg border border-indigo-600 text-right">
+                <span class="text-xs block text-indigo-300">Live Score</span>
+                <span id="score-display" class="font-bold text-lg text-green-300">0 / 0</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-4xl mx-auto w-full px-4 py-6 flex-grow">
+        
+        <!-- Progress Bar & Navigation Info -->
+        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 mb-4">
+            <div class="flex justify-between items-center text-sm font-semibold text-slate-600 mb-2">
+                <span id="question-tracker">Question 1 of 75</span>
+                <span id="percentage-tracker" class="text-indigo-600">0%</span>
+            </div>
+            <div class="w-full bg-slate-200 rounded-full h-2.5 overflow-hidden">
+                <div id="progress-bar" class="bg-indigo-600 h-2.5 rounded-full transition-all duration-300" style="width: 1.33%"></div>
+            </div>
+        </div>
+
+        <!-- Question Card -->
+        <div class="bg-white rounded-xl shadow-md border border-slate-200 p-6 mb-6">
+            
+            <!-- Question Text -->
+            <div class="mb-6 border-b border-slate-100 pb-4">
+                <h2 id="question-text-hi" class="text-lg md:text-xl font-bold text-slate-900 mb-2 leading-relaxed"></h2>
+                <h3 id="question-text-en" class="text-base md:text-lg font-medium text-slate-600 italic leading-relaxed"></h3>
+            </div>
+
+            <!-- Options Grid -->
+            <div id="options-container" class="grid grid-cols-1 gap-3 mb-6">
+                <!-- Options rendered dynamically -->
+            </div>
+
+            <!-- Interactive Features: Hint & Rationale -->
+            <div class="space-y-3">
+                <button id="hint-btn" onclick="toggleHint()" class="text-xs font-semibold text-amber-600 hover:text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200 px-3 py-1.5 rounded-md transition duration-150 inline-flex items-center gap-1">
+                    💡 <span>Show Hint / संकेत</span>
+                </button>
+                <div id="hint-box" class="hidden bg-amber-50 border-l-4 border-amber-400 p-3 rounded-r text-xs text-amber-900 leading-relaxed">
+                    <!-- Hint text rendered dynamically -->
+                </div>
+
+                <div id="explanation-box" class="hidden bg-indigo-50 border-l-4 border-indigo-500 p-4 rounded-r text-sm text-indigo-950 leading-relaxed">
+                    <p class="font-bold text-indigo-900 mb-1">Explanation / व्याख्या:</p>
+                    <p id="explanation-text"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Controls Bar -->
+        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-wrap items-center justify-between gap-3">
+            <div class="flex gap-2">
+                <button id="prev-btn" onclick="prevQuestion()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-4 py-2 rounded-lg font-semibold text-sm transition duration-150 disabled:opacity-50 disabled:cursor-not-allowed">
+                    ← Previous
+                </button>
+                <button id="next-btn" onclick="nextQuestion()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg font-semibold text-sm transition duration-150 disabled:opacity-50 disabled:cursor-not-allowed">
+                    Next →
+                </button>
+            </div>
+
+            <!-- Jump to Question Input -->
+            <div class="flex items-center gap-2">
+                <label for="jump-input" class="text-xs font-semibold text-slate-600">Jump to:</label>
+                <input type="number" id="jump-input" min="1" max="75" placeholder="#" class="w-16 px-2 py-1 border border-slate-300 rounded-md text-sm text-center focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                <button onclick="jumpToQuestion()" class="bg-slate-700 hover:bg-slate-800 text-white px-3 py-1 rounded-md text-xs font-semibold transition duration-150">
+                    Go
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-3 text-center text-xs text-slate-500">
+        Haryana GK Exam Preparation • Auto-Scaffolded Dataset (2370–2444)
+    </footer>
+
+    <!-- Quiz Logic & Dynamic Dataset JavaScript -->
+    <script>
+        const rawDataset = [
+            { id: 2370, qHi: "नाहड़ वाइल्डलाइफ सैंक्चुअरी (वन्यजीव अभयारण्य) हरियाणा के कौनसे जिले में स्थित है?", qEn: "Nahar Wildlife Sanctuary is located in which district of Haryana?", ans: "रेवाड़ी (Rewari)", dist: ["गुरुग्राम (Gurugram)", "झज्जर (Jhajjar)", "महेंद्रगढ़ (Mahendragarh)"], hint: "यह जिला पीतल नगरी (Brass City) के नाम से प्रसिद्ध है।", exp: "नाहड़ वन्यजीव अभयारण्य हरियाणा के रेवाड़ी जिले में स्थित है।" },
+            { id: 2371, qHi: "हरियाणा राज्य के वर्तमान राज्यपाल कौन हैं? (पुस्तक संदर्भ)", qEn: "Who is the current Governor of Haryana state as per the text reference?", ans: "बंडारू दत्तात्रेय (Bhandaru Dattatreya)", dist: ["सत्यदेव नारायण आर्य (Satyadev Narayan Arya)", "कप्तान सिंह सोलंकी (Kaptan Singh Solanki)", "जगन्नाथ पहाड़िया (Jagannath Pahadia)"], hint: "यह हरियाणा के 18वें क्रम के राज्यपाल हैं।", exp: "पुस्तक संदर्भ के अनुसार हरियाणा के 18वें राज्यपाल बंडारू दत्तात्रेय हैं।" },
+            { id: 2372, qHi: "वाहनों के उत्सर्जन से निर्माण होने वाले प्रदूषण जैसी समस्या का अल्टरनेटिव मोबिलिटी उपायों से समाधान ढूँढने के लिए ICAT ने किस आधार पर तीन दिवसीय न्यूजेन मोबिलिटी समिट 2019 का आयोजन किया था?", qEn: "On what theme did ICAT organize the 3-day NuGen Mobility Summit 2019 to find alternative mobility solutions for vehicle emissions?", ans: "स्मार्ट और हरित मोबिलिटी (Smart & Green Mobility)", dist: ["स्वच्छ और सुरक्षित यातायात (Clean & Safe Transport)", "ई-मोबिलिटी क्रांति (E-Mobility Revolution)", "सतत परिवहन विकास (Sustainable Transport Development)"], hint: "यह स्मार्ट और पर्यावरण अनुकूल तकनीकों पर केंद्रित था।", exp: "ICAT ने 'स्मार्ट और हरित मोबिलिटी' के आधार पर न्यूजेन मोबिलिटी समिट 2019 का आयोजन मानेसर में किया था।" },
+            { id: 2373, qHi: "हरियाणा में CAT न्यूजेन ड्राइव सेफ क्लब मोबाइल ऐप का उद्घाटन किसने किया?", qEn: "Who inaugurated the 'CAT NuGen Drive Safe Club' mobile app in Haryana?", ans: "नितिन गडकरी (Nitin Gadkari)", dist: ["मनोहर लाल खट्टर (Manohar Lal Khattar)", "अनिल विज (Anil Vij)", "दुष्यंत चौटाला (Dushyant Chautala)"], hint: "केंद्रीय सड़क परिवहन और राजमार्ग मंत्री।", exp: "केंद्रीय मंत्री नितिन गडकरी ने CAT न्यूजेन ड्राइव सेफ क्लब मोबाइल ऐप का उद्घाटन किया।" },
+            { id: 2374, qHi: "हरियाणा स्पोर्ट्स यूनिवर्सिटी (हरियाणा खेल विश्व विद्यालय) के कुलाधिपति कौन हैं? (संदर्भित पाठ अनुसार)", qEn: "Who is the Chancellor of Haryana Sports University as referenced in the text?", ans: "अशोक कुमार (Ashok Kumar)", dist: ["कपिल देव (Kapil Dev)", "कुलदीप सिंह (Kuldeep Singh)", "अनिल विज (Anil Vij)"], hint: "आईपीएस अधिकारी/पूर्व डीजीपी संदर्भ।", exp: "दिए गए संदर्भ पाठानुसार हरियाणा स्पोर्ट्स यूनिवर्सिटी के कुलाधिपति अशोक कुमार दर्ज हैं।" },
+            { id: 2375, qHi: "हरियाणा पर्यावरण और वातावरण बदलाव मंत्री विपुल गोयल ने प्रदूषण को मात देने के लिए लोगों को कौनसे थैले प्रयोग करने का सुझाव दिया?", qEn: "Which bags were suggested by Haryana Environment Minister Vipul Goyal to combat pollution?", ans: "जूट (पटसन) थैला (Jute Bag)", dist: ["कागज का थैला (Paper Bag)", "सूती कपड़े का थैला (Cotton Bag)", "बायोडिग्रेडेबल प्लास्टिक (Biodegradable Plastic)"], hint: "यह प्राकृतिक रेशे से बना थैला है।", exp: "पर्यावरण मंत्री विपुल गोयल ने प्लास्टिक का विकल्प देने के लिए जूट (पटसन) के थैले प्रयोग करने की सलाह दी।" },
+            { id: 2376, qHi: "हरियाणा सरकार ने अन्य सरकारी भूमि, पंचायतों व बेकार भूमि पर वन और पेड़ों की छाँव बढ़ाने के लिए कौनसा कदम उठाया था?", qEn: "Which initiative was launched by Haryana Government to increase tree cover on vacant/panchayat lands?", ans: "बड़े पैमाने पर वृक्षारोपण कार्यक्रम (Mass Plantation Drive)", dist: ["हरियाली पथ योजना (Hariyali Path Scheme)", "वन संरक्षण अभियान (Forest Protection Campaign)", "कृषि वानिकी योजना (Agro-Forestry Project)"], hint: "बड़े स्तर पर पौधे लगाने की मुहिम।", exp: "सरकारी व पंचायत की खाली पड़ी भूमि पर छायादार वृक्ष लगाने के लिए बड़े पैमाने पर वृक्षारोपण कार्यक्रम चलाया गया।" },
+            { id: 2377, qHi: "विपुल गोयल जी के 5 मुद्दों के फार्मूले के तहत पर्यावरण स्वास्थ्य संभालने के लिए एक व्यक्ति को कितने पेड़ लगाने चाहिए?", qEn: "Under the 5-point formula proposed by Vipul Goyal, how many trees should an individual plant?", ans: "1 में 3 पेड़ (3 Trees per person)", dist: ["1 में 1 पेड़ (1 Tree)", "1 में 5 पेड़ (5 Trees)", "1 में 2 पेड़ (2 Trees)"], hint: "प्रत्येक व्यक्ति के लिए 3 वृक्षों का लक्ष्य।", exp: "पर्यावरण स्वास्थ्य सुधारने के लिए दिए गए फार्मूले के अनुसार 1 व्यक्ति द्वारा 3 पेड़ लगाने की बात कही गई।" },
+            { id: 2378, qHi: "सूरदास की विख्यात रचना कौनसी है?", qEn: "Which is the famous literary work composed by Surdas?", ans: "सूरसागर (Sursagar)", dist: ["सूरसारावली (Sursaravali)", "साहित्य लहरी (Sahitya Lahari)", "कृष्ण गीतावली (Krishna Gitavali)"], hint: "यह संत सूरदास जी की सबसे प्रसिद्ध प्रामाणिक रचना है।", exp: "महान कवी सूरदास जी (सीही, फरीदाबाद निवासी) की सर्वाधिक प्रसिद्ध रचना 'सूरसागर' है।" },
+            { id: 2379, qHi: "तैमूर ने हरियाणा पर कौनसे काल/वर्ष में हमला किया था?", qEn: "In which year/period did Timur invade Haryana?", ans: "1398", dist: ["1192", "1526", "1761"], hint: "14वीं शताब्दी के अंत में तुगलक वंश के पतन के समय।", exp: "तैमूर लंग ने 1398 ई. में हरियाणा क्षेत्र (सिरसा, हिसार, फतेहाबाद) पर आक्रमण किया था।" },
+            { id: 2380, qHi: "हरियाणा यूथ वेलफेयर एंड स्पोर्ट्स डिपार्टमेंट के निदेशक कौन हैं? (पाठ्य पुस्तक अनुसार)", qEn: "Who is listed as the Director of Haryana Youth Welfare and Sports Department in the text?", ans: "सुजीव वर्मा (Sujeev Verma)", dist: ["अमित खत्री (Amit Khatri)", "पंकज यादव (Pankaj Yadav)", "आलोक वर्मा (Alok Verma)"], hint: "प्रशासनिक अधिकारी संदर्भ।", exp: "पाठ्य पुस्तक के अनुसार तत्कालीन निदेशक का नाम सुजीव वर्मा उल्लेखित है।" },
+            { id: 2381, qHi: "ओट्टु बैराज हरियाणा की किस नदी पर बना है?", qEn: "Ottu Barrage is constructed on which river of Haryana?", ans: "घग्गर (Ghaggar River)", dist: ["यमुना (Yamuna River)", "मार्कंडा (Markanda River)", "सरस्वती (Saraswati River)"], hint: "यह नदी सिरसा जिले में स्थित है।", exp: "ओट्टू बैराज (धनुर्धारी बांध) सिरसा जिले में घग्गर-हकरा नदी पर स्थित है।" },
+            { id: 2382, qHi: "करनाल जिले के किस किसान को राष्ट्रपति रामनाथ कोविंद ने पद्म श्री पुरस्कार दिया?", qEn: "Which farmer from Karnal district was awarded the Padma Shri by President Ram Nath Kovind?", ans: "सुलतान सिंह (Sultan Singh)", dist: ["कमल सिंह चौहान (Kamal Singh Chauhan)", "कंवर सिंह चौहान (Kanwar Singh Chauhan)", "नरेंद्र सिंह (Narendra Singh)"], hint: "मत्स्य पालन (Fish farming) के क्षेत्र में नवाचार के लिए प्रसिद्ध।", exp: "करनाल के नीलोखेड़ी निवासी सुल्तान सिंह को आधुनिक मत्स्य पालन के लिए पद्म श्री से सम्मानित किया गया।" },
+            { id: 2383, qHi: "अरुणा नदी को ...... भी कहा जाता है?", qEn: "Aruna River is also known by which other name?", ans: "मार्कंडा नदी (Markanda River)", dist: ["टांगरी नदी (Tangri River)", "साहिबी नदी (Sahibi River)", "दोहान नदी (Dohan River)"], hint: "शाहाबाद मार्कंडा इसी नदी के तट पर स्थित है।", exp: "मार्कंडा नदी का प्राचीन पौराणिक नाम 'अरुणा' था।" },
+            { id: 2384, qHi: "जनवरी 2024 को, हरियाणा के पर्यावरण और जलवायु परिवर्तन मंत्री कौन हैं? (पुस्तक दर्ज)", qEn: "Who is recorded as Haryana's Environment & Climate Change Minister as of Jan 2024 in the book?", ans: "कंवर पाल गुर्जर (Kanwar Pal Gurjar)", dist: ["मूलचंद शर्मा (Mool Chand Sharma)", "रणजीत सिंह (Ranjit Singh)", "विपुल गोयल (Vipul Goyal)"], hint: "हरियाणा के पूर्व शिक्षा एवं वन मंत्री।", exp: "पुस्तक के पाठ्य उत्तर सारणी में जनवरी 2024 संदर्भ हेतु कंवर पाल गुर्जर का नाम दर्ज है।" },
+            { id: 2385, qHi: "'जाट समाचार' किसने प्रकाशित किया था?", qEn: "Who published the newspaper 'Jat Samachar'?", ans: "बाबू कन्हैयालाल (Babu Kanhaiya Lal)", dist: ["सर छोटूराम (Sir Chhotu Ram)", "पंडित नेकीराम (Pt. Neki Ram)", "लाला लाजपत राय (Lala Lajpat Rai)"], hint: "1889 में गुड़गांव से प्रकाशन।", exp: "जाट समाचार पत्र का प्रकाशन बाबू कन्हैयालाल द्वारा 1889 ई. में किया गया था।" },
+            { id: 2386, qHi: "हरियाणा के कौन से धार्मिक स्थल पर भगवान श्री कृष्ण जी ने अर्जुन को भगवद गीता सुनाई ऐसा माना जाता है?", qEn: "At which holy site in Haryana is Lord Krishna believed to have delivered the Bhagavad Gita to Arjuna?", ans: "ज्योतिसर (Jyotisar)", dist: ["ब्रह्म सरोवर (Brahma Sarovar)", "पेहोवा (Pehowa)", "सन्नहित सरोवर (Sannahit Sarovar)"], hint: "कुरुक्षेत्र में वट वृक्ष के पास स्थित।", exp: "कुरुक्षेत्र का ज्योतिसर वह पवित्र स्थान है जहाँ श्रीकृष्ण ने अर्जुन को श्रीमद्भगवद्गीता का ज्ञान दिया था।" },
+            { id: 2387, qHi: "किस महीने में, सूरजकुंड शिल्प मेला नामक दुनिया का सबसे बड़ा मेला हरियाणा में मनाया जाता है?", qEn: "In which month is the world-famous Surajkund Crafts Mela organized in Haryana?", ans: "फरवरी (February)", dist: ["जनवरी (January)", "मार्च (March)", "अक्टूबर (October)"], hint: "साल के दूसरे महीने में फरीदाबाद में।", exp: "सूरजकुंड अंतरराष्ट्रीय शिल्प मेला प्रतिवर्ष फरवरी माह में फरीदाबाद जिले में आयोजित होता है।" },
+            { id: 2388, qHi: "अमेजॉन कंपनी का बड़ा पूर्ति केंद्र (Fulfillment Centre) हरियाणा में कहाँ स्थित है?", qEn: "Where is Amazon's large Fulfillment Centre located in Haryana?", ans: "सोनीपत (Sonipat)", dist: ["गुरुग्राम (Gurugram)", "फरीदाबाद (Faridabad)", "अंबाला (Ambala)"], hint: "यह शहर 'एजुकेशन सिटी' और स्वर्णिम शहर के रूप में जाना जाता है।", exp: "अमेजॉन का विशाल पूर्ति केंद्र सोनीपत (कासंडी/कामी) में स्थापित किया गया है।" },
+            { id: 2389, qHi: "हरियाणा में कितने राष्ट्रीय उद्यान और वन्यजीव अभयारण्य हैं?", qEn: "How many National Parks and Wildlife Sanctuaries are there in Haryana?", ans: "2 और 8 (2 & 8)", dist: ["1 और 7 (1 & 7)", "2 और 7 (2 & 7)", "3 और 9 (3 & 9)"], hint: "सुल्तानपुर और कलेसर 2 राष्ट्रीय उद्यान हैं।", exp: "हरियाणा में 2 राष्ट्रीय उद्यान (सुल्तानपुर व कलेसर) तथा 8 प्रमुख वन्यजीव अभयारण्य हैं।" },
+            { id: 2390, qHi: "कौन सी लिपि में 'कनाल इन्स्क्रिप्शन' (Karnal Inscription) लिखा है?", qEn: "In which script is the 'Karnal Inscription' written?", ans: "खरोष्ठी लिपि (Kharosthi Script)", dist: ["ब्राह्मी लिपि (Brahmi Script)", "देवनागरी लिपि (Devanagari Script)", "गुरुमुखी लिपि (Gurmukhi Script)"], hint: "प्राचीन पश्चिमोत्तर भारत की प्रसिद्ध लिपि।", exp: "करनाल से प्राप्त प्राचीन अभिलेख खरोष्ठी लिपि में उत्कीर्ण है।" },
+            { id: 2391, qHi: "1966-67 में रेवाड़ी से प्रकाशित होने वाली दो विख्यात पत्रिका कौनसी हैं?", qEn: "Which two famous journals were published from Rewari in 1966-67?", ans: "हरियाणा शोध पत्रिका और जनरल ऑफ हरियाणा स्टडीज (Haryana Shodh Patrika & Journal of Haryana Studies)", dist: ["हरियाणा संदेश व हरियाणा केसरी", "ग्राम सेवक व सावधान", "चेतना व कायाकल्प"], hint: "अनुसंधान और शोध से जुड़ी शोध पत्रिकाएं।", exp: "1966-67 में रेवाड़ी से 'हरियाणा शोध पत्रिका' तथा 'जनरल ऑफ हरियाणा स्टडीज' का संपादन/प्रकाशन हुआ।" },
+            { id: 2392, qHi: "संस्कृत और अन्य कई भारतीय भाषाओं को मूलभूत आधार हरियाणा की कौन सी भाषा ने प्रदान किया है?", qEn: "Which dialect of Haryana provided a foundational base for Sanskrit and other Indian languages?", ans: "हरियाणवी (Haryanvi)", dist: ["कोरवी (Kauravi)", "बाँगडू (Bangru)", "मेवाती (Mewati)"], hint: "राज्य की मुख्य लोक बोली।", exp: "पाठ्य विवरणानुसार हरियाणवी भाषा/बोली ने प्राचीन आर्य भाषाओं के विकास में आधारभूत योगदान दिया।" },
+            { id: 2393, qHi: "जमुआमीर सांग के जन्मदाता / सांग कहाँ हुआ? (रोहतक का स्थान)", qEn: "Where did Jamuamir Saang originate in Rohtak as per the text?", ans: "सुनारिया (Sunaria)", dist: ["मैहम (Meham)", "कलानौर (Kalanaur)", "सांपला (Sampla)"], hint: "रोहतक जिले की प्रसिद्ध जेल/स्थान।", exp: "जमुआमीर सांग का मंचन/उत्पत्ति स्थान रोहतक का सुनारिया क्षेत्र माना गया है।" },
+            { id: 2394, qHi: "दिल्ली सल्तनत के नीचे लोधी वंश के आखिरी शासक कौन थे?", qEn: "Who was the last ruler of the Lodi Dynasty under the Delhi Sultanate?", ans: "इब्राहिम लोधी (Ibrahim Lodi)", dist: ["बहलोल लोधी (Bahlul Lodi)", "सिकंदर लोधी (Sikandar Lodi)", "दौलत खान लोधी (Daulat Khan Lodi)"], hint: "पानीपत की पहली लड़ाई (1526) में मारे गए।", exp: "पानीपत के प्रथम युद्ध (1526) में बाबर के हाथों पराजित होने वाला इब्राहिम लोधी अंतिम सुल्तान था।" },
+            { id: 2395, qHi: "भारतीय सेना ने हरियाणा की कौन सी जगह पर आर्टिफिशिअल इंटेलीजेंस सेमिनार का आयोजन किया था?", qEn: "At which location in Haryana did the Indian Army organize an Artificial Intelligence Seminar?", ans: "हिसार (Hisar)", dist: ["अंबाला (Ambala)", "चंडीगढ़ (Chandigarh)", "कुरुक्षेत्र (Kurukshetra)"], hint: "इसे स्टीलगिरी / मैग्नेट सिटी भी कहा जाता है।", exp: "भारतीय सेना की दक्षिण-पश्चिम कमान द्वारा हिसार सैन्य स्टेशन पर AI सेमिनार आयोजित किया गया था।" },
+            { id: 2396, qHi: "हरियाणा राज्य का कौन सा ब्लाक पहला सक्षम प्लस ब्लाक बना?", qEn: "Which block of Haryana state became the first 'Saksham Plus' block?", ans: "सांपला (Sampla)", dist: ["घरौंडा (Gharaunda)", "कौसली (Kosli)", "रादौर (Radaur)"], hint: "रोहतक जिले का एक प्रसिद्ध कस्बा।", exp: "शिक्षा स्तर के गुणवत्ता मानक प्राप्त कर रोहतक का सांपला ब्लॉक पहला सक्षम प्लस ब्लॉक बना।" },
+            { id: 2397, qHi: "हरियाणा की कितनी प्रतिशत भूमि पर खेती की जाती है?", qEn: "What percentage of land in Haryana is under cultivation?", ans: "80%", dist: ["70%", "65%", "85%"], hint: "लगभग चार-पांचवां हिस्सा।", exp: "हरियाणा की कुल भौगोलिक भूमि के लगभग 80% भाग पर कृषि कार्य किया जाता है।" },
+            { id: 2398, qHi: "उर्दू में 'हरियाणा तिलक' समाचार पत्र की शुरुआत किसने की?", qEn: "Who started the Urdu newspaper 'Haryana Tilak'?", ans: "श्री राम शर्मा (Pt. Shri Ram Sharma)", dist: ["नेकी राम शर्मा (Pt. Neki Ram Sharma)", "देशबंधु गुप्त (Deshbandhu Gupta)", "लाला चन्नूलाल (Lala Chhannulal)"], hint: "झाज्जर जिले से स्वतंत्रता सेनानी व लेखक।", exp: "पं. श्री राम शर्मा ने 1923 में उर्दू भाषा में 'हरियाणा तिलक' नामक साप्ताहिक पत्र निकाला था।" },
+            { id: 2399, qHi: "'हयात-ए-शादी' यह किनका गद्य और पद्य संग्रह है?", qEn: "'Hayat-e-Saadi' is a prose and poetry compilation by which personality?", ans: "ख्वाजा अल्ताफ हुसैन हाली (Khwaja Altaf Hussain Hali)", dist: ["मौलवी अहमद बख्श (Maulvi Ahmad Bakhsh)", "विशंभरनाथ कौशिक (Vishambhar Nath Kaushik)", "शाह मोहम्मद (Shah Mohammad)"], hint: "पानीपत से संबंध रखने वाले प्रसिद्ध उर्दू शायर।", exp: "उर्दू के महान अदीब ख्वाजा अल्ताफ हुसैन हाली द्वारा रचित प्रसिद्ध जीवनी संग्रह 'हयात-ए-सादी' है।" },
+            { id: 2400, qHi: "हरियाणा भाषा कौनसी विदेशी भाषा से साम्य रखती है?", qEn: "Haryanvi language/dialect shares similarity with which foreign language?", ans: "फिनिश (Finnish)", dist: ["जर्मन (German)", "रूसी (Russian)", "फ्रेंच (French)"], hint: "फिनलैंड की भाषा।", exp: "भाषा वैज्ञानिकों के अध्ययन अनुसार हरियाणवी के कुछ ध्वन्यात्मक गुण फिनिश (Finnish) भाषा से मेल खाते हैं।" },
+            { id: 2401, qHi: "सांगी पं. मांगेराम का जन्म कहां पर हुआ?", qEn: "Where was the famous Saangi Pandit Mange Ram born?", ans: "सिसाना (सोनीपत) [Sisana, Sonipat]", dist: ["खेड़ी सुल्तान (Jhajjar)", "बलाना (Panipat)", "मांदौठी (Jhajjar)"], hint: "सोनीपत जिले का प्रसिद्ध ऐतिहासिक गाँव।", exp: "प्रसिद्ध सांगी पंडित मांगेराम का जन्म सोनीपत जिले के सिसाना गाँव में हुआ था।" },
+            { id: 2402, qHi: "हरियाणा के सूखे डेसिड्यूअस (पर्णपाती) जंगलों में कौनसे पेड़ों की प्रजाति पाई जाती है?", qEn: "Which tree species is predominantly found in dry deciduous forests of Haryana?", ans: "टेंडुस / तेंदू (Tendu / Tendus)", dist: ["देवदार (Deodar)", "टीक (Teak)", "सुंदरी (Sundari)"], hint: "इसकी पत्तियों का उपयोग बीड़ी बनाने में भी होता है।", exp: "हरियाणा के शुष्क पर्णपाती वनों में तेंदू (Tendus) प्रजाति के वृक्ष बहुतायत में पाए जाते हैं।" },
+            { id: 2403, qHi: "'सैन बाला' किनके द्वारा रचित सांग है?", qEn: "'Sain Bala' is a Saang composed by whom?", ans: "सांगी पं. मांगेराम (Saangi Pt. Mange Ram)", dist: ["पं. दीपचंद बहमन (Pt. Deep Chand Bahman)", "लखमी चंद (Lakhmi Chand)", "दयाचंद मायना (Dayachand Mayna)"], hint: "सिसाना गाँव में जन्मे प्रसिद्ध सांगी।", exp: "'सैन बाला' सांग की रचना पंडित मांगेराम जी ने की थी।" },
+            { id: 2404, qHi: "डायरेक्टरेट ऑफ अर्बन लोकल बॉडीज डिपार्टमेंट ऑफ हरियाणा (हरियाणा के शहरी स्थानीय निकाय विभाग के निदेशालय) की स्थापना कब हुई?", qEn: "When was the Directorate of Urban Local Bodies Department of Haryana established?", ans: "1 अप्रैल, 1982 (1st April 1982)", dist: ["1 नवंबर, 1966", "15 अगस्त, 1975", "26 जनवरी, 1990"], hint: "अप्रैल 1982 का पहला दिन।", exp: "हरियाणा शहरी स्थानीय निकाय निदेशालय की स्थापना 1 अप्रैल 1982 को की गई थी।" },
+            { id: 2405, qHi: "सिसवाल संस्कृति (Siswal Culture) के अस्तित्व के सबूत हरियाणा के कौनसे जिले में पाए गए?", qEn: "Evidences of Siswal Culture were found in which district of Haryana?", ans: "हिसार (Hisar)", dist: ["सिरसा (Sirsa)", "जींद (Jind)", "फतेहाबाद (Fatehabad)"], hint: "यह स्थान इसी जिले के नवपाषाण/ताम्रपाषाण स्थल के रूप में प्रसिद्ध है।", exp: "सिसवाल गाँव हिसार जिले में स्थित है जहाँ प्राचीन सिसवाल संस्कृति के अवशेष मिले।" },
+            { id: 2406, qHi: "गुडगाँव का नया नाम गुरुग्राम रखने के बाद मेवात के लिए कौनसा नाम चुना गया था?", qEn: "After renaming Gurgaon as Gurugram, which name was chosen for Mewat?", ans: "नूंह (Nuh)", dist: ["सत्यमेवपुरम (Satyamevpuram)", "मेवात नगर (Mewat Nagar)", "फिरोजपुर (Firozpur)"], hint: "अप्रैल 2016 में बदला गया नाम।", exp: "हरियाणा सरकार ने गुड़गांव का नाम गुरुग्राम और मेवात जिले का नाम बदलकर 'नूंह' किया।" },
+            { id: 2407, qHi: "प्लास्टिक थैलों से बनी हुई कछुए की मूर्ति जिसे दुनिया की सबसे बड़ी मूर्ति मानी जाती है, वह कौनसे स्थान पर स्थित है?", qEn: "Where is the world's largest turtle sculpture made of plastic bags located in Haryana?", ans: "ब्रह्म सरोवर (Brahma Sarovar)", dist: ["कर्ण झील (Karna Lake)", "तिल्यार झील (Tilyar Lake)", "हथनीकुंड (Hathnikund)"], hint: "कुरुक्षेत्र का पावन सरोवर।", exp: "पर्यावरण जागरूकता हेतु प्लास्टिक थैलियों से निर्मित कछुए की विशाल प्रतिकृति ब्रह्म सरोवर, कुरुक्षेत्र में प्रदर्शित की गई।" },
+            { id: 2408, qHi: "गिद्ध का संरक्षण करने के लिए हरियाणा फॉरेस्ट डिपार्टमेंट ने पिंजौर के नजदीक कौनसा केंद्र स्थापित किया?", qEn: "Which conservation center was established near Pinjore by Haryana Forest Dept for Vultures?", ans: "पिंजौर के नजदीक गिद्ध संरक्षण और प्रजनन केंद्र (2001) [Vulture Care & Breeding Centre]", dist: ["गिद्ध बचाव एवं पुनर्वास केंद्र (2005)", "गिद्ध पार्क एवं अनुसंधान संस्थान (2010)", "राष्ट्रीय पक्षी संरक्षण केंद्र"], hint: "वर्ष 2001 में एशिया का पहला ऐसा केंद्र।", exp: "पिंजौर (पंचकुला) में 'गिद्ध संरक्षण एवं प्रजनन केंद्र' (Jatayu Conservation Breeding Centre) स्थापित किया गया।" },
+            { id: 2409, qHi: "हरियाणा में सॉइल इरोजन (भू-चरण) कम करने के लिए जैवउपचारात्मक (Bio-remedial) उपाय क्या किए गए हैं?", qEn: "What bio-remedial measure was implemented to reduce soil erosion in Haryana?", ans: "ग्रास बैरियर्स (घास के अवरोध) [Grass Barriers]", dist: ["वृक्ष बाड़ (Tree Fencing)", "पत्थर चेक डैम (Stone Dams)", "प्लास्टिक मल्चिंग (Plastic Mulching)"], hint: "मिट्टी के कटाव को रोकने के लिए प्राकृतिक घास की पट्टियां।", exp: "मृदा अपरदन को रोकने हेतु जैविक उपचार के रूप में 'ग्रास बैरियर्स' (घास की पट्टियों) का प्रयोग किया गया।" },
+            { id: 2410, qHi: "हरियाणा सरकार ने अलामकारी छोटा चिड़ियाघर बंद करने का तय किया और जनता के लिए चिड़ियाघर के विकसन पर कहाँ जोर दिया?", qEn: "Which zoo development did the Haryana Govt focus on after closing small setups?", ans: "रोहतक (Rohtak Zoo)", dist: ["अंबाला (Ambala)", "भिवानी (Bhiwani)", "पिंजौर (Pinjore)"], hint: "तिल्यार कॉम्प्लेक्स के पास स्थित चिड़ियाघर।", exp: "छोटे अनाम चिड़ियाघरों को समेटकर रोहतक चिड़ियाघर के आधुनिकीकरण और विस्तार पर विशेष बल दिया गया।" },
+            { id: 2411, qHi: "गुप्त कालीन मुहरे (Gupta period seals) कौनसी जगह में मिली थी?", qEn: "In which place were Gupta period seals discovered in Haryana?", ans: "मिथाथल (Mitatthal)", dist: ["बनावली (Banawali)", "राखीगढ़ी (Rakhigarhi)", "अग्रोहा (Agroha)"], hint: "भिवानी जिले का प्रसिद्ध पुरातात्विक स्थल।", exp: "भिवानी जिले के मिथाथल स्थल से गुप्तकालीन सिक्के और मुद्राएँ (मुहरें) प्राप्त हुई हैं।" },
+            { id: 2412, qHi: "भारत में वैश्य समुदाय के उद्गम संदर्भ में किसका बड़ा महत्व है?", qEn: "Which place has immense significance regarding the origin of the Vaishya community in India?", ans: "अग्रोहा (Agroha)", dist: ["पेहोवा (Pehowa)", "असंध (Assandh)", "थानेसर (Thanesar)"], hint: "महाराजा अग्रसेन की राजधानी।", exp: "हिसार के पास स्थित अग्रोहा को वैश्य (अग्रवाल) समाज का उद्गम स्थल माना जाता है।" },
+            { id: 2413, qHi: "हरियाणा फॉरेस्ट डिपार्टमेंट (हरियाणा वन विभाग) का लक्ष्य है कि हरियाणा भूमि जंगल और पेड़ों से कितनी भर दें?", qEn: "What is the target percentage of land cover under forest/trees set by Haryana Forest Dept?", ans: "20 प्रतिशत (20%)", dist: ["10 प्रतिशत (10%)", "15 प्रतिशत (15%)", "33 प्रतिशत (33%)"], hint: "राज्य का महत्वाकांक्षी लक्ष्य 20% है।", exp: "हरियाणा वन विभाग ने राज्य के कुल भौगोलिक क्षेत्रफल का 20% भाग वन आच्छादित करने का दीर्घकालिक लक्ष्य रखा है।" },
+            { id: 2414, qHi: "'रूप बसंत' किनके द्वारा रचित सांग है?", qEn: "'Roop Basant' is a popular Saang composed by whom?", ans: "सांगी पं. मांगेराम (Saangi Pt. Mange Ram)", dist: ["पं. दीपचंद (Pt. Deep Chand)", "बाजे भगत (Baje Bhagat)", "धनपत सिंह (Dhanpat Singh)"], hint: "सिसाना निवासी विख्यात सांगी।", exp: "'रूप बसंत' लोक सांग की रचना पंडित मांगेराम जी द्वारा की गई थी।" },
+            { id: 2415, qHi: "झज्जर जिले में किस गाँव का विकास डिजीटल गाँव के रूप में किया जा रहा है?", qEn: "Which village in Jhajjar district is being developed as a Digital Village?", ans: "सांखोल (Sankhol)", dist: ["बहादुरगढ़ (Bahadurgarh)", "दुजाना (Dujana)", "छारा (Chhara)"], hint: "बहादुरगढ़ के पास स्थित सांखोल गाँव।", exp: "झज्जर जिले के 'सांखोल' गाँव को डिजिटल सुविधाओं से लैस कर डिजिटल विलेज के रूप में चुना गया।" },
+            { id: 2416, qHi: "नई स्थापित JJP (जननायक जनता पार्टी) पक्ष का चुनाव चिन्ह क्या है?", qEn: "What is the election symbol of the Jananayak Janta Party (JJP)?", ans: "चाबी (Key)", dist: ["चश्मा (Spectacles)", "हॉकी (Hockey)", "ट्रैक्टर (Tractor)"], hint: "ताला खोलने का यंत्र।", exp: "जननायक जनता पार्टी (JJP) का आधिकारिक चुनाव चिन्ह 'चाबी' (Key) है।" },
+            { id: 2417, qHi: "एरोस्पेस यूनिवर्सिटी प्रस्थापित करने के लिए हरियाणा के कौनसे जिले को चुना गया है?", qEn: "Which district of Haryana has been selected to establish an Aerospace University?", ans: "हिसार (Hisar)", dist: ["गुरुग्राम (Gurugram)", "अंबाला (Ambala)", "करनाल (Karnal)"], hint: "महाराजा अग्रसेन अंतर्राष्ट्रीय हवाई अड्डा इसी जिले में है।", exp: "हिसार में विमानन व एरोस्पेस अध्ययन को बढ़ावा देने हेतु एरोस्पेस यूनिवर्सिटी का प्रस्ताव रखा गया।" },
+            { id: 2418, qHi: "पदम भूषण पुरस्कार प्राप्त कौन व्यक्ति सरस्वती नदी पुनर्जीवन प्रकल्प में सक्रियता से शामिल थे?", qEn: "Which Padma Bhushan awardee was actively involved in the Saraswati River Rejuvenation Project?", ans: "दर्शन लाल जैन (Darshan Lal Jain)", dist: ["चंडी प्रसाद भट्ट (Chandi Prasad Bhatt)", "सुंदरलाल बहुगुणा (Sunderlal Bahuguna)", "बाबा रामदेव (Baba Ramdev)"], hint: "जगाधरी (यमुनानगर) के प्रसिद्ध समाजसेवी।", exp: "पद्म भूषण से सम्मानित समाजसेवी दर्शन लाल जैन ने सरस्वती नदी पुनरुद्धार योजना में मुख्य भूमिका निभाई।" },
+            { id: 2419, qHi: "हरियाणा हास्य कविता के लिए सुरेन्द्र शर्मा जी को कौनसा पुरस्कार मिला?", qEn: "Which prestigious civilian award was given to Surender Sharma for Haryanvi humor poetry?", ans: "पदम श्री (Padma Shri)", dist: ["पदम भूषण (Padma Bhushan)", "साहित्य अकादमी पुरस्कार (Sahitya Akademi)", "हरियाणा साहित्य रत्न"], hint: "चार लाइना हास्य कवि ('दोई बातें हो सके हैं')।", exp: "प्रसिद्ध हास्य कवि सुरेंद्र शर्मा (नांगल चौधरी, महेंद्रगढ़) को 2013 में 'पद्म श्री' सम्मान मिला।" },
+            { id: 2420, qHi: "सभी गाँव को 24x7 बिजली प्रदान करने के मामले में हरियाणा देश का पहला राज्य कब बना/बना?", qEn: "Haryana became the first state in India to provide 24x7 electricity to all villages under which scheme/context?", ans: "बिजली / म्हारा गाँव जगमग गाँव (Electricity 1970/2015)", dist: ["सौर ऊर्जा (Solar Power)", "नल से जल (Tap Water)", "सड़क संपर्क (Road Connectivity)"], hint: "नवंबर 1970 में 100% ग्रामीण विद्युतीकरण करने वाला पहला राज्य।", exp: "हरियाणा 1970 में भारत का पहला राज्य बना था जिसने अपने सभी गाँवों में बिजली पहुँचाई थी।" },
+            { id: 2421, qHi: "पहली महिला वकील और 1954 में विधान सभा के सदस्य के तौर पर चुनी जाने वाली हरियाणा की भी पहली महिला कौन थी?", qEn: "Who was Haryana's first female advocate and the first woman elected to the Legislative Assembly (1954)?", ans: "चंद्रावती (Chandrawati)", dist: ["शन्नो देवी (Shanno Devi)", "सुचेता कृपलानी (Sucheta Kripalani)", "सरोजिनी नायडू (Sarojini Naidu)"], hint: "पुडुचेरी की पूर्व उपराज्यपाल भी रहीं।", exp: "श्रीमती चंद्रावती हरियाणा की पहली महिला अधिवक्ता और 1954 (संयुक्त पंजाब) में विधायक बनने वाली पहली महिला थीं।" },
+            { id: 2422, qHi: "सर्वोच्च चोटी करोह, हरियाणा के किस पहाड़ियों के भौगोलिक क्षेत्र में आती है?", qEn: "Karoh Peak, the highest point in Haryana, lies in which hill range?", ans: "मोरनी (Morni Hills)", dist: ["अरावली (Aravalli Hills)", "शिवालिक (Shivalik Range)", "तोशाम (Tosham Hills)"], hint: "पंचकुला जिले में स्थित पहाड़ियाँ।", exp: "हरियाणा की सबसे ऊँची चोटी 'करोह' (1467 मीटर/1514 मीटर) पंचकुला की मोरनी पहाड़ियों में स्थित है।" },
+            { id: 2423, qHi: "'चंद्रहास' किनके द्वारा रचित सांग है?", qEn: "'Chandrahas' is a Saang composed by whom?", ans: "सांगी पं. मांगेराम (Saangi Pt. Mange Ram)", dist: ["पं. दीपचंद (Pt. Deep Chand)", "लखमी चंद (Lakhmi Chand)", "मांगेराम (Mange Ram)"], hint: "पं. मांगेराम जी की प्रसिद्ध रचना।", exp: "'चंद्रहास' सांग की रचना पंडित मांगेराम जी ने की थी।" },
+            { id: 2424, qHi: "वह जिला जहां डोलोमाइट (Dolomite) पाया जाता है?", qEn: "Which district of Haryana is known for Dolomite mineral deposits?", ans: "महेंद्रगढ़ (Mahendragarh)", dist: ["रेवाड़ी (Rewari)", "गुरुग्राम (Gurugram)", "अंबाला (Ambala)"], hint: "हरियाणा का खनिजों का शहर।", exp: "महेंद्रगढ़ जिले में बहुमूल्य खनिज जैसे डोलोमाइट, एस्बेस्टस, चूना पत्थर पाए जाते हैं।" },
+            { id: 2425, qHi: "हरियाणा के सबसे बड़े जिले सिरसा का क्षेत्र लगभग कितना है?", qEn: "What is the total geographical area of Sirsa, the largest district of Haryana?", ans: "4277 Sq. Km (4277 किमी²)", dist: ["3983 Sq. Km", "5130 Sq. Km", "4421 Sq. Km"], hint: "लगभग 4270 वर्ग किमी।", exp: "चरखी दादरी बनने के बाद सिरसा हरियाणा का सबसे बड़ा जिला है जिसका क्षेत्रफल 4,277 वर्ग किमी है।" },
+            { id: 2426, qHi: "'हरियाणा' शब्द का मतलब क्या है?", qEn: "What is the literal meaning of the word 'Haryana'?", ans: "विष्णु का निवास (Abode of Lord Vishnu / Hari)", dist: ["शिव की भूमि (Land of Shiva)", "हरा-भरा जंगल (Green Forest)", "देवताओं की भूमि (Land of Gods)"], hint: "हरि + अयाणा (विष्णु का घर)।", exp: "शाब्दिक अर्थ में 'हरियाणा' का तात्पर्य 'हरि (विष्णु) का अयन/निवास' अथवा ईश्वर का निवास माना गया है।" },
+            { id: 2427, qHi: "वैदिक काल के शुरू में, 4 वेदों में से कौनसे वेद की निर्मिति हरियाणा क्षेत्र में हुई?", qEn: "In the early Vedic period, which of the 4 Vedas was composed in the Haryana region?", ans: "ऋग्वेद (Rigveda)", dist: ["सामवेद (Samaveda)", "यजुरवेद (Yajurveda)", "अथर्ववेद (Atharvaveda)"], hint: "संसार का सबसे प्राचीन ग्रंथ।", exp: "सरस्वती और दृषद्वती नदियों के किनारे ऋग्वेद की ऋचाओं की रचना हरियाणा की पावन भूमि पर हुई।" },
+            { id: 2428, qHi: "हरियाणा राज्य की पहली महिला प्रमुख शासन सचिव और पहली महिला गृह सचिव कौन थी?", qEn: "Who was the first female Principal Chief Secretary and first female Home Secretary of Haryana?", ans: "नवराज संधू (Navraj Sandhu)", dist: ["शकुंतला जाखड़ (Shakuntla Jakhar)", "उर्वशी गुलाटी (Keshni Anand Arora / Urvashi Gulati)", "दीप्ति उमाशंकर (Deepti Umashankar)"], hint: "वरिष्ठ आईएएस अधिकारी।", exp: "श्रीमती नवराज संधू हरियाणा की पहली महिला गृह सचिव तथा वरिष्ठ मुख्य सचिव पद पर रहीं।" },
+            { id: 2429, qHi: "सांगी पं. दीपचंद का जन्म कहां पर हुआ? (खांडा सेठी, रोहतक)", qEn: "Where was Saangi Pt. Deep Chand born?", ans: "खांडा सेठी (सोनीपत/रोहतक क्षेत्र) [Khanda Sethi]", dist: ["सिसाना (Sonipat)", "शेरिया (Jhajjar)", "बैंसी (Rohtak)"], hint: "खांडा गाँव (पूर्व रोहतक/वर्तमान सोनीपत)।", exp: "हरियाणा के शेक्सपियर कहे जाने वाले पं. दीपचंद बहमन का जन्म खांडा गाँव में हुआ था।" },
+            { id: 2430, qHi: "'फार्मा पार्क' जिसका लक्ष्य अनुसंधान और विकास को प्रोत्साहन देने वाली अकादमियों और इकोसिस्टम सुगम कर फार्मास्यूटिकल उत्पादन का हब बनाकर हरियाणा का विकास करना है, वह कहाँ पर स्थित है?", qEn: "Where is the Pharma Park located in Haryana to boost pharmaceutical manufacturing?", ans: "करनाल (Karnal)", dist: ["पानीपत (Panipat)", "हिसार (Hisar)", "सोनीपत (Sonipat)"], hint: "धान का कटोरा कहा जाने वाला शहर।", exp: "औषधि निर्माण को बढ़ावा देने के लिए करनाल जिले में 'फार्मा पार्क' की स्थापना की गई है।" },
+            { id: 2431, qHi: "'शिक्षासेतु' (Shiksha Setu) नामक मोबाइल ऐप का शुभारंभ कौनसी सरकार ने किया था?", qEn: "Which state government launched the mobile application named 'Shiksha Setu'?", ans: "हरियाणा (Haryana)", dist: ["पंजाब (Punjab)", "राजस्थान (Rajasthan)", "उत्तर प्रदेश (Uttar Pradesh)"], hint: "उच्च शिक्षा विभाग द्वारा जारी ऐप।", exp: "हरियाणा सरकार के उच्च शिक्षा विभाग ने छात्रों को कॉलेज संबंधी जानकारी हेतु 'शिक्षासेतु' ऐप शुरू किया था।" },
+            { id: 2432, qHi: "'किस्सा बीजा सोरठ' किनके द्वारा रचित सांग है?", qEn: "'Kissa Beeja Sorath' is a famous Saang composed by whom?", ans: "पं. दीपचंद (Pt. Deep Chand)", dist: ["पं. मांगेराम (Pt. Mange Ram)", "लखमी चंद (Lakhmi Chand)", "बाजे भगत (Baje Bhagat)"], hint: "हरियाणा के कालिदास/शेक्सपियर पं. दीपचंद।", exp: "'किस्सा बीजा सोरठ' लोक सांग पं. दीपचंद बहमन द्वारा रचित है।" },
+            { id: 2433, qHi: "हरियाणा भाषा कौनसी लिपि का प्रयोग करती है?", qEn: "Which script is used for writing the Haryanvi language/dialects?", ans: "देवनागरी (Devanagari)", dist: ["गुरुमुखी (Gurmukhi)", "रोमन (Roman)", "फ़ारसी (Persian)"], hint: "हिंदी भाषा की लिपि।", exp: "हरियाणवी भाषा/बोली लिखने के लिए 'देवनागरी' लिपि का ही आधिकारिक प्रयोग होता है।" },
+            { id: 2434, qHi: "'गोपीचंद' किनके द्वारा रचित सांग है?", qEn: "'Gopichand' is a Saang composed by whom?", ans: "पं. दीपचंद (Pt. Deep Chand)", dist: ["पं. मांगेराम (Pt. Mange Ram)", "लखमी चंद (Lakhmi Chand)", "दयाचंद (Dayachand)"], hint: "पं. दीपचंद बहमन की लोकप्रिय रचना।", exp: "राजा गोपीचंद के जीवन पर आधारित सांग 'गोपीचंद' की रचना पं. दीपचंद ने की थी।" },
+            { id: 2435, qHi: "'भरथरी' किनके द्वारा रचित सांग है?", qEn: "'Bharthari' is a Saang composed by whom?", ans: "पं. दीपचंद (Pt. Deep Chand)", dist: ["पं. मांगेराम (Pt. Mange Ram)", "रामकिशन व्यास (Ram Kishan Vyas)", "अहमद बख्श (Ahmad Bakhsh)"], hint: "पं. दीपचंद बहमन।", exp: "'भरथरी' (राजा भरथरी) सांग पं. दीपचंद की प्रमुख कृतियों में से एक है।" },
+            { id: 2436, qHi: "'नल-दमयंती' किनके द्वारा रचित सांग है?", qEn: "'Nal-Damayanti' is a Saang composed by whom?", ans: "पं. दीपचंद (Pt. Deep Chand)", dist: ["पं. मांगेराम (Pt. Mange Ram)", "लखमी चंद (Lakhmi Chand)", "बाजे भगत (Baje Bhagat)"], hint: "पं. दीपचंद बहमन।", exp: "पौराणिक कथा नल-दमयंती पर आधारित सांग पं. दीपचंद बहमन द्वारा रचा गया है।" },
+            { id: 2437, qHi: "घग्गर नदी का प्रदूषण मिटाने के लिए सरकार ने जो उपक्रम शुरू किया है उसका नाम क्या है?", qEn: "What is the name of the initiative launched by the government to clean Ghaggar river pollution?", ans: "घग्गर एक्शन प्लान (Ghaggar Action Plan)", dist: ["घग्गर सफाई अभियान (Ghaggar Clean Drive)", "हरित घग्गर योजना (Green Ghaggar Project)", "सरस्वती-घग्गर मिशन (Saraswati-Ghaggar Mission)"], hint: "नदी प्रदूषण मुक्ति एक्शन योजना।", exp: "घग्गर नदी के बढ़ते जल प्रदूषण को रोकने के लिए सरकार ने 'घग्गर एक्शन प्लान' की शुरुआत की।" },
+            { id: 2438, qHi: "हरियाणा स्टेट पोल्यूशन कन्ट्रोल बोर्ड (हरियाणा राज्य प्रदूषण नियंत्रण मंडल) के (दिसंबर 2024 में) अध्यक्ष कौन हैं? (पुस्तक दर्ज)", qEn: "Who is recorded as Chairman of HSPCB (as of Dec 2024 reference) in the text?", ans: "पी. राघवेंद्र राव (P. Raghavendra Rao)", dist: ["अशोक खेत्रपाल (Ashok Khetrapal)", "अनंत कुमार (Anant Kumar)", "संजीव कौशल (Sanjeev Kaushal)"], hint: "पूर्व वरिष्ठ आईएएस अधिकारी।", exp: "हरियाणा राज्य प्रदूषण नियंत्रण बोर्ड (HSPCB) के अध्यक्ष के रूप में पी. राघवेंद्र राव का नाम दर्ज है।" },
+            { id: 2439, qHi: "नए बने हरियाणा राज्य का अधिकतर भाग पहले पुराने ...... राज्य का हिस्सा था!", qEn: "Major part of the newly created Haryana state was previously part of which old state?", ans: "पंजाब (Punjab)", dist: ["उत्तर प्रदेश (Uttar Pradesh)", "राजस्थान (Rajasthan)", "दिल्ली (Delhi)"], hint: "1 नवंबर 1966 को अलग हुआ राज्य।", exp: "1966 में पूर्वी पंजाब (Punjab) पुनर्गठन अधिनियम के तहत हरियाणा को पंजाब से अलग कर नया राज्य बनाया गया।" },
+            { id: 2440, qHi: "'हरिश्चंद्र' किनके द्वारा रचित सांग है?", qEn: "'Harishchandra' is a Saang composed by whom?", ans: "पं. दीपचंद (Pt. Deep Chand)", dist: ["पं. मांगेराम (Pt. Mange Ram)", "लखमी चंद (Lakhmi Chand)", "दयाचंद मायना (Dayachand Mayna)"], hint: "सत्यवादी हरिश्चंद्र पर रचित सांग - पं. दीपचंद।", exp: "सत्यवादी राजा हरिश्चंद्र पर आधारित सांग पं. दीपचंद बहमन की रचना है।" },
+            { id: 2441, qHi: "चौदह साल की उस लड़की का नाम बताएं जिसने रीसायकल, पुनः उपयोग और अवव्यवस्था कम करने को बढ़ावा देने वाले 'माय ओन बैग' (मेरा अपना थैला) उपक्रम के बारे में जिनेवा के युनाइटेड नेशंस यूरोपीय मुख्यालय में भाषण दिया था?", qEn: "Name the 14-year-old girl who spoke at UN European HQ in Geneva on 'My Own Bag' initiative?", ans: "सिया तायल (Siya Tayal)", dist: ["आकृति वर्मा (Aakriti Verma)", "सृष्टि जाखड़ (Srishti Jakhar)", "मनु भाकर (Manu Bhakar)"], hint: "रोहतक/हरियाणा की बाल पर्यावरण कार्यकर्ता।", exp: "14 वर्षीय सिया तायल ने सिंगल-यूज़ प्लास्टिक के विकल्प 'माय ओन बैग' अभियान के लिए यूएन (जिनेवा) में संबोधन दिया था।" },
+            { id: 2442, qHi: "पंचायती राज संस्था में महिलाओं के लिए आरक्षित की गई सीटों का प्रतिशत है?", qEn: "What is the percentage of seats reserved for women in Panchayati Raj Institutions in Haryana?", ans: "50%", dist: ["33%", "30%", "40%"], hint: "आधा भाग (आधा हिस्सा)।", exp: "हरियाणा सरकार ने पंचायती राज संस्थाओं में महिलाओं के लिए 50% आरक्षण का प्रावधान किया है।" },
+            { id: 2443, qHi: "हरियाणा के वर्तमान मुख्य सूचना आयुक्त कौन हैं? (पाठ्य पुस्तक संदर्भ)", qEn: "Who is recorded as the Chief Information Commissioner of Haryana in the text?", ans: "विजयवर्धन (Vijay Vardhan)", dist: ["यशपाल संगवान (Yashpal Sangwan)", "अरुण झा (Arun Jha)", "एस. एस. फूलिया (S.S. Phulia)"], hint: "हरियाणा के पूर्व मुख्य सचिव।", exp: "पाठ्य पुस्तक के प्रासंगिक आंकड़ों के अनुसार हरियाणा के मुख्य सूचना आयुक्त विजयवर्धन हैं।" },
+            { id: 2444, qHi: "हरियाणा के राज्य चुनाव आयुक्त कौन हैं? (पाठ्य पुस्तक संदर्भ)", qEn: "Who is recorded as the State Election Commissioner of Haryana in the text?", ans: "धनपत सिंह (Dhanpat Singh)", dist: ["अनुराग अग्रवाल (Anurag Agarwal)", "राजीव शर्मा (Rajeev Sharma)", "दलिप सिंह (Dalip Singh)"], hint: "हरियाणा के पूर्व वरिष्ठ आईएएस अधिकारी।", exp: "पाठ्य पुस्तक के संदर्भ अनुसार हरियाणा के राज्य चुनाव आयुक्त धनपत सिंह हैं।" }
+        ];
+
+        // Process raw dataset to ensure broad unique scaffolding & random shuffle of distractor options
+        let quizData = rawDataset.map((item, index) => {
+            // Combine correct answer + distractors
+            let allOptions = [item.ans, ...item.dist];
+            
+            // Fisher-Yates shuffle algorithm for options
+            for (let i = allOptions.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [allOptions[i], allOptions[j]] = [allOptions[j], allOptions[i]];
+            }
+
+            return {
+                num: index + 1,
+                id: item.id,
+                qHi: item.qHi,
+                qEn: item.qEn,
+                options: allOptions,
+                correctAnswer: item.ans,
+                hint: item.hint,
+                exp: item.exp,
+                userAnswer: null
+            };
+        });
+
+        let currentIndex = 0;
+        let score = 0;
+
+        // Core Functions
+        function loadQuestion(index) {
+            const q = quizData[index];
+            
+            // Update Headers & Progress
+            document.getElementById('question-tracker').innerText = `Question ${index + 1} of ${quizData.length} (Q.ID: ${q.id})`;
+            const pct = Math.round(((index + 1) / quizData.length) * 100);
+            document.getElementById('percentage-tracker').innerText = `${pct}%`;
+            document.getElementById('progress-bar').style.width = `${pct}%`;
+
+            // Question Texts
+            document.getElementById('question-text-hi').innerText = `${q.num}. ${q.qHi}`;
+            document.getElementById('question-text-en').innerText = q.qEn;
+
+            // Hint & Explanation Reset
+            document.getElementById('hint-box').classList.add('hidden');
+            document.getElementById('hint-box').innerText = q.hint;
+            
+            const expBox = document.getElementById('explanation-box');
+            if (q.userAnswer !== null) {
+                document.getElementById('explanation-text').innerText = q.exp;
+                expBox.classList.remove('hidden');
+            } else {
+                expBox.classList.add('hidden');
+            }
+
+            // Render Options
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            const optionLabels = ['A', 'B', 'C', 'D'];
+
+            q.options.forEach((opt, i) => {
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left p-3.5 rounded-lg border text-sm font-medium transition-all duration-150 flex items-center justify-between `;
+                
+                if (q.userAnswer === null) {
+                    btn.className += `border-slate-200 bg-slate-50 hover:bg-indigo-50 hover:border-indigo-300 text-slate-800`;
+                    btn.onclick = () => selectOption(index, opt);
+                } else {
+                    btn.disabled = true;
+                    if (opt === q.correctAnswer) {
+                        btn.className += `border-emerald-500 bg-emerald-50 text-emerald-900 font-bold`;
+                    } else if (opt === q.userAnswer && opt !== q.correctAnswer) {
+                        btn.className += `border-rose-500 bg-rose-50 text-rose-900 line-through`;
+                    } else {
+                        btn.className += `border-slate-200 bg-slate-50 text-slate-400 opacity-60`;
+                    }
+                }
+
+                btn.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="w-7 h-7 flex items-center justify-center rounded-full bg-slate-200 text-slate-700 font-bold text-xs">${optionLabels[i]}</span>
+                        <span>${opt}</span>
+                    </div>
+                    ${q.userAnswer !== null && opt === q.correctAnswer ? '<span class="text-emerald-600 text-base">✓</span>' : ''}
+                    ${q.userAnswer !== null && opt === q.userAnswer && opt !== q.correctAnswer ? '<span class="text-rose-600 text-base">✗</span>' : ''}
+                `;
+                optionsContainer.appendChild(btn);
+            });
+
+            // Update Nav Buttons
+            document.getElementById('prev-btn').disabled = (index === 0);
+            document.getElementById('next-btn').disabled = (index === quizData.length - 1);
+            document.getElementById('jump-input').value = index + 1;
+        }
+
+        function selectOption(index, selectedOpt) {
+            const q = quizData[index];
+            if (q.userAnswer !== null) return; // Prevent re-selection
+
+            q.userAnswer = selectedOpt;
+
+            if (selectedOpt === q.correctAnswer) {
+                score++;
+            }
+
+            updateScore();
+            loadQuestion(index);
+        }
+
+        function updateScore() {
+            const answeredCount = quizData.filter(q => q.userAnswer !== null).length;
+            document.getElementById('score-display').innerText = `${score} / ${answeredCount}`;
+        }
+
+        function nextQuestion() {
+            if (currentIndex < quizData.length - 1) {
+                currentIndex++;
+                loadQuestion(currentIndex);
+            }
+        }
+
+        function prevQuestion() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                loadQuestion(currentIndex);
+            }
+        }
+
+        function jumpToQuestion() {
+            const val = parseInt(document.getElementById('jump-input').value);
+            if (val >= 1 && val <= quizData.length) {
+                currentIndex = val - 1;
+                loadQuestion(currentIndex);
+            } else {
+                alert(`Please enter a question number between 1 and ${quizData.length}.`);
+            }
+        }
+
+        function toggleHint() {
+            const hintBox = document.getElementById('hint-box');
+            hintBox.classList.toggle('hidden');
+        }
+
+        // Key Navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT') return;
+            if (e.key === 'ArrowRight') nextQuestion();
+            if (e.key === 'ArrowLeft') prevQuestion();
+        });
+
+        // Initialize App
+        loadQuestion(currentIndex);
+    </script>
+<script src="../../quiz-question-controls.js"></script>
+<script src="../../quiz-app-ui-v2.js"></script></body>
+</html>

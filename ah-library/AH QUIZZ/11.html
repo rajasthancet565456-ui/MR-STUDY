@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Animal Husbandry & Poultry Farming Interactive Quiz</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .font-hindi { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+  </style>
+<style id="cosmic-readable-quiz-theme">
+:root{--space:#e8dcff;--panel:#f3eaff;--panel2:#dcc6ff;--edge:#6a45bf;--glow:#d28b28;--accent:#d15f9f;--ink:#2c1b4d;--muted:#66547c;--mist:rgba(106,69,191,.2)}html{background:var(--space)}body{background:radial-gradient(ellipse 62% 45% at 90% -5%,rgba(209,95,159,.28),transparent 62%),radial-gradient(ellipse 55% 40% at 8% 100%,rgba(65,164,207,.26),transparent 64%),var(--space)!important;color:var(--ink)!important;min-height:100vh}body:before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.78;background-image:radial-gradient(circle at 9% 18%,var(--glow) 0 1px,transparent 1.7px),radial-gradient(circle at 26% 69%,var(--edge) 0 .8px,transparent 1.5px),radial-gradient(circle at 68% 24%,var(--accent) 0 1px,transparent 1.8px),radial-gradient(circle at 88% 73%,#47a8d3 0 .8px,transparent 1.5px);background-size:220px 190px,300px 270px,260px 230px,340px 310px;z-index:-1}header{background:linear-gradient(105deg,var(--panel),var(--panel2))!important;border-color:rgba(106,69,191,.25)!important;box-shadow:0 7px 24px rgba(84,48,142,.14)!important}header h1{color:var(--edge)!important;text-shadow:none!important}header p,header .text-slate-400,header .text-indigo-200,header .text-indigo-300{color:var(--muted)!important}main>div,#quiz-card,.bg-slate-800,.bg-slate-900,.bg-indigo-900,.bg-indigo-950{background:linear-gradient(145deg,#f8f0ff,var(--panel))!important;border-color:rgba(106,69,191,.22)!important;color:var(--ink)!important;box-shadow:0 14px 35px rgba(84,48,142,.12)!important}.bg-slate-700,.bg-slate-100,.bg-slate-50{background:#eadffd!important;color:var(--ink)!important}.text-slate-100,.text-slate-200,.text-slate-300,.text-slate-400,.text-white,.text-slate-800,.text-slate-700,.text-slate-600{color:var(--ink)!important}.text-indigo-400,.text-indigo-300,.text-emerald-400,.text-yellow-300{color:var(--edge)!important}.border-slate-700,.border-slate-700\/60,.border-indigo-700,.border-slate-200{border-color:rgba(106,69,191,.25)!important}button:not(.bg-green-600):not(.bg-red-600){background:#f9f2ff!important;color:var(--ink)!important;border:1px solid rgba(106,69,191,.25)!important;box-shadow:0 3px 10px rgba(84,48,142,.09)!important}button.bg-indigo-600,button.bg-slate-800,button.bg-slate-900,button.bg-indigo-900{background:linear-gradient(120deg,var(--edge),var(--accent))!important;color:#fff!important;border:0!important}button.bg-indigo-600 *,button.bg-slate-800 *,button.bg-slate-900 *,button.bg-indigo-900 *{color:#fff!important}button:hover{filter:brightness(1.04);transform:translateY(-1px)}input,select,textarea{background:#f9f2ff!important;border-color:rgba(106,69,191,.35)!important;color:var(--ink)!important}input:focus,select:focus,textarea:focus{outline:none!important;border-color:var(--edge)!important;box-shadow:0 0 0 3px var(--mist)!important}.bg-indigo-500,#progress-bar{background:linear-gradient(90deg,var(--edge),var(--accent),var(--glow))!important}.rounded-2xl{border-radius:1.25rem!important}
+</style></head>
+<body class="bg-slate-100 min-h-screen text-slate-800 font-sans antialiased">
+
+  <!-- Header -->
+  <header class="bg-indigo-700 text-white shadow-lg sticky top-0 z-50">
+    <div class="max-w-5xl mx-auto px-4 py-4 flex flex-wrap justify-between items-center">
+      <div>
+        <h1 class="text-xl md:text-2xl font-bold tracking-tight">Animal Husbandry Quiz (पशुपालन एवं कुक्कुट पालन)</h1>
+        <p class="text-xs md:text-sm text-indigo-200">Exam-Level Practice Questions (Bilingual: Hindi & English)</p>
+      </div>
+      <div class="mt-2 md:mt-0 bg-indigo-900/60 px-4 py-2 rounded-lg text-right">
+        <span class="text-xs uppercase tracking-wider text-indigo-300 block">Total Questions</span>
+        <span class="text-lg font-extrabold text-yellow-400">105 Unique Questions</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-4 py-6">
+    <!-- Quiz Card Container -->
+    <div class="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden">
+      
+      <!-- Top Control Bar & Stats -->
+      <div class="bg-slate-50 border-b border-slate-200 p-4 flex flex-wrap justify-between items-center gap-4">
+        <div class="flex items-center space-x-2">
+          <span class="text-sm font-semibold text-slate-600">Question:</span>
+          <span id="q-number" class="text-lg font-bold text-indigo-700">1</span>
+          <span class="text-sm text-slate-400">/ 105</span>
+        </div>
+
+        <div class="flex items-center space-x-4">
+          <div class="text-sm font-semibold">
+            Score: <span id="live-score" class="text-emerald-600 font-bold">0</span> / <span id="attempted-count">0</span>
+          </div>
+          <div class="flex items-center space-x-1">
+            <label for="jump-input" class="text-xs font-semibold text-slate-500">Jump to:</label>
+            <input type="number" id="jump-input" min="1" max="105" class="w-16 border border-slate-300 rounded px-2 py-1 text-sm text-center focus:ring-2 focus:ring-indigo-500 outline-none" />
+            <button onclick="jumpToQuestion()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-2.5 py-1.5 rounded font-medium transition">Go</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="w-full bg-slate-200 h-2">
+        <div id="progress-bar" class="bg-indigo-600 h-2 transition-all duration-300" style="width: 0.95%;"></div>
+      </div>
+
+      <!-- Main Question Section -->
+      <div class="p-6">
+        <!-- Question Badge / Source -->
+        <div class="mb-3 flex justify-between items-center">
+          <span id="page-tag" class="text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded bg-indigo-100 text-indigo-800">Page 1</span>
+          <button id="hint-btn" onclick="toggleHint()" class="text-xs font-semibold text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-300 px-3 py-1 rounded-full flex items-center gap-1 transition">
+            💡 Show Hint
+          </button>
+        </div>
+
+        <!-- Hint Box -->
+        <div id="hint-box" class="hidden mb-4 p-3 bg-amber-50 border-l-4 border-amber-500 text-amber-900 text-sm rounded-r">
+          <p id="hint-text" class="italic"></p>
+        </div>
+
+        <!-- Question Text -->
+        <div class="mb-6">
+          <h2 id="question-text" class="text-base md:text-lg font-semibold text-slate-800 leading-relaxed font-hindi"></h2>
+        </div>
+
+        <!-- Options Grid -->
+        <div id="options-container" class="space-y-3 mb-6">
+          <!-- Options dynamically rendered here -->
+        </div>
+
+        <!-- Explanation / Rationale Box -->
+        <div id="explanation-box" class="hidden p-4 rounded-lg border">
+          <h3 id="exp-title" class="font-bold text-sm uppercase tracking-wider mb-1"></h3>
+          <p id="explanation-text" class="text-sm font-hindi leading-relaxed"></p>
+        </div>
+      </div>
+
+      <!-- Bottom Navigation Footer -->
+      <div class="bg-slate-50 border-t border-slate-200 p-4 flex justify-between items-center">
+        <button id="prev-btn" onclick="prevQuestion()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium px-4 py-2 rounded-lg text-sm transition disabled:opacity-50 disabled:cursor-not-allowed">
+          &larr; Previous
+        </button>
+        <button id="next-btn" onclick="nextQuestion()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-5 py-2 rounded-lg text-sm transition shadow">
+          Next &rarr;
+        </button>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    // Full Dataset of 105 Unique Questions extracted directly from Image 1 to Image 7
+    const rawQuestions = [
+      // --- PAGE 1 (25 Questions) ---
+      {
+        page: "Page 1",
+        q: "कौपॉन्स (Capons) क्या है? / What is a Capon?",
+        options: ["बधिया किया हुआ चूजा (Castrated rooster/cock)", "दूध देने वाली बकरी (Milching Goat)", "मुर्गी का अंडा (Hen Egg)", "नवजात बछड़ा (Newborn Calf)"],
+        answer: "बधिया किया हुआ चूजा (Castrated rooster/cock)",
+        hint: "It refers to a castrated young male chicken raised for meat.",
+        exp: "कौपॉन्स (Capons) बधिया किए हुए नर चूजे (Castrated roosters) को कहा जाता है।"
+      },
+      {
+        page: "Page 1",
+        q: "पशुप्लेग की रोकथाम में प्रयुक्त G.T.V. का पूरा नाम क्या है? / What is the full form of G.T.V. vaccine used in Rinderpest prevention?",
+        options: ["Goat Tissue Virus Vaccine", "Goat Treatment Vaccine", "General Tissue Virus Vaccine", "Genetic Tissue Virus Vaccine"],
+        answer: "Goat Tissue Virus Vaccine",
+        hint: "GTV stands for a virus tissue vaccine prepared using goats.",
+        exp: "G.T.V. का पूरा नाम 'गोट टिश्यू वायरस वैक्सीन' (Goat Tissue Virus Vaccine) है।"
+      },
+      {
+        page: "Page 1",
+        q: "G.T.V. का टीका सर्वप्रथम 1926 में किसके द्वारा खोजा गया था? / Who first discovered the G.T.V. vaccine in 1926?",
+        options: ["एडवर्ड (1926 I.V.R.O.)", "डॉ. वर्गिस कुरियन", "लुई पाश्चर", "एडवर्ड जेनर"],
+        answer: "एडवर्ड (1926 I.V.R.O.)",
+        hint: "Discovered at IVRO in 1926.",
+        exp: "G.T.V. टीका सर्वप्रथम 1926 में एडवर्ड (I.V.R.O.) द्वारा खोजा गया था।"
+      },
+      {
+        page: "Page 1",
+        q: "दूध न देने वाली बकरी की कौन-सी नस्ल है? / Which of the following is a non-milch breed of goat known for wool/mohair?",
+        options: ["पश्मीना हिल (Pashmina Hill)", "सानेन (Saanen)", "बरबरी (Barbari)", "जमुनापारी (Jamunapari)"],
+        answer: "पश्मीना हिल (Pashmina Hill)",
+        hint: "This breed is known for producing fine pashmina fiber rather than milk.",
+        exp: "पश्मीना हिल दूध न देने वाली बकरी की नस्ल है जो पश्मीना ऊन उत्पादन हेतु जानी जाती है।"
+      },
+      {
+        page: "Page 1",
+        q: "भैंस के दूध में गाय के दूध के मिलावट को किस विधि से ज्ञात करते हैं? / Which test is used to detect the adulteration of cow milk in buffalo milk?",
+        options: ["हंसा परीक्षण (Hansa Test)", "स्ट्रिप कप टेस्ट (Strip Cup Test)", "बर्चर्ड टेस्ट (Burchard Test)", "आयोडीन टेस्ट (Iodine Test)"],
+        answer: "हंसा परीक्षण (Hansa Test)",
+        hint: "Named after Hansa.",
+        exp: "भैंस के दूध में गाय के दूध की मिलावट का पता लगाने के लिए 'हंसा परीक्षण' (Hansa Test) का प्रयोग किया जाता है।"
+      },
+      {
+        page: "Page 1",
+        q: "नवजात बच्चे (बछड़े) को कितनी खीस (Colostrum) पिलानी चाहिए? / How much colostrum should be fed to a newborn calf?",
+        options: ["शरीर के भार का 1/10 भाग (1/10th of body weight)", "शरीर के भार का 1/20 भाग (1/20th of body weight)", "शरीर के भार का 1/5 भाग (1/5th of body weight)", "शरीर के भार का 1/50 भाग (1/50th of body weight)"],
+        answer: "शरीर के भार का 1/10 भाग (1/10th of body weight)",
+        hint: "It is 10% of the newborn's body weight.",
+        exp: "नवजात बछड़े को उसके शरीर के कुल भार का 1/10 भाग (10%) खीस पिलानी चाहिए।"
+      },
+      {
+        page: "Page 1",
+        q: "पशुपालन प्रबन्धन (Animal Management) के रूप में प्रयुक्त चर्म कीटाणुनाशक कौन-कौन से हैं? / Which of the following are used as skin disinfectants in Animal Management?",
+        options: ["फार्मेलीन, पौटेशियम परमैंगनेट, एथिल एल्कोहल", "सोडियम क्लोराइड, यूरिया, सुक्रोज", "सल्फ्यूरिक एसिड, नाइट्रिक एसिड, फिनोल", "क्लोरोफॉर्म, ईथर, बेंजीन"],
+        answer: "फार्मेलीन, पौटेशियम परमैंगनेट, एथिल एल्कोहल",
+        hint: "Common disinfectants include Formalin, KMnO4, and Ethyl alcohol.",
+        exp: "चर्म कीटाणुनाशक के रूप में फार्मेलीन (Formalin), पोटेशियम परमैंगनेट (Potassium Permanganate) तथा एथिल एल्कोहल का उपयोग किया जाता है।"
+      },
+      {
+        page: "Page 1",
+        q: "खुरपका-मुँहपका रोग (FMD) भारत व दक्षिणी अफ्रीका में किन वायरस कारणों से होता है? / Which viruses cause Foot and Mouth Disease (FMD) in India and South Africa?",
+        options: ["SAT1, SAT2, SAT3 एवं एशिया वायरस", "H5N1 एवं H1N1", "पैरामिक्सो वायरस एवं रिनोवायरस", "पॉक्स वायरस एवं जीटीवी"],
+        answer: "SAT1, SAT2, SAT3 एवं एशिया वायरस",
+        hint: "SAT stands for South African Territories types.",
+        exp: "खुरपका-मुँहपका (FMD) भारत और दक्षिणी अफ्रीका में SAT-1, SAT-2, SAT-3 तथा Asia-1 वायरस घटकों के कारण होता है।"
+      },
+      {
+        page: "Page 1",
+        q: "किस ऋतु में खुरपका-मुँहपका (FMD) रोग का प्रकोप सर्वाधिक होता है? / In which season is the outbreak of Foot & Mouth Disease (FMD) most prevalent?",
+        options: ["बसन्त ऋतु में (Spring Season)", "शीत ऋतु में (Winter Season)", "ग्रीष्म ऋतु में (Summer Season)", "वर्षा ऋतु में (Monsoon Season)"],
+        answer: "बसन्त ऋतु में (Spring Season)",
+        hint: "It occurs maximum during spring.",
+        exp: "खुरपका-मुँहपका रोग का प्रकोप सर्वाधिक बसन्त ऋतु (Spring Season) में होता है।"
+      },
+      {
+        page: "Page 1",
+        q: "पशुप्लेग उन्मूलन योजना (Rinderpest Eradication Scheme) कब चलाई गई थी? / When was the Rinderpest Eradication Plan launched in India?",
+        options: ["1 अक्टूबर, 1954", "15 अगस्त, 1947", "26 जनवरी, 1950", "12 जुलाई, 1982"],
+        answer: "1 अक्टूबर, 1954",
+        hint: "Launched in October 1954.",
+        exp: "पशुप्लेग उन्मूलन योजना 1 अक्टूबर, 1954 को शुरू की गई थी।"
+      },
+      {
+        page: "Page 1",
+        q: "बकरी की किस नस्ल के नर व मादा दोनों में दाढ़ी (Beard) पाई जाती है? / In which goat breed do both males and females possess a beard?",
+        options: ["सानेन (Saanen)", "जमुनापारी (Jamunapari)", "बीतल (Beetal)", "मारवाड़ी (Marwari)"],
+        answer: "सानेन (Saanen)",
+        hint: "Known as the Milk Queen of the goat world.",
+        exp: "सानेन (Saanen) नस्ल की बकरी के नर एवं मादा दोनों में दाढ़ी (Beard) पाई जाती है।"
+      },
+      {
+        page: "Page 1",
+        q: "ICMR के अनुसार प्रतिदिन एक स्वस्थ व्यक्ति के लिए दूध की कितनी आवश्यकता होती है? / According to ICMR, how much milk is required per day for a healthy individual?",
+        options: ["300 ग्राम (300 grams)", "100 ग्राम (100 grams)", "500 ग्राम (500 grams)", "250 ग्राम (250 grams)"],
+        answer: "300 ग्राम (300 grams)",
+        hint: "Around 300g per day per capita.",
+        exp: "ICMR (भारतीय चिकित्सा अनुसंधान परिषद) के अनुसार एक स्वस्थ व्यक्ति को प्रतिदिन 300 ग्राम दूध की आवश्यकता होती है।"
+      },
+      {
+        page: "Page 1",
+        q: "राष्ट्रीय डेयरी विकास बोर्ड (NDDB) की स्थापना कब और कहाँ हुई थी? / When and where was the National Dairy Development Board (NDDB) established?",
+        options: ["आनन्द (गुजरात), 1965", "करनाल (हरियाणा), 1955", "इज्जतनगर (यूपी), 1970", "हिसार (हरियाणा), 1985"],
+        answer: "आनन्द (गुजरात), 1965",
+        hint: "Located in Anand, Gujarat in 1965.",
+        exp: "राष्ट्रीय डेयरी विकास बोर्ड (NDDB) की स्थापना वर्ष 1965 में आनन्द (गुजरात) में हुई थी।"
+      },
+      {
+        page: "Page 1",
+        q: "राष्ट्रीय डेयरी अनुसंधान संस्थान (NDRI) की स्थापना कब और कहाँ हुई थी? / When and where was National Dairy Research Institute (NDRI) established?",
+        options: ["करनाल (हरियाणा), 1955", "आनन्द (गुजरात), 1965", "बीकानेर (राजस्थान), 1993", "मथुरा (यूपी), 1989"],
+        answer: "करनाल (हरियाणा), 1955",
+        hint: "Located in Karnal, Haryana.",
+        exp: "राष्ट्रीय डेयरी अनुसंधान संस्थान (NDRI) की स्थापना 1955 में करनाल (हरियाणा) में हुई थी।"
+      },
+      {
+        page: "Page 1",
+        q: "भारतीय डेयरी निगम (IDC) की स्थापना कब हुई थी? / When was Indian Dairy Corporation established?",
+        options: ["13 जनवरी 1970 (आनन्द, गुजरात)", "15 अगस्त 1965 (दिल्ली)", "26 नवम्बर 1980 (करनाल)", "1 जुलाई 1978 (मुंबई)"],
+        answer: "13 जनवरी 1970 (आनन्द, गुजरात)",
+        hint: "Established on 13th January 1970 in Anand.",
+        exp: "भारतीय डेयरी निगम (Indian Dairy Corporation) की स्थापना 13 जनवरी 1970 को आनन्द (गुजरात) में की गई थी।"
+      },
+      {
+        page: "Page 1",
+        q: "श्वेत क्रांति (Operation Flood) की शुरुआत 1970 में किसके द्वारा की गई थी? / White Revolution / Operation Flood was launched in 1970 by which board?",
+        options: ["राष्ट्रीय डेयरी विकास बोर्ड (NDDB)", "ICAR", "IVRI", "NABARD"],
+        answer: "राष्ट्रीय डेयरी विकास बोर्ड (NDDB)",
+        hint: "NDDB launched Operation Flood.",
+        exp: "श्वेत क्रांति की शुरुआत NDDB (राष्ट्रीय डेयरी विकास बोर्ड) द्वारा 1970 में ऑपरेशन फ्लड के माध्यम से की गई थी।"
+      },
+      {
+        page: "Page 1",
+        q: "ऑपरेशन फ्लड का मुख्य उद्देश्य क्या था? / What were the main objectives of Operation Flood?",
+        options: ["देश में दुग्ध उत्पादन बढ़ाना, किसानों को दूध का उचित मूल्य दिलाना, ग्रामीण आय में वृद्धि करना", "केवल मुर्गियों का संवर्धन", "पशु रोगों का पूर्ण विनाश", "केवल विदेशी नस्लों का आयात"],
+        answer: "देश में दुग्ध उत्पादन बढ़ाना, किसानों को दूध का उचित मूल्य दिलाना, ग्रामीण आय में वृद्धि करना",
+        hint: "All 3 options related to milk production & rural income.",
+        exp: "ऑपरेशन फ्लड का मुख्य उद्देश्य दुग्ध उत्पादन बढ़ाना, किसानों को उचित मूल्य दिलाना तथा ग्रामीण आय में वृद्धि करना था।"
+      },
+      {
+        page: "Page 1",
+        q: "ऑपरेशन फ्लड का दूसरा चरण कब से कब तक चला? / What was the period of Operation Flood Phase II?",
+        options: ["1 जुलाई 1978 से 1985 तक", "1970 से 1975 तक", "1985 से 1996 तक", "1990 से 2000 तक"],
+        answer: "1 जुलाई 1978 से 1985 तक",
+        hint: "Phase 1 started 1970, Phase 2 ran from 1 July 1978 to 1985.",
+        exp: "ऑपरेशन फ्लड का प्रथम चरण 1970 में शुरू हुआ तथा दूसरा चरण 1 जुलाई 1978 से 1985 तक चला।"
+      },
+      {
+        page: "Page 1",
+        q: "सेपरेट दूध (Skimmed Milk) का सही संघटन (Fat & SNF) क्या है? / What is the fat and SNF composition of Skimmed Milk?",
+        options: ["वसा < 0.5%, SNF = 8.7%", "वसा < 3.0%, SNF = 8.5%", "वसा = 1.5%, SNF = 9.0%", "वसा = 4.5%, SNF = 8.5%"],
+        answer: "वसा < 0.5%, SNF = 8.7%",
+        hint: "Fat is less than 0.5% and SNF is 8.7%.",
+        exp: "सेपरेट दूध (Skimmed Milk) में वसा 0.5% से कम तथा SNF 8.7% होता है।"
+      },
+      {
+        page: "Page 1",
+        q: "टोंड मिल्क (Toned Milk) में वसा और SNF का क्या प्रतिशत होता है? / What is the standard Fat and SNF percentage in Toned Milk?",
+        options: ["वसा < 3.0%, SNF = 8.5%", "वसा < 0.5%, SNF = 8.7%", "वसा < 1.5%, SNF = 9.0%", "वसा = 6.0%, SNF = 9.0%"],
+        answer: "वसा < 3.0%, SNF = 8.5%",
+        hint: "Fat < 3.0% and SNF = 8.5%.",
+        exp: "टोंड मिल्क (Toned Milk) का संघटन: वसा 3.0% से कम तथा SNF (Solid Not Fat) = 8.5% होता है।"
+      },
+      {
+        page: "Page 1",
+        q: "डबल टोंड मिल्क (Double Toned Milk) का मानक संघटन क्या है? / What is the standard Fat and SNF content in Double Toned Milk?",
+        options: ["वसा < 1.5%, SNF = 9.0%", "वसा < 3.0%, SNF = 8.5%", "वसा < 0.5%, SNF = 8.7%", "वसा = 4.0%, SNF = 8.0%"],
+        answer: "वसा < 1.5%, SNF = 9.0%",
+        hint: "Fat is under 1.5% and SNF is 9.0%.",
+        exp: "डबल टोंड मिल्क में वसा 1.5% से कम तथा SNF (Solid Not Fat) 9.0% होता है।"
+      },
+      {
+        page: "Page 1",
+        q: "भारत में 'दूध क्रांति का जनक' (Father of White Revolution) किसे कहा जाता है? / Who is known as the Father of White Revolution in India?",
+        options: ["डॉ. वर्गिस कुरियन (Dr. Verghese Kurien)", "एम. एस. स्वामीनाथन", "डॉ. एन. ई. बोरलॉग", "डॉ. आर. एस. पारोदा"],
+        answer: "डॉ. वर्गिस कुरियन (Dr. Verghese Kurien)",
+        hint: "Architect of Operation Flood.",
+        exp: "भारत में दुग्ध क्रांति का जनक डॉ. वर्गिस कुरियन (Dr. Verghese Kurien) को माना जाता है।"
+      },
+      {
+        page: "Page 1",
+        q: "भारत के किस राज्य में बकरियां नहीं पाई जाती हैं? / In which state of India are goats NOT found (as per book list)?",
+        options: ["कर्नाटक (Karnataka)", "हरियाणा (Haryana)", "राजस्थान (Rajasthan)", "केरल (Kerala)"],
+        answer: "कर्नाटक (Karnataka)",
+        hint: "State specified in the textbook table for zero/negligible goat presence.",
+        exp: "पाठ्यपुस्तकानुसार भारत के 'कर्नाटक' राज्य में बकरियां नहीं पाई जाती हैं।"
+      },
+      {
+        page: "Page 1",
+        q: "दूध निकालते समय पशु के डर जाने पर किस हार्मोन के कारण पशु दूध चढ़ा (Holding Up) लेते हैं? / Which hormone causes milk holding up in animals due to fear or stress during milking?",
+        options: ["इपीनेफ्रीन (Epinephrine)", "ऑक्सीटोसिन (Oxytocin)", "प्रोलैक्टिन (Prolactin)", "एस्ट्रोजन (Estrogen)"],
+        answer: "इपीनेफ्रीन (Epinephrine)",
+        hint: "Adrenaline/Epinephrine causes milk retention/holding.",
+        exp: "डरने या तनाव में आने पर 'इपीनेफ्रीन' (Epinephrine/Adrenaline) हार्मोन के स्राव से पशु दूध चढ़ा लेते हैं, जबकि ऑक्सीटोसिन दूध उतारने में मदद करता है।"
+      },
+      {
+        page: "Page 1",
+        q: "जम्मू-कश्मीर का प्रसिद्ध भेड़-बकरियां पालने वाला समुदाय कौन सा है? / Which community is famous for rearing sheep and goats in Jammu & Kashmir?",
+        options: ["गुर्ज़र बकरवाल (Gurjar Bakarwal)", "गद्दी (Gaddi)", "राइका (Raika)", "धंगर (Dhangar)"],
+        answer: "गुर्ज़र बकरवाल (Gurjar Bakarwal)",
+        hint: "Bakarwals of J&K.",
+        exp: "जम्मू-कश्मीर का प्रसिद्ध भेड़-बकरी पालक समुदाय 'गुर्ज़र बकरवाल' (Gurjar Bakarwal) है। (हिमाचल प्रदेश के चरवाहे 'गद्दी' कहलाते हैं)।"
+      },
+
+      // --- PAGE 2 (25 Questions) ---
+      {
+        page: "Page 2",
+        q: "गाय (Cow/Cattle) के समूह (Group) और आवास (Home) को क्रमशः क्या कहते हैं? / What are the group and shelter terms for Cow/Cattle?",
+        options: ["Herd, Barn", "Flock, Pen", "Trip, Pen", "Drove, Sty"],
+        answer: "Herd, Barn",
+        hint: "Group is Herd, Home is Barn.",
+        exp: "गाय के समूह को Herd तथा उसके रहने के स्थान (घर) को Barn कहते हैं।"
+      },
+      {
+        page: "Page 2",
+        q: "भेड़ (Sheep) के वयस्क नर, वयस्क मादा, नवजात तथा समूह का सही युग्म क्या है? / What are the correct terms for Sheep (Adult Male, Adult Female, Newborn, Group)?",
+        options: ["Ram, Ewe, Lamb, Flock", "Buck, Doe, Kid, Trip", "Boar, Sow, Piglet, Drove", "Stallion, Mare, Foal, Pack"],
+        answer: "Ram, Ewe, Lamb, Flock",
+        hint: "Ram (Male), Ewe (Female), Lamb (Newborn), Flock (Group).",
+        exp: "भेड़ में: वयस्क नर = Ram, वयस्क मादा = Ewe, नवजात = Lamb, समूह = Flock, घर = Pen।"
+      },
+      {
+        page: "Page 2",
+        q: "बकरी (Goat) के समूह को 'Trip/Band' तथा घर को 'Pen' कहते हैं, इसके वयस्क नर व मादा को क्या कहते हैं? / What are adult male and female goats called?",
+        options: ["Buck, Doe (Nanny)", "Ram, Ewe", "Boar, Sow", "Bull, Cow"],
+        answer: "Buck, Doe (Nanny)",
+        hint: "Buck and Doe/Nanny.",
+        exp: "बकरी के वयस्क नर को Buck तथा वयस्क मादा को Doe या Nanny कहते हैं।"
+      },
+      {
+        page: "Page 2",
+        q: "सूअर (Pig/Swine) के आवास (Home) और समूह (Group) को क्या कहा जाता है? / What are the shelter and group terms for Swine/Pig?",
+        options: ["Sty, Drove", "Barn, Herd", "Pen, Flock", "Stable, Pack"],
+        answer: "Sty, Drove",
+        hint: "Pig housing is Pigsty (Sty) and group is Drove.",
+        exp: "सूअर के समूह को Drove तथा घर/आवास को Sty कहते हैं।"
+      },
+      {
+        page: "Page 2",
+        q: "घोड़ा (Horse) के जवान नर को 'Colt' एवं जवान मादा को 'Filly' कहते हैं; इसके घर (Home) को क्या कहा जाता है? / What is the home/shelter of a Horse called?",
+        options: ["Stable", "Barn", "Sty", "Kennel"],
+        answer: "Stable",
+        hint: "Horses live in a Stable.",
+        exp: "घोड़े के रहने के स्थान को Stable (अस्तबल) कहते हैं। नर को Stallion, मादा को Mare कहते हैं।"
+      },
+      {
+        page: "Page 2",
+        q: "ऊँट (Camel) के वयस्क नर को Maiya/Oant तथा नवजात/जवान को Tordia कहते हैं; इसके समूह को क्या कहते हैं? / What is the group term for Camel?",
+        options: ["Tika", "Flock", "Herd", "Drove"],
+        answer: "Tika",
+        hint: "Group of camels is Tika.",
+        exp: "ऊँट के समूह को 'Tika' कहा जाता है।"
+      },
+      {
+        page: "Page 2",
+        q: "कुत्ता (Dog) और बिल्ली (Cat) के समूहों (Group) का सही जोड़ा क्या है? / What are the correct group names for Dog and Cat?",
+        options: ["Kennel, Clowder", "Pack, Herd", "Flock, Drove", "Trip, Band"],
+        answer: "Kennel, Clowder",
+        hint: "Dog group/shelter Kennel, Cat group Clowder.",
+        exp: "कुत्ते के घर/समूह हेतु Kennel तथा बिल्ली के समूह को Clowder (तथा घर हेतु Ketting) शब्द प्रयोग होता है।"
+      },
+      {
+        page: "Page 2",
+        q: "भेड़ व भैंस पालना तथा कंबल बुनना किस समुदाय का पारंपरिक व्यवसाय है? / Sheep/Buffalo rearing and blanket weaving is associated with which community?",
+        options: ["धंगर (Dhangar)", "राइका (Raika)", "गद्दी (Gaddi)", "बकरवाल (Bakarwal)"],
+        answer: "धंगर (Dhangar)",
+        hint: "Dhangars are traditionally sheep herders & blanket weavers.",
+        exp: "भेड़ व भैंस पालना तथा कंबल बुनना 'धंगर' (Dhangar) समुदाय से संबंधित है।"
+      },
+      {
+        page: "Page 2",
+        q: "राजस्थान का कौन सा समुदाय ऊँट (Camel) पालने के लिए प्रसिद्ध है? / Which community of Rajasthan is famous for Camel rearing?",
+        options: ["राइका / रेबारी (Raika)", "गुर्ज़र", "धंगर", "गद्दी"],
+        answer: "राइका / रेबारी (Raika)",
+        hint: "Raika / Rebari of Rajasthan.",
+        exp: "राजस्थान में ऊँट पालने के लिए 'राइका' (Raika / Rebari) समुदाय सुप्रसिद्ध है।"
+      },
+      {
+        page: "Page 2",
+        q: "विश्व क्षयरोग दिवस (World TB Day) कब मनाया जाता है? / When is World TB Day celebrated?",
+        options: ["24 मार्च (24 March)", "25 अप्रैल (25 April)", "1 जून (1 June)", "6 जुलाई (6 July)"],
+        answer: "24 मार्च (24 March)",
+        hint: "Celebrated in March.",
+        exp: "विश्व क्षयरोग (TB) दिवस 24 मार्च को मनाया जाता है।"
+      },
+      {
+        page: "Page 2",
+        q: "विश्व मलेरिया दिवस (World Malaria Day) किस तिथि को मनाया जाता है? / On which date is World Malaria Day observed?",
+        options: ["25 अप्रैल (25 April)", "24 मार्च (24 March)", "28 सितम्बर (28 September)", "26 नवम्बर (26 November)"],
+        answer: "25 अप्रैल (25 April)",
+        hint: "Observed on 25th April.",
+        exp: "विश्व मलेरिया दिवस 25 अप्रैल को मनाया जाता है।"
+      },
+      {
+        page: "Page 2",
+        q: "विश्व पशु चिकित्सा दिवस (World Veterinary Day) कब मनाया जाता है? / When is World Veterinary Day observed?",
+        options: ["अप्रैल का अंतिम शनिवार (Last Saturday of April)", "1 जून (1st June)", "6 जुलाई (6th July)", "28 सितम्बर (28th September)"],
+        answer: "अप्रैल का अंतिम शनिवार (Last Saturday of April)",
+        hint: "Last Saturday of April.",
+        exp: "विश्व पशु चिकित्सा दिवस अप्रैल माह के अंतिम शनिवार (Last Saturday of April) को मनाया जाता है।"
+      },
+      {
+        page: "Page 2",
+        q: "विश्व दुग्ध दिवस (World Milk Day) किस तिथि को मनाया जाता है? / When is World Milk Day celebrated globally?",
+        options: ["1 जून (1st June)", "26 नवम्बर (26th November)", "24 मार्च (24th March)", "6 जुलाई (6th July)"],
+        answer: "1 जून (1st June)",
+        hint: "1st June.",
+        exp: "विश्व दुग्ध दिवस (World Milk Day) प्रतिवर्ष 1 जून को मनाया जाता है।"
+      },
+      {
+        page: "Page 2",
+        q: "राष्ट्रीय दुग्ध दिवस (National Milk Day) 26 नवम्बर को किसके जन्मदिन पर मनाया जाता है? / National Milk Day (26 Nov) is celebrated on whose birth anniversary?",
+        options: ["डॉ. वर्गिस कुरियन (Dr. Verghese Kurien)", "एम. एस. स्वामीनाथन", "सैम पित्रोदा", "डॉ. वी. पी. राव"],
+        answer: "डॉ. वर्गिस कुरियन (Dr. Verghese Kurien)",
+        hint: "Milkman of India.",
+        exp: "राष्ट्रीय दुग्ध दिवस 26 नवम्बर को 'मिलमैन ऑफ इंडिया' डॉ. वर्गिस कुरियन के जन्मदिन के अवसर पर मनाया जाता है।"
+      },
+      {
+        page: "Page 2",
+        q: "विश्व जुनोसिस दिवस (World Zoonoses Day) किस तारीख को मनाया जाता है? / On which date is World Zoonoses Day observed?",
+        options: ["6 जुलाई (6th July)", "28 सितम्बर (28th September)", "25 अप्रैल (25th April)", "1 जून (1st June)"],
+        answer: "6 जुलाई (6th July)",
+        hint: "6th July.",
+        exp: "विश्व जुनोसिस दिवस (World Zoonoses Day) 6 जुलाई को मनाया जाता है।"
+      },
+      {
+        page: "Page 2",
+        q: "विश्व रेबीज दिवस (World Rabies Day) कब मनाया जाता है? / When is World Rabies Day observed?",
+        options: ["28 सितम्बर (28th September)", "6 जुलाई (6th July)", "24 मार्च (24th March)", "26 नवम्बर (26th November)"],
+        answer: "28 सितम्बर (28th September)",
+        hint: "28th September.",
+        exp: "विश्व रेबीज दिवस 28 सितम्बर को मनाया जाता है।"
+      },
+      {
+        page: "Page 2",
+        q: "विश्व चिकन दिवस और विश्व अण्डा दिवस क्रमशः कब मनाए जाते हैं? / When are World Chicken Day and World Egg Day celebrated?",
+        options: ["अक्टूबर का द्वितीय गुरुवार & अक्टूबर का द्वितीय शुक्रवार", "1 जून & 26 नवम्बर", "25 अप्रैल & 24 मार्च", "6 जुलाई & 28 सितम्बर"],
+        answer: "अक्टूबर का द्वितीय गुरुवार & अक्टूबर का द्वितीय शुक्रवार",
+        hint: "2nd Thursday & 2nd Friday of October.",
+        exp: "विश्व चिकन दिवस - अक्टूबर का द्वितीय गुरुवार तथा विश्व अण्डा दिवस - अक्टूबर का द्वितीय शुक्रवार को मनाया जाता है।"
+      },
+      {
+        page: "Page 2",
+        q: "इंडियन वेटनरी रिसर्च इंस्टीट्यूट (IVRI) कहाँ स्थित है? / Where is the Indian Veterinary Research Institute (IVRI) located?",
+        options: ["इज्जतनगर, बरेली (उत्तर प्रदेश)", "करनाल (हरियाणा)", "मगदूम, मथुरा (उत्तर प्रदेश)", "मेरठ (उत्तर प्रदेश)"],
+        answer: "इज्जतनगर, बरेली (उत्तर प्रदेश)",
+        hint: "Izatnagar, Bareilly (UP).",
+        exp: "IVRI (इंडियन वेटनरी रिसर्च इंस्टीट्यूट) इज्जतनगर, बरेली (उत्तर प्रदेश) में स्थित है।"
+      },
+      {
+        page: "Page 2",
+        q: "सेंट्रल इंस्टीट्यूट फॉर रिसर्च ऑन गोट (CIRG) कहाँ स्थित है? / Where is Central Institute for Research on Goats (CIRG) located?",
+        options: ["मगदूम, मथुरा (उत्तर प्रदेश)", "हिसार (हरियाणा)", "अविकानगर, टोंक (राजस्थान)", "मेरठ (उत्तर प्रदेश)"],
+        answer: "मगदूम, मथुरा (उत्तर प्रदेश)",
+        hint: "Makhdoom, Mathura (U.P.).",
+        exp: "CIRG (सेंट्रल इंस्टीट्यूट फॉर रिसर्च ऑन गोट) मगदूम, मथुरा (उ.प्र.) में स्थित है।"
+      },
+      {
+        page: "Page 2",
+        q: "सेंट्रल इंस्टीट्यूट फॉर रिसर्च ऑन कैटल (CIRC) कहाँ स्थित है? / Where is Central Institute for Research on Cattle (CIRC) situated?",
+        options: ["मेरठ (उत्तर प्रदेश)", "हिसार (हरियाणा)", "करनाल (हरियाणा)", "बीकानेर (राजस्थान)"],
+        answer: "मेरठ (उत्तर प्रदेश)",
+        hint: "Meerut (UP).",
+        exp: "CIRC (Central Institute for Research on Cattle) मेरठ (उत्तर प्रदेश) में स्थित है।"
+      },
+      {
+        page: "Page 2",
+        q: "सेंट्रल इंस्टीट्यूट फॉर रिसर्च ऑन बफेलो (CIRB) कहाँ स्थित है? / Central Institute for Research on Buffaloes (CIRB) is located in which city?",
+        options: ["हिसार (हरियाणा)", "करनाल (हरियाणा)", "बरेली (यूपी)", "गुवाहाटी (असाम)"],
+        answer: "हिसार (हरियाणा)",
+        hint: "Hisar, Haryana.",
+        exp: "CIRB (सेंट्रल इंस्टीट्यूट फॉर रिसर्च ऑन बफेलो) हिसार (हरियाणा) में स्थित है।"
+      },
+      {
+        page: "Page 2",
+        q: "सेन्ट्रल शीप एण्ड ऊल रिसर्च इंस्टीट्यूट (CSWRI) कहाँ स्थित है? / Where is Central Sheep and Wool Research Institute (CSWRI) situated?",
+        options: ["अविकानगर, मालपुरा, टोंक (राजस्थान)", "बीकानेर (राजस्थान)", "मथुरा (यूपी)", "हिसार (हरियाणा)"],
+        answer: "अविकानगर, मालपुरा, टोंक (राजस्थान)",
+        hint: "Avikanagar, Malpura, Tonk (Rajasthan).",
+        exp: "CSWRI (सेन्ट्रल शीप एण्ड ऊल रिसर्च इंस्टीट्यूट) अविकानगर, मालपुरा, टोंक (राजस्थान) में स्थित है।"
+      },
+      {
+        page: "Page 2",
+        q: "सेन्ट्रल एवियन रिसर्च इंस्टीट्यूट (CARI) कहाँ स्थित है? / Central Avian Research Institute (CARI) is located at:",
+        options: ["इज्जतनगर, बरेली (उत्तर प्रदेश)", "गुवाहाटी (असाम)", "दीरांग (अरुणाचल प्रदेश)", "बेंगलुरू (कर्नाटक)"],
+        answer: "इज्जतनगर, बरेली (उत्तर प्रदेश)",
+        hint: "Izatnagar, Bareilly (UP).",
+        exp: "CARI (सेन्ट्रल एवियन रिसर्च इंस्टीट्यूट) इज्जतनगर, बरेली (उ.प्र.) में स्थित है।"
+      },
+      {
+        page: "Page 2",
+        q: "नेशनल रिसर्च सेंटर ऑन कैमल (NRCC) कहाँ स्थित है? / Where is National Research Centre on Camel (NRCC) located?",
+        options: ["बीकानेर (राजस्थान)", "टोंक (राजस्थान)", "हिसार (हरियाणा)", "झरनापानी (नागालैंड)"],
+        answer: "बीकानेर (राजस्थान)",
+        hint: "Bikaner, Rajasthan.",
+        exp: "NRCC (नेशनल रिसर्च सेंटर ऑन कैमल) बीकानेर (राजस्थान) में स्थित है।"
+      },
+      {
+        page: "Page 2",
+        q: "नेशनल रिसर्च सेंटर ऑन इक्वाइन (NRCE) कहाँ स्थित है? / Where is National Research Centre on Equines (NRCE) located?",
+        options: ["हिसार (हरियाणा)", "करनाल (हरियाणा)", "मेरठ (उत्तर प्रदेश)", "हैदराबाद (तेलंगाना)"],
+        answer: "हिसार (हरियाणा)",
+        hint: "Hisar, Haryana.",
+        exp: "NRCE (नेशनल रिसर्च सेंटर ऑन इक्वाइन - घोड़ों पर अनुसंधान) हिसार (हरियाणा) में स्थित है।"
+      },
+
+      // --- PAGE 3 (5 Questions) ---
+      {
+        page: "Page 3",
+        q: "नेशनल रिसर्च सेंटर ऑन पिग (NRCP) कहाँ स्थित है? / Where is National Research Centre on Pig (NRCP) located?",
+        options: ["रानी, गुवाहाटी (असाम)", "झरनापानी (नागालैंड)", "दीरांग (अरुणाचल प्रदेश)", "हैदराबाद (तेलंगाना)"],
+        answer: "रानी, गुवाहाटी (असाम)",
+        hint: "Rani, Guwahati, Assam.",
+        exp: "NRCP (नेशनल रिसर्च सेंटर ऑन पिग) रानी, गुवाहाटी (असाम) में स्थित है।"
+      },
+      {
+        page: "Page 3",
+        q: "नेशनल रिसर्च सेंटर ऑन याक (NRCY) कहाँ स्थित है? / Where is National Research Centre on Yak (NRCY) located?",
+        options: ["दीरांग (अरुणाचल प्रदेश)", "झरनापानी (नागालैंड)", "शिलोंग (मेघालय)", "गंगटोक (सिक्किम)"],
+        answer: "दीरांग (अरुणाचल प्रदेश)",
+        hint: "Dirang, Arunachal Pradesh.",
+        exp: "NRCY (नेशनल रिसर्च सेंटर ऑन याक) दीरांग (अरुणाचल प्रदेश) में स्थित है।"
+      },
+      {
+        page: "Page 3",
+        q: "नेशनल रिसर्च सेंटर ऑन मीट (NRCM) एवं डायरेक्टरेट ऑफ पोल्ट्री रिसर्च (DPR) कहाँ स्थित हैं? / Where are NRCM and DPR located?",
+        options: ["हैदराबाद (तेलंगाना)", "करनाल (हरियाणा)", "बेंगलुरू (कर्नाटक)", "इज्जतनगर (यूपी)"],
+        answer: "हैदराबाद (तेलंगाना)",
+        hint: "Hyderabad, Telangana.",
+        exp: "NRCM (नेशनल रिसर्च सेंटर ऑन मीट) तथा DPR (डायरेक्टरेट ऑफ पोल्ट्री रिसर्च) दोनों हैदराबाद (तेलंगाना) में स्थित हैं।"
+      },
+      {
+        page: "Page 3",
+        q: "नेशनल रिसर्च सेंटर ऑन मिथुन (NRCMI) कहाँ स्थित है? / Where is National Research Centre on Mithun (NRCMI) located?",
+        options: ["झरनापानी (नागालैंड)", "दीरांग (अरुणाचल प्रदेश)", "गुवाहाटी (असाम)", "इम्फाल (मणिपुर)"],
+        answer: "झरनापानी (नागालैंड)",
+        hint: "Jharnapani, Nagaland.",
+        exp: "NRCMI (नेशनल रिसर्च सेंटर ऑन मिथुन) झरनापानी (नागालैंड) में स्थित है।"
+      },
+      {
+        page: "Page 3",
+        q: "नेशनल ब्यूरो ऑफ एनिमल जेनेटिक्स रिसोर्सेज (NBAGR) कहाँ स्थित है? / Where is National Bureau of Animal Genetic Resources (NBAGR) located?",
+        options: ["करनाल (हरियाणा)", "बेंगलुरू (कर्नाटक)", "मथुरा (यूपी)", "हिसार (हरियाणा)"],
+        answer: "करनाल (हरियाणा)",
+        hint: "Karnal, Haryana.",
+        exp: "NBAGR (नेशनल ब्यूरो ऑफ एनिमल जेनेटिक्स रिसोर्सेज) करनाल (हरियाणा) में स्थित है।"
+      },
+
+      // --- PAGE 4 (15 Questions) ---
+      {
+        page: "Page 4",
+        q: "सर्वप्रथम प्राचीन काल में पूर्वी भारत में असील (Aseel) नस्ल की मुर्गियों/मुर्गों को किस उद्देश्य से पाला जाता था? / Originally in ancient East India, why was the Aseel breed raised?",
+        options: ["लड़ाने के लिए (For Cockfighting)", "अण्डा उत्पादन के लिए (Egg Production)", "केवल ऊन के लिए", "दूध उत्पादन के लिए"],
+        answer: "लड़ाने के लिए (For Cockfighting)",
+        hint: "Raised for fighting games.",
+        exp: "सर्वप्रथम प्राचीन काल में पूर्वी भारत में असील (Aseel) नस्ल के मुर्गों को मुर्गों की लड़ाई (Cockfighting) के लिए पाला जाता था, बाद में अण्डा/मांस उत्पादन हेतु।"
+      },
+      {
+        page: "Page 4",
+        q: "भारत में मुर्गीपालन को बढ़ावा देने के लिए 1979 में केंद्रीय पक्षी अनुसंधान संस्थान (CARI) की स्थापना कहाँ की गई? / In 1979, where was CARI established to promote poultry farming?",
+        options: ["उत्तर प्रदेश के इज्जतनगर में", "हरियाणा के करनाल में", "आंध्र प्रदेश के हैदराबाद में", "राजस्थान के बीकानेर में"],
+        answer: "उत्तर प्रदेश के इज्जतनगर में",
+        hint: "Izatnagar, UP.",
+        exp: "1979 में उत्तर प्रदेश के इज्जतनगर में केंद्रीय पक्षी अनुसंधान संस्थान (CARI) की स्थापना की गई थी।"
+      },
+      {
+        page: "Page 4",
+        q: "वर्तमान में भारत में मुर्गियों के प्रति व्यक्ति प्रति वर्ष अण्डों की खपत कितनी है तथा किस राज्य का प्रथम स्थान है? / What is the per capita egg consumption per year in India and which state ranks 1st in poultry?",
+        options: ["57 अण्डे; आंध्र प्रदेश का प्रथम स्थान", "100 अण्डे; हरियाणा का प्रथम स्थान", "200 अण्डे; पंजाब का प्रथम स्थान", "30 अण्डे; उत्तर प्रदेश का प्रथम स्थान"],
+        answer: "57 अण्डे; आंध्र प्रदेश का प्रथम स्थान",
+        hint: "57 eggs per person; Andhra Pradesh is top.",
+        exp: "पुस्तक के अनुसार भारत में अण्डों की खपत 57 अण्डे प्रति व्यक्ति प्रति वर्ष है तथा मुर्गीपालन क्षेत्र में आंध्र प्रदेश का प्रथम स्थान है।"
+      },
+      {
+        page: "Page 4",
+        q: "रोड आइलैंड रेड (Rhode Island Red) मुर्गी नस्ल का मूल स्थान क्या है? / What is the origin place of Rhode Island Red breed?",
+        options: ["अमेरिका (USA)", "इटली (Italy)", "इंग्लैंड (England)", "भारत (India)"],
+        answer: "अमेरिका (USA)",
+        hint: "USA.",
+        exp: "रोड आइलैंड रेड (RIR) का मूल स्थान अमेरिका है। यह मलायगेम, लेगहॉर्न तथा एशियाटिक मूल की नस्लों के संकरण से विकसित हुई है।"
+      },
+      {
+        page: "Page 4",
+        q: "रोड आइलैंड रेड (Rhode Island Red) के मुर्गे तथा मुर्गी का सामान्य वजन कितना होता है? / What is the average weight of RIR cock and hen?",
+        options: ["मुर्गा 3.8 किग्रा तथा मुर्गी 3.0 किग्रा", "मुर्गा 5.9 किग्रा तथा मुर्गी 4.5 किग्रा", "मुर्गा 1.5 किग्रा तथा मुर्गी 1.0 किग्रा", "मुर्गा 2.0 किग्रा तथा मुर्गी 1.5 किग्रा"],
+        answer: "मुर्गा 3.8 किग्रा तथा मुर्गी 3.0 किग्रा",
+        hint: "Cock: 3.8 kg, Hen: 3.0 kg.",
+        exp: "रोड आइलैंड रेड के मुर्गे का वजन सामान्यतः 3.8 किग्रा तथा मुर्गी का वजन 3.0 किग्रा होता है।"
+      },
+      {
+        page: "Page 4",
+        q: "व्हाइट लेगहॉर्न (White Leghorn) नस्ल का मूल स्थान (Origin) कौन-सा देश है? / What is the place of origin of White Leghorn breed?",
+        options: ["इटली (Italy)", "अमेरिका (USA)", "इंग्लैंड (England)", "चीन (China)"],
+        answer: "इटली (Italy)",
+        hint: "Italy (came to US in 1835).",
+        exp: "व्हाइट लेगहॉर्न (White Leghorn) का मूल स्थान इटली (Italy) है। सन 1835 में यह नस्ल अमेरिका पहुँची थी।"
+      },
+      {
+        page: "Page 4",
+        q: "मेडिटेरेनियन (Mediterranean) वर्ग की सबसे अच्छी अण्डा देने वाली नस्ल कौन-सी है? / Which is the best egg-laying breed belonging to the Mediterranean class?",
+        options: ["व्हाइट लेगहॉर्न (White Leghorn)", "असील (Aseel)", "कड़कनाथ (Kadaknath)", "प्लाईमाउथ रॉक (Plymouth Rock)"],
+        answer: "व्हाइट लेगहॉर्न (White Leghorn)",
+        hint: "White Leghorn.",
+        exp: "व्हाइट लेगहॉर्न मेडिटेरेनियन वर्ग की सबसे अच्छी अण्डा देने वाली नस्ल है (लगभग 240 अण्डे प्रति वर्ष देती है)।"
+      },
+      {
+        page: "Page 4",
+        q: "व्हाइट लेगहॉर्न की शारीरिक विशेषताएं क्या हैं? / What are physical characteristics of White Leghorn?",
+        options: ["छोटा आकार, क्रियाशील, लाल सिर पर छोटी कलगी (Comb), गलचर्म (Wattle) सुव्यवस्थित, टांगे-चोंच पीली", "काली त्वचा एवं काला मांस", "विशाल भारी शरीर 6 किग्रा", "सिर पर दाढ़ी"],
+        answer: "छोटा आकार, क्रियाशील, लाल सिर पर छोटी कलगी (Comb), गलचर्म (Wattle) सुव्यवस्थित, टांगे-चोंच पीली",
+        hint: "Small active bird with yellow beak & shank.",
+        exp: "व्हाइट लेगहॉर्न का आकार छोटा, स्वभाव सफा-सुथरा व एक्टिव, छोटी कलगी (Comb), गलचर्म (Wattle) तथा टांगे व चोंच पीली होती है।"
+      },
+      {
+        page: "Page 4",
+        q: "रेड कॉर्निश (Red Cornish) नस्ल का मूल स्थान कहाँ है और इसे किन नस्लों के संकरण से विकसित किया गया? / Origin of Red Cornish and its crossbreeding origins?",
+        options: ["इंग्लैंड; असील, मलाया तथा इंग्लिश लड़ाकू नस्लों के संकरण से", "अमेरिका; लेगहॉर्न व रोड आइलैंड", "इटली; देशी नस्लों से", "चीन; शंघाई पक्षी से"],
+        answer: "इंग्लैंड; असील, मलाया तथा इंग्लिश लड़ाकू नस्लों के संकरण से",
+        hint: "England; cross of Aseel, Malaya & English fighting game breeds.",
+        exp: "रेड कॉर्निश का मूल स्थान इंग्लैंड है। यह असील, मलाया तथा इंग्लिश लड़ाकू नस्लों के संकरण से विकसित की गई है।"
+      },
+      {
+        page: "Page 4",
+        q: "रेड कॉर्निश नस्ल की मुख्य उपयोगिता क्या है? / What is the primary commercial utility of Red Cornish?",
+        options: ["अण्डों की बजाय उत्कृष्ट स्वादिष्ट मांस (Broiler/Meat)", "केवल अण्डा उत्पादन", "लड़ाई का खेल", "ऊन उत्पादन"],
+        answer: "अण्डों की बजाय उत्कृष्ट स्वादिष्ट मांस (Broiler/Meat)",
+        hint: "Reared for high quality meat.",
+        exp: "रेड कॉर्निश को अण्डों की बजाय स्वादिष्ट मांस (Meat) के लिए पाला जाता है क्योंकि इसका मांस उत्तम गुणवत्ता का होता है।"
+      },
+      {
+        page: "Page 4",
+        q: "प्लाईमाउथ रॉक (Plymouth Rock) का मूल स्थान कौन-सा देश है? / What is the native country of Plymouth Rock breed?",
+        options: ["अमेरिका (USA)", "इटली (Italy)", "इंग्लैंड (England)", "भारत (India)"],
+        answer: "अमेरिका (USA)",
+        hint: "USA.",
+        exp: "प्लाईमाउथ रॉक (Plymouth Rock) नस्ल का मूल स्थान अमेरिका (USA) है।"
+      },
+      {
+        page: "Page 4",
+        q: "व्हाइट लेगहॉर्न मुर्गी किस उम्र में अण्डा देना प्रारम्भ कर देती है? / At what age does a White Leghorn hen start laying eggs?",
+        options: ["5-6 माह की उम्र में (5-6 months)", "2 माह की उम्र में (2 months)", "1 वर्ष की उम्र में (1 year)", "8-10 माह की उम्र में (8-10 months)"],
+        answer: "5-6 माह की उम्र में (5-6 months)",
+        hint: "5 to 6 months.",
+        exp: "व्हाइट लेगहॉर्न मुर्गियां 5 से 6 माह की उम्र में अण्डा देना प्रारम्भ कर देती हैं।"
+      },
+      {
+        page: "Page 4",
+        q: "रेड कॉर्निश (Red Cornish) मुर्गी की कलगी (Comb) किस प्रकार की होती है? / What shape is the comb of Red Cornish chicken?",
+        options: ["मटर की किस (Pea Comb) की तरह", "सिंगल कलगी (Single Comb)", "गुलाब कलगी (Rose Comb)", "कलगी अनुपस्थित"],
+        answer: "मटर की किस (Pea Comb) की तरह",
+        hint: "Pea comb.",
+        exp: "रेड कॉर्निश की कलगी (Comb) मटर की किस (Pea Comb) की तरह होती है तथा सीना चौड़ा होता है।"
+      },
+      {
+        page: "Page 4",
+        q: "व्हाइट लेगहॉर्न एक वर्ष में लगभग कितने अण्डे देती है? / How many eggs per year does White Leghorn lay on average?",
+        options: ["लगभग 240 अण्डे (240 eggs/year)", "लगभग 100 अण्डे (100 eggs/year)", "लगभग 500 अण्डे (500 eggs/year)", "लगभग 50 अण्डे (50 eggs/year)"],
+        answer: "लगभग 240 अण्डे (240 eggs/year)",
+        hint: "240 eggs per year.",
+        exp: "एक वर्ष में व्हाइट लेगहॉर्न मुर्गी लगभग 240 अण्डे देती है।"
+      },
+      {
+        page: "Page 4",
+        q: "रोड आइलैंड रेड मुर्गी प्रतिकूल/विपरीत परिस्थितियों में भी कैसा प्रदर्शन करती है? / How does Rhode Island Red perform in adverse conditions?",
+        options: ["विपरीत परिस्थितियों में भी भली-भांति पनपती है", "तुरंत बीमार पड़ जाती है", "अण्डा देना बंद कर देती है", "कोई प्रभाव नहीं पड़ता केवल मांस घटता है"],
+        answer: "विपरीत परिस्थितियों में भी भली-भांति पनपती है",
+        hint: "Hardy breed, thrives well under adverse conditions.",
+        exp: "रोड आइलैंड रेड पक्षी विपरीत परिस्थितियों (Adverse conditions) में भी भली-भांति पनपते हैं।"
+      },
+
+      // --- PAGE 5 (15 Questions) ---
+      {
+        page: "Page 5",
+        q: "सम्पूर्ण अण्डे में जल, प्रोटीन, वसा और खनिज लवण का प्रतिशत क्रमशः कितना होता है? / What is the percentage of Water, Protein, Fat, and Minerals in a Whole Egg?",
+        options: ["जल 66.5%, प्रोटीन 11.8%, वसा 11.0%, खनिज लवण 10.7%", "जल 80%, प्रोटीन 20%, वसा 5%, खनिज 1%", "जल 50%, प्रोटीन 25%, वसा 20%, खनिज 5%", "जल 90%, प्रोटीन 5%, वसा 2%, खनिज 3%"],
+        answer: "जल 66.5%, प्रोटीन 11.8%, वसा 11.0%, खनिज लवण 10.7%",
+        hint: "Whole egg: Water ~66.5%, Protein ~11.8%, Fat ~11%, Minerals ~10.7%.",
+        exp: "सम्पूर्ण अण्डे में: जल = 66.5%, प्रोटीन = 11.8%, वसा = 11.0%, तथा खनिज लवण = 10.7% पाया जाता है।"
+      },
+      {
+        page: "Page 5",
+        q: "अण्डे के सफेद भाग (श्वेतक / Albumin) में जल और प्रोटीन का प्रतिशत कितना होता है? / In egg white (Albumin), what are the percentages of Water and Protein?",
+        options: ["जल 88.0%, प्रोटीन 11.0%", "जल 66.5%, प्रोटीन 11.8%", "जल 48.4%, प्रोटीन 17.5%", "जल 95.0%, प्रोटीन 2.0%"],
+        answer: "जल 88.0%, प्रोटीन 11.0%",
+        hint: "Albumin water content is 88%.",
+        exp: "अण्डे के श्वेतक (Albumin) में जल 88.0%, प्रोटीन 11.0%, वसा 0.2% तथा खनिज 0.8% होता है।"
+      },
+      {
+        page: "Page 5",
+        q: "अण्डे की जर्दी (Yolk) में वसा (Fat) और प्रोटीन का प्रतिशत कितना होता है? / In Egg Yolk, what is the percentage of Fat and Protein?",
+        options: ["वसा 32.5%, प्रोटीन 17.5%", "वसा 11.0%, प्रोटीन 11.8%", "वसा 0.2%, प्रोटीन 11.0%", "वसा 96.6%, प्रोटीन 2.0%"],
+        answer: "वसा 32.5%, प्रोटीन 17.5%",
+        hint: "Yolk fat is ~32.5% and protein ~17.5%.",
+        exp: "अण्डे की जर्दी (Yolk) में जल 48.4%, प्रोटीन 17.5%, वसा 32.5% तथा खनिज 2.0% होता है।"
+      },
+      {
+        page: "Page 5",
+        q: "अण्डे के बाहरी कवच (Egg Shell) में खनिज लवण (Minerals) का प्रतिशत कितना होता है? / What is the percentage of minerals in Egg Shell?",
+        options: ["96.6%", "10.7%", "32.5%", "50.0%"],
+        answer: "96.6%",
+        hint: "Egg shell is composed of 96.6% minerals (mainly Calcium carbonate).",
+        exp: "अण्डे का बाहरी कवच (Shell) 96.6% खनिज लवण (मुख्यतः कैल्शियम कार्बोनेट) से बना होता है।"
+      },
+      {
+        page: "Page 5",
+        q: "मुर्गी के मांस (Chicken) में जल और प्रोटीन की मात्रा का प्रतिशत कितना होता है? / What is the percentage of Water and Protein in Chicken Meat?",
+        options: ["जल 65-80%, प्रोटीन 16-22%", "जल 40-50%, प्रोटीन 30-40%", "जल 85-95%, प्रोटीन 5-10%", "जल 50-60%, प्रोटीन 10-12%"],
+        answer: "जल 65-80%, प्रोटीन 16-22%",
+        hint: "Water 65-80%, Protein 16-22%.",
+        exp: "मुर्गी के मांस में जल 65-80% तथा प्रोटीन 16-22% पाया जाता है।"
+      },
+      {
+        page: "Page 5",
+        q: "असील (Aseel) नस्ल की मुर्गी का वितरण क्षेत्र तथा मुख्य विशेषता क्या है? / Distribution and key trait of Aseel breed?",
+        options: ["आंध्र प्रदेश, यूपी, राजस्थान; इसे लखनऊ का मुर्गा/लड़ाकू मुर्गा कहते हैं एवं राजसी चाल हेतु प्रसिद्ध", "झाबुआ MP; काला मांस", "ओडिशा; मलय नाम", "इटली; अण्डा उत्पादन"],
+        answer: "आंध्र प्रदेश, यूपी, राजस्थान; इसे लखनऊ का मुर्गा/लड़ाकू मुर्गा कहते हैं एवं राजसी चाल हेतु प्रसिद्ध",
+        hint: "Lucknow cock, famous for regal stance & fighting traits.",
+        exp: "असील आंध्र प्रदेश, यूपी, राजस्थान में पाई जाती है। इसे लखनऊ का मुर्गा/लड़ाकू मुर्गा/इंडियन गेम कहते हैं। यह अपनी राजसी चाल के लिए प्रसिद्ध है।"
+      },
+      {
+        page: "Page 5",
+        q: "कड़कनाथ (Kadaknath) नस्ल का उत्पत्ति क्षेत्र कौन-सा है तथा इसे 'काला मांसी' क्यों कहते हैं? / Origin of Kadaknath and why is it called 'Kala Mansi'?",
+        options: ["झाबुआ एवं धार जिला (MP); मांस का रंग काला होने के कारण", "अहमदाबाद (गुजरात); काले पंखों के कारण", "ओडिशा; काली त्वचा के कारण", "इज्जतनगर (UP); काले अण्डों के कारण"],
+        answer: "झाबुआ एवं धार जिला (MP); मांस का रंग काला होने के कारण",
+        hint: "Jhabua & Dhar (MP), black-colored meat.",
+        exp: "कड़कनाथ मध्य प्रदेश के झाबुआ व धार जिले की नस्ल है। इसके मांस का रंग काला होने के कारण इसे 'काला मांसी' कहा जाता है।"
+      },
+      {
+        page: "Page 5",
+        q: "कड़कनाथ मुर्गी की कलगी, वैटल एवं जीभ का रंग कैसा होता है? / What color are the comb, wattle, and tongue of Kadaknath breed?",
+        options: ["बैंगनी रंग (Purple)", "लाल रंग (Red)", "पीला रंग (Yellow)", "सफेद रंग (White)"],
+        answer: "बैंगनी रंग (Purple)",
+        hint: "Purple color.",
+        exp: "कड़कनाथ की कलगी, वैटल (Wattle) तथा जीभ का रंग बैंगनी (Purple) होता है। इसमें सर्वाधिक रोग प्रतिरोधक क्षमता पाई जाती है।"
+      },
+      {
+        page: "Page 5",
+        q: "कड़कनाथ नस्ल में मुर्गी व मुर्गे का वजन कितना होता है? / Average weight of Kadaknath hen and cock?",
+        options: ["मुर्गी 1.0 किग्रा व मुर्गा 1.5 किग्रा", "मुर्गी 3.0 किग्रा व मुर्गा 3.8 किग्रा", "मुर्गी 4.5 किग्रा व मुर्गा 5.9 किग्रा", "मुर्गी 2.5 किग्रा व मुर्गा 3.5 किग्रा"],
+        answer: "मुर्गी 1.0 किग्रा व मुर्गा 1.5 किग्रा",
+        hint: "Smallest/lightest Indian breed: Hen 1.0 kg, Cock 1.5 kg.",
+        exp: "कड़कनाथ सबसे हल्की नस्ल है; इसमें मुर्गी का वजन 1.0 किग्रा तथा मुर्गे का वजन 1.5 किग्रा होता है।"
+      },
+      {
+        page: "Page 5",
+        q: "चिट्टागोंग (Chittagong) नस्ल का अन्य नाम क्या है तथा इसका वितरण कहाँ है? / Alternative name and distribution of Chittagong breed?",
+        options: ["इसे 'मलय' भी कहते हैं; ओडिशा", "इसे 'संघाई' कहते हैं; चीन", "इसे 'काला मांसी' कहते हैं; MP", "इसे 'इंडियन गेम' कहते हैं; UP"],
+        answer: "इसे 'मलय' भी कहते हैं; ओडिशा",
+        hint: "Also known as Malay, distributed in Odisha.",
+        exp: "चिट्टागोंग नस्ल को 'मलय' (Malay) भी कहा जाता है, इसका मुख्य वितरण क्षेत्र ओडिशा है।"
+      },
+      {
+        page: "Page 5",
+        q: "कोचीन (Cochin) नस्ल का मूल स्थान कहाँ है तथा इसे किस अन्य नाम से जाना जाता है? / Origin of Cochin breed and its nickname?",
+        options: ["संघाई (चीन); इसे 'संघाई पक्षी' भी कहते हैं", "इटली; इसे लेगहॉर्न कहते हैं", "अमेरिका; इसे रॉक कहते हैं", "इंग्लैंड; इसे कॉर्निश कहते हैं"],
+        answer: "संघाई (चीन); इसे 'संघाई पक्षी' भी कहते हैं",
+        hint: "Shanghai (China); called Shanghai Bird.",
+        exp: "कोचीन नस्ल का मूल स्थान संघाई (चीन) है और इसे 'संघाई पक्षी' (Shanghai Bird) भी कहते हैं।"
+      },
+      {
+        page: "Page 5",
+        q: "विश्व की सबसे भारी मुर्गी नस्ल 'जर्सी ब्लैक जायंट' (Jersey Black Giant) के मुर्गे व मुर्गी का वजन कितना होता है? / Weight of cock and hen in world's heaviest breed, Jersey Black Giant?",
+        options: ["मुर्गा 5.9 किग्रा व मुर्गी 4.5 किग्रा", "मुर्गा 3.8 किग्रा व मुर्गी 3.0 किग्रा", "मुर्गा 1.5 किग्रा व मुर्गी 1.0 किग्रा", "मुर्गा 8.0 किग्रा व मुर्गी 6.5 किग्रा"],
+        answer: "मुर्गा 5.9 किग्रा व मुर्गी 4.5 किग्रा",
+        hint: "Cock 5.9 kg, Hen 4.5 kg.",
+        exp: "विश्व की सबसे भारी नस्ल जर्सी ब्लैक जायंट (USA) में मुर्गे का वजन 5.9 किग्रा तथा मुर्गी का वजन 4.5 किग्रा होता है।"
+      },
+      {
+        page: "Page 5",
+        q: "मुर्गी की किस नस्ल के मांस में कामोत्तेजक (Aphrodisiac) गुण पाया जाता है? / The meat of which chicken breed is believed to have aphrodisiac properties?",
+        options: ["कड़कनाथ (Kadaknath)", "असील (Aseel)", "बसरा (Bousra)", "लेगहॉर्न (Leghorn)"],
+        answer: "कड़कनाथ (Kadaknath)",
+        hint: "Kadaknath.",
+        exp: "कड़कनाथ मुर्गी के मांस में कामोत्तेजक (Aphrodisiac) गुण पाए जाते हैं।"
+      },
+      {
+        page: "Page 5",
+        q: "बसरा (Bousra) नस्ल की मुर्गियों का वितरण क्षेत्र कौन-सा है? / What is the distribution region of Bousra breed?",
+        options: ["गुजरात व महाराष्ट्र (Gujarat & Maharashtra)", "आंध्र प्रदेश व यूपी", "ओडिशा व बंगाल", "पंजाब व हरियाणा"],
+        answer: "गुजरात व महाराष्ट्र (Gujarat & Maharashtra)",
+        hint: "Gujarat and Maharashtra.",
+        exp: "बसरा (Bousra) नस्ल की मुर्गियों का वितरण क्षेत्र गुजरात एवं महाराष्ट्र है।"
+      },
+      {
+        page: "Page 5",
+        q: "मुर्गी के मांस (Chicken) में वसा (Fat) और कार्बोहाइड्रेट का प्रतिशत कितना होता है? / Fat and Carbohydrate percentage in Chicken meat?",
+        options: ["वसा 1.5-13%, कार्बोहाइड्रेट 0.50-01.5%", "वसा 25-30%, कार्बोहाइड्रेट 10-15%", "वसा 0.1%, कार्बोहाइड्रेट 50%", "वसा 40%, कार्बोहाइड्रेट 0%"],
+        answer: "वसा 1.5-13%, कार्बोहाइड्रेट 0.50-01.5%",
+        hint: "Fat 1.5-13%, Carbohydrates 0.50-1.5%.",
+        exp: "मुर्गी के मांस में वसा 1.5 - 13% तथा कार्बोहाइड्रेट 0.50 - 1.5% पाया जाता है।"
+      },
+
+      // --- PAGE 6 (20 Questions) ---
+      {
+        page: "Page 6",
+        q: "मुर्गे/मुर्गी में गुणसूत्रों (Chromosomes) की संख्या कितनी पाई जाती है? / What is the chromosome number (2n) in chickens?",
+        options: ["78", "60", "50", "46"],
+        answer: "78",
+        hint: "2n = 78.",
+        exp: "मुर्गे/मुर्गी में गुणसूत्रों (Chromosomes) की संख्या 78 (2n=78) पाई जाती है।"
+      },
+      {
+        page: "Page 6",
+        q: "मुर्गी में नस्ल सुधार की सबसे अच्छी प्रजनन पद्धति कौन-सी है? / Which is the best breeding method for breed improvement in poultry?",
+        options: ["लाइन ब्रीडिंग (Line Breeding)", "आउट क्रॉसिंग (Out Crossing)", "क्रॉस ब्रीडिंग (Cross Breeding)", "इनब्रीडिंग (Inbreeding)"],
+        answer: "लाइन ब्रीडिंग (Line Breeding)",
+        hint: "Line breeding.",
+        exp: "मुर्गी में नस्ल सुधार की सबसे अच्छी प्रजनन पद्धति लाइन ब्रीडिंग (Line Breeding) है।"
+      },
+      {
+        page: "Page 6",
+        q: "मुर्गी का वैज्ञानिक नाम क्या है? / What is the scientific name of the domestic chicken?",
+        options: ["गेलस डोमेस्टिकस (Gallus domesticus)", "बॉस इंडिकस (Bos indicus)", "बुबेलस बुबेलिस (Bubalus bubalis)", "कैप्रा हिरकस (Capra hircus)"],
+        answer: "गेलस डोमेस्टिकस (Gallus domesticus)",
+        hint: "Gallus domesticus.",
+        exp: "मुर्गी का वैज्ञानिक नाम 'गेलस डोमेस्टिकस' (Gallus domesticus) है।"
+      },
+      {
+        page: "Page 6",
+        q: "वर्तमान में भारत में मुर्गियों की कितनी मान्यता प्राप्त देसी/स्थानीय नस्लें पाई जाती हैं? / How many recognized indigenous chicken breeds are found in India?",
+        options: ["19", "50", "12", "32"],
+        answer: "19",
+        hint: "19 recognized breeds according to the textbook note.",
+        exp: "पाठ्यपुस्तक के अनुसार वर्तमान में भारत में मुर्गियों की 19 मान्यता प्राप्त नस्लें पाई जाती हैं।"
+      },
+      {
+        page: "Page 6",
+        q: "पोल्ट्री में चोंच को तोड़ना / काटना क्या कहलाता है और यह किस उम्र में किया जाता है? / What is Debeaking and at what age is it performed?",
+        options: ["Debeaking (एक दिन की उम्र में)", "Dubbing (3 दिन की उम्र में)", "Brooding (6-8 सप्ताह की उम्र में)", "Hatching (24 घंटे में)"],
+        answer: "Debeaking (एक दिन की उम्र में)",
+        hint: "Debeaking at 1 day of age.",
+        exp: "पोल्ट्री में चोंच काटना Debeaking कहलाता है, जो सामान्यतः 1 दिन की उम्र में किया जाता है।"
+      },
+      {
+        page: "Page 6",
+        q: "मुर्गे की कलगी (Comb) को हटाना क्या कहलाता है तथा यह किस उम्र में किया जाता है? / What is Dubbing and at what age is it done?",
+        options: ["Dubbing (3 दिन की उम्र में)", "Debeaking (1 दिन की उम्र में)", "Caponization (1 माह की उम्र में)", "Desnooding (5 दिन की उम्र में)"],
+        answer: "Dubbing (3 दिन की उम्र में)",
+        hint: "Dubbing at 3 days of age.",
+        exp: "मुर्गे की कलगी (Comb) को हटाना 'Dubbing' कहलाता है और यह 3 दिन की उम्र में किया जाता है।"
+      },
+      {
+        page: "Page 6",
+        q: "100 मुर्गियों को प्रतिदिन कितने लीटर पीने के पानी की आवश्यकता होती है? / How many liters of drinking water do 100 hens require per day?",
+        options: ["25 लीटर (25 Liters)", "10 लीटर (10 Liters)", "50 लीटर (50 Liters)", "100 लीटर (100 Liters)"],
+        answer: "25 लीटर (25 Liters)",
+        hint: "25 Liters per 100 birds.",
+        exp: "100 मुर्गियों को प्रतिदिन लगभग 25 लीटर पीने के पानी की आवश्यकता होती है।"
+      },
+      {
+        page: "Page 6",
+        q: "100 मुर्गियां प्रतिदिन कितना गोबर (Manure/Droppings) उत्पादित करती हैं? / How much manure do 100 hens produce daily?",
+        options: ["4 Kg", "10 Kg", "1 Kg", "15 Kg"],
+        answer: "4 Kg",
+        hint: "4 Kg per day per 100 hens.",
+        exp: "100 मुर्गियां प्रतिदिन लगभग 4 Kg गोबर उत्पादित करती हैं।"
+      },
+      {
+        page: "Page 6",
+        q: "पोल्ट्री आवास का लम्बा अक्ष (Long axis of poultry house) किस दिशा में रहना चाहिए? / In which direction should the long axis of a poultry house be oriented?",
+        options: ["पूर्व-पश्चिम दिशा में (East-West direction)", "उत्तर-दक्षिण दिशा में (North-South direction)", "उत्तर-पूर्व दिशा में", "दक्षिण-पश्चिम दिशा में"],
+        answer: "पूर्व-पश्चिम दिशा में (East-West direction)",
+        hint: "East-West direction to avoid direct sunlight & winds.",
+        exp: "पोल्ट्री आवास का लम्बा अक्ष 'पूर्व-पश्चिम दिशा' (East-West direction) में होना चाहिए।"
+      },
+      {
+        page: "Page 6",
+        q: "मुर्गी कितने सप्ताह की उम्र से अण्डा देना शुरू कर देती है? / At what age (in weeks) do hens start laying eggs?",
+        options: ["22 सप्ताह (22 weeks)", "10 सप्ताह (10 weeks)", "35 सप्ताह (35 weeks)", "50 सप्ताह (50 weeks)"],
+        answer: "22 सप्ताह (22 weeks)",
+        hint: "Around 22 weeks of age.",
+        exp: "मुर्गी सामान्यतः 22 सप्ताह (22 weeks) की उम्र में अण्डा देना शुरू कर देती है।"
+      },
+      {
+        page: "Page 6",
+        q: "मुर्गी में Oviposition (अण्डे देने की प्रक्रिया) में कितना समय लगता है? / How much time does Oviposition take in a hen?",
+        options: ["24-26 घंटे (24-26 hours)", "12 घंटे (12 hours)", "48 घंटे (48 hours)", "6-8 घंटे (6-8 hours)"],
+        answer: "24-26 घंटे (24-26 hours)",
+        hint: "24 to 26 hours.",
+        exp: "मुर्गी में Oviposition (अण्डा बाहर निकालने की प्रक्रिया) में 24-26 घंटे का समय लगता है।"
+      },
+      {
+        page: "Page 6",
+        q: "चूजों को 6-8 सप्ताह की उम्र तक अतिरिक्त ऊष्मा/गर्मी प्रदान करना क्या कहलाता है? / Providing extra warmth to chicks up to 6-8 weeks is called?",
+        options: ["Brooding", "Hatching", "Dubbing", "Debeaking"],
+        answer: "Brooding",
+        hint: "Brooding.",
+        exp: "चूजों को 6-8 सप्ताह की उम्र तक कृत्रिम या प्राकृतिक रूप से ऊष्मा प्रदान करना 'Brooding' कहलाता है।"
+      },
+      {
+        page: "Page 6",
+        q: "कुकुट पालन (Poultry Farming) के लिए मुर्गियों की एक इकाई (Unit) कितनी मानी जाती है? / What is standard count for one unit of poultry?",
+        options: ["100 मुर्गी (100 Hens)", "500 मुर्गी (500 Hens)", "50 मुर्गी (50 Hens)", "1000 मुर्गी (1000 Hens)"],
+        answer: "100 मुर्गी (100 Hens)",
+        hint: "100 hens.",
+        exp: "कुकुट पालन के लिए मुर्गी की एक इकाई 100 मुर्गियों (100 Hens) की मानी जाती है।"
+      },
+      {
+        page: "Page 6",
+        q: "मुर्गी में कुल हड्डियों (Bones) की संख्या और वायुकोष (Air sacs) की संख्या कितनी होती है? / What are total bones and total air sacs in a chicken?",
+        options: ["कुल हड्डियाँ = 169, वायुकोष = 9", "कुल हड्डियाँ = 206, वायुकोष = 5", "कुल हड्डियाँ = 120, वायुकोष = 12", "कुल हड्डियाँ = 300, वायुकोष = 2"],
+        answer: "कुल हड्डियाँ = 169, वायुकोष = 9",
+        hint: "169 bones and 9 air sacs.",
+        exp: "मुर्गी में कुल हड्डियों की संख्या 169 होती है तथा वायुकोषों (Air sacs) की संख्या 9 होती है।"
+      },
+      {
+        page: "Page 6",
+        q: "मुर्गियों के रक्त में ग्लूकोज का स्तर, RBC का जीवनकाल तथा सामान्य शारीरिक तापमान कितना होता है? / Blood glucose level, RBC lifespan, and normal body temp of chicken?",
+        options: ["ग्लूकोज: 60-110 mg/dl, RBC जीवनकाल: 30 दिन, तापमान: 107 °F", "ग्लूकोज: 200 mg/dl, RBC जीवनकाल: 120 दिन, तापमान: 98.6 °F", "ग्लूकोज: 50 mg/dl, RBC जीवनकाल: 10 दिन, तापमान: 101 °F", "ग्लूकोज: 150 mg/dl, RBC जीवनकाल: 60 दिन, तापमान: 104 °F"],
+        answer: "ग्लूकोज: 60-110 mg/dl, RBC जीवनकाल: 30 दिन, तापमान: 107 °F",
+        hint: "Glucose 60-110, RBC 30 days, Temp 107°F.",
+        exp: "मुर्गियों के रक्त में ग्लूकोज स्तर 60-110 mg/dl, RBC का जीवनकाल 30 दिन तथा सामान्य तापमान 107 °F होता है। WBC में सर्वाधिक लिम्फोसाइट होती है।"
+      },
+      {
+        page: "Page 6",
+        q: "मुर्गे की श्वसन दर (Respiration rate) तथा नाड़ी दर (Pulse rate) प्रति मिनट कितनी होती है? / Respiration rate and pulse rate per minute in poultry?",
+        options: ["श्वसन दर: 15-30/मिनट, नाड़ी दर: 250-300/मिनट", "श्वसन दर: 60/मिनट, नाड़ी दर: 70/मिनट", "श्वसन दर: 5-10/मिनट, नाड़ी दर: 100/मिनट", "श्वसन दर: 40-50/मिनट, नाड़ी दर: 500/मिनट"],
+        answer: "श्वसन दर: 15-30/मिनट, नाड़ी दर: 250-300/मिनट",
+        hint: "Respiration: 15-30/min, Pulse: 250-300/min.",
+        exp: "मुर्गे में श्वसन दर 15-30 प्रति मिनट तथा नाड़ी (धड़कन) दर 250-300 प्रति मिनट होती है।"
+      },
+      {
+        page: "Page 6",
+        q: "मुर्गियों में बर्ड फ्लू (Bird Flu) के लिए कौन-सा वायरस जिम्मेदार होता है? / Which virus is responsible for Bird Flu in poultry?",
+        options: ["H5N1", "H1N1", "Paramyxovirus", "Poxvirus"],
+        answer: "H5N1",
+        hint: "H5N1 Avian Influenza virus.",
+        exp: "मुर्गियों में बर्ड फ्लू (Bird Flu / Avian Influenza) के लिए H5N1 वायरस जिम्मेदार होता है।"
+      },
+      {
+        page: "Page 6",
+        q: "मुर्गियों की किस बीमारी में टांगों एवं पंखों में लकवा (Paralysis) मार जाता है तथा यह किस प्रकार की बीमारी है? / In which poultry disease do legs and wings get paralyzed (also causes cancer)?",
+        options: ["मारेक (Marek's Disease)", "गम्बोरो (Gumboro)", "रानीखेत (Ranikhet)", "फाउल पॉक्स (Fowl Pox)"],
+        answer: "मारेक (Marek's Disease)",
+        hint: "Marek's disease causes leg/wing paralysis & cancer.",
+        exp: "मारेक (Marek's) बीमारी में टांगों व पंखों में लकवा मार जाता है। यह मुर्गियों में कैंसर पैदा करने वाला रोग भी है।"
+      },
+      {
+        page: "Page 6",
+        q: "मुर्गियों में 'सफेद तरल दस्त' (White watery diarrhea) किस बीमारी का मुख्य लक्षण है? / White liquid diarrhea is a symptom of which poultry disease?",
+        options: ["गम्बोरो (Gumboro / IBD)", "मारेक (Marek)", "रानीखेत (Ranikhet)", "कोकिडियोसिस (Coccidiosis)"],
+        answer: "गम्बोरो (Gumboro / IBD)",
+        hint: "Gumboro disease.",
+        exp: "गम्बोरो (Gumboro) बीमारी में मुर्गियों को सफेद तरल दस्त होता है। इसका टीका 14 दिन की उम्र पर लगाया जाता है।"
+      },
+      {
+        page: "Page 6",
+        q: "रानीखेत (Ranikhet) बीमारी का अन्य नाम, प्रभावित अंग तथा कारण क्या है? / New Castle disease details (other name, organ affected, pathogen)?",
+        options: ["अन्य नाम: न्यू कैसल; प्रभावित अंग: श्वसन व तंत्रिका तंत्र; कारण: पैरामिक्सो वायरस टाइप-1", "अन्य नाम: गम्बोरो; प्रभावित अंग: यकृत; कारण: प्रोटोजोआ", "अन्य नाम: मारेक; प्रभावित अंग: त्वचा; कारण: कवक", "अन्य नाम: बर्ड फ्लू; प्रभावित अंग: हृदय; कारण: बैक्टीरिया"],
+        answer: "अन्य नाम: न्यू कैसल; प्रभावित अंग: श्वसन व तंत्रिका तंत्र; कारण: पैरामिक्सो वायरस टाइप-1",
+        hint: "New Castle, Respiratory/Nervous system, Paramyxovirus type-1.",
+        exp: "रानीखेत बीमारी को 'न्यू कैसल' (New Castle) भी कहते हैं। यह पैरामिक्सो वायरस टाइप-1 से होती है तथा श्वसन तंत्र व तंत्रिका तंत्र को प्रभावित करती है।"
+      },
+
+      // --- PAGE 7 (5 Questions) ---
+      {
+        page: "Page 7",
+        q: "मुर्गियों में खूनी पेचिश (Coccidiosis / Bloody Diarrhea) का मुख्य कारण क्या है? / What causes Bloody Diarrhea (Coccidiosis) in poultry?",
+        options: ["प्रोटोजोआ (Protozoa - Eimeria)", "वायरस (Virus)", "जीवाणु (Bacteria)", "कवक (Fungus)"],
+        answer: "प्रोटोजोआ (Protozoa - Eimeria)",
+        hint: "Caused by Protozoa.",
+        exp: "मुर्गियों में खूनी पेचिश (Coccidiosis) का कारण प्रोटोजोआ (Protozoa) परजीवी है।"
+      },
+      {
+        page: "Page 7",
+        q: "मुर्गी की द्विप्रयोजनी (Dual Purpose) नस्ल तथा मांस हेतु व्यापारिक दृष्टि से उच्च कोटि की नस्लें कौन-सी हैं? / Dual-purpose breed and high quality meat breed of chicken?",
+        options: ["द्विप्रयोजनी: रोड आइलैंड रेड; उच्च कोटि मांस: प्लाइमाउथ रॉक", "द्विप्रयोजनी: लेगहॉर्न; उच्च कोटि मांस: सानेन", "द्विप्रयोजनी: कड़कनाथ; उच्च कोटि मांस: असील", "द्विप्रयोजनी: बसरा; उच्च कोटि मांस: कोचीन"],
+        answer: "द्विप्रयोजनी: रोड आइलैंड रेड; उच्च कोटि मांस: प्लाइमाउथ रॉक",
+        hint: "Dual purpose: RIR; Top quality meat: Plymouth Rock.",
+        exp: "मुर्गी की द्विप्रयोजनी (Dual Purpose) नस्ल रोड आइलैंड रेड (RIR) है तथा मांस हेतु व्यापारिक दृष्टि से उच्च कोटि की नस्ल प्लाइमाउथ रॉक है।"
+      },
+      {
+        page: "Page 7",
+        q: "रानीखेत बीमारी की रोकथाम के लिए प्रथम दिन कौन-सा टीका (Vaccine) लगाया जाता है? / Which vaccine strain is administered on 1st day against Ranikhet disease?",
+        options: ["F1 Strain (F-Strain)", "R B Strain", "Pigeon Pox Vaccine", "Gumboro Vaccine"],
+        answer: "F1 Strain (F-Strain)",
+        hint: "F1 Strain.",
+        exp: "रानीखेत बीमारी (Ranikhet disease) से बचाव हेतु प्रथम दिन 'F1 Strain' का टीका लगाया जाता है।"
+      },
+      {
+        page: "Page 7",
+        q: "रानीखेत बीमारी की रोकथाम के लिए मुर्गियों में 8 आठ सप्ताह की आयु में कौन-सा टीका लगाया जाता है? / Which vaccine strain is given at 8 weeks of age for Ranikhet disease?",
+        options: ["R, B Strain", "F1 Strain", "H5N1 Vaccine", "Gumboro Vaccine"],
+        answer: "R, B Strain",
+        hint: "RB Strain at 8 weeks.",
+        exp: "रानीखेत बीमारी की रोकथाम हेतु 8 सप्ताह की आयु में 'R, B Strain' का टीका लगाया जाता है।"
+      },
+      {
+        page: "Page 7",
+        q: "मुर्गियों में चेचक (Fowl Pox) रोग होने की सर्वाधिक संभावना किस आयु में होती है तथा 1 माह से कम उम्र के चूजों में कौन-सा टीका लगाते हैं? / Age of high Fowl Pox risk & vaccine used for chicks under 1 month?",
+        options: ["8 से 12 सप्ताह में अधिक संभावना; पिजियन पॉक्स वैक्सीन (Pigeon Pox Vaccine) लगाते हैं", "1 से 2 सप्ताह में अधिक संभावना; GTV वैक्सीन", "20 से 25 सप्ताह में अधिक संभावना; F1 स्ट्रेन", "5 से 6 माह में अधिक संभावना; मारेक्स वैक्सीन"],
+        answer: "8 से 12 सप्ताह में अधिक संभावना; पिजियन पॉक्स वैक्सीन (Pigeon Pox Vaccine) लगाते हैं",
+        hint: "Risk at 8-12 weeks; Pigeon Pox vaccine for chicks < 1 month.",
+        exp: "मुर्गियों में चेचक (Fowl Pox) रोग होने की संभावना 8 से 12 सप्ताह में अत्यधिक होती है। 1 माह से कम उम्र के चूजों में पिजियन पॉक्स वैक्सीन (Pigeon Pox Vaccine) लगाते हैं।"
+      }
+    ];
+
+    // State variables
+    let currentIdx = 0;
+    let userAnswers = new Array(rawQuestions.length).fill(null);
+    let questionsData = [];
+
+    // Fisher-Yates Shuffle Algorithm for Options
+    function shuffleArray(array) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    // Initialize Questions Dataset with Randomized Option Positions
+    function initDataset() {
+      questionsData = rawQuestions.map((qObj) => {
+        return {
+          ...qObj,
+          shuffledOptions: shuffleArray(qObj.options)
+        };
+      });
+    }
+
+    // Render Current Question
+    function renderQuestion() {
+      const q = questionsData[currentIdx];
+      const total = questionsData.length;
+
+      // Update Header & Progress Bar
+      document.getElementById("q-number").innerText = currentIdx + 1;
+      document.getElementById("page-tag").innerText = q.page;
+      const progressPercent = ((currentIdx + 1) / total) * 100;
+      document.getElementById("progress-bar").style.width = `${progressPercent}%`;
+
+      // Question text
+      document.getElementById("question-text").innerText = `Q${currentIdx + 1}. ${q.q}`;
+
+      // Reset Hint
+      document.getElementById("hint-box").classList.add("hidden");
+      document.getElementById("hint-text").innerText = q.hint;
+
+      // Render Options
+      const optionsContainer = document.getElementById("options-container");
+      optionsContainer.innerHTML = "";
+
+      const selectedOpt = userAnswers[currentIdx];
+
+      q.shuffledOptions.forEach((optText, i) => {
+        const btn = document.createElement("button");
+        btn.className = `w-full text-left p-3.5 rounded-lg border text-sm md:text-base font-medium transition duration-150 flex items-center justify-between font-hindi `;
+        
+        const optionLabel = String.fromCharCode(65 + i); // A, B, C, D
+
+        if (selectedOpt === null) {
+          btn.className += "border-slate-200 bg-slate-50 hover:bg-indigo-50 hover:border-indigo-300 text-slate-700";
+          btn.onclick = () => selectOption(optText);
+        } else {
+          btn.disabled = true;
+          if (optText === q.answer) {
+            btn.className += "border-emerald-500 bg-emerald-50 text-emerald-900 font-semibold";
+          } else if (optText === selectedOpt) {
+            btn.className += "border-rose-500 bg-rose-50 text-rose-900 font-semibold";
+          } else {
+            btn.className += "border-slate-200 bg-slate-50 text-slate-400 opacity-60";
+          }
+        }
+
+        btn.innerHTML = `
+          <span><strong class="text-indigo-600 mr-2">${optionLabel}.</strong> ${optText}</span>
+          ${selectedOpt !== null && optText === q.answer ? '<span class="text-emerald-600 text-lg">✓</span>' : ''}
+          ${selectedOpt !== null && optText === selectedOpt && optText !== q.answer ? '<span class="text-rose-600 text-lg">✕</span>' : ''}
+        `;
+
+        optionsContainer.appendChild(btn);
+      });
+
+      // Render Explanation Box
+      const expBox = document.getElementById("explanation-box");
+      const expTitle = document.getElementById("exp-title");
+      const expText = document.getElementById("explanation-text");
+
+      if (selectedOpt !== null) {
+        expBox.classList.remove("hidden");
+        if (selectedOpt === q.answer) {
+          expBox.className = "p-4 rounded-lg border border-emerald-300 bg-emerald-50 text-emerald-900";
+          expTitle.innerText = "✓ Correct Answer!";
+        } else {
+          expBox.className = "p-4 rounded-lg border border-rose-300 bg-rose-50 text-rose-900";
+          expTitle.innerText = `✕ Incorrect! Correct Answer: ${q.answer}`;
+        }
+        expText.innerText = q.exp;
+      } else {
+        expBox.classList.add("hidden");
+      }
+
+      // Button State
+      document.getElementById("prev-btn").disabled = currentIdx === 0;
+      document.getElementById("next-btn").innerText = currentIdx === total - 1 ? "Finish Quiz" : "Next \u2192";
+
+      // Update Live Score Stats
+      updateScoreStats();
+    }
+
+    // Handle Option Selection
+    function selectOption(selectedOpt) {
+      if (userAnswers[currentIdx] === null) {
+        userAnswers[currentIdx] = selectedOpt;
+        renderQuestion();
+      }
+    }
+
+    // Toggle Hint Box
+    function toggleHint() {
+      const hintBox = document.getElementById("hint-box");
+      hintBox.classList.toggle("hidden");
+    }
+
+    // Update Live Score Counter
+    function updateScoreStats() {
+      let score = 0;
+      let attempted = 0;
+      userAnswers.forEach((ans, idx) => {
+        if (ans !== null) {
+          attempted++;
+          if (ans === questionsData[idx].answer) {
+            score++;
+          }
+        }
+      });
+      document.getElementById("live-score").innerText = score;
+      document.getElementById("attempted-count").innerText = attempted;
+    }
+
+    // Next Question Button
+    function nextQuestion() {
+      if (currentIdx < questionsData.length - 1) {
+        currentIdx++;
+        renderQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        alert(`Quiz Finished!\nYour Final Score: ${document.getElementById("live-score").innerText} out of ${questionsData.length}`);
+      }
+    }
+
+    // Previous Question Button
+    function prevQuestion() {
+      if (currentIdx > 0) {
+        currentIdx--;
+        renderQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    // Jump to Question Input
+    function jumpToQuestion() {
+      const val = parseInt(document.getElementById("jump-input").value, 10);
+      if (val >= 1 && val <= questionsData.length) {
+        currentIdx = val - 1;
+        renderQuestion();
+        document.getElementById("jump-input").value = "";
+      } else {
+        alert(`Please enter a question number between 1 and ${questionsData.length}`);
+      }
+    }
+
+    // Start App on Load
+    window.onload = () => {
+      initDataset();
+      renderQuestion();
+    };
+  </script>
+<script src="../../quiz-question-controls.js"></script>
+<script src="../../quiz-app-ui-v2.js"></script></body>
+</html>

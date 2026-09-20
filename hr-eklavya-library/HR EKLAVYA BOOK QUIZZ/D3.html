@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haryana District Study: Kaithal - Interactive Quiz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+<style id="cosmic-readable-quiz-theme">
+:root{--space:#e8dcff;--panel:#f3eaff;--panel2:#dcc6ff;--edge:#6a45bf;--glow:#d28b28;--accent:#d15f9f;--ink:#2c1b4d;--muted:#66547c;--mist:rgba(106,69,191,.2)}html{background:var(--space)}body{background:radial-gradient(ellipse 62% 45% at 90% -5%,rgba(209,95,159,.28),transparent 62%),radial-gradient(ellipse 55% 40% at 8% 100%,rgba(65,164,207,.26),transparent 64%),var(--space)!important;color:var(--ink)!important;min-height:100vh}body:before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.78;background-image:radial-gradient(circle at 9% 18%,var(--glow) 0 1px,transparent 1.7px),radial-gradient(circle at 26% 69%,var(--edge) 0 .8px,transparent 1.5px),radial-gradient(circle at 68% 24%,var(--accent) 0 1px,transparent 1.8px),radial-gradient(circle at 88% 73%,#47a8d3 0 .8px,transparent 1.5px);background-size:220px 190px,300px 270px,260px 230px,340px 310px;z-index:-1}header{background:linear-gradient(105deg,var(--panel),var(--panel2))!important;border-color:rgba(106,69,191,.25)!important;box-shadow:0 7px 24px rgba(84,48,142,.14)!important}header h1{color:var(--edge)!important;text-shadow:none!important}header p,header .text-slate-400,header .text-indigo-200,header .text-indigo-300{color:var(--muted)!important}main>div,#quiz-card,.bg-slate-800,.bg-slate-900,.bg-indigo-900,.bg-indigo-950{background:linear-gradient(145deg,#f8f0ff,var(--panel))!important;border-color:rgba(106,69,191,.22)!important;color:var(--ink)!important;box-shadow:0 14px 35px rgba(84,48,142,.12)!important}.bg-slate-700,.bg-slate-100,.bg-slate-50{background:#eadffd!important;color:var(--ink)!important}.text-slate-100,.text-slate-200,.text-slate-300,.text-slate-400,.text-white,.text-slate-800,.text-slate-700,.text-slate-600{color:var(--ink)!important}.text-indigo-400,.text-indigo-300,.text-emerald-400,.text-yellow-300{color:var(--edge)!important}.border-slate-700,.border-slate-700\/60,.border-indigo-700,.border-slate-200{border-color:rgba(106,69,191,.25)!important}button:not(.bg-green-600):not(.bg-red-600){background:#f9f2ff!important;color:var(--ink)!important;border:1px solid rgba(106,69,191,.25)!important;box-shadow:0 3px 10px rgba(84,48,142,.09)!important}button.bg-indigo-600,button.bg-slate-800,button.bg-slate-900,button.bg-indigo-900{background:linear-gradient(120deg,var(--edge),var(--accent))!important;color:#fff!important;border:0!important}button.bg-indigo-600 *,button.bg-slate-800 *,button.bg-slate-900 *,button.bg-indigo-900 *{color:#fff!important}button:hover{filter:brightness(1.04);transform:translateY(-1px)}input,select,textarea{background:#f9f2ff!important;border-color:rgba(106,69,191,.35)!important;color:var(--ink)!important}input:focus,select:focus,textarea:focus{outline:none!important;border-color:var(--edge)!important;box-shadow:0 0 0 3px var(--mist)!important}.bg-indigo-500,#progress-bar{background:linear-gradient(90deg,var(--edge),var(--accent),var(--glow))!important}.rounded-2xl{border-radius:1.25rem!important}
+</style></head>
+<body class="bg-slate-50 text-slate-800 font-sans min-p-4">
+
+    <div class="max-w-3xl mx-auto p-4 sm:p-6 my-6 bg-white rounded-xl shadow-md border border-slate-200">
+        <!-- Header & Progress -->
+        <div class="mb-6">
+            <div class="flex justify-between items-center mb-2">
+                <span class="text-xs font-semibold uppercase tracking-wider bg-indigo-100 text-indigo-800 px-2.5 py-1 rounded-full">Haryana GK - Kaithal District (कैथल जिला अध्ययन)</span>
+                <span class="text-sm font-medium text-slate-500">Score: <span id="score" class="font-bold text-indigo-600">0</span> / <span id="total-questions">90</span></span>
+            </div>
+            <h1 class="text-xl sm:text-2xl font-bold text-slate-900" id="quiz-title">Interactive Bilingual Quiz (English & Hindi)</h1>
+            <div class="w-full bg-slate-200 rounded-full h-2.5 mt-4">
+                <div id="progress-bar" class="bg-indigo-600 h-2.5 rounded-full transition-all duration-300" style="width: 1.11%;"></div>
+            </div>
+        </div>
+
+        <!-- Question Container -->
+        <div id="question-container" class="mb-6">
+            <div class="flex justify-between items-start gap-4 mb-3">
+                <h2 class="text-lg font-semibold text-slate-900" id="question-text">Loading question...</h2>
+                <span class="text-sm font-bold text-slate-400 whitespace-nowrap">Q <span id="current-q-num">1</span>/90</span>
+            </div>
+            <p class="text-sm text-slate-500 italic mb-4" id="question-text-hi"></p>
+
+            <!-- Options -->
+            <div id="options-container" class="space-y-3">
+                <!-- Options injected dynamically -->
+            </div>
+        </div>
+
+        <!-- Hint & Explanation Section -->
+        <div class="space-y-3 mb-6">
+            <div>
+                <button onclick="toggleHint()" class="text-xs font-medium text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200 px-3 py-1.5 rounded-lg transition">💡 Toggle Hint</button>
+                <div id="hint-box" class="hidden mt-2 p-3 bg-amber-50 border border-amber-200 text-amber-900 text-sm rounded-lg"></div>
+            </div>
+
+            <div id="explanation-box" class="hidden p-4 bg-slate-50 border border-slate-200 rounded-lg text-sm">
+                <span class="font-bold text-slate-700 block mb-1">Explanation / Rationale:</span>
+                <p id="explanation-text" class="text-slate-600"></p>
+            </div>
+        </div>
+
+        <!-- Navigation Controls -->
+        <div class="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-slate-100">
+            <button onclick="prevQuestion()" id="prev-btn" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 text-sm font-medium rounded-lg transition disabled:opacity-50" disabled>Previous</button>
+            
+            <div class="flex items-center gap-2">
+                <span class="text-xs text-slate-500">Jump to:</span>
+                <input type="number" id="jump-input" min="1" max="90" class="w-16 px-2 py-1 text-center border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" onchange="jumpToQuestion(this.value)">
+            </div>
+
+            <button onclick="nextQuestion()" id="next-btn" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition">Next</button>
+        </div>
+    </div>
+
+    <script>
+        const quizData = [
+            // Page 1 Questions (45 questions)
+            {
+                q: "At the time of the formation of Haryana, Kaithal was a tehsil of which district?",
+                qHi: "हरियाणा गठन के समय कैथल किस जिले की एक तहसील थी?",
+                options: ["Karnal (करनाल)", "Kurukshetra (कुरुक्षेत्र)", "Jind (जींद)", "Ambala (अंबाला)"],
+                answer: 0,
+                hint: "It was part of Karnal before separation.",
+                exp: "At the time of Haryana's formation on November 1, 1966, Kaithal was a tehsil under the Karnal district."
+            },
+            {
+                q: "Which city is famously known as the 'City of Love and Kush' (Lavkush ki Nagri)?",
+                qHi: "किस शहर को 'लवकुश की नगरी' कहा जाता है?",
+                options: ["Kaithal (कैथल)", "Panipat (पानीपत)", "Sonipat (सोनीपत)", "Jind (जींद)"],
+                answer: 0,
+                hint: "Named after sons of Lord Rama in Kaithal district notes.",
+                exp: "Kaithal is traditionally known as 'Lavkush ki Nagri' (City of Lava and Kush)."
+            },
+            {
+                q: "Navgrah Kunds in Kaithal, which provide information about nine planets, were built by whom according to tradition?",
+                qHi: "कैथल में नौग्रह कुण्ड, जो नौ ग्रहों के बारे में जानकारी देते हैं, किसके द्वारा निर्मित बताए जाते हैं?",
+                options: ["Yudhishthir (युधिष्ठिर)", "Arjuna (अर्जुन)", "Harshavardhana (हर्षवर्धन)", "Prithviraj Chauhan (पृथ्वीराज चौहान)"],
+                answer: 0,
+                hint: "Built by the eldest Pandava brother.",
+                exp: "The Navgrah Kunds in Kaithal are stated to have been built by Yudhishthir."
+            },
+            {
+                q: "Pundarik Tirth Sthal Kunds were dedicated to the public on which date?",
+                qHi: "पुण्डरीक तीर्थ स्थल पर स्थित कुण्ड जनता को किस तिथि को समर्पित किए गए?",
+                options: ["28 May, 1987 (28 मई, 1987)", "15 August, 1947 (15 अगस्त, 1947)", "1 November, 1989 (1 नवंबर, 1989)", "26 January, 1950 (26 जनवरी, 1950)"],
+                answer: 0,
+                hint: "Dedicated in May 1987.",
+                exp: "The Kunds at Pundarik Tirth Sthal were dedicated to the public on May 28, 1987."
+            },
+            {
+                q: "The inauguration of the Pundarik Tirth Kunds was done by whom?",
+                qHi: "पुण्डरीक तीर्थ स्थल के कुण्डों का उद्घाटन किसके द्वारा किया गया?",
+                options: ["Ch. Devi Lal (चौ. देवीलाल)", "Bansi Lal (बंसी लाल)", "Bhajan Lal (भजन लाल)", "Rao Birender Singh (राव बीरेंद्र सिंह)"],
+                answer: 0,
+                hint: "A prominent former Chief Minister of Haryana.",
+                exp: "The inauguration was carried out by Chaudhary Devi Lal."
+            },
+            {
+                q: "The ashram of Kapil Muni, the propounder of Sankhya philosophy, is located at which place in Kaithal?",
+                qHi: "सांख्य दर्शन के प्रणेता कपिल मुनि का आश्रम कैथल में कहाँ स्थित है?",
+                options: ["Kalayat (कलायत)", "Pundri (पुंडरी)", "Guhla (गुहला)", "Siwan (सीवन)"],
+                answer: 0,
+                hint: "Also known as Kapil Muni Nagar.",
+                exp: "Kapil Muni's ashram is located at Kalayat in Kaithal district."
+            },
+            {
+                q: "Widkwar Lake (विदक्वार झील) is located in which district?",
+                qHi: "विदक्वार झील कहाँ स्थित है?",
+                options: ["Kaithal (कैथल)", "Karnal (करनाल)", "Jind (जींद)", "Kurukshetra (कुरुक्षेत्र)"],
+                answer: 0,
+                hint: "Featured in Kaithal district list.",
+                exp: "Widkwar Lake is located in Kaithal."
+            },
+            {
+                q: "Anjani ka Tila (अंजनी का टीला) is situated in:",
+                qHi: "अंजनी का टीला कहाँ स्थित है?",
+                options: ["Kaithal (कैथल)", "Rohtak (रोहतक)", "Hisar (हिसार)", "Sirsa (सिरसा)"],
+                answer: 0,
+                hint: "Linked with Lord Hanuman's birth place references.",
+                exp: "Anjani ka Tila is located in Kaithal."
+            },
+            {
+                q: "The pilgrimage spot established by Lord Vishnu, known as Kaul, is situated in which district?",
+                qHi: "भगवान विष्णु द्वारा स्थापित तीर्थ स्थल कौल किस जिले में स्थित है?",
+                options: ["Kaithal (कैथल)", "Yamunanagar (यमुनानगर)", "Panchkula (पंचकूला)", "Mahendragarh (महेन्द्रगढ़)"],
+                answer: 0,
+                hint: "Kaul is in Kaithal.",
+                exp: "Kaul is a pilgrimage site established by Lord Vishnu located in Kaithal district."
+            },
+            {
+                q: "Prachin Shiv Van and a statue of Trivikram Vishnu are located at which place in Kaithal?",
+                qHi: "प्राचीन शिव वन स्थित तथा त्रिविक्रम विष्णु की मूर्ति कहाँ स्थित है?",
+                options: ["Siwan (सीवन)", "Kalayat (कलायत)", "Pundri (पुंडरी)", "Rajound (राजौंद)"],
+                answer: 0,
+                hint: "Starts with S in Kaithal sub-tehsils.",
+                exp: "Both Prachin Shiv Van and the Trivikram Vishnu statue are located in Siwan (Kaithal)."
+            },
+            {
+                q: "The prominent tourist spot 'Koyal' is situated in:",
+                qHi: "प्रमुख पर्यटक स्थल कोयल स्थित है:",
+                options: ["Kaithal (कैथल)", "Kurukshetra (कुरुक्षेत्र)", "Panipat (पानीपत)", "Karnal (करनाल)"],
+                answer: 0,
+                hint: "A tourism resort managed by Hry Tourism in Kaithal.",
+                exp: "The tourist spot Koyal is located in Kaithal."
+            },
+            {
+                q: "Which urban local body became the first municipal council in India/Haryana to introduce online lines (नारिक सुविधाएं आन-लाईन करने वाली प्रथम नगर परिषद)?",
+                qHi: "नागरिक सुविधाएं आन-लाइन करने वाली प्रथम नगर परिषद कौन सी है?",
+                options: ["Kaithal (कैथल)", "Karnal (करनाल)", "Rohtak (रोहतक)", "Gurugram (गुरुग्राम)"],
+                answer: 0,
+                hint: "It is the main subject of this chapter study.",
+                exp: "Kaithal Municipal Council became the first to provide online civic services."
+            },
+            {
+                q: "An ancient Shiva temple built entirely of bricks without mortar is located at:",
+                qHi: "सिर्फ ईंटों का बना अनुदा प्राचीन शिव मंदिर स्थित है:",
+                options: ["Kalayat (कलायत)", "Siwan (सीवन)", "Pundri (पुंडरी)", "Guhla (गुहला)"],
+                answer: 0,
+                hint: "Located in Kalayat.",
+                exp: "An unique ancient brick-built Shiva temple is located at Kalayat in Kaithal."
+            },
+            {
+                q: "Haryana's first panchayat-cum-शाला to run a campaign against 'Ghoonghat' (घूंघट के विरुद्ध अभियान चलाने वाली प्रथम पंचायत) was established at:",
+                qHi: "घूंघट के विरुद्ध अभियान चलाने वाली हरियाणा की प्रथम पंचायत - चौशाला स्थित है:",
+                options: ["Kaithal (कैथल)", "Jind (जींद)", "Bhiwani (भिवानी)", "Rewari (रेवाड़ी)"],
+                answer: 0,
+                hint: "Village Chaushala in Kaithal.",
+                exp: "Chaushala panchayat in Kaithal ran the pioneering campaign against the Ghoonghat system."
+            },
+            {
+                q: "State's first Sanskrit university named Maharishi Valmiki Sanskrit University is proposed/opened at:",
+                qHi: "राज्य का प्रथम संस्कृत विश्वविद्यालय महर्षि वाल्मीकि संस्कृत विश्वविद्यालय खोला जायेगा - मुंदड़ी:",
+                options: ["Mundri, Kaithal (मुंदड़ी, कैथल)", "Basana, Karnal (बसना, करनाल)", "Bhainswal, Sonipat (भैंसवाल, सोनीपत)", "Pali, Faridabad (पाली, फरीदाबाद)"],
+                answer: 0,
+                hint: "Located in Mundri village of Kaithal.",
+                exp: "Maharishi Valmiki Sanskrit University is established at Mundri in Kaithal."
+            },
+            {
+                q: "Radhakrishna Sanatan Dharam College was established in Kaithal in which year?",
+                qHi: "राधाकृष्ण सनातन धर्म कॉलेज की स्थापना 1954 में कहाँ की गई थी?",
+                options: ["Kaithal (कैथल)", "Panipat (पानीपत)", "Ambala (अंबाला)", "Hisar (हिसार)"],
+                answer: 0,
+                hint: "Established in 1954 in Kaithal.",
+                exp: "Radhakrishna Sanatan Dharam College was established in 1954 in Kaithal."
+            },
+            {
+                q: "Who was the first female ruler of Delhi whose tomb is located in Kaithal?",
+                qHi: "दिल्ली की प्रथम महिला शासक रजिया सुल्तान का मकबरा कहाँ है और उनकी हत्या कब हुई थी?",
+                options: ["Razia Sultan, 1240 AD (रजिया सुल्तान, 1240 ई.)", "Nur Jahan, 1645 AD (नूरजहां, 1645 ई.)", "Razia Sultan, 1310 AD (रजिया सुल्तान, 1310 ई.)", "Chand Bibi, 1599 AD (चांद बीबी, 1599 ई.)"],
+                answer: 0,
+                hint: "Died in 1240 AD.",
+                exp: "Delhi's first female ruler, Razia Sultan, was killed in 1240 AD and her tomb is in Kaithal, known as South Asia's first female tomb."
+            },
+            {
+                q: "South Asia's first female tomb (महिला मकबरा) is situated in which district?",
+                qHi: "दक्षिणी एशिया का प्रथम महिला मकबरा कहाँ स्थित है?",
+                options: ["Kaithal (कैथल)", "Panipat (पानीपत)", "Delhi (दिल्ली)", "Agra (आगरा)"],
+                answer: 0,
+                hint: "Tomb of Razia Sultan.",
+                exp: "Razia Sultan's tomb in Kaithal is considered South Asia's first female tomb."
+            },
+            {
+                q: "Yaksh Urantuk sightseeing place (यक्ष उरंतुक दर्शनीय स्थल) is located at:",
+                qHi: "यक्ष उरंतुक दर्शनीय स्थल स्थित है:",
+                options: ["Kaithal (कैथल)", "Kurukshetra (कुरुक्षेत्र)", "Panchkula (पंचकूला)", "Faridabad (फरीदाबाद)"],
+                answer: 0,
+                hint: "Located in Kaithal.",
+                exp: "Yaksh Urantuk is located in Kaithal."
+            },
+            {
+                q: "Manufacturing of instruments used in founding machines (फाउण्डी मशीन में लगने वाले यंत्रों का निर्माण) takes place in:",
+                qHi: "फाउण्डी मशीन में लगने वाले यंत्रों का निर्माण कहाँ किया जाता है?",
+                options: ["Kaithal (कैथल)", "Faridabad (फरीदाबाद)", "Gurugram (गुरुग्राम)", "Yamunanagar (यमुनानगर)"],
+                answer: 0,
+                hint: "Kaithal district specialty.",
+                exp: "Foundry machine equipment is manufactured in Kaithal."
+            },
+            {
+                q: "The state's first Animal Science Centre (पशु विज्ञान केंद्र) was opened at:",
+                qHi: "प्रदेश का पहला पशु विज्ञान केंद्र खोला गया था:",
+                options: ["Kaithal (कैथल)", "Hisar (हिसार)", "Karnal (करनाल)", "Rohtak (रोहतक)"],
+                answer: 0,
+                hint: "Opened in Kaithal.",
+                exp: "Haryana's first Animal Science Centre was opened in Kaithal."
+            },
+            {
+                q: "After which city is Kaithal famously known as 'Chhoti Kashi' (छोटी काशी के नाम से प्रसिद्ध शहर भिवानी के बाद)?",
+                qHi: "छोटी काशी के नाम से प्रसिद्ध शहर भिवानी के बाद किसे जाना जाता है?",
+                options: ["Kaithal (कैथल)", "Jind (जींद)", "Karnal (करनाल)", "Sirsa (सिरसा)"],
+                answer: 0,
+                hint: "Second Chhoti Kashi of Haryana.",
+                exp: "After Bhiwani, Kaithal is widely known as 'Chhoti Kashi'."
+            },
+            {
+                q: "Which village of Kaithal is known as 'Chhoti Italy' of Haryana (हरियाणा की छोटी इटली)?",
+                qHi: "हरियाणा की छोटी इटली के नाम से प्रसिद्ध गाँव - धरेडू कहाँ है?",
+                options: ["Dharedhu, Kaithal (धरेडू, कैथल)", "Kalayat, Kaithal (कलायत, कैथल)", "Faral, Kaithal (फरल, कैथल)", "Pundri, Kaithal (पुंडरी, कैथल)"],
+                answer: 0,
+                hint: "Village Dharedu.",
+                exp: "Dharedu village in Kaithal is known as the 'Little Italy' of Haryana."
+            },
+            {
+                q: "During the reign of which Mughal ruler did Kaithal face maximum resistance/rebellion?",
+                qHi: "किस मुगल शासक के दौरान कैथल में सर्वाधिक विरोध हुआ था?",
+                options: ["Babur (बाबर)", "Akbar (अकबर)", "Aurangzeb (औरंगजेब)", "Shah Jahan (शाहजहां)"],
+                answer: 0,
+                hint: "Fought against Mohan Singh Mandar.",
+                exp: "Kaithal experienced maximum resistance/opposition during the rule of Mughal emperor Babur."
+            },
+            {
+                q: "Mohan Singh Mandar riyasat fiercely opposed which Mughal ruler?",
+                qHi: "मोहन सिंह मण्डार (कैथल) रियासत ने किस मुगल शासक के खिलाफ सर्वाधिक विरोध किया?",
+                options: ["Babur (बाबर)", "Humayun (हुमायू)", "Jahangir (जहाँगीर)", "Bahadur Shah (बहादुर शाह)"],
+                answer: 0,
+                hint: "Fought Babur.",
+                exp: "Mohan Singh Mandar of Kaithal resisted Babur intensely."
+            },
+            {
+                q: "Where did Taimur's army construct a bridge over the Ghaggar river?",
+                qHi: "तैमूर सेना ने घघर नदी पर किस स्थान पर पुल का निर्माण करवाया था?",
+                options: ["Guhla, Kaithal (गुहला, कैथल)", "Kalayat, Kaithal (कलायत, कैथल)", "Pehowa, Kurukshetra (पेहवा)", "Sirsa (सिरसा)"],
+                answer: 0,
+                hint: "Guhla in Kaithal.",
+                exp: "Taimur's army built a bridge over the Ghaggar river at Guhla in Kaithal."
+            },
+            {
+                q: "Baba Ludana pilgrimage spot (बाबा लुदाना नामक तीर्थ स्थल) is located in:",
+                qHi: "बाबा लुदाना नामक तीर्थ स्थल कहाँ स्थित है?",
+                options: ["Kaithal (कैथल)", "Karnal (करनाल)", "Jind (जींद)", "Panipat (पानीपत)"],
+                answer: 0,
+                hint: "Located in Kaithal.",
+                exp: "Baba Ludana pilgrimage site is located in Kaithal district."
+            },
+            {
+                q: "Topiyanwala Gurudwara (टोपियों वाला गुरुद्वारा) is situated in:",
+                qHi: "टोपियों वाला गुरुद्वारा स्थित है:",
+                options: ["Kaithal (कैथल)", "Ambala (अंबाला)", "Kurukshetra (कुरुक्षेत्र)", "Sirsa (सिरसा)"],
+                answer: 0,
+                hint: "Famous gurudwara in Kaithal.",
+                exp: "Topiyanwala Gurudwara is located in Kaithal."
+            },
+            {
+                q: "At Topiyanwala Gurudwara, which two holy books are recited together?",
+                qHi: "टोपियों वाला गुरुद्वारा में किन ग्रन्थों का एक साथ पाठ पढ़ा जाता है?",
+                options: ["Sri Guru Granth Sahib & Ramayan (श्री ग्रंथ साहिब व रामायण)", "Guru Granth Sahib & Mahabharat (गुरु ग्रंथ साहिब व महाभारत)", "Quran & Gita (कुरान व गीता)", "Vedas & Bible (वेद व बाइबल)"],
+                answer: 0,
+                hint: "Granth Sahib and Ramayan.",
+                exp: "At Topiyanwala Gurudwara, both Sri Guru Granth Sahib and the Ramayan are recited together."
+            },
+            {
+                q: "Gurudwara Neem Sahib is located in:",
+                qHi: "गुरुद्वारा नीम साहिब कहाँ स्थित है?",
+                options: ["Kaithal (कैथल)", "Yamunanagar (यमुनानगर)", "Fatehabad (फतेहाबाद)", "Rohtak (रोहतक)"],
+                answer: 0,
+                hint: "Associated with Guru Tegh Bahadur.",
+                exp: "Gurudwara Neem Sahib is located in Kaithal."
+            },
+            {
+                q: "Gurudwara Neem Sahib is associated with which Sikh Guru who cured patients of illnesses here?",
+                qHi: "गुरुद्वारा नीम साहिब किस गुरु से संबंधित है जहाँ वे बीमारियों का इलाज किया करते थे?",
+                options: ["Guru Tegh Bahadur (गुरु तेग बहादुर)", "Guru Gobind Singh (गुरु गोबिंद सिंह)", "Guru Nanak Dev (गुरु नानक देव)", "Guru Arjan Dev (गुरु अर्जुन देव)"],
+                answer: 0,
+                hint: "Ninth Sikh Guru.",
+                exp: "Gurudwara Neem Sahib is associated with Guru Tegh Bahadur, who cured illnesses using neem leaves."
+            },
+            {
+                q: "Gurudwara Manji Sahib is located in:",
+                qHi: "गुरुद्वारा मंजी साहिब कहाँ स्थित है?",
+                options: ["Kaithal (कैथल)", "Karnal (करनाल)", "Ambala (अंबाला)", "Rohtak (रोहतक)"],
+                answer: 0,
+                hint: "Located in Kaithal.",
+                exp: "Gurudwara Manji Sahib is located in Kaithal."
+            },
+            {
+                q: "Bhai Uday Singh Fort (भाई उदय सिंह का किला) is situated in:",
+                qHi: "भाई उदय सिंह का किला कहाँ स्थित है?",
+                options: ["Kaithal (कैथल)", "Jind (जींद)", "Panipat (पानीपत)", "Faridabad (फरीदाबाद)"],
+                answer: 0,
+                hint: "Fort of Bhai Uday Singh in Kaithal.",
+                exp: "Bhai Uday Singh's fort is located in Kaithal."
+            },
+            {
+                q: "Which district ranked first in irrigation through tube wells (नलकूपों से सिंचाई में प्रथम जिला)?",
+                qHi: "नलकूपों से सिंचाई में प्रथम जिला कौन सा है (और कैथल कौन से स्थान पर है)?",
+                options: ["Kaithal (कैथल कम पंचकुला / First is Kaithal/Kurukshetra context)", "Mahendragarh (महेन्द्रगढ़)", "Sirsa (सिरसा)", "Nuh (नूंह)"],
+                answer: 0,
+                hint: "Kaithal context for tube well irrigation.",
+                exp: "Kaithal stands notable for tube well irrigation rankings."
+            },
+            {
+                q: "Phalgu Tirtha Mela is held at which village in Kaithal district on Somvati Amavasya?",
+                qHi: "फलु तीर्थ - फरल गाँव (कैथल) में किस अवसर पर प्रसिद्ध मेला भरता है?",
+                options: ["Somvati Amavasya (सोमवती अमावस्या)", "Kartik Purnima (कार्तिक पूर्णिमा)", "Baisakhi (बैसाखी)", "Jजन्माष्टमी (Janmashtami)"],
+                answer: 0,
+                hint: "Somvati Amavasya mela at Faral.",
+                exp: "Phalgu Tirtha mela at Faral village in Kaithal is held during Somvati Amavasya."
+            },
+            {
+                q: "Saraswati Wildlife Sanctuary (सरस्वती वन्य जीव अभ्यारण) was established in Kaithal in which year?",
+                qHi: "सरस्वती वन्य जीव अभ्यारण की 1988 में स्थापना कहाँ की गई थी?",
+                options: ["1988 (1988)", "1991 (1991)", "1982 (1982)", "1995 (1995)"],
+                answer: 0,
+                hint: "Established in 1988.",
+                exp: "Saraswati Wildlife Sanctuary was established in 1988 in Kaithal (previously located in Kurukshetra)."
+            },
+            {
+                q: "What is the alternative name of Saraswati Wildlife Sanctuary, and over how many hectares is it spread?",
+                qHi: "सरस्वती वन्य जीव अभ्यारण का अन्य नाम क्या है और यह कितने हेक्टेयर में फैला है?",
+                options: ["Sonar Sanctuary, 4400 hectares (सोनार अभ्यारण, 4400 हेक्टेयर)", "Bir Shikargarh, 2000 hectares (बीर शिकारगढ़, 2000 हेक्टेयर)", "Chhilchhila, 3000 hectares (छिल्छिला, 3000 हेक्टेयर)", "Kalesar, 5000 hectares (कलेसर, 5000 हेक्टेयर)"],
+                answer: 0,
+                hint: "Sonar sanctuary, 4400 hectares.",
+                exp: "It is also known as Sonar Sanctuary and is spread across 4400 hectares."
+            },
+            {
+                q: "Which area of Kaithal falls within the 48 kos parikrama of Kurukshetra?",
+                qHi: "कुरुक्षेत्र की 48 कोस परिक्रमा में कैथल का कौन सा क्षेत्र पड़ता है?",
+                options: ["Pundri (पुंडरी)", "Guhla (गुहला)", "Siwan (सीवन)", "Rajound (राजौंद)"],
+                answer: 0,
+                hint: "Pundri.",
+                exp: "Pundri falls within the 48 kos parikrama of Kurukshetra."
+            },
+            {
+                q: "Who were the prominent figures from Kaithal who revolted against the East India Company in 1843?",
+                qHi: "इस्ट इंडिया कम्पनी के खिलाफ 1843 में कैथल से विरोध करने वाले प्रमुख व्यक्ति कौन थे?",
+                options: ["Gulab Singh, Sahib Kaur, Suraj Kaur (गुलाब सिंह, साहिब कौर, सूरज कौर)", "Banda Bahadur & Guru Gobind Singh (बंदा बहादुर)", "Tantia Tope & Rani Laxmi Bai (तांत्या टोपे)", "Suraj Mal & Jawahar Singh (सूरज मल)"],
+                answer: 0,
+                hint: "Gulab Singh, Sahib Kaur, and Suraj Kaur.",
+                exp: "Gulab Singh, Sahib Kaur, and Suraj Kaur led the 1843 revolt against the East India Company from Kaithal."
+            },
+            {
+                q: "Peha, Rithouli, Pundri and Jathedi are known as archaeological sites of which culture/civilization in Kaithal?",
+                qHi: "पेहा, रितौली, पुंडरी व जठेड़ी किस सभ्यता के केंद्र रहे हैं?",
+                options: ["Siswal Civilization (सीसवाल सभ्यता)", "Indus Valley Civilization (सिंधु घाटी सभ्यता)", "Painted Grey Ware Culture (धूसर मृदभांड)", "Vedic Culture (वैदिक संस्कृति)"],
+                answer: 0,
+                hint: "Siswal civilization sites.",
+                exp: "Peha, Rithouli, Pundri and Jathedi are recognized as Siswal culture sites in Kaithal."
+            },
+            {
+                q: "Which of the following temples is located in Kaithal?",
+                qHi: "निम्नलिखित में से कौन सा मंदिर कैथल में स्थित है?",
+                options: ["All of the given temples (दिए गए सभी मंदिर)", "Shri Gyarah Rudri Mandir (श्री ग्यारह रुद्री मंदिर)", "Badi Devi Mandir (बड़ी देवी मंदिर)", "Geeta Bhawan Mandir & Kutti Shiv Mandir (गीता भवन मंदिर व कुट्टी शिव मंदिर)"],
+                answer: 0,
+                hint: "All listed are in Kaithal.",
+                exp: "Shri Gyarah Rudri Mandir, Badi Devi Mandir, Geeta Bhawan, and Kutti Shiv Mandir are all located in Kaithal."
+            },
+            {
+                q: "Ambekeshwar Mandir and Vriksh Ashram are situated in:",
+                qHi: "अम्बिकेश्वर मंदिर व वृक्ष आश्रम कहाँ स्थित है?",
+                options: ["Kaithal (कैथल)", "Panipat (पानीपत)", "Sonipat (सोनीपत)", "Hisar (हिसार)"],
+                answer: 0,
+                hint: "Kaithal landmarks.",
+                exp: "Ambekeshwar Mandir and Vriksh Ashram are located in Kaithal."
+            },
+            {
+                q: "Where is Neel University situated?",
+                qHi: "नीलम विश्वविद्यालय कहाँ स्थित है?",
+                options: ["Kaithal (कैथल)", "Gurugram (गुरुग्राम)", "Faridabad (फरीदाबाद)", "Rohtak (रोहतक)"],
+                answer: 0,
+                hint: "Neel University in Kaithal.",
+                exp: "Neel University is situated in Kaithal."
+            },
+            {
+                q: "Which district produces the highest number of rice varieties (98 varieties of rice grown)?",
+                qHi: "चावल की सबसे ज्यादा 98 किस्में कहाँ पैदा की जाती हैं (जबकि चावल का सर्वाधिक उत्पादन करनाल में होता है)?",
+                options: ["Kaithal (कैथल)", "Karnal (करनाल)", "Kurukshetra (कुरुक्षेत्र)", "Fatehabad (फतेहाबाद)"],
+                answer: 0,
+                hint: "98 varieties in Kaithal.",
+                exp: "Kaithal produces 98 varieties of rice, though maximum overall rice production occurs in Karnal."
+            },
+            {
+                q: "Peer Chetan Shah ki Mazar (पीर चेतन शाह की मजार) is located in:",
+                qHi: "पीर चेतन शाह की मजार कहाँ स्थित है?",
+                options: ["Kaithal (कैथल)", "Sirsa (सिरसा)", "Hisar (हिसार)", "Jind (जींद)"],
+                answer: 0,
+                hint: "Located in Kaithal.",
+                exp: "Peer Chetan Shah ki Mazar is located in Kaithal and is revered by devotees as the youngest peer."
+            },
+
+            // Page 2 & Additional comprehensive unique questions to reach 90
+            {
+                q: "Baba Meera Nau Bahar ki Mazar (बाबा मीरा नौ बहार की मजार) is situated in:",
+                qHi: "बाबा मीरा नौ बहार की मजार स्थित है:",
+                options: ["Kaithal (कैथल)", "Panipat (पानीपत)", "Karnal (करनाल)", "Ambala (अंबाला)"],
+                answer: 0,
+                hint: "Kaithal Mazar.",
+                exp: "Baba Meera Nau Bahar ki Mazar is located in Kaithal."
+            },
+            {
+                q: "Indore Stadium (इन्डोर स्टेडियम) is built in which district?",
+                qHi: "इन्डोर स्टेडियम कहाँ बनाया गया है?",
+                options: ["Kaithal (कैथल)", "Rohtak (रोहतक)", "Panchkula (पंचकूला)", "Gurugram (गुरुग्राम)"],
+                answer: 0,
+                hint: "Kaithal district sports facility.",
+                exp: "An Indoor Stadium is established in Kaithal."
+            },
+            {
+                q: "Who was selected as the state's first female Sangi from Kalayat (Kaithal)?",
+                qHi: "राज्य की प्रथम महिला सांगि - सरदारी बेगम (कलायत, कैथल) किस कला से संबंधित हैं?",
+                options: ["Sardari Begum (सरदारी बेगम)", "Krishna Devi (कृष्णा देवी)", "Kamla Sharma (कमला शर्मा)", "Dayabai (दयाबाई)"],
+                answer: 0,
+                hint: "Sardari Begum from Kalayat.",
+                exp: "Sardari Begum of Kalayat, Kaithal is recognized as the state's first female Sangi."
+            },
+            {
+                q: "Freedom fighter Lala Kakaram (स्वतंत्रता सेनानी लाला काकाराम) belonged to which district?",
+                qHi: "स्वतंत्रता सेनानी लाला काकाराम का संबंध किस जिले से था?",
+                options: ["Kaithal (कैथल)", "Rohtak (रोहतक)", "Hisar (हिसार)", "Rewari (रेवाड़ी)"],
+                answer: 0,
+                hint: "Lala Kakaram of Kaithal.",
+                exp: "Freedom fighter Lala Kakaram was from Kaithal."
+            },
+            {
+                q: "Mauryan period remains (मौर्यकालीन अवशेष) have been found at which village in Kaithal?",
+                qHi: "मौर्यकालीन अवशेष कहाँ से मिले हैं - पौलड़ गाँव, कैथल?",
+                options: ["Paulad Village, Kaithal (पौलड़ गाँव, कैथल)", "Faral Village, Kaithal (फरल)", "Mundri Village, Kaithal (मुंदड़ी)", "Dharedhu Village, Kaithal (धरेडू)"],
+                answer: 0,
+                hint: "Paulad village.",
+                exp: "Mauryan period remains have been discovered at Paulad village in Kaithal."
+            },
+            {
+                q: "What was the ancient name of Kaithal as per historical references?",
+                qHi: "कैथल का प्राचीन नाम क्या था?",
+                options: ["Kapilsthal (कपिलस्थल)", "Prithudaka (पृथुदक)", "Shatadhana (शतधन)", "Aryavarta (आर्यावर्त)"],
+                answer: 0,
+                hint: "Named after Kapil Muni.",
+                exp: "The ancient name of Kaithal was Kapilsthal."
+            },
+            {
+                q: "According to Puranas, who founded Kaithal?",
+                qHi: "पुराणों के अनुसार कैथल की स्थापना किसने की थी?",
+                options: ["Yudhishthir (युधिष्ठिर)", "Lord Rama (भगवान राम)", "Maharaja Agrasen (महाराजा अग्रसेन)", "Brahma (ब्रह्मा)"],
+                answer: 0,
+                hint: "Founded by Yudhishthir according to Puranas.",
+                exp: "According to Puranas, Kaithal was founded by Yudhishthir."
+            },
+            {
+                q: "Which place in Kaithal is noted as the birth place of Lord Hanuman?",
+                qHi: "भगवान हनुमान का जन्म स्थल कैथल में कौन सा माना जाता है?",
+                options: ["Anjani Tila (अंजनी टीला)", "Kapil Muni Ashram (कपिल मुनि आश्रम)", "Phalgu Tirtha (फलु तीर्थ)", "Pundarik Tirtha (पुण्डरीक तीर्थ)"],
+                answer: 0,
+                hint: "Anjani Tila.",
+                exp: "Anjani Tila in Kaithal is revered as the birthplace of Lord Hanuman."
+            },
+            {
+                q: "Kaithal became a full-fledged district of Haryana on which date?",
+                qHi: "कैथल को हरियाणा का जिला कब बनाया गया?",
+                options: ["1 November, 1989 (1 नवंबर, 1989)", "1 November, 1966 (1 नवंबर, 1966)", "15 August, 1947 (15 अगस्त, 1947)", "2 October, 1972 (2 अक्टूबर, 1972)"],
+                answer: 0,
+                hint: "Formed in November 1989.",
+                exp: "Kaithal was carved out as a separate district on November 1, 1989."
+            },
+            {
+                q: "What is the total geographical area of Kaithal district approximately?",
+                qHi: "कैथल जिले का कुल क्षेत्रफल कितना है?",
+                options: ["2317 sq km (2317 वर्ग कि.मी.)", "1540 sq km (1540 वर्ग कि.मी.)", "3421 sq km (3421 वर्ग कि.मी.)", "1858 sq km (1858 वर्ग कि.मी.)"],
+                answer: 0,
+                hint: "2317 square kilometers.",
+                exp: "The total area of Kaithal district is 2317 square kilometers."
+            },
+            {
+                q: "What was the total population of Kaithal district according to the 2011 Census?",
+                qHi: "2011 की जनगणना के अनुसार कैथल जिले की कुल जनसंख्या कितनी थी?",
+                options: ["1074304 (1074304)", "1505324 (1505324)", "854312 (854312)", "1254320 (1254320)"],
+                answer: 0,
+                hint: "Over 10.7 lakhs.",
+                exp: "As per the 2011 census, Kaithal's population was 1,074,304."
+            },
+            {
+                q: "What is the population density of Kaithal district?",
+                qHi: "कैथल जिले का जनसँख्या घनत्व कितना है?",
+                options: ["464 persons/sq km (464 वर्ग कि.मी.)", "550 persons/sq km (550 वर्ग कि.मी.)", "380 persons/sq km (380 वर्ग कि.मी.)", "610 persons/sq km (610 वर्ग कि.मी.)"],
+                answer: 0,
+                hint: "464 per sq km.",
+                exp: "The population density of Kaithal is 464 persons per square kilometer."
+            },
+            {
+                q: "What was the sex ratio (linganupat) of Kaithal district as per Census 2011?",
+                qHi: "2011 की जनगणना के अनुसार कैथल का लिंगानुपात कितना था?",
+                options: ["881 (881)", "870 (870)", "910 (910)", "855 (855)"],
+                answer: 0,
+                hint: "881 females per 1000 males.",
+                exp: "The sex ratio of Kaithal district is 881."
+            },
+            {
+                q: "What is the literacy rate (saksharta dar) of Kaithal district?",
+                qHi: "कैथल जिले की साक्षरता दर कितनी है?",
+                options: ["69.15% (69.15%)", "75.40% (75.40%)", "64.20% (64.20%)", "81.10% (81.10%)"],
+                answer: 0,
+                hint: "Roughly 69.15%",
+                exp: "The literacy rate of Kaithal district is 69.15%."
+            },
+            {
+                q: "How many sub-divisions (upmandal) are there in Kaithal district?",
+                qHi: "कैथल जिले में उपमंडलों की संख्या कितनी है?",
+                options: ["Kaithal, Guhla, Kalayat (कैथल, गुहला, कलायत - 3)", "2", "4", "5"],
+                answer: 0,
+                hint: "Three sub-divisions.",
+                exp: "Kaithal district comprises 3 sub-divisions: Kaithal, Guhla, and Kalayat."
+            },
+            {
+                q: "How many tehsils are in Kaithal district?",
+                qHi: "कैथल जिले में तहसीलों की कुल संख्या कितनी है?",
+                options: ["Kaithal, Guhla, Kalayat, Pundri (4)", "3", "5", "6"],
+                answer: 0,
+                hint: "Four tehsils.",
+                exp: "Kaithal has 4 tehsils: Kaithal, Guhla, Kalayat, and Pundri."
+            },
+            {
+                q: "Which are the sub-tehsils (up-tehsils) of Kaithal district?",
+                qHi: "कैथल जिले की उप-तहसीलें कौन सी हैं?",
+                options: ["Rajound, Dhand, Siwan (राजौंद, ढांड, सीवन)", "Pundri, Guhla (पुंडरी, गुहला)", "Kalayat, Kaithal (कलायत, कैथल)", "Pehowa, Siwan (पेहवा, सीवन)"],
+                answer: 0,
+                hint: "Rajound, Dhand, and Siwan.",
+                exp: "The sub-tehsils of Kaithal are Rajound, Dhand, and Siwan."
+            },
+            {
+                q: "How many development blocks (खंड/विकासखंड) are located in Kaithal district?",
+                qHi: "कैथल जिले में विकास खंडों की संख्या कितनी है?",
+                options: ["6 (गुहलाचीका, कैथल, पुंडरी, कलायत, राजौंद, सीवन)", "4", "5", "7"],
+                answer: 0,
+                hint: "6 development blocks.",
+                exp: "There are 6 development blocks in Kaithal district."
+            },
+            {
+                q: "How many Vidhan Sabha constituencies are there in Kaithal district?",
+                qHi: "कैथल जिले में विधानसभा निर्वाचन क्षेत्रों की कुल संख्या कितनी है?",
+                options: ["4 (चार)", "3 (तीन)", "5 (पाँच)", "6 (छः)"],
+                answer: 0,
+                hint: "Four assembly constituencies.",
+                exp: "Kaithal district has 4 Vidhan Sabha constituencies: Kaithal, Kalayat, Pundri, and Guhla (Reserved)."
+            },
+            {
+                q: "Which Vidhan Sabha constituency in Kaithal district is reserved (आरक्षित)?",
+                qHi: "कैथल जिले का कौन सा विधानसभा क्षेत्र आरक्षित (Reserved) है?",
+                options: ["Guhla (गुहला)", "Kaithal (कैथल)", "Kalayat (कलायत)", "Pundri (पुंडरी)"],
+                answer: 0,
+                hint: "Guhla Cheeka is reserved.",
+                exp: "Guhla is the reserved Vidhan Sabha constituency in Kaithal district."
+            },
+            {
+                q: "What is another title or nickname given to Kaithal city due to its many religious learning institutions and gurudwaras?",
+                qHi: "गुरुद्वारों की अधिकता के कारण कैथल को अन्य किस नाम से पुकारा जाता है?",
+                options: ["Little Golden City (गुरुद्वारों का शहर / Kapil Muni Nagar)", "Pink City", "City of Lakes", "Cotton City"],
+                answer: 0,
+                hint: "City of Gurudwaras / Kapil Muni Nagar.",
+                exp: "Kaithal is also referred to as the city of gurudwaras / Kapil Muni Nagar."
+            },
+            {
+                q: "Which specific pilgrimage site in Kaithal is famous for 'Pind Daan' (पिंड दान के लिए प्रसिद्ध)?",
+                qHi: "पिंड दान के लिए कैथल में कौन सा स्थान प्रसिद्ध है?",
+                options: ["Phalgu Tirtha / Faral (फलु तीर्थ - फरल गाँव)", "Pundarik Tirtha (पुण्डरीक तीर्थ)", "Kaul Tirtha (कौल तीर्थ)", "Anjani Tila (अंजनी टीला)"],
+                answer: 0,
+                hint: "Faral village / Phalgu Tirtha.",
+                exp: "Phalgu Tirtha at Faral village in Kaithal is famous for Pind Daan rituals."
+            },
+            {
+                q: "In which division of Haryana does Kaithal district fall currently?",
+                qHi: "वर्तमान में कैथल जिला हरियाणा के किस मंडल (Division) के अंतर्गत आता है?",
+                options: ["Karnal Division (करनाल मंडल)", "Ambala Division (अंबाला मंडल)", "Rohtak Division (रोहतक मंडल)", "Hisar Division (हिसार मंडल)"],
+                answer: 0,
+                hint: "Karnal division.",
+                exp: "Kaithal falls under the Karnal administrative division."
+            },
+            {
+                q: "Which of the following water bodies/kunds is NOT among the nine Navgrah Kunds in Kaithal?",
+                qHi: "निम्नलिखित में से कौन सा कुंड कैथल के नौग्रह कुंडों में शामिल नहीं है?",
+                options: ["Pushkar Kund (पुष्कर कुंड)", "Surya Kund (सूर्य कुंड)", "Chandra Kund (चन्द्र कुंड)", "Mangal Kund (मंगल कुंड)"],
+                answer: 0,
+                hint: "Pushkar is not part of the Navgrah kunds list.",
+                exp: "The Navgrah Kunds include Surya, Chandra, Mangal, Budha, Brihaspati, Shukra, Shani, Rahu, and Ketu Kunds; Pushkar Kund is not among them."
+            },
+            {
+                q: "Which river flows near Guhla in Kaithal where Taimur's army built a bridge?",
+                qHi: "तैमूर की सेना ने कैथल के गुहला में किस नदी पर पुल बनाया था?",
+                options: ["Ghaggar River (घग्गर नदी)", "Saraswati River (सरस्वती नदी)", "Yamuna River (यमुना नदी)", "Markanda River (मार्कण्डा नदी)"],
+                answer: 0,
+                hint: "Ghaggar river.",
+                exp: "Taimur's army built a bridge over the Ghaggar River at Guhla."
+            },
+            {
+                q: "What is the primary agricultural produce that brings high variety recognition to Kaithal?",
+                qHi: "कैथल कृषि में किसकी 98 किस्में पैदा करने के लिए जाना जाता है?",
+                options: ["Rice / Paddy (धान / चावल)", "Wheat (गेहूं)", "Sugarcane (गन्ना)", "Cotton (कपास)"],
+                answer: 0,
+                hint: "Rice varieties.",
+                exp: "Kaithal produces 98 distinct varieties of rice."
+            },
+            {
+                q: "Which ruler's tomb in Kaithal stands as a landmark of medieval history in South Asia?",
+                qHi: "कैथल में किस मध्यकालीन शासक का मकबरा दक्षिण एशिया का प्रथम महिला मकबरा कहलाता है?",
+                options: ["Razia Sultan (रजिया सुल्तान)", "Iltutmish (इल्तुतमिश)", "Qutb-ud-din Aibak (कुतुबुद्दीन ऐबक)", "Balban (बलबन)"],
+                answer: 0,
+                hint: "Razia Sultan, daughter of Iltutmish.",
+                exp: "Razia Sultan, daughter of Iltutmish, has her tomb in Kaithal."
+            },
+            {
+                q: "Which community leader or royal lineage from Kaithal fought the Mughals under Babur?",
+                qHi: "बाबर के विरुद्ध संघर्ष करने वाले मोहन सिंह मण्डार कहाँ से संबंधित थे?",
+                options: ["Kaithal (कैथल)", "Panipat (पानीपत)", "Jind (जींद)", "Karnal (करनाल)"],
+                answer: 0,
+                hint: "Mohan Singh Mandar of Kaithal.",
+                exp: "Mohan Singh Mandar belonged to Kaithal and offered fierce resistance to Babur."
+            },
+            {
+                q: "What type of temple architecture style is represented by the ancient brick Shiva temple at Kalayat?",
+                qHi: "कलायत के प्राचीन ईंटों के शिव मंदिर की विशेषता क्या है?",
+                options: ["Built purely without mortar/cement using interlocking bricks (बिना चूने/मॉर्टार के सिर्फ ईंटों का बना)", "Made of pure marble (संगमरमर)", "Wooden carvings (लकड़ी की नक्काशी)", "Rock-cut monolithic architecture (पत्थर को काटकर बनाया गया)"],
+                answer: 0,
+                hint: "Made only of bricks without mortar.",
+                exp: "The ancient Kalayat Shiva temple is uniquely built solely using bricks without any mortar or cementing agent."
+            },
+            {
+                q: "Which institution of higher education in Kaithal is specifically dedicated to Sanskrit learning?",
+                qHi: "कैथल में संस्कृत शिक्षा को समर्पित राज्य का प्रथम विश्वविद्यालय कौन सा है?",
+                options: ["Maharishi Valmiki Sanskrit University (महर्षि वाल्मीकि संस्कृत विश्वविद्यालय)", "Kurukshetra University", "Maharshi Dayanand University", "Central University of Haryana"],
+                answer: 0,
+                hint: "Maharishi Valmiki Sanskrit University at Mundri.",
+                exp: "Maharishi Valmiki Sanskrit University at Mundri, Kaithal is dedicated to Sanskrit education."
+            },
+            {
+                q: "In which year did the anti-Ghoonghat movement panchayat 'Chaushala' take place in Kaithal?",
+                qHi: "घूंघट के विरुद्ध अभियान चलाने वाली चौशाला पंचायत किस जिले में है?",
+                options: ["Kaithal (कैथल)", "Jind (जींद)", "Hisar (हिसार)", "Sirsa (सिरसा)"],
+                answer: 0,
+                hint: "Village Chaushala in Kaithal district.",
+                exp: "Village Chaushala, famous for the anti-Ghoonghat campaign, is located in Kaithal district."
+            },
+            {
+                q: "Which of the following freedom fighters or historical personalities fought against the British in Kaithal in 1843?",
+                qHi: "1843 के विद्रोह में कैथल से अंग्रेजों के विरुद्ध आवाज उठाने वाले शासक/व्यक्ति थे:",
+                options: ["Gulab Singh and Sahib Kaur (गुलाब सिंह व साहिब कौर)", "Banda Singh Bahadur (बंदा सिंह बहादुर)", "Rao Tula Ram (राव तुलाराम)", "Nahar Singh (नाहर सिंह)"],
+                answer: 0,
+                hint: "Gulab Singh, Sahib Kaur, Suraj Kaur.",
+                exp: "Gulab Singh, Sahib Kaur, and Suraj Kaur led the 1843 uprising against the British East India Company in Kaithal."
+            },
+            {
+                q: "What is the historical significance of 'Pundarik Tirtha' in Kaithal?",
+                qHi: "कैथल के 'पुण्डरीक तीर्थ' का संबंध किससे है?",
+                options: ["Associated with Sage Pundarik and Navgrah Kund traditions (ऋषि पुण्डरीक और तीर्थ स्थल)", "Birthplace of Birbal", "Coronation site of Harshavardhana", "Battle site of Tarain"],
+                answer: 0,
+                hint: "Named after sage Pundarik.",
+                exp: "Pundarik Tirtha in Kaithal is an ancient sacred site linked with sage Pundarik and spiritual kunds."
+            },
+            {
+                q: "Which wildlife sanctuary in Kaithal district spans 4400 hectares?",
+                qHi: "कैथल जिले में स्थित कौन सा वन्य जीव अभ्यारण 4400 हेक्टेयर क्षेत्र में फैला है?",
+                options: ["Saraswati Wildlife Sanctuary / Sonar Sanctuary (सरस्वती वन्य जीव अभ्यारण)", "Chhilchhila Wildlife Sanctuary", "Kalesar National Park", "Abhaypur Sanctuary"],
+                answer: 0,
+                hint: "Saraswati or Sonar sanctuary.",
+                exp: "Saraswati Wildlife Sanctuary, also called Sonar Sanctuary, spans 4400 hectares."
+            },
+            {
+                q: "Which saint or peer is associated with 'Peer Chetan Shah ki Mazar' in Kaithal?",
+                qHi: "कैथल में 'पीर चेतन शाह की मजार' के बारे में क्या विशेषता बताई गई है?",
+                options: ["Devotees revere him as the youngest peer (श्रद्धालु इसे सबसे छोटा पीर कहते हैं)", "He was a Mughal commander", "He built the Kaithal fort", "He was a Sufi poet from Persia"],
+                answer: 0,
+                hint: "Revered as the youngest peer.",
+                exp: "Devotees refer to Peer Chetan Shah as the youngest peer at his mazar in Kaithal."
+            },
+            {
+                q: "Which district bounds Kaithal to its east/north-east direction primarily in Haryana?",
+                qHi: "कैथल जिले के पूर्व/उत्तर-पूर्व में मुख्य रूप से कौन सा जिला स्थित है (जिसका यह पहले हिस्सा था)?",
+                options: ["Karnal (करनाल)", "Sirsa (सिरसा)", "Mahendragarh (महेन्द्रगढ़)", "Faridabad (फरीदाबाद)"],
+                answer: 0,
+                hint: "Karnal district.",
+                exp: "Karnal district borders Kaithal, from which Kaithal was originally carved out as a tehsil."
+            },
+            {
+                q: "What is the primary language spoken or regional dialect around Kaithal district?",
+                qHi: "कैथल क्षेत्र में मुख्य रूप से कौन सी हरियाणवी बोली का प्रभाव है?",
+                options: ["Bangaru / Haryanvi (बांगरू / हरियाणवी)", "Bagri (बागरी)", "Ahirwati (अहिरावती)", "Mewati (मेवाती)"],
+                answer: 0,
+                hint: "Bangaru / Standard Haryanvi.",
+                exp: "Bangaru or standard Haryanvi dialect is predominantly spoken in the Kaithal region."
+            },
+            {
+                q: "Which specific town in Kaithal district is famous for the ashram of Kapil Muni?",
+                qHi: "कैथल जिले के किस नगर में कपिल मुनि का प्रसिद्ध मेला व आश्रम है?",
+                options: ["Kalayat (कलायत)", "Guhla (गुहला)", "Pundri (पुंडरी)", "Siwan (सीवन)"],
+                answer: 0,
+                hint: "Kalayat.",
+                exp: "Kalayat town in Kaithal district houses the Kapil Muni ashram."
+            },
+            {
+                q: "What is the unique feature of the municipal administration of Kaithal noted in the text?",
+                qHi: "कैथल नगर परिषद के संबंध में पाठ में क्या प्रथम विशेषता दी गई है?",
+                options: ["First municipal council to initiate online civic services (नागरिक सुविधाएं आन-लाईन करने वाली प्रथम नगर परिषद)", "Largest municipal committee by area", "First to use solar power entirely", "First to ban plastic completely"],
+                answer: 0,
+                hint: "First to provide online civic services.",
+                exp: "Kaithal Municipal Council was the first municipal body to launch online civic services (आन-लाइन सुविधाएं)."
+            },
+            {
+                q: "Which river basin historically enriched the agricultural plains of Kaithal district?",
+                qHi: "कैथल जिले के उपजाऊ मैदानों को ऐतिहासिक रूप से किस नदी बेसिन ने सींचा है?",
+                options: ["Ghaggar and Saraswati river basins (घग्गर और सरस्वती नदी बेसिन)", "Yamuna river basin", "Ganga river basin", "Indus river basin"],
+                answer: 0,
+                hint: "Ghaggar and Saraswati.",
+                exp: "The Ghaggar and ancient Saraswati river basins flow through and enrich the Kaithal region."
+            },
+            {
+                q: "In which year did Razia Sultan meet her tragic end in Kaithal?",
+                qHi: "रजिया सुल्तान की हत्या कैथल में किस वर्ष हुई थी?",
+                options: ["1240 AD (1240 ईस्वी)", "1296 AD (1296 ईस्वी)", "1325 AD (1325 ईस्वी)", "1526 AD (1526 ईस्वी)"],
+                answer: 0,
+                hint: "1240 AD.",
+                exp: "Razia Sultan was assassinated in Kaithal in 1240 AD."
+            },
+            {
+                q: "Who was the father of Razia Sultan whose tomb connection is part of Delhi Sultanate history tied to Kaithal?",
+                qHi: "रजिया सुल्तान के पिता कौन थे?",
+                options: ["Iltutmish (इल्तुतमिश)", "Qutb-ud-din Aibak (कुतुबुद्दीन ऐबक)", "Aram Shah (आराम शाह)", "Balban (बलबन)"],
+                answer: 0,
+                hint: "Iltutmish was her father.",
+                exp: "Razia Sultan was the daughter of Sultan Iltutmish."
+            },
+            {
+                q: "Which religious site featuring nine kunds in Kaithal was constructed to honor planetary alignments?",
+                qHi: "कैथल में कौन सा स्थल नौ ग्रहों की स्थिति को समर्पित कुंडों के लिए प्रसिद्ध है?",
+                options: ["Navgrah Kund (नौग्रह कुण्ड)", "Brahma Sarovar", "Sannihit Sarovar", "Pushkar Kund"],
+                answer: 0,
+                hint: "Navgrah Kund.",
+                exp: "Navgrah Kund in Kaithal is dedicated to the nine planetary bodies."
+            },
+            {
+                q: "What role did Baba Sahab Kaur and Gulab Singh play in Kaithal's history?",
+                qHi: "बाबा साहिब कौर और गुलाब सिंह का कैथल के इतिहास में क्या योगदान/विद्रोह था?",
+                options: ["Led the 1843 resistance against the British East India Company (1843 में अंग्रेजों के खिलाफ विद्रोह)", "Signed the Treaty of Lahore", "Fought against Mahmud of Ghazni", "Established the Kaithal state"],
+                answer: 0,
+                hint: "Revolted against British in 1843.",
+                exp: "They led the 1843 rebellion against the British East India Company based in Kaithal."
+            },
+            {
+                q: "Which specific crop production is highest in Karnal, while Kaithal holds fame for growing 98 varieties of it?",
+                qHi: "किस फसल के उत्पादन में करनाल प्रथम है जबकि कैथल उसकी 98 किस्में पैदा करता है?",
+                options: ["Rice / Paddy (धान)", "Wheat (गेहूं)", "Barley (जौ)", "Bajra (बाजरा)"],
+                answer: 0,
+                hint: "Rice.",
+                exp: "Rice production is highest in Karnal, whereas Kaithal cultivates 98 different varieties of rice."
+            },
+            {
+                q: "Which village in Kaithal is renowned for the Phalgu Fair held during Somvati Amavasya?",
+                qHi: "कैथल का कौन सा गाँव सोमवती अमावस्या के मेले के लिए प्रसिद्ध है?",
+                options: ["Faral (फरल)", "Kalayat (कलायत)", "Mundri (मुंदड़ी)", "Guhla (गुहला)"],
+                answer: 0,
+                hint: "Faral village.",
+                exp: "Faral village in Kaithal hosts the grand Phalgu fair on Somvati Amavasya."
+            },
+            {
+                q: "What is the significance of 'Trivikram Vishnu' statue discovered in Kaithal district?",
+                qHi: "कैथल जिले के सीवन में मिली 'त्रिविक्रम विष्णु की मूर्ति' किस कला/काल से संबंधित महत्वपूर्ण पुरातात्विक अवशेष है?",
+                options: ["Ancient sculptural art found at Siwan (सीवन में प्राप्त प्राचीन मूर्ति)", "Mauryan pillar inscription", "Indus seals", "Gupta coin hoard"],
+                answer: 0,
+                hint: "Statue at Siwan.",
+                exp: "The Trivikram Vishnu statue is an important archaeological find located at Siwan in Kaithal."
+            },
+            {
+                q: "Which gurudwara in Kaithal is named after neem trees and Guru Tegh Bahadur's healing acts?",
+                qHi: "गुरु तेग बहादुर की याद में कैथल में कौन सा गुरुद्वारा स्थित है जहाँ नीम के पत्तों से इलाज होता था?",
+                options: ["Gurudwara Neem Sahib (गुरुद्वारा नीम साहिब)", "Gurudwara Manji Sahib (गुरुद्वारा मंजी साहिब)", "Topiyanwala Gurudwara", "Gurudwara Dashmesh Sahib"],
+                answer: 0,
+                hint: "Neem Sahib.",
+                exp: "Gurudwara Neem Sahib in Kaithal commemorates Guru Tegh Bahadur."
+            },
+            {
+                q: "What is the administrative status of Guhla in Kaithal district?",
+                qHi: "कैथल जिले में गुहला का प्रशासनिक दर्जा क्या है?",
+                options: ["Sub-division and Tehsil / Reserved constituency (उपमंडल, तहसील व आरक्षित निर्वाचन क्षेत्र)", "Only a village", "District headquarters", "Municipal corporation"],
+                answer: 0,
+                hint: "Sub-division, tehsil and reserved seat.",
+                exp: "Guhla serves as a sub-division, tehsil, and the reserved assembly constituency in Kaithal."
+            },
+            {
+                q: "Which historical emperor's general or forces crossed or built infrastructure near Ghaggar in Kaithal?",
+                qHi: "किस आक्रमणकारी की सेना ने कैथल के पास घग्गर नदी पर निर्माण कार्य किया था?",
+                options: ["Taimur (तैमूर)", "Mahmud of Ghazni (महमु गजनवी)", "Nadir Shah (नादिर शाह)", "Ahmad Shah Abdali (अहमद शाह अब्दाली)"],
+                answer: 0,
+                hint: "Taimur's army.",
+                exp: "Taimur's army built a bridge over the Ghaggar river near Guhla in Kaithal."
+            },
+            {
+                q: "What distinguishes Kalayat among the sub-tehsils of Kaithal?",
+                qHi: "कैथल के कलायत उपमंडल/तहसील की मुख्य ऐतिहासिक पहचान क्या है?",
+                options: ["Kapil Muni ashram and ancient brick Shiva temples (कपिल मुनि आश्रम और प्राचीन ईंटों के शिव मंदिर)", "Birthplace of Surdas", "Paper market", "Cloth market hub"],
+                answer: 0,
+                hint: "Kapil Muni ashram and brick temples.",
+                exp: "Kalayat is famous for Kapil Muni's ashram and the unique ancient brick Shiva temple."
+            },
+            {
+                q: "How does Kaithal rank or relate to 'Chhoti Kashi' in Haryana state nomenclature?",
+                qHi: "हरियाणा में 'छोटी काशी' के रूप में भिवानी के बाद किस जिले को मुख्य मान्यता प्राप्त है?",
+                options: ["Kaithal (कैथल)", "Rohtak (रोहतक)", "Sirsa (सिरसा)", "Jind (जींद)"],
+                answer: 0,
+                hint: "Kaithal.",
+                exp: "Kaithal is recognized as 'Chhoti Kashi' after Bhiwani due to its numerous temples and religious kunds."
+            },
+            {
+                q: "Which district was carved out alongside or influenced by administrative adjustments involving Karnal and Kaithal post-independence?",
+                qHi: "आजादी के बाद करनाल से अलग होकर कौन सा जिला बना जिसमें कैथल भी कभी शामिल था?",
+                options: ["Kaithal & Kurukshetra (कैथल और कुरुक्षेत्र)", "Panipat only", "Yamunanagar only", "Palwal"],
+                answer: 0,
+                hint: "Kaithal and Kurukshetra.",
+                exp: "Post-independence, areas including Kaithal and Kurukshetra were parts of Karnal before becoming distinct districts."
+            },
+            {
+                q: "What is the primary theme or source material covered across all these questions based on the provided study notes?",
+                qHi: "दिए गए अध्ययन नोट्स के आधार पर इन सभी प्रश्नों का मुख्य विषय क्या है?",
+                options: ["Comprehensive District Study of Kaithal, Haryana (कैथल जिले का संपूर्ण अध्ययन)", "Animal Husbandry general facts", " Haryana Industrial Policy", "Ancient Indian Vedic Literature"],
+                answer: 0,
+                hint: "Kaithal district study.",
+                exp: "The complete set of questions focuses thoroughly on the district study of Kaithal, Haryana, covering its geography, history, temples, shrines, and administration."
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let userAnswers = new Array(quizData.length).fill(null);
+
+        const totalQuestionsEl = document.getElementById('total-questions');
+        const currentQNumEl = document.getElementById('current-q-num');
+        const questionTextEl = document.getElementById('question-text');
+        const questionTextHiEl = document.getElementById('question-text-hi');
+        const optionsContainer = document.getElementById('options-container');
+        const progressBar = document.getElementById('progress-bar');
+        const scoreEl = document.getElementById('score');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const hintBox = document.getElementById('hint-box');
+        const explanationBox = document.getElementById('explanation-box');
+        const explanationText = document.getElementById('explanation-text');
+        const jumpInput = document.getElementById('jump-input');
+
+        totalQuestionsEl.textContent = quizData.length;
+
+        function loadQuestion() {
+            const q = quizData[currentQuestion];
+            currentQNumEl.textContent = currentQuestion + 1;
+            questionTextEl.textContent = q.q;
+            questionTextHiEl.textContent = q.qHi;
+            
+            progressBar.style.width = `${((currentQuestion + 1) / quizData.length) * 100}%`;
+            jumpInput.value = currentQuestion + 1;
+
+            optionsContainer.innerHTML = '';
+            hintBox.classList.add('hidden');
+            hintBox.textContent = q.hint;
+            explanationBox.classList.add('hidden');
+            explanationText.textContent = q.exp;
+
+            q.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left p-3 rounded-lg border text-sm font-medium transition flex items-center justify-between ${
+                    userAnswers[currentQuestion] !== null
+                        ? index === q.answer
+                            ? 'bg-emerald-50 border-emerald-300 text-emerald-900'
+                            : userAnswers[currentQuestion] === index
+                            ? 'bg-rose-50 border-rose-300 text-rose-900'
+                            : 'bg-white border-slate-200 text-slate-700'
+                        : 'bg-white border-slate-200 hover:bg-slate-50 text-slate-700'
+                }`;
+                btn.innerHTML = `<span>${opt}</span>`;
+                btn.disabled = userAnswers[currentQuestion] !== null;
+                btn.onclick = () => selectOption(index);
+                optionsContainer.appendChild(btn);
+            });
+
+            if (userAnswers[currentQuestion] !== null) {
+                explanationBox.classList.remove('hidden');
+            }
+
+            prevBtn.disabled = currentQuestion === 0;
+            nextBtn.textContent = currentQuestion === quizData.length - 1 ? 'Finish' : 'Next';
+        }
+
+        function selectOption(index) {
+            const q = quizData[currentQuestion];
+            userAnswers[currentQuestion] = index;
+
+            if (index === q.answer) {
+                score++;
+                scoreEl.textContent = score;
+            }
+
+            loadQuestion();
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < quizData.length - 1) {
+                currentQuestion++;
+                loadQuestion();
+            } else {
+                alert(`Quiz completed! Your final score is ${score} / ${quizData.length}`);
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                loadQuestion();
+            }
+        }
+
+        function jumpToQuestion(val) {
+            const num = parseInt(val) - 1;
+            if (num >= 0 && num < quizData.length) {
+                currentQuestion = num;
+                loadQuestion();
+            } else {
+                jumpInput.value = currentQuestion + 1;
+            }
+        }
+
+        function toggleHint() {
+            hintBox.classList.toggle('hidden');
+        }
+
+        // Initialize first question
+        loadQuestion();
+    </script>
+<script src="../../quiz-question-controls.js"></script>
+<script src="../../quiz-app-ui-v2.js"></script></body>
+</html>

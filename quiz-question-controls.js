@@ -1,0 +1,33 @@
+/* Runs inside every individual quiz page so controls remain reliable in local browsers. */
+(() => {
+  if (document.getElementById('quiz-question-dock')) return;
+  const prev = document.querySelector('#prev-btn');
+  const next = document.querySelector('#next-btn');
+  if (!prev && !next) return;
+  const jumpInput = document.querySelector('#jump-input, input[id*="jump" i]');
+  const jumpGo = document.querySelector('#jump-btn, button[id*="jump" i], button[data-action="jump"]') || [...document.querySelectorAll('button')].find(button => /^go\b/i.test(button.textContent.trim()));
+  const style = document.createElement('style');
+  style.textContent = `body{padding-bottom:94px!important}[class*="bg-emerald"],[class*="bg-green"]{background-color:#dcfce7!important;border-color:#22c55e!important;color:#14532d!important}[class*="bg-rose"],[class*="bg-red"]{background-color:#fee2e2!important;border-color:#ef4444!important;color:#7f1d1d!important}#quiz-question-dock{position:fixed;z-index:99999;left:50%;bottom:max(10px,env(safe-area-inset-bottom));transform:translateX(-50%);display:flex;align-items:center;gap:8px;width:min(710px,calc(100vw - 24px));padding:10px 12px;border:1px solid rgba(93,61,164,.36);border-radius:14px;background:rgba(255,255,255,.97);box-shadow:0 14px 34px rgba(28,17,59,.28);color:#281a4b;font:600 12px system-ui,sans-serif;backdrop-filter:blur(12px)}#quiz-question-dock button,#quiz-question-dock input{height:38px;border:1px solid rgba(93,61,164,.3);border-radius:8px;background:#fff;color:#281a4b;font:inherit}#quiz-question-dock button{padding:0 11px;cursor:pointer}#quiz-question-dock button:hover{border-color:#7654cc}#quiz-question-dock .dock-next{background:#7654cc;color:#fff;border-color:#7654cc}.dock-label{color:#6a45bf;font:700 11px monospace;letter-spacing:.06em;text-transform:uppercase;margin-right:auto}.dock-jump{display:flex;gap:5px;align-items:center}.dock-jump input{width:56px;text-align:center}@media(max-width:560px){body{padding-bottom:138px!important}#quiz-question-dock{flex-wrap:wrap;justify-content:space-between;padding:8px}.dock-label{width:100%;margin:0;font-size:10px}#quiz-question-dock button{padding:0 9px;font-size:11px}}`;
+  style.textContent += `[class*="bg-emerald"],[class*="bg-green"]{background:#166534!important;border-color:#14532d!important;color:#fff!important}[class*="bg-emerald"] *,[class*="bg-green"] *{color:#fff!important}[class*="bg-rose"],[class*="bg-red"]{background:#991b1b!important;border-color:#7f1d1d!important;color:#fff!important}[class*="bg-rose"] *,[class*="bg-red"] *{color:#fff!important}`;
+  document.head.append(style);
+  const feedback = document.createElement('style');
+  feedback.textContent = `button[class*="bg-emerald"],button[class*="bg-green"]{background:#dcfce7!important;border:2px solid #16a34a!important;color:#064e3b!important;font-weight:700!important}button[class*="bg-emerald"] span,button[class*="bg-green"] span{color:#064e3b!important}button[class*="bg-rose"],button[class*="bg-red"]{background:#fee2e2!important;border:2px solid #ef4444!important;color:#991b1b!important}button[class*="bg-rose"] span,button[class*="bg-red"] span{color:#991b1b!important}`;
+  document.head.append(feedback);
+  const dock = document.createElement('nav'); dock.id = 'quiz-question-dock'; dock.setAttribute('aria-label', 'Question navigation');
+  dock.innerHTML = `<span class="dock-label">Question navigation</span><button type="button" data-action="prev">← Previous</button><button type="button" class="dock-next" data-action="next">Next →</button><span class="dock-jump"><input type="number" min="1" inputmode="numeric" aria-label="Question number" placeholder="Q#"><button type="button" data-action="jump">Go</button></span><button type="button" data-action="reset">Reset</button>`;
+  document.body.append(dock);
+  const dockInput = dock.querySelector('input');
+  const goPrev = () => { if (prev && !prev.disabled) prev.click(); };
+  const goNext = () => { if (next && !next.disabled) next.click(); };
+  const goJump = () => { const number = Number(dockInput.value); if (!number || !jumpInput) return; jumpInput.value = number; jumpInput.dispatchEvent(new Event('input', {bubbles:true})); jumpInput.dispatchEvent(new Event('change', {bubbles:true})); if (jumpGo) jumpGo.click(); else jumpInput.dispatchEvent(new KeyboardEvent('keydown', {key:'Enter', bubbles:true})); };
+  dock.querySelector('[data-action="prev"]').addEventListener('click', goPrev);
+  dock.querySelector('[data-action="next"]').addEventListener('click', goNext);
+  dock.querySelector('[data-action="jump"]').addEventListener('click', goJump);
+  dock.querySelector('[data-action="reset"]').addEventListener('click', () => location.reload());
+  dockInput.addEventListener('keydown', event => { if (event.key === 'Enter') { event.preventDefault(); goJump(); } });
+  jumpInput?.addEventListener('keydown', event => { if (event.key === 'Enter') { event.preventDefault(); jumpGo?.click(); } });
+  document.addEventListener('keydown', event => { if (event.target.matches('input,textarea,select,button')) return; if (event.key === 'ArrowLeft') { event.preventDefault(); goPrev(); } else if (event.key === 'ArrowRight') { event.preventDefault(); goNext(); } }, true);
+  let startX = 0, startY = 0;
+  document.addEventListener('touchstart', event => { const p = event.changedTouches[0]; startX = p.clientX; startY = p.clientY; }, {passive:true});
+  document.addEventListener('touchend', event => { const p = event.changedTouches[0], x = p.clientX - startX, y = p.clientY - startY; if (Math.abs(x) > 65 && Math.abs(x) > Math.abs(y) * 1.4) x < 0 ? goNext() : goPrev(); }, {passive:true});
+})();

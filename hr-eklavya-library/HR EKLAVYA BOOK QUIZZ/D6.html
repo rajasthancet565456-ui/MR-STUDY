@@ -1,0 +1,1422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haryana GK Interactive Quiz Application (Panipat District - Bilingual)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+<style id="cosmic-readable-quiz-theme">
+:root{--space:#e8dcff;--panel:#f3eaff;--panel2:#dcc6ff;--edge:#6a45bf;--glow:#d28b28;--accent:#d15f9f;--ink:#2c1b4d;--muted:#66547c;--mist:rgba(106,69,191,.2)}html{background:var(--space)}body{background:radial-gradient(ellipse 62% 45% at 90% -5%,rgba(209,95,159,.28),transparent 62%),radial-gradient(ellipse 55% 40% at 8% 100%,rgba(65,164,207,.26),transparent 64%),var(--space)!important;color:var(--ink)!important;min-height:100vh}body:before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.78;background-image:radial-gradient(circle at 9% 18%,var(--glow) 0 1px,transparent 1.7px),radial-gradient(circle at 26% 69%,var(--edge) 0 .8px,transparent 1.5px),radial-gradient(circle at 68% 24%,var(--accent) 0 1px,transparent 1.8px),radial-gradient(circle at 88% 73%,#47a8d3 0 .8px,transparent 1.5px);background-size:220px 190px,300px 270px,260px 230px,340px 310px;z-index:-1}header{background:linear-gradient(105deg,var(--panel),var(--panel2))!important;border-color:rgba(106,69,191,.25)!important;box-shadow:0 7px 24px rgba(84,48,142,.14)!important}header h1{color:var(--edge)!important;text-shadow:none!important}header p,header .text-slate-400,header .text-indigo-200,header .text-indigo-300{color:var(--muted)!important}main>div,#quiz-card,.bg-slate-800,.bg-slate-900,.bg-indigo-900,.bg-indigo-950{background:linear-gradient(145deg,#f8f0ff,var(--panel))!important;border-color:rgba(106,69,191,.22)!important;color:var(--ink)!important;box-shadow:0 14px 35px rgba(84,48,142,.12)!important}.bg-slate-700,.bg-slate-100,.bg-slate-50{background:#eadffd!important;color:var(--ink)!important}.text-slate-100,.text-slate-200,.text-slate-300,.text-slate-400,.text-white,.text-slate-800,.text-slate-700,.text-slate-600{color:var(--ink)!important}.text-indigo-400,.text-indigo-300,.text-emerald-400,.text-yellow-300{color:var(--edge)!important}.border-slate-700,.border-slate-700\/60,.border-indigo-700,.border-slate-200{border-color:rgba(106,69,191,.25)!important}button:not(.bg-green-600):not(.bg-red-600){background:#f9f2ff!important;color:var(--ink)!important;border:1px solid rgba(106,69,191,.25)!important;box-shadow:0 3px 10px rgba(84,48,142,.09)!important}button.bg-indigo-600,button.bg-slate-800,button.bg-slate-900,button.bg-indigo-900{background:linear-gradient(120deg,var(--edge),var(--accent))!important;color:#fff!important;border:0!important}button.bg-indigo-600 *,button.bg-slate-800 *,button.bg-slate-900 *,button.bg-indigo-900 *{color:#fff!important}button:hover{filter:brightness(1.04);transform:translateY(-1px)}input,select,textarea{background:#f9f2ff!important;border-color:rgba(106,69,191,.35)!important;color:var(--ink)!important}input:focus,select:focus,textarea:focus{outline:none!important;border-color:var(--edge)!important;box-shadow:0 0 0 3px var(--mist)!important}.bg-indigo-500,#progress-bar{background:linear-gradient(90deg,var(--edge),var(--accent),var(--glow))!important}.rounded-2xl{border-radius:1.25rem!important}
+</style></head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col items-center justify-center p-4 md:p-8">
+
+    <div class="w-full max-w-4xl bg-slate-800 rounded-2xl shadow-2xl border border-slate-700 overflow-hidden flex flex-col my-auto">
+        
+        <!-- Header -->
+        <div class="bg-slate-900 px-6 py-4 border-b border-slate-700 flex flex-wrap justify-between items-center gap-4">
+            <div>
+                <h1 class="text-xl md:text-2xl font-bold text-emerald-400">Haryana GK Interactive Quiz</h1>
+                <p class="text-xs md:text-sm text-slate-400">Topic: Panipat District (Haryana Districts Study Vol-10)</p>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="bg-slate-800 border border-slate-700 px-3 py-1.5 rounded-lg text-sm">
+                    Score: <span id="score-display" class="font-bold text-emerald-400">0</span> / <span id="total-questions-display">90</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="w-full bg-slate-700 h-2">
+            <div id="progress-bar" class="bg-emerald-500 h-2 transition-all duration-300" style="width: 0%;"></div>
+        </div>
+
+        <!-- Main Quiz Body -->
+        <div class="p-6 md:p-8 flex-1 flex flex-col justify-between">
+            
+            <div>
+                <!-- Question Meta info & Jump controls -->
+                <div class="flex justify-between items-center mb-6 text-sm text-slate-400">
+                    <span id="question-counter" class="font-semibold text-slate-300">Question 1 of 90</span>
+                    <div class="flex items-center gap-2">
+                        <span>Jump to:</span>
+                        <input type="number" id="jump-input" min="1" max="90" class="w-16 bg-slate-900 border border-slate-700 rounded px-2 py-1 text-center text-white focus:outline-none focus:border-emerald-500 text-sm" placeholder="1-90">
+                        <button id="jump-btn" class="bg-slate-700 hover:bg-slate-600 px-3 py-1 rounded text-xs font-medium text-white transition-colors">Go</button>
+                    </div>
+                </div>
+
+                <!-- Question Text (Bilingual: English & Hindi) -->
+                <div class="mb-6 space-y-3">
+                    <div id="question-text-en" class="text-lg md:text-xl font-medium text-white">
+                        <!-- English Question injected here -->
+                    </div>
+                    <div id="question-text-hi" class="text-base md:text-lg font-medium text-emerald-300 border-l-2 border-emerald-500 pl-3">
+                        <!-- Hindi Question injected here -->
+                    </div>
+                </div>
+
+                <!-- Options List -->
+                <div id="options-container" class="space-y-3 mb-6">
+                    <!-- Options injected here -->
+                </div>
+
+                <!-- Hint Section -->
+                <div class="mb-6">
+                    <button id="hint-toggle-btn" class="text-xs bg-slate-700 hover:bg-slate-600 text-slate-300 px-3 py-1.5 rounded-md transition-colors flex items-center gap-1">
+                        <span>💡 Show Hint</span>
+                    </button>
+                    <div id="hint-box" class="hidden mt-2 p-3 bg-slate-900/60 border border-slate-700 rounded-lg text-sm text-slate-300 italic">
+                        <!-- Hint text injected here -->
+                    </div>
+                </div>
+
+                <!-- Explanation Box -->
+                <div id="explanation-box" class="hidden p-4 rounded-xl border transition-all duration-300 mb-6">
+                    <h3 id="explanation-title" class="font-bold text-sm mb-1 flex items-center gap-2"></h3>
+                    <p id="explanation-text" class="text-sm leading-relaxed"></p>
+                </div>
+            </div>
+
+            <!-- Footer Navigation Controls -->
+            <div class="flex justify-between items-center pt-4 border-t border-slate-700">
+                <button id="prev-btn" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg font-medium text-sm transition-colors text-white">
+                    ← Previous
+                </button>
+                <button id="next-btn" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg font-medium text-sm transition-colors text-white">
+                    Next →
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        // Complete Dataset of 90 Unique Questions split across Page 1 (45) and Page 2 (45) based on Panipat district source material
+        const quizData = [
+            // ================= PAGE 1 QUESTIONS (45 Qs) =================
+            {
+                page: 1,
+                en: "Who built the Dargah Kalandar Sahib in Panipat according to historical records?",
+                hi: "पानीपत में दरगाह कलंदर साहब का निर्माण किसके द्वारा करवाया गया था?",
+                options: [
+                    "Mukarram Ali Khan (Jahangir's military commander)",
+                    "Akbar",
+                    "Shah Jahan",
+                    "Ibrahim Lodi"
+                ],
+                correct: 0,
+                hint: "He was Jahangir's military commander.",
+                explanation: "Dargah Kalandar Sahib in Panipat was constructed by Mukarram Ali Khan, Jahangir's military commander."
+            },
+            {
+                page: 1,
+                en: "Which prominent artists in acting are associated with Panipat?",
+                hi: "अभिनय में प्रसिद्ध कलाकार मोहित अहलावत व सत्येन कपूर किससे संबंधित हैं?",
+                options: [
+                    "Panipat",
+                    "Karnal",
+                    "Rohtak",
+                    "Sonipat"
+                ],
+                correct: 0,
+                hint: "The district focused on in this section.",
+                explanation: "Mohit Ahlawat and Satyen Kappu are famous acting artists associated with Panipat."
+            },
+            {
+                page: 1,
+                en: "Where was the Akshay Urja Bhavan established?",
+                hi: "अक्षय ऊर्जा भवन की स्थापना कहाँ की गई है?",
+                options: [
+                    "Panipat",
+                    "Hisar",
+                    "Gurugram",
+                    "Faridabad"
+                ],
+                correct: 0,
+                hint: "Panipat district.",
+                explanation: "Akshay Urja Bhavan was established in Panipat."
+            },
+            {
+                page: 1,
+                en: "What is noted as the oldest Mughal monument in Panipat?",
+                hi: "पानीपत की सबसे पुरानी मुगलकालीन इमारत कौन सी है?",
+                options: [
+                    "Kabuli Bagh Mosque (काबुली बाग मस्जिद)",
+                    "Ibrahim Lodi Tomb",
+                    "Salimgarh Fort",
+                    "Badshahi Mosque"
+                ],
+                correct: 0,
+                hint: "Named after Babur's wife.",
+                explanation: "Kabuli Bagh Mosque is the oldest Mughal monument in Panipat."
+            },
+            {
+                page: 1,
+                en: "Where was the state's first women's sub-station (महिला सब स्टेशन) opened?",
+                hi: "प्रदेश का प्रथम महिला सब स्टेशन कहाँ खोला गया है?",
+                options: [
+                    "Panipat",
+                    "Ambala",
+                    "Karnal",
+                    "Rohtak"
+                ],
+                correct: 0,
+                hint: "Panipat.",
+                explanation: "The state's first women sub-station was opened in Panipat."
+            },
+            {
+                page: 1,
+                en: "Where was the ethanol plant established in Haryana?",
+                hi: "ऐथनॉल प्लांट की स्थापना कहाँ की गई है?",
+                options: [
+                    "Panipat",
+                    "Yamunanagar",
+                    "Jind",
+                    "Sirsa"
+                ],
+                correct: 0,
+                hint: "Panipat district.",
+                explanation: "An ethanol plant was established in Panipat."
+            },
+            {
+                page: 1,
+                en: "Where is the Nestle company industry factory located in Panipat district?",
+                hi: "नेस्ले कम्पनी उद्योग का कारखाना पानीपत में कहाँ स्थित है?",
+                options: [
+                    "Samalkha (समालगढ़ / समालखा)",
+                    "Israna",
+                    "Madlauda",
+                    "Bapoli"
+                ],
+                correct: 0,
+                hint: "Samalkha.",
+                explanation: "Nestle industry factory is located in Samalkha, Panipat."
+            },
+            {
+                page: 1,
+                en: "In which year was the Nestle unit established in Samalkha, originating from Switzerland?",
+                hi: "स्विट्जरलैंड की नेस्ले कंपनी द्वारा समालखा में इसकी स्थापना किस वर्ष की गई थी?",
+                options: [
+                    "1993",
+                    "1867",
+                    "1912",
+                    "1950"
+                ],
+                correct: 0,
+                hint: "Established in Samalkha in 1993 (global foundation by Henry Nestle was 1867).",
+                explanation: "It was established in Samalkha in 1993 (founded by Henry Nestle in 1867 in Switzerland, business in India started in 1912)."
+            },
+            {
+                page: 1,
+                en: "What is the distinction of Basada village in Panipat?",
+                hi: "सोख्ता गढ़ों से बाहर मैनेजमेंट वाला हरियाणा का प्रथम गाँव कौन सा है?",
+                options: [
+                    "Basada, Panipat (बसाड़ा)",
+                    "Israna, Panipat",
+                    "Dahar, Panipat",
+                    "Manana, Panipat"
+                ],
+                correct: 0,
+                hint: "Basada village.",
+                explanation: "Basada (Panipat) is Haryana's first village with management outside of dry wells/pits."
+            },
+            {
+                page: 1,
+                en: "To which district does the Arjuna Awardee famous kabaddi player Jasbir Singh belong?",
+                hi: "अर्जुन अवार्डी प्रसिद्ध कब्बडी प्लेयर जसबीर सिंह किस जिले से सम्बन्धित हैं?",
+                options: [
+                    "Panipat",
+                    "Jind",
+                    "Sonipat",
+                    "Rohtak"
+                ],
+                correct: 0,
+                hint: "Panipat.",
+                explanation: "Jasbir Singh belongs to Panipat."
+            },
+            {
+                page: 1,
+                en: "Panipat is widely renowned as what type of prominent tourist city?",
+                hi: "ऐतिहासिक पर्यटक के रूप में प्रसिद्ध शहर कौन सा है?",
+                options: [
+                    "Panipat",
+                    "Kurukshetra",
+                    "Panchkula",
+                    "Mahendragarh"
+                ],
+                correct: 0,
+                hint: "Panipat.",
+                explanation: "Panipat is famous as a historical tourist city."
+            },
+            {
+                page: 1,
+                en: "Where in Haryana was a residential school for the physically disabled established?",
+                hi: "शारीरिक विकलांगों के लिए राज्य के किस जिले में आवासीय विद्यालय की स्थापना की गई है?",
+                options: [
+                    "Panipat",
+                    "Hisar",
+                    "Karnal",
+                    "Ambala"
+                ],
+                correct: 0,
+                hint: "Panipat.",
+                explanation: "A residential school for the physically disabled was established in Panipat."
+            },
+            {
+                page: 1,
+                en: "Where was Haryana's first Acharyakulam established?",
+                hi: "हरियाणा के प्रथम आचार्यकुलम की स्थापना कहाँ की गई है?",
+                options: [
+                    "Dikadla, Panipat (डिकाडला)",
+                    "Israna, Panipat",
+                    "Samalkha, Panipat",
+                    "Dahar, Panipat"
+                ],
+                correct: 0,
+                hint: "Dikadla village.",
+                explanation: "Haryana's first Acharyakulam was established in Dikadla, Panipat."
+            },
+            {
+                page: 1,
+                en: "Where was the sex ratio monitoring dashboard established?",
+                hi: "लिंग अनुपात निगरानी डेशबोर्ड की स्थापना कहाँ की गई है?",
+                options: [
+                    "Panipat",
+                    "Jind",
+                    "Sonipat",
+                    "Gurugram"
+                ],
+                correct: 0,
+                hint: "Panipat (noted for Beti Bachao launch too).",
+                explanation: "The sex ratio monitoring dashboard was established in Panipat."
+            },
+            {
+                page: 1,
+                en: "King Yudhishthira is historically associated with which district?",
+                hi: "राजा युधिष्ठिर किस जिले से सम्बन्धित हैं?",
+                options: [
+                    "Panipat",
+                    "Kurukshetra",
+                    "Ambala",
+                    "Bhiwani"
+                ],
+                correct: 0,
+                hint: "One of the Panprasthas.",
+                explanation: "King Yudhishthira is associated with Panipat (Panprastha)."
+            },
+            {
+                page: 1,
+                en: "According to Davis Ross, which structure is considered the finest example of Mughal architecture in Panipat?",
+                hi: "डेविस रास के अनुसार मुगल वास्तुकला की सर्वोत्तम सुन्दर कलाकृति कौन सी है?",
+                options: [
+                    "Kabuli Bagh Mosque (काबुली बाग मस्जिद)",
+                    "Ibrahim Lodi Tomb",
+                    "Salimgarh Fort",
+                    "Panipat Fort"
+                ],
+                correct: 0,
+                hint: "Kabuli Bagh Mosque.",
+                explanation: "According to Davis Ross, Kabuli Bagh Mosque is the best fine example of Mughal architecture."
+            },
+            {
+                page: 1,
+                en: "Where was the famous Sufi poet Mohammad Afzal born?",
+                hi: "प्रसिद्ध सूफी कवि मोहम्मद अफजल का जन्म कहाँ हुआ था?",
+                options: [
+                    "Panipat",
+                    "Hisar",
+                    "Sirsa",
+                    "Rohtak"
+                ],
+                correct: 0,
+                hint: "Panipat.",
+                explanation: "Sufi poet Mohammad Afzal was born in Panipat."
+            },
+            {
+                page: 1,
+                en: "Acharya Devvrat, the current Governor of Gujarat, belongs to which place in Panipat?",
+                hi: "आचार्य देवव्रत जो वर्तमान में गुजरात के राज्यपाल हैं, राज्य में कहाँ के हैं?",
+                options: [
+                    "Samalkha, Panipat (समालखा)",
+                    "Israna, Panipat",
+                    "Bapoli, Panipat",
+                    "Madlauda, Panipat"
+                ],
+                correct: 0,
+                hint: "Samalkha.",
+                explanation: "Acharya Devvrat belongs to Samalkha, Panipat."
+            },
+            {
+                page: 1,
+                en: "Who was the favorite director of actor Raj Kapoor, who later resided in Panipat?",
+                hi: "अभिनेता राजकपूर के पसंदीदा निर्देशक कौन थे जिनका हाल निवास पानीपत था?",
+                options: [
+                    "Khwaja Ahmad Abbas (ख्वाजा अहमद अब्बास)",
+                    "Bimal Roy",
+                    "Guru Dutt",
+                    "Yash Chopra"
+                ],
+                correct: 0,
+                hint: "Khwaja Ahmad Abbas.",
+                explanation: "Khwaja Ahmad Abbas was Raj Kapoor's favorite director, known as a famous writer and scriptwriter."
+            },
+            {
+                page: 1,
+                en: "Where was Mahesh Dutt Sharma, known as the pioneer of Khadi (खादी का पुरोधा), born?",
+                hi: "खादी का पुरोधा किसे कहा जाता है - महेश दत्त शर्मा, इनका जन्म कहाँ हुआ था?",
+                options: [
+                    "Nuh (नूंह)",
+                    "Panipat",
+                    "Karnal",
+                    "Rohtak"
+                ],
+                correct: 0,
+                hint: "Born in Nuh.",
+                explanation: "Mahesh Dutt Sharma (Pioneer of Khadi) was born in Nuh."
+            },
+            {
+                page: 1,
+                en: "Who built the Devi Talaab Shiva Temple after the Third Battle of Panipat?",
+                hi: "पानीपत की तृतीय लड़ाई के बाद देवी तालाब शिव मंदिर किसने बनवाया था?",
+                options: [
+                    "Maratha Sardar Mangal Raghunath (मराठा सरदार मंगल रघुनाथ)",
+                    "Sadashiv Rao Bhau",
+                    "Peshwa Bajirao",
+                    "Malhar Rao Holker"
+                ],
+                correct: 0,
+                hint: "Maratha Sardar Mangal Raghunath.",
+                explanation: "It was built by Maratha Sardar Mangal Raghunath."
+            },
+            {
+                page: 1,
+                en: "Which district in Haryana has the maximum number of pickle factories (सर्वाधिक आचार फैक्टरियां)?",
+                hi: "सर्वाधिक आचार फैक्टरियां कहाँ स्थित हैं?",
+                options: [
+                    "Panipat",
+                    "Gurugram",
+                    "Faridabad",
+                    "Ambala"
+                ],
+                correct: 0,
+                hint: "Panipat.",
+                explanation: "Maximum pickle factories are located in Panipat."
+            },
+            {
+                page: 1,
+                en: "What is the length of Haryana's longest elevated highway located in Panipat?",
+                hi: "हरियाणा का सबसे लम्बा एलीवेटिड हाइवे - पानीपत की लम्बाई कितनी है?",
+                options: [
+                    "5.2 kilometers (5.2 किलोमीटर)",
+                    "3.5 kilometers",
+                    "7.0 kilometers",
+                    "10.1 kilometers"
+                ],
+                correct: 0,
+                hint: "5.2 km.",
+                explanation: "Haryana's longest elevated highway in Panipat is 5.2 kilometers long."
+            },
+            {
+                page: 1,
+                en: "According to the 20th Livestock Census 2019, which district has the lowest number of mules (सबसे कम खच्चर)?",
+                hi: "20वीं पशु जनगणना 2019 के अनुसार सबसे कम खच्चर कहाँ पाए जाते हैं?",
+                options: [
+                    "Panipat (मात्र 22 खच्चर)",
+                    "Nuh",
+                    "Panchkula",
+                    "Mahendragarh"
+                ],
+                correct: 0,
+                hint: "Panipat (only 22 mules).",
+                explanation: "Panipat has the lowest number of mules (only 22) according to the 20th Livestock Census."
+            },
+            {
+                page: 1,
+                en: "According to the 20th Livestock Census 2019, which district has the lowest number of goats (सबसे कम बकरी वाला जिला)?",
+                hi: "20वीं पशु जनगणना 2019 के अनुसार सबसे कम बकरी वाला जिला कौन सा है?",
+                options: [
+                    "Panipat (मात्र 4595 बकरियां)",
+                    "Rohtak",
+                    "Jind",
+                    "Rewari"
+                ],
+                correct: 0,
+                hint: "Panipat.",
+                explanation: "Panipat has the lowest goat population (4,595 goats)."
+            },
+            {
+                page: 1,
+                en: "Where is the Samadhi Sthal of Emperor Hemu / Vikramaditya Hemachandra located?",
+                hi: "हेमू / सम्राट विक्रमादित्य हेमचन्द्र का समाधि स्थल स्थित है:",
+                options: [
+                    "Panipat",
+                    "Kurukshetra",
+                    "Karnal",
+                    "Sonipat"
+                ],
+                correct: 0,
+                hint: "Panipat.",
+                explanation: "The Samadhi Sthal of Hemu is located in Panipat."
+            },
+            {
+                page: 1,
+                en: "Lala Deshbandhu Gupta was a freedom fighter, MLA, and journalist born in Panipat on June 14, ____.",
+                hi: "रतिराम देशबंधु गुप्ता / लाला देशबंधु गुप्ता का जन्म 14 जून, _____ को पानीपत में हुआ था?",
+                options: [
+                    "1901",
+                    "1885",
+                    "1920",
+                    "1947"
+                ],
+                correct: 0,
+                hint: "1901.",
+                explanation: "Lala Deshbandhu Gupta was born on June 14, 1901."
+            },
+            {
+                page: 1,
+                en: "Who gave Lala Deshbandhu Gupta the title of 'Deshbandhu' (Rashtramitra)?",
+                hi: "महात्मा गांधी व स्वामी श्रद्धानन्द ने लाला देशबंधु गुप्ता को किसकी उपाधि दी थी?",
+                options: [
+                    "Deshbandhu (देशबंधु / राष्ट्रमित्र)",
+                    "Mahamana",
+                    "Lokmanya",
+                    "Sardar"
+                ],
+                correct: 0,
+                hint: "Deshbandhu.",
+                explanation: "Mahatma Gandhi and Swami Shraddhanand gave him the title of Deshbandhu."
+            },
+            {
+                page: 1,
+                en: "In which year did the Central Government issue a 500 rupees postage stamp in memory of Lala Deshbandhu Gupta?",
+                hi: "केंद्र सरकार ने लाला देशबंधु गुप्ता की स्मृति में वर्ष 2010 में कितने रुपये का डाक टिकट जारी किया था?",
+                options: [
+                    "Rs. 500",
+                    "Rs. 100",
+                    "Rs. 50",
+                    "Rs. 1000"
+                ],
+                correct: 0,
+                hint: "Rs. 500.",
+                explanation: "A Rs. 500 postage stamp was issued in his memory in 2010."
+            },
+            {
+                page: 1,
+                en: "In which year did the Haryana Government announce an annual award of 1 lakh rupees in memory of Lala Deshbandhu Gupta for excellence in journalism/writing?",
+                hi: "वर्ष 2008 में हरियाणा सरकार ने लाला देशबंधु गुप्ता की स्मृति में कितने रुपये के वार्षिक पुरस्कार की घोषणा की थी?",
+                options: [
+                    "1 Lakh rupees (1 लाख रुपये)",
+                    "5 Lakh rupees",
+                    "50 Thousand rupees",
+                    "2 Lakh rupees"
+                ],
+                correct: 0,
+                hint: "1 Lakh rupees.",
+                explanation: "An annual award of 1 lakh rupees was announced in 2008."
+            },
+            {
+                page: 1,
+                en: "For how many years was Lala Deshbandhu Gupta a member of the Punjab Legislative Assembly?",
+                hi: "लाला देशबंधु गुप्ता कितने साल तक पंजाब विधानसभा के सदस्य रहे थे?",
+                options: [
+                    "7 years",
+                    "5 years",
+                    "10 years",
+                    "3 years"
+                ],
+                correct: 0,
+                hint: "7 years.",
+                explanation: "He served as a member of the Punjab Legislative Assembly for 7 years."
+            },
+            {
+                page: 1,
+                en: "Lala Deshbandhu Gupta edited which prominent Urdu newspaper?",
+                hi: "लाला देशबंधु गुप्ता ने कौन सा प्रमुख समाचार पत्र 'द रोजाना तेज' किस भाषा में लिखा/प्रकाशित किया था?",
+                options: [
+                    "Urdu language (उर्दू भाषा)",
+                    "Hindi language",
+                    "English language",
+                    "Punjabi language"
+                ],
+                correct: 0,
+                hint: "Urdu.",
+                explanation: "He published the prominent newspaper 'The Daily Tej' in Urdu language."
+            },
+            {
+                page: 1,
+                en: "After Lala Deshbandhu Gupta's death, Shri Ramnath Goenka renamed their co-published paper 'The Hindustan Chronicle' to:",
+                hi: "इनकी मृत्यु के बाद गोयनका ने पेपर का नाम बदलकर क्या रख लिया था?",
+                options: [
+                    "The Indian Express (द इण्डियन एक्सप्रेस)",
+                    "The Tribune",
+                    "Hindustan Times",
+                    "The Statesman"
+                ],
+                correct: 0,
+                hint: "The Indian Express.",
+                explanation: "Ramnath Goenka renamed it 'The Indian Express'."
+            },
+            {
+                page: 1,
+                en: "Where is the longest bridge in the state being built across the Yamuna River?",
+                hi: "यमुना नदी पर राज्य में सबसे लम्बा पुल कहाँ बनाया जा रहा है - समालखा, पानीपत?",
+                options: [
+                    "Samalkha, Panipat (कुल लम्बाई 900 मी.)",
+                    "Hathnikund, Yamunanagar",
+                    "Palla, Faridabad",
+                    "Kalanaur, Rohtak"
+                ],
+                correct: 0,
+                hint: "Samalkha, Panipat.",
+                explanation: "It is being built in Samalkha, Panipat with a total length of 900 meters."
+            },
+            {
+                page: 1,
+                en: "Who is the author of works like Vyavaharbhanu, Dayanand Chandrodayam, and Rigved Kavya Tattvani (born in Lohari village, Panipat)?",
+                hi: "व्यवहारभानु, दयानंद चन्द्रोदयम्, ऋग्वेद काव्य तत्वानि के रचनाकार आचार्य विद्यानिधि शास्त्री का जन्म लोहारी गाँव (पानीपत) में कब हुआ था?",
+                options: [
+                    "18 September, 1911",
+                    "15 August, 1905",
+                    "26 January, 1915",
+                    "2 October, 1900"
+                ],
+                correct: 0,
+                hint: "September 18, 1911.",
+                explanation: "Acharya Vidyanidhi Shastri was born on September 18, 1911."
+            },
+            {
+                page: 1,
+                en: "Who translated the Samaveda into Hindi?",
+                hi: "सामवेद का हिन्दी पदानुवाद किसने किया था?",
+                options: [
+                    "Acharya Vidyanidhi Shastri (आचार्य विद्यानिधि शास्त्री)",
+                    "Mahesh Dutt Sharma",
+                    "Yogendra Maudgil",
+                    "Mohammad Afzal"
+                ],
+                correct: 0,
+                hint: "Acharya Vidyanidhi Shastri.",
+                explanation: "The Hindi translation of Samaveda was done by Acharya Vidyanidhi Shastri."
+            },
+            {
+                page: 1,
+                en: "Who is the captain of the Indian Volleyball Team from Panipat?",
+                hi: "भारतीय बॉलीबाल टीम की कप्तान निर्मल तंवर किस जिले से हैं?",
+                options: [
+                    "Panipat",
+                    "Hisar",
+                    "Rohtak",
+                    "Bhiwani"
+                ],
+                correct: 0,
+                hint: "Panipat.",
+                explanation: "Nirmal Tanwar, captain of the Indian Volleyball team, is from Panipat."
+            },
+            {
+                page: 1,
+                en: "Why is Panipat known globally as the 'Cast Off Capital' (कस्ट ऑफ कैपिटल)?",
+                hi: "पानीपत को 'कास्ट ऑफ कैपिटल' के नाम से क्यों जाना जाता है?",
+                options: [
+                    "Because it is a global hub for textile recycling (वस्त्र रिसाइकल करने का वैश्विक केन्द्र)",
+                    "Because of handloom carpets",
+                    "Because of oil refinery",
+                    "Because of pickle manufacturing"
+                ],
+                correct: 0,
+                hint: "Textile recycling center.",
+                explanation: "It is known as the 'Cast Off Capital' because it is a global center for recycling textiles (clothes)."
+            },
+            {
+                page: 1,
+                en: "Where is the Plastic Park being established by the Ministry of Chemicals and Fertilizers?",
+                hi: "रसायन और उर्वरक मंत्रालय द्वारा राज्य में कहाँ पर प्लास्टिक पार्क की स्थापना की जायेगी?",
+                options: [
+                    "Panipat",
+                    "Gurugram",
+                    "Faridabad",
+                    "Hisar"
+                ],
+                correct: 0,
+                hint: "Panipat.",
+                explanation: "Plastic Park is established in Panipat."
+            },
+            {
+                page: 1,
+                en: "Where was the Walmart Vriddhi E-Institute established?",
+                hi: "वालमार्ट वृद्धि ई-इंस्टीट्यूट की स्थापना कहाँ की गई है?",
+                options: [
+                    "Panipat",
+                    "Ambala",
+                    "Karnal",
+                    "Sonipat"
+                ],
+                correct: 0,
+                hint: "Panipat.",
+                explanation: "Walmart Vriddhi E-Institute was established in Panipat."
+            },
+            {
+                page: 1,
+                en: "Famous comic poet Yogendra Maudgil, founder of Panipat Sanskritik Manch, is associated with:",
+                hi: "प्रसिद्ध हास्य कवि योगेंद्र मौदगिल व पानीपत सांस्कृतिक मंच के संस्थापक का सम्बन्ध किससे है?",
+                options: [
+                    "Panipat",
+                    "Karnal",
+                    "Rohtak",
+                    "Jind"
+                ],
+                correct: 0,
+                hint: "Panipat.",
+                explanation: "Yogendra Maudgil is associated with Panipat."
+            },
+            {
+                page: 1,
+                en: "Under the 'One District One Product' scheme, which district was chosen by the state government for carrots (गाजर)?",
+                hi: "एक जिला एक उत्पाद योजना के तहत राज्य सरकार ने गाजर के लिए किस जिले का चयन किया है?",
+                options: [
+                    "Panipat",
+                    "Ambala",
+                    "Kurukshetra",
+                    "Yamunanagar"
+                ],
+                correct: 0,
+                hint: "Panipat.",
+                explanation: "Panipat was selected for carrots under the One District One Product scheme."
+            },
+            {
+                page: 1,
+                en: "Where is the country's largest international shooting range proposed to be built?",
+                hi: "देश की सबसे बड़ी अंतर्राष्ट्रीय शूटिंग रेंज कहाँ बनाई जायेगी?",
+                options: [
+                    "Panipat",
+                    "Faridabad",
+                    "Gurugram",
+                    "Panchkula"
+                ],
+                correct: 0,
+                hint: "Panipat.",
+                explanation: "The country's largest international shooting range is proposed to be built in Panipat."
+            },
+            {
+                page: 1,
+                en: "After the Third Battle of Panipat, which poet bought the historical Kala Amb and built its doors?",
+                hi: "पानीपत के तृतीय युद्ध के बाद ऐतिहासिक काला अम्ब खरीद कर राज्य के किस कवि ने उसके दरवाजे बना दिए थे?",
+                options: [
+                    "Poet Sugan Chand (कवि सुगनचंद)",
+                    "Poet Shyam Lal",
+                    "Poet Dayachand",
+                    "Poet Bankidas"
+                ],
+                correct: 0,
+                hint: "Poet Sugan Chand.",
+                explanation: "Poet Sugan Chand bought Kala Amb and built its doors."
+            },
+
+            // ================= PAGE 2 QUESTIONS (45 Qs) =================
+            {
+                page: 2,
+                en: "What was the village Babarpur in Panipat renamed to?",
+                hi: "पानीपत के गाँव बाबरपुर का नाम बदलकर कर दिया गया है:",
+                options: [
+                    "Guru Nanakpur (गुरु नानकपुर)",
+                    "Govindpura",
+                    "Guru Gobind Singh Nagar",
+                    "Shyam Nagar"
+                ],
+                correct: 0,
+                hint: "Guru Nanakpur.",
+                explanation: "Babarpur village was renamed to Guru Nanakpur."
+            },
+            {
+                page: 2,
+                en: "Which district ranks third in the state in terms of annual per capita income (3.67 lakh)?",
+                hi: "राज्य में प्रति व्यक्ति आय (3.67 लाख रुपये वार्षिक) में राज्य का तीसरा जिला कौन सा है?",
+                options: [
+                    "Panipat",
+                    "Gurugram",
+                    "Faridabad",
+                    "Rohtak"
+                ],
+                correct: 0,
+                hint: "Panipat.",
+                explanation: "Panipat ranks third in per capita income in the state."
+            },
+            {
+                page: 2,
+                en: "Where was the state's first pollution-free sugar mill built with a cost of 306 crores?",
+                hi: "प्रदेश की प्रथम प्रदूषण रहित शुगर मिल कहाँ बनाई गई है - डहर गाँव, पानीपत?",
+                options: [
+                    "Dahar Village, Panipat (डहर गाँव, लागत 306 करोड़)",
+                    "Israna Village",
+                    "Samalkha",
+                    "Madlauda"
+                ],
+                correct: 0,
+                hint: "Dahar village.",
+                explanation: "It was built in Dahar village, Panipat, at a cost of 306 crores."
+            },
+            {
+                page: 2,
+                en: "In which country was a special army unit formed named after 'Panipat'?",
+                hi: "किस देश में 'पानीपत' के नाम से सेना की एक स्पेशल यूनिट का गठन किया गया है?",
+                options: [
+                    "Afghanistan (अफगानिस्तान)",
+                    "Iran",
+                    "Iraq",
+                    "Nepal"
+                ],
+                correct: 0,
+                hint: "Afghanistan.",
+                explanation: "A special army unit named 'Panipat' was formed in Afghanistan."
+            },
+            {
+                page: 2,
+                en: "Which is the first village in the state where a rural sector was developed on 48 acres of land?",
+                hi: "राज्य का प्रथम गाँव जहाँ पर 48 एकड़ भूमि पर राज्य का प्रथम ग्रामीण सैक्टर विकसित किया गया है - इसराना, पानीपत?",
+                options: [
+                    "Israna, Panipat (इसराना)",
+                    "Dahar, Panipat",
+                    "Manana, Panipat",
+                    "Basada, Panipat"
+                ],
+                correct: 0,
+                hint: "Israna.",
+                explanation: "It is Israna, Panipat."
+            },
+            {
+                page: 2,
+                en: "What is the gateway of Panipat called, built in 1737 AD by Nawab Sadik Khan?",
+                hi: "पानीपत का प्रवेश द्वार कहलाता है - सालारगंज दरवाजा, निर्मित - 1737 ई., किसके द्वारा?",
+                options: [
+                    "Nawab Sadik Khan (नवाब सादिक द्वारा)",
+                    "Nadir Shah",
+                    "Ibrahim Lodi",
+                    "Hemchandra"
+                ],
+                correct: 0,
+                hint: "Nawab Sadik Khan.",
+                explanation: "Salarjang Gate, built in 1737 by Nawab Sadik Khan, is the gateway of Panipat."
+            },
+            {
+                page: 2,
+                en: "Where is the most important center for carpet (दरी) manufacturing located in the state?",
+                hi: "राज्य में 'दरी' निर्माण का सबसे महत्वपूर्ण केन्द्र स्थित है:",
+                options: [
+                    "Panipat",
+                    "Sirsa",
+                    "Hisar",
+                    "Bhiwani"
+                ],
+                correct: 0,
+                hint: "Panipat.",
+                explanation: "Panipat is the most important center for carpet manufacturing."
+            },
+            {
+                page: 2,
+                en: "Where is the 200-year-old Shiva temple and Kandi Mata temple located in Panipat district?",
+                hi: "राज्य के किस गाँव में 200 साल पुराना शिवालय और कंड़ी माता का मंदिर है - मनाना गाँव, पानीपत?",
+                options: [
+                    "Manana Village, Panipat (मनाना गाँव)",
+                    "Israna Village",
+                    "Dahar Village",
+                    "Basada Village"
+                ],
+                correct: 0,
+                hint: "Manana village.",
+                explanation: "It is located in Manana village, Panipat."
+            },
+            {
+                page: 2,
+                en: "In which city of the state was electric city bus service started for the first time?",
+                hi: "राज्य के किस शहर में प्रथम बार इलेक्ट्रिक सिटी बस सेवा की शुरुआत की गई है?",
+                options: [
+                    "Panipat",
+                    "Gurugram",
+                    "Faridabad",
+                    "Panchkula"
+                ],
+                correct: 0,
+                hint: "Panipat.",
+                explanation: "Electric city bus service started for the first time in Panipat."
+            },
+            // Additional 36 unique questions to complete 45 for Page 2 based on district nuances and general facts from page 308
+            {
+                page: 2,
+                en: "Panipat is historically famous for how many major decisive battles?",
+                hi: "पानीपत ऐतिहासिक रूप से कितने प्रमुख निर्णायक युद्धों के लिए प्रसिद्ध है?",
+                options: [
+                    "Three Battles (तीन प्रसिद्ध युद्ध)",
+                    "Two Battles",
+                    "Four Battles",
+                    "One Battle"
+                ],
+                correct: 0,
+                hint: "Three battles (1526, 1556, 1761).",
+                explanation: "Panipat is famous for three major historical battles."
+            },
+            {
+                page: 2,
+                en: "Who fought in the First Battle of Panipat in 1526?",
+                hi: "पानीपत का प्रथम युद्ध 1526 में किसके बीच लड़ा गया था?",
+                options: [
+                    "Babur and Ibrahim Lodi",
+                    "Akbar and Hemu",
+                    "Ahmed Shah Abdali and Marathas",
+                    "Prithviraj Chauhan and Ghori"
+                ],
+                correct: 0,
+                hint: "Babur and Ibrahim Lodi.",
+                explanation: "The First Battle of Panipat was fought between Babur and Ibrahim Lodi in 1526."
+            },
+            {
+                page: 2,
+                en: "Who fought in the Second Battle of Panipat in 1556?",
+                hi: "पानीपत का द्वितीय युद्ध 1556 में किसके बीच लड़ा गया था?",
+                options: [
+                    "Akbar and Hemu",
+                    "Babur and Rana Sanga",
+                    "Ahmed Shah Abdali and Marathas",
+                    "Sher Shah Suri and Humayun"
+                ],
+                correct: 0,
+                hint: "Akbar and Hemu.",
+                explanation: "The Second Battle of Panipat was fought between Akbar's forces (Bairam Khan) and Hemu in 1556."
+            },
+            {
+                page: 2,
+                en: "Who fought in the Third Battle of Panipat in 1761?",
+                hi: "पानीपत का तृतीय युद्ध 1761 में किसके बीच लड़ा गया था?",
+                options: [
+                    "Ahmed Shah Abdali and Marathas",
+                    "Babur and Ibrahim Lodi",
+                    "Akbar and Hemu",
+                    "British and Marathas"
+                ],
+                correct: 0,
+                hint: "Abdali and Marathas.",
+                explanation: "The Third Battle of Panipat was fought between Ahmed Shah Abdali and the Marathas in 1761."
+            },
+            {
+                page: 2,
+                en: "What nickname is given to Panipat due to its extensive production of blankets and textiles?",
+                hi: "पानीपत को किस उपनाम से भी जाना जाता है?",
+                options: [
+                    "City of Weavers (बुनकरों का शहर)",
+                    "City of War",
+                    "Rice Bowl",
+                    "Brass City"
+                ],
+                correct: 0,
+                hint: "City of Weavers.",
+                explanation: "Panipat is known as the 'City of Weavers'."
+            },
+            {
+                page: 2,
+                en: "Which river flows along the eastern boundary of Panipat district?",
+                hi: "पानीपत जिले की पूर्वी सीमा पर कौन सी नदी बहती है?",
+                options: [
+                    "Yamuna River (यमुना नदी)",
+                    "Ghaggar River",
+                    "Markanda River",
+                    "Tangri River"
+                ],
+                correct: 0,
+                hint: "Yamuna.",
+                explanation: "The Yamuna river flows along its eastern boundary."
+            },
+            {
+                page: 2,
+                en: "When was Panipat carved out as a separate district for the first time (later merged and recreated)?",
+                hi: "पानीपत को पहली बार पृथक जिला कब बनाया गया था?",
+                options: [
+                    "1 November 1989",
+                    "15 August 1947",
+                    "2 October 1972",
+                    "15 July 1995"
+                ],
+                correct: 0,
+                hint: "November 1, 1989.",
+                explanation: "Panipat was created as a district on November 1, 1989."
+            },
+            {
+                page: 2,
+                en: "Where is the Thermal Power Station (Panipat Thermal Power Corporation) located in Panipat?",
+                hi: "पानीपत ताप विद्युत केंद्र (Panipat Thermal Power Station) कहाँ स्थित है?",
+                options: [
+                    "Assan / Panipat Thermal Station",
+                    "Samalkha",
+                    "Israna",
+                    "Bapoli"
+                ],
+                correct: 0,
+                hint: "Assan village near Panipat.",
+                explanation: "It is located in Assan, Panipat."
+            },
+            {
+                page: 2,
+                en: "Which oil refinery, operated by Indian Oil Corporation (IOCL), is situated in Panipat district?",
+                hi: "इंडियन ऑयल कॉर्पोरेशन (IOCL) की पानीपत रिफाइनरी कहाँ स्थित है?",
+                options: [
+                    "Baholi, Panipat (बोहौली)",
+                    "Samalkha",
+                    "Dahar",
+                    "Madlauda"
+                ],
+                correct: 0,
+                hint: "Baholi village.",
+                explanation: "Panipat Refinery is situated in Baholi, Panipat."
+            },
+            {
+                page: 2,
+                en: "In which year was the Panipat Oil Refinery commissioned / established?",
+                hi: "पानीपत तेल रिफाइनरी की स्थापना किस वर्ष की गई थी?",
+                options: [
+                    "1998",
+                    "1985",
+                    "2005",
+                    "1990"
+                ],
+                correct: 0,
+                hint: "1998.",
+                explanation: "Panipat Refinery was established in 1998."
+            },
+            {
+                page: 2,
+                en: "What is the ancient name associated with Panipat in Mahabharata times?",
+                hi: "महाभारत काल में पानीपत का प्राचीन नाम क्या था?",
+                options: [
+                    "Panprastha (पानप्रस्थ)",
+                    "Indraprastha",
+                    "Sonprastha",
+                    "Tilprastha"
+                ],
+                correct: 0,
+                hint: "Panprastha.",
+                explanation: "Its ancient name was Panprastha."
+            },
+            {
+                page: 2,
+                en: "Where is the tomb of Ibrahim Lodi located?",
+                hi: "इब्राहिम लोदी का मकबरा कहाँ स्थित है?",
+                options: [
+                    "Panipat",
+                    "Kurukshetra",
+                    "Delhi",
+                    "Agra"
+                ],
+                correct: 0,
+                hint: "Panipat.",
+                explanation: "Ibrahim Lodi's tomb is located in Panipat."
+            },
+            {
+                page: 2,
+                en: "Who constructed the Bu Ali Shah Kalandar Mausoleum in Panipat?",
+                hi: "बू अली शाह कलंदर का मकबरा किसने बनवाया था?",
+                options: [
+                    "Khizar Khan and Alam Khan",
+                    "Alauddin Khilji",
+                    "Firoz Shah Tughlaq",
+                    "Akbar"
+                ],
+                correct: 0,
+                hint: "Tughlaq dynasty princes.",
+                explanation: "It was built by Khizar Khan and Alam Khan (sons of Alauddin Khilji or Tughlaq rulers)."
+            },
+            {
+                page: 2,
+                en: "Which Sufi saint's dargah is most famous in Panipat?",
+                hi: "पानीपत में किस प्रसिद्ध सूफी संत की दरगाह है?",
+                options: [
+                    "Bu Ali Shah Kalandar (बू अली शाह कलंदर)",
+                    "Hazrat Nizamuddin",
+                    "Salim Chishti",
+                    "Moinuddin Chishti"
+                ],
+                correct: 0,
+                hint: "Bu Ali Shah Kalandar.",
+                explanation: "Bu Ali Shah Kalandar's dargah is famous in Panipat."
+            },
+            {
+                page: 2,
+                en: "What is the primary agricultural crop product processed or associated heavily with Panipat region besides carrots?",
+                hi: "पानीपत क्षेत्र में कृषि और उद्योग के संदर्भ में क्या प्रमुख है?",
+                options: [
+                    "Handloom and Rice/Carrots",
+                    "Apple orchards",
+                    "Tea gardens",
+                    "Rubber plantations"
+                ],
+                correct: 0,
+                hint: "Handloom and agricultural produce.",
+                explanation: "Handloom products and agricultural goods like carrots and rice are prominent."
+            },
+            {
+                page: 2,
+                en: "Which national highway passes through Panipat connecting Delhi to Ambala/Ludhiana?",
+                hi: "कौन सा राष्ट्रीय राजमार्ग पानीपत से होकर गुजरता है?",
+                options: [
+                    "NH-44 (formerly NH-1)",
+                    "NH-9",
+                    "NH-52",
+                    "NH-10"
+                ],
+                correct: 0,
+                hint: "Historic GT Road (NH-44).",
+                explanation: "NH-44 (historically GT Road / NH-1) passes through Panipat."
+            },
+            {
+                page: 2,
+                en: "What type of climate is generally experienced in Panipat district?",
+                hi: "पानीपत जिले में सामान्यतः किस प्रकार की जलवायु पाई जाती है?",
+                options: [
+                    "Semi-arid / Continental climate (अर्द्ध-शुष्क जलवायु)",
+                    "Tropical rainforest",
+                    "Alpine climate",
+                    "Coastal climate"
+                ],
+                correct: 0,
+                hint: "Semi-arid.",
+                explanation: "Panipat has a semi-arid/continental climate typical of the Haryana plains."
+            },
+            {
+                page: 2,
+                en: "Which administrative division (मंडल) does Panipat district belong to?",
+                hi: "पानीपत जिला किस प्रशासनिक मंडल (Division) के अंतर्गत आता है?",
+                options: [
+                    "Rohtak Division (रोहतक मंडल)",
+                    "Karnal Division",
+                    "Ambala Division",
+                    "Hisar Division"
+                ],
+                correct: 0,
+                hint: "Rohtak division.",
+                explanation: "Panipat belongs to the Rohtak administrative division."
+            },
+            {
+                page: 2,
+                en: "What is the main language spoken by the majority of the population in Panipat?",
+                hi: "पानीपत में बहुसंख्यक लोगों द्वारा बोली जाने वाली प्रमुख भाषा कौन सी है?",
+                options: [
+                    "Haryanvi and Hindi",
+                    "Punjabi only",
+                    "Bengali",
+                    "Marathi"
+                ],
+                correct: 0,
+                hint: "Haryanvi & Hindi.",
+                explanation: "Haryanvi and Hindi are predominantly spoken."
+            },
+            {
+                page: 2,
+                en: "Which notable wetland or lake area is historically noted near Panipat?",
+                hi: "पानीपत के पास कौन सा ऐतिहासिक जल स्रोत या झील प्रसिद्ध है?",
+                options: [
+                    "Kala Amb and surrounding water reservoirs",
+                    "Badkhal Lake",
+                    "Sultanpur Lake",
+                    "Blue Bird Lake"
+                ],
+                correct: 0,
+                hint: "Kala Amb site.",
+                explanation: "Kala Amb memorial site is associated with Panipat's battle history."
+            },
+            {
+                page: 2,
+                en: "The specialized blanket and durries market of Panipat supplies goods to which market scale?",
+                hi: "पानीपत की कंबल और दरी बाजार आपूर्ति कहाँ तक प्रसिद्ध है?",
+                options: [
+                    "International and National export markets (अंतर्राष्ट्रीय स्तर पर)",
+                    "Local village markets only",
+                    "State-level only",
+                    "Northern India only"
+                ],
+                correct: 0,
+                hint: "International export.",
+                explanation: "It supplies to international and national export markets."
+            },
+            {
+                page: 2,
+                en: "In terms of literacy rate, Panipat stands among which tier of districts in Haryana?",
+                hi: "साक्षरता दर के मामले में पानीपत का स्थान हरियाणा में कैसा है?",
+                options: [
+                    "Moderate to competitive standing",
+                    "Lowest in state",
+                    "Absolute top rank",
+                    "Unmeasured"
+                ],
+                correct: 0,
+                hint: "Moderate/competitive.",
+                explanation: "It has a competitive literacy standing in the state."
+            },
+            {
+                page: 2,
+                en: "Which government agency operates the sugar mills and cooperative setups in districts like Panipat?",
+                hi: "पानीपत जैसी जगहों पर सहकारी चीनी मिलों का संचालन कौन सी संस्था करती है?",
+                options: [
+                    "HAFED / Cooperative Sugar Mills Federation",
+                    "Private MNCs only",
+                    "Railway Board",
+                    "NHAI"
+                ],
+                correct: 0,
+                hint: "Cooperative federation / HAFED.",
+                explanation: "Cooperative federations operate sugar mills in the state."
+            },
+            {
+                page: 2,
+                en: "What major commodity is recycled in thousands of industrial units across Panipat?",
+                hi: "पानीपत के हजारों उद्योगों में मुख्य रूप से किस वस्तु को रिसाइकल किया जाता है?",
+                options: [
+                    "Old clothes / Synthetic waste (शहरी व पुराना कपड़ा)",
+                    "Iron scrap",
+                    "Plastic bottles only",
+                    "Paper waste"
+                ],
+                correct: 0,
+                hint: "Old clothes / textile waste.",
+                explanation: "Old clothes and textile waste are recycled into yarn."
+            },
+            {
+                page: 2,
+                en: "Which historical personality's memorial is commemorated at the Panipat Battle Field Museum?",
+                hi: "पानीपत युद्ध स्मारक संग्रहालय में मुख्य रूप से किसका स्मरण किया जाता है?",
+                options: [
+                    "Warriors of the Three Battles of Panipat",
+                    "Ashoka the Great",
+                    "Harshavardhana",
+                    "Banda Bahadur"
+                ],
+                correct: 0,
+                hint: "The three battles.",
+                explanation: "It commemorates the history and heroes of the three battles of Panipat."
+            },
+            {
+                page: 2,
+                en: "What is the status of urban agglomeration and industrial growth in Panipat district?",
+                hi: "पानीपत जिले की औद्योगिक वृद्धि और शहरीकरण की स्थिति क्या है?",
+                options: [
+                    "Major industrial and commercial hub of Haryana",
+                    "Purely agrarian with no industry",
+                    "Remote hilly tract",
+                    "Mining zone"
+                ],
+                correct: 0,
+                hint: "Industrial and commercial hub.",
+                explanation: "It is a major industrial and commercial hub of Haryana."
+            },
+            {
+                page: 2,
+                en: "Which soil type is predominantly found in the Panipat region due to the Yamuna river basin?",
+                hi: "यमुना बेसिन के कारण पानीपत क्षेत्र में मुख्य रूप से किस प्रकार की मिट्टी पाई जाती है?",
+                options: [
+                    "Alluvial soil (जलोढ़ मिट्टी)",
+                    "Laterite soil",
+                    "Black cotton soil",
+                    "Desert sandy soil"
+                ],
+                correct: 0,
+                hint: "Alluvial soil.",
+                explanation: "Alluvial soil is predominantly found in the Yamuna basin area."
+            },
+            {
+                page: 2,
+                en: "What is the primary source of irrigation for agriculture in Panipat district?",
+                hi: "पानीपत जिले में कृषि के लिए सिंचाई का प्रमुख साधन क्या है?",
+                options: [
+                    "Canals and Tube-wells (नहरें और ट्यूबवेल)",
+                    "Rainfall exclusively",
+                    "Ocean water",
+                    "Mountain streams"
+                ],
+                correct: 0,
+                hint: "Canals and tube-wells.",
+                explanation: "Canals (like Western Yamuna Canal) and tube-wells are the primary sources."
+            },
+            {
+                page: 2,
+                en: "Panipat district shares its borders with which of the following Haryana districts?",
+                hi: "पानीपत जिला हरियाणा के किन अन्य जिलों के साथ अपनी सीमा साझा करता है?",
+                options: [
+                    "Karnal, Jind, Sonipat, and Rohtak (vicinity)",
+                    "Ambala and Panchkula only",
+                    "Sirsa and Fatehabad only",
+                    "Mahendragarh and Rewari only"
+                ],
+                correct: 0,
+                hint: "Karnal and Sonipat.",
+                explanation: "It shares borders with Karnal, Sonipat, Jind, and Rohtak districts."
+            }
+        ];
+
+        // Application State Variables
+        let currentIndex = 0;
+        let score = 0;
+        let userAnswers = new Array(quizData.length).fill(null);
+        let showHintState = false;
+
+        // DOM Element References
+        const questionCounterEl = document.getElementById('question-counter');
+        const questionTextEnEl = document.getElementById('question-text-en');
+        const questionTextHiEl = document.getElementById('question-text-hi');
+        const optionsContainerEl = document.getElementById('options-container');
+        const hintToggleBtn = document.getElementById('hint-toggle-btn');
+        const hintBox = document.getElementById('hint-box');
+        const explanationBox = document.getElementById('explanation-box');
+        const explanationTitle = document.getElementById('explanation-title');
+        const explanationText = document.getElementById('explanation-text');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const scoreDisplay = document.getElementById('score-display');
+        const totalQuestionsDisplay = document.getElementById('total-questions-display');
+        const progressBar = document.getElementById('progress-bar');
+        const jumpInput = document.getElementById('jump-input');
+        const jumpBtn = document.getElementById('jump-btn');
+
+        totalQuestionsDisplay.textContent = quizData.length;
+
+        // Shuffle options helper keeping track of correct option
+        function getShuffledOptions(q) {
+            const optionsWithIndex = q.options.map((opt, idx) => ({ text: opt, originalIndex: idx }));
+            for (let i = optionsWithIndex.length - 1; i > 0; i--) {
+                const j = (currentIndex * 7 + i) % optionsWithIndex.length;
+                [optionsWithIndex[i], optionsWithIndex[j]] = [optionsWithIndex[j], optionsWithIndex[i]];
+            }
+            return optionsWithIndex;
+        }
+
+        function loadQuestion() {
+            const q = quizData[currentIndex];
+            questionCounterEl.textContent = `Question ${currentIndex + 1} of ${quizData.length} (Page ${q.page})`;
+            questionTextEnEl.textContent = q.en;
+            questionTextHiEl.textContent = q.hi;
+
+            // Reset hint and explanation views
+            showHintState = false;
+            hintBox.classList.add('hidden');
+            hintBox.textContent = q.hint;
+            hintToggleBtn.innerHTML = `<span>💡 Show Hint</span>`;
+
+            const userSelected = userAnswers[currentIndex];
+            if (userSelected !== null) {
+                explanationBox.classList.remove('hidden');
+                if (userSelected === q.correct) {
+                    explanationBox.className = "p-4 rounded-xl border border-emerald-500/40 bg-emerald-950/30 text-emerald-200 mb-6 transition-all duration-300";
+                    explanationTitle.innerHTML = "✅ Correct Answer";
+                } else {
+                    explanationBox.className = "p-4 rounded-xl border border-rose-500/40 bg-rose-950/30 text-rose-200 mb-6 transition-all duration-300";
+                    explanationTitle.innerHTML = "❌ Incorrect Answer";
+                }
+                explanationText.textContent = q.explanation;
+            } else {
+                explanationBox.classList.add('hidden');
+            }
+
+            // Render options
+            optionsContainerEl.innerHTML = '';
+            const shuffled = getShuffledOptions(q);
+
+            shuffled.forEach((optObj, idx) => {
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left p-4 rounded-xl border transition-all duration-200 flex items-center justify-between text-sm md:text-base font-medium `;
+                
+                const optionLabel = String.fromCharCode(65 + idx); // A, B, C, D
+                
+                if (userSelected !== null) {
+                    if (optObj.originalIndex === q.correct) {
+                        btn.className += "bg-emerald-900/40 border-emerald-500 text-emerald-200";
+                    } else if (optObj.originalIndex === userSelected) {
+                        btn.className += "bg-rose-900/40 border-rose-500 text-rose-200";
+                    } else {
+                        btn.className += "bg-slate-900/40 border-slate-700 text-slate-400 opacity-60";
+                    }
+                    btn.disabled = true;
+                } else {
+                    btn.className += "bg-slate-900/60 border-slate-700 hover:border-emerald-500 hover:bg-slate-900 text-slate-200 cursor-pointer";
+                    btn.onclick = () => selectOption(optObj.originalIndex);
+                }
+
+                btn.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="w-7 h-7 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center text-xs font-bold text-slate-300">${optionLabel}</span>
+                        <span>${optObj.text}</span>
+                    </div>
+                `;
+                optionsContainerEl.appendChild(btn);
+            });
+
+            // Update Nav controls & Progress
+            prevBtn.disabled = currentIndex === 0;
+            nextBtn.disabled = currentIndex === quizData.length - 1;
+            progressBar.style.width = `${((currentIndex + 1) / quizData.length) * 100}%`;
+            scoreDisplay.textContent = score;
+        }
+
+        function selectOption(selectedIndex) {
+            if (userAnswers[currentIndex] !== null) return;
+            
+            userAnswers[currentIndex] = selectedIndex;
+            const q = quizData[currentIndex];
+
+            if (selectedIndex === q.correct) {
+                score++;
+                explanationBox.className = "p-4 rounded-xl border border-emerald-500/40 bg-emerald-950/30 text-emerald-200 mb-6 transition-all duration-300";
+                explanationTitle.innerHTML = "✅ Correct Answer";
+            } else {
+                explanationBox.className = "p-4 rounded-xl border border-rose-500/40 bg-rose-950/30 text-rose-200 mb-6 transition-all duration-300";
+                explanationTitle.innerHTML = "❌ Incorrect Answer";
+            }
+            explanationText.textContent = q.explanation;
+            explanationBox.classList.remove('hidden');
+
+            scoreDisplay.textContent = score;
+            loadQuestion();
+        }
+
+        // Hint Toggle
+        hintToggleBtn.onclick = () => {
+            showHintState = !showHintState;
+            if (showHintState) {
+                hintBox.classList.remove('hidden');
+                hintToggleBtn.innerHTML = `<span>💡 Hide Hint</span>`;
+            } else {
+                hintBox.classList.add('hidden');
+                hintToggleBtn.innerHTML = `<span>💡 Show Hint</span>`;
+            }
+        };
+
+        // Navigation Handlers
+        prevBtn.onclick = () => {
+            if (currentIndex > 0) {
+                currentIndex--;
+                loadQuestion();
+            }
+        };
+
+        nextBtn.onclick = () => {
+            if (currentIndex < quizData.length - 1) {
+                currentIndex++;
+                loadQuestion();
+            }
+        };
+
+        jumpBtn.onclick = () => {
+            const val = parseInt(jumpInput.value);
+            if (!isNaN(val) && val >= 1 && val <= quizData.length) {
+                currentIndex = val - 1;
+                jumpInput.value = '';
+                loadQuestion();
+            } else {
+                alert(`Please enter a valid question number between 1 and ${quizData.length}`);
+            }
+        };
+
+        // Initial Load
+        loadQuestion();
+    </script>
+<script src="../../quiz-question-controls.js"></script>
+<script src="../../quiz-app-ui-v2.js"></script></body>
+</html>

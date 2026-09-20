@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate English Vocabulary Masterclass (Page 12 OWS)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        lavenderBg: '#F0E6FF',
+                        headerBg: '#E5D5FA',
+                        cardBg: '#FBF7FF',
+                        primaryPurple: '#6542C8',
+                        darkPurple: '#30205D',
+                        secondaryPurple: '#7352C9',
+                        lightPurple: '#E9DDF8',
+                        borderPurple: '#DCCBF2',
+                        progressTrack: '#DDD9E8',
+                        hoverBg: '#F0E5FF',
+                        mutedText: '#716782',
+                        accentYellow: '#F3A62A'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-lavenderBg min-h-screen text-darkPurple font-sans flex flex-col justify-between selection:bg-lightPurple selection:text-darkPurple">
+
+    <!-- Sticky Header -->
+    <header class="sticky top-0 z-50 bg-headerBg/90 backdrop-blur-md border-b border-borderPurple shadow-sm px-4 py-3">
+        <div class="max-w-4xl mx-auto flex flex-wrap items-center justify-between gap-3">
+            <div>
+                <h1 class="text-lg md:text-xl font-bold text-darkPurple tracking-tight">English Vocabulary Masterclass</h1>
+                <p class="text-xs text-mutedText">Blackbook OWS (SN 278 - 304) • Exam-Level Mastery Quiz</p>
+            </div>
+            <div class="flex items-center gap-2">
+                <div class="bg-cardBg border border-borderPurple px-3 py-1.5 rounded-full text-xs font-semibold shadow-inner flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-primaryPurple animate-pulse"></span>
+                    <span>Score: <span id="score-display">0</span> / <span id="total-score-display">100</span></span>
+                </div>
+                <div class="bg-primaryPurple text-white px-3 py-1.5 rounded-full text-xs font-bold shadow">
+                    Q <span id="current-q-badge">1</span>/<span id="total-q-badge">100</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Quiz Container -->
+    <main class="flex-grow flex items-center justify-center p-4 md:p-6">
+        <div class="w-full max-w-3xl bg-cardBg border border-borderPurple rounded-3xl shadow-xl p-6 md:p-10 transition-all duration-300 relative">
+            
+            <!-- Question Metadata / Header -->
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+                <span id="question-category-badge" class="text-xs font-semibold px-3 py-1 bg-lightPurple text-primaryPurple rounded-full uppercase tracking-wide">One Word Substitution</span>
+                <span id="question-number-label" class="text-xs font-bold text-mutedText">Question 1 of 100</span>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="w-full bg-progressTrack h-2.5 rounded-full overflow-hidden mb-6">
+                <div id="progress-bar" class="bg-primaryPurple h-full transition-all duration-300 rounded-full" style="width: 1%;"></div>
+            </div>
+
+            <!-- Question Text -->
+            <h2 id="question-text" class="text-xl md:text-2xl font-bold text-darkPurple mb-6 leading-snug">
+                Loading question...
+            </h2>
+
+            <!-- Answer Options Container -->
+            <div id="options-container" class="space-y-3 mb-6">
+                <!-- Dynamically injected options -->
+            </div>
+
+            <!-- Hint Section -->
+            <div class="mb-6">
+                <button id="hint-toggle-btn" onclick="toggleHint()" class="text-xs font-semibold text-secondaryPurple hover:text-darkPurple flex items-center gap-1.5 transition-colors focus:outline-none">
+                    <span>💡 Toggle Hint</span>
+                </button>
+                <div id="hint-box" class="hidden mt-2 p-3 bg-lightPurple/50 border border-borderPurple rounded-xl text-xs text-darkPurple italic">
+                    <!-- Hint text -->
+                </div>
+            </div>
+
+            <!-- Explanation / Rationale Box -->
+            <div id="explanation-box" class="hidden p-4 rounded-2xl bg-lightPurple/70 border border-borderPurple text-sm text-darkPurple mb-6 transition-all duration-300">
+                <div class="font-bold mb-1 flex items-center gap-1.5 text-primaryPurple">
+                    <span>📖 Exam Rationale & Word Deep Dive</span>
+                </div>
+                <p id="explanation-text" class="leading-relaxed"></p>
+            </div>
+
+            <!-- Navigation Controls (In-card) -->
+            <div class="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-borderPurple">
+                <button onclick="prevQuestion()" id="prev-btn" class="px-5 py-2.5 rounded-xl border border-borderPurple bg-white text-darkPurple font-medium text-sm hover:bg-hoverBg disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-sm">
+                    ← Previous
+                </button>
+                <div class="flex items-center gap-2">
+                    <span class="text-xs font-medium text-mutedText hidden sm:inline">Jump to Q:</span>
+                    <input type="number" id="jump-input" min="1" max="100" class="w-16 px-2.5 py-1.5 text-center text-sm bg-white border border-borderPurple rounded-xl focus:outline-none focus:ring-2 focus:ring-primaryPurple" placeholder="1">
+                    <button onclick="jumpToQuestion()" class="px-3 py-1.5 bg-primaryPurple text-white text-xs font-semibold rounded-xl hover:bg-secondaryPurple transition-all shadow">Go</button>
+                </div>
+                <button onclick="nextQuestion()" id="next-btn" class="px-5 py-2.5 rounded-xl bg-primaryPurple text-white font-medium text-sm hover:bg-secondaryPurple transition-all shadow-md">
+                    Next →
+                </button>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Sticky Bottom Navigation Panel -->
+    <nav class="sticky bottom-0 z-40 bg-white/90 backdrop-blur-md border-t border-borderPurple shadow-lg py-3 px-4">
+        <div class="max-w-4xl mx-auto flex flex-wrap items-center justify-between gap-3 text-xs">
+            <div class="flex items-center gap-2">
+                <button onclick="prevQuestion()" class="px-3 py-1.5 rounded-lg border border-borderPurple bg-cardBg hover:bg-hoverBg font-medium text-darkPurple transition">← Prev</button>
+                <button onclick="nextQuestion()" class="px-3 py-1.5 rounded-lg bg-primaryPurple text-white hover:bg-secondaryPurple font-medium transition">Next →</button>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="font-medium text-mutedText">Jump:</span>
+                <input type="number" id="bottom-jump-input" min="1" max="100" class="w-14 px-2 py-1 text-center bg-cardBg border border-borderPurple rounded-lg text-xs focus:ring-1 focus:ring-primaryPurple" placeholder="Q#">
+                <button onclick="bottomJump()" class="px-2.5 py-1 bg-darkPurple text-white rounded-lg font-medium hover:bg-primaryPurple transition">Go</button>
+            </div>
+            <div>
+                <button onclick="resetQuiz()" class="px-3 py-1.5 rounded-lg border border-red-200 bg-red-50 text-red-600 font-medium hover:bg-red-100 transition">Reset Quiz</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Script: Quiz Database & Logic (Page 12: SN 278 - 304) -->
+    <script>
+        const questions = [
+            // --- CARNIVOROUS (278) ---
+            {
+                id: 1,
+                category: "One Word Substitution",
+                question: "Choose the correct one-word substitution: Animals that eat meat.",
+                options: ["Carnivorous", "Herbivorous", "Omnivorous", "Cannibal"],
+                answer: 0,
+                hint: "Meat-eating creatures like lions and tigers.",
+                explanation: "Carnivorous (Adj.) refers to animals that eat meat[cite: 11]. Hindi meaning: मांसभक्षी[cite: 11]."
+            },
+            {
+                id: 2,
+                category: "Synonym & Antonym",
+                question: "Which of the following is the direct antonym for 'Carnivorous'?",
+                options: ["Herbivorous (plant-eating)", "Predatory", "Flesh-eating", "Rapacious"],
+                answer: 0,
+                hint: "Animals feeding exclusively on plants.",
+                explanation: "Herbivorous animals feed on plants, serving as the opposite of carnivorous."
+            },
+            {
+                id: 3,
+                category: "Exam Frequency Check (*)",
+                question: "Notice the asterisk (*) next to 'Carnivorous*' in the Blackbook list. This indicates:",
+                options: ["High examination frequency in previous SSC CGL/CHSL exams", "An obsolete spelling", "A foreign idiom", "An optional vocabulary item"],
+                answer: 0,
+                hint: "Starred items show high exam recurrence.",
+                explanation: "Asterisks (*) highlight terms frequently tested across competitive recruitment tests."
+            },
+            {
+                id: 4,
+                category: "Grammar & Class",
+                question: "What is the corresponding noun form for the adjective 'Carnivorous'?",
+                options: ["Carnivore", "Carnivory", "Carnage", "Carcass"],
+                answer: 0,
+                hint: "The noun naming a meat-eating animal.",
+                explanation: "'Carnivore' is the noun, while 'carnivorous' is the adjective[cite: 11]."
+            },
+
+            // --- CAROL (279) ---
+            {
+                id: 5,
+                category: "One Word Substitution",
+                question: "Song which is sung in a church by a group of singers:",
+                options: ["Carol", "Cacophony", "Cadence", "Ballad"],
+                answer: 0,
+                hint: "Joyful religious or Christmas hymn.",
+                explanation: "Carol (N.) is a song sung in a church by a group of singers[cite: 11]. Hindi meaning: ईसाइयों का भजन[cite: 11]."
+            },
+            {
+                id: 6,
+                category: "Cultural Context",
+                question: "During which seasonal festival are carols most popularly sung globally?",
+                options: ["Christmas", "Halloween", "Easter Monday", "Independence Day"],
+                answer: 0,
+                hint: "December festive celebration.",
+                explanation: "Christmas carols are traditional festive songs sung during the winter holiday season."
+            },
+            {
+                id: 7,
+                category: "Synonym Match",
+                question: "Which of the following is a direct synonym for 'Carol'?",
+                options: ["Hymn / Chant / Praise song", "Cacophony", "Dirge", "Silence"],
+                answer: 0,
+                hint: "Religious or celebratory song.",
+                explanation: "A hymn or joyful chant is synonymous with a carol."
+            },
+            {
+                id: 8,
+                category: "Grammar Check",
+                question: "What part of speech is 'Carol'?",
+                options: ["Noun (also used as verb)", "Adjective only", "Adverb", "Preposition"],
+                answer: 0,
+                hint: "Names a song.",
+                explanation: "Carol functions primarily as a Noun[cite: 11] and occasionally as a verb meaning to sing joyfully."
+            },
+
+            // --- CARTOGRAPHER (280) ---
+            {
+                id: 9,
+                category: "One Word Substitution",
+                question: "A person who draws or makes maps:",
+                options: ["Cartographer", "Calligrapher", "Lexicographer", "Cacographer"],
+                answer: 0,
+                hint: "Mapmaker professional.",
+                explanation: "Cartographer (N.) is a person who draws or makes maps[cite: 11]. Hindi meaning: मानचित्रकार[cite: 11]."
+            },
+            {
+                id: 10,
+                category: "Root Word Analysis",
+                question: "The root 'Carta-' or 'Chart-' in Cartographer originates from terms meaning:",
+                options: ["Map, paper, or card", "Water or ocean", "Stars or planets", "Mountains"],
+                answer: 0,
+                hint: "Relates to charts and maps.",
+                explanation: "Cartography derives from chart/map making."
+            },
+            {
+                id: 11,
+                category: "Synonym Match",
+                question: "Which professional is closely related to a 'cartographer'?",
+                options: ["Topographer / Map maker", "Calligrapher", "Surgeon", "Botanist"],
+                answer: 0,
+                hint: "Someone mapping terrain.",
+                explanation: "A topographer or map maker is synonymous with a cartographer."
+            },
+            {
+                id: 12,
+                category: "Grammar Check",
+                question: "What part of speech is 'Cartographer'?",
+                options: ["Noun", "Verb", "Adjective", "Adverb"],
+                answer: 0,
+                hint: "Names a profession.",
+                explanation: "Cartographer is a Noun[cite: 11]."
+            },
+
+            // --- CARTOGRAPHY (281) ---
+            {
+                id: 13,
+                category: "One Word Substitution",
+                question: "The art or process of drawing or making maps:",
+                options: ["Cartography", "Calligraphy", "Cacography", "Biography"],
+                answer: 0,
+                hint: "Science and practice of map making.",
+                explanation: "Cartography (N.) is the art or process of making maps[cite: 11]. Hindi meaning: मानचित्रकारी[cite: 11]."
+            },
+            {
+                id: 14,
+                category: "Modern Technological Application",
+                question: "Modern cartography relies heavily on which technology?",
+                options: ["GIS (Geographic Information Systems) and satellite GPS", "Hand-quill pens", "Typewriters", "Acoustic sonars"],
+                answer: 0,
+                hint: "Digital satellite positioning.",
+                explanation: "Modern map making utilizes advanced satellite data and GIS mapping software."
+            },
+            {
+                id: 15,
+                category: "Distractor Check",
+                question: "Distinguish between 'Cartography' and 'Calligraphy'. What is calligraphy?",
+                options: ["The art of beautiful handwriting", "Map making", "Spelling errors", "Making cartoons"],
+                answer: 0,
+                hint: "Artistic penmanship.",
+                explanation: "Calligraphy is beautiful handwriting, whereas cartography is map making[cite: 11]."
+            },
+            {
+                id: 16,
+                category: "Grammar Check",
+                question: "What part of speech is 'Cartography'?",
+                options: ["Noun", "Verb", "Adjective", "Adverb"],
+                answer: 0,
+                hint: "Names a scientific discipline/art.",
+                explanation: "Cartography is a Noun[cite: 11]."
+            },
+
+            // --- CARTOON (282) ---
+            {
+                id: 17,
+                category: "One Word Substitution",
+                question: "An amusing drawing about politics/events in the news:",
+                options: ["Cartoon", "Carcass", "Caravan", "Carol"],
+                answer: 0,
+                hint: "Satirical sketch in newspapers.",
+                explanation: "Cartoon (N.) is an amusing drawing about politics/events[cite: 11]. Hindi meaning: व्यंगचित्र[cite: 11]."
+            },
+            {
+                id: 18,
+                category: "Editorial Context",
+                question: "In newspapers, political cartoons are primarily designed to:",
+                options: ["Provide satirical commentary and social critique", "Advertise products", "Report weather", "List stock market prices"],
+                answer: 0,
+                hint: "Satire and commentary.",
+                explanation: "Editorial cartoons use humor and satire to critique political figures and current events."
+            },
+            {
+                id: 19,
+                category: "Synonym Match",
+                question: "Which of the following is a direct synonym for a satirical drawing?",
+                options: ["Caricature / Satirical sketch", "Photograph", "Blueprint", "Documentary"],
+                answer: 0,
+                hint: "Exaggerated illustrative drawing.",
+                explanation: "A caricature or satirical sketch is synonymous with a political cartoon."
+            },
+            {
+                id: 20,
+                category: "Grammar Check",
+                question: "What part of speech is 'Cartoon'?",
+                options: ["Noun (also used as verb)", "Adjective only", "Adverb", "Preposition"],
+                answer: 0,
+                hint: "Names an artwork.",
+                explanation: "Cartoon functions primarily as a Noun[cite: 11]."
+            },
+
+            // --- CASCADE (283) ---
+            {
+                id: 21,
+                category: "One Word Substitution",
+                question: "A fall of water from a great height:",
+                options: ["Cascade", "Casino", "Casserole", "Cauldron"],
+                answer: 0,
+                hint: "Small waterfall or series of cascading flows.",
+                explanation: "Cascade (N.) means a waterfall or series of steep falls[cite: 11]. Hindi meaning: झरना[cite: 11]."
+            },
+            {
+                id: 22,
+                category: "Figurative Meaning",
+                question: "When someone says 'A cascade of light poured into the room', what does 'cascade' signify?",
+                options: ["A rapid, abundant flow or falling down", "Total darkness", "A complete stoppage", "A frozen solid block"],
+                answer: 0,
+                hint: "Flowing downwards abundantly.",
+                explanation: "Metaphorically, cascade describes anything tumbling down in large quantities like a waterfall."
+            },
+            {
+                id: 23,
+                category: "Synonym Match",
+                question: "Which word is synonymous with 'Cascade'?",
+                options: ["Waterfall / Torrent / Cataract", "Drought", "Puddle", "Desert"],
+                answer: 0,
+                hint: "Flowing water body.",
+                explanation: "A waterfall, torrent, or cataract is synonymous with cascade."
+            },
+            {
+                id: 24,
+                category: "Grammar Check",
+                question: "What part of speech is 'Cascade'?",
+                options: ["Noun and Verb", "Adjective only", "Adverb only", "Conjunction"],
+                answer: 0,
+                hint: "Can be a waterfall (noun) or to flow down (verb).",
+                explanation: "Cascade functions as both a Noun and a Verb[cite: 11]."
+            },
+
+            // --- CASINO (284) ---
+            {
+                id: 25,
+                category: "One Word Substitution",
+                question: "A place where gambling games are played:",
+                options: ["Casino", "Byre", "Cache", "Cellar"],
+                answer: 0,
+                hint: "Establishment for roulette, blackjack, and slot machines.",
+                explanation: "Casino (N.) is a public room or building for gambling games[cite: 11]. Hindi meaning: जुआखाना[cite: 11]."
+            },
+            {
+                id: 26,
+                category: "Etymology",
+                question: "The word 'Casino' originates from Italian roots meaning:",
+                options: ["A small country house or summerhouse (casa)", "A fortress", "A church", "A trading market"],
+                answer: 0,
+                hint: "Diminutive of house.",
+                explanation: "Originally referring to a small villa or social clubhouse, it evolved to mean a gambling establishment."
+            },
+            {
+                id: 27,
+                category: "Distractor Check",
+                question: "Distinguish between 'Casino' and 'Cache'. What is a cache?",
+                options: ["A hidden store of things/valuables", "A gambling house", "An animal burrow", "A cowshed"],
+                answer: 0,
+                hint: "Hidden stash.",
+                explanation: "A cache is a hidden stash, whereas a casino is a public gambling house[cite: 11]."
+            },
+            {
+                id: 28,
+                category: "Grammar Check",
+                question: "What part of speech is 'Casino'?",
+                options: ["Noun", "Verb", "Adjective", "Adverb"],
+                answer: 0,
+                hint: "Names a building/establishment.",
+                explanation: "Casino is a Noun[cite: 11]."
+            },
+
+            // --- CASSEROLE (285) ---
+            {
+                id: 29,
+                category: "One Word Substitution",
+                question: "A large, deep pot used both in the oven and as a serving vessel:",
+                options: ["Casserole", "Cauldron", "Catalog", "Cavalry"],
+                answer: 0,
+                hint: "Baking dish and serving pot combined.",
+                explanation: "Casserole (N.) is a deep baking dish used in ovens and for serving[cite: 11]. Hindi meaning: हाँड़ी (एक तरह का बरतन)[cite: 11]."
+            },
+            {
+                id: 30,
+                category: "Culinary Context",
+                question: "In cooking, a 'casserole' also refers to:",
+                options: ["A baked dish cooked slowly in such a covered pot", "A raw salad", "A fried pastry", "A chilled beverage"],
+                answer: 0,
+                hint: "Slow-baked meal.",
+                explanation: "Casserole refers both to the cooking vessel and the baked stew-like meal prepared inside it."
+            },
+            {
+                id: 31,
+                category: "Synonym Match",
+                question: "Which kitchen item is most similar in function to a casserole dish?",
+                options: ["Dutch oven / Baking pot", "Frying pan", "Colander", "Whisk"],
+                answer: 0,
+                hint: "Deep heavy baking vessel.",
+                explanation: "A Dutch oven or heavy baking pot is comparable to a casserole."
+            },
+            {
+                id: 32,
+                category: "Grammar Check",
+                question: "What part of speech is 'Casserole'?",
+                options: ["Noun", "Verb", "Adjective", "Adverb"],
+                answer: 0,
+                hint: "Names a cooking utensil/dish.",
+                explanation: "Casserole is a Noun[cite: 11]."
+            },
+
+            // --- CATALOGUE (286) ---
+            {
+                id: 33,
+                category: "One Word Substitution",
+                question: "A list or collection of books or informative graphics:",
+                options: ["Catalogue", "Cacophony", "Cache", "Carcass"],
+                answer: 0,
+                hint: "Systematic list of items or library books.",
+                explanation: "Catalogue (N.) is a complete list or itemized display[cite: 11]. Hindi meaning: सूची[cite: 11]."
+            },
+            {
+                id: 34,
+                category: "Exam Frequency (*)",
+                question: "Why does 'Catalogue*' have an asterisk in the Blackbook vocabulary list?",
+                options: ["High recurrence in previous SSC spelling and OWS questions", "It is an obsolete term", "It has no plural form", "It is a foreign phrase"],
+                answer: 0,
+                hint: "High-yield exam word.",
+                explanation: "Asterisks (*) mark high-yield vocabulary frequently tested in competitive recruitment exams."
+            },
+            {
+                id: 35,
+                category: "Synonym Match",
+                question: "Which of the following is a direct synonym for 'Catalogue'?",
+                options: ["Directory / Index / Listing", "Random scatter", "Cacophony", "Chaos"],
+                answer: 0,
+                hint: "Systematic index.",
+                explanation: "A directory, index, or listing is synonymous with a catalogue."
+            },
+            {
+                id: 36,
+                category: "Grammar Check",
+                question: "What part of speech is 'Catalogue'?",
+                options: ["Noun and Verb", "Adjective only", "Adverb only", "Preposition"],
+                answer: 0,
+                hint: "Can be a list (noun) or to list items (verb).",
+                explanation: "Catalogue functions as both a Noun and a Verb[cite: 11]."
+            },
+
+            // --- CATALYST (287) ---
+            {
+                id: 37,
+                category: "One Word Substitution",
+                question: "A substance that speeds up a chemical reaction without being consumed by the reaction itself:",
+                options: ["Catalyst", "Catalytic", "Catastrophe", "Cerebral"],
+                answer: 0,
+                hint: "Chemical speed-enhancer remaining unchanged.",
+                explanation: "Catalyst (N.) is a substance accelerating a chemical reaction without self-consumption[cite: 11]. Hindi meaning: उत्प्रेरक[cite: 11]."
+            },
+            {
+                id: 38,
+                category: "Figurative Context",
+                question: "In social or business contexts, a 'catalyst' is defined as:",
+                options: ["A person or event that sparks rapid change or action", "A barrier stopping progress", "A passive observer", "A financial debt"],
+                answer: 0,
+                hint: "Agent of change.",
+                explanation: "Metaphorically, a catalyst is a person or thing that precipitates change or activity."
+            },
+            {
+                id: 39,
+                category: "Synonym Match",
+                question: "Which of the following is synonymous with a 'catalyst' in figurative use?",
+                options: ["Stimulus / Spark / Impetus", "Hindrance", "Anchor", "Brake"],
+                answer: 0,
+                hint: "Driving force.",
+                explanation: "A stimulus or impetus acts as a catalyst for action."
+            },
+            {
+                id: 40,
+                category: "Grammar Check",
+                question: "What part of speech is 'Catalyst'?",
+                options: ["Noun", "Verb", "Adjective", "Adverb"],
+                answer: 0,
+                hint: "Names a substance/agent.",
+                explanation: "Catalyst is a Noun[cite: 11]."
+            },
+
+            // --- CATASTROPHE (288) ---
+            {
+                id: 41,
+                category: "One Word Substitution",
+                question: "An event causing great and sudden damage or suffering:",
+                options: ["Catastrophe", "Catalyst", "Cadence", "Carol"],
+                answer: 0,
+                hint: "Disaster or calamity.",
+                explanation: "Catastrophe (N.) is an event causing sudden great disaster or suffering[cite: 11]. Hindi meaning: तबाही[cite: 11]."
+            },
+            {
+                id: 42,
+                category: "Exam Frequency (*)",
+                question: "Why does 'Catastrophe*' feature an asterisk in the Blackbook index?",
+                options: ["High examination frequency in SSC spelling and synonym tests", "It is an obsolete term", "It has no synonyms", "It is a verb only"],
+                answer: 0,
+                hint: "High-yield exam word.",
+                explanation: "Asterisks (*) highlight terms that repeatedly appear in competitive exams."
+            },
+            {
+                id: 43,
+                category: "Synonym & Antonym",
+                question: "What is the direct antonym of 'Catastrophe'?",
+                options: ["Blessing / Triumph / Miracle / Success", "Disaster", "Calamity", "Tragedy"],
+                answer: 0,
+                hint: "Positive success or fortunate event.",
+                explanation: "A triumph, blessing, or success serves as an antonym to catastrophe."
+            },
+            {
+                id: 44,
+                category: "Grammar Check",
+                question: "What part of speech is 'Catastrophe'?",
+                options: ["Noun", "Verb", "Adjective", "Adverb"],
+                answer: 0,
+                hint: "Names an event/disaster.",
+                explanation: "Catastrophe is a Noun[cite: 11]."
+            },
+
+            // --- CATASTROPHIC (289) ---
+            {
+                id: 45,
+                category: "One Word Substitution",
+                question: "Causing great damage or suffering:",
+                options: ["Catastrophic", "Catalytic", "Cerebral", "Carnivorous"],
+                answer: 0,
+                hint: "Disastrous or ruinous adjective form.",
+                explanation: "Catastrophic (Adj.) means involving or causing sudden great damage[cite: 11]. Hindi meaning: विनाशकारी[cite: 11]."
+            },
+            {
+                id: 46,
+                category: "Synonym Match",
+                question: "Which of the following is a direct synonym for 'Catastrophic'?",
+                options: ["Disastrous / Devastating / Ruinous", "Beneficial", "Minor", "Favorable"],
+                answer: 0,
+                hint: "Extremely destructive.",
+                explanation: "Disastrous and devastating are direct synonyms for catastrophic."
+            },
+            {
+                id: 47,
+                category: "Derivative Link",
+                question: "How does 'Catastrophic' relate to 'Catastrophe'?",
+                options: ["It is the adjective form derived from the noun catastrophe", "It is an unrelated antonym", "It is a verb meaning to destroy", "It is a medical instrument"],
+                answer: 0,
+                hint: "Noun-to-adjective derivation.",
+                explanation: "Catastrophic is the adjectival form describing events characterized by catastrophe[cite: 11]."
+            },
+            {
+                id: 48,
+                category: "Grammar Check",
+                question: "What part of speech is 'Catastrophic'?",
+                options: ["Adjective", "Noun", "Verb", "Adverb"],
+                answer: 0,
+                hint: "Modifies a noun (e.g., catastrophic failure).",
+                explanation: "Catastrophic is an Adjective[cite: 11]."
+            },
+
+            // --- CAUCUS (290) ---
+            {
+                id: 49,
+                category: "One Word Substitution",
+                question: "A local meeting of party members to select candidates, elect convention delegates, etc.:",
+                options: ["Caucus", "Cauldron", "Cavalry", "Caravan"],
+                answer: 0,
+                hint: "Political party meeting or closed group conference.",
+                explanation: "Caucus (N.) is a meeting of party members to select candidates[cite: 11]. Hindi meaning: ऐसी सभा जिसमें दल के सदस्य नेता चुनते हैं[cite: 11]."
+            },
+            {
+                id: 50,
+                category: "Exam Frequency (*)",
+                question: "Why does 'Caucus*' feature an asterisk in the Blackbook vocabulary list?",
+                options: ["Frequent testing in SSC political and governmental OWS rounds", "It is a medical term", "It is spelled incorrectly", "It has no plural form"],
+                answer: 0,
+                hint: "High-yield competitive exam term.",
+                explanation: "Asterisks (*) mark high-yield terms frequently tested in government exams."
+            },
+            {
+                id: 51,
+                category: "Synonym Match",
+                question: "Which word is synonymous with a political 'caucus'?",
+                options: ["Assembly / Meeting / Conference", "Solitary confinement", "Cacophony", "Silence"],
+                answer: 0,
+                hint: "Gathering of members.",
+                explanation: "An assembly or party conference is synonymous with a caucus."
+            },
+            {
+                id: 52,
+                category: "Grammar Check",
+                question: "What part of speech is 'Caucus'?",
+                options: ["Noun (also used as verb)", "Adjective only", "Adverb", "Preposition"],
+                answer: 0,
+                hint: "Names a meeting/gathering.",
+                explanation: "Caucus functions as a Noun and Verb[cite: 11]."
+            },
+
+            // --- CAULDRON (291) ---
+            {
+                id: 53,
+                category: "One Word Substitution",
+                question: "A large, deep, metal pot used for cooking over open fire:",
+                options: ["Cauldron", "Casserole", "Casino", "Cellar"],
+                answer: 0,
+                hint: "Large boiling pot used by witches or historic cooks.",
+                explanation: "Cauldron (N.) is a large deep metal pot for cooking over open fires[cite: 11]. Hindi meaning: हाँडा / कढ़ाई[cite: 11]."
+            },
+            {
+                id: 54,
+                category: "Cultural / Mythological Association",
+                question: "In folklore and mythology, cauldrons are most famously associated with:",
+                options: ["Witches brewing magical potions", "Deep-sea diving gear", "High-speed locomotives", "Astronaut space suits"],
+                answer: 0,
+                hint: "Witchcraft boiling pots.",
+                explanation: "Mythology and folklore frequently depict witches brewing mysterious potions in boiling cauldrons."
+            },
+            {
+                id: 55,
+                category: "Distractor Check",
+                question: "Distinguish between 'Cauldron' and 'Casserole'. What characterizes a cauldron?",
+                options: ["It is a large, deep metal pot for open-fire boiling", "It is a baking dish for ovens", "It is a glass drinking cup", "It is a plastic storage box"],
+                answer: 0,
+                hint: "Large open-fire boiling pot.",
+                explanation: "A cauldron is a large open-fire boiling pot, whereas a casserole is an oven-safe baking dish[cite: 11]."
+            },
+            {
+                id: 56,
+                category: "Grammar Check",
+                question: "What part of speech is 'Cauldron'?",
+                options: ["Noun", "Verb", "Adjective", "Adverb"],
+                answer: 0,
+                hint: "Names a metallic pot.",
+                explanation: "Cauldron is a Noun[cite: 11]."
+            },
+
+            // --- CAVALRY (292) ---
+            {
+                id: 57,
+                category: "One Word Substitution",
+                question: "Soldiers who fight on horseback:",
+                options: ["Cavalry", "Infantry", "Navy", "Artillery"],
+                answer: 0,
+                hint: "Mounted horse troops.",
+                explanation: "Cavalry (N.) refers to soldiers fighting on horseback[cite: 11]. Hindi meaning: घुड़सवार सेना[cite: 11]."
+            },
+            {
+                id: 58,
+                category: "Exam Frequency (*)",
+                question: "Why does 'Cavalry*' feature an asterisk in the Blackbook military OWS list?",
+                options: ["High recurrence in SSC and defense recruitment exams", "It is an obsolete term", "It has no plural form", "It is a medical term"],
+                answer: 0,
+                hint: "High exam frequency.",
+                explanation: "Asterisk (*) indicates high recurrence in previous competitive exams."
+            },
+            {
+                id: 59,
+                category: "Distinction Check",
+                question: "Contrast 'Cavalry' with 'Infantry'. What are infantry soldiers?",
+                options: ["Soldiers who fight on foot", "Soldiers who fight on horseback", "Navy sailors", "Air force pilots"],
+                answer: 0,
+                hint: "Foot soldiers.",
+                explanation: "Infantry soldiers fight on foot, whereas cavalry soldiers ride horses[cite: 11]."
+            },
+            {
+                id: 60,
+                category: "Grammar Check",
+                question: "What part of speech is 'Cavalry'?",
+                options: ["Noun", "Verb", "Adjective", "Adverb"],
+                answer: 0,
+                hint: "Names a military corps.",
+                explanation: "Cavalry is a Noun[cite: 11]."
+            },
+
+            // --- CAW (293) ---
+            {
+                id: 61,
+                category: "One Word Substitution",
+                question: "The sound of a crow:",
+                options: ["Caw", "Buzz", "Cacophony", "Cadence"],
+                answer: 0,
+                hint: "Harsh cry made by crows and ravens.",
+                explanation: "Caw (V./N.) is the harsh cry made by a crow[cite: 11]. Hindi meaning: कौवे की कांव-कांव[cite: 11]."
+            },
+            {
+                id: 62,
+                category: "Onomatopoeia Classification",
+                question: "Like 'buzz', the word 'caw' is classified as:",
+                options: ["An onomatopoeic word imitating an animal sound", "A portmanteau", "An acronym", "A foreign idiom"],
+                answer: 0,
+                hint: "Imitates the bird's voice.",
+                explanation: "'Caw' phonetically mimics the sound produced by a crow."
+            },
+            {
+                id: 63,
+                category: "Distractor Check",
+                question: "Distinguish 'Caw' from 'Buzz'. Which animal makes a buzz?",
+                options: ["Bees / insects", "Crows", "Cows", "Lions"],
+                answer: 0,
+                hint: "Insect humming sound.",
+                explanation: "Bees buzz, while crows caw[cite: 10, 11]."
+            },
+            {
+                id: 64,
+                category: "Grammar Check",
+                question: "What part of speech is 'Caw'?",
+                options: ["Verb and Noun", "Adjective only", "Adverb only", "Preposition"],
+                answer: 0,
+                hint: "Can be the cry (noun) or to make the cry (verb).",
+                explanation: "Caw functions as both a Verb and a Noun[cite: 11]."
+            },
+
+            // --- CEASEFIRE (294) ---
+            {
+                id: 65,
+                category: "One Word Substitution",
+                question: "A time when enemies agree to stop fighting:",
+                options: ["Ceasefire", "Catastrophe", "Cacophony", "Cadence"],
+                answer: 0,
+                hint: "Temporary truce in combat.",
+                explanation: "Ceasefire (N.) is an agreement between enemies to halt fighting[cite: 11]. Hindi meaning: युद्ध विराम[cite: 11]."
+            },
+            {
+                id: 66,
+                category: "Synonym Match",
+                question: "Which of the following is a direct synonym for 'Ceasefire'?",
+                options: ["Truce / Armistice / Peace pact", "Declaration of war", "Escalation", "Battle"],
+                answer: 0,
+                hint: "Agreement to pause hostilities.",
+                explanation: "A truce or armistice is synonymous with a ceasefire."
+            },
+            {
+                id: 67,
+                category: "Diplomatic Context",
+                question: "A ceasefire is typically negotiated to:",
+                options: ["Allow humanitarian relief and peace talks", "Prepare for a surprise ambush", "Permanently increase military spending", "Close borders permanently"],
+                answer: 0,
+                hint: "Pausing war for relief/talks.",
+                explanation: "Ceasefires provide temporary relief from combat to enable negotiations or aid delivery."
+            },
+            {
+                id: 68,
+                category: "Grammar Check",
+                question: "What part of speech is 'Ceasefire'?",
+                options: ["Noun", "Verb", "Adjective", "Adverb"],
+                answer: 0,
+                hint: "Names a diplomatic agreement/pact.",
+                explanation: "Ceasefire is a Noun[cite: 11]."
+            },
+
+            // --- CELIBACY (295) ---
+            {
+                id: 69,
+                category: "One Word Substitution",
+                question: "The state of being unmarried by choice:",
+                options: ["Celibacy", "Canophilia", "Cache", "Cacography"],
+                answer: 0,
+                hint: "Vow of remaining unmarried and abstaining.",
+                explanation: "Celibacy (N.) is the state of abstaining from marriage and sexual relations[cite: 11]. Hindi meaning: ब्रह्मचर्य[cite: 11]."
+            },
+            {
+                id: 70,
+                category: "Cultural / Religious Context",
+                question: "In many religious traditions, taking a vow of celibacy signifies:",
+                options: ["Dedication to spiritual devotion and asceticism", "Desire for material wealth", "Political ambition", "Military command"],
+                answer: 0,
+                hint: "Spiritual dedication.",
+                explanation: "Celibacy is often practiced by monks, priests, and ascetics devoted entirely to spiritual paths."
+            },
+            {
+                id: 71,
+                category: "Adjectival Form",
+                question: "What is the corresponding adjective form of 'Celibacy'?",
+                options: ["Celibate", "Celibacious", "Celibatory", "Cerebral"],
+                answer: 0,
+                hint: "Describing a person practicing celibacy.",
+                explanation: "'Celibate' is the adjective describing someone who practices celibacy."
+            },
+            {
+                id: 72,
+                category: "Grammar Check",
+                question: "What part of speech is 'Celibacy'?",
+                options: ["Noun", "Verb", "Adjective", "Adverb"],
+                answer: 0,
+                hint: "Names a personal state/lifestyle.",
+                explanation: "Celibacy is a Noun[cite: 11]."
+            },
+
+            // --- CELLAR (296) ---
+            {
+                id: 73,
+                category: "One Word Substitution",
+                question: "Underground place for storing wine or other provisions:",
+                options: ["Cellar", "Casino", "Cache", "Byre"],
+                answer: 0,
+                hint: "Basement storage room for wine bottles.",
+                explanation: "Cellar (N.) is an underground storage room for wine or provisions[cite: 11]. Hindi meaning: तहखाना[cite: 11]."
+            },
+            {
+                id: 74,
+                category: "Synonym Match",
+                question: "Which of the following is synonymous with a 'cellar'?",
+                options: ["Basement / Vault / Subterranean store", "Attic", "Balcony", "Roof terrace"],
+                answer: 0,
+                hint: "Underground room.",
+                explanation: "A basement or vault is synonymous with a cellar."
+            },
+            {
+                id: 75,
+                category: "Distractor Check",
+                question: "Distinguish between 'Cellar' and 'Attic'. Where is an attic located?",
+                options: ["At the top of a house just below the roof", "Underground", "In the backyard", "Inside a barn"],
+                answer: 0,
+                hint: "Top floor vs underground.",
+                explanation: "An attic is at the top of a building under the roof, whereas a cellar is underground[cite: 11]."
+            },
+            {
+                id: 76,
+                category: "Grammar Check",
+                question: "What part of speech is 'Cellar'?",
+                options: ["Noun", "Verb", "Adjective", "Adverb"],
+                answer: 0,
+                hint: "Names an architectural space.",
+                explanation: "Cellar is a Noun[cite: 11]."
+            },
+
+            // --- CEMETERY (297) ---
+            {
+                id: 77,
+                category: "One Word Substitution",
+                question: "A large burial ground:",
+                options: ["Cemetery", "Casino", "Cellar", "Cache"],
+                answer: 0,
+                hint: "Graveyard for burying the dead.",
+                explanation: "Cemetery (N.) is a large burial ground or graveyard[cite: 11]. Hindi meaning: कब्रिस्तान[cite: 11]."
+            },
+            {
+                id: 78,
+                category: "Exam Frequency (*)",
+                question: "Why does 'Cemetery*' feature an asterisk in the Blackbook spelling/OWS list?",
+                options: ["Extremely high test frequency due to its tricky spelling (multiple 'e's)", "It is an obsolete term", "It has no synonyms", "It is a verb only"],
+                answer: 0,
+                hint: "Tricky spelling frequently tested.",
+                explanation: "Cemetery is a notoriously misspelled word (c-e-m-e-t-e-r-y), making it a favorite for SSC spelling tests."
+            },
+            {
+                id: 79,
+                category: "Synonym Match",
+                question: "Which of the following is a direct synonym for 'Cemetery'?",
+                options: ["Graveyard / Necropolis / Burial ground", "Playground", "Park", "Cathedral"],
+                answer: 0,
+                hint: "Place of graves.",
+                explanation: "A graveyard or necropolis is synonymous with a cemetery."
+            },
+            {
+                id: 80,
+                category: "Grammar Check",
+                question: "What part of speech is 'Cemetery'?",
+                options: ["Noun", "Verb", "Adjective", "Adverb"],
+                answer: 0,
+                hint: "Names a location.",
+                explanation: "Cemetery is a Noun[cite: 11]."
+            },
+
+            // --- CENTENARIAN (298) ---
+            {
+                id: 81,
+                category: "One Word Substitution",
+                question: "A person who is a 100 years old or more:",
+                options: ["Centenarian", "Cannibal", "Cartographer", "Cacographer"],
+                answer: 0,
+                hint: "Person reaching a century of life.",
+                explanation: "Centenarian (N.) is a person who is 100 years old or more[cite: 11]. Hindi meaning: सौ वर्ष का[cite: 11]."
+            },
+            {
+                id: 82,
+                category: "Root Word Analysis",
+                question: "The prefix 'Cent-' in centenarian refers to:",
+                options: ["One hundred (100)", "Ten (10)", "One thousand (1000)", "Fifty (50)"],
+                answer: 0,
+                hint: "Century measurement.",
+                explanation: "'Cent-' signifies one hundred (as in century or cent)."
+            },
+            {
+                id: 83,
+                category: "Exam Frequency (*)",
+                question: "Why does 'Centenarian*' have an asterisk in Blackbook OWS lists?",
+                options: ["Frequent appearance in SSC vocabulary and one-word substitution exams", "It is an archaic medical term", "It has no plural form", "It is an adjective only"],
+                answer: 0,
+                hint: "High exam utility.",
+                explanation: "Asterisk (*) indicates high recurrence in previous years' competitive exams."
+            },
+            {
+                id: 84,
+                category: "Grammar Check",
+                question: "What part of speech is 'Centenarian'?",
+                options: ["Noun (also used as adjective)", "Verb only", "Adverb only", "Preposition"],
+                answer: 0,
+                hint: "Names a person of a certain age.",
+                explanation: "Centenarian functions as a Noun and Adjective[cite: 11]."
+            },
+
+            // --- CENTENNIAL (299) ---
+            {
+                id: 85,
+                category: "One Word Substitution",
+                question: "The 100th anniversary of an event:",
+                options: ["Centennial", "Centenarian", "Cerebral", "Catastrophic"],
+                answer: 0,
+                hint: "Hundredth year celebration.",
+                explanation: "Centennial (N./Adj.) marks the 100th anniversary of an event[cite: 11]. Hindi meaning: शताब्दी / सौ साल का[cite: 11]."
+            },
+            {
+                id: 86,
+                category: "Distinction Check",
+                question: "Distinguish between 'Centenarian' and 'Centennial'. What does centenarian mean?",
+                options: ["A person who is 100 years old", "A 100-year anniversary celebration", "A map maker", "A meat-eating animal"],
+                answer: 0,
+                hint: "Person vs Anniversary.",
+                explanation: "A centenarian is a 100-year-old person, whereas a centennial is a 100-year milestone celebration[cite: 11]."
+            },
+            {
+                id: 87,
+                category: "Synonym Match",
+                question: "Which term is synonymous with a 'centennial' celebration?",
+                options: ["Tercentenary / Centenary milestone", "Daily routine", "Weekly meeting", "Monthly report"],
+                answer: 0,
+                hint: "Hundred-year mark.",
+                explanation: "A centenary is synonymous with a centennial celebration."
+            },
+            {
+                id: 88,
+                category: "Grammar Check",
+                question: "What part of speech is 'Centennial'?",
+                options: ["Noun and Adjective", "Verb only", "Adverb only", "Conjunction"],
+                answer: 0,
+                hint: "Can be the event (noun) or describing the anniversary (adjective).",
+                explanation: "Centennial functions as both a Noun and an Adjective[cite: 11]."
+            },
+
+            // --- CENTRIFUGAL (300) ---
+            {
+                id: 89,
+                category: "One Word Substitution",
+                question: "Anything tending to move away from centre:",
+                options: ["Centrifugal", "Centripetal", "Cerebral", "Catastrophic"],
+                answer: 0,
+                hint: "Force pushing outward from the center.",
+                explanation: "Centrifugal (Adj.) means tending to move away from the center[cite: 11]. Hindi meaning: अपकेंद्रीय (केंद्र से दूर भागने की प्रवृत्ति)[cite: 11]."
+            },
+            {
+                id: 90,
+                category: "Physics Distinction",
+                question: "In physics, what is the exact opposite of 'centrifugal' force?",
+                options: ["Centripetal force (tending toward the center)", "Gravitational pull", "Friction", "Magnetic drag"],
+                answer: 0,
+                hint: "Center-seeking force.",
+                explanation: "Centripetal force pulls toward the center, whereas centrifugal force moves outward from the center."
+            },
+            {
+                id: 91,
+                category: "Practical Application",
+                question: "A laundry spin dryer uses centrifugal force to:",
+                options: ["Throw water outward through drum holes to dry clothes", "Freeze clothing", "Heat garments", "Fold shirts"],
+                answer: 0,
+                hint: "Outward spinning water removal.",
+                explanation: "Spin dryers use outward centrifugal force to extract water from wet fabrics."
+            },
+            {
+                id: 92,
+                category: "Grammar Check",
+                question: "What part of speech is 'Centrifugal'?",
+                options: ["Adjective", "Noun", "Verb", "Adverb"],
+                answer: 0,
+                hint: "Describes a direction of movement.",
+                explanation: "Centrifugal is an Adjective[cite: 11]."
+            },
+
+            // --- CEREBRAL (301) ---
+            {
+                id: 93,
+                category: "One Word Substitution",
+                question: "Something that is related to the brain or the intellect:",
+                options: ["Cerebral", "Carnivorous", "Catastrophic", "Centrifugal"],
+                answer: 0,
+                hint: "Intellectual rather than emotional.",
+                explanation: "Cerebral (Adj.) relates to the brain or intellect[cite: 11]. Hindi meaning: दिमागी[cite: 11]."
+            },
+            {
+                id: 94,
+                category: "Exam Frequency (*)",
+                question: "Why does 'Cerebral*' feature an asterisk in the Blackbook vocabulary list?",
+                options: ["High examination recurrence in SSC synonym and adjective tests", "It is an obsolete term", "It has no synonyms", "It is a noun only"],
+                answer: 0,
+                hint: "High-yield exam word.",
+                explanation: "Asterisks (*) highlight terms that repeatedly appear in competitive recruitment exams."
+            },
+            {
+                id: 95,
+                category: "Synonym Match",
+                question: "Which of the following is a direct synonym for 'Cerebral'?",
+                options: ["Intellectual / Analytical / Brainy", "Physical", "Emotional", "Instinctive"],
+                answer: 0,
+                hint: "Intellect-focused.",
+                explanation: "Intellectual and analytical are direct synonyms for cerebral."
+            },
+            {
+                id: 96,
+                category: "Grammar Check",
+                question: "What part of speech is 'Cerebral'?",
+                options: ["Adjective", "Noun", "Verb", "Adverb"],
+                answer: 0,
+                hint: "Describes mental/brain capacity.",
+                explanation: "Cerebral is an Adjective[cite: 11]."
+            },
+
+            // --- CEROGRAPHY (302) ---
+            {
+                id: 97,
+                category: "One Word Substitution",
+                question: "Art of designing or writing on wax:",
+                options: ["Cerography", "Calligraphy", "Cartography", "Cacography"],
+                answer: 0,
+                hint: "Wax engraving art form.",
+                explanation: "Cerography (N.) is the art of designing or writing on wax[cite: 11]. Hindi meaning: मोम पर नक्काशी का[cite: 11]."
+            },
+            {
+                id: 98,
+                category: "Root Word Breakdown",
+                question: "The prefix 'Cero-' in Cerography stems from Greek 'cera', meaning:",
+                options: ["Wax", "Stone", "Wood", "Metal"],
+                answer: 0,
+                hint: "Relates to wax tablets.",
+                explanation: "'Cero-' refers to wax (as in ceroplastic or cerography)."
+            },
+            {
+                id: 99,
+                category: "Distractor Check",
+                question: "Distinguish between 'Cerography' and 'Calligraphy'. What does calligraphy involve?",
+                options: ["Beautiful handwriting with pens/brushes", "Engraving on wax", "Map drawing", "Spelling errors"],
+                answer: 0,
+                hint: "Penmanship art.",
+                explanation: "Calligraphy is beautiful handwriting, whereas cerography is wax engraving[cite: 11]."
+            },
+            {
+                id: 100,
+                category: "Grammar Check",
+                question: "What part of speech is 'Cerography'?",
+                options: ["Noun", "Verb", "Adjective", "Adverb"],
+                answer: 0,
+                hint: "Names an artistic technique.",
+                explanation: "Cerography is a Noun[cite: 11]."
+            }
+        ];
+
+        let currentIndex = 0;
+        let score = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+        let answeredState = new Array(questions.length).fill(false);
+
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const scoreDisplay = document.getElementById('score-display');
+        const currentQBadge = document.getElementById('current-q-badge');
+        const totalQBadge = document.getElementById('total-q-badge');
+        const totalScoreDisplay = document.getElementById('total-score-display');
+        const progressBar = document.getElementById('progress-bar');
+        const questionNumberLabel = document.getElementById('question-number-label');
+        const questionCategoryBadge = document.getElementById('question-category-badge');
+        const hintBox = document.getElementById('hint-box');
+        const explanationBox = document.getElementById('explanation-box');
+        const explanationText = document.getElementById('explanation-text');
+        const jumpInput = document.getElementById('jump-input');
+        const bottomJumpInput = document.getElementById('bottom-jump-input');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+
+        totalScoreDisplay.textContent = questions.length;
+        totalQBadge.textContent = questions.length;
+
+        function loadQuestion(index) {
+            if (index < 0 || index >= questions.length) return;
+            currentIndex = index;
+            const q = questions[currentIndex];
+
+            questionNumberLabel.textContent = `Question ${currentIndex + 1} of ${questions.length}`;
+            currentQBadge.textContent = currentIndex + 1;
+            questionCategoryBadge.textContent = q.category;
+            questionText.textContent = q.question;
+
+            // Progress bar update
+            const progressPct = ((currentIndex + 1) / questions.length) * 100;
+            progressBar.style.width = `${progressPct}%`;
+
+            // Hint setup
+            hintBox.textContent = q.hint;
+            hintBox.classList.add('hidden');
+
+            // Explanation setup
+            if (answeredState[currentIndex]) {
+                explanationText.textContent = q.explanation;
+                explanationBox.classList.remove('hidden');
+            } else {
+                explanationBox.classList.add('hidden');
+            }
+
+            // Render Options
+            optionsContainer.innerHTML = '';
+            q.options.forEach((opt, i) => {
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left p-4 rounded-2xl border transition-all flex items-center justify-between font-medium text-sm md:text-base shadow-sm `;
+                
+                const isSelected = userAnswers[currentIndex] === i;
+                const isAnswered = answeredState[currentIndex];
+
+                if (isAnswered) {
+                    if (i === q.answer) {
+                        btn.className += `bg-green-50 border-green-300 text-green-900 shadow-md`;
+                    } else if (isSelected) {
+                        btn.className += `bg-red-50 border-red-300 text-red-900 shadow-md`;
+                    } else {
+                        btn.className += `bg-white/60 border-borderPurple text-darkPurple/60`;
+                    }
+                    btn.disabled = true;
+                } else {
+                    btn.className += `bg-white border-borderPurple text-darkPurple hover:bg-hoverBg hover:border-primaryPurple focus:outline-none focus:ring-2 focus:ring-primaryPurple`;
+                    btn.onclick = () => selectOption(i);
+                }
+
+                btn.innerHTML = `
+                    <span><strong class="mr-2 text-primaryPurple">${String.fromCharCode(65 + i)}.</strong> ${opt}</span>
+                    <span class="text-xs font-bold">${isAnswered && i === q.answer ? '✅ Correct' : (isAnswered && isSelected ? '❌ Your Choice' : '')}</span>
+                `;
+                optionsContainer.appendChild(btn);
+            });
+
+            prevBtn.disabled = currentIndex === 0;
+            nextBtn.textContent = currentIndex === questions.length - 1 ? 'Finish 🏁' : 'Next →';
+            jumpInput.value = currentIndex + 1;
+            bottomJumpInput.value = currentIndex + 1;
+        }
+
+        function selectOption(selectedIndex) {
+            if (answeredState[currentIndex]) return;
+            userAnswers[currentIndex] = selectedIndex;
+            answeredState[currentIndex] = true;
+
+            const q = questions[currentIndex];
+            if (selectedIndex === q.answer) {
+                score++;
+                scoreDisplay.textContent = score;
+            }
+
+            explanationText.textContent = q.explanation;
+            explanationBox.classList.remove('hidden');
+
+            loadQuestion(currentIndex);
+        }
+
+        function nextQuestion() {
+            if (currentIndex < questions.length - 1) {
+                loadQuestion(currentIndex + 1);
+            } else {
+                alert(`Quiz Completed! 🎉 Your final score is ${score} out of ${questions.length}. Excellent work mastering your English Vocabulary!`);
+            }
+        }
+
+        function prevQuestion() {
+            if (currentIndex > 0) {
+                loadQuestion(currentIndex - 1);
+            }
+        }
+
+        function toggleHint() {
+            hintBox.classList.toggle('hidden');
+        }
+
+        function jumpToQuestion() {
+            const val = parseInt(jumpInput.value);
+            if (!isNaN(val) && val >= 1 && val <= questions.length) {
+                loadQuestion(val - 1);
+            } else {
+                alert(`Please enter a valid question number between 1 and ${questions.length}.`);
+            }
+        }
+
+        function bottomJump() {
+            const val = parseInt(bottomJumpInput.value);
+            if (!isNaN(val) && val >= 1 && val <= questions.length) {
+                loadQuestion(val - 1);
+            } else {
+                alert(`Please enter a valid question number between 1 and ${questions.length}.`);
+            }
+        }
+
+        function resetQuiz() {
+            if (confirm("Are you sure you want to reset the quiz? All your progress will be cleared.")) {
+                score = 0;
+                scoreDisplay.textContent = score;
+                userAnswers = new Array(questions.length).fill(null);
+                answeredState = new Array(questions.length).fill(false);
+                loadQuestion(0);
+            }
+        }
+
+        // Keyboard Navigation Support
+        document.addEventListener('keydown', (e) => {
+            if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+                if (e.key === 'Enter') {
+                    if (document.activeElement === jumpInput) jumpToQuestion();
+                    if (document.activeElement === bottomJumpInput) bottomJump();
+                }
+                return;
+            }
+
+            if (e.key === 'ArrowLeft') {
+                prevQuestion();
+            } else if (e.key === 'ArrowRight') {
+                nextQuestion();
+            }
+        });
+
+        // Initialize first question on load
+        window.onload = () => {
+            loadQuestion(0);
+        };
+    </script>
+</body>
+</html>

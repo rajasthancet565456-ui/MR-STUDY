@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animal Husbandry Quiz | पशुपालन प्रश्नोत्तरी</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .option-card:hover { transform: translateY(-2px); transition: all 0.2s ease; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #888; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #555; }
+    </style>
+<style id="cosmic-readable-quiz-theme">
+:root{--space:#e8dcff;--panel:#f3eaff;--panel2:#dcc6ff;--edge:#6a45bf;--glow:#d28b28;--accent:#d15f9f;--ink:#2c1b4d;--muted:#66547c;--mist:rgba(106,69,191,.2)}html{background:var(--space)}body{background:radial-gradient(ellipse 62% 45% at 90% -5%,rgba(209,95,159,.28),transparent 62%),radial-gradient(ellipse 55% 40% at 8% 100%,rgba(65,164,207,.26),transparent 64%),var(--space)!important;color:var(--ink)!important;min-height:100vh}body:before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.78;background-image:radial-gradient(circle at 9% 18%,var(--glow) 0 1px,transparent 1.7px),radial-gradient(circle at 26% 69%,var(--edge) 0 .8px,transparent 1.5px),radial-gradient(circle at 68% 24%,var(--accent) 0 1px,transparent 1.8px),radial-gradient(circle at 88% 73%,#47a8d3 0 .8px,transparent 1.5px);background-size:220px 190px,300px 270px,260px 230px,340px 310px;z-index:-1}header{background:linear-gradient(105deg,var(--panel),var(--panel2))!important;border-color:rgba(106,69,191,.25)!important;box-shadow:0 7px 24px rgba(84,48,142,.14)!important}header h1{color:var(--edge)!important;text-shadow:none!important}header p,header .text-slate-400,header .text-indigo-200,header .text-indigo-300{color:var(--muted)!important}main>div,#quiz-card,.bg-slate-800,.bg-slate-900,.bg-indigo-900,.bg-indigo-950{background:linear-gradient(145deg,#f8f0ff,var(--panel))!important;border-color:rgba(106,69,191,.22)!important;color:var(--ink)!important;box-shadow:0 14px 35px rgba(84,48,142,.12)!important}.bg-slate-700,.bg-slate-100,.bg-slate-50{background:#eadffd!important;color:var(--ink)!important}.text-slate-100,.text-slate-200,.text-slate-300,.text-slate-400,.text-white,.text-slate-800,.text-slate-700,.text-slate-600{color:var(--ink)!important}.text-indigo-400,.text-indigo-300,.text-emerald-400,.text-yellow-300{color:var(--edge)!important}.border-slate-700,.border-slate-700\/60,.border-indigo-700,.border-slate-200{border-color:rgba(106,69,191,.25)!important}button:not(.bg-green-600):not(.bg-red-600){background:#f9f2ff!important;color:var(--ink)!important;border:1px solid rgba(106,69,191,.25)!important;box-shadow:0 3px 10px rgba(84,48,142,.09)!important}button.bg-indigo-600,button.bg-slate-800,button.bg-slate-900,button.bg-indigo-900{background:linear-gradient(120deg,var(--edge),var(--accent))!important;color:#fff!important;border:0!important}button.bg-indigo-600 *,button.bg-slate-800 *,button.bg-slate-900 *,button.bg-indigo-900 *{color:#fff!important}button:hover{filter:brightness(1.04);transform:translateY(-1px)}input,select,textarea{background:#f9f2ff!important;border-color:rgba(106,69,191,.35)!important;color:var(--ink)!important}input:focus,select:focus,textarea:focus{outline:none!important;border-color:var(--edge)!important;box-shadow:0 0 0 3px var(--mist)!important}.bg-indigo-500,#progress-bar{background:linear-gradient(90deg,var(--edge),var(--accent),var(--glow))!important}.rounded-2xl{border-radius:1.25rem!important}
+</style></head>
+<body class="bg-slate-100 font-sans text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-indigo-700 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-2">
+            <div class="flex items-center space-x-3">
+                <i class="fa-solid me-2 fa-horse-head text-2xl text-amber-300"></i>
+                <h1 class="text-xl font-bold tracking-wide">Animal Husbandry Master Quiz</h1>
+            </div>
+            <div class="flex items-center space-x-4 text-sm font-medium">
+                <span class="bg-indigo-800 px-3 py-1 rounded-full border border-indigo-500">
+                    <i class="fa-solid fa-layer-group text-indigo-300 mr-1"></i> <span id="page-tag">Page 1</span>
+                </span>
+                <span class="bg-emerald-600 px-3 py-1 rounded-full">
+                    Score: <span id="live-score">0</span> / <span id="answered-count">0</span>
+                </span>
+            </div>
+        </div>
+        <!-- Progress bar -->
+        <div class="w-full bg-indigo-950 h-2">
+            <div id="progress-bar" class="bg-amber-400 h-2 transition-all duration-300" style="width: 0%"></div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-4xl mx-auto w-full p-4 flex-grow flex flex-col justify-between">
+        
+        <!-- Controls Bar -->
+        <div class="bg-white p-4 rounded-xl shadow-md mb-4 flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center space-x-2">
+                <span class="text-sm font-semibold text-slate-600">Question:</span>
+                <span id="q-number" class="text-lg font-bold text-indigo-700">1</span>
+                <span class="text-slate-400">/ 70</span>
+            </div>
+
+            <div class="flex items-center space-x-2">
+                <label for="jump-input" class="text-sm font-medium text-slate-600">Jump to:</label>
+                <input type="number" id="jump-input" min="1" max="70" class="w-16 border rounded-lg px-2 py-1 text-center text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <button onclick="jumpToQuestion()" class="bg-indigo-600 text-white text-sm px-3 py-1 rounded-lg hover:bg-indigo-700 transition">Go</button>
+            </div>
+
+            <div class="flex items-center space-x-2">
+                <button id="prev-btn" onclick="navigate(-1)" class="bg-slate-200 text-slate-700 px-4 py-1.5 rounded-lg text-sm font-semibold hover:bg-slate-300 disabled:opacity-50 transition">
+                    <i class="fa-solid fa-chevron-left mr-1"></i> Prev
+                </button>
+                <button id="next-btn" onclick="navigate(1)" class="bg-indigo-600 text-white px-4 py-1.5 rounded-lg text-sm font-semibold hover:bg-indigo-700 transition">
+                    Next <i class="fa-solid fa-chevron-right ml-1"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Question Card -->
+        <div id="question-card" class="bg-white rounded-2xl shadow-xl p-6 mb-4 flex-grow border border-slate-200">
+            <!-- Source Tag -->
+            <div class="mb-3">
+                <span id="source-badge" class="inline-block bg-amber-100 text-amber-800 text-xs font-semibold px-2.5 py-0.5 rounded border border-amber-300">
+                    Source: Page 1
+                </span>
+            </div>
+
+            <!-- Question Text -->
+            <div class="mb-6">
+                <h2 id="q-text-hi" class="text-lg md:text-xl font-bold text-slate-800 mb-2 leading-snug"></h2>
+                <p id="q-text-en" class="text-sm md:text-base text-slate-500 italic font-medium"></p>
+            </div>
+
+            <!-- Answer Options -->
+            <div id="options-container" class="grid grid-cols-1 gap-3 mb-6">
+                <!-- Dynamically populated options -->
+            </div>
+
+            <!-- Action Buttons: Hint & Rationale -->
+            <div class="pt-4 border-t border-slate-100 flex flex-col space-y-3">
+                <button id="hint-btn" onclick="toggleHint()" class="self-start text-xs font-semibold text-amber-600 hover:text-amber-700 flex items-center bg-amber-50 px-3 py-1.5 rounded-lg border border-amber-200 transition">
+                    <i class="fa-regular fa-lightbulb mr-1.5 text-amber-500"></i> <span id="hint-toggle-text">Show Hint / संकेत देखें</span>
+                </button>
+                
+                <div id="hint-box" class="hidden bg-amber-50 border-l-4 border-amber-400 p-3 rounded text-sm text-amber-800">
+                    <p id="hint-text"></p>
+                </div>
+
+                <!-- Explanation Box -->
+                <div id="explanation-box" class="hidden bg-indigo-50 border-l-4 border-indigo-500 p-4 rounded-lg">
+                    <h4 class="font-bold text-indigo-900 text-sm mb-1"><i class="fa-solid fa-circle-info mr-1"></i> Explanation / व्याख्या:</h4>
+                    <p id="explanation-text" class="text-sm text-indigo-800 leading-relaxed"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question Navigator Drawer / Grid -->
+        <div class="bg-white rounded-xl shadow-md p-4 mb-4">
+            <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Question Palette (1-70)</h3>
+            <div id="palette-grid" class="grid grid-cols-10 sm:grid-cols-14 md:grid-cols-20 gap-1.5 max-h-28 overflow-y-auto custom-scrollbar p-1">
+                <!-- Dynamically populated buttons -->
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="bg-slate-800 text-slate-400 text-xs text-center py-3 border-t border-slate-700">
+        Animal Husbandry Competitive Exam Prep • 70 Unique Bilingual Questions (HSSC, SSC, RRB, State Exams)
+    </footer>
+
+    <script>
+        // Full Dataset: 70 Unique Questions mapped strictly to provided image pages
+        const questionsData = [
+            // ================= PAGE 1 (Image 1) - 15 Questions =================
+            {
+                id: 1, page: 1,
+                qHi: "घोड़े का वैज्ञानिक वर्गीकरण में 'संघ' (Phylum) क्या है?",
+                qEn: "What is the 'Phylum' in the scientific classification of the horse?",
+                options: [
+                    { hi: "कॉर्डेटा (Chordata)", en: "Chordata", isCorrect: true },
+                    { hi: "मेमेलिया (Mammalia)", en: "Mammalia", isCorrect: false },
+                    { hi: "पेरिसोडैक्टायला (Perissodactyla)", en: "Perissodactyla", isCorrect: false },
+                    { hi: "ईक्यूडी (Equidae)", en: "Equidae", isCorrect: false }
+                ],
+                hint: "यह संघ उन जीवों का है जिनमें नोटोकॉर्ड पाई जाती है।",
+                rationale: "घोड़े का वैज्ञानिक वर्गीकरण: जगत - जीव-जन्तु, संघ - कॉर्डेटा (Chordata), वर्ग - मेमेलिया, गण - चतुर्खुरीयगण (Perissodactyla), कुल - ईक्यूडी, जाति - ईक्वस, प्रजाति - ई-फेरस।"
+            },
+            {
+                id: 2, page: 1,
+                qHi: "घोड़े का वैज्ञानिक नाम क्या है?",
+                qEn: "What is the scientific name of the horse?",
+                options: [
+                    { hi: "ईक्वस ई-फेरस (Equus caballus / Equus e-ferrus)", en: "Equus e-ferrus", isCorrect: true },
+                    { hi: "बॉस इण्डिकस (Bos indicus)", en: "Bos indicus", isCorrect: false },
+                    { hi: "बुबेलस बुबेलिस (Bubalus bubalis)", en: "Bubalus bubalis", isCorrect: false },
+                    { hi: "कैप्रा हिरकस (Capra hircus)", en: "Capra hircus", isCorrect: false }
+                ],
+                hint: "वंश 'Equus' और प्रजाति 'e-ferrus' को मिलाकर बनता है।",
+                rationale: "घोड़े का जाति नाम Equus तथा प्रजाति नाम e-ferrus है, जिससे इसका पूरा वैज्ञानिक नाम Equus e-ferrus बनता है।"
+            },
+            {
+                id: 3, page: 1,
+                qHi: "मनुष्य ने लगभग किस समय के आसपास घोड़ों को पालतू बनाना शुरू किया था?",
+                qEn: "Around what time did humans start domesticating horses?",
+                options: [
+                    { hi: "4000 ईसा पूर्व (4000 BC)", en: "4000 BC", isCorrect: true },
+                    { hi: "2000 ईसा पूर्व (2000 BC)", en: "2000 BC", isCorrect: false },
+                    { hi: "6000 ईसा पूर्व (6000 BC)", en: "6000 BC", isCorrect: false },
+                    { hi: "1000 ईसा पूर्व (1000 BC)", en: "1000 BC", isCorrect: false }
+                ],
+                hint: "यह 4वीं शताब्दी ईसा पूर्व की बात है।",
+                rationale: "दिए गए विवरण के अनुसार मनुष्य ने लगभग 4000 ईसा पूर्व के आसपास घोड़ों को पालतू बनाना शुरू किया था।"
+            },
+            {
+                id: 4, page: 1,
+                qHi: "मादा घोड़े के दूध को क्या कहा जाता है?",
+                qEn: "What is the milk of a female horse called?",
+                options: [
+                    { hi: "मार्स (Mares milk)", en: "Mars milk", isCorrect: true },
+                    { hi: "कोल्ट मिल्क (Colt milk)", en: "Colt milk", isCorrect: false },
+                    { hi: "पोनी मिल्क (Pony milk)", en: "Pony milk", isCorrect: false },
+                    { hi: "फाल मिल्क (Foal milk)", en: "Foal milk", isCorrect: false }
+                ],
+                hint: "इसे हिंदी पाठ्यपुस्तकों में 'मार्स' लिखा गया है।",
+                rationale: "मादा घोड़े (घोड़ी) के दूध को 'मार्स' (Mars) कहा जाता है।"
+            },
+            {
+                id: 5, page: 1,
+                qHi: "एक युवा घोड़े (बच्चे) को क्या कहा जाता है जो जन्म के तुरन्त बाद खड़ा हो सकता है?",
+                qEn: "What is a young horse called that can stand and run immediately after birth?",
+                options: [
+                    { hi: "बछेड़ा (Foal / Colt)", en: "Foal / Colt", isCorrect: true },
+                    { hi: "बछड़ा (Calf)", en: "Calf", isCorrect: false },
+                    { hi: "मेमना (Lamb)", en: "Lamb", isCorrect: false },
+                    { hi: "किड (Kid)", en: "Kid", isCorrect: false }
+                ],
+                hint: "इसे हिंदी में 'बछेड़ा' कहा जाता है।",
+                rationale: "एक युवा घोड़े को बछेड़ा कहा जाता है जो जन्म के तुरन्त बाद खड़ा हो सकता है और दौड़ सकता है।"
+            },
+            {
+                id: 6, page: 1,
+                qHi: "घोड़े की औसत आयु कितनी होती है?",
+                qEn: "What is the average lifespan of a horse?",
+                options: [
+                    { hi: "25 से 30 वर्ष", en: "25 to 30 years", isCorrect: true },
+                    { hi: "15 से 20 वर्ष", en: "15 to 20 years", isCorrect: false },
+                    { hi: "35 से 40 वर्ष", en: "35 to 40 years", isCorrect: false },
+                    { hi: "10 से 15 वर्ष", en: "10 to 15 years", isCorrect: false }
+                ],
+                hint: "यह लगभग एक चौथाई शताब्दी या उससे कुछ अधिक होती है।",
+                rationale: "एक घोड़े की औसत आयु 25 से 30 वर्ष के बीच होती है।"
+            },
+            {
+                id: 7, page: 1,
+                qHi: "आज दुनिया में घोड़े की कितनी से अधिक नस्लें पाई जाती हैं?",
+                qEn: "More than how many breeds of horses are found in the world today?",
+                options: [
+                    { hi: "300 से अधिक", en: "More than 300", isCorrect: true },
+                    { hi: "100 से अधिक", en: "More than 100", isCorrect: false },
+                    { hi: "500 से अधिक", en: "More than 500", isCorrect: false },
+                    { hi: "200 से अधिक", en: "More than 200", isCorrect: false }
+                ],
+                hint: "संख्या तीन सौ से अधिक है।",
+                rationale: "विश्व भर में घोड़ों की 300 से अधिक नस्लें (breeds) पाई जाती हैं।"
+            },
+            {
+                id: 8, page: 1,
+                qHi: "प्राचीन समय में हरियाणा में घोड़ों के व्यापार के लिए कौन सा स्थान प्रसिद्ध था?",
+                qEn: "Which place in Haryana was famous for horse trading in ancient times?",
+                options: [
+                    { hi: "पेहवा (Pehowa)", en: "Pehowa", isCorrect: true },
+                    { hi: "बेरी (Beri)", en: "Beri", isCorrect: false },
+                    { hi: "हिसार (Hisar)", en: "Hisar", isCorrect: false },
+                    { hi: "करनाल (Karnal)", en: "Karnal", isCorrect: false }
+                ],
+                hint: "यह कुरुक्षेत्र जिले के पास स्थित ऐतिहासिक स्थान है।",
+                rationale: "प्राचीन समय में हरियाणा में पेहवा (कुरुक्षेत्र) घोड़ों के व्यापार के लिए प्रसिद्ध था।"
+            },
+            {
+                id: 9, page: 1,
+                qHi: "20वीं पशु गणना 2019 के अनुसार हरियाणा में सर्वाधिक घोड़ों की संख्या किस जिले में पाई जाती है?",
+                qEn: "According to 20th Livestock Census 2019, which district has highest number of horses in Haryana?",
+                options: [
+                    { hi: "गुरुग्राम (Gurugram)", en: "Gurugram", isCorrect: true },
+                    { hi: "पंचकुला (Panchkula)", en: "Panchkula", isCorrect: false },
+                    { hi: "झज्जर (Jhajjar)", en: "Jhajjar", isCorrect: false },
+                    { hi: "अंबाला (Ambala)", en: "Ambala", isCorrect: false }
+                ],
+                hint: "यह हरियाणा का साइबर सिटी कहा जाने वाला जिला है।",
+                rationale: "20वीं पशु गणना 2019 के अनुसार हरियाणा में सर्वाधिक घोड़ों की संख्या गुरुग्राम जिले में पाई जाती है।"
+            },
+            {
+                id: 10, page: 1,
+                qHi: "20वीं पशु गणना 2019 के अनुसार हरियाणा के किस जिले में सबसे कम घोड़े पाए जाते हैं?",
+                qEn: "Which district in Haryana has the minimum number of horses according to 2019 census?",
+                options: [
+                    { hi: "पंचकुला (Panchkula)", en: "Panchkula", isCorrect: true },
+                    { hi: "गुरुग्राम (Gurugram)", en: "Gurugram", isCorrect: false },
+                    { hi: "महेंद्रगढ़ (Mahendragarh)", en: "Mahendragarh", isCorrect: false },
+                    { hi: "रेवाड़ी (Rewari)", en: "Rewari", isCorrect: false }
+                ],
+                hint: "यह हरियाणा का सबसे उत्तरी जिला है।",
+                rationale: "20वीं पशु गणना 2019 के अनुसार हरियाणा के पंचकुला जिले में सबसे कम घोड़े पाए जाते हैं।"
+            },
+            {
+                id: 11, page: 1,
+                qHi: "हरियाणा के किस स्थान पर प्रसिद्ध 'गधों/घोड़ों का मेला' भरता है?",
+                qEn: "At which place in Haryana is the famous donkey/horse fair held?",
+                options: [
+                    { hi: "बेरी (झज्जर)", en: "Beri (Jhajjar)", isCorrect: true },
+                    { hi: "पेहवा (कुरुक्षेत्र)", en: "Pehowa (Kurukshetra)", isCorrect: false },
+                    { hi: "सूरजकुंड (फरीदाबाद)", en: "Surajkund (Faridabad)", isCorrect: false },
+                    { hi: "चिंकारा (भिवानी)", en: "Chinkara (Bhiwani)", isCorrect: false }
+                ],
+                hint: "यह झज्जर जिले में स्थित है।",
+                rationale: "हरियाणा के बेरी (झज्जर) में प्रसिद्ध गधों/घोड़ों का मेला लगता है।"
+            },
+            {
+                id: 12, page: 1,
+                qHi: "एक घोड़ा या घोड़ी द्वारा प्रतिदिन औसतन कितना गोबर उत्पादित होता है?",
+                qEn: "How much dung is produced daily by a horse/mare on average?",
+                options: [
+                    { hi: "13.5 कि.ग्रा. (13.5 kg)", en: "13.5 kg", isCorrect: true },
+                    { hi: "20.5 कि.ग्रा. (20.5 kg)", en: "20.5 kg", isCorrect: false },
+                    { hi: "8.0 कि.ग्रा. (8.0 kg)", en: "8.0 kg", isCorrect: false },
+                    { hi: "25.0 कि.ग्रा. (25.0 kg)", en: "25.0 kg", isCorrect: false }
+                ],
+                hint: "यह 13 से 14 किलो के बीच है।",
+                rationale: "पाठ्य विवरण के अनुसार एक घोड़ा/घोड़ी द्वारा प्रतिदिन 13.5 कि.ग्रा. गोबर उत्पादित होता है।"
+            },
+            {
+                id: 13, page: 1,
+                qHi: "विश्व घुड़सवारी प्रतियोगिता में स्वर्ण पदक जीतने वाली प्रथम हरियाणवी महिला कौन हैं?",
+                qEn: "Who is the first Haryanvi woman to win a Gold Medal in World Equestrian Competition?",
+                options: [
+                    { hi: "श्वेता हुड्डा (Shweta Hooda)", en: "Shweta Hooda", isCorrect: true },
+                    { hi: "साक्षी मलिक (Sakshi Malik)", en: "Sakshi Malik", isCorrect: false },
+                    { hi: "विनेश फोगट (Vinesh Phogat)", en: "Vinesh Phogat", isCorrect: false },
+                    { hi: "ममता खरब (Mamta Kharab)", en: "Mamta Kharab", isCorrect: false }
+                ],
+                hint: "इनका उपनाम 'हुड्डा' है।",
+                rationale: "विश्व घुड़सवारी प्रतियोगिता में स्वर्ण पदक जीतने वाली प्रथम हरियाणवी महिला श्वेता हुड्डा हैं।"
+            },
+            {
+                id: 14, page: 1,
+                qHi: "घोड़े के संदर्भ में 'Trop, Canter, Gallop' शब्द क्या दर्शाते हैं?",
+                qEn: "What do the terms 'Trop, Canter, Gallop' indicate in relation to a horse?",
+                options: [
+                    { hi: "घोड़े की चाल (Gait/Movement of horse)", en: "Horse Gait", isCorrect: true },
+                    { hi: "घोड़े की नस्लें (Horse Breeds)", en: "Horse Breeds", isCorrect: false },
+                    { hi: "घोड़े के रोग (Horse Diseases)", en: "Horse Diseases", isCorrect: false },
+                    { hi: "घोड़े का आहार (Horse Feed)", en: "Horse Feed", isCorrect: false }
+                ],
+                hint: "यह घोड़े के दौड़ने या चलने की शैलियाँ हैं।",
+                rationale: "Trop, Canter, और Gallop घोड़े की चाल (गैत/Gait) के विभिन्न प्रकार हैं।"
+            },
+            {
+                id: 15, page: 1,
+                qHi: "घोड़े के शरीर रचना के संदर्भ में निम्नलिखित में से कौन सा कथन सही है?",
+                qEn: "Which of the following statements is correct regarding horse anatomy?",
+                options: [
+                    { hi: "घोड़े की स्कैपुला में Glenoid notch अनुपस्थित होती है तथा कुल 200 हड्डियाँ होती हैं।", en: "Glenoid notch is absent in scapula and total bones are 200.", isCorrect: true },
+                    { hi: "घोड़े में कुल 206 हड्डियाँ होती हैं तथा 12 Thoracic कशेरूकाएँ होती हैं।", en: "Total bones 206 and 12 Thoracic vertebrae.", isCorrect: false },
+                    { hi: "घोड़े के यकृत में 8 lobe होते हैं।", en: "Horse liver has 8 lobes.", isCorrect: false },
+                    { hi: "घोड़े की गर्दन के बाल Mane नहीं कहलाते।", en: "Mane is not horse neck hair.", isCorrect: false }
+                ],
+                hint: "घोड़े में हड्डियों की कुल संख्या 200 होती है और स्कैपुला में नोच अनुपस्थित होती है।",
+                rationale: "घोड़े में स्कैपुला में Glenoid notch अनुपस्थित होती है, कुल हड्डियाँ 200, Thoracic कशेरूकाएँ 18, यकृत में 4,3,5 lobe होते हैं तथा गर्दन के लम्बे बाल Mane कहलाते हैं।"
+            },
+
+            // ================= PAGE 2 (Image 2) - 20 Questions =================
+            {
+                id: 16, page: 2,
+                qHi: "घोड़े में सामान्य श्वसन दर (प्रति मिनट) कितनी होती है?",
+                qEn: "What is the normal respiration rate (per minute) in a horse?",
+                options: [
+                    { hi: "8 - 12 प्रति मिनट", en: "8 - 12 per minute", isCorrect: true },
+                    { hi: "15 - 25 प्रति मिनट", en: "15 - 25 per minute", isCorrect: false },
+                    { hi: "35 - 42 प्रति मिनट", en: "35 - 42 per minute", isCorrect: false },
+                    { hi: "2 - 5 प्रति मिनट", en: "2 - 5 per minute", isCorrect: false }
+                ],
+                hint: "यह 10 के आसपास की एक छोटी सीमा है।",
+                rationale: "घोड़े में सामान्य श्वसन दर 8 से 12 प्रति मिनट होती है।"
+            },
+            {
+                id: 17, page: 2,
+                qHi: "घोड़े में नाड़ी दर (Pulse rate) प्रति मिनट कितनी होती है?",
+                qEn: "What is the pulse rate (per minute) in a horse?",
+                options: [
+                    { hi: "35 - 42 प्रति मिनट", en: "35 - 42 per minute", isCorrect: true },
+                    { hi: "8 - 12 प्रति मिनट", en: "8 - 12 per minute", isCorrect: false },
+                    { hi: "60 - 80 प्रति मिनट", en: "60 - 80 per minute", isCorrect: false },
+                    { hi: "100 - 120 प्रति मिनट", en: "100 - 120 per minute", isCorrect: false }
+                ],
+                hint: "यह 35 से 42 के मध्य होती है।",
+                rationale: "घोड़े में सामान्य नाड़ी दर (Pulse Rate) 35 से 42 प्रति मिनट होती है।"
+            },
+            {
+                id: 18, page: 2,
+                qHi: "घोड़े का सामान्य शारीरिक तापमान कितना होता है?",
+                qEn: "What is the normal body temperature of a horse?",
+                options: [
+                    { hi: "100.5 °F", en: "100.5 °F", isCorrect: true },
+                    { hi: "98.6 °F", en: "98.6 °F", isCorrect: false },
+                    { hi: "102.5 °F", en: "102.5 °F", isCorrect: false },
+                    { hi: "105.0 °F", en: "105.0 °F", isCorrect: false }
+                ],
+                hint: "यह 100 डिग्री फारेनहाइट से थोड़ा अधिक है।",
+                rationale: "घोड़े का सामान्य तापमान 100.5 °F (फारेनहाइट) होता है।"
+            },
+            {
+                id: 19, page: 2,
+                qHi: "काठियावाड़ी घोड़े की नस्ल की उत्पत्ति कहाँ से मानी जाती है?",
+                qEn: "What is the place of origin of the Kathiawari horse breed?",
+                options: [
+                    { hi: "काठियावाड़ (गुजरात)", en: "Kathiawar (Gujarat)", isCorrect: true },
+                    { hi: "मारवाड़ (राजस्थान)", en: "Marwar (Rajasthan)", isCorrect: false },
+                    { hi: "सिक्किम व दार्जिलिंग", en: "Sikkim & Darjeeling", isCorrect: false },
+                    { hi: "लद्दाख", en: "Ladakh", isCorrect: false }
+                ],
+                hint: "यह गुजरात राज्य के एक प्रायद्वीपीय क्षेत्र के नाम पर है।",
+                rationale: "काठियावाड़ी नस्ल की उत्पत्ति काठियावाड़ (गुजरात) क्षेत्र से मानी जाती है।"
+            },
+            {
+                id: 20, page: 2,
+                qHi: "मणिपुरी घोड़े का उत्पत्ति स्थान कौन सा राज्य है?",
+                qEn: "Which state is the origin place of the Manipuri horse?",
+                options: [
+                    { hi: "मणिपुर", en: "Manipur", isCorrect: true },
+                    { hi: "हिमाचल प्रदेश", en: "Himachal Pradesh", isCorrect: false },
+                    { hi: "गुजरात", en: "Gujarat", isCorrect: false },
+                    { hi: "राजस्थान", en: "Rajasthan", isCorrect: false }
+                ],
+                hint: "यह पूर्वोत्तर भारत का एक राज्य है जो इसके नाम में शामिल है।",
+                rationale: "मणिपुरी घोड़े का उत्पत्ति स्थान मणिपुर राज्य है।"
+            },
+            {
+                id: 21, page: 2,
+                qHi: "मारवाड़ी नस्ल के घोड़े का उत्पत्ति क्षेत्र कौन सा है?",
+                qEn: "Which region is the native origin of the Marwari horse breed?",
+                options: [
+                    { hi: "मारवाड़ (राजस्थान)", en: "Marwar (Rajasthan)", isCorrect: true },
+                    { hi: "कच्छ (गुजरात)", en: "Kutch (Gujarat)", isCorrect: false },
+                    { hi: "लद्दाख", en: "Ladakh", isCorrect: false },
+                    { hi: "हिमाचल प्रदेश", en: "Himachal Pradesh", isCorrect: false }
+                ],
+                hint: "राजस्थान का पश्चिमी क्षेत्र।",
+                rationale: "मारवाड़ी घोड़े की उत्पत्ति मारवाड़ (राजस्थान) क्षेत्र से है।"
+            },
+            {
+                id: 22, page: 2,
+                qHi: "भूटिया घोड़े की नस्ल का उत्पत्ति क्षेत्र कौन सा है?",
+                qEn: "What is the origin area of the Bhutia horse breed?",
+                options: [
+                    { hi: "सिक्किम व दार्जिलिंग", en: "Sikkim & Darjeeling", isCorrect: true },
+                    { hi: "लद्दाख", en: "Ladakh", isCorrect: false },
+                    { hi: "हिमाचल प्रदेश", en: "Himachal Pradesh", isCorrect: false },
+                    { hi: "कच्छ (गुजरात)", en: "Kutch (Gujarat)", isCorrect: false }
+                ],
+                hint: "पूर्वी हिमालय क्षेत्र (सिक्किम और पश्चिम बंगाल का पर्वतीय भाग)।",
+                rationale: "भूटिया नस्ल का उत्पत्ति क्षेत्र सिक्किम व दार्जिलिंग है।"
+            },
+            {
+                id: 23, page: 2,
+                qHi: "जंसकारी (Zanskari) घोड़े का उत्पत्ति क्षेत्र कहाँ है?",
+                qEn: "Where is the origin place of Zanskari horse breed?",
+                options: [
+                    { hi: "लद्दाख", en: "Ladakh", isCorrect: true },
+                    { hi: "हिमाचल प्रदेश", en: "Himachal Pradesh", isCorrect: false },
+                    { hi: "मणिपुर", en: "Manipur", isCorrect: false },
+                    { hi: "राजस्थान", en: "Rajasthan", isCorrect: false }
+                ],
+                hint: "यह केंद्र शासित प्रदेश हिमालयी शीत मरुस्थल क्षेत्र में है।",
+                rationale: "जंसकारी नस्ल का उत्पत्ति क्षेत्र लद्दाख (जांस्कर घाटी) है।"
+            },
+            {
+                id: 24, page: 2,
+                qHi: "स्पीति (Spiti) नस्ल के घोड़े मुख्य रूप से कहाँ पाए जाते हैं?",
+                qEn: "Spiti breed horses are mainly found in which state?",
+                options: [
+                    { hi: "हिमाचल प्रदेश", en: "Himachal Pradesh", isCorrect: true },
+                    { hi: "लद्दाख", en: "Ladakh", isCorrect: false },
+                    { hi: "सिक्किम", en: "Sikkim", isCorrect: false },
+                    { hi: "गुजरात", en: "Gujarat", isCorrect: false }
+                ],
+                hint: "स्पीति घाटी किस राज्य में स्थित है?",
+                rationale: "स्पीति नस्ल के घोड़े का उत्पत्ति क्षेत्र हिमाचल प्रदेश है।"
+            },
+            {
+                id: 25, page: 2,
+                qHi: "कच्छी सिंधी (Kacchi Sindhi) घोड़े का उत्पत्ति क्षेत्र कौन सा माना जाता है?",
+                qEn: "What is the origin place of Kacchi Sindhi horse breed?",
+                options: [
+                    { hi: "कच्छ (गुजरात), जैसलमेर, बाड़मेर (राज.)", en: "Kutch (Gujarat), Jaisalmer, Barmer (Raj.)", isCorrect: true },
+                    { hi: "लद्दाख व स्पीति", en: "Ladakh & Spiti", isCorrect: false },
+                    { hi: "मणिपुर व असम", en: "Manipur & Assam", isCorrect: false },
+                    { hi: "हरियाणा व पंजाब", en: "Haryana & Punjab", isCorrect: false }
+                ],
+                hint: "गुजरात के कच्छ और राजस्थान के सीमावर्ती जिले।",
+                rationale: "कच्छी सिंधी नस्ल की उत्पत्ति कच्छ (गुजरात), जैसलमेर व बाड़मेर (राजस्थान) क्षेत्र से है।"
+            },
+            {
+                id: 26, page: 2,
+                qHi: "घोड़े की सबसे बलिष्ठ तथा सबसे सुंदर नस्ल कौन सी मानी जाती है?",
+                qEn: "Which horse breed is considered the strongest and most beautiful in India?",
+                options: [
+                    { hi: "काठियावाड़ी (Kathiawari)", en: "Kathiawari", isCorrect: true },
+                    { hi: "मारवाड़ी (Marwari)", en: "Marwari", isCorrect: false },
+                    { hi: "मणिपुरी (Manipuri)", en: "Manipuri", isCorrect: false },
+                    { hi: "स्पीति (Spiti)", en: "Spiti", isCorrect: false }
+                ],
+                hint: "गुजरात के काठियावाड़ क्षेत्र की प्रसिद्ध सर्वोत्तम नस्ल।",
+                rationale: "घोड़े की सबसे बलिष्ठ (strongest) तथा सबसे सुंदर नस्ल काठियावाड़ी मानी जाती है।"
+            },
+            {
+                id: 27, page: 2,
+                qHi: "घोड़े की सबसे बुद्धिमान नस्ल कौन सी है, जिसका उपयोग पोलो खेल एवं मिलिट्री में किया जाता है?",
+                qEn: "Which is the smartest horse breed used in Polo and Military?",
+                options: [
+                    { hi: "मणिपुरी (Manipuri)", en: "Manipuri", isCorrect: true },
+                    { hi: "काठियावाड़ी (Kathiawari)", en: "Kathiawari", isCorrect: false },
+                    { hi: "थारोब्रैड (Thoroughbred)", en: "Thoroughbred", isCorrect: false },
+                    { hi: "मालानी (Malani)", en: "Malani", isCorrect: false }
+                ],
+                hint: "पोलो खेल की उत्पत्ति का संबंध भारत के पूर्वोत्तर राज्य मणिपुर से है।",
+                rationale: "मणिपुरी नस्ल घोड़े की सबसे बुद्धिमान नस्ल है जिसे पोलो खेल और भारतीय सेना (मिलिट्री) द्वारा उपयोग में लाया जाता है।"
+            },
+            {
+                id: 28, page: 2,
+                qHi: "कलाबाजियां दिखाने के लिए कौन सा घोड़ा प्रसिद्ध है?",
+                qEn: "Which horse is famous for performing acrobatics?",
+                options: [
+                    { hi: "मालानी घोड़ा (Malani Horse)", en: "Malani Horse", isCorrect: true },
+                    { hi: "मणिपुरी घोड़ा (Manipuri Horse)", en: "Manipuri Horse", isCorrect: false },
+                    { hi: "थारोब्रैड (Thoroughbred)", en: "Thoroughbred", isCorrect: false },
+                    { hi: "भूटिया (Bhutia)", en: "Bhutia", isCorrect: false }
+                ],
+                hint: "इसे 'मालानी' नस्ल कहा जाता है।",
+                rationale: "कलाबाजियां दिखाने के लिए मालानी घोड़ा प्रसिद्ध है।"
+            },
+            {
+                id: 29, page: 2,
+                qHi: "इंग्लैंड में पाई जाने वाली घोड़े की प्रसिद्ध नस्ल कौन सी है?",
+                qEn: "Which is the famous horse breed found/originating in England?",
+                options: [
+                    { hi: "थारोब्रैड (Thoroughbred)", en: "Thoroughbred", isCorrect: true },
+                    { hi: "काठियावाड़ी (Kathiawari)", en: "Kathiawari", isCorrect: false },
+                    { hi: "मणिपुरी (Manipuri)", en: "Manipuri", isCorrect: false },
+                    { hi: "मारवाड़ी (Marwari)", en: "Marwari", isCorrect: false }
+                ],
+                hint: "विश्व प्रसिद्ध रेसिंग हॉर्स ब्रीड।",
+                rationale: "इंग्लैंड में पाई जाने वाली घोड़े की प्रसिद्ध नस्ल थारोब्रैड (Thoroughbred) है।"
+            },
+            {
+                id: 30, page: 2,
+                qHi: "नर घोड़े (Stallion) और घोड़ी (Mare) में दाँतों की संख्या क्रमशः कितनी होती है?",
+                qEn: "What is the number of teeth in male horse (stallion) and female horse (mare) respectively?",
+                options: [
+                    { hi: "नर में 40 तथा घोड़ी में 36", en: "40 in male and 36 in female", isCorrect: true },
+                    { hi: "नर में 36 तथा घोड़ी में 40", en: "36 in male and 40 in female", isCorrect: false },
+                    { hi: "दोनों में 32", en: "32 in both", isCorrect: false },
+                    { hi: "दोनों में 40", en: "40 in both", isCorrect: false }
+                ],
+                hint: "नर घोड़े में कैनाइन (Canine) दाँत होने के कारण 4 दाँत अधिक होते हैं।",
+                rationale: "घोड़े (नर) में दाँतों की संख्या 40 पाई जाती है जबकि घोड़ी (मादा) में दाँतों की संख्या 36 होती है।"
+            },
+            {
+                id: 31, page: 2,
+                qHi: "भारत में आधिकारिक रूप से घोड़ों की कितनी नस्लें मान्यता प्राप्त / पाई जाती हैं?",
+                qEn: "How many indigenous breeds of horse are officially recognized/found in India?",
+                options: [
+                    { hi: "7", en: "7", isCorrect: true },
+                    { hi: "10", en: "10", isCorrect: false },
+                    { hi: "5", en: "5", isCorrect: false },
+                    { hi: "12", en: "12", isCorrect: false }
+                ],
+                hint: "तालिका में काठियावाड़ी से कच्छी सिंधी तक दी गई संख्या।",
+                rationale: "भारत में घोड़ों की कुल 7 देसी नस्लें (काठियावाड़ी, मणिपुरी, मारवाड़ी, भूटिया, जंसकारी, स्पीति, कच्छी सिंधी) पाई जाती हैं।"
+            },
+            {
+                id: 32, page: 2,
+                qHi: "घोड़ी में मदचक्र (Estrus cycle) तथा मदकाल (Estrus duration) की लम्बाई क्रमशः कितनी होती है?",
+                qEn: "What is the duration of Estrus Cycle and Estrus Period in a mare respectively?",
+                options: [
+                    { hi: "मदचक्र 21 दिन तथा मदकाल 6 दिन", en: "Estrus Cycle 21 days & Estrus period 6 days", isCorrect: true },
+                    { hi: "मदचक्र 14 दिन तथा मदकाल 2 दिन", en: "Estrus Cycle 14 days & Estrus period 2 days", isCorrect: false },
+                    { hi: "मदचक्र 28 दिन तथा मदकाल 10 दिन", en: "Estrus Cycle 28 days & Estrus period 10 days", isCorrect: false },
+                    { hi: "मदचक्र 30 दिन तथा मदकाल 1 दिन", en: "Estrus Cycle 30 days & Estrus period 1 day", isCorrect: false }
+                ],
+                hint: "मदचक्र सामान्यतः 3 सप्ताह (21 दिन) का होता है।",
+                rationale: "घोड़ी में मदचक्र की लम्बाई 21 दिन तथा मदकाल (गर्भाधान अवधि अनुकूलता) की लम्बाई 6 दिन होती है।"
+            },
+            {
+                id: 33, page: 2,
+                qHi: "घोड़ी में गर्भ परीक्षण की प्रमुख विधि कौन सी है?",
+                qEn: "Which is the main Pregnancy Detection Method used in mares?",
+                options: [
+                    { hi: "Cuboni-Test A-Z Test", en: "Cuboni-Test A-Z Test", isCorrect: true },
+                    { hi: "Strip cup test", en: "Strip cup test", isCorrect: false },
+                    { hi: "Methylene blue test", en: "Methylene blue test", isCorrect: false },
+                    { hi: "Widal test", en: "Widal test", isCorrect: false }
+                ],
+                hint: "यह मूत्र में एस्ट्रोजन की उपस्थिति जांचने का परीक्षण है।",
+                rationale: "घोड़ी में गर्भ परीक्षण की विधियाँ Cuboni-Test A-Z Test हैं।"
+            },
+            {
+                id: 34, page: 2,
+                qHi: "घोड़ी में कृत्रिम गर्भाधान (Artificial Insemination) की कौन सी विधि प्रयोग की जाती है?",
+                qEn: "Which method is used for Artificial Insemination in mares?",
+                options: [
+                    { hi: "वेजाइनल विधि (Vaginal Method)", en: "Vaginal Method", isCorrect: true },
+                    { hi: "रेक्टो-वैजाइनल विधि (Recto-vaginal method)", en: "Recto-vaginal method", isCorrect: false },
+                    { hi: "सर्वाइकल विधि (Cervical method)", en: "Cervical method", isCorrect: false },
+                    { hi: "लैप्रोस्कोपिक विधि (Laparoscopic method)", en: "Laparoscopic method", isCorrect: false }
+                ],
+                hint: "गायों में रेक्टो-वैजाइनल होती है, घोड़ी में वैजाइनल विधि।",
+                rationale: "घोड़ी में कृत्रिम गर्भाधान (A.I.) की मुख्य विधि वैजाइनल विधि (Vaginal Method) है।"
+            },
+            {
+                id: 35, page: 2,
+                qHi: "घोड़ी में अण्डाशय (Ovary) की आकृति कैसी होती है और घोड़े में किस प्रकार के खुर पाए जाते हैं?",
+                qEn: "What is the shape of ovary in mare and what type of hooves do horses have?",
+                options: [
+                    { hi: "अण्डाशय सेम के बीज के आकार का तथा खुर अविभाजित (Solid/Undivided hoof) होते हैं।", en: "Ovary bean-shaped & hooves undivided", isCorrect: true },
+                    { hi: "अण्डाशय गोल तथा खुर विभाजित (Cloven) होते हैं।", en: "Ovary round & hooves cloven", isCorrect: false },
+                    { hi: "अण्डाशय नासपाती के आकार का तथा खुर 4 भागों में बटे होते हैं।", en: "Ovary pear-shaped & hooves 4-part", isCorrect: false },
+                    { hi: "अण्डाशय चपटा तथा खुर नहीं होते।", en: "Ovary flat & no hooves", isCorrect: false }
+                ],
+                hint: "सेम (Bean) की आकृति और बिना कटे-फटे खुर।",
+                rationale: "घोड़ी में अण्डाशय की आकृति सेम के बीज (Bean shape) जैसी होती है और घोड़े में अविभाजित खुर (Solid undivided hooves) पाए जाते हैं। घोड़ी में 2 थन होते हैं और घोड़ा 36 लीटर पानी पीता है।"
+            },
+
+            // ================= PAGE 3 (Image 3) - 25 Questions =================
+            {
+                id: 36, page: 3,
+                qHi: "पशु आहार में कौन-कौन से आवश्यक पोषक तत्व शामिल होते हैं?",
+                qEn: "Which essential nutrients are included in animal feed?",
+                options: [
+                    { hi: "कार्बोहाइड्रेट, प्रोटीन, वसा, खनिज लवण, विटामिन व पानी", en: "Carbohydrates, protein, fat, minerals, vitamins & water", isCorrect: true },
+                    { hi: "केवल कार्बोहाइड्रेट व प्रोटीन", en: "Only carbohydrates & protein", isCorrect: false },
+                    { hi: "केवल वसा व जल", en: "Only fat & water", isCorrect: false },
+                    { hi: "केवल खनिज और विटामिन", en: "Only minerals and vitamins", isCorrect: false }
+                ],
+                hint: "इसमें सभी छह प्रमुख पोषक वर्ग शामिल हैं।",
+                rationale: "पशु आहार में आवश्यक पदार्थ जैसे कार्बोहाइड्रेट, प्रोटीन, वसा, खनिज लवण, विटामिन व पानी शामिल होते हैं।"
+            },
+            {
+                id: 37, page: 3,
+                qHi: "पशु आहार में दाने का कितना प्रतिशत भाग खनिज लवण (Mineral Mixture) के रूप में खिलाना चाहिए?",
+                qEn: "What percentage of concentrate feed should consist of mineral salts/mixture?",
+                options: [
+                    { hi: "1 प्रतिशत", en: "1 percent", isCorrect: true },
+                    { hi: "5 प्रतिशत", en: "5 percent", isCorrect: false },
+                    { hi: "10 प्रतिशत", en: "10 percent", isCorrect: false },
+                    { hi: "0.1 प्रतिशत", en: "0.1 percent", isCorrect: false }
+                ],
+                hint: "सौ भाग दाने में केवल एक भाग।",
+                rationale: "पशु आहार में दाने का 1 प्रतिशत खनिज लवण पशुओं को खिलाना चाहिए।"
+            },
+            {
+                id: 38, page: 3,
+                qHi: "देशी गाय के लिए कुल शुष्क पदार्थ (Dry Matter) की आवश्यकता प्रति 100 कि.ग्रा. शरीर भार पर कितनी होती है?",
+                qEn: "What is the daily Dry Matter requirement for Desi Cow per 100 kg body weight?",
+                options: [
+                    { hi: "2 - 2.5 Kg", en: "2 - 2.5 Kg", isCorrect: true },
+                    { hi: "2.5 Kg", en: "2.5 Kg", isCorrect: false },
+                    { hi: "4 - 5 Kg", en: "4 - 5 Kg", isCorrect: false },
+                    { hi: "1 Kg", en: "1 Kg", isCorrect: false }
+                ],
+                hint: "दो से ढाई किलोग्राम।",
+                rationale: "देशी गाय के लिए कुल शुष्क पदार्थ की आवश्यकता 2 - 2.5 Kg प्रति 100 Kg body weight है।"
+            },
+            {
+                id: 39, page: 3,
+                qHi: "भैंस या संकर (Crossbred) गाय के लिए शुष्क पदार्थ की आवश्यकता प्रति 100 कि.ग्रा. शरीर भार पर कितनी है?",
+                qEn: "What is the Dry Matter requirement for Buffalo/Crossbred cow per 100 kg body weight?",
+                options: [
+                    { hi: "2.5 Kg", en: "2.5 Kg", isCorrect: true },
+                    { hi: "2.0 Kg", en: "2.0 Kg", isCorrect: false },
+                    { hi: "3.5 Kg", en: "3.5 Kg", isCorrect: false },
+                    { hi: "1.5 Kg", en: "1.5 Kg", isCorrect: false }
+                ],
+                hint: "देशी गाय से थोड़ी अधिक, सटीक 2.5 किग्रा।",
+                rationale: "भैंस/संकर गाय के लिए शुष्क पदार्थ आवश्यकता 2.5 Kg per 100 Kg body weight है।"
+            },
+            {
+                id: 40, page: 3,
+                qHi: "जीवन निर्वाह आहार (Maintenance Ration) के रूप में देशी गाय को कितना भूसा व दाना दिया जाता है?",
+                qEn: "For maintenance ration, how much straw and concentrate is given to a Desi Cow?",
+                options: [
+                    { hi: "4 Kg भूसा + 1 Kg दाना", en: "4 Kg straw + 1 Kg concentrate", isCorrect: true },
+                    { hi: "4-6 Kg भूसा + 2 Kg दाना", en: "4-6 Kg straw + 2 Kg concentrate", isCorrect: false },
+                    { hi: "2 Kg भूसा + 1 Kg दाना", en: "2 Kg straw + 1 Kg concentrate", isCorrect: false },
+                    { hi: "5 Kg भूसा + 3 Kg दाना", en: "5 Kg straw + 3 Kg concentrate", isCorrect: false }
+                ],
+                hint: "चार किलो सूखा चारा और एक किलो दाना।",
+                rationale: "देशी गाय को जीवन निर्वाह हेतु 4 Kg भूसा + 1 Kg दाना दिया जाता है।"
+            },
+            {
+                id: 41, page: 3,
+                qHi: "जीवन निर्वाह के लिए भैंस या संकर गाय को प्रति दिन कितना भूसा और दाना चाहिए?",
+                qEn: "How much straw and concentrate is required for maintenance of Buffalo/Crossbred cow?",
+                options: [
+                    { hi: "4-6 Kg भूसा + 2 Kg दाना", en: "4-6 Kg straw + 2 Kg concentrate", isCorrect: true },
+                    { hi: "4 Kg भूसा + 1 Kg दाना", en: "4 Kg straw + 1 Kg concentrate", isCorrect: false },
+                    { hi: "8 Kg भूसा + 3 Kg दाना", en: "8 Kg straw + 3 Kg concentrate", isCorrect: false },
+                    { hi: "2 Kg भूसा + 0.5 Kg दाना", en: "2 Kg straw + 0.5 Kg concentrate", isCorrect: false }
+                ],
+                hint: "चार से छह किलो भूसा और दो किलो दाना।",
+                rationale: "भैंस/संकर गाय के जीवन निर्वाह हेतु 4-6 Kg भूसा + 2 Kg दाना दिया जाता है।"
+            },
+            {
+                id: 42, page: 3,
+                qHi: "उत्पादन राशन में देशी गाय को कितने दूध उत्पादन पर 1 कि.ग्रा. दाना दिया जाता है?",
+                qEn: "In production ration, 1 kg concentrate is given for how much milk yield in Desi Cow?",
+                options: [
+                    { hi: "प्रत्येक 2.5 लीटर दूध उत्पादन पर", en: "Every 2.5 liters milk yield", isCorrect: true },
+                    { hi: "प्रत्येक 2 लीटर दूध उत्पादन पर", en: "Every 2 liters milk yield", isCorrect: false },
+                    { hi: "प्रत्येक 3 लीटर दूध उत्पादन पर", en: "Every 3 liters milk yield", isCorrect: false },
+                    { hi: "प्रत्येक 1 लीटर दूध उत्पादन पर", en: "Every 1 liter milk yield", isCorrect: false }
+                ],
+                hint: "ढाई लीटर दूध पर 1 किग्रा दाना।",
+                rationale: "उत्पादन राशन के तहत देशी गाय को 1 Kg दाना प्रति 2.5 लीटर दूध उत्पादन पर दिया जाता है।"
+            },
+            {
+                id: 43, page: 3,
+                qHi: "उत्पादन राशन में भैंस/संकर गाय को 1 कि.ग्रा. दाना कितने दूध उत्पादन पर दिया जाता है?",
+                qEn: "In production ration, 1 kg concentrate is given for how much milk yield in Buffalo/Crossbred cow?",
+                options: [
+                    { hi: "प्रत्येक 2 लीटर दूध उत्पादन पर", en: "Every 2 liters milk yield", isCorrect: true },
+                    { hi: "प्रत्येक 2.5 लीटर दूध उत्पादन पर", en: "Every 2.5 liters milk yield", isCorrect: false },
+                    { hi: "प्रत्येक 4 लीटर दूध उत्पादन पर", en: "Every 4 liters milk yield", isCorrect: false },
+                    { hi: "प्रत्येक 1.5 लीटर दूध उत्पादन पर", en: "Every 1.5 liters milk yield", isCorrect: false }
+                ],
+                hint: "दो लीटर दूध पर 1 किग्रा दाना।",
+                rationale: "भैंस/संकर गाय को उत्पादन राशन हेतु 1 Kg दाना प्रति 2 लीटर दूध उत्पादन पर दिया जाता है।"
+            },
+            {
+                id: 44, page: 3,
+                qHi: "गर्भावस्था राशन (Pregnancy Ration) के तहत देशी गाय को कितना अतिरिक्त दाना दिया जाता है?",
+                qEn: "How much extra concentrate is given to Desi Cow as pregnancy ration?",
+                options: [
+                    { hi: "1.25 Kg दाना", en: "1.25 Kg concentrate", isCorrect: true },
+                    { hi: "1.75 Kg दाना", en: "1.75 Kg concentrate", isCorrect: false },
+                    { hi: "2.50 Kg दाना", en: "2.50 Kg concentrate", isCorrect: false },
+                    { hi: "0.50 Kg दाना", en: "0.50 Kg concentrate", isCorrect: false }
+                ],
+                hint: "सव्वा किलोग्राम (1.25 kg)।",
+                rationale: "गर्भावस्था राशन में देशी गाय को 1.25 Kg दाना दिया जाता है।"
+            },
+            {
+                id: 45, page: 3,
+                qHi: "गर्भावस्था राशन में भैंस या संकर गाय को कितना अतिरिक्त दाना दिया जाता है?",
+                qEn: "How much extra concentrate is given to Buffalo/Crossbred cow as pregnancy ration?",
+                options: [
+                    { hi: "1.75 Kg दाना", en: "1.75 Kg concentrate", isCorrect: true },
+                    { hi: "1.25 Kg दाना", en: "1.25 Kg concentrate", isCorrect: false },
+                    { hi: "3.00 Kg दाना", en: "3.00 Kg concentrate", isCorrect: false },
+                    { hi: "2.00 Kg दाना", en: "2.00 Kg concentrate", isCorrect: false }
+                ],
+                hint: "पौने दो किलोग्राम (1.75 kg)।",
+                rationale: "गर्भावस्था राशन के रूप में भैंस/संकर गाय को 1.75 Kg दाना दिया जाता है।"
+            },
+            {
+                id: 46, page: 3,
+                qHi: "हल्का कार्य करने वाले बैल (Working Bull) को प्रतिदिन कितना दाना दिया जाता है?",
+                qEn: "How much daily concentrate is given to a bull doing light work?",
+                options: [
+                    { hi: "1 से 1.5 कि.ग्रा. प्रतिदिन", en: "1 to 1.5 kg per day", isCorrect: true },
+                    { hi: "2 से 2.5 कि.ग्रा. प्रतिदिन", en: "2 to 2.5 kg per day", isCorrect: false },
+                    { hi: "3 से 4.0 कि.ग्रा. प्रतिदिन", en: "3 to 4.0 kg per day", isCorrect: false },
+                    { hi: "कोई दाना नहीं", en: "No concentrate", isCorrect: false }
+                ],
+                hint: "1 से 1.5 किग्रा।",
+                rationale: "हल्का कार्य करने वाले बैल का आहार 1 से 1.5 कि.ग्रा. दाना प्रतिदिन है।"
+            },
+            {
+                id: 47, page: 3,
+                qHi: "मध्यम कार्य करने वाले बैल को प्रतिदिन कितना दाना मिलना चाहिए?",
+                qEn: "How much daily concentrate should be fed to a bull doing medium work?",
+                options: [
+                    { hi: "2 से 2.5 कि.ग्रा. प्रतिदिन", en: "2 to 2.5 kg per day", isCorrect: true },
+                    { hi: "1 से 1.5 कि.ग्रा. प्रतिदिन", en: "1 to 1.5 kg per day", isCorrect: false },
+                    { hi: "3 से 4.0 कि.ग्रा. प्रतिदिन", en: "3 to 4.0 kg per day", isCorrect: false },
+                    { hi: "5 कि.ग्रा. प्रतिदिन", en: "5 kg per day", isCorrect: false }
+                ],
+                hint: "2 से 2.5 किग्रा।",
+                rationale: "मध्यम कार्य करने वाले बैल के लिए 2 से 2.5 कि.ग्रा. दाना प्रतिदिन निर्धारित है।"
+            },
+            {
+                id: 48, page: 3,
+                qHi: "भारी कार्य करने वाले बैल (Heavy work bull) के लिए प्रतिदिन कितना दाना प्रस्तावित है?",
+                qEn: "How much daily concentrate is recommended for a bull doing heavy work?",
+                options: [
+                    { hi: "3 से 4.0 कि.ग्रा. प्रतिदिन", en: "3 to 4.0 kg per day", isCorrect: true },
+                    { hi: "2 से 2.5 कि.ग्रा. प्रतिदिन", en: "2 to 2.5 kg per day", isCorrect: false },
+                    { hi: "1 से 1.5 कि.ग्रा. प्रतिदिन", en: "1 to 1.5 kg per day", isCorrect: false },
+                    { hi: "6 कि.ग्रा. प्रतिदिन", en: "6 kg per day", isCorrect: false }
+                ],
+                hint: "3 से 4 किलोग्राम।",
+                rationale: "भारी कार्य करने वाले बैल का आहार 3 से 4.0 कि.ग्रा. दाना प्रतिदिन होता है।"
+            },
+            {
+                id: 49, page: 3,
+                qHi: "गर्भवती गाय को शरीर भार का कितने प्रतिशत शुष्क पदार्थ चारे/दाने के रूप में देना चाहिए?",
+                qEn: "What percentage of body weight as Dry Matter should be given to pregnant cows?",
+                options: [
+                    { hi: "2-2.5 प्रतिशत", en: "2-2.5 percent", isCorrect: true },
+                    { hi: "5 प्रतिशत", en: "5 percent", isCorrect: false },
+                    { hi: "1-1.5 प्रतिशत", en: "1-1.5 percent", isCorrect: false },
+                    { hi: "4 प्रतिशत", en: "4 percent", isCorrect: false }
+                ],
+                hint: "नोट के अनुसार 2 से 2.5%।",
+                rationale: "गर्भवती गाय को शरीर भार का 2-2.5 प्रतिशत शुष्क पदार्थ चारे/दाने के रूप में देना चाहिए।"
+            },
+            {
+                id: 50, page: 3,
+                qHi: "15 कि.ग्रा. दूध देने वाली गाय को अदलहनी और दलहनी चारे का अनुपात कितना खिलाना चाहिए?",
+                qEn: "For a cow giving 15 kg milk, what ratio of non-legume to legume fodder should be fed?",
+                options: [
+                    { hi: "2/3 भाग अदलहनी व 1/3 भाग दलहनी चारा", en: "2/3 non-legume & 1/3 legume fodder", isCorrect: true },
+                    { hi: "1/2 भाग अदलहनी व 1/2 भाग दलहनी चारा", en: "1/2 non-legume & 1/2 legume fodder", isCorrect: false },
+                    { hi: "1/3 भाग अदलहनी व 2/3 भाग दलहनी चारा", en: "1/3 non-legume & 2/3 legume fodder", isCorrect: false },
+                    { hi: "केवल दलहनी चारा", en: "Only legume fodder", isCorrect: false }
+                ],
+                hint: "दो-तिहाई गैर-दलहनी और एक-तिहाई दलहनी।",
+                rationale: "15 कि.ग्रा. दूध देने वाली गाय को 2/3 भाग अदलहनी व 1/3 भाग दलहनी चारा खिलाना चाहिए।"
+            },
+            {
+                id: 51, page: 3,
+                qHi: "5 कि.ग्रा. तक दूध देने वाली दुधारू गाय के लिए आदर्श हरा व सूखा चारा प्रबंधन क्या है?",
+                qEn: "What is the feeding management for a milch cow yielding up to 5 kg milk?",
+                options: [
+                    { hi: "(40-50 Kg) मिश्रित फलीदार व बेफलीदार हरा चारा + 2 Kg सूखा चारा", en: "(40-50 kg) mixed fodder + 2 kg dry fodder", isCorrect: true },
+                    { hi: "10 Kg सूखा चारा + 5 Kg दाना", en: "10 kg dry fodder + 5 kg concentrate", isCorrect: false },
+                    { hi: "20 Kg हरा चारा + 5 Kg सूखा चारा", en: "20 kg green + 5 kg dry fodder", isCorrect: false },
+                    { hi: "केवल 5 Kg दाना", en: "Only 5 kg concentrate", isCorrect: false }
+                ],
+                hint: "40-50 किग्रा मिश्रित चारा तथा 2 किग्रा सूखा चारा पेट भर खिलाएं।",
+                rationale: "5 कि.ग्रा. तक दूध देने वाली दुधारू गाय को भरपेट (40-50 kg) मिश्रित फलीदार व बेफलीदार हरा चारा तथा 2 kg सूखा चारा खिलाना चाहिए।"
+            },
+            {
+                id: 52, page: 3,
+                qHi: "5 कि.ग्रा. से अधिक दूध देने वाली गाय को अतिरिक्त रूप से कितना प्रोटीन युक्त दाना दिया जाता है?",
+                qEn: "What protein content concentrate is fed additionally to cows giving >5 kg milk?",
+                options: [
+                    { hi: "14-15 प्रतिशत प्रोटीन युक्त दाना", en: "14-15 percent protein enriched concentrate", isCorrect: true },
+                    { hi: "5-10 प्रतिशत प्रोटीन युक्त दाना", en: "5-10 percent protein concentrate", isCorrect: false },
+                    { hi: "25-30 प्रतिशत प्रोटीन युक्त दाना", en: "25-30 percent protein concentrate", isCorrect: false },
+                    { hi: "बिना प्रोटीन का दाना", en: "Non-protein concentrate", isCorrect: false }
+                ],
+                hint: "14 से 15 प्रतिशत।",
+                rationale: "5 कि.ग्रा. से अधिक दूध देने वाली गाय को अतिरिक्त 14-15 प्रतिशत प्रोटीन युक्त दाना खिलाया जाता है।"
+            },
+            {
+                id: 53, page: 3,
+                qHi: "हरे चारे को संरक्षित (Preserve) करने की दो प्रमुख विधियाँ कौन सी हैं?",
+                qEn: "What are the two main methods of preserving green fodder?",
+                options: [
+                    { hi: "1) साइलेज बनाना 2) 'हे' बनाना", en: "1) Silage making 2) Hay making", isCorrect: true },
+                    { hi: "1) उबालना 2) जमाना", en: "1) Boiling 2) Freezing", isCorrect: false },
+                    { hi: "1) पीसना 2) भिगोना", en: "1) Grinding 2) Soaking", isCorrect: false },
+                    { hi: "1) यूरीया उपचार 2) रासायनिक छिड़काव", en: "1) Urea treatment 2) Chemical spray", isCorrect: false }
+                ],
+                hint: "साइलेज (Silage) और हे (Hay)।",
+                rationale: "हरे चारे को संरक्षित करने की दो विधियाँ: 1) साइलेज बनाना 2) 'हे' (Hay) बनाना।"
+            },
+            {
+                id: 54, page: 3,
+                qHi: "साइलेज किस प्रक्रिया द्वारा हरे चारे को लम्बे समय तक संरक्षित रखने का तरीका है?",
+                qEn: "By which process does silage preserve green fodder for a long time?",
+                options: [
+                    { hi: "अवायवीय किण्वन (Anaerobic Fermentation)", en: "Anaerobic Fermentation", isCorrect: true },
+                    { hi: "वायवीय किण्वन (Aerobic Fermentation)", en: "Aerobic Fermentation", isCorrect: false },
+                    { hi: "सूर्य के प्रकाश में सुखाकर", en: "Sun drying", isCorrect: false },
+                    { hi: "पाश्चुरीकरण (Pasteurization)", en: "Pasteurization", isCorrect: false }
+                ],
+                hint: "ऑक्सीजन की अनुपस्थिति में होने वाला किण्वन।",
+                rationale: "साइलेज अवायवीय किण्वन (Anaerobic fermentation) द्वारा हरे चारे को लम्बे समय तक संरक्षित रखने की विधि है।"
+            },
+            {
+                id: 55, page: 3,
+                qHi: "साइलेज बनाने के लिए प्रयुक्त हरे चारे में नमी (Moisture) की मात्रा कितनी होनी चाहिए?",
+                qEn: "What should be the moisture percentage in green fodder used for making silage?",
+                options: [
+                    { hi: "60 - 70%", en: "60 - 70%", isCorrect: true },
+                    { hi: "12 - 14%", en: "12 - 14%", isCorrect: false },
+                    { hi: "30 - 40%", en: "30 - 40%", isCorrect: false },
+                    { hi: "85 - 90%", en: "85 - 90%", isCorrect: false }
+                ],
+                hint: "60 से 70 प्रतिशत।",
+                rationale: "साइलेज बनाने हेतु हरे चारे में नमी की मात्रा 60-70% होनी चाहिए।"
+            },
+            {
+                id: 56, page: 3,
+                qHi: "साइलेज बनाने के लिए किस फसल का पौधा सबसे अच्छा माना जाता है?",
+                qEn: "Which crop plant is considered best for making silage?",
+                options: [
+                    { hi: "मक्का (Maize)", en: "Maize (Zea Mays)", isCorrect: true },
+                    { hi: "जई (Oat)", en: "Oats (Avena Sativa)", isCorrect: false },
+                    { hi: "बरसीम (Berseem)", en: "Berseem", isCorrect: false },
+                    { hi: "नेपियर घास", en: "Napier grass", isCorrect: false }
+                ],
+                hint: "जिसमें कार्बोहाइड्रेट/शर्करा की मात्रा अधिक और तना मोटा होता है (मक्का)।",
+                rationale: "साइलेज बनाने के लिए मक्का (Maize) का पौधा सबसे अच्छा माना जाता है।"
+            },
+            {
+                id: 57, page: 3,
+                qHi: "साइलेज बनाने में प्रयुक्त गड्ढों, नालियों या बुर्ज को क्या कहा जाता है और यह कितने प्रकार के होते हैं?",
+                qEn: "What are the pits/structures used for silage called, and how many types are there?",
+                options: [
+                    { hi: "साइलो (Silo) - 3 प्रकार के", en: "Silo - 3 types", isCorrect: true },
+                    { hi: "साइलो (Silo) - 5 प्रकार के", en: "Silo - 5 types", isCorrect: false },
+                    { hi: "हैंगर - 2 प्रकार के", en: "Hangar - 2 types", isCorrect: false },
+                    { hi: "गोदाम - 4 प्रकार के", en: "Godown - 4 types", isCorrect: false }
+                ],
+                hint: "इसे 'साइलो' कहते हैं, जो 3 प्रकार के होते हैं।",
+                rationale: "साइलेज बनाने वाले गढ्ढों/बुर्ज को साइलो (Silo) कहते हैं। ये 3 प्रकार के होते हैं: साइलो बुर्ज, साइलो खाई, और साइलो गर्त।"
+            },
+            {
+                id: 58, page: 3,
+                qHi: "साइलो बुर्ज (Silo tower) के आकार के संबंध में कौन सी माप सही है?",
+                qEn: "Which dimensions are correct for a Silo Tower?",
+                options: [
+                    { hi: "8'-10' व्यास वाले व 20'-22' ऊँचे", en: "8'-10' diameter & 20'-22' height", isCorrect: true },
+                    { hi: "8' गहरी व 7'-8' चौड़ी", en: "8' deep & 7'-8' wide", isCorrect: false },
+                    { hi: "8' x 5' x 4' आकार", en: "8' x 5' x 4' size", isCorrect: false },
+                    { hi: "15'-20' व्यास व 50' ऊँचे", en: "15'-20' diameter & 50' height", isCorrect: false }
+                ],
+                hint: "यह जमीन के ऊपर बनाया जाने वाला 20-22 फीट ऊँचा ढांचा है।",
+                rationale: "साइलो बुर्ज (Silo tower) जमीन के ऊपर बनाए जाते हैं, जो 8'-10' व्यास वाले तथा 20'-22' ऊँचे होते हैं।"
+            },
+            {
+                id: 59, page: 3,
+                qHi: "साइलो खाई (Silo trench) तथा साइलो गर्त (Silo pit) की माप क्या होती है?",
+                qEn: "What are the dimensions of Silo Trench and Silo Pit respectively?",
+                options: [
+                    { hi: "खाई: 8' गहरी व 7'-8' चौड़ी; गर्त: 8' x 5' x 4' आकार", en: "Trench: 8' deep & 7'-8' wide; Pit: 8' x 5' x 4'", isCorrect: true },
+                    { hi: "खाई: 20' ऊँची; गर्त: 10' x 10' आकार", en: "Trench: 20' high; Pit: 10' x 10'", isCorrect: false },
+                    { hi: "खाई: 12' चौड़ी; गर्त: 2' x 2' x 2' आकार", en: "Trench: 12' wide; Pit: 2' x 2' x 2'", isCorrect: false },
+                    { hi: "दोनों 8'-10' व्यास के गोल गढ्ढे हैं", en: "Both 8'-10' round pits", isCorrect: false }
+                ],
+                hint: "खाई भूमि के नीचे 8 फीट गहरी और गर्त 8'x5'x4' आकार का होता है।",
+                rationale: "साइलो खाई (Silo trench) भूमि के नीचे 8' गहरी व 7'-8' चौड़ी तथा साइलो गर्त (Silo pit) 8' x 5' x 4' आकार का गोल या चौकोर गड्ढा होता है।"
+            },
+            {
+                id: 60, page: 3,
+                qHi: "'हे' (Hay) बनाने की प्रक्रिया क्या है तथा इसमें नमी की मात्रा कितनी होती है?",
+                qEn: "What is Hay making process and what is its moisture content?",
+                options: [
+                    { hi: "सूर्य के प्रकाश में सुखाया चारा; नमी 12-14%", en: "Sun dried fodder; moisture 12-14%", isCorrect: true },
+                    { hi: "अवायवीय किण्वन द्वारा; नमी 60-70%", en: "Anaerobic fermented; moisture 60-70%", isCorrect: false },
+                    { hi: "उबालकर सुखाया; नमी 5%", en: "Boiled and dried; moisture 5%", isCorrect: false },
+                    { hi: "छाया में सुखाया; नमी 30-40%", en: "Shade dried; moisture 30-40%", isCorrect: false }
+                ],
+                hint: "सूर्य के प्रकाश में सुखाया गया सूखा चारा, नमी केवल 12-14%।",
+                rationale: "'हे' (Hay) सूर्य के प्रकाश में सुखाया हुआ चारा कहलाता है। इसमें नमी की मात्रा 12-14% होती है। 'जई' फसल से 'हे' चारा तैयार किया जाता है।"
+            },
+
+            // ================= PAGE 4 (Image 4) - 10 Questions =================
+            {
+                id: 61, page: 4,
+                qHi: "'हे' (Hay) की मूल परिभाषा क्या है?",
+                qEn: "What is the basic definition of 'Hay'?",
+                options: [
+                    { hi: "सूर्य के प्रकाश में सुखाया हुआ चारा", en: "Fodder dried in sunlight", isCorrect: true },
+                    { hi: "अवायवीय किण्वन द्वारा हरे चारे को संरक्षित करने की विधि", en: "Method of preserving green fodder by anaerobic fermentation", isCorrect: false },
+                    { hi: "यूरिया से उपचारित सूखा भूसा", en: "Urea treated dry straw", isCorrect: false },
+                    { hi: "उबला हुआ हरा चारा", en: "Boiled green fodder", isCorrect: false }
+                ],
+                hint: "यह सूर्य की धूप में सुखाकर बनाया जाता है।",
+                rationale: "'हे' (Hay) की परिभाषा: सूर्य के प्रकाश में सुखाया हुआ चारा 'हे' कहलाता है।"
+            },
+            {
+                id: 62, page: 4,
+                qHi: "साइलेज (Silage) की मूल परिभाषा क्या है?",
+                qEn: "What is the basic definition of 'Silage'?",
+                options: [
+                    { hi: "अवायवीय किण्वन द्वारा हरे चारे को लंबे समय तक संरक्षित रखने का तरीका", en: "Method of preserving green fodder for long time by anaerobic fermentation", isCorrect: true },
+                    { hi: "सूर्य की धूप में सुखाया गया हरा चारा", en: "Green fodder dried in sunlight", isCorrect: false },
+                    { hi: "दाने और खल का मिश्रण", en: "Mix of concentrate and oilcake", isCorrect: false },
+                    { hi: "पेड़ की सूखी पत्तियाँ", en: "Dry leaves of trees", isCorrect: false }
+                ],
+                hint: "यह बिना हवा (अवायवीय) किण्वन की प्रक्रिया है।",
+                rationale: "साइलेज: यह अवायवीय किण्वन (Anaerobic fermentation) द्वारा हरे चारे को लंबे समय तक संरक्षित रखने का तरीका है।"
+            },
+            {
+                id: 63, page: 4,
+                qHi: "'हे' (Hay) में नमी की मात्रा (Moisture percentage) कितनी होती है?",
+                qEn: "What is the percentage of moisture content in 'Hay'?",
+                options: [
+                    { hi: "12-14%", en: "12-14%", isCorrect: true },
+                    { hi: "60-70%", en: "60-70%", isCorrect: false },
+                    { hi: "25-30%", en: "25-30%", isCorrect: false },
+                    { hi: "5-8%", en: "5-8%", isCorrect: false }
+                ],
+                hint: "12 से 14 प्रतिशत।",
+                rationale: "'हे' में नमी की मात्रा 12-14% होती है।"
+            },
+            {
+                id: 64, page: 4,
+                qHi: "साइलेज (Silage) में नमी की मात्रा (Moisture percentage) कितनी पाई जाती है?",
+                qEn: "What is the percentage of moisture content in 'Silage'?",
+                options: [
+                    { hi: "60-70%", en: "60-70%", isCorrect: true },
+                    { hi: "12-14%", en: "12-14%", isCorrect: false },
+                    { hi: "80-90%", en: "80-90%", isCorrect: false },
+                    { hi: "40-45%", en: "40-45%", isCorrect: false }
+                ],
+                hint: "60 से 70 प्रतिशत।",
+                rationale: "साइलेज में नमी की मात्रा 60-70% होती है।"
+            },
+            {
+                id: 65, page: 4,
+                qHi: "'हे' (Hay) बनाने के लिए सर्वोत्तम फसल कौन सी है?",
+                qEn: "Which crop is considered best for making 'Hay'?",
+                options: [
+                    { hi: "जई (Avena Sativa)", en: "Oat (Avena Sativa)", isCorrect: true },
+                    { hi: "मक्का (Zea Mays)", en: "Maize (Zea Mays)", isCorrect: false },
+                    { hi: "ज्वार (Sorghum)", en: "Sorghum", isCorrect: false },
+                    { hi: "बाजरा (Pearl Millet)", en: "Pearl Millet", isCorrect: false }
+                ],
+                hint: "इसका वैज्ञानिक नाम Avena sativa है।",
+                rationale: "'हे' बनाने के लिए सर्वोत्तम फसल जई (Avena Sativa) है।"
+            },
+            {
+                id: 66, page: 4,
+                qHi: "साइलेज (Silage) बनाने के लिए सर्वोत्तम फसल कौन सी मानी जाती है?",
+                qEn: "Which crop is best suited for making 'Silage'?",
+                options: [
+                    { hi: "मक्का (Zea Mays)", en: "Maize (Zea Mays)", isCorrect: true },
+                    { hi: "जई (Avena Sativa)", en: "Oat (Avena Sativa)", isCorrect: false },
+                    { hi: "चना (Cicer arietinum)", en: "Gram", isCorrect: false },
+                    { hi: "गेहूँ (Triticum aestivum)", en: "Wheat", isCorrect: false }
+                ],
+                hint: "इसका वैज्ञानिक नाम Zea Mays है।",
+                rationale: "साइलेज बनाने के लिए सर्वोत्तम फसल मक्का (Zea Mays) है।"
+            },
+            {
+                id: 67, page: 4,
+                qHi: "'हे' बनाने के लिए किस प्रकार के तने व पत्तियों वाले पौधों का चयन किया जाता है?",
+                qEn: "What type of plant stem and leaves are selected for Hay making?",
+                options: [
+                    { hi: "पतला तना व ज्यादा पत्तियाँ", en: "Thin stem and more leaves", isCorrect: true },
+                    { hi: "मोटा तना व कम पत्तियाँ", en: "Thick stem and fewer leaves", isCorrect: false },
+                    { hi: "बिना पत्तियों वाला तना", en: "Stem without leaves", isCorrect: false },
+                    { hi: "केवल जड़ें", en: "Only roots", isCorrect: false }
+                ],
+                hint: "पतला तना आसानी से सूखता है।",
+                rationale: "'हे' बनाने के लिए पतला तना व ज्यादा पत्तियों वाले पौधों का चयन किया जाता है।"
+            },
+            {
+                id: 68, page: 4,
+                qHi: "साइलेज बनाने के लिए किस प्रकार के तने और पत्तियों वाले पौधों की आवश्यकता होती है?",
+                qEn: "What type of plant stem and leaves are required for Silage making?",
+                options: [
+                    { hi: "मोटा तना व पत्तियाँ कम", en: "Thick stem and fewer leaves", isCorrect: true },
+                    { hi: "पतला तना व ज्यादा पत्तियाँ", en: "Thin stem and more leaves", isCorrect: false },
+                    { hi: "केवल फूल वाले पौधे", en: "Only flowering plants", isCorrect: false },
+                    { hi: "झाड़ीदार पौधे", en: "Bushy plants", isCorrect: false }
+                ],
+                hint: "मक्का जैसा मोटा तना।",
+                rationale: "साइलेज बनाने के लिए मोटा तना व कम पत्तियों वाले पौधों का चयन किया जाता है।"
+            },
+            {
+                id: 69, page: 4,
+                qHi: "'हे' (Hay) बनाने हेतु फसल काटने का सबसे उचित समय कौन सा है?",
+                qEn: "What is the ideal harvest stage of crop for making 'Hay'?",
+                options: [
+                    { hi: "पुष्प अवस्था (Flowering stage)", en: "Flowering stage", isCorrect: true },
+                    { hi: "पुष्प अवस्था से दुग्ध अवस्था के मध्य", en: "Between flowering and milk stage", isCorrect: false },
+                    { hi: "फसल के पूरी तरह पक जाने पर", en: "Full maturity stage", isCorrect: false },
+                    { hi: "अंकुरण के तुरंत बाद", en: "Just after germination", isCorrect: false }
+                ],
+                hint: "जब पौधे में फूल (Flower) आ रहे हों।",
+                rationale: "'हे' बनाने के लिए फसल काटने का सही/उचित समय पुष्प अवस्था (Flowering stage) है।"
+            },
+            {
+                id: 70, page: 4,
+                qHi: "साइलेज (Silage) बनाने हेतु फसल काटने का सबसे उपयुक्त समय कौन सा होता है?",
+                qEn: "What is the most suitable crop harvest stage for Silage making?",
+                options: [
+                    { hi: "पुष्प अवस्था से दुग्ध अवस्था के मध्य", en: "Between flowering stage to milk stage", isCorrect: true },
+                    { hi: "केवल पुष्प अवस्था", en: "Only flowering stage", isCorrect: false },
+                    { hi: "दाना कटाई के समय", en: "Grain harvest stage", isCorrect: false },
+                    { hi: "बीज रोपण के समय", en: "Seed sowing stage", isCorrect: false }
+                ],
+                hint: "फूल आने से लेकर दाने में दूध पड़ने (Dough/Milk stage) के बीच का समय।",
+                rationale: "साइलेज बनाने के लिए फसल काटने का उचित समय 'पुष्प अवस्था से दुग्ध अवस्था के मध्य' (Between flowering to milk stage) होता है।"
+            }
+        ];
+
+        // State variables
+        let currentIndex = 0;
+        let userAnswers = new Array(questionsData.length).fill(null);
+
+        // DOM elements
+        const qNumberEl = document.getElementById('q-number');
+        const pageTagEl = document.getElementById('page-tag');
+        const sourceBadgeEl = document.getElementById('source-badge');
+        const qHiEl = document.getElementById('q-text-hi');
+        const qEnEl = document.getElementById('q-text-en');
+        const optionsContainer = document.getElementById('options-container');
+        const hintBtn = document.getElementById('hint-btn');
+        const hintBox = document.getElementById('hint-box');
+        const hintText = document.getElementById('hint-text');
+        const explanationBox = document.getElementById('explanation-box');
+        const explanationText = document.getElementById('explanation-text');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const liveScoreEl = document.getElementById('live-score');
+        const answeredCountEl = document.getElementById('answered-count');
+        const progressBar = document.getElementById('progress-bar');
+        const paletteGrid = document.getElementById('palette-grid');
+
+        // Initialize Palette
+        function initPalette() {
+            paletteGrid.innerHTML = '';
+            for (let i = 0; i < questionsData.length; i++) {
+                const btn = document.createElement('button');
+                btn.id = `palette-btn-${i}`;
+                btn.className = `w-7 h-7 text-xs font-bold rounded flex items-center justify-center border transition ${getPaletteBtnBg(i)}`;
+                btn.innerText = i + 1;
+                btn.onclick = () => {
+                    currentIndex = i;
+                    renderQuestion();
+                };
+                paletteGrid.appendChild(btn);
+            }
+        }
+
+        function getPaletteBtnBg(index) {
+            if (index === currentIndex) {
+                return 'border-indigo-600 bg-indigo-100 text-indigo-800 ring-2 ring-indigo-400';
+            }
+            if (userAnswers[index] !== null) {
+                return userAnswers[index].isCorrect 
+                    ? 'bg-emerald-500 text-white border-emerald-600' 
+                    : 'bg-rose-500 text-white border-rose-600';
+            }
+            return 'bg-slate-100 text-slate-700 border-slate-300 hover:bg-slate-200';
+        }
+
+        function updatePalette() {
+            for (let i = 0; i < questionsData.length; i++) {
+                const btn = document.getElementById(`palette-btn-${i}`);
+                if (btn) {
+                    btn.className = `w-7 h-7 text-xs font-bold rounded flex items-center justify-center border transition ${getPaletteBtnBg(i)}`;
+                }
+            }
+        }
+
+        // Render current question
+        function renderQuestion() {
+            const q = questionsData[currentIndex];
+
+            // Header info
+            qNumberEl.innerText = currentIndex + 1;
+            pageTagEl.innerText = `Page ${q.page}`;
+            sourceBadgeEl.innerText = `Source Material: Page ${q.page} (${getPageDescription(q.page)})`;
+
+            // Question texts
+            qHiEl.innerText = `${q.id}. ${q.qHi}`;
+            qEnEl.innerText = q.qEn;
+
+            // Hint reset
+            hintBox.classList.add('hidden');
+            hintText.innerText = q.hint;
+            document.getElementById('hint-toggle-text').innerText = "Show Hint / संकेत देखें";
+
+            // Rationale reset
+            explanationBox.classList.add('hidden');
+            explanationText.innerText = q.rationale;
+
+            // Options rendering
+            optionsContainer.innerHTML = '';
+            const labels = ['A', 'B', 'C', 'D'];
+            const isAnswered = userAnswers[currentIndex] !== null;
+
+            q.options.forEach((opt, idx) => {
+                const optBtn = document.createElement('button');
+                optBtn.className = `option-card w-full text-left p-3.5 rounded-xl border-2 flex items-start space-x-3 text-sm transition ${getOptionStyle(idx, isAnswered)}`;
+                optBtn.disabled = isAnswered;
+                optBtn.onclick = () => selectOption(idx);
+
+                optBtn.innerHTML = `
+                    <span class="font-bold bg-slate-200 text-slate-700 rounded-lg w-6 h-6 flex items-center justify-center flex-shrink-0 text-xs mt-0.5">${labels[idx]}</span>
+                    <div class="flex-grow">
+                        <p class="font-semibold text-slate-800">${opt.hi}</p>
+                        <p class="text-xs text-slate-500 italic mt-0.5">${opt.en}</p>
+                    </div>
+                `;
+                optionsContainer.appendChild(optBtn);
+            });
+
+            if (isAnswered) {
+                explanationBox.classList.remove('hidden');
+            }
+
+            // Navigation status
+            prevBtn.disabled = currentIndex === 0;
+            nextBtn.innerText = currentIndex === questionsData.length - 1 ? "Finish" : "Next";
+            nextBtn.innerHTML = currentIndex === questionsData.length - 1 
+                ? 'Finish <i class="fa-solid fa-check ml-1"></i>' 
+                : 'Next <i class="fa-solid fa-chevron-right ml-1"></i>';
+
+            updateStats();
+            updatePalette();
+        }
+
+        function getPageDescription(page) {
+            switch(page) {
+                case 1: return "Horse Taxonomy, Stats & Haryana Facts";
+                case 2: return "Respiration, Pulse, Breeds & Anatomy";
+                case 3: return "Animal Feed Rations & Silage/Hay";
+                case 4: return "Hay vs Silage Comparison Table";
+                default: return "";
+            }
+        }
+
+        function getOptionStyle(optIdx, isAnswered) {
+            if (!isAnswered) {
+                return "border-slate-200 hover:border-indigo-400 bg-white hover:bg-slate-50";
+            }
+            const q = questionsData[currentIndex];
+            const selectedOpt = userAnswers[currentIndex].selectedIdx;
+
+            if (q.options[optIdx].isCorrect) {
+                return "border-emerald-500 bg-emerald-50 text-emerald-900 font-medium";
+            }
+            if (optIdx === selectedOpt && !q.options[optIdx].isCorrect) {
+                return "border-rose-500 bg-rose-50 text-rose-900 font-medium";
+            }
+            return "border-slate-200 bg-slate-50 opacity-60";
+        }
+
+        function selectOption(idx) {
+            const q = questionsData[currentIndex];
+            const isCorrect = q.options[idx].isCorrect;
+            userAnswers[currentIndex] = {
+                selectedIdx: idx,
+                isCorrect: isCorrect
+            };
+            renderQuestion();
+        }
+
+        function toggleHint() {
+            const isHidden = hintBox.classList.contains('hidden');
+            if (isHidden) {
+                hintBox.classList.remove('hidden');
+                document.getElementById('hint-toggle-text').innerText = "Hide Hint / संकेत छुपाएं";
+            } else {
+                hintBox.classList.add('hidden');
+                document.getElementById('hint-toggle-text').innerText = "Show Hint / संकेत देखें";
+            }
+        }
+
+        function navigate(dir) {
+            const newIndex = currentIndex + dir;
+            if (newIndex >= 0 && newIndex < questionsData.length) {
+                currentIndex = newIndex;
+                renderQuestion();
+            }
+        }
+
+        function jumpToQuestion() {
+            const val = parseInt(document.getElementById('jump-input').value);
+            if (val >= 1 && val <= questionsData.length) {
+                currentIndex = val - 1;
+                renderQuestion();
+            }
+        }
+
+        function updateStats() {
+            const answered = userAnswers.filter(a => a !== null);
+            const score = answered.filter(a => a.isCorrect).length;
+
+            liveScoreEl.innerText = score;
+            answeredCountEl.innerText = answered.length;
+            
+            const progressPct = (answered.length / questionsData.length) * 100;
+            progressBar.style.width = `${progressPct}%`;
+        }
+
+        // Initialize app on load
+        window.onload = () => {
+            initPalette();
+            renderQuestion();
+        };
+    </script>
+<script src="../../quiz-question-controls.js"></script>
+<script src="../../quiz-app-ui-v2.js"></script></body>
+</html>
+```eof
+
+### Question Distribution Summary
+- **Page 1 (Image 1):** 15 Unique Questions (Q1 to Q15) - Scientific taxonomy, lifespan, Haryana census stats, Pehowa horse trade, body stats, bones, maneuver terms.
+- **Page 2 (Image 2):** 20 Unique Questions (Q16 to Q35) - Respiration, pulse, temperature, all 7 Indian breeds (Kathiawari, Manipuri, Marwari, Bhutia, Zanskari, Spiti, Kacchi Sindhi), Thoroughbred, teeth count, pregnancy tests, AI method.
+- **Page 3 (Image 3):** 25 Unique Questions (Q36 to Q60) - Animal Feed nutrients, mineral %, dry matter requirements, Maintenance/Production/Pregnancy rations, working bull feed, silage/hay concepts, Silo dimensions.
+- **Page 4 (Image 4):** 10 Unique Questions (Q61 to Q70) - Hay vs Silage comparison table (definitions, moisture contents, best crops, stem/leaf preferences, ideal harvesting stage).

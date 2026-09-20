@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blackbook English Vocabulary Mastery Quiz - Letter C (OWS)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        body {
+            background-color: #F0E6FF;
+            color: #30205D;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+        .quiz-card {
+            background-color: #FBF7FF;
+            border: 1px solid #DCCBF2;
+        }
+        .primary-purple {
+            background-color: #6542C8;
+        }
+        .primary-purple-text {
+            color: #6542C8;
+        }
+        .dark-purple-text {
+            color: #30205D;
+        }
+        .muted-text {
+            color: #716782;
+        }
+        .option-btn {
+            background-color: #FBF7FF;
+            border: 1px solid #DCCBF2;
+            transition: all 0.2s ease;
+        }
+        .option-btn:hover {
+            background-color: #F0E5FF;
+            border-color: #7352C9;
+        }
+        .option-selected {
+            background-color: #E9DDF8 !important;
+            border-color: #6542C8 !important;
+            box-shadow: 0 0 0 2px #6542C8;
+        }
+        .option-correct {
+            background-color: #E2F8EC !important;
+            border-color: #28A745 !important;
+            color: #155724 !important;
+        }
+        .option-incorrect {
+            background-color: #FDE8E8 !important;
+            border-color: #DC3545 !important;
+            color: #721C24 !important;
+        }
+        .progress-track {
+            background-color: #DDD9E8;
+        }
+        .header-bg {
+            background-color: #E5D5FA;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-[#E9DDF8] selection:text-[#30205D]">
+
+    <!-- Header -->
+    <header class="header-bg sticky top-0 z-50 shadow-sm border-b border-[#DCCBF2] px-4 py-3">
+        <div class="max-w-4xl mx-auto flex flex-wrap items-center justify-between gap-3">
+            <div>
+                <h1 class="text-lg md:text-xl font-bold dark-purple-text flex items-center gap-2">
+                    <span>✨</span> Blackbook Vocabulary Masterclass (OWS & Roots)
+                </h1>
+                <p class="text-xs muted-text">Exam-Level Practice: SSC, RRB, State Exams (Page 13)</p>
+            </div>
+            <div class="flex items-center gap-3">
+                <div class="bg-white/80 border border-[#DCCBF2] px-3 py-1.5 rounded-full text-xs font-semibold dark-purple-text shadow-xs flex items-center gap-2">
+                    <span>🎯 Score:</span> <span id="score-display" class="primary-purple-text font-bold">0</span> / <span id="total-score-display">0</span>
+                </div>
+                <button id="reset-btn" class="bg-[#6542C8] hover:bg-[#5233A8] text-white px-3 py-1.5 rounded-full text-xs font-medium transition cursor-pointer shadow-xs">
+                    Reset Quiz
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow flex items-center justify-center p-4 md:p-6">
+        <div class="w-full max-w-3xl quiz-card rounded-2xl shadow-lg p-6 md:p-8 relative">
+            
+            <!-- Question Meta Header -->
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+                <div class="flex items-center gap-2">
+                    <span id="question-badge" class="bg-[#E9DDF8] primary-purple-text text-xs font-bold px-2.5 py-1 rounded-md">
+                        Question 1 of 50
+                    </span>
+                    <span id="category-badge" class="bg-white border border-[#DCCBF2] muted-text text-xs px-2.5 py-1 rounded-md">
+                        One Word Substitution
+                    </span>
+                </div>
+                <div id="exam-tag" class="text-xs font-medium text-[#7352C9] bg-[#F0E5FF] px-2 py-0.5 rounded">
+                    SSC / RRB High Yield
+                </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="w-full progress-track h-2 rounded-full mb-6 overflow-hidden">
+                <div id="progress-bar" class="primary-purple h-full transition-all duration-300 w-0"></div>
+            </div>
+
+            <!-- Question Text -->
+            <div class="mb-6">
+                <h2 id="question-text" class="text-lg md:text-xl font-bold dark-purple-text leading-relaxed">
+                    Loading question...
+                </h2>
+            </div>
+
+            <!-- Answer Options Container -->
+            <div id="options-container" class="space-y-3 mb-6">
+                <!-- Dynamically injected option buttons -->
+            </div>
+
+            <!-- Hint Section -->
+            <div class="mb-6">
+                <button id="hint-toggle-btn" class="text-xs font-semibold primary-purple-text hover:underline flex items-center gap-1 cursor-pointer">
+                    💡 Toggle Hint
+                </button>
+                <div id="hint-box" class="hidden mt-2 p-3 bg-[#F0E5FF] border border-[#DCCBF2] rounded-lg text-xs dark-purple-text">
+                    <!-- Hint text -->
+                </div>
+            </div>
+
+            <!-- Explanation / Rationale Box -->
+            <div id="explanation-box" class="hidden mb-6 p-4 rounded-xl border transition-all duration-300">
+                <h4 id="explanation-title" class="font-bold text-sm mb-1 flex items-center gap-1.5">
+                    <span>📖</span> Rationale & Exam Notes
+                </h4>
+                <p id="explanation-text" class="text-xs leading-relaxed"></p>
+            </div>
+
+            <!-- Navigation Controls inside Card -->
+            <div class="flex items-center justify-between pt-4 border-t border-[#DCCBF2]">
+                <button id="prev-btn" class="px-4 py-2 rounded-xl text-xs md:text-sm font-semibold border border-[#DCCBF2] bg-white dark-purple-text hover:bg-[#F0E5FF] disabled:opacity-40 disabled:cursor-not-allowed transition cursor-pointer flex items-center gap-1">
+                    ← Previous
+                </button>
+
+                <!-- Jump to Question -->
+                <div class="hidden sm:flex items-center gap-2">
+                    <span class="text-xs muted-text font-medium">Jump to:</span>
+                    <input type="number" id="jump-input" min="1" max="50" class="w-14 px-2 py-1 text-xs border border-[#DCCBF2] rounded-lg text-center bg-white dark-purple-text focus:outline-none focus:ring-2 focus:ring-[#6542C8]">
+                    <button id="jump-btn" class="px-2.5 py-1 text-xs font-medium primary-purple text-white rounded-lg hover:bg-[#5233A8] transition cursor-pointer">Go</button>
+                </div>
+
+                <button id="next-btn" class="px-4 py-2 rounded-xl text-xs md:text-sm font-semibold primary-purple text-white hover:bg-[#5233A8] transition cursor-pointer flex items-center gap-1">
+                    Next →
+                </button>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Sticky Bottom Navigation Bar -->
+    <nav class="bg-white/90 backdrop-blur-md border-t border-[#DCCBF2] sticky bottom-0 z-40 px-4 py-3 shadow-md">
+        <div class="max-w-3xl mx-auto flex flex-wrap items-center justify-between gap-3 text-xs">
+            <div class="flex items-center gap-2">
+                <button id="bottom-prev" class="px-3 py-1.5 rounded-lg border border-[#DCCBF2] bg-white font-medium hover:bg-[#F0E5FF] disabled:opacity-40 cursor-pointer">
+                    ← Prev
+                </button>
+                <button id="bottom-next" class="px-3 py-1.5 rounded-lg primary-purple text-white font-medium hover:bg-[#5233A8] cursor-pointer">
+                    Next →
+                </button>
+            </div>
+            
+            <div class="flex items-center gap-2 sm:hidden">
+                <span class="muted-text">Q:</span>
+                <input type="number" id="mobile-jump-input" min="1" max="50" class="w-12 px-2 py-1 border border-[#DCCBF2] rounded-lg text-center bg-white">
+                <button id="mobile-jump-btn" class="px-2.5 py-1 primary-purple text-white rounded-lg">Go</button>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <span id="progress-status-text" class="font-semibold dark-purple-text">Question 1 of 50</span>
+                <button id="bottom-reset-btn" class="text-red-600 hover:underline font-medium cursor-pointer">
+                    Reset
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Quiz Logic Script -->
+    <script>
+        // 50 Comprehensive Exam-Level Questions covering Page 13 vocabulary items (Chagrin to Circumstantial)
+        const quizData = [
+            {
+                id: 1,
+                category: "One Word Substitution",
+                exam: "SSC CGL / CHSL",
+                question: "Choose the correct one-word substitution: 'Vexation for humiliation or disappointment.'",
+                options: [
+                    { text: "Chagrin", correct: true },
+                    { text: "Chutzpah", correct: false },
+                    { text: "Churlish", correct: false },
+                    { text: "Chastise", correct: false }
+                ],
+                hint: "It's a noun starting with 'Ch' reflecting annoyance or distress at having failed or been humiliated.",
+                explanation: "Chagrin (N.) means distress or embarrassment at having failed or been humiliated (विफलता, निराशा की वजह से शर्मिंदगी महसूस होना). Example: 'To her chagrin, her name was omitted from the list.'"
+            },
+            {
+                id: 2,
+                category: "Synonym & Meaning",
+                exam: "RRB NTPC",
+                question: "What is the primary meaning of the verb 'Change' in the context of vocabulary substitution?",
+                options: [
+                    { text: "Replacing something with something else", correct: true },
+                    { text: "Running after someone to catch them", correct: false },
+                    { text: "Criticising someone severely", correct: false },
+                    { text: "Reading someone's palm lines", correct: false }
+                ],
+                hint: "Think about substituting an old item with a new one.",
+                explanation: "Change (V.) means replacing something with something else (परिवर्तन). In standard examinations, it represents substitution or alteration."
+            },
+            {
+                id: 3,
+                category: "One Word Substitution",
+                exam: "State PCS",
+                question: "A child who is believed to have been secretly left in exchange for another is known as:",
+                options: [
+                    { text: "Changeling", correct: true },
+                    { text: "Charlatan", correct: false },
+                    { text: "Chauffeur", correct: false },
+                    { text: "Choreographer", correct: false }
+                ],
+                hint: "Rooted in folklore where fairies substituted a human child.",
+                explanation: "Changeling (N.) refers to a child secretly left in exchange for another, commonly found in fairy tales and folklore (बदला हुआ बच्चा)."
+            },
+            {
+                id: 4,
+                category: "One Word Substitution",
+                exam: "SSC MTS",
+                question: "A small building or room used for Christian worship in a school, prison, or large private house is called a:",
+                options: [
+                    { text: "Chapel", correct: true },
+                    { text: "Chasm", correct: false },
+                    { text: "Chassis", correct: false },
+                    { text: "Choir", correct: false }
+                ],
+                hint: "It is smaller than a full church.",
+                explanation: "Chapel (N.) is a small place of worship situated inside larger institutions like schools, prisons, or mansions (छोटा गिरजा घर)."
+            },
+            {
+                id: 5,
+                category: "Vocabulary & Root",
+                exam: "SSC CGL",
+                question: "Select the correct one-word substitution: 'Compelling attractiveness or charm that can inspire or influence others.' (*High Frequency SSC Exam word)",
+                options: [
+                    { text: "Charisma", correct: true },
+                    { text: "Chutzpah", correct: false },
+                    { text: "Churlish", correct: false },
+                    { text: "Chiromancy", correct: false }
+                ],
+                hint: "A magnetic personality trait possessed by great leaders.",
+                explanation: "Charisma (N.) refers to compelling charm or magnetism that inspires devotion in others (आकर्षण). Marked as high frequency in competitive exams."
+            },
+            {
+                id: 6,
+                category: "Adjective Form",
+                exam: "RRB Group D",
+                question: "What is the adjective form describing someone 'exercising a compelling charm which inspires devotion in others'?",
+                options: [
+                    { text: "Charismatic", correct: true },
+                    { text: "Churlish", correct: false },
+                    { text: "Chronic", correct: false },
+                    { text: "Circumstantial", correct: false }
+                ],
+                hint: "Derived directly from 'Charisma'.",
+                explanation: "Charismatic (Adj.) describes a person who possesses charismatic appeal or magnetic charm (आकर्षक)."
+            },
+            {
+                id: 7,
+                category: "One Word Substitution",
+                exam: "SSC CHSL",
+                question: "A person falsely claiming to have special knowledge or skill (a quack or impostor) is termed:",
+                options: [
+                    { text: "Charlatan", correct: true },
+                    { text: "Chauffeur", correct: false },
+                    { text: "Choreographer", correct: false },
+                    { text: "Chronometer", correct: false }
+                ],
+                hint: "Someone who makes fraudulent pretences to medical or professional expertise.",
+                explanation: "Charlatan (N.) is an impostor or quack who pretends to have skills or knowledge they do not possess (ढongi)."
+            },
+            {
+                id: 8,
+                category: "Verb Action",
+                exam: "State Exam",
+                question: "To 'run after in order to catch or catch up with' corresponds to which common English verb?",
+                options: [
+                    { text: "Chase", correct: true },
+                    { text: "Chastise", correct: false },
+                    { text: "Chirp", correct: false },
+                    { text: "Chop", correct: false }
+                ],
+                hint: "Tom and Jerry often do this.",
+                explanation: "Chase (V.) means to pursue or run after someone or something to catch them (पीछा करना)."
+            },
+            {
+                id: 9,
+                category: "One Word Substitution",
+                exam: "SSC CGL",
+                question: "A deep fissure in the earth's surface (abyss or gorge) is known as:",
+                options: [
+                    { text: "Chasm", correct: true },
+                    { text: "Chassis", correct: false },
+                    { text: "Choir", correct: false },
+                    { text: "Chore", correct: false }
+                ],
+                hint: "A gaping gorge or deep crack in the ground.",
+                explanation: "Chasm (N.) denotes a deep fissure, gap, or gorge in the earth's surface or between people (गहरी खाई)."
+            },
+            {
+                id: 10,
+                category: "Technical Vocabulary",
+                exam: "RRB NTPC",
+                question: "The base frame of a car or other wheeled vehicle is called its:",
+                options: [
+                    { text: "Chassis", correct: true },
+                    { text: "Chronometer", correct: false },
+                    { text: "Circumlocution", correct: false },
+                    { text: "Chop", correct: false }
+                ],
+                hint: "The underlying structural skeleton of an automobile.",
+                explanation: "Chassis (N.) is the foundational base frame supporting a motor vehicle or wheeled machine (ढांचा)."
+            },
+            {
+                id: 11,
+                category: "One Word Substitution",
+                exam: "SSC CPO",
+                question: "To criticise someone severely (often formally or with punishment) is to:",
+                options: [
+                    { text: "Chastise", correct: true },
+                    { text: "Chagrin", correct: false },
+                    { text: "Chide", correct: false },
+                    { text: "Charm", correct: false }
+                ],
+                hint: "To reprimand harshly or punish severely.",
+                explanation: "Chastise (V.) means to scold, reprimand, or punish severely (फटकारना)."
+            },
+            {
+                id: 12,
+                category: "One Word Substitution",
+                exam: "SSC CGL",
+                question: "A person employed to drive a private or hired car (*Frequent SSC exam word):",
+                options: [
+                    { text: "Chauffeur", correct: true },
+                    { text: "Charlatan", correct: false },
+                    { text: "Choreographer", correct: false },
+                    { text: "Chronicler", correct: false }
+                ],
+                hint: "A professional driver hired for luxury vehicles.",
+                explanation: "Chauffeur (N.) is a professional driver employed for a private car (मोटर-चालक). Very high exam repetition."
+            },
+            {
+                id: 13,
+                category: "One Word Substitution",
+                exam: "State PSC",
+                question: "Palm reading (the practice of telling fortunes from the lines on the palm of the hand) is called:",
+                options: [
+                    { text: "Chiromancy", correct: true },
+                    { text: "Chronology", correct: false },
+                    { text: "Circumlocution", correct: false },
+                    { text: "Chutzpah", correct: false }
+                ],
+                hint: "Also known as palmistry; starts with 'Ch'.",
+                explanation: "Chiromancy (N.) is palm reading or palmistry (हस्तरेखा विद्या)."
+            },
+            {
+                id: 14,
+                category: "One Word Substitution",
+                exam: "SSC CHSL",
+                question: "A group of singers in a church (*Important Exam Term):",
+                options: [
+                    { text: "Choir", correct: true },
+                    { text: "Chapel", correct: false },
+                    { text: "Crew", correct: false },
+                    { text: "Crowd", correct: false }
+                ],
+                hint: "They sing hymns during religious services.",
+                explanation: "Choir (N.) refers to an organized group of singers, especially performing in a church (गायक-मंडली)."
+            },
+            {
+                id: 15,
+                category: "One Word Substitution",
+                exam: "RRB Group D",
+                question: "A routine task, especially a household one (like washing dishes or cleaning), is known as a:",
+                options: [
+                    { text: "Chore", correct: true },
+                    { text: "Chasm", correct: false },
+                    { text: "Change", correct: false },
+                    { text: "Chase", correct: false }
+                ],
+                hint: "Daily boring housework or duty.",
+                explanation: "Chore (N.) is a routine or boring task, typically domestic or household work (दैनिक काम)."
+            },
+            {
+                id: 16,
+                category: "One Word Substitution",
+                exam: "SSC CGL",
+                question: "One who plans the steps and moves in a dance is called a:",
+                options: [
+                    { text: "Choreographer", correct: true },
+                    { text: "Chauffeur", correct: false },
+                    { text: "Charlatan", correct: false },
+                    { text: "Chronicle", correct: false }
+                ],
+                hint: "Designer of ballet and dance routines.",
+                explanation: "Choreographer (N.) is a person who composes and designs dance sequences (नृत्य-निर्देशक)."
+            },
+            {
+                id: 17,
+                category: "One Word Substitution",
+                exam: "SSC CPO",
+                question: "A disease persisting for a long time or recurring again and again (*High Exam Priority):",
+                options: [
+                    { text: "Chronic", correct: true },
+                    { text: "Churlish", correct: false },
+                    { text: "Acute", correct: false },
+                    { text: "Circumstantial", correct: false }
+                ],
+                hint: "Opposite of acute; long-standing medical condition.",
+                explanation: "Chronic (Adj.) describes a long-lasting, persistent condition or illness (दीर्घ/स्थायी)."
+            },
+            {
+                id: 18,
+                category: "One Word Substitution",
+                exam: "RRB NTPC",
+                question: "A factual written account of important or historical events in the order of their occurrence is a:",
+                options: [
+                    { text: "Chronicle", correct: true },
+                    { text: "Chronology", correct: false },
+                    { text: "Chronometer", correct: false },
+                    { text: "Circumlocution", correct: false }
+                ],
+                hint: "A register of historical records arranged chronologically.",
+                explanation: "Chronicle (N.) is a chronological record of historical events (कालक्रम से अभिलेखन)."
+            },
+            {
+                id: 19,
+                category: "Vocabulary Concept",
+                exam: "SSC CHSL",
+                question: "What does the adjective 'Chronological' mean with respect to events?",
+                options: [
+                    { text: "Arranged in the order of their occurrence", correct: true },
+                    { text: "Occurring suddenly without warning", correct: false },
+                    { text: "Lasting for a very brief moment", correct: false },
+                    { text: "Scattered randomly across time", correct: false }
+                ],
+                hint: "From earliest to latest in time sequence.",
+                explanation: "Chronological (Adj.) means arranged in the order of time in which events happened (तिथिविद्यमानुसार / कालक्रम)."
+            },
+            {
+                id: 20,
+                category: "One Word Substitution",
+                exam: "State PCS",
+                question: "An arrangement of events or dates in the order of their occurrence (*Exam Starred Item):",
+                options: [
+                    { text: "Chronology", correct: true },
+                    { text: "Chronicle", correct: false },
+                    { text: "Chronometer", correct: false },
+                    { text: "Chasm", correct: false }
+                ],
+                hint: "The science or study of computing time or ordering dates.",
+                explanation: "Chronology (N.) is the science or arrangement of events in their proper order of time (कालक्रम)."
+            },
+            {
+                id: 21,
+                category: "One Word Substitution",
+                exam: "SSC CGL",
+                question: "An instrument for measuring time accurately in spite of motion or variations in temperature, humidity, and air pressure:",
+                options: [
+                    { text: "Chronometer", correct: true },
+                    { text: "Barometer", correct: false },
+                    { text: "Thermometer", correct: false },
+                    { text: "Speedometer", correct: false }
+                ],
+                hint: "A high-precision marine timekeeper.",
+                explanation: "Chronometer (N.) is an exceptionally precise time-measuring instrument used in navigation (बिल्कुल ठीक समय बतानेवाली घड़ी)."
+            },
+            {
+                id: 22,
+                category: "One Word Substitution",
+                exam: "RRB Group D",
+                question: "Rude in a mean-spirited and surly way (*Important Adjective):",
+                options: [
+                    { text: "Churlish", correct: true },
+                    { text: "Charismatic", correct: false },
+                    { text: "Chutzpah", correct: false },
+                    { text: "Charming", correct: false }
+                ],
+                hint: "Lacking manners or civility; boorish.",
+                explanation: "Churlish (Adj.) means rude, sullen, and boorish in behavior (अभद्र)."
+            },
+            {
+                id: 23,
+                category: "One Word Substitution",
+                exam: "SSC MTS",
+                question: "Extreme self-confidence or audacity (often bordering on arrogance):",
+                options: [
+                    { text: "Chutzpah", correct: true },
+                    { text: "Chagrin", correct: false },
+                    { text: "Chasm", correct: false },
+                    { text: "Chronology", correct: false }
+                ],
+                hint: "Yiddish word meaning supreme nerve or gall.",
+                explanation: "Chutzpah (N.) refers to audacity, supreme nerve, or shameless gall (दुस्साहस)."
+            },
+            {
+                id: 24,
+                category: "One Word Substitution",
+                exam: "SSC CGL",
+                question: "The use of many words where only a few are necessary (verbosity/roundabout speech) (*Exam Starred Word):",
+                options: [
+                    { text: "Circumlocution", correct: true },
+                    { text: "Circumstantial", correct: false },
+                    { text: "Chronology", correct: false },
+                    { text: "Charlatan", correct: false }
+                ],
+                hint: "Talking in circles instead of getting straight to the point.",
+                explanation: "Circumlocution (N.) means talking around a subject using excessive words (शब्द-बाहुल्य / घुमा-फिराकर बात कहना)."
+            },
+            {
+                id: 25,
+                category: "One Word Substitution",
+                exam: "State Exam",
+                question: "Clues available at a scene of an incident or crime are described as:",
+                options: [
+                    { text: "Circumstantial", correct: true },
+                    { text: "Chronic", correct: false },
+                    { text: "Churlish", correct: false },
+                    { text: "Challenging", correct: false }
+                ],
+                hint: "Pointing indirectly toward a conclusion without proving it directly.",
+                explanation: "Circumstantial (Adj.) means pointing to a conclusion through indirect evidence or clues available at a scene (परिस्थितिक)."
+            },
+            {
+                id: 26,
+                category: "Synonym Quiz",
+                exam: "SSC CGL",
+                question: "Select the closest synonym for 'Chagrin':",
+                options: [
+                    { text: "Annoyance / Embarrassment", correct: true },
+                    { text: "Delight / Joy", correct: false },
+                    { text: "Confidence", correct: false },
+                    { text: "Indifference", correct: false }
+                ],
+                hint: "Feeling frustrated or humiliated.",
+                explanation: "Chagrin is synonymous with annoyance, vexation, and humiliation."
+            },
+            {
+                id: 27,
+                category: "Antonym Quiz",
+                exam: "SSC CHSL",
+                question: "Choose the antonym for 'Churlish':",
+                options: [
+                    { text: "Polite / Courteous", correct: true },
+                    { text: "Surly", correct: false },
+                    { text: "Rude", correct: false },
+                    { text: "Mean-spirited", correct: false }
+                ],
+                hint: "Opposite of rude and surly.",
+                explanation: "Churlish means rude; hence, its antonym is polite, courteous, or gracious."
+            },
+            {
+                id: 28,
+                category: "Synonym Quiz",
+                exam: "RRB NTPC",
+                question: "What is a suitable synonym for 'Charlatan'?",
+                options: [
+                    { text: "Impostor / Quack", correct: true },
+                    { text: "Expert", correct: false },
+                    { text: "Genuine professional", correct: false },
+                    { text: "Leader", correct: false }
+                ],
+                hint: "Someone who fakes professional expertise.",
+                explanation: "A charlatan is an impostor, fake, or quack who pretends to possess skills they lack."
+            },
+            {
+                id: 29,
+                category: "Synonym Quiz",
+                exam: "SSC CPO",
+                question: "Select the synonym for 'Chasm':",
+                options: [
+                    { text: "Abyss / Gorge", correct: true },
+                    { text: "Bridge", correct: false },
+                    { text: "Plateau", correct: false },
+                    { text: "Summit", correct: false }
+                ],
+                hint: "A deep crack or opening in the earth.",
+                explanation: "Chasm means a deep fissure or abyss."
+            },
+            {
+                id: 30,
+                category: "Synonym Quiz",
+                exam: "State PCS",
+                question: "Choose the synonym for 'Chastise':",
+                options: [
+                    { text: "Punish / Reprimand", correct: true },
+                    { text: "Praise", correct: false },
+                    { text: "Reward", correct: false },
+                    { text: "Encourage", correct: false }
+                ],
+                hint: "To scold or punish severely.",
+                explanation: "Chastise means to scold severely or punish."
+            },
+            {
+                id: 31,
+                category: "Root & Usage",
+                exam: "SSC CGL",
+                question: "If a medical condition is described as 'chronic', it implies:",
+                options: [
+                    { text: "It persists for a long time or keeps recurring", correct: true },
+                    { text: "It cures instantly with a pill", correct: false },
+                    { text: "It only happens once in a lifetime", correct: false },
+                    { text: "It is completely painless", correct: false }
+                ],
+                hint: "Think of chronic back pain or asthma.",
+                explanation: "Chronic implies long-standing duration and persistent recurrence."
+            },
+            {
+                id: 32,
+                category: "Synonym Quiz",
+                exam: "RRB Group D",
+                question: "Select the synonym for 'Chutzpah':",
+                options: [
+                    { text: "Audacity / Nerve", correct: true },
+                    { text: "Timidity", correct: false },
+                    { text: "Shyness", correct: false },
+                    { text: "Cowardice", correct: false }
+                ],
+                hint: "Supreme confidence or gall.",
+                explanation: "Chutzpah denotes extreme audacity or nerve."
+            },
+            {
+                id: 33,
+                category: "Synonym Quiz",
+                exam: "SSC MTS",
+                question: "What does 'Circumlocution' mean in writing or speech?",
+                options: [
+                    { text: "Indirect or roundabout speech (using too many words)", correct: true },
+                    { text: "Clear and direct expression", correct: false },
+                    { text: "A brief summary", correct: false },
+                    { text: "Silent communication", correct: false }
+                ],
+                hint: "Beating around the bush with verbose phrasing.",
+                explanation: "Circumlocution is roundabout speech where many words are used instead of being direct."
+            },
+            {
+                id: 34,
+                category: "Contextual Fill-in",
+                exam: "SSC CGL",
+                question: "Complete the sentence: 'The detective gathered all the _______ evidence from the crime scene to build the case.'",
+                options: [
+                    { text: "circumstantial", correct: true },
+                    { text: "churlish", correct: false },
+                    { text: "chronic", correct: false },
+                    { text: "chimeric", correct: false }
+                ],
+                hint: "Clues available at the scene of an incident.",
+                explanation: "Circumstantial evidence refers to indirect clues and circumstances at a scene."
+            },
+            {
+                id: 35,
+                category: "Contextual Fill-in",
+                exam: "SSC CHSL",
+                question: "Complete the sentence: 'Despite facing heavy losses, the team leader refused to let _____ affect his resolve.'",
+                options: [
+                    { text: "chagrin", correct: true },
+                    { text: "chassis", correct: false },
+                    { text: "choir", correct: false },
+                    { text: "chronometer", correct: false }
+                ],
+                hint: "Vexation or humiliation from disappointment.",
+                explanation: "Chagrin fits the context of disappointment and vexation."
+            },
+            {
+                id: 36,
+                category: "One Word Matching",
+                exam: "State PCS",
+                question: "Match the following OWS correctly:\n1. Chiromancy -> Palm reading\n2. Chore -> Household task\n3. Chapel -> Small worship room\nWhich of the above pairs are correct?",
+                options: [
+                    { text: "1, 2, and 3 are all correct", correct: true },
+                    { text: "Only 1 and 2", correct: false },
+                    { text: "Only 2 and 3", correct: false },
+                    { text: "Only 1 and 3", correct: false }
+                ],
+                hint: "Review all three definitions from page 13.",
+                explanation: "All three pairings are accurate according to Blackbook English Vocabulary OWS list."
+            },
+            {
+                id: 37,
+                category: "One Word Matching",
+                exam: "SSC CPO",
+                question: "Match the professional roles with their definitions:\nA. Chauffeur -> Private car driver\nB. Choreographer -> Dance planner\nC. Charlatan -> Fake medical expert\nSelect the correct option:",
+                options: [
+                    { text: "All A, B, and C are correctly matched", correct: true },
+                    { text: "Only A and B", correct: false },
+                    { text: "Only B and C", correct: false },
+                    { text: "None are correct", correct: false }
+                ],
+                hint: "Check chauffeur, choreographer, and charlatan definitions.",
+                explanation: "All matches are precise and frequently asked in SSC exams."
+            },
+            {
+                id: 38,
+                category: "Statement Evaluation",
+                exam: "RRB NTPC",
+                question: "Consider the following statements regarding 'Chronology' and 'Chronicle':\nStatement I: Chronology is the arrangement of events in order of occurrence.\nStatement II: Chronicle is a factual written account of historical events in order of occurrence.\nWhich statement(s) is/are correct?",
+                options: [
+                    { text: "Both Statement I and II are correct", correct: true },
+                    { text: "Only Statement I is correct", correct: false },
+                    { text: "Only Statement II is correct", correct: false },
+                    { text: "Neither Statement I nor II is correct", correct: false }
+                ],
+                hint: "Both terms deal with time-ordered records.",
+                explanation: "Both statements accurately define chronology and chronicle."
+            },
+            {
+                id: 39,
+                category: "Antonym Quiz",
+                exam: "SSC CGL",
+                question: "What is the exact antonym of 'Charismatic'?",
+                options: [
+                    { text: "Uninspiring / Unappealing", correct: true },
+                    { text: "Magnetic", correct: false },
+                    { text: "Attractive", correct: false },
+                    { text: "Fascinating", correct: false }
+                ],
+                hint: "Lacking personal charm or appeal.",
+                explanation: "Charismatic means inspiring charm; its antonym is uninspiring or unappealing."
+            },
+            {
+                id: 40,
+                category: "Synonym Quiz",
+                exam: "SSC MTS",
+                question: "Select the synonym for 'Chore':",
+                options: [
+                    { text: "Task / Duty", correct: true },
+                    { text: "Leisure", correct: false },
+                    { text: "Entertainment", correct: false },
+                    { text: "Relaxation", correct: false }
+                ],
+                hint: "A routine domestic job.",
+                explanation: "A chore is a routine task or duty."
+            },
+            {
+                id: 41,
+                category: "One Word Substitution",
+                exam: "State PCS",
+                question: "What instrument is designed to measure time with extreme accuracy despite motion and environmental changes?",
+                options: [
+                    { text: "Chronometer", correct: true },
+                    { text: "Thermometer", correct: false },
+                    { text: "Seismograph", correct: false },
+                    { text: "Anemometer", correct: false }
+                ],
+                hint: "Used in navigation to determine longitude.",
+                explanation: "Chronometer is the precise timekeeper."
+            },
+            {
+                id: 42,
+                category: "Vocabulary Distinction",
+                exam: "SSC CGL",
+                question: "What is the key difference between a 'Chapel' and a 'Choir'?",
+                options: [
+                    { text: "Chapel is a small building/room for worship; Choir is a group of singers.", correct: true },
+                    { text: "Chapel is a car frame; Choir is a dance planner.", correct: false },
+                    { text: "Chapel is palm reading; Choir is a deep chasm.", correct: false },
+                    { text: "There is no difference.", correct: false }
+                ],
+                hint: "One is a place/room; the other is a singing group.",
+                explanation: "Chapel refers to a worship space, whereas choir refers to vocal singers in a church."
+            },
+            {
+                id: 43,
+                category: "Contextual Usage",
+                exam: "RRB Group D",
+                question: "If someone speaks with 'circumlocution', how are they communicating?",
+                options: [
+                    { text: "Using excessive, roundabout words", correct: true },
+                    { text: "Speaking with extreme brevity", correct: false },
+                    { text: "Speaking in complete silence", correct: false },
+                    { text: "Speaking in foreign languages only", correct: false }
+                ],
+                hint: "Circum = around, locution = speaking.",
+                explanation: "Circumlocution means speaking around the point with too many words."
+            },
+            {
+                id: 44,
+                category: "One Word Substitution",
+                exam: "SSC CHSL",
+                question: "Which term describes a child secretly switched or left in place of another?",
+                options: [
+                    { text: "Changeling", correct: true },
+                    { text: "Chauffeur", correct: false },
+                    { text: "Charlatan", correct: false },
+                    { text: "Churl", correct: false }
+                ],
+                hint: "Folklore baby exchange.",
+                explanation: "Changeling is the traditional term for a substituted child."
+            },
+            {
+                id: 45,
+                category: "Synonym Quiz",
+                exam: "SSC CPO",
+                question: "Select the synonym for 'Chastise':",
+                options: [
+                    { text: "Scold severely / Rebuke", correct: true },
+                    { text: "Compliment", correct: false },
+                    { text: "Applaud", correct: false },
+                    { text: "Embrace", correct: false }
+                ],
+                hint: "Harsh criticism or reprimand.",
+                explanation: "Chastise means to reprimand or rebuke severely."
+            },
+            {
+                id: 46,
+                category: "Vocabulary Review",
+                exam: "State PCS",
+                question: "Which of the following words denotes 'extreme self-confidence or audacity'?",
+                options: [
+                    { text: "Chutzpah", correct: true },
+                    { text: "Chagrin", correct: false },
+                    { text: "Churlishness", correct: false },
+                    { text: "Chronicle", correct: false }
+                ],
+                hint: "Bold nerve or gall.",
+                explanation: "Chutzpah signifies audacity and unyielding nerve."
+            },
+            {
+                id: 47,
+                category: "One Word Substitution",
+                exam: "SSC CGL",
+                question: "Identify the OWS: 'The base frame of a car or other wheeled vehicle.'",
+                options: [
+                    { text: "Chassis", correct: true },
+                    { text: "Chasm", correct: false },
+                    { text: "Chapel", correct: false },
+                    { text: "Choir", correct: false }
+                ],
+                hint: "Automotive structural frame.",
+                explanation: "Chassis is the vehicle's structural frame."
+            },
+            {
+                id: 48,
+                category: "Antonym Quiz",
+                exam: "RRB NTPC",
+                question: "What is the antonym of 'Chronic'?",
+                options: [
+                    { text: "Acute / Temporary", correct: true },
+                    { text: "Long-lasting", correct: false },
+                    { text: "Persistent", correct: false },
+                    { text: "Inveterate", correct: false }
+                ],
+                hint: "Short-term or sudden onset.",
+                explanation: "Chronic means long-term; its opposite is acute or temporary."
+            },
+            {
+                id: 49,
+                category: "Comprehensive Review",
+                exam: "SSC CGL (Expert)",
+                question: "Which of the following groups of words all belong to Letter 'Ch' OWS items from Page 13?",
+                options: [
+                    { text: "Chagrin, Changeling, Charlatan, Chauffeur", correct: true },
+                    { text: "Chagrin, Calculus, Chambers, Chemistry", correct: false },
+                    { text: "Chauffeur, Champion, Chemistry, Chaos", correct: false },
+                    { text: "Chronicle, Celsius, Circuit, Circuitous", correct: false }
+                ],
+                hint: "Check terms directly from the Blackbook page 13 list.",
+                explanation: "All four terms are featured prominently on Blackbook page 13 as standard OWS exam items."
+            },
+            {
+                id: 50,
+                category: "Mastery Check",
+                exam: "Ultimate Exam Test",
+                question: "After mastering all these terms (Chagrin to Circumstantial), what is the primary benefit in competitive exams like SSC and RRB?",
+                options: [
+                    { text: "Zero hesitation in solving OWS, synonyms, and fill-in-the-blanks with complete accuracy", correct: true },
+                    { text: "Memorizing only one definition without context", correct: false },
+                    { text: "Relying on guesswork during the exam", correct: false },
+                    { text: "Needing to revisit the book multiple times", correct: false }
+                ],
+                hint: "Permanent retention and lifetime vocabulary mastery.",
+                explanation: "Thorough practice across varied question types ensures lifetime retention and rock-solid exam confidence."
+            }
+        ];
+
+        let currentIndex = 0;
+        let score = 0;
+        let userAnswers = {}; // stores selected option index per question ID
+
+        // DOM Elements
+        const questionBadge = document.getElementById('question-badge');
+        const categoryBadge = document.getElementById('category-badge');
+        const examTag = document.getElementById('exam-tag');
+        const progressBar = document.getElementById('progress-bar');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const hintToggleBtn = document.getElementById('hint-toggle-btn');
+        const hintBox = document.getElementById('hint-box');
+        const explanationBox = document.getElementById('explanation-box');
+        const explanationText = document.getElementById('explanation-text');
+        const scoreDisplay = document.getElementById('score-display');
+        const totalScoreDisplay = document.getElementById('total-score-display');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const bottomPrev = document.getElementById('bottom-prev');
+        const bottomNext = document.getElementById('bottom-next');
+        const jumpInput = document.getElementById('jump-input');
+        const jumpBtn = document.getElementById('jump-btn');
+        const mobileJumpInput = document.getElementById('mobile-jump-input');
+        const mobileJumpBtn = document.getElementById('mobile-jump-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const bottomResetBtn = document.getElementById('bottom-reset-btn');
+        const progressStatusText = document.getElementById('progress-status-text');
+
+        totalScoreDisplay.textContent = quizData.length;
+        jumpInput.max = quizData.length;
+        mobileJumpInput.max = quizData.length;
+
+        function shuffleArray(array) {
+            let shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        // Shuffle options for each question once upon initialization to ensure random position of correct answer
+        const randomizedQuizData = quizData.map(q => {
+            const shuffledOpts = shuffleArray(q.options);
+            return { ...q, shuffledOptions: shuffledOpts };
+        });
+
+        function loadQuestion(index) {
+            const q = randomizedQuizData[index];
+            currentIndex = index;
+
+            // Update badges & progress
+            questionBadge.textContent = `Question ${index + 1} of ${quizData.length}`;
+            categoryBadge.textContent = q.category;
+            examTag.textContent = q.exam;
+            progressStatusText.textContent = `Question ${index + 1} of ${quizData.length}`;
+            
+            const progressPercent = ((index + 1) / quizData.length) * 100;
+            progressBar.style.width = `${progressPercent}%`;
+
+            questionText.textContent = q.question;
+
+            // Hint setup
+            hintBox.textContent = q.hint;
+            hintBox.classList.add('hidden');
+            hintToggleBtn.textContent = "💡 Toggle Hint";
+
+            // Explanation setup
+            explanationBox.classList.add('hidden');
+
+            // Render options
+            optionsContainer.innerHTML = '';
+            const savedAnswer = userAnswers[q.id];
+
+            q.shuffledOptions.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left p-4 rounded-xl font-medium text-sm md:text-base option-btn flex items-center justify-between cursor-pointer`;
+                
+                const labelSpan = document.createElement('span');
+                labelSpan.textContent = `${String.fromCharCode(65 + idx)}. ${opt.text}`;
+                btn.appendChild(labelSpan);
+
+                if (savedAnswer !== undefined) {
+                    btn.disabled = true;
+                    if (idx === savedAnswer) {
+                        if (opt.correct) {
+                            btn.classList.add('option-correct');
+                            labelSpan.innerHTML += ` ✓ <span class="text-xs font-bold float-right">Correct</span>`;
+                        } else {
+                            btn.classList.add('option-incorrect');
+                            labelSpan.innerHTML += ` ✗ <span class="text-xs font-bold float-right">Your Answer</span>`;
+                        }
+                    } else if (opt.correct) {
+                        btn.classList.add('option-correct');
+                        labelSpan.innerHTML += ` ✓ <span class="text-xs font-bold float-right">Correct Answer</span>`;
+                    }
+                } else {
+                    btn.addEventListener('click', () => selectOption(index, idx, opt.correct, btn));
+                }
+
+                optionsContainer.appendChild(btn);
+            });
+
+            if (savedAnswer !== undefined) {
+                showExplanation(q);
+            }
+
+            // Navigation button states
+            prevBtn.disabled = index === 0;
+            bottomPrev.disabled = index === 0;
+            nextBtn.textContent = index === quizData.length - 1 ? "Finish Quiz 🏁" : "Next →";
+            bottomNext.textContent = index === quizData.length - 1 ? "Finish 🏁" : "Next →";
+
+            jumpInput.value = index + 1;
+            mobileJumpInput.value = index + 1;
+        }
+
+        function selectOption(qIndex, optIdx, isCorrect, btnElement) {
+            const q = randomizedQuizData[qIndex];
+            userAnswers[q.id] = optIdx;
+
+            // Disable all option buttons and highlight
+            const buttons = optionsContainer.querySelectorAll('button');
+            buttons.forEach((b, idx) => {
+                b.disabled = true;
+                const optObj = q.shuffledOptions[idx];
+                if (optObj.correct) {
+                    b.classList.add('option-correct');
+                } else if (idx === optIdx && !isCorrect) {
+                    b.classList.add('option-incorrect');
+                }
+            });
+
+            if (isCorrect) {
+                score++;
+                scoreDisplay.textContent = score;
+            }
+
+            showExplanation(q);
+        }
+
+        function showExplanation(q) {
+            explanationText.textContent = q.explanation;
+            explanationBox.classList.remove('hidden');
+            const hasUserCorrect = q.shuffledOptions[userAnswers[q.id]]?.correct;
+            if (hasUserCorrect) {
+                explanationBox.className = "mb-6 p-4 rounded-xl border bg-[#E2F8EC] border-[#28A745] text-[#155724]";
+                document.getElementById('explanation-title').innerHTML = `<span>✅</span> Correct! Rationale & Exam Notes`;
+            } else {
+                explanationBox.className = "mb-6 p-4 rounded-xl border bg-[#FDE8E8] border-[#DC3545] text-[#721C24]";
+                document.getElementById('explanation-title').innerHTML = `<span>❌</span> Incorrect. Rationale & Exam Notes`;
+            }
+        }
+
+        // Hint Toggle
+        hintToggleBtn.addEventListener('click', () => {
+            hintBox.classList.toggle('hidden');
+            hintToggleBtn.textContent = hintBox.classList.contains('hidden') ? "💡 Toggle Hint" : "💡 Hide Hint";
+        });
+
+        // Navigation Handlers
+        function handleNext() {
+            if (currentIndex < quizData.length - 1) {
+                loadQuestion(currentIndex + 1);
+            } else {
+                alert(`🎉 Quiz Completed! Your final score is ${score} out of ${quizData.length}. Great job mastering your Blackbook Vocabulary!`);
+            }
+        }
+
+        function handlePrev() {
+            if (currentIndex > 0) {
+                loadQuestion(currentIndex - 1);
+            }
+        }
+
+        nextBtn.addEventListener('click', handleNext);
+        bottomNext.addEventListener('click', handleNext);
+        prevBtn.addEventListener('click', handlePrev);
+        bottomPrev.addEventListener('click', handlePrev);
+
+        // Jump Handling
+        function executeJump(inputEl) {
+            const val = parseInt(inputEl.value);
+            if (!isNaN(val) && val >= 1 && val <= quizData.length) {
+                loadQuestion(val - 1);
+            } else {
+                alert(`Please enter a valid question number between 1 and ${quizData.length}.`);
+            }
+        }
+
+        jumpBtn.addEventListener('click', () => executeJump(jumpInput));
+        mobileJumpBtn.addEventListener('click', () => executeJump(mobileJumpInput));
+
+        jumpInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') executeJump(jumpInput);
+        });
+        mobileJumpInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') executeJump(mobileJumpInput);
+        });
+
+        // Reset Quiz
+        function resetQuiz() {
+            if (confirm("Are you sure you want to reset the quiz? All progress and answers will be cleared.")) {
+                score = 0;
+                scoreDisplay.textContent = 0;
+                userAnswers = {};
+                loadQuestion(0);
+            }
+        }
+
+        resetBtn.addEventListener('click', resetQuiz);
+        bottomResetBtn.addEventListener('click', resetQuiz);
+
+        // Keyboard Navigation (Arrow Keys)
+        document.addEventListener('keydown', (e) => {
+            // Do not trigger if user is typing in inputs
+            if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
+
+            if (e.key === 'ArrowLeft') {
+                handlePrev();
+            } else if (e.key === 'ArrowRight') {
+                handleNext();
+            }
+        });
+
+        // Initial Load
+        loadQuestion(0);
+    </script>
+</body>
+</html>

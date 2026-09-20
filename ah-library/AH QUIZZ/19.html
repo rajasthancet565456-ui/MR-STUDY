@@ -1,0 +1,1583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horticulture Bilingual Quiz App (100 Unique Questions)</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+      body { font-family: 'Inter', sans-serif; }
+    </style>
+<style id="cosmic-readable-quiz-theme">
+:root{--space:#e8dcff;--panel:#f3eaff;--panel2:#dcc6ff;--edge:#6a45bf;--glow:#d28b28;--accent:#d15f9f;--ink:#2c1b4d;--muted:#66547c;--mist:rgba(106,69,191,.2)}html{background:var(--space)}body{background:radial-gradient(ellipse 62% 45% at 90% -5%,rgba(209,95,159,.28),transparent 62%),radial-gradient(ellipse 55% 40% at 8% 100%,rgba(65,164,207,.26),transparent 64%),var(--space)!important;color:var(--ink)!important;min-height:100vh}body:before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.78;background-image:radial-gradient(circle at 9% 18%,var(--glow) 0 1px,transparent 1.7px),radial-gradient(circle at 26% 69%,var(--edge) 0 .8px,transparent 1.5px),radial-gradient(circle at 68% 24%,var(--accent) 0 1px,transparent 1.8px),radial-gradient(circle at 88% 73%,#47a8d3 0 .8px,transparent 1.5px);background-size:220px 190px,300px 270px,260px 230px,340px 310px;z-index:-1}header{background:linear-gradient(105deg,var(--panel),var(--panel2))!important;border-color:rgba(106,69,191,.25)!important;box-shadow:0 7px 24px rgba(84,48,142,.14)!important}header h1{color:var(--edge)!important;text-shadow:none!important}header p,header .text-slate-400,header .text-indigo-200,header .text-indigo-300{color:var(--muted)!important}main>div,#quiz-card,.bg-slate-800,.bg-slate-900,.bg-indigo-900,.bg-indigo-950{background:linear-gradient(145deg,#f8f0ff,var(--panel))!important;border-color:rgba(106,69,191,.22)!important;color:var(--ink)!important;box-shadow:0 14px 35px rgba(84,48,142,.12)!important}.bg-slate-700,.bg-slate-100,.bg-slate-50{background:#eadffd!important;color:var(--ink)!important}.text-slate-100,.text-slate-200,.text-slate-300,.text-slate-400,.text-white,.text-slate-800,.text-slate-700,.text-slate-600{color:var(--ink)!important}.text-indigo-400,.text-indigo-300,.text-emerald-400,.text-yellow-300{color:var(--edge)!important}.border-slate-700,.border-slate-700\/60,.border-indigo-700,.border-slate-200{border-color:rgba(106,69,191,.25)!important}button:not(.bg-green-600):not(.bg-red-600){background:#f9f2ff!important;color:var(--ink)!important;border:1px solid rgba(106,69,191,.25)!important;box-shadow:0 3px 10px rgba(84,48,142,.09)!important}button.bg-indigo-600,button.bg-slate-800,button.bg-slate-900,button.bg-indigo-900{background:linear-gradient(120deg,var(--edge),var(--accent))!important;color:#fff!important;border:0!important}button.bg-indigo-600 *,button.bg-slate-800 *,button.bg-slate-900 *,button.bg-indigo-900 *{color:#fff!important}button:hover{filter:brightness(1.04);transform:translateY(-1px)}input,select,textarea{background:#f9f2ff!important;border-color:rgba(106,69,191,.35)!important;color:var(--ink)!important}input:focus,select:focus,textarea:focus{outline:none!important;border-color:var(--edge)!important;box-shadow:0 0 0 3px var(--mist)!important}.bg-indigo-500,#progress-bar{background:linear-gradient(90deg,var(--edge),var(--accent),var(--glow))!important}.rounded-2xl{border-radius:1.25rem!important}
+</style></head>
+<body class="bg-slate-50 text-slate-800 min-p-4 flex flex-col min-h-screen">
+
+    <header class="bg-indigo-700 text-white shadow-md py-4 px-6 mb-6">
+        <div class="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div>
+                <h1 class="text-2xl font-bold tracking-tight">Horticulture & Fruit Science Master Quiz</h1>
+                <p class="text-indigo-200 text-sm">Bilingual (English / Hindi) • 100 Unique Exam-Level Questions</p>
+            </div>
+            <div class="flex items-center gap-3 bg-indigo-800 px-4 py-2 rounded-lg border border-indigo-600">
+                <span class="text-sm font-medium">Score:</span>
+                <span id="score-display" class="text-xl font-bold text-emerald-300">0 / 100</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-3xl w-full mx-auto px-4 flex-grow mb-12">
+        <!-- Progress Bar -->
+        <div class="w-full bg-slate-200 rounded-full h-2.5 mb-6 overflow-hidden">
+            <div id="progress-bar" class="bg-indigo-600 h-2.5 transition-all duration-300" style="width: 1%;"></div>
+        </div>
+
+        <!-- Quiz Card Container -->
+        <div class="bg-white rounded-2xl shadow-xl border border-slate-200/80 p-6 sm:p-8 relative">
+            
+            <!-- Question Meta Header -->
+            <div class="flex justify-between items-center text-sm font-semibold text-slate-500 mb-4 border-b border-slate-100 pb-3">
+                <span id="question-counter">Question 1 of 100</span>
+                <span id="question-category" class="bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Mango Cultivation</span>
+            </div>
+
+            <!-- Question Statements -->
+            <div class="mb-6 space-y-2">
+                <h2 id="question-text-en" class="text-lg sm:text-xl font-bold text-slate-900">Loading Question...</h2>
+                <h3 id="question-text-hi" class="text-base sm:text-lg font-medium text-indigo-900/90 font-serif">लोड हो रहा है...</h3>
+            </div>
+
+            <!-- Options Grid -->
+            <div id="options-container" class="grid grid-cols-1 gap-3 mb-6">
+                <!-- Dynamically injected options -->
+            </div>
+
+            <!-- Hint Box Section -->
+            <div class="mb-6">
+                <button id="hint-btn" onclick="toggleHint()" class="text-xs font-semibold text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200 px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5">
+                    <span>💡 Show Hint / संकेत दिखाएं</span>
+                </button>
+                <div id="hint-box" class="hidden mt-2 p-3 bg-amber-50 border-l-4 border-amber-400 text-amber-900 text-sm rounded-r-lg">
+                    <!-- Hint text -->
+                </div>
+            </div>
+
+            <!-- Explanation Box (Revealed upon answer) -->
+            <div id="explanation-box" class="hidden mb-6 p-4 rounded-xl border transition-all duration-300">
+                <div class="font-bold text-sm mb-1 flex items-center gap-1.5" id="explanation-title"></div>
+                <p id="explanation-text-en" class="text-sm mb-1"></p>
+                <p id="explanation-text-hi" class="text-sm font-serif opacity-90"></p>
+            </div>
+
+            <!-- Navigation Bar & Jump Control -->
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-slate-100">
+                <div class="flex items-center gap-2 w-full sm:w-auto">
+                    <button onclick="prevQuestion()" id="prev-btn" class="flex-1 sm:flex-none px-4 py-2 border border-slate-300 text-slate-700 font-semibold rounded-xl hover:bg-slate-50 transition disabled:opacity-50 disabled:cursor-not-allowed">
+                        Previous
+                    </button>
+                    <button onclick="nextQuestion()" id="next-btn" class="flex-1 sm:flex-none px-5 py-2 bg-indigo-600 text-white font-semibold rounded-xl hover:bg-indigo-700 transition">
+                        Next
+                    </button>
+                </div>
+
+                <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+                    <span class="text-xs font-medium text-slate-500 whitespace-nowrap">Jump to:</span>
+                    <input type="number" id="jump-input" min="1" max="100" class="w-16 px-2 py-1.5 text-center border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="1-100">
+                    <button onclick="jumpToQuestion()" class="px-3 py-1.5 bg-slate-800 text-white text-xs font-semibold rounded-lg hover:bg-slate-900 transition">Go</button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="text-center py-6 text-xs text-slate-400 border-t border-slate-200 mt-auto">
+        Horticulture & Exam Prep System &bull; Based on Competitive Exam Source Material
+    </footer>
+
+    <script>
+        // 100 Completely Unique Bilingual Questions built strictly from Source Material Range
+        const quizData = [
+            // Page 1 Questions (Mango & Banana Focus)
+            {
+                category: "Mango Cultivation",
+                en: "What is the botanical name of Mango?",
+                hi: "आम का वानस्पतिक नाम क्या है?",
+                options: ["Mangifera indica", "Musa paradisiaca", "Carica papaya", "Psidium guajava"],
+                answer: 0,
+                hint: "Family Anacardiaceae, tropical fruit king.",
+                expEn: "Mangifera indica is the scientific binomial name for mango, belonging to family Anacardiaceae.",
+                expHi: "मैन्जीफेरा इंडिका (Mangifera indica) आम का वानस्पतिक नाम है, जो एनाकार्डिएसी कुल से संबंधित है।"
+            },
+            {
+                category: "Mango Cultivation",
+                en: "What is the chromosome number (2n) of Mango?",
+                hi: "आम में गुणसूत्र संख्या (2n) कितनी होती है?",
+                options: ["2n = 18", "2n = 22", "2n = 40", "2n = 36"],
+                answer: 2,
+                hint: "It equals 4x = 40.",
+                expEn: "Mango has a somatic chromosome number of 2n = 4x = 40.",
+                expHi: "आम में कायिक गुणसूत्र संख्या 2n = 4x = 40 होती है।"
+            },
+            {
+                category: "Mango Cultivation",
+                en: "What is the recognized origin place of Mango?",
+                hi: "आम का उद्गम स्थल (Origin) कहाँ माना जाता है?",
+                options: ["Mexico", "India - Burma", "South America", "China"],
+                answer: 1,
+                hint: "Shared region between South Asia and Southeast Asia.",
+                expEn: "The native origin location of mango is documented as India-Burma.",
+                expHi: "आम का उद्गम स्थल भारत-बर्मा माना जाता है।"
+            },
+            {
+                category: "Mango Cultivation",
+                en: "What type of fruit is a Mango botanically?",
+                hi: "वनस्पति विज्ञान के अनुसार आम किस प्रकार का फल है?",
+                options: ["Berry (सरस)", "Drupe / Asthil (अष्ठिल)", "Hesperidium (हेस्पेरिडियम)", "Pepo (पेपो)"],
+                answer: 1,
+                hint: "Also known as a stone fruit.",
+                expEn: "Mango is classified botanically as a Drupe (Asthil), containing a hard endocarp stone.",
+                expHi: "आम को वनस्पति रूप से अष्ठिल (Drupe) प्रकार का फल माना जाता है।"
+            },
+            {
+                category: "Mango Cultivation",
+                en: "Which part of the mango fruit is edible?",
+                hi: "आम का खाने योग्य भाग कौन सा है?",
+                options: ["Endocarp", "Mesocarp (मध्य फल भित्ति)", "Thalamus", "Juicy placental hairs"],
+                answer: 1,
+                hint: "The fleshy middle layer.",
+                expEn: "The fleshy middle layer called the Mesocarp (मध्य फल भित्ति) is the edible part of a mango.",
+                expHi: "आम का खाने वाला भाग मध्य फल भित्ति (Mesocarp) होता है।"
+            },
+            {
+                category: "Mango Cultivation",
+                en: "Which hybrid variety of mango is developed by crossing 'Neelam' × 'Alphonso'?",
+                hi: "'नीलम' × 'अल्फांसो' के संकरण से विकसित आम की संकर किस्म कौन सी है?",
+                options: ["Amrapali", "Mallika", "Sindhu", "Ratna"],
+                answer: 3,
+                hint: "Developed at Vengurla, Maharashtra.",
+                expEn: "Ratna is the hybrid variety developed by crossing Neelam × Alphonso.",
+                expHi: "नीलम × अल्फांसो के संकरण से 'रअपना' किस्म विकसित की गई है।"
+            },
+            {
+                category: "Mango Cultivation",
+                en: "Which unique mango variety is seedless or has a very small stone (6g residue)?",
+                hi: "कौन सी आम की किस्म बीज रहित (या बहुत कम गुठली वाली) है?",
+                options: ["Sindhu", "Amrapali", "Chausa", "Dashehari"],
+                answer: 0,
+                hint: "Developed by B.S.K.V. Dapoli.",
+                expEn: "Sindhu is famous for being a nearly seedless mango variety with a tiny stone weighing around 6 grams.",
+                expHi: "सिंधु आम की वह किस्म है जो बीज रहित (अथवा केवल 6 ग्राम अवशेष मात्र गुठली वाली) होती है।"
+            },
+            {
+                category: "Mango Cultivation",
+                en: "What is the ideal temperature range for optimum growth of mango?",
+                hi: "आम की वृद्धि के लिए सर्वाधिक उपयुक्त तापमान कितना है?",
+                options: ["10-15 °C", "24-27 °C", "35-40 °C", "42-45 °C"],
+                answer: 1,
+                hint: "Mid-twenties range.",
+                expEn: "An average temperature of 24-27 °C is best suited for the growth and development of mango trees.",
+                expHi: "आम की वृद्धि के लिए 24-27 °C तापमान सर्वाधिक उपयुक्त रहता है।"
+            },
+            {
+                category: "Mango Cultivation",
+                en: "Which soil pH range is considered ideal for mango cultivation?",
+                hi: "आम की खेती के लिए मृदा का pH मान कितना होना चाहिए?",
+                options: ["4.0 to 5.0", "5.0 to 6.0", "6.5 to 7.5", "8.5 to 9.5"],
+                answer: 2,
+                hint: "Slightly acidic to neutral range.",
+                expEn: "Deep sandy loam soils with an optimum pH ranging from 6.5 to 7.5 are ideal for mango farming.",
+                expHi: "आम की खेती के लिए जीवांशयुक्त गहरी बलुई दोमट मिट्टी जिसका pH मान 6.5 से 7.5 हो, उत्तम होती है।"
+            },
+            {
+                category: "Mango Cultivation",
+                en: "Ambika and Arunima varieties of mango were developed by which institute?",
+                hi: "आम की 'अम्बिका' और 'अरुणिमा' किस्में किस संस्थान द्वारा विकसित की गई हैं?",
+                options: ["IARI, New Delhi", "CISH, Lucknow", "IIHR, Bengaluru", "PAU, Ludhiana"],
+                answer: 1,
+                hint: "Central Institute located in Uttar Pradesh capital.",
+                expEn: "These modern hybrid varieties were developed by CISH (Central Institute for Subtropical Horticulture), Lucknow.",
+                expHi: "सी.आई.एस.एच. (CISH) लखनऊ द्वारा अम्बिका व अरुणिमा किस्में विकसित की गई हैं।"
+            },
+            {
+                category: "Banana Cultivation",
+                en: "What is the botanical name of Banana?",
+                hi: "केले का वानस्पतिक नाम क्या है?",
+                options: ["Musa paradisiaca", "Carica papaya", "Psidium guajava", "Vitis vinifera"],
+                answer: 0,
+                hint: "Belongs to family Musaceae.",
+                expEn: "Musa paradisiaca is the scientific name for banana.",
+                expHi: "केले का वानस्पतिक नाम मूसा पैराडिसियाका (Musa paradisiaca) है।"
+            },
+            {
+                category: "Banana Cultivation",
+                en: "What is the chromosome number configuration of Banana?",
+                hi: "केले में गुणसूत्र संख्या कितनी होती है?",
+                options: ["2n = 2x = 22", "2n = 3x = 33", "2n = 4x = 44", "2n = 2x = 18"],
+                answer: 1,
+                hint: "It is triploid (3x = 33).",
+                expEn: "Banana is typically triploid with a somatic chromosome count of 2n = 3x = 33, causing seedlessness.",
+                expHi: "केले में गुणसूत्र संख्या 2n = 3x = 33 होती है।"
+            },
+            {
+                category: "Banana Cultivation",
+                en: "What is the primary edible portion of a Banana?",
+                hi: "केले का खाने योग्य भाग कौन सा होता है?",
+                options: ["Endocarp only", "Mesocarp & inner fruit wall (मध्य व अन्तः फल भित्ति)", "Thalamus", "Seed coat (Aril)"],
+                answer: 1,
+                hint: "Middle and inner layers.",
+                expEn: "The Mesocarp and inner fruit wall (मध्य व अन्तः फल भित्ति) constitute the edible portion of bananas.",
+                expHi: "केले का खाने वाला भाग मध्य व अन्तः फल भित्ति (Mesocarp) होता है।"
+            },
+            {
+                category: "Banana Cultivation",
+                en: "Which alternative name or moniker is given to Banana?",
+                hi: "केले को इनमें से किस उपनाम से जाना जाता है?",
+                options: ["Apple of Paradise / Kalpataru", "Poor Man's Apple", "Tree of Heaven", "King of Dry Fruits"],
+                answer: 0,
+                hint: "Also called 'Edlesfig'.",
+                expEn: "Banana is known by names like Kalpataru, Fig of Paradise, and Apple of Paradise (एड्सफिंग व एप्पल ऑफ़ पैराडाइस).",
+                expHi: "केले का उपनाम कल्पतरू, एड्सफिंग व एप्पल ऑफ़ पैराडाइस है।"
+            },
+            {
+                category: "Banana Cultivation",
+                en: "Approximately what percentage of carbohydrates is present in a banana fruit?",
+                hi: "केले के फल में कितने प्रतिशत कार्बोहाइड्रेट पाया जाता है?",
+                options: ["12%", "18%", "27%", "45%"],
+                answer: 2,
+                hint: "More than a quarter of its composition.",
+                expEn: "Banana fruit contains approximately 27% carbohydrates, making it an energy-rich food source.",
+                expHi: "केले के फल में 27% कार्बोहाइड्रेट पाया जाता है।"
+            },
+
+            // Page 2 Questions (Banana details, Lime, Mandarin, Guava)
+            {
+                category: "Banana Cultivation",
+                en: "What is the underground true stem of a banana plant called?",
+                hi: "केले का सत्य तना जो भूमिगत रहता है, क्या कहलाता है?",
+                options: ["Corm", "Rhizome (राइजोम)", "Sucker", "Bulb"],
+                answer: 1,
+                hint: "Starts with 'R'.",
+                expEn: "The true stem of a banana plant remains underground and is known as a Rhizome (राइजोम).",
+                expHi: "केले का सत्य तना भूमिगत रहता है जिसे राइजोम (Rhizome) कहते हैं।"
+            },
+            {
+                category: "Banana Cultivation",
+                en: "Which banana variety is specifically used for baby food products?",
+                hi: "नवजात शिशु के खाद्य उत्पाद बनाने के लिए केले की किस किस्म का उपयोग किया जाता है?",
+                options: ["Poovan", "Kunan (कुनन)", "Rasthali", "Robusta"],
+                answer: 1,
+                hint: "Starts with 'K'.",
+                expEn: "Kunan variety is utilized for preparing infant/baby food products.",
+                expHi: "नवजात शिशु के खाद्य उत्पाद बनाने के लिए कुनन (Kunan) किस्म का उपयोग किया जाता है।"
+            },
+            {
+                category: "Banana Cultivation",
+                en: "Which banana variety is recorded as having the highest sweetness?",
+                hi: "सबसे अधिक मिठास वाली केले की किस्म कौन सी है?",
+                options: ["Karpuravalli (कार्पुरावल्ली)", "Grand Naine", "Dwarf Cavendish", "Virupakshi"],
+                answer: 0,
+                hint: "Known for high sugar concentration.",
+                expEn: "Karpuravalli is noted for being the sweetest variety of banana.",
+                expHi: "सबसे अधिक मिठास वाली केले की किस्म कार्पुरावल्ली है।"
+            },
+            {
+                category: "Banana Cultivation",
+                en: "Which banana varieties are predominantly used for making figs and chips?",
+                hi: "फिग (Fig) एवं चिप्स बनाने में प्रयुक्त केले की किस्में कौन सी हैं?",
+                options: ["Poovan & Nendran (पुवन एवं नेन्द्रान)", "Basrai & Dwarf Cavendish", "Monthan & Robusta", "Safed Velchi & Hill"],
+                answer: 0,
+                hint: "Two popular South Indian cultivars.",
+                expEn: "Poovan and Nendran are the specific varieties used for processing chips and dried banana figs.",
+                expHi: "फिग एवं चिप्स बनाने में प्रयुक्त केले की किस्में पुवन एवं नेन्द्रान हैं।"
+            },
+            {
+                category: "Banana Cultivation",
+                en: "Through which modern technique is the propagation of banana variety 'G-9' (Grand Naine) carried out?",
+                hi: "केले की जी-9 (G-9) किस्म का प्रवर्धन किस तकनीक द्वारा किया जाता है?",
+                options: ["Layering", "Plant Tissue Culture (पादप ऊतक संवर्धन)", "Sword Sucker", "Bud grafting"],
+                answer: 1,
+                hint: "In-vitro laboratory method.",
+                expEn: "Propagation of G-9 banana is commercially executed via Plant Tissue Culture (पादप ऊतक संवर्धन).",
+                expHi: "केले की जी-9 किस्म का प्रवर्धन पादप ऊतक संवर्धन (Plant Tissue Culture) तकनीक से किया जाता है।"
+            },
+            {
+                category: "Lime (नींबू)",
+                en: "What is the botanical name of Lime (कागजी नींबू)?",
+                hi: "नींबू (लाइम) का वानस्पतिक नाम क्या है?",
+                options: ["Citrus aurantifolia", "Citrus reticulata", "Citrus sinensis", "Psidium guajava"],
+                answer: 0,
+                hint: "Family Rutaceae, genus Citrus.",
+                expEn: "Citrus aurantifolia Swingle is the botanical name for lime.",
+                expHi: "नींबू का वानस्पतिक नाम सिट्रस अरन्टिफोलिया स्विंगल (Citrus aurantifolia Swingle) है।"
+            },
+            {
+                category: "Lime (नींबू)",
+                en: "What is the chromosome number (2n) of Citrus fruits like Lime and Mandarin?",
+                hi: "नींबू वर्गीय फलों (जैसे नींबू व संतरा) में गुणसूत्र संख्या 2n कितनी होती है?",
+                options: ["2n = 18", "2n = 22", "2n = 26", "2n = 36"],
+                answer: 0,
+                hint: "x = 9, 2n = 18.",
+                expEn: "Citrus fruits have a somatic chromosome count of 2n = 18 (with basic number x = 9).",
+                expHi: "नींबू वर्गीय फलों में गुणसूत्र संख्या 2n = 18 होती है (x = 9)।"
+            },
+            {
+                category: "Lime (नींबू)",
+                en: "What is the recognized fruit type of Citrus species (Lime, Mandarin, Orange)?",
+                hi: "सिट्रस फलों (नींबू, संतरा) का प्रमुख फल प्रकार (Fruit Type) क्या है?",
+                options: ["Berry", "Hesperidium Berry (हेस्पेरिडियम सरस)", "Drupe", "Pepo"],
+                answer: 1,
+                hint: "Contains juicy placental hairs.",
+                expEn: "Citrus fruits are classified as Hesperidium Berry with juicy placental hair vesicles.",
+                expHi: "सिट्रस फलों का फल प्रकार हेस्पेरिडियम सरस (Hesperidium Berry) है।"
+            },
+            {
+                category: "Lime (नींबू)",
+                en: "What chemical or plant hormone is used in citrus fruit cultivation to prevent pre-harvest fruit drop?",
+                hi: "नींबू वर्गीय फलों में फलों को समय से पूर्व गिरने से रोकने के लिए किसका उपयोग किया जाता है?",
+                options: ["GA3", "2,4-D", "Indole Acetic Acid", "Ethylene"],
+                answer: 1,
+                hint: "A synthetic auxin plant growth regulator.",
+                expEn: "2,4-D (2,4-Dichlorophenoxyacetic acid) is sprayed to prevent fruit dropping in citrus crops.",
+                expHi: "नींबू में फलों को गिरने से रोकने के लिए 2,4-D का उपयोग किया जाता है।"
+            },
+            {
+                category: "Mandarin (संतरा)",
+                en: "What is the botanical name of Mandarin (संतरा)?",
+                hi: "संतरे (Mandarin) का वानस्पतिक नाम क्या है?",
+                options: ["Citrus reticulata Blanco", "Citrus sinensis", "Citrus limon", "Carica papaya"],
+                answer: 0,
+                hint: "Family Rutaceae.",
+                expEn: "Citrus reticulata Blanco is the binomial name for Mandarin orange.",
+                expHi: "संतरे का वानस्पतिक नाम सिट्रस रेटिकुलाटा बाल्को (Citrus reticulata Blanco) है।"
+            },
+            {
+                category: "Mandarin (संतरा)",
+                en: "What is the origin place of Mandarin (संतरा)?",
+                hi: "संतरे का उद्गम स्थल (Origin) कहाँ माना जाता है?",
+                options: ["India", "Southern China (दक्षिणी चीनी)", "Mexico", "Tropical America"],
+                answer: 1,
+                hint: "East Asian country known as Southern China.",
+                expEn: "Mandarin originated in Southern China.",
+                expHi: "संतरे का उद्गम स्थल दक्षिणी चीनी (Southern China) है।"
+            },
+            {
+                category: "Mandarin (संतरा)",
+                en: "Which district in Haryana holds the highest production of Mandarin/Kinnow?",
+                hi: "हरियाणा के किस जिले में संतरा व किन्नू का सर्वाधिक उत्पादन होता है?",
+                options: ["Sirsa (सिरसा)", "Ambala", "Karnal", "Hisar"],
+                answer: 0,
+                hint: "Westernmost district bordering Punjab and Rajasthan.",
+                expEn: "Sirsa district in Haryana leads in the production of Mandarin and Kinnow fruits.",
+                expHi: "हरियाणा के सिरसा जिले में संतरा व किन्नू का सर्वाधिक उत्पादन होता है।"
+            },
+            {
+                category: "Guava (अमरूद)",
+                en: "What is the botanical name of Guava (अमरूद)?",
+                hi: "अमरूद का वानस्पतिक नाम क्या है?",
+                options: ["Psidium guajava", "Carica papaya", "Ziziphus mauritiana", "Emblica officinalis"],
+                answer: 0,
+                hint: "Family Myrtaceae.",
+                expEn: "Psidium guajava is the scientific name of guava, belonging to family Myrtaceae.",
+                expHi: "अमरूद का वानस्पतिक नाम सोडियम गुजावा / पसिडियम गुजावा (Psidium guajava) है।"
+            },
+            {
+                category: "Guava (अमरूद)",
+                en: "Which fruit is popularly known as the 'Apple of the Tropics'?",
+                hi: "किस फल को 'एप्पल ऑफ द ट्रॉपिक्स' (Apple of the tropics) कहा जाता है?",
+                options: ["Banana", "Guava (अमरूद)", "Papaya", "Pomegranate"],
+                answer: 1,
+                hint: "Rich in Vitamin C and high nutritive value.",
+                expEn: "Due to its high nutritional value and structure, Guava is referred to as the Apple of the tropics.",
+                expHi: "उच्च पोषण मान के कारण अमरूद को 'एप्पल ऑफ द ट्रॉपिक्स' (Apple of the tropics) कहा जाता है।"
+            },
+            {
+                category: "Guava (अमरूद)",
+                en: "Which Indian city is globally famous for producing high-quality guavas?",
+                hi: "भारत में कौन सा शहर उच्च गुणवत्ता वाले अमरूद के लिए विश्व विख्यात है?",
+                options: ["Allahabad, Uttar Pradesh", "Nagpur, Maharashtra", "Lucknow, Uttar Pradesh", "Hisar, Haryana"],
+                answer: 0,
+                hint: "City in UP.",
+                expEn: "Allahabad (Uttar Pradesh) is world-famous for producing exceptional quality guavas.",
+                expHi: "हमारे देश में इलाहाबाद (उत्तर प्रदेश) अच्छी गुणवत्ता वाले अमरूद के लिए विश्व विख्यात है।"
+            },
+
+            // Page 3 Questions (Guava varieties, Papaya, Ber)
+            {
+                category: "Guava (अमरूद)",
+                en: "Hisar Safeda and Hisar Surkha varieties of guava were developed by which university?",
+                hi: "हिसार सफेदा व हिसार सुरखा अमरूद की किस्में किस विश्वविद्यालय द्वारा विकसित हैं?",
+                options: ["CCS HAU, Hisar", "PAU, Ludhiana", "GBPUAT, Pantnagar", "NDUAT, Ayodhya"],
+                answer: 0,
+                hint: "Haryana Agricultural University.",
+                expEn: "Haryana Agricultural University (HAU) Hisar developed Hisar Safeda and Hisar Surkha.",
+                expHi: "हरियाणा कृषि विश्वविद्यालय, हिसार द्वारा हिसार सफेदा व हिसार सुरखा किस्में विकसित की गई हैं।"
+            },
+            {
+                category: "Papaya (पपीता)",
+                en: "What is the botanical name of Papaya?",
+                hi: "पपीते का वानस्पतिक नाम क्या है?",
+                options: ["Carica papaya", "Psidium guajava", "Ziziphus mauritiana", "Punica granatum"],
+                answer: 0,
+                hint: "Family Caricaceae.",
+                expEn: "Carica papaya is the botanical name of papaya, belonging to the family Caricaceae.",
+                expHi: "पपीते का वानस्पतिक नाम केरिया पपाया (Carica papaya) है।"
+            },
+            {
+                category: "Papaya (पपीता)",
+                en: "What is the chromosome count (2n) of Papaya?",
+                hi: "पपीते में गुणसूत्र संख्या कितनी होती है?",
+                options: ["2n = 18", "2n = 22", "2n = 36", "2n = 40"],
+                answer: 0,
+                hint: "2n = 2x = 18.",
+                expEn: "Papaya has a diploid chromosome count of 2n = 2x = 18.",
+                expHi: "पपीते में गुणसूत्र संख्या 2n = 2x = 18 होती है।"
+            },
+            {
+                category: "Papaya (पपीता)",
+                en: "What causes the yellow pigmentation in papaya fruits?",
+                hi: "पपीते के फलों का पीला रंग किस वर्णक (Pigment) के कारण होता है?",
+                options: ["Carotenoid (कैरोटिनॉयड / कैरिकाजैन्थिन)", "Lycopene", "Anthocyanin", "Chlorophyll"],
+                answer: 0,
+                hint: "Caricaxanthin pigment.",
+                expEn: "The yellow color of papaya pulp/fruit is due to the pigment Caricaxanthin (केरिकाजैन्थिन).",
+                expHi: "पपीते के फलों का पीला रंग वर्णक केरिकाजैन्थिन (Caricaxanthin) के कारण होता है।"
+            },
+            {
+                category: "Papaya (पपीता)",
+                en: "What enzyme is commercially extracted from the latex of unripe papaya fruits?",
+                hi: "अपरिपक्व पपीते के फलों के लेटेक्स (दूध) से कौन सा प्रमुख एंजाइम बनाया जाता है?",
+                options: ["Papain (पपेन)", "Bromelain", "Pectinase", "Amylase"],
+                answer: 0,
+                hint: "Proteolytic enzyme starting with 'P'.",
+                expEn: "Papain, a valuable proteolytic enzyme, is extracted from the milky latex of unripe green papayas.",
+                expHi: "पपीते के हरे अपरिवक्फ फलों के लेटेक्स से पपेन (Papain) बनाया जाता है।"
+            },
+            {
+                category: "Papaya (पपीता)",
+                en: "Which transgenic variety of papaya was developed to be resistant to the Ring Spot Virus?",
+                hi: "रिंग स्पोट विषाणु से प्रतिरोधी पपीते की कौन सी ट्रांसजेनिक किस्में विकसित की गई हैं?",
+                options: ["SunUp and Rainbow (सनअप व रेनबो)", "Pusa Dwarf and Pusa Delicious", "Madhuvindu and Coorg Honey", "Surya and Prabhat"],
+                answer: 0,
+                hint: "First transgenic papaya.",
+                expEn: "SunUp and Rainbow are the first transgenic papaya varieties engineered for ring spot virus resistance.",
+                expHi: "रिंग स्पोट विषाणु से प्रतिरोधी किस्में सनअप व रेनबो (SunUp & Rainbow) विकसित की गई हैं।"
+            },
+            {
+                category: "Ber (बेर)",
+                en: "What is the botanical name of Ber (Indian Jujube)?",
+                hi: "बेर का वानस्पतिक नाम क्या है?",
+                options: ["Ziziphus mauritiana", "Emblica officinalis", "Phoenix dactylifera", "Aegle marmelos"],
+                answer: 0,
+                hint: "Family Rhamnaceae.",
+                expEn: "Ziziphus mauritiana is the binomial name for Indian Ber.",
+                expHi: "बेर का वानस्पतिक नाम जिजिफस मोरिसियाना लेम्क (Ziziphus mauritiana) है।"
+            },
+            {
+                category: "Ber (बेर)",
+                en: "What is the chromosome number of Ber?",
+                hi: "बेर में गुणसूत्र संख्या (2n) कितनी होती है?",
+                options: ["2n = 24", "2n = 48", "2n = 36", "2n = 18"],
+                answer: 1,
+                hint: "Tetraploid, 2n = 4x = 48.",
+                expEn: "Ber is a tetraploid fruit tree with 2n = 4x = 48 chromosomes.",
+                expHi: "बेर में गुणसूत्र संख्या 2n = 4x = 48 होती है।"
+            },
+            {
+                category: "Ber (बेर)",
+                en: "Why is Ber often referred to as the 'Poor Man's Apple' (गरीब का सेब)?",
+                hi: "बेर को उसके किस गुण के कारण 'गरीब का सेब' (Poor Man's Apple) कहा जाता है?",
+                options: ["Due to high nutritional value and low cost", "Because it is cheap and grows in deserts", "Because it looks like an apple", "Due to high fat content"],
+                answer: 0,
+                hint: "High nutritive/health value accessible to everyone.",
+                expEn: "Ber is called the Poor Man's Apple due to its exceptionally high nutritive and vitamin profile at low cost.",
+                expHi: "बेर के उच्च पोषण मान के कारण इसे गरीब का सेब (Poor Man's Apple) कहा जाता है।"
+            },
+            {
+                category: "Ber (बेर)",
+                en: "Which new variety of Ber recently came to India via West Bengal from Bangladesh?",
+                hi: "हाल ही में बांग्लादेश के रास्ते पश्चिम बंगाल से भारत आई बेर की बड़ी आकार वाली नई किस्म कौन सी है?",
+                options: ["Apple Ber (एप्पल बेर)", "Gola", "Umran", "Banarasi"],
+                answer: 0,
+                hint: "Named after popular temperate fruit.",
+                expEn: "Apple Ber is the large-sized variety imported recently via Bangladesh and West Bengal.",
+                expHi: "आजकल नई किस्म थाई बेर (एप्पल बेर) बांग्लादेश से पश्चिम बंगाल के रास्ते भारत आई है जो आकार में बड़ी होती है।"
+            },
+
+            // Page 4 Questions (Grapes, Amla, Pomegranate)
+            {
+                category: "Grapes (अंगूर)",
+                en: "What is the botanical name of Grapes?",
+                hi: "अंगूर का वानस्पतिक नाम क्या है?",
+                options: ["Vitis vinifera", "Carica papaya", "Phoenix dactylifera", "Punica granatum"],
+                answer: 0,
+                hint: "Family Vitaceae.",
+                expEn: "Vitis vinifera is the botanical scientific name for cultivated grapes.",
+                expHi: "अंगूर का वानस्पतिक नाम विटिस विनिफेरा मिचस (Vitis vinifera) है।"
+            },
+            {
+                category: "Grapes (अंगूर)",
+                en: "What is the chromosome number (2n) of Grapes?",
+                hi: "अंगूर में गुणसूत्र संख्या 2n कितनी होती है?",
+                options: ["2n = 20", "2n = 38", "2n = 40", "2n = 48"],
+                answer: 2,
+                hint: "2n = 2x = 40.",
+                expEn: "Grapes have a somatic chromosome number of 2n = 2x = 40.",
+                expHi: "अंगूर में गुणसूत्र संख्या 2n = 2x = 40 होती है।"
+            },
+            {
+                category: "Grapes (अंगूर)",
+                en: "What is the origin place of Grapes?",
+                hi: "अंगूर का उद्गम स्थल (Origin) कहाँ माना जाता है?",
+                options: ["Armenia (Near Asia Minor / आर्मेनिया)", "India", "China", "Mexico"],
+                answer: 0,
+                hint: "Region near Asia Minor.",
+                expEn: "Grapes originated in Armenia near Asia Minor.",
+                expHi: "अंगूर का उद्गम स्थल आर्मेनिया (एशिया माइनर के पास) है।"
+            },
+            {
+                category: "Grapes (अंगूर)",
+                en: "Raisins (किशमिश) are produced by drying fresh grapes down to what percentage of moisture?",
+                hi: "ताजा अंगूर को सुखाकर कितने प्रतिशत नमी तक किशमिश बनाई जाती है?",
+                options: ["5 percent", "12 percent", "17 percent", "25 percent"],
+                answer: 2,
+                hint: "Sub-20 range, specifically 17%.",
+                expEn: "Fresh grapes are dried until they retain about 17% moisture to form raisins (किशमिश).",
+                expHi: "ताजा अंगूर को सुखाकर उसे 17 प्रतिशत नमी तक लाकर किशमिश बनाई जाती है।"
+            },
+            {
+                category: "Amla (आँवला)",
+                en: "What is the botanical name of Amla (Indian Gooseberry)?",
+                hi: "आँवले का वानस्पतिक नाम क्या है?",
+                options: ["Emblica officinalis (Phyllanthus emblica)", "Aegle marmelos", "Psidium guajava", "Ziziphus mauritiana"],
+                answer: 0,
+                hint: "Family Euphorbiaceae.",
+                expEn: "Emblica officinalis (syn. Phyllanthus emblica) is the scientific name for Amla, under family Euphorbiaceae.",
+                expHi: "आँवले का वानस्पतिक नाम एम्बलिका ऑफिसिनेलिस गर्टन (Emblica officinalis) है, कुल - यूफोरिएसी।"
+            },
+            {
+                category: "Amla (आँवला)",
+                en: "Amla is exceptionally rich in which vitamin?",
+                hi: "आँवले में किस विटामिन की मात्रा सर्वाधिक पाई जाती है?",
+                options: ["Vitamin A", "Vitamin B", "Vitamin C (600 mg / 100g pulp)", "Vitamin D"],
+                answer: 2,
+                hint: "Ascorbic acid, around 600 mg per 100g.",
+                expEn: "Amla contains the highest amount of Vitamin C (around 600 mg per 100 grams of pulp) next to Barbados cherry.",
+                expHi: "आँवले में सर्वाधिक मात्रा में विटामिन 'सी' (600 मि.ग्रा./100 ग्राम गूदे) पाई जाती है।"
+            },
+            {
+                category: "Amla (आँवला)",
+                en: "Which district in Uttar Pradesh leads in maximum production of Amla?",
+                hi: "उत्तर प्रदेश का कौन सा जिला आँवले के सर्वाधिक उत्पादन के लिए प्रसिद्ध है?",
+                options: ["Pratapgarh (प्रतापगढ़)", "Allahabad", "Varanasi", "Lucknow"],
+                answer: 0,
+                hint: "UP district known for Amla orchards.",
+                expEn: "Pratapgarh district in Uttar Pradesh is renowned for having the highest production of Amla.",
+                expHi: "देश में आँवले का सर्वाधिक उत्पादन प्रतापगढ़ जिला, उत्तर प्रदेश राज्य में होता है।"
+            },
+            {
+                category: "Pomegranate (अनार)",
+                en: "What is the botanical name of Pomegranate (अनार)?",
+                hi: "अनार का वानस्पतिक नाम क्या है?",
+                options: ["Punica granatum L.", "Phoenix dactylifera", "Aegle marmelos", "Carica papaya"],
+                answer: 0,
+                hint: "Family Punicaceae.",
+                expEn: "Punica granatum L. is the scientific binomial for pomegranate.",
+                expHi: "अनार का वानस्पतिक नाम प्यूनिका ग्रेनेटम एल. (Punica granatum L.) है।"
+            },
+            {
+                category: "Pomegranate (अनar)",
+                en: "What is the chromosome count (2n) of Pomegranate?",
+                hi: "अनार में गुणसूत्र संख्या 2n कितनी होती है?",
+                options: ["2n = 18", "2n = 22", "2n = 34", "2n = 42"],
+                answer: 0,
+                hint: "x = 9, 2n = 2x = 18.",
+                expEn: "Pomegranate has a diploid chromosome number of 2n = 2x = 18.",
+                expHi: "अनार में गुणसूत्र संख्या 2n = 2x = 18 होती है।"
+            },
+            {
+                category: "Pomegranate (अनार)",
+                en: "What is the origin place of Pomegranate?",
+                hi: "अनार का उद्गम स्थल (Origin) कहाँ माना जाता है?",
+                options: ["Iran (ईरान)", "India", "China", "Turkey"],
+                answer: 0,
+                hint: "Middle Eastern country.",
+                expEn: "Pomegranate originated in Iran.",
+                expHi: "अनार का उद्गम स्थल ईरान (Iran) है।"
+            },
+
+            // Page 5 Questions (Date Palm, Bael, Physiology Disorders)
+            {
+                category: "Date Palm (खजूर)",
+                en: "What is the botanical name of Date Palm (खजूर)?",
+                hi: "खजूर का वानस्पतिक नाम क्या है?",
+                options: ["Phoenix dactylifera", "Punica granatum", "Aegle marmelos", "Ziziphus mauritiana"],
+                answer: 0,
+                hint: "Family Arecaceae (Palmae).",
+                expEn: "Phoenix dactylifera is the scientific name of the date palm tree.",
+                expHi: "खजूर का वानस्पतिक नाम फीनिक्स डेक्टाइलोफेरा (Phoenix dactylifera) है।"
+            },
+            {
+                category: "Date Palm (खजूर)",
+                en: "What is the alternative nickname or name given to Date Palm?",
+                hi: "खजूर को अन्य किस उपनाम से जाना जाता है?",
+                options: ["Century Plant (सेंचुरी प्लांट)", "Tree of Heaven", "Apple of Tropics", "Poor Man's Fruit"],
+                answer: 0,
+                hint: "Relates to its long lifespan.",
+                expEn: "Date Palm is also known as the Century Plant.",
+                expHi: "खजूर का उपनाम 'सेंचुरी प्लांट' (Century Plant) है।"
+            },
+            {
+                category: "Date Palm (खजूर)",
+                en: "In which state of India does Date Palm record the highest production?",
+                hi: "भारत में खजूर का सर्वाधिक उत्पादन किस राज्य में होता है?",
+                options: ["Gujarat (कच्छ, गुजरात)", "Rajasthan", "Punjab", "Haryana"],
+                answer: 0,
+                hint: "Kutch region in a western state.",
+                expEn: "Gujarat (specifically the Kutch region) accounts for the highest production of dates in India.",
+                expHi: "भारत में खजूर का सर्वाधिक उत्पादन कच्छ (गुजरात) में होता है।"
+            },
+            {
+                category: "Date Palm Growth Stages",
+                en: "What is the name of the fruit development stage in Date Palm when fruits are green and hard?",
+                hi: "खजूर में फल विकास की उस अवस्था को क्या कहते हैं जब फल कच्चे, हरे व कठोर होते हैं?",
+                options: ["Gandora / Kimri (गंडोरा / किमरी)", "Doka / Khalas", "Dang / Rutab", "Pind / Tamar"],
+                answer: 0,
+                hint: "First stage of fruit maturity.",
+                expEn: "The green and hard immature stage of date palm fruits is called Gandora or Kimri.",
+                expHi: "खजूर में फल विकास की प्रथम अवस्था जब फल कच्चे हरे व कठोर होते हैं, गंडोरा (किमरी) कहलाती है।"
+            },
+            {
+                category: "Bael (बेल)",
+                en: "What is the botanical name of Bael (Wood Apple)?",
+                hi: "बेल (Bael) का वानस्पतिक नाम क्या है?",
+                options: ["Aegle marmelos Correa", "Emblica officinalis", "Punica granatum", "Citrus reticulata"],
+                answer: 0,
+                hint: "Family Rutaceae, sacred tree.",
+                expEn: "Aegle marmelos Correa is the botanical name for Bael, belonging to family Rutaceae.",
+                expHi: "बेल का वानस्पतिक नाम एजेल मार्मेलोस कॉरेिया (Aegle marmelos Correa) है।"
+            },
+            {
+                category: "Bael (बेल)",
+                en: "Which active mucilaginous substance present in Bael fruit makes it very effective for curing stomach/diarrheal disorders?",
+                hi: "बेल के फल में पाया जाने वाला कौन सा तत्व पेट की बीमारियों के उपचार में उपयोग किया जाता है?",
+                options: ["Marmelosisin (मार्मेलोसिन)", "Papain", "Limonin", "Morphine"],
+                answer: 0,
+                hint: "Named after its genus.",
+                expEn: "Marmelosisin is the active compound found in Bael fruit helpful for treating gastrointestinal ailments.",
+                expHi: "बेल के फल में मार्मेलोसिन नामक तत्व पाया जाता है जो पेट की बीमारियों के उपचार में उपयोग किया जाता है।"
+            },
+            {
+                category: "Physiological Disorders (दैहिक विकार)",
+                en: "What is the primary cause of 'Internal Necrosis' (आंतरिक नेक्रोसिस/गलन) disorder in Amla?",
+                hi: "आँवले में आंतरिक नेक्रोसिस (गलन) रोग का प्रमुख कारण क्या है?",
+                options: ["Boron (B) deficiency (बोरॉन तत्व की कमी)", "Zinc deficiency", "Sulfur dioxide gas", "Copper deficiency"],
+                answer: 0,
+                hint: "Trace element starting with 'B'.",
+                expEn: "Internal necrosis in amla is caused by a deficiency of Boron (B).",
+                expHi: "आँवले में आंतरिक नेक्रोसिस (गलन) रोग का कारण बोरॉन (B) तत्व की कमी है।"
+            },
+            {
+                category: "Physiological Disorders",
+                en: "What causes 'Black Tip' (काला शिरा) disorder in Mango fruits?",
+                hi: "आम में काला शिरा (Black tip) रोग का प्रमुख कारण क्या है?",
+                options: ["Sulfur dioxide / brick kiln smoke (सल्फर डाई ऑक्साइड)", "Boron deficiency", "Zinc deficiency", "Calcium chloride"],
+                answer: 0,
+                hint: "Pollution from nearby brick kilns (भट्ठे का धुआँ).",
+                expEn: "Black tip in mangoes is physiologically caused by sulfur dioxide and toxic gases emitted from brick kilns.",
+                expHi: "आम में काला शिरा (Black tip) रोग का प्रमुख कारण सल्फर डाई ऑक्साइड (ईंट भट्ठों का धुआँ) है।"
+            },
+            {
+                category: "Physiological Disorders",
+                en: "What is the cause of 'Little Leaf' disorder in Mango?",
+                hi: "आम में लिटिल लीफ रोग का प्रमुख कारण क्या है?",
+                options: ["Zinc (Zn) deficiency (जिंक तत्व की कमी)", "Boron deficiency", "Copper deficiency", "Molybdenum deficiency"],
+                answer: 0,
+                hint: "Micronutrient Zn.",
+                expEn: "Little leaf in mango trees is induced by a deficiency of Zinc (Zn).",
+                expHi: "आम में लिटिल लीफ रोग का कारण जिंक (Zn) तत्व की कमी है।"
+            },
+            {
+                category: "Physiological Disorders",
+                en: "What is the cause of 'Hen and Chicken' disorder in Grapes?",
+                hi: "अंगूर में 'हेन एण्ड चिकन' रोग का मुख्य कारण क्या है?",
+                options: ["Boron (B) deficiency (बोरॉन तत्व की कमी)", "Zinc deficiency", "Copper deficiency", "Calcium deficiency"],
+                answer: 0,
+                hint: "Causes uneven berry size.",
+                expEn: "Hen and chicken disorder in grapes results from Boron deficiency, leading to uneven berry development.",
+                expHi: "अंगूर में 'हेन एण्ड चिकन' रोग का कारण बोरॉन (B) तत्व की कमी है।"
+            },
+
+            // Page 6 & 7 Questions (More Disorders, General Horticultural Facts)
+            {
+                category: "Physiological Disorders",
+                en: "What causes 'Dieback' disease in Citrus (Lemon/Lime)?",
+                hi: "नींबू में डाईबैक रोग का प्रमुख कारण क्या है?",
+                options: ["Copper (Cu) deficiency (कॉपर तत्व की कमी)", "Zinc deficiency", "Boron deficiency", "Iron deficiency"],
+                answer: 0,
+                hint: "Fungal/nutritional issue linked to copper.",
+                expEn: "Dieback in citrus plants is primarily caused by a deficiency of Copper (Cu).",
+                expHi: "नींबू में डाईबैक रोग का कारण कॉपर (Cu) तत्व की कमी है।"
+            },
+            {
+                category: "Physiological Disorders",
+                en: "What is the reason behind fruit cracking (फलों का फटना) in Pomegranate?",
+                hi: "अनार में फलों के फटने का प्रमुख कारण क्या है?",
+                options: ["Boron deficiency / moisture fluctuations (बोरॉन तत्व की कमी)", "Nitrogen excess", "Potassium surplus", "High humidity"],
+                answer: 0,
+                hint: "Micronutrient shortage or irregular irrigation.",
+                expEn: "Fruit cracking in pomegranates is caused by Boron deficiency and erratic watering cycles.",
+                expHi: "अनार में फलों के फटने का कारण बोरॉन तत्व की कमी है।"
+            },
+            {
+                category: "Physiological Disorders",
+                en: "What causes 'Water Core' disorder in Bananas?",
+                hi: "केले में वाटर कोर रोग का प्रमुख कारण क्या है?",
+                options: ["Sorbitol accumulation or ice/frost crystallization (सोरबिटोल के जमने या बर्फ के कण)", "Boron toxicity", "Excess calcium", "Copper deficiency"],
+                answer: 0,
+                hint: "Related to sorbitol and freezing conditions.",
+                expEn: "Water core in banana is triggered by sorbitol accumulation or ice/frost formation inside tissues.",
+                expHi: "केले में वाटर कोर रोग का कारण सोर्बिटोल के जमने या बर्फ के कण है।"
+            },
+            {
+                category: "General Horticulture Facts",
+                en: "Which fruit is known as the 'Tree of Heaven' (स्वर्ग का पेड़)?",
+                hi: "किस फल को 'स्वर्ग का पेड़' (Tree of Heaven) कहा जाता है?",
+                options: ["Banana (केला)", "Coconut", "Mango", "Papaya"],
+                answer: 0,
+                hint: "Called Kalpataru or paradise tree.",
+                expEn: "Banana is traditionally referred to as the Tree of Heaven or paradise tree.",
+                expHi: "स्वर्ग का पेड़ कहा जाता है – केले को।"
+            },
+            {
+                category: "General Horticulture Facts",
+                en: "Which fruit is known as 'Adam's Fig' (एडम्स फिग)?",
+                hi: "इनमें से किसे 'एडम्स फिग' (Adam's fig) कहा जाता है?",
+                options: ["Banana", "Fig", "Pineapple", "Date Palm"],
+                answer: 0,
+                hint: "Another name for banana.",
+                expEn: "Adam's Fig is another historical common name for Banana.",
+                expHi: "एडम्स फिग कहा जाता है – केला को।"
+            },
+            {
+                category: "General Horticulture Facts",
+                en: "Which fruit is titled the 'King of Arid Fruits' (शुष्क फलों का राजा)?",
+                hi: "शुष्क फलों का राजा (King of Arid Fruits) किसे कहा जाता है?",
+                options: ["Ber (बेर)", "Date Palm", "Amla", "Pomegranate"],
+                answer: 0,
+                hint: "Hardy dryland fruit with 2n = 48.",
+                expEn: "Ber (Indian jujube) is acclaimed as the King of Arid Fruits due to its drought tolerance.",
+                expHi: "शुष्क फलों का राजा – बेर (Ber) को कहा जाता है।"
+            },
+            {
+                category: "General Horticulture Facts",
+                en: "Which fruit is known as 'Indian Blackberry' (इंडियन ब्लैक बेरी)?",
+                hi: "इनमें से किसे 'इंडियन ब्लैक बेरी' (Indian Black Berry) कहा जाता है?",
+                options: ["Jamun (जामुन)", "Amla", "Ber", "Mulberry"],
+                answer: 0,
+                hint: "Dark purple summer fruit.",
+                expEn: "Jamun is popularly called the Indian Blackberry.",
+                expHi: "इंडियन ब्लैक बेरी कहा जाता है – जामुन को।"
+            },
+            {
+                category: "General Horticulture Facts",
+                en: "Which fruit is known as 'Indian Gooseberry' (इंडियन गूसबेरी)?",
+                hi: "इंडियन गूसबेरी (Indian Gooseberry) किसे कहा जाता है?",
+                options: ["Amla (आँवला)", "Jamun", "Ber", "Bael"],
+                answer: 0,
+                hint: "Extremely rich in vitamin C.",
+                expEn: "Amla is internationally known as the Indian Gooseberry.",
+                expHi: "इंडियन गूसबेरी कहा जाता है – आँवला को।"
+            },
+            {
+                category: "General Horticulture Facts",
+                en: "Which fruit is titled the 'King of Temperate Fruits' (शीतोष्ण फलों का राजा)?",
+                hi: "शीतोष्ण फलों का राजा (King of Temperate Fruits) किसे कहा जाता है?",
+                options: ["Apple (सेब)", "Pear", "Peach", "Plum"],
+                answer: 0,
+                hint: "Keeps the doctor away.",
+                expEn: "Apple is recognized as the King of Temperate Fruits.",
+                expHi: "शीतोष्ण फलों का राजा – सेब (Apple) को कहा जाता है।"
+            },
+            {
+                category: "General Horticulture Facts",
+                en: "Which fruit combination is known as the 'Queen of Fruits' (फलों की रानी)?",
+                hi: "फलों की रानी (Queen of Fruits) किसे कहा जाता है?",
+                options: ["Mangosteen (मैंगोस्टीन)", "Litchi (लीची)", "Plum", "Strawberry"],
+                answer: 0,
+                hint: "Tropical delicacy with white segmented flesh.",
+                expEn: "Mangosteen (and sometimes Litchi in regional texts) is titled the Queen of Fruits.",
+                expHi: "मैंगोस्टीन व फलों की रानी कहा जाता है – लीची / मैंगोस्टीन को।"
+            },
+
+            // Questions 61 to 100 (Continuing unique syllabus extraction from images)
+            {
+                category: "General Horticulture Facts",
+                en: "Which plant is called the 'Kalpavriksha' (कल्पवृक्ष फल)?",
+                hi: "किस पौधे/फल को 'कल्पवृक्ष फल' (Kalpavriksha) कहा जाता है?",
+                options: ["Coconut (नारियल)", "Date Palm", "Banana", "Mango"],
+                answer: 0,
+                hint: "Tree providing all necessities.",
+                expEn: "Coconut (Nariyal) is traditionally known as Kalpavriksha because every part of the tree is useful.",
+                expHi: "कल्पवृक्ष फल कहा जाता है – नारियल को।"
+            },
+            {
+                category: "General Horticulture Facts",
+                en: "What gives Apples their characteristic red color?",
+                hi: "सेब का रंग लाल किसके कारण होता है?",
+                options: ["Anthocyanin (एन्थ्रोसाइनिन / एन्थोसायनिन)", "Carotenoid", "Lycopene", "Chlorophyll"],
+                answer: 0,
+                hint: "Water-soluble flavonoid pigment.",
+                expEn: "The red pigment in apples is Anthocyanin.",
+                expHi: "सेब का रंग लाल एन्थोसायनिन (Anthocyanin) के कारण होता है।"
+            },
+            {
+                category: "Ripening Agents",
+                en: "Which gas is universally used artificially to ripen raw fruits?",
+                hi: "कच्चे फलों को पकाने के लिए किस गैस का उपयोग किया जाता है?",
+                options: ["Ethylene or Acetylene (एथलीन या ऐसीटिलीन)", "Carbon dioxide", "Oxygen", "Nitrogen"],
+                answer: 0,
+                hint: "Natural ripening hormone gas.",
+                expEn: "Ethylene gas (or acetylene gas from calcium carbide) is used for artificial ripening of raw fruits.",
+                expHi: "कच्चे फलों को पकाने के लिए एथलीन या ऐसीटिलीन गैस का उपयोग किया जाता है।"
+            },
+            {
+                category: "Ripening Agents",
+                en: "Which chemical compound is popularly known as 'Carbid' (कार्बाइड) used for fruit ripening?",
+                hi: "कच्चे फलों को पकाने में प्रयुक्त रासायनिक यौगिक 'कार्बाइड' का पूरा रासायनिक रूप क्या है?",
+                options: ["Calcium Carbide (कैल्शियम कार्बाइड)", "Calcium Chloride", "Calcium Nitrate", "Ethylene glycol"],
+                answer: 0,
+                hint: "Releases acetylene on contact with moisture.",
+                expEn: "Calcium carbide reacts with moisture to release acetylene gas used for commercial fruit ripening.",
+                expHi: "कच्चे फलों को पकाने में प्रयुक्त रसायन – कैल्शियम कार्बाइड (Carbide) है।"
+            },
+            {
+                category: "Enzymes & Composition",
+                en: "Which proteolytic enzyme is exclusively found in Papaya?",
+                hi: "'पेपेन' नामक प्रोटिएज एंजाइम किस फल में पाया जाता है?",
+                options: ["Papaya (पपीता)", "Pineapple", "Banana", "Mango"],
+                answer: 0,
+                hint: "Derived from latex.",
+                expEn: "Papain is a key proteolytic enzyme found abundantly in papaya latex.",
+                expHi: "'पेपेन' नामक प्रोटिएज एंजाइम पपीते में पाया जाता है।"
+            },
+            {
+                category: "Production Statistics",
+                en: "Which state in India has the highest production of Pineapple?",
+                hi: "देश में सर्वाधिक 'अनानास' (Pineapple) का उत्पादन किस राज्य में होता है?",
+                options: ["West Bengal (प. बंगाल)", "Kerala", "Assam", "Tripura"],
+                answer: 0,
+                hint: "Eastern state of India.",
+                expEn: "West Bengal leads in national pineapple production according to horticultural statistics.",
+                expHi: "देश में सर्वाधिक 'अनानास' का उत्पादन पश्चिम बंगाल (प. बंगाल) में होता है।"
+            },
+            {
+                category: "Global Rankings",
+                en: "What is India's global rank in the production of Coconut?",
+                hi: "नारियल के उत्पादन में भारत का विश्व में कौन सा स्थान है?",
+                options: ["First (प्रथम)", "Second", "Third", "Fifth"],
+                answer: 0,
+                hint: "Top rank worldwide.",
+                expEn: "India holds the 1st position globally in coconut production.",
+                expHi: "नारियल के उत्पादन में भारत का विश्व में प्रथम स्थान है।"
+            },
+            {
+                category: "Production Statistics",
+                en: "Which state in India leads in the total production of Grapes?",
+                hi: "देश में अंगूर का सर्वाधिक उत्पादन किस राज्य में होता है?",
+                options: ["Maharashtra (महाराष्ट्र)", "Punjab", "Karnataka", "Tamil Nadu"],
+                answer: 0,
+                hint: "Western state famous for vineyards (Nasik).",
+                expEn: "Maharashtra records the highest production of grapes in India.",
+                expHi: "देश में अंगूर का सर्वाधिक उत्पादन महाराष्ट्र में होता है।"
+            },
+            {
+                category: "Grape Varieties",
+                en: "Which grape variety yields fruit twice a year?",
+                hi: "अंगूर की कौन-सी किस्म साल में दो बार फल देती है?",
+                options: ["Bangalore Blue (बैंगलोर ब्लू)", "Anab-e-Shahi", "Gulabi", "Dilkush"],
+                answer: 0,
+                hint: "Popular regional grape variety in south India.",
+                expEn: "Bangalore Blue grape variety is known to bear fruit twice a year under southern climatic conditions.",
+                expHi: "अंगूर की बैंगलोर ब्लू किस्म साल में दो बार फल देती है।"
+            },
+            {
+                category: "Human Nutrition",
+                en: "According to dietary guidelines, how many grams of fruit should a healthy human consume daily?",
+                hi: "एक स्वस्थ मनुष्य को प्रतिदिन कितना फल लेना चाहिए?",
+                options: ["92 grams", "200 grams", "120 grams", "50 grams"],
+                answer: 0,
+                hint: "Specific recommended value around 90-100g.",
+                expEn: "Standard nutritional recommendation suggests a healthy individual consume about 92 grams of fruit daily.",
+                expHi: "एक स्वस्थ मनुष्य को प्रतिदिन 92 ग्राम फल लेना चाहिए।"
+            },
+            {
+                category: "Post-Harvest Management",
+                en: "To keep harvested fruits safe, moisture content should ideally not exceed what percentage?",
+                hi: "फलों को सुरक्षित रखने के लिए नमी की मात्रा कितने प्रतिशत से अधिक नहीं होनी चाहिए?",
+                options: ["20-24%", "10-12%", "30-35%", "40-50%"],
+                answer: 0,
+                hint: "Roughly 20 to 24 percent.",
+                expEn: "Post-harvest safety requires that moisture levels do not exceed 20-24% in dried/preserved fruit products.",
+                expHi: "फलों को सुरक्षित रखने के लिए नमी की मात्रा 20-24% से अधिक नहीं होनी चाहिए।"
+            },
+            {
+                category: "Superlatives",
+                en: "Which is the largest fruit that grows on tree branches/trunks (Cauliflowery)?",
+                hi: "सबसे बड़ा फल जो पौधों के तनों पर लगता है, वह कौन सा है?",
+                options: ["Jackfruit (कटहल)", "Pumpkin", "Watermelon", "Papaya"],
+                answer: 0,
+                hint: "Caulififlory fruit with spiky skin.",
+                expEn: "Jackfruit (कटहल) is the largest tree-borne fruit in the world.",
+                expHi: "सबसे बड़ा फल जो पौधों के तनों पर लगता है – कटहल (Jackfruit) है।"
+            },
+            {
+                category: "Plant Hormones",
+                en: "Which plant hormone is commonly applied to induce seedless fruit development (Parthenocarpy)?",
+                hi: "बीजरहित फल (पार्थेनोकार्पी) बनाने में किस हॉर्मोन का प्रयोग किया जाता है?",
+                options: ["Auxin (ऑक्सीजन / ऑक्सिन)", "Gibberellin", "Cytokinin", "Abscisic Acid"],
+                answer: 0,
+                hint: "Primary root/shoot growth hormone.",
+                expEn: "Auxins are widely applied to stimulate artificial parthenocarpy (seedless fruit production).",
+                expHi: "बीजरहित फल बनाने में ऑक्सीजन (ऑक्सिन - Auxin) हॉर्मोन का प्रयोग किया जाता है।"
+            },
+            {
+                category: "Propagation Techniques",
+                en: "What is the technique of developing plants without seeds inside a laboratory medium called?",
+                hi: "बिना बीज के फलों को विकसित करने की तकनीक को क्या कहा जाता है?",
+                options: ["Tissue Culture (टिशू कल्चर)", "Grafting", "Layering", "Budding"],
+                answer: 0,
+                hint: "Micropropagation using cells/tissues.",
+                expEn: "Plant tissue culture is the micropropagation technique used to regenerate plants aseptically.",
+                expHi: "बिना बीज के फलों को विकसित करने की तकनीक को टिशू कल्चर (Tissue Culture) कहा जाता है।"
+            },
+            {
+                category: "General Biology",
+                en: "Which plant type produces seeds but does not bear true edible fleshy fruit?",
+                hi: "कौन-सा पौधा, फल नहीं देता है, परन्तु बीज पैदा करता है?",
+                options: ["Gymnosperms like Cycas / Pine (साइकेस / पाइनस)", "Angiosperms", "Ferns", "Mosses"],
+                answer: 0,
+                hint: "Non-flowering seed plants.",
+                expEn: "Gymnosperms (such as Cycas or Pine) produce exposed seeds rather than true fruits.",
+                expHi: "साइकेस (या पाइनस) ऐसा पौधा है जो फल नहीं देता, परंतु बीज पैदा करता है।"
+            },
+            {
+                category: "Byproducts & Uses",
+                en: "Billiards balls (बिलियर्ड्स की गेंद) are traditionally manufactured using cellulose derived from which plant?",
+                hi: "बिलियर्ड्स की गेंद किस पौधे के सेल्युलोज से बनाई जाती है?",
+                options: ["Date Palm (खजूर पौधे के सेल्युलोज से)", "Coconut", "Bamboo", "Cotton"],
+                answer: 0,
+                hint: "Palm family plant whose trunk yields strong fiber.",
+                expEn: "Cellulose derived from date palm parts has historically been used in making specialized items like billiard balls.",
+                expHi: "बिलियर्ड्स की गेंद खजूर पौधे के सेल्युलोज से बनाई जाती है।"
+            },
+            {
+                category: "Terminology",
+                en: "What is the specialized scientific study and cultivation of fruits called?",
+                hi: "फलों की कृषि या वैज्ञानिक अध्ययन क्या कहलाता है?",
+                options: ["Pomology (पोमोलॉजि / उद्यान विज्ञान)", "Olericulture", "Floriculture", "Agronomy"],
+                answer: 0,
+                hint: "Branch of horticulture dealing with fruit crops.",
+                expEn: "Pomology is the branch of horticulture concerned with the science and cultivation of fruits.",
+                expHi: "फलों की कृषि या वैज्ञानिक अध्ययन पोमोलॉजि (Pomology) कहलाता है।"
+            },
+            {
+                category: "Fruit Taste Attributes",
+                en: "What chemical compound is primarily responsible for the sweet taste in fruits?",
+                hi: "फलों के मीठे स्वाद का मुख्य कारण क्या होता है?",
+                options: ["Fructose (फ्रक्टोज शर्करा)", "Sucrose", "Glucose", "Maltose"],
+                answer: 0,
+                hint: "Fruit sugar.",
+                expEn: "Fructose is the primary natural fruit sugar responsible for sweetness.",
+                expHi: "फलों के मीठे स्वाद का कारण फ्रक्टोज (Fructose) शर्करा है।"
+            },
+            {
+                category: "Fruit Classification",
+                en: "Which of the following is a classic example of a True Fruit vs False Fruit (असली फल व नकली फल)?",
+                options: ["Cashew / Cashew nut (काजू)", "Apple", "Strawberry", "Pineapple"],
+                answer: 0,
+                hint: "Pedicel/thalamus swelling with nut outside.",
+                expEn: "Cashew is a classic textbook example highlighting true vs false fruit characteristics where the peduncle swells.",
+                expHi: "असली फल व नकली फल का उदाहरण काजू (Cashew) है।"
+            },
+            {
+                category: "Organic Acids",
+                en: "Which organic acid is predominantly found in Apples and Bananas?",
+                hi: "सेव व केले में कौन सा अम्ल पाया जाता है?",
+                options: ["Malic acid (मैलिक अम्ल)", "Citric acid", "Tartaric acid", "Acetic acid"],
+                answer: 0,
+                hint: "Found abundantly in pome fruits.",
+                expEn: "Malic acid is the predominant organic acid present in apples and bananas.",
+                expHi: "सेब व केले में मैलिक अम्ल (Malic acid) पाया जाता है।"
+            },
+            {
+                category: "Organic Acids",
+                en: "Citric acid is predominantly found in which group of fruits?",
+                hi: "साइट्रिक अम्ल मुख्य रूप से किन फलों में पाया जाता है?",
+                options: ["Citrus / Lemon, Ber, Guava, Pear (नींबू, बेरी, अमरूद, नाशपाती)", "Tamarind, Grapes", "Apple, Banana", "Plum, Cherry"],
+                answer: 0,
+                hint: "Sour citrus fruits and stone fruits.",
+                expEn: "Citric acid is found in citrus fruits like lemon, ber, guava, and pear.",
+                expHi: "साइट्रिक अम्ल - नींबू, बेरी, अमरूद, नाशपाती में पाया जाता है।"
+            },
+            {
+                category: "Organic Acids",
+                en: "Tartaric acid is characteristic of which fruits?",
+                hi: "टार्टरिक अम्ल किस फल में प्रमुखता से पाया जाता है?",
+                options: ["Tamarind and Grapes (इमली, अंगूर)", "Lemon and Ber", "Apple and Banana", "Mango and Papaya"],
+                answer: 0,
+                hint: "Found in wine grapes and sour tamarind.",
+                expEn: "Tartaric acid is naturally abundant in tamarind and grapes.",
+                expHi: "टार्टरिक अम्ल - इमली, अंगूर में पाया जाता है।"
+            },
+            {
+                category: "Papaya Cultivation",
+                en: "What is the recommended percentage ratio of male-to-female plants required in a papaya field?",
+                hi: "पपीते की खेती के लिए कितने प्रतिशत नर पौधों का खेत में होना जरूरी है?",
+                options: ["10 percent", "50 percent", "25 percent", "2 percent"],
+                answer: 0,
+                hint: "One-tenth for pollination.",
+                expEn: "Approximately 10% male plants are required in dioecious papaya orchards for proper pollination and fruit setting.",
+                expHi: "पपीते की खेती के लिए 10 प्रतिशत नर पौधों का होना जरूरी है।"
+            },
+            {
+                category: "Post-Harvest Treatment",
+                en: "Which chemical compound is widely used to prevent rapid spoilage and rotting of harvested fruits and vegetables?",
+                hi: "फलों/सब्जियों को जल्दी खराब होने से बचाने के लिए किसका उपयोग किया जाता है?",
+                options: ["Calcium chloride (कैल्शियम क्लोराइड)", "Sodium chloride", "Calcium carbide", "Ethylene"],
+                answer: 0,
+                hint: "Firming agent salt.",
+                expEn: "Calcium chloride treatments help maintain firmness and prevent rapid decay in harvested produce.",
+                expHi: "फलों/सब्जियों को जल्दी खराब होने से बचाने के लिए कैल्शियम क्लोराइड का उपयोग किया जाता है।"
+            },
+            {
+                category: "Mango Varieties",
+                en: "Amrapali mango variety is a cross between which parents?",
+                hi: "आम की 'आम्रपाली' किस्म किन दो किस्मों का संकर है?",
+                options: ["Dashehari × Neelum", "Neelum × Alphonso", "Chausa × Totapuri", "Banganpalli × Safeda"],
+                answer: 0,
+                hint: "Dwarf regular-bearing hybrid (Dashehari × Neelum).",
+                expEn: "Amrapali is a hybrid resulting from the cross of Dashehari × Neelum, ideal for high-density planting.",
+                expHi: "आम्रपाली किस्म दशहरी × नीलम का संकर है।"
+            },
+            {
+                category: "Mango Varieties",
+                en: "Mallika mango variety is a hybrid derived from which parent combination?",
+                hi: "आम की 'मल्लिका' किस्म किन किस्मों का संकर है?",
+                options: ["Neelum × Dashehari", "Alphonso × Neelum", "Chausa × Alphonso", "Amrapali × Ratna"],
+                answer: 0,
+                hint: "Reverse cross of Amrapali.",
+                expEn: "Mallika is bred from the cross of Neelum × Dashehari.",
+                expHi: "मल्लिका किस्म नीलम × दशहरी का संकर है।"
+            },
+            {
+                category: "Citrus Varieties",
+                en: "Kinnow is a hybrid mandarin developed by crossing which two citrus species?",
+                hi: "किन्नू (Kinnow) किन दो संतरा/सिट्रस प्रजातियों का संकर है?",
+                options: ["King × Willow Leaf (किंग व विलोलीफ)", "Mandarin × Sweet Orange", "Lime × Lemon", "Grapefruit × Pomelo"],
+                answer: 0,
+                hint: "Developed by H.B. Frost.",
+                expEn: "Kinnow is a hybrid between King (Citrus nobilis) and Willow Leaf (Citrus deliciosa) mandarin.",
+                expHi: "किंग तथा विलोलीफ से संतरे की संकर किस्म 'किन्नू' बनाई गई है।"
+            },
+            {
+                category: "Banana Varieties",
+                en: "Which banana variety is known for wind-resistance and high yield in commercial cultivation?",
+                hi: "व्यापारीक स्तर पर उगाई जाने वाली कौन सी केले की किस्म हवा के प्रति सहनशील है?",
+                options: ["Basrai Dwarf", "Poovan", "Rasthali", "Kunan"],
+                answer: 0,
+                hint: "Short statured variety.",
+                expEn: "Basrai Dwarf is widely grown due to its dwarf stature protecting it against strong winds.",
+                expHi: "बसाई ड्वार्फ (Basrai dwarf) केले की एक प्रमुख व्यावसायिक और कम ऊँचाई वाली किस्म है।"
+            },
+            {
+                category: "Guava Varieties",
+                en: "Lucknow-49 (popularly known as Sardar) guava is recognized for what feature?",
+                hi: "लखनऊ-49 (सरदार) अमरूद की किस्म की मुख्य विशेषता क्या है?",
+                options: ["Heavy yielding with white flesh and soft seeds", "Pink pulp", "Seedless fruit", "Prone to heavy wilting"],
+                answer: 0,
+                hint: "Popular selection from L-49.",
+                expEn: "Lucknow-49 (Sardar) is a prolific bearer with white, thick flesh and excellent quality.",
+                expHi: "लखनऊ-49 (सरदार) अमरूद की अधिक उपज देने वाली और सफेद गूदे वाली प्रसिद्ध किस्म है।"
+            },
+            {
+                category: "Papaya Varieties",
+                en: "Pusa Majesty and Pusa Dwarf are well-known varieties of which fruit crop?",
+                hi: "पूसा मैजेस्टी और पूसा ड्वार्फ किस फल की प्रसिद्ध किस्में हैं?",
+                options: ["Papaya (पपीता)", "Mango", "Guava", "Banana"],
+                answer: 0,
+                hint: "Family Caricaceae crop.",
+                expEn: "Pusa Majesty and Pusa Dwarf are prominent papaya varieties released by IARI.",
+                expHi: "पूसा मैजेस्टी और पूसा ड्वार्फ पपीते की उन्नत किस्में हैं।"
+            },
+            {
+                category: "Ber Varieties",
+                en: "Umran and Gola are famous commercial varieties of which fruit?",
+                hi: "उम्रान (Umran) और गोला किस फल की प्रसिद्ध उन्नत किस्में हैं?",
+                options: ["Ber (बेर)", "Guava", "Amla", "Pomegranate"],
+                answer: 0,
+                hint: "Arid fruit with high vitamin C.",
+                expEn: "Umran and Gola are top-performing commercial cultivars of Indian Ber.",
+                expHi: "उम्रान और गोला बेर की प्रसिद्ध उन्नत किस्में हैं।"
+            },
+            {
+                category: "Amla Varieties",
+                en: "Chakaiya and Banarasi are prominent cultivated varieties of which fruit?",
+                hi: "चक्काया और बनारसी किस फल की प्रमुख उन्नत किस्में हैं?",
+                options: ["Amla (आँवला)", "Ber", "Guava", "Bael"],
+                answer: 0,
+                hint: "Indian gooseberry varieties.",
+                expEn: "Chakaiya, Banarasi, and Francis are classic cultivars of Amla.",
+                expHi: "चक्काया और बनारसी आँवले की प्रमुख उन्नत किस्में हैं।"
+            },
+            {
+                category: "Pomegranate Varieties",
+                en: "Bhagwa and Ganesh are leading commercial varieties of which fruit?",
+                hi: "भगवा और गणेश किस फल की शीर्ष व्यावसायिक किस्में हैं?",
+                options: ["Pomegranate (अनार)", "Guava", "Grapes", "Citrus"],
+                answer: 0,
+                hint: "Deep red arils, rich in iron and calcium.",
+                expEn: "Bhagwa and Ganesh are premium pomegranate varieties grown extensively for export and domestic markets.",
+                expHi: "भगवा और गणेश अनार की शीर्ष व्यावसायिक किस्में हैं।"
+            },
+            {
+                category: "Date Palm Varieties",
+                en: "Halawy and Khadrawy are elite cultivars belonging to which fruit tree?",
+                hi: "हलावी (Halawy) और खदरावी (Khadrawy) किस फल के उत्कृष्ट cultivar हैं?",
+                options: ["Date Palm (खजूर)", "Pomegranate", "Grapes", "Bael"],
+                answer: 0,
+                hint: "Grown in arid climates for sweet dates.",
+                expEn: "Halawy and Khadrawy are standard soft date palm cultivars introduced into arid zones.",
+                expHi: "हलावी और खदरावी खजूर की उत्कृष्ट किस्में हैं।"
+            },
+            {
+                category: "General Fruit Science",
+                en: "What is the primary objective of training and pruning in fruit crops?",
+                hi: "फल वृक्षों में प्रूनिंग (छांट-छांट) का मुख्य उद्देश्य क्या होता है?",
+                options: ["To maximize sunlight penetration and improve fruit quality", "To increase plant height indefinitely", "To stop flowering permanently", "To prevent pest attacks completely"],
+                answer: 0,
+                hint: "Enhances canopy architecture and yield.",
+                expEn: "Pruning regulates canopy architecture, light interception, and enhances overall fruit quality and yield.",
+                expHi: "प्रूनिंग का मुख्य उद्देश्य पौधों को उचित आकार देना, सूर्य का प्रकाश बढ़ाना और फल की गुणवत्ता सुधारना है।"
+            },
+            {
+                category: "General Plant Propagation",
+                en: "Inarching (approach grafting) is a traditional propagation method most commonly practiced in which fruit tree?",
+                hi: "इनार्चिंग (अप्रोच ग्राफ्टिंग) विधि मुख्य रूप से किस फल वृक्ष में सर्वाधिक अपनाई जाती है?",
+                options: ["Mango (आम)", "Papaya", "Banana", "Grapes"],
+                answer: 0,
+                hint: "Traditional propagation for stone fruit king.",
+                expEn: "Inarching has been the classic traditional method for multiplying true-to-type mango plants.",
+                expHi: "इनार्चिंग (Approach grafting) विधि मुख्य रूप से आम में अपनाई जाती है।"
+            },
+            {
+                category: "Climatic Classifications",
+                en: "Which group of fruits thrives best under tropical and subtropical climatic conditions with warm temperatures?",
+                hi: "कौन से फल उष्ण व उपोष्ण (Tropical & Subtropical) जलवायु के लिए सबसे उपयुक्त माने जाते हैं?",
+                options: ["Mango, Banana, Papaya, Guava", "Apple, Pear, Walnut", "Cherry, Strawberry", "Almond, Peach"],
+                answer: 0,
+                hint: "Crops covered extensively in the syllabus pages.",
+                expEn: "Mango, banana, papaya, and guava are classic tropical/subtropical fruit species.",
+                expHi: "आम, केला, पपीता और अमरूद उष्ण व उपोष्ण जलवायु के प्रमुख फल हैं।"
+            },
+            {
+                category: "Botanical Families",
+                en: "To which botanical family does the Papaya plant belong?",
+                hi: "पपीता का वानस्पतिक कुल (Family) कौन सा है?",
+                options: ["Caricaceae (केरीकेसी)", "Rutaceae", "Myrtaceae", "Vitaceae"],
+                answer: 0,
+                hint: "Genus Carica.",
+                expEn: "Papaya belongs to the Caricaceae family.",
+                expHi: "पपीते का वानस्पतिक कुल केरीकेसी (Caricaceae) है।"
+            },
+            {
+                category: "Botanical Families",
+                en: "What is the plant family for Guava?",
+                hi: "अमरूद का वानस्पतिक कुल (Family) क्या है?",
+                options: ["Myrtaceae (मर्टेसी)", "Rutaceae", "Musaceae", "Anacardiaceae"],
+                answer: 0,
+                hint: "Same family as Jamun/Eucalyptus.",
+                expEn: "Guava belongs to the Myrtaceae family.",
+                expHi: "अमरूद का वानस्पतिक कुल मर्टेसी (Myrtaceae) है।"
+            },
+            {
+                category: "Botanical Families",
+                en: "Which family does the Grapevine (Vitis vinifera) belong to?",
+                hi: "अंगूर किस वानस्पतिक कुल से संबंधित है?",
+                options: ["Vitaceae (विटेसी)", "Punicaceae", "Euphorbiaceae", "Rhamnaceae"],
+                answer: 0,
+                hint: "Family name derived from Vitis.",
+                expEn: "Grapes belong to the Vitaceae family.",
+                expHi: "अंगूर विटेसी (Vitaceae) कुल से संबंधित है।"
+            },
+            {
+                category: "Botanical Families",
+                en: "What is the botanical family of Pomegranate?",
+                hi: "अनार का वानस्पतिक कुल (Family) कौन सा है?",
+                options: ["Punicaceae (पुनिकेसी / पुमिकेसी)", "Caricaceae", "Musaceae", "Arecaceae"],
+                answer: 0,
+                hint: "Derived from Punica granatum.",
+                expEn: "Pomegranate belongs to the Punicaceae family.",
+                expHi: "अनार पुनिकेसी (Punicaceae) कुल से संबंधित है।"
+            },
+            {
+                category: "Botanical Families",
+                en: "To which family does Date Palm belong?",
+                hi: "खजूर का वानस्पतिक कुल (Family) क्या है?",
+                options: ["Arecaceae / Palmae (पामी या एरेकेसी)", "Rutaceae", "Myrtaceae", "Vitaceae"],
+                answer: 0,
+                hint: "Palm family.",
+                expEn: "Date Palm belongs to the Arecaceae (formerly Palmae) family.",
+                expHi: "खजूर पामी या एरेकेसी (Arecaceae) कुल से संबंधित है।"
+            },
+            {
+                category: "Fruit Anatomy",
+                en: "What is the edible part of a Pomegranate fruit?",
+                hi: "अनार का खाने योग्य भाग कौन सा होता है?",
+                options: ["Juicy Seed Coat / Aril (बीज आवरण / एरिल)", "Mesocarp", "Thalamus", "Endocarp"],
+                answer: 0,
+                hint: "Juicy outer seed coat layer.",
+                expEn: "The juicy seed coat or Aril (बीज आवरण) is the edible portion of a pomegranate.",
+                expHi: "अनार का खाने योग्य भाग बीज आवरण (Aril) होता है।"
+            },
+            {
+                category: "Fruit Anatomy",
+                en: "What is the edible part of a Date Palm fruit?",
+                hi: "खजूर का खाने योग्य भाग कौन सा होता है?",
+                options: ["Fruit Wall / Pericarp (फल भित्ति)", "Aril", "Endosperm", "Placental hairs"],
+                answer: 0,
+                hint: "Pericarp layer.",
+                expEn: "The pericarp (फल भित्ति) is the edible portion of dates.",
+                expHi: "खजूर का खाने योग्य भाग फल भित्ति (Pericarp) होता है।"
+            },
+            {
+                category: "Fruit Anatomy",
+                en: "What is the edible part of Grapes?",
+                hi: "अंगूर का खाने योग्य भाग कौन सा होता है?",
+                options: ["Pericarp and Placenta (फल भित्ति व प्लेसेन्टा)", "Mesocarp only", "Aril", "Endocarp"],
+                answer: 0,
+                hint: "Outer and middle wall plus placenta.",
+                expEn: "Pericarp and Placenta constitute the edible part of grapes.",
+                expHi: "अंगूर का खाने योग्य भाग फल भित्ति व प्लेसेन्टा है।"
+            },
+            {
+                category: "Fruit Anatomy",
+                en: "What is the edible part of Amla?",
+                hi: "आँवले का खाने योग्य भाग कौन सा होता है?",
+                options: ["Pericarp (फल भित्ति)", "Mesocarp", "Aril", "Thalamus"],
+                answer: 0,
+                hint: "Fleshy fruit wall.",
+                expEn: "Pericarp (फल भित्ति) is the edible fleshy part of Amla.",
+                expHi: "आँवले का खाने योग्य भाग फल भित्ति (Pericarp) है।"
+            },
+            {
+                category: "Fruit Anatomy",
+                en: "What is the edible part of Bael fruit?",
+                hi: "बेल (Bael) का खाने योग्य भाग कौन सा होता है?",
+                options: ["Fleshy Placenta / Placentae (रसीला प्लेसेन्टा)", "Epicarp", "Seed coat", "Stone"],
+                answer: 0,
+                hint: "Mucilaginous juicy pulp inside.",
+                expEn: "The fleshy/juicy placenta is consumed in Bael fruit.",
+                expHi: "बेल का खाने योग्य भाग रसीला प्लेसेन्टा होता है।"
+            },
+            {
+                category: "Exam Fact Check",
+                en: "Which state ranks first in overall fruit production in India?",
+                hi: "भारत में कुल फल उत्पादन में कौन सा राज्य प्रथम स्थान पर है?",
+                options: ["Andhra Pradesh / Maharashtra", "Haryana", "Punjab", "Kerala"],
+                answer: 0,
+                hint: "Major southern/western horticultural hub.",
+                expEn: "States like Andhra Pradesh and Maharashtra alternate at the top for national fruit production metrics in competitive exams.",
+                expHi: "भारत में कुल फल उत्पादन में आंध्र प्रदेश / महाराष्ट्र अग्रणी राज्यों में आते हैं।"
+            },
+            {
+                category: "Exam Fact Check",
+                en: "What is the primary purpose of adding gypsum or amendments to sodic soils in fruit orchards?",
+                hi: "फल उद्यानों में sodic (क्षारीय) भूमि सुधार के लिए मुख्य रूप से किसका प्रयोग किया जाता है?",
+                options: ["Gypsum (जिप्सम)", "Urea", "Potash", "Lime"],
+                answer: 0,
+                hint: "Calcium sulfate source for reclamation.",
+                expEn: "Gypsum is the classic chemical amendment used to reclaim sodic and saline soils.",
+                expHi: "क्षारीय भूमियों के सुधार के लिए जिप्सम का प्रयोग किया जाता है।"
+            },
+            {
+                category: "Exam Fact Check",
+                en: "Mango malformation (मालफॉर्मेशन) is recognized as one of the most destructive diseases affecting which crop?",
+                hi: "मालफॉर्मेशन आम की सबसे विनाशकारी बीमारी है, यह किससे संबंधित है?",
+                options: ["Mango (आम)", "Banana", "Papaya", "Citrus"],
+                answer: 0,
+                hint: "Floral and vegetative malformation in mango.",
+                expEn: "Mango malformation is a severe physiological/fungal disorder specific to mango crops.",
+                expHi: "मालफॉर्मेशन आम की सबसे विनाशकारी बीमारी है।"
+            },
+            {
+                category: "Exam Fact Check",
+                en: "Panama wilt and Sigatoka are major destructive diseases affecting which fruit crop?",
+                hi: "पनामा और सिगाटोगा (Sigatoka) रोग किस फसल की मुख्य समस्या हैं?",
+                options: ["Banana (केला)", "Papaya", "Grapes", "Guava"],
+                answer: 0,
+                hint: "Triploid fruit crop diseases.",
+                expEn: "Panama wilt and Sigatoka leaf spot are major pathological threats in banana cultivation.",
+                expHi: "पनामा, सिगाटोगा, मौकों, बंचीटॉप केले के प्रमुख रोग हैं।"
+            },
+            {
+                category: "Exam Fact Check",
+                en: "Wilt (उखटा रोग) is considered the primary and most serious disease affecting which orchard crop?",
+                hi: "उखटा रोग (Wilt) किस फल की मुख्य और गंभीर समस्या है?",
+                options: ["Guava (अमरूद)", "Mango", "Ber", "Citrus"],
+                answer: 0,
+                hint: "Fungal vascular wilt in guava.",
+                expEn: "Wilt (Fusarium oxysporum) is the primary destructive disease affecting guava orchards.",
+                expHi: "अमरूद की मुख्य समस्या उखटा (Wilt) रोग है।"
+            },
+            {
+                category: "Exam Fact Check",
+                en: "What is the ideal tree spacing recommended for planting Papaya orchards?",
+                hi: "पपीते में पौधे से पौधे की दूरी (Spacing) सामान्यतः कितनी रखी जाती है?",
+                options: ["3 × 3 meters", "10 × 10 meters", "1 × 1 meter", "6 × 6 meters"],
+                answer: 0,
+                hint: "Standard medium spacing for quick crops.",
+                expEn: "Papaya is planted at a standard square spacing of 3 × 3 meters.",
+                expHi: "पपीते में पौध रोपण का अन्तर 3 × 3 मीटर होना चाहिए।"
+            },
+            {
+                category: "Exam Fact Check",
+                en: "What is the chromosome number configuration of Guava?",
+                hi: "अमरूद में गुणसूत्र संख्या 2n कितनी होती है?",
+                options: ["2n = 2x = 22", "2n = 18", "2n = 40", "2n = 36"],
+                answer: 0,
+                hint: "2n = 22.",
+                expEn: "Guava has a diploid chromosome count of 2n = 2x = 22.",
+                expHi: "अमरूद में गुणसूत्र संख्या 2n = 2x = 22 होती है।"
+            },
+            {
+                category: "Exam Fact Check",
+                en: "What is the chromosome number configuration of Amla?",
+                hi: "आँवले में गुणसूत्र संख्या 2n कितनी होती है?",
+                options: ["2n = 2x = 28", "2n = 18", "2n = 22", "2n = 40"],
+                answer: 0,
+                hint: "2n = 28.",
+                expEn: "Amla has a somatic chromosome number of 2n = 2x = 28.",
+                expHi: "आँवले में गुणसूत्र संख्या 2n = 2x = 28 होती है।"
+            },
+            {
+                category: "Exam Fact Check",
+                en: "Which fruit is known as the 'Indian Black Berry' and belongs to family Myrtaceae?",
+                hi: "भारतीय ब्लैक बेरी (जामुन) का वानस्पतिक कुल कौन सा है?",
+                options: ["Myrtaceae (मर्टेसी)", "Rutaceae", "Caricaceae", "Vitaceae"],
+                answer: 0,
+                hint: "Syzygium cumini family.",
+                expEn: "Jamun belongs to the Myrtaceae family.",
+                expHi: "जामुन मर्टेसी कुल से संबंधित है।"
+            },
+            {
+                category: "Exam Fact Check",
+                en: "What is the origin place of Papaya according to standard horticultural texts?",
+                hi: "पपीते का उद्गम स्थल (Origin) कहाँ माना जाता है?",
+                options: ["Tropical America / Mexico (उष्ण कटिबंधीय अमेरिका)", "India", "China", "Iran"],
+                answer: 0,
+                hint: "Central/Tropical America.",
+                expEn: "Papaya originated in Tropical America (Mexico).",
+                expHi: "पपीते का उद्गम स्थल उष्ण कटिबंधीय अमेरिका (मेक्सिको) है।"
+            },
+            {
+                category: "Exam Fact Check",
+                en: "What is the origin place of Ber (Indian Jujube)?",
+                hi: "बेर का उद्गम स्थल (Origin) कहाँ माना जाता है?",
+                options: ["India (भारत)", "Mexico", "China", "Iran"],
+                answer: 0,
+                hint: "Native to South Asia / India.",
+                expEn: "Indian Ber is native to India.",
+                expHi: "बेर का उद्गम स्थल भारत (India) है।"
+            },
+            {
+                category: "Exam Fact Check",
+                en: "What is the origin place of Guava?",
+                hi: "अमरूद का उद्गम स्थल (Origin) कहाँ माना जाता है?",
+                options: ["Mexico / Peru (मैक्सिको पेरू)", "India", "China", "Iran"],
+                answer: 0,
+                hint: "Neotropical origin.",
+                expEn: "Guava originated in tropical America, specifically Mexico to Peru.",
+                expHi: "अमरूद का उद्गम स्थल मैक्सिको पेरू (Mexico to Peru) है।"
+            },
+            {
+                category: "Exam Fact Check",
+                en: "What percentage of male plants is recommended in papaya cultivation when using regular seed propagation?",
+                hi: "पपीते की खेती में नर पौधों का प्रतिशत सुरक्षित रखने के लिए क्या प्रावधान है?",
+                options: ["10% male plants for pollination", "50% male plants", "No male plants needed", "100% male plants"],
+                answer: 0,
+                hint: "About 1 in 10 plants.",
+                expEn: "In dioecious papaya varieties grown from seeds, roughly 10% male trees are retained for adequate pollination.",
+                expHi: "पपीते में परागण हेतु लगभग 10% नर पौधे रखने चाहिए।"
+            },
+            {
+                category: "Exam Fact Check",
+                en: "Which fruit is well known for containing high amounts of pectin, making it ideal for jelly making?",
+                hi: "किस फल में प्रचुर मात्रा में पेक्टिन पाया जाने के कारण उसकी जेली सबसे उत्तम बनती है?",
+                options: ["Guava (अमरूद)", "Banana", "Papaya", "Grapes"],
+                answer: 0,
+                hint: "Rich pectin source fruit.",
+                expEn: "Guava is exceptionally rich in pectin, which forms a firm gel structure ideal for jelly preparation.",
+                expHi: "अमरूद में पेक्टिन की प्रचुरता के कारण गुणवत्ता युक्त जेली बनाई जाती है।"
+            },
+            {
+                category: "Exam Fact Check",
+                en: "What is the approximate optimum temperature range for growing Guava successfully?",
+                hi: "अमरूद की खेती के लिए उपयुक्त तापमान कितना होना चाहिए?",
+                options: ["23 - 28 °C", "10 - 15 °C", "38 - 45 °C", "5 - 10 °C"],
+                answer: 0,
+                hint: "Subtropical warmth.",
+                expEn: "An optimum temperature range of 23-28 °C is ideal for successful guava production.",
+                expHi: "अमरूद के लिए उचित तापमान 23-28 °C होना चाहिए।"
+            },
+            {
+                category: "Exam Fact Check",
+                en: "What is the chromosome number (2n) of Citrus species (Mandarin, Sweet Orange, Lime)?",
+                hi: "सिट्रस प्रजातियों (जैसे संतरा, नींबू) में गुणसूत्र संख्या 2n कितनी होती है?",
+                options: ["2n = 18", "2n = 22", "2n = 36", "2n = 40"],
+                answer: 0,
+                hint: "x = 9, so 2n = 18.",
+                expEn: "Citrus species are diploid with 2n = 2x = 18 chromosomes.",
+                expHi: "सिट्रस फलों में गुणसूत्र संख्या 2n = 18 होती है।"
+            }
+        ];
+
+        let currentIndex = 0;
+        let score = 0;
+        let userAnswers = new Array(quizData.length).fill(null);
+
+        const questionCounter = document.getElementById('question-counter');
+        const questionCategory = document.getElementById('question-category');
+        const questionTextEn = document.getElementById('question-text-en');
+        const questionTextHi = document.getElementById('question-text-hi');
+        const optionsContainer = document.getElementById('options-container');
+        const hintBtn = document.getElementById('hint-btn');
+        const hintBox = document.getElementById('hint-box');
+        const explanationBox = document.getElementById('explanation-box');
+        const explanationTitle = document.getElementById('explanation-title');
+        const explanationTextEn = document.getElementById('explanation-text-en');
+        const explanationTextHi = document.getElementById('explanation-text-hi');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const scoreDisplay = document.getElementById('score-display');
+        const progressBar = document.getElementById('progress-bar');
+        const jumpInput = document.getElementById('jump-input');
+
+        function loadQuestion() {
+            const q = quizData[currentIndex];
+            questionCounter.textContent = `Question ${currentIndex + 1} of ${quizData.length}`;
+            questionCategory.textContent = q.category;
+            questionTextEn.textContent = `${currentIndex + 1}. ${q.en}`;
+            questionTextHi.textContent = q.hi;
+
+            // Reset Hint & Explanation
+            hintBox.classList.add('hidden');
+            hintBox.textContent = q.hint;
+            explanationBox.classList.add('hidden');
+
+            // Render Options
+            optionsContainer.innerHTML = '';
+            q.options.forEach((option, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left px-4 py-3 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 font-medium text-slate-700 transition flex items-center justify-between group";
+                
+                const spanText = document.createElement('span');
+                spanText.textContent = `${String.fromCharCode(65 + idx)}. ${option}`;
+                btn.appendChild(spanText);
+
+                const hasAnswered = userAnswers[currentIndex] !== null;
+                
+                if (hasAnswered) {
+                    btn.disabled = true;
+                    if (idx === q.answer) {
+                        btn.classList.add('bg-emerald-50', 'border-emerald-300', 'text-emerald-900');
+                    } else if (userAnswers[currentIndex] === idx) {
+                        btn.classList.add('bg-rose-50', 'border-rose-300', 'text-rose-900');
+                    }
+                } else {
+                    btn.onclick = () => selectAnswer(idx);
+                }
+
+                optionsContainer.appendChild(btn);
+            });
+
+            if (userAnswers[currentIndex] !== null) {
+                showExplanation(userAnswers[currentIndex] === q.answer);
+            }
+
+            // Update Navigation state
+            prevBtn.disabled = currentIndex === 0;
+            nextBtn.textContent = currentIndex === quizData.length - 1 ? "Finish" : "Next";
+
+            // Update Progress Bar
+            const progressPct = ((currentIndex + 1) / quizData.length) * 100;
+            progressBar.style.width = `${progressPct}%`;
+            scoreDisplay.textContent = `${score} / ${quizData.length}`;
+        }
+
+        function selectAnswer(selectedIndex) {
+            const q = quizData[currentIndex];
+            userAnswers[currentIndex] = selectedIndex;
+
+            const isCorrect = selectedIndex === q.answer;
+            if (isCorrect) {
+                score++;
+            }
+
+            scoreDisplay.textContent = `${score} / ${quizData.length}`;
+            loadQuestion();
+        }
+
+        function showExplanation(isCorrect) {
+            const q = quizData[currentIndex];
+            explanationBox.classList.remove('hidden');
+            
+            if (isCorrect) {
+                explanationBox.className = "mb-6 p-4 rounded-xl border bg-emerald-50 border-emerald-200 text-emerald-900";
+                explanationTitle.innerHTML = "✅ Correct! / सही उत्तर!";
+            } else {
+                explanationBox.className = "mb-6 p-4 rounded-xl border bg-rose-50 border-rose-200 text-rose-900";
+                explanationTitle.innerHTML = "❌ Incorrect. / गलत उत्तर।";
+            }
+
+            explanationTextEn.textContent = q.expEn;
+            explanationTextHi.textContent = q.expHi;
+        }
+
+        function toggleHint() {
+            hintBox.classList.toggle('hidden');
+        }
+
+        function nextQuestion() {
+            if (currentIndex < quizData.length - 1) {
+                currentIndex++;
+                loadQuestion();
+            } else {
+                alert(`Quiz Completed! Final Score: ${score} / ${quizData.length}`);
+            }
+        }
+
+        function prevQuestion() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                loadQuestion();
+            }
+        }
+
+        function jumpToQuestion() {
+            const val = parseInt(jumpInput.value);
+            if (!isNaN(val) && val >= 1 && val <= quizData.length) {
+                currentIndex = val - 1;
+                loadQuestion();
+                jumpInput.value = '';
+            } else {
+                alert(`Please enter a valid question number between 1 and ${quizData.length}`);
+            }
+        }
+
+        // Initialize First Question
+        loadQuestion();
+    </script>
+<script src="../../quiz-question-controls.js"></script>
+<script src="../../quiz-app-ui-v2.js"></script></body>
+</html>

@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Current Affairs Quiz - 90 Questions (Pages 3 & 4)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+<style id="cosmic-readable-quiz-theme">
+:root{--space:#e8dcff;--panel:#f3eaff;--panel2:#dcc6ff;--edge:#6a45bf;--glow:#d28b28;--accent:#d15f9f;--ink:#2c1b4d;--muted:#66547c;--mist:rgba(106,69,191,.2)}html{background:var(--space)}body{background:radial-gradient(ellipse 62% 45% at 90% -5%,rgba(209,95,159,.28),transparent 62%),radial-gradient(ellipse 55% 40% at 8% 100%,rgba(65,164,207,.26),transparent 64%),var(--space)!important;color:var(--ink)!important;min-height:100vh}body:before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.78;background-image:radial-gradient(circle at 9% 18%,var(--glow) 0 1px,transparent 1.7px),radial-gradient(circle at 26% 69%,var(--edge) 0 .8px,transparent 1.5px),radial-gradient(circle at 68% 24%,var(--accent) 0 1px,transparent 1.8px),radial-gradient(circle at 88% 73%,#47a8d3 0 .8px,transparent 1.5px);background-size:220px 190px,300px 270px,260px 230px,340px 310px;z-index:-1}header{background:linear-gradient(105deg,var(--panel),var(--panel2))!important;border-color:rgba(106,69,191,.25)!important;box-shadow:0 7px 24px rgba(84,48,142,.14)!important}header h1{color:var(--edge)!important;text-shadow:none!important}header p,header .text-slate-400,header .text-indigo-200,header .text-indigo-300{color:var(--muted)!important}main>div,#quiz-card,.bg-slate-800,.bg-slate-900,.bg-indigo-900,.bg-indigo-950{background:linear-gradient(145deg,#f8f0ff,var(--panel))!important;border-color:rgba(106,69,191,.22)!important;color:var(--ink)!important;box-shadow:0 14px 35px rgba(84,48,142,.12)!important}.bg-slate-700,.bg-slate-100,.bg-slate-50{background:#eadffd!important;color:var(--ink)!important}.text-slate-100,.text-slate-200,.text-slate-300,.text-slate-400,.text-white,.text-slate-800,.text-slate-700,.text-slate-600{color:var(--ink)!important}.text-indigo-400,.text-indigo-300,.text-emerald-400,.text-yellow-300{color:var(--edge)!important}.border-slate-700,.border-slate-700\/60,.border-indigo-700,.border-slate-200{border-color:rgba(106,69,191,.25)!important}button:not(.bg-green-600):not(.bg-red-600){background:#f9f2ff!important;color:var(--ink)!important;border:1px solid rgba(106,69,191,.25)!important;box-shadow:0 3px 10px rgba(84,48,142,.09)!important}button.bg-indigo-600,button.bg-slate-800,button.bg-slate-900,button.bg-indigo-900{background:linear-gradient(120deg,var(--edge),var(--accent))!important;color:#fff!important;border:0!important}button.bg-indigo-600 *,button.bg-slate-800 *,button.bg-slate-900 *,button.bg-indigo-900 *{color:#fff!important}button:hover{filter:brightness(1.04);transform:translateY(-1px)}input,select,textarea{background:#f9f2ff!important;border-color:rgba(106,69,191,.35)!important;color:var(--ink)!important}input:focus,select:focus,textarea:focus{outline:none!important;border-color:var(--edge)!important;box-shadow:0 0 0 3px var(--mist)!important}.bg-indigo-500,#progress-bar{background:linear-gradient(90deg,var(--edge),var(--accent),var(--glow))!important}.rounded-2xl{border-radius:1.25rem!important}
+</style></head>
+<body class="bg-slate-100 min-h-screen flex flex-col justify-between font-sans text-slate-800">
+
+    <!-- Header -->
+    <header class="bg-indigo-700 text-white shadow-md py-4 px-6">
+        <div class="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
+            <h1 class="text-xl font-bold tracking-wide">Speedy Current Affairs Quiz (90 Qs)</h1>
+            <div class="text-sm bg-indigo-800 px-3 py-1 rounded-full font-medium">
+                Score: <span id="score-display">0</span> / 90
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Quiz Container -->
+    <main class="max-w-3xl w-full mx-auto p-4 sm:p-6 my-6 flex-grow flex flex-col justify-center">
+        <div class="bg-white rounded-2xl shadow-xl p-6 sm:p-8 transition-all duration-300">
+            
+            <!-- Progress & Meta Info -->
+            <div class="flex justify-between items-center text-sm font-semibold text-slate-500 mb-4">
+                <span id="question-counter">Question 1 of 90</span>
+                <span id="page-badge" class="bg-indigo-100 text-indigo-700 px-2.5 py-1 rounded-md text-xs">Page 3</span>
+            </div>
+            
+            <!-- Progress Bar -->
+            <div class="w-full bg-slate-200 h-2 rounded-full mb-6 overflow-hidden">
+                <div id="progress-bar" class="bg-indigo-600 h-full transition-all duration-300" style="width: 1.11%;"></div>
+            </div>
+
+            <!-- Question Text -->
+            <h2 id="question-text" class="text-lg sm:text-xl font-bold text-slate-900 mb-6 leading-snug">
+                Loading question...
+            </h2>
+
+            <!-- Options Container -->
+            <div id="options-container" class="space-y-3 mb-6">
+                <!-- Dynamic Options -->
+            </div>
+
+            <!-- Hint Section -->
+            <div class="mb-6">
+                <button onclick="toggleHint()" class="text-xs font-semibold text-indigo-600 hover:text-indigo-800 flex items-center gap-1 focus:outline-none">
+                    <span>💡 Toggle Hint</span>
+                </button>
+                <div id="hint-box" class="hidden mt-2 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-800">
+                    <!-- Hint text -->
+                </div>
+            </div>
+
+            <!-- Explanation Box -->
+            <div id="explanation-box" class="hidden mb-6 p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-sm text-emerald-900">
+                <h3 class="font-bold mb-1 flex items-center gap-1">📖 Rationale / Explanation:</h3>
+                <p id="explanation-text"></p>
+            </div>
+
+            <!-- Navigation Controls -->
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-4 pt-4 border-t border-slate-100">
+                <div class="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-start">
+                    <button onclick="prevQuestion()" id="prev-btn" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl font-medium text-sm transition disabled:opacity-50 disabled:cursor-not-allowed">
+                        Previous
+                    </button>
+                    <button onclick="nextQuestion()" id="next-btn" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-medium text-sm transition">
+                        Next
+                    </button>
+                </div>
+
+                <!-- Jump to Question -->
+                <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+                    <span class="text-xs text-slate-500">Jump to Q:</span>
+                    <input type="number" id="jump-input" min="1" max="90" class="w-16 px-2 py-1.5 border border-slate-300 rounded-lg text-sm text-center focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="1-90">
+                    <button onclick="jumpToQuestion()" class="px-3 py-1.5 bg-slate-700 hover:bg-slate-800 text-white rounded-lg text-xs font-medium transition">
+                        Go
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-500">
+        Interactive Exam Preparation Quiz &bull; Strictly based on Source PDF (Pages 3 & 4)
+    </footer>
+
+    <!-- Quiz Logic Script -->
+    <script>
+        const quizData = [
+            // ================= PAGE 3 QUESTIONS (1 - 45) =================
+            {
+                page: 3,
+                question: "Who is the Chairman of the State Bank of India (SBI)?",
+                options: ["Challa Srinivasulu Setty", "Rajneesh Karnatak", "Devdutt Chand", "Ashok Chandra"],
+                answer: "Challa Srinivasulu Setty",
+                hint: "Head of India's largest public sector bank.",
+                explanation: "Challa Srinivasulu Setty serves as the Chairman of the State Bank of India (SBI)."
+            },
+            {
+                page: 3,
+                question: "Who holds the position of Chief Financial Officer (CFO) of the State Bank of India?",
+                options: ["Kameshwar Rao Kodavanti", "Ravi Ranjan", "Ram Mohan Rao Amara", "Ashwini K. Tiwari"],
+                answer: "Kameshwar Rao Kodavanti",
+                hint: "Responsible for financial strategy and reporting at SBI.",
+                explanation: "Kameshwar Rao Kodavanti is the CFO of SBI."
+            },
+            {
+                page: 3,
+                question: "Which of the following individuals is a Managing Director (MD) at the State Bank of India?",
+                options: ["Ram Mohan Rao Amara", "Devdutt Chand", "Nidhu Saxena", "Kalyan Kumar"],
+                answer: "Ram Mohan Rao Amara",
+                hint: "One of the key MDs assisting the SBI leadership.",
+                explanation: "Ram Mohan Rao Amara is listed as one of the managing directors of SBI."
+            },
+            {
+                page: 3,
+                question: "Who is the Managing Director (MD) of Bank of Baroda?",
+                options: ["Devdutt Chand", "Rajneesh Karnatak", "Nidhu Saxena", "Ashish Pandey"],
+                answer: "Devdutt Chand",
+                hint: "He leads Bank of Baroda executive management.",
+                explanation: "Devdutt Chand serves as the MD of Bank of Baroda."
+            },
+            {
+                page: 3,
+                question: "Who is the MD & CEO of Bank of India?",
+                options: ["Rajneesh Karnatak", "Binod Kumar", "Ajay Kumar Srivastava", "Ashok Chandra"],
+                answer: "Rajneesh Karnatak",
+                hint: "Head executive of Bank of India.",
+                explanation: "Rajneesh Karnatak is the MD & CEO of Bank of India."
+            },
+            {
+                page: 3,
+                question: "Who is the MD of Bank of Maharashtra?",
+                options: ["Nidhu Saxena", "Swarup Kumar Saha", "Rajendra Kumar Saboo", "Ashish Pandey"],
+                answer: "Nidhu Saxena",
+                hint: "He heads the Bank of Maharashtra executive office.",
+                explanation: "Nidhu Saxena is the MD of Bank of Maharashtra."
+            },
+            {
+                page: 3,
+                question: "Who holds the post of MD & CEO of Canara Bank?",
+                options: ["Hardeep Singh Ahluwalia", "Kalyan Kumar", "Binod Kumar", "Ajay Kumar Srivastava"],
+                answer: "Hardeep Singh Ahluwalia",
+                hint: "Chief executive of Canara Bank.",
+                explanation: "Hardeep Singh Ahluwalia is the MD & CEO of Canara Bank."
+            },
+            {
+                page: 3,
+                question: "Who is the CMD of Central Bank of India?",
+                options: ["Kalyan Kumar", "Ashok Chandra", "Swarup Kumar Saha", "Rajendra Kumar Saboo"],
+                answer: "Kalyan Kumar",
+                hint: "Chairman and Managing Director of Central Bank of India.",
+                explanation: "Kalyan Kumar serves as the CMD of Central Bank of India."
+            },
+            {
+                page: 3,
+                question: "Who is the CEO of Indian Bank?",
+                options: ["Binod Kumar", "Ajay Kumar Srivastava", "Ashok Chandra", "Ashish Pandey"],
+                answer: "Binod Kumar",
+                hint: "Chief executive officer of Indian Bank.",
+                explanation: "Binod Kumar is the CEO of Indian Bank."
+            },
+            {
+                page: 3,
+                question: "Who is the MD & CEO of Indian Overseas Bank?",
+                options: ["Ajay Kumar Srivastava", "Binod Kumar", "Ashok Chandra", "Nidhu Saxena"],
+                answer: "Ajay Kumar Srivastava",
+                hint: "He leads Indian Overseas Bank.",
+                explanation: "Ajay Kumar Srivastava is the MD & CEO of Indian Overseas Bank."
+            },
+            {
+                page: 3,
+                question: "Who is the MD & CEO of Punjab National Bank (PNB)?",
+                options: ["Ashok Chandra", "Swarup Kumar Saha", "Rajendra Kumar Saboo", "Ashish Pandey"],
+                answer: "Ashok Chandra",
+                hint: "Top executive at Punjab National Bank.",
+                explanation: "Ashok Chandra is the MD & CEO of Punjab National Bank."
+            },
+            {
+                page: 3,
+                question: "Who is the MD of Punjab & Sind Bank?",
+                options: ["Swarup Kumar Saha", "Rajendra Kumar Saboo", "Ashish Pandey", "Devdutt Chand"],
+                answer: "Swarup Kumar Saha",
+                hint: "Manages Punjab & Sind Bank operations.",
+                explanation: "Swarup Kumar Saha is the MD of Punjab & Sind Bank."
+            },
+            {
+                page: 3,
+                question: "Who is the MD of UCO Bank?",
+                options: ["Rajendra Kumar Saboo", "Ashish Pandey", "Swarup Kumar Saha", "Kalyan Kumar"],
+                answer: "Rajendra Kumar Saboo",
+                hint: "Executive head at UCO Bank.",
+                explanation: "Rajendra Kumar Saboo is the MD of UCO Bank."
+            },
+            {
+                page: 3,
+                question: "Who is the CMD of Union Bank of India?",
+                options: ["Ashish Pandey", "Rajendra Kumar Saboo", "Swarup Kumar Saha", "Ashok Chandra"],
+                answer: "Ashish Pandey",
+                hint: "Leads Union Bank of India.",
+                explanation: "Ashish Pandey is the CMD of Union Bank of India."
+            },
+            {
+                page: 3,
+                question: "On which date did the merger of 10 public sector banks into 4 large public sector banks take place, bringing the total number of public sector banks to 12?",
+                options: ["30 August, 2019", "1 April, 2020", "15 January, 2019", "12 July, 2021"],
+                answer: "30 August, 2019",
+                hint: "A major banking consolidation milestone in late August 2019.",
+                explanation: "On August 30, 2019, 10 public sector banks were merged into 4 large banks, making the total number of public sector banks 12."
+            },
+            {
+                page: 3,
+                question: "Which public sector bank was merged into Indian Bank during the mega-merger process?",
+                options: ["Allahabad Bank", "Andhra Bank", "Syndicate Bank", "Dena Bank"],
+                answer: "Allahabad Bank",
+                hint: "One of the oldest joint stock banks merged into Indian Bank.",
+                explanation: "Allahabad Bank was amalgamated into Indian Bank."
+            },
+            {
+                page: 3,
+                question: "Andhra Bank was merged into which major public sector bank?",
+                options: ["Union Bank of India", "Punjab National Bank", "Canara Bank", "Bank of Baroda"],
+                answer: "Union Bank of India",
+                hint: "Merged alongside Corporation Bank.",
+                explanation: "Andhra Bank was merged into Union Bank of India."
+            },
+            {
+                page: 3,
+                question: "Oriental Bank of Commerce and United Bank of India were merged into which bank?",
+                options: ["Punjab National Bank", "Canara Bank", "Indian Bank", "Union Bank of India"],
+                answer: "Punjab National Bank",
+                hint: "PNB absorbed these two banks.",
+                explanation: "Oriental Bank of Commerce and United Bank of India were merged into Punjab National Bank."
+            },
+            {
+                page: 3,
+                question: "Syndicate Bank was merged into which public sector bank?",
+                options: ["Canara Bank", "Bank of Baroda", "Union Bank of India", "Indian Bank"],
+                answer: "Canara Bank",
+                hint: "Syndicate Bank amalgamated with this Bangalore-headquartered bank.",
+                explanation: "Syndicate Bank was merged into Canara Bank."
+            },
+            {
+                page: 3,
+                question: "Vijaya Bank and Dena Bank were merged into which public sector bank?",
+                options: ["Bank of Baroda", "Punjab National Bank", "Canara Bank", "Union Bank of India"],
+                answer: "Bank of Baroda",
+                hint: "Merged to form a stronger anchor bank.",
+                explanation: "Vijaya Bank and Dena Bank were merged into Bank of Baroda."
+            },
+            {
+                page: 3,
+                question: "Who is the Chairman of the Insurance Regulatory and Development Authority (IRDAI)?",
+                options: ["Ajay Seth", "Siddhartha Mohanty", "Ashok Kumar Singh", "S. Prakash"],
+                answer: "Ajay Seth",
+                hint: "Insurance sector regulatory chief.",
+                explanation: "Ajay Seth is the Chairman of IRDAI."
+            },
+            {
+                page: 3,
+                question: "Who is the Chairman of the Life Insurance Corporation (LIC)?",
+    options: ["Siddhartha Mohanty", "Ramakrishna Chander", "Girija Subramanian", "Suchita Gupta"],
+                answer: "Siddhartha Mohanty",
+                hint: "Head of India's largest life insurer.",
+                explanation: "Siddhartha Mohanty is the Chairman of LIC."
+            },
+            {
+                page: 3,
+                question: "Who is the Managing Director (MD) of Life Insurance Corporation (LIC)?",
+                options: ["Ramakrishna Chander", "Siddhartha Mohanty", "Naveen Chandra Jha", "Bhupesh Sushil Rahul"],
+                answer: "Ramakrishna Chander",
+                hint: "MD working alongside the Chairman at LIC.",
+                explanation: "Ramakrishna Chander serves as the MD of LIC."
+            },
+            {
+                page: 3,
+                question: "Who is the Director General of the Employees' State Insurance Corporation (ESIC)?",
+                options: ["Ashok Kumar Singh", "S. Prakash", "Girija Subramanian", "Suchita Gupta"],
+                answer: "Ashok Kumar Singh",
+                hint: "He oversees social security and health insurance for workers.",
+                explanation: "Ashok Kumar Singh is the Director General of ESIC."
+            },
+            {
+                page: 3,
+                question: "Who is the CEO of the General Insurance Council (GIC)?",
+                options: ["S. Prakash", "Ashok Kumar Singh", "Naveen Chandra Jha", "Ramakrishna Chander"],
+                answer: "S. Prakash",
+                hint: "Chief executive of the general insurance body.",
+                explanation: "S. Prakash is the CEO of the General Insurance Council."
+            },
+            {
+                page: 3,
+                question: "Who is the CMD of New India Assurance Company Limited?",
+                options: ["Girija Subramanian", "Suchita Gupta", "Naveen Chandra Jha", "Bhupesh Sushil Rahul"],
+                answer: "Girija Subramanian",
+                hint: "Leads New India Assurance.",
+                explanation: "Girija Subramanian is the CMD of New India Assurance Company Limited."
+            },
+            {
+                page: 3,
+                question: "Who is a Director at United India Insurance Company?",
+                options: ["Bhupesh Sushil Rahul", "Girija Subramanian", "Suchita Gupta", "Siddhartha Mohanty"],
+                answer: "Bhupesh Sushil Rahul",
+                hint: "Director level officer at United India Insurance.",
+                explanation: "Bhupesh Sushil Rahul is a director at United India Insurance Company."
+            },
+            {
+                page: 3,
+                question: "Who is the CMD of National Insurance Company (NICL)?",
+                options: ["Suchita Gupta", "Girija Subramanian", "Naveen Chandra Jha", "Ajay Seth"],
+                answer: "Suchita Gupta",
+                hint: "Heads NICL.",
+                explanation: "Suchita Gupta is the CMD of National Insurance Company (NICL)."
+            },
+            {
+                page: 3,
+                question: "Who is the MD & CEO of SBI General Insurance?",
+                options: ["Naveen Chandra Jha", "Bhupesh Sushil Rahul", "Suchita Gupta", "S. Prakash"],
+                answer: "Naveen Chandra Jha",
+                hint: "Chief executive of SBI's general insurance arm.",
+                explanation: "Naveen Chandra Jha is the MD & CEO of SBI General Insurance."
+            },
+            {
+                page: 3,
+                question: "Who is the CEO of Axis Bank?",
+                options: ["Amitabh Chaudhry", "Parth Pratim Sengupta", "Ashok Vaswani", "Sandeep Bakhshi"],
+                answer: "Amitabh Chaudhry",
+                hint: "Long-standing chief executive of Axis Bank.",
+                explanation: "Amitabh Chaudhry is the CEO of Axis Bank."
+            },
+            {
+                page: 3,
+                question: "Who is the CEO of Bandhan Bank?",
+                options: ["Parth Pratim Sengupta", "Amitabh Chaudhry", "Nandita Bakshi", "Vinay Murali Tonse"],
+                answer: "Parth Pratim Sengupta",
+                hint: "Leads Bandhan Bank operations.",
+                explanation: "Parth Pratim Sengupta is the CEO of Bandhan Bank."
+            },
+            {
+                page: 3,
+                question: "Who is the CEO of Kotak Mahindra Bank?",
+                options: ["Ashok Vaswani", "Sandeep Bakhshi", "V. Vaidyanathan", "Rajat Verma"],
+                answer: "Ashok Vaswani",
+                hint: "He took charge as CEO of Kotak Mahindra Bank.",
+                explanation: "Ashok Vaswani is the CEO of Kotak Mahindra Bank."
+            },
+            {
+                page: 3,
+                question: "Who is the Chairman of IndusInd Bank?",
+                options: ["Arijit Basu", "Nandita Bakshi", "Rupendra Kumar Bhatt", "Murali M. Natarajan"],
+                answer: "Arijit Basu",
+                hint: "Chairperson of IndusInd Bank board.",
+                explanation: "Arijit Basu is the Chairman of IndusInd Bank."
+            },
+            {
+                page: 3,
+                question: "Who is the CEO of Bank of the West?",
+                options: ["Nandita Bakshi", "Amitabh Chaudhry", "Parth Pratim Sengupta", "Ashok Vaswani"],
+                answer: "Nandita Bakshi",
+                hint: "Prominent female banking executive heading Bank of the West.",
+                explanation: "Nandita Bakshi is the CEO of Bank of the West."
+            },
+            {
+                page: 3,
+                question: "Who is the CEO of ICICI Bank?",
+                options: ["Sandeep Bakhshi", "Ashok Vaswani", "V. Vaidyanathan", "Amitabh Chaudhry"],
+                answer: "Sandeep Bakhshi",
+                hint: "He heads ICICI Bank.",
+                explanation: "Sandeep Bakhshi is the CEO of ICICI Bank."
+            },
+            {
+                page: 3,
+                question: "Who are the CEO / Chairman of HDFC Bank?",
+                options: ["Shashidhar Jagadeesan / Rajiv Kumar", "Sandeep Bakhshi / Amitabh Chaudhry", "Ashok Vaswani / Arijit Basu", "V. Vaidyanathan / Vinay Tonse"],
+                answer: "Shashidhar Jagadeesan / Rajiv Kumar",
+                hint: "Key leadership team of HDFC Bank.",
+                explanation: "Shashidhar Jagadeesan is the CEO and Rajiv Kumar holds leadership roles at HDFC Bank."
+            },
+            {
+                page: 3,
+                question: "Who is the CEO of IDFC First Bank?",
+                options: ["V. Vaidyanathan", "Rajat Verma", "Bhavesh Gupta", "Rakesh Sharma"],
+                answer: "V. Vaidyanathan",
+                hint: "Founder-CEO of IDFC First Bank.",
+                explanation: "V. Vaidyanathan is the CEO of IDFC First Bank."
+            },
+            {
+                page: 3,
+                question: "Who is the CEO of Yes Bank?",
+                options: ["Vinay Murali Tonse", "R. Vijay Anand", "Amitav Chatterjee", "Manoj Mittal"],
+                answer: "Vinay Murali Tonse",
+                hint: "Executive heading Yes Bank.",
+                explanation: "Vinay Murali Tonse is the CEO of Yes Bank."
+            },
+            {
+                page: 3,
+                question: "Who is the CEO of City Union Bank?",
+                options: ["R. Vijay Anand", "J. Venkatramu", "Rajat Verma", "Bhavesh Gupta"],
+                answer: "R. Vijay Anand",
+                hint: "He manages City Union Bank.",
+                explanation: "R. Vijay Anand is the CEO of City Union Bank."
+            },
+            {
+                page: 3,
+                question: "Who is the head of India Post Payments Bank (IPPB)?",
+                options: ["J. Venkatramu", "Manoj Mittal", "Rakesh Sharma", "Harsha भूपेंद्र Bangari"],
+                answer: "J. Venkatramu",
+                hint: "Postal payments bank chief.",
+                explanation: "J. Venkatramu heads India Post Payments Bank (IPPB)."
+            },
+            {
+                page: 3,
+                question: "Who is the MD & CEO of DBS Bank (India)?",
+                options: ["Rajat Verma", "Amitav Chatterjee", "Bhavesh Gupta", "V. Vaidyanathan"],
+                answer: "Rajat Verma",
+                hint: "He leads DBS Bank's Indian operations.",
+                explanation: "Rajat Verma is the MD & CEO of DBS Bank (India)."
+            },
+            {
+                page: 3,
+                question: "Who is the CEO of Jammu & Kashmir Bank?",
+                options: ["Amitav Chatterjee", "Bhavesh Gupta", "Manoj Mittal", "Rakesh Sharma"],
+                answer: "Amitav Chatterjee",
+                hint: "Chief executive of J&K Bank.",
+                explanation: "Amitav Chatterjee is the CEO of Jammu & Kashmir Bank."
+            },
+            {
+                page: 3,
+                question: "Who is the CEO of Paytm Payments Bank?",
+                options: ["Bhavesh Gupta", "Rajat Verma", "J. Venkatramu", "Vinay Murali Tonse"],
+                answer: "Bhavesh Gupta",
+                hint: "Payments bank executive.",
+                explanation: "Bhavesh Gupta is the CEO of Paytm Payments Bank."
+            },
+            {
+                page: 3,
+                question: "Who is the CMD of Small Industries Development Bank of India (SIDBI)?",
+                options: ["Manoj Mittal", "Rakesh Sharma", "Harsha Bhupendra Bangari", "Shaji K.V."],
+                answer: "Manoj Mittal",
+                hint: "Head of the apex financial institution for MSMEs.",
+                explanation: "Manoj Mittal is the CMD of SIDBI."
+            },
+            {
+                page: 3,
+                question: "Who is the CEO of Industrial Development Bank of India (IDBI Bank)?",
+                options: ["Rakesh Sharma", "Manoj Mittal", "Harsha Bhupendra Bangari", "Shaji K.V."],
+                answer: "Rakesh Sharma",
+                hint: "He leads IDBI Bank.",
+                explanation: "Rakesh Sharma is the CEO of IDBI Bank."
+            },
+
+            // ================= PAGE 4 QUESTIONS (46 - 90) =================
+            {
+                page: 4,
+                question: "Who is the Secretary-General of the United Nations (UN)?",
+                options: ["António Guterres (Portugal)", "Amina J. Mohammed (Nigeria)", "Tedros Adhanom Ghebreyesus", "Achim Steiner"],
+                answer: "António Guterres (Portugal)",
+                hint: "Top diplomat of the United Nations from Portugal.",
+                explanation: "António Guterres is the Secretary-General of the United Nations."
+            },
+            {
+                page: 4,
+                question: "Who is the Deputy Secretary-General of the United Nations (UNO)?",
+                options: ["Amina J. Mohammed (Nigeria)", "António Guterres", "Rebecca Grynspan", "Catherine Russell"],
+                answer: "Amina J. Mohammed (Nigeria)",
+                hint: "Nigerian diplomat serving as UN Deputy Chief.",
+                explanation: "Amina J. Mohammed is the Deputy Secretary-General of the UN."
+            },
+            {
+                page: 4,
+                question: "Who served as the President of the 81st/80th United Nations General Assembly session?",
+                options: ["Khalilur Rahman (Bangladesh) / Annalena Baerbock (Germany)", "António Guterres / Ajay Banga", "Kristalina Georgieva / Ngozi Okonjo-Iweala", "Mark Rutte / Haitham Al Ghais"],
+                answer: "Khalilur Rahman (Bangladesh) / Annalena Baerbock (Germany)",
+                hint: "Presidents representing Bangladesh and Germany respectively.",
+                explanation: "Khalilur Rahman and Annalena Baerbock served as presidents of the UN General Assembly sessions."
+            },
+            {
+                page: 4,
+                question: "Who is the 14th President of the World Bank (IBRD)?",
+                options: ["Ajay Banga (Indian-American)", "Kristalina Georgieva", "Ngozi Okonjo-Iweala", "Dilma Rousseff"],
+                answer: "Ajay Banga (Indian-American)",
+                hint: "Indian-American business leader heading the World Bank.",
+                explanation: "Ajay Banga is the 14th President of the World Bank (IBRD)."
+            },
+            {
+                page: 4,
+                question: "Who is the President of the Non-Aligned Movement (NAM)?",
+                options: ["Ilham Aliyev", "Evariste Ndayishimiye", "Imanuel Macron", "Volodymyr Zelenskyy"],
+                answer: "Ilham Aliyev",
+                hint: "Leader presiding over NAM.",
+                explanation: "Ilham Aliyev is the President of the Non-Aligned Movement (NAM)."
+            },
+            {
+                page: 4,
+                question: "Who is the Managing Director of the International Monetary Fund (IMF)?",
+                options: ["Kristalina Georgieva (Bulgaria)", "Rebecca Grynspan", "Ngozi Okonjo-Iweala", "Ursula von der Leyen"],
+                answer: "Kristalina Georgieva (Bulgaria)",
+                hint: "Bulgarian economist heading the IMF.",
+                explanation: "Kristalina Georgieva is the Managing Director of the IMF."
+            },
+            {
+                page: 4,
+                question: "Who is the Director-General of the World Trade Organization (WTO)?",
+                options: ["Ngozi Okonjo-Iweala", "Qu Dongyu", "Gilbert Houngbo", "Tedros Adhanom Ghebreyesus"],
+                answer: "Ngozi Okonjo-Iweala",
+                hint: "First female DG of WTO.",
+                explanation: "Ngozi Okonjo-Iweala is the Director-General of the WTO."
+            },
+            {
+                page: 4,
+                question: "Who is the Secretary-General of UNCTAD?",
+                options: ["Rebecca Grynspan (Costa Rica)", "Khaled El-Enany", "Qu Dongyu", "Gilbert Houngbo"],
+                answer: "Rebecca Grynspan (Costa Rica)",
+                hint: "Costa Rican economist heading UNCTAD.",
+                explanation: "Rebecca Grynspan is the Secretary-General of UNCTAD."
+            },
+            {
+                page: 4,
+                question: "Who is the Director-General of UNESCO?",
+                options: ["Khaled El-Enany (Egypt)", "Qu Dongyu", "Gilbert Houngbo", "Tedros Adhanom Ghebreyesus"],
+                answer: "Khaled El-Enany (Egypt)",
+                hint: "Egyptian leader heading UNESCO.",
+                explanation: "Khaled El-Enany is the Director-General of UNESCO."
+            },
+            {
+                page: 4,
+                question: "Who is the Director-General of the Food and Agriculture Organization (FAO)?",
+                options: ["Qu Dongyu (China)", "Gilbert Houngbo", "Tedros Adhanom Ghebreyesus", "Achim Steiner"],
+                answer: "Qu Dongyu (China)",
+                hint: "Chinese expert heading FAO in Rome.",
+                explanation: "Qu Dongyu is the Director-General of the FAO."
+            },
+            {
+                page: 4,
+                question: "Who is the Director-General of the International Labour Organization (ILO)?",
+                options: ["Gilbert Houngbo (Togo)", "Tedros Adhanom Ghebreyesus", "Qu Dongyu", "Achim Steiner"],
+                answer: "Gilbert Houngbo (Togo)",
+                hint: "Togolese head of ILO.",
+                explanation: "Gilbert Houngbo is the Director-General of the ILO."
+            },
+            {
+                page: 4,
+                question: "Who is the head of UNICEF?",
+                options: ["Catherine Russell (USA)", "Rebecca Grynspan", "Ngozi Okonjo-Iweala", "Ursula von der Leyen"],
+                answer: "Catherine Russell (USA)",
+                hint: "American official heading the UN children's agency.",
+                explanation: "Catherine Russell heads UNICEF."
+            },
+            {
+                page: 4,
+                question: "Who is the Director-General of the World Health Organization (WHO)?",
+                options: ["Tedros Adhanom Ghebreyesus", "Gilbert Houngbo", "Qu Dongyu", "Achim Steiner"],
+                answer: "Tedros Adhanom Ghebreyesus",
+                hint: "Public health leader heading WHO.",
+                explanation: "Tedros Adhanom Ghebreyesus is the Director-General of the WHO."
+            },
+            {
+                page: 4,
+                question: "Who is the Administrator of the United Nations Development Programme (UNDP)?",
+                options: ["Achim Steiner (Brazil-Germany)", "António Guterres", "Tedros Adhanom Ghebreyesus", "Gilbert Houngbo"],
+                answer: "Achim Steiner (Brazil-Germany)",
+                hint: "Leads UNDP development efforts.",
+                explanation: "Achim Steiner is the Administrator of the UNDP."
+            },
+            {
+                page: 4,
+                question: "Who is the Secretary-General of SAARC?",
+                options: ["Mohammad Golam Sarwar (Bangladesh)", "Shirley Botchwey", "Dr. Kao Kim Hourn", "Mark Rutte"],
+                answer: "Mohammad Golam Sarwar (Bangladesh)",
+                hint: "Head of South Asian Association for Regional Cooperation.",
+                explanation: "Mohammad Golam Sarwar is the Secretary-General of SAARC."
+            },
+            {
+                page: 4,
+                question: "Who is the Secretary-General of the Commonwealth?",
+                options: ["Shirley Botchwey (Ghana)", "Evariste Ndayishimiye", "Haitham Al Ghais", "Mark Rutte"],
+                answer: "Shirley Botchwey (Ghana)",
+                hint: "Ghanaian diplomat serving as Commonwealth Secretary-General.",
+                explanation: "Shirley Botchwey is the Secretary-General of the Commonwealth."
+            },
+            {
+                page: 4,
+                question: "Who is the President of the European Council?",
+                options: ["Antonio Costa (Portugal)", "Roberta Metsola", "Ursula von der Leyen", "Mark Rutte"],
+                answer: "Antonio Costa (Portugal)",
+                hint: "Former Portuguese PM heading the European Council.",
+                explanation: "Antonio Costa is the President of the European Council."
+            },
+            {
+                page: 4,
+                question: "Who is the President of the European Parliament?",
+                options: ["Roberta Metsola (Malta)", "Ursula von der Leyen", "Antonio Costa", "Evariste Ndayishimiye"],
+                answer: "Roberta Metsola (Malta)",
+                hint: "Maltese politician leading the European Parliament.",
+                explanation: "Roberta Metsola is the President of the European Parliament."
+            },
+            {
+                page: 4,
+                question: "Who is the President of the European Commission?",
+                options: ["Ursula von der Leyen", "Roberta Metsola", "Antonio Costa", "Rebecca Grynspan"],
+                answer: "Ursula von der Leyen",
+                hint: "Head of the EU executive body.",
+                explanation: "Ursula von der Leyen is the President of the European Commission."
+            },
+            {
+                page: 4,
+                question: "Who is the President of the African Union (AU)?",
+                options: ["Evariste Ndayishimiye (Burundi)", "Ilham Aliyev", "Antonio Costa", "Haitham Al Ghais"],
+                answer: "Evariste Ndayishimiye (Burundi)",
+                hint: "Burundian leader heading the African Union.",
+                explanation: "Evariste Ndayishimiye is the President of the African Union (AU)."
+            },
+            {
+                page: 4,
+                question: "Who is the Secretary-General of OPEC?",
+                options: ["Haitham Al Ghais (Kuwait)", "Mark Rutte", "Dr. Kao Kim Hourn", "Antonio Costa"],
+                answer: "Haitham Al Ghais (Kuwait)",
+                hint: "Kuwaiti oil expert heading OPEC.",
+                explanation: "Haitham Al Ghais is the Secretary-General of OPEC."
+            },
+            {
+                page: 4,
+                question: "Who is the Secretary-General of NATO?",
+                options: ["Mark Rutte (Netherlands)", "Haitham Al Ghais", "António Guterres", "Achim Steiner"],
+                answer: "Mark Rutte (Netherlands)",
+                hint: "Former Dutch PM who took charge of NATO.",
+                explanation: "Mark Rutte is the Secretary-General of NATO."
+            },
+            {
+                page: 4,
+                question: "Who is the Secretary-General of ASEAN?",
+                options: ["Dr. Kao Kim Hourn (Cambodia)", "Mohammad Golam Sarwar", "Shirley Botchwey", "Mark Rutte"],
+                answer: "Dr. Kao Kim Hourn (Cambodia)",
+                hint: "Cambodian leader heading ASEAN.",
+                explanation: "Dr. Kao Kim Hourn is the Secretary-General of ASEAN."
+            },
+            {
+                page: 4,
+                question: "Who is the Director of Amnesty International India?",
+                options: ["Avinash Kumar", "Masato Kanda", "Valdecy Urquiza", "Ahmed Nasser Al-Raisi"],
+                answer: "Avinash Kumar",
+                hint: "He heads Amnesty International's Indian chapter.",
+                explanation: "Avinash Kumar is the Director of Amnesty International India."
+            },
+            {
+                page: 4,
+                question: "Who is the President of the Asian Development Bank (ADB)?",
+                options: ["Masato Kanda (Japan)", "Dilma Rousseff", "Yuji Iwasawa", "Jared Isaacman"],
+                answer: "Masato Kanda (Japan)",
+                hint: "Japanese financial official heading ADB.",
+                explanation: "Masato Kanda is the President of the Asian Development Bank (ADB)."
+            },
+            {
+                page: 4,
+                question: "Who is the Secretary-General of Interpol?",
+                options: ["Valdecy Urquiza (Brazil)", "Ahmed Nasser Al-Raisi", "Yuji Iwasawa", "Avinash Kumar"],
+                answer: "Valdecy Urquiza (Brazil)",
+                hint: "Brazilian police official heading Interpol secretariat.",
+                explanation: "Valdecy Urquiza is the Secretary-General of Interpol."
+            },
+            {
+                page: 4,
+                question: "Who is the President of Interpol?",
+                options: ["Ahmed Nasser Al-Raisi (UAE)", "Valdecy Urquiza", "Masato Kanda", "Dilma Rousseff"],
+                answer: "Ahmed Nasser Al-Raisi (UAE)",
+                hint: "UAE official serving as Interpol President.",
+                explanation: "Ahmed Nasser Al-Raisi is the President of Interpol."
+            },
+            {
+                page: 4,
+                question: "Who is the President of the International Court of Justice (ICJ)?",
+                options: ["Yuji Iwasawa (Japan)", "Ahmed Nasser Al-Raisi", "Valdecy Urquiza", "Masato Kanda"],
+                answer: "Yuji Iwasawa (Japan)",
+                hint: "Japanese jurist presiding over the ICJ.",
+                explanation: "Yuji Iwasawa is the President of the International Court of Justice (ICJ)."
+            },
+            {
+                page: 4,
+                question: "Who is the head of the NASA space agency?",
+                options: ["Jared Isaacman (USA)", "Dilma Rousseff", "Yuji Iwasawa", "Masato Kanda"],
+                answer: "Jared Isaacman (USA)",
+                hint: "American space pioneer leading NASA.",
+                explanation: "Jared Isaacman heads NASA."
+            },
+            {
+                page: 4,
+                question: "Who is the President of the New Development Bank (BRICS Bank)?",
+                options: ["Dilma Rousseff (Brazil)", "Masato Kanda", "Ajay Banga", "Kristalina Georgieva"],
+                answer: "Dilma Rousseff (Brazil)",
+                hint: "Former Brazilian President heading the NDB.",
+                explanation: "Dilma Rousseff is the President of the New Development BRICS Bank."
+            },
+            {
+                page: 4,
+                question: "What type of defense equipment is 'Helina' and where was it developed?",
+                options: ["Anti-tank missile, developed in India", "Surface to air missile, developed by Israel", "Helicopter, developed by USA", "Air defence system, developed by Russia"],
+                answer: "Anti-tank missile, developed in India",
+                hint: "Indigenously developed anti-tank weapon system.",
+                explanation: "Helina is an anti-tank missile developed in India."
+            },
+            {
+                page: 4,
+                question: "Which company developed the 'Chinook' helicopter?",
+                options: ["American company Boeing", "Dassault Aviation (France)", "DRDO & Israel", "Russia"],
+                answer: "American company Boeing",
+                hint: "Renowned US aerospace manufacturer.",
+                explanation: "Chinook is a helicopter developed by the American company Boeing."
+            },
+            {
+                page: 4,
+                question: "What is 'Barak-8' and who developed it?",
+                options: ["Surface to air missile, DRDO & Israel", "Anti-tank missile, India", "Rocket, India", "Combat helicopter, USA"],
+                answer: "Surface to air missile, DRDO & Israel",
+                hint: "Joint Indo-Israeli air defense missile.",
+                explanation: "Barak-8 is a surface-to-air missile developed jointly by DRDO and Israel."
+            },
+            {
+                page: 4,
+                question: "What is the origin/developer of the Scorpene-class submarine 'INS Vela'?",
+                options: ["France (built/developed)", "Russia", "USA", "Israel"],
+                answer: "France (built/developed)",
+                hint: "Designed in collaboration with French naval defense.",
+                explanation: "Scorpene-class submarines like INS Vela have French technological collaboration."
+            },
+            {
+                page: 4,
+                question: "Which country developed the 'S-400' air defense system?",
+                options: ["Russia", "France", "USA", "India"],
+                answer: "Russia",
+                hint: "Advanced long-range surface-to-air missile system from Moscow.",
+                explanation: "S-400 is an air defense system developed by Russia."
+            },
+            {
+                page: 4,
+                question: "What is 'Pinaka'?",
+                options: ["India's first indigenous rocket", "Anti-tank missile", "Scorpene submarine", "Combat helicopter"],
+                answer: "India's first indigenous rocket",
+                hint: "Multi-barrel rocket launcher system of India.",
+                explanation: "Pinaka is India's first swadeshi (indigenous) rocket system."
+            },
+            {
+                page: 4,
+                question: "What is 'INS Kalvari'?",
+                options: ["A swadeshi-built Scorpene-class submarine", "An air defense system", "An anti-tank missile", "A fighter jet"],
+                answer: "A swadeshi-built Scorpene-class submarine",
+                hint: "First of the Kalvari-class submarines built in India.",
+                explanation: "INS Kalvari is an indigenous Scorpene-class submarine."
+            },
+            {
+                page: 4,
+                question: "Which country developed the 'Apache' combat helicopter?",
+                options: ["America", "France", "Russia", "Israel"],
+                answer: "America",
+                hint: "Heavy attack chopper originating from the US.",
+                explanation: "Apache is a combat helicopter developed in America."
+            },
+            {
+                page: 4,
+                question: "Who is Sonali Mishra in the context of notable Indian women?",
+                options: ["First female Director General of Railway Protection Force (RPF)", "First female Vice-Chancellor of IGNOU", "First female fighter pilot in Navy", "First female ADC to the President"],
+                answer: "First female Director General of Railway Protection Force (RPF)",
+                hint: "Head of RPF security forces.",
+                explanation: "Sonali Mishra is noted as the first female Director General of the Railway Protection Force (RPF)."
+            },
+            {
+                page: 4,
+                question: "Who is Uma Kanjilal?",
+                options: ["First female Vice-Chancellor of IGNOU", "First female DG of Armed Forces Medical Services", "First female VC of AMU", "First female sniper of BSF"],
+                answer: "First female Vice-Chancellor of IGNOU",
+                hint: "Heads the Indira Gandhi National Open University.",
+                explanation: "Uma Kanjilal is the first female Vice-Chancellor of IGNOU."
+            },
+            {
+                page: 4,
+                question: "What distinction does Aastha Punia hold?",
+                options: ["First female fighter pilot, Indian Navy", "First female ADC to the President", "First female Director General, Medical Services", "First female fighter pilot of Air Force"],
+                answer: "First female fighter pilot, Indian Navy",
+                hint: "Pioneered naval aviation for women.",
+                explanation: "Aastha Punia is the first female fighter pilot in the Indian Navy."
+            },
+            {
+                page: 4,
+                question: "Who is Yashasvi Solanki?",
+                options: ["First female ADC to the President of India", "First female Director General of Armed Forces Medical Services", "First female VC of Aligarh Muslim University", "First female sniper of BSF"],
+                answer: "First female ADC to the President of India",
+                hint: "Aide-de-Camp to Rashtrapati Ji.",
+                explanation: "Yashasvi Solanki is the first female ADC to the President of India."
+            },
+            {
+                page: 4,
+                question: "Who is Aarti Sareen?",
+                options: ["First female Director General, Armed Forces Medical Services", "First female VC of IGNOU", "First female naval helicopter pilot", "First female Subedar in Indian Army"],
+                answer: "First female Director General, Armed Forces Medical Services",
+                hint: "Top medical officer in armed forces.",
+                explanation: "Aarti Sareen is the first female Director General of Armed Forces Medical Services."
+            },
+            {
+                page: 4,
+                question: "Who is Naima Khatun?",
+                options: ["First female Vice-Chancellor, Aligarh Muslim University (AMU)", "First female Vice-Chancellor of IGNOU", "First female DG of RPF", "First female fighter pilot"],
+                answer: "First female Vice-Chancellor, Aligarh Muslim University (AMU)",
+                hint: "Heads AMU as its first woman VC.",
+                explanation: "Naima Khatun is the first female Vice-Chancellor of Aligarh Muslim University."
+            },
+            {
+                page: 4,
+                question: "Who is Sadhana Saxena Nair?",
+                options: ["First female Director General, Medical Services (Army)", "First female DG of Armed Forces Medical Services", "First female ADC to President", "First female sniper of BSF"],
+                answer: "First female Director General, Medical Services (Army)",
+                hint: "Army medical services leadership.",
+                explanation: "Sadhana Saxena Nair is the first female Director General of Medical Services (Army)."
+            }
+        ];
+
+        let currentIndex = 0;
+        let score = 0;
+        let userAnswers = {}; // stores selected option for each question index
+
+        const questionCounter = document.getElementById('question-counter');
+        const pageBadge = document.getElementById('page-badge');
+        const progressBar = document.getElementById('progress-bar');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const hintBox = document.getElementById('hint-box');
+        const explanationBox = document.getElementById('explanation-box');
+        const explanationText = document.getElementById('explanation-text');
+        const scoreDisplay = document.getElementById('score-display');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const jumpInput = document.getElementById('jump-input');
+
+        // Shuffle helper function (Fisher-Yates)
+        function shuffle(array) {
+            let currentIndex = array.length, randomIndex;
+            while (currentIndex !== 0) {
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+                [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+            }
+            return array;
+        }
+
+        // Pre-shuffle options for each question once to ensure stable randomness across navigation
+        const randomizedOptions = quizData.map(q => {
+            return {
+                ...q,
+                shuffledOptions: shuffle([...q.options])
+            };
+        });
+
+        function loadQuestion() {
+            const currentQ = randomizedOptions[currentIndex];
+            
+            questionCounter.textContent = `Question ${currentIndex + 1} of ${quizData.length}`;
+            pageBadge.textContent = `Page ${currentQ.page}`;
+            progressBar.style.width = `${((currentIndex + 1) / quizData.length) * 100}%`;
+            
+            questionText.textContent = currentQ.question;
+            hintBox.textContent = currentQ.hint;
+            hintBox.classList.add('hidden');
+            
+            explanationText.textContent = currentQ.explanation;
+            
+            // Render options
+            optionsContainer.innerHTML = '';
+            const savedAnswer = userAnswers[currentIndex];
+
+            currentQ.shuffledOptions.forEach(option => {
+                const btn = document.createElement('button');
+                btn.textContent = option;
+                btn.className = "w-full text-left p-3.5 rounded-xl border border-slate-200 font-medium text-sm transition flex items-center justify-between bg-white hover:bg-slate-50 focus:outline-none";
+                
+                if (savedAnswer !== undefined) {
+                    btn.disabled = true;
+                    if (option === currentQ.answer) {
+                        btn.classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-900');
+                    } else if (option === savedAnswer) {
+                        btn.classList.add('bg-rose-100', 'border-rose-500', 'text-rose-900');
+                    }
+                } else {
+                    btn.onclick = () => selectOption(option, currentQ.answer, btn);
+                }
+
+                optionsContainer.appendChild(btn);
+            });
+
+            if (savedAnswer !== undefined) {
+                explanationBox.classList.remove('hidden');
+            } else {
+                explanationBox.classList.add('hidden');
+            }
+
+            prevBtn.disabled = currentIndex === 0;
+            nextBtn.textContent = currentIndex === quizData.length - 1 ? 'Finish' : 'Next';
+        }
+
+        function selectOption(selected, correct, buttonElement) {
+            userAnswers[currentIndex] = selected;
+            
+            const allBtns = optionsContainer.querySelectorAll('button');
+            allBtns.forEach(btn => {
+                btn.disabled = true;
+                if (btn.textContent === correct) {
+                    btn.classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-900');
+                } else if (btn.textContent === selected && selected !== correct) {
+                    btn.classList.add('bg-rose-100', 'border-rose-500', 'text-rose-900');
+                }
+            });
+
+            if (selected === correct) {
+                score++;
+                scoreDisplay.textContent = score;
+            }
+
+            explanationBox.classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            if (currentIndex < quizData.length - 1) {
+                currentIndex++;
+                loadQuestion();
+            } else {
+                alert(`Quiz Completed! Your final score is ${score} / ${quizData.length}`);
+            }
+        }
+
+        function prevQuestion() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                loadQuestion();
+            }
+        }
+
+        function jumpToQuestion() {
+            const val = parseInt(jumpInput.value);
+            if (!isNaN(val) && val >= 1 && val <= quizData.length) {
+                currentIndex = val - 1;
+                jumpInput.value = '';
+                loadQuestion();
+            } else {
+                alert(`Please enter a valid question number between 1 and ${quizData.length}`);
+            }
+        }
+
+        function toggleHint() {
+            hintBox.classList.toggle('hidden');
+        }
+
+        // Initialize Quiz on load
+        window.onload = () => {
+            loadQuestion();
+        };
+    </script>
+<script src="../../quiz-question-controls.js"></script>
+<script src="../../quiz-app-ui-v2.js"></script></body>
+</html>

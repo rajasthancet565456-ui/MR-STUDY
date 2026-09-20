@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haryana GK Interactive Quiz (Bilingual)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 3px;
+        }
+    </style>
+<style id="cosmic-readable-quiz-theme">
+:root{--space:#e8dcff;--panel:#f3eaff;--panel2:#dcc6ff;--edge:#6a45bf;--glow:#d28b28;--accent:#d15f9f;--ink:#2c1b4d;--muted:#66547c;--mist:rgba(106,69,191,.2)}html{background:var(--space)}body{background:radial-gradient(ellipse 62% 45% at 90% -5%,rgba(209,95,159,.28),transparent 62%),radial-gradient(ellipse 55% 40% at 8% 100%,rgba(65,164,207,.26),transparent 64%),var(--space)!important;color:var(--ink)!important;min-height:100vh}body:before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.78;background-image:radial-gradient(circle at 9% 18%,var(--glow) 0 1px,transparent 1.7px),radial-gradient(circle at 26% 69%,var(--edge) 0 .8px,transparent 1.5px),radial-gradient(circle at 68% 24%,var(--accent) 0 1px,transparent 1.8px),radial-gradient(circle at 88% 73%,#47a8d3 0 .8px,transparent 1.5px);background-size:220px 190px,300px 270px,260px 230px,340px 310px;z-index:-1}header{background:linear-gradient(105deg,var(--panel),var(--panel2))!important;border-color:rgba(106,69,191,.25)!important;box-shadow:0 7px 24px rgba(84,48,142,.14)!important}header h1{color:var(--edge)!important;text-shadow:none!important}header p,header .text-slate-400,header .text-indigo-200,header .text-indigo-300{color:var(--muted)!important}main>div,#quiz-card,.bg-slate-800,.bg-slate-900,.bg-indigo-900,.bg-indigo-950{background:linear-gradient(145deg,#f8f0ff,var(--panel))!important;border-color:rgba(106,69,191,.22)!important;color:var(--ink)!important;box-shadow:0 14px 35px rgba(84,48,142,.12)!important}.bg-slate-700,.bg-slate-100,.bg-slate-50{background:#eadffd!important;color:var(--ink)!important}.text-slate-100,.text-slate-200,.text-slate-300,.text-slate-400,.text-white,.text-slate-800,.text-slate-700,.text-slate-600{color:var(--ink)!important}.text-indigo-400,.text-indigo-300,.text-emerald-400,.text-yellow-300{color:var(--edge)!important}.border-slate-700,.border-slate-700\/60,.border-indigo-700,.border-slate-200{border-color:rgba(106,69,191,.25)!important}button:not(.bg-green-600):not(.bg-red-600){background:#f9f2ff!important;color:var(--ink)!important;border:1px solid rgba(106,69,191,.25)!important;box-shadow:0 3px 10px rgba(84,48,142,.09)!important}button.bg-indigo-600,button.bg-slate-800,button.bg-slate-900,button.bg-indigo-900{background:linear-gradient(120deg,var(--edge),var(--accent))!important;color:#fff!important;border:0!important}button.bg-indigo-600 *,button.bg-slate-800 *,button.bg-slate-900 *,button.bg-indigo-900 *{color:#fff!important}button:hover{filter:brightness(1.04);transform:translateY(-1px)}input,select,textarea{background:#f9f2ff!important;border-color:rgba(106,69,191,.35)!important;color:var(--ink)!important}input:focus,select:focus,textarea:focus{outline:none!important;border-color:var(--edge)!important;box-shadow:0 0 0 3px var(--mist)!important}.bg-indigo-500,#progress-bar{background:linear-gradient(90deg,var(--edge),var(--accent),var(--glow))!important}.rounded-2xl{border-radius:1.25rem!important}
+</style></head>
+<body class="bg-slate-900 text-slate-100 min-h-screen font-sans flex flex-col justify-between">
+
+    <!-- Header -->
+    <header class="bg-slate-800 border-b border-slate-700 p-4 sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto flex flex-wrap justify-between items-center gap-4">
+            <div>
+                <h1 class="text-xl font-bold text-amber-400">Haryana GK Quiz Portal</h1>
+                <p class="text-xs text-slate-400">Questions 1783-1888 (90 Unique Exam Questions)</p>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="text-right">
+                    <span class="text-xs text-slate-400 block">Score</span>
+                    <span id="score-display" class="text-lg font-bold text-emerald-400">0 / 0</span>
+                </div>
+                <div class="w-24 bg-slate-700 h-3 rounded-full overflow-hidden">
+                    <div id="progress-bar" class="bg-amber-500 h-full w-0 transition-all duration-300"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-4xl mx-auto p-4 w-full flex-grow flex flex-col justify-center">
+        <div class="bg-slate-800 border border-slate-700 rounded-xl p-6 shadow-xl">
+            
+            <!-- Question Top Nav -->
+            <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-700 text-sm">
+                <span id="question-number" class="font-semibold text-amber-400">Question 1 of 90</span>
+                <div class="flex items-center gap-2">
+                    <label for="jump-input" class="text-xs text-slate-400">Jump to:</label>
+                    <input type="number" id="jump-input" min="1" max="90" class="w-16 bg-slate-900 border border-slate-700 rounded px-2 py-1 text-center text-xs focus:outline-none focus:border-amber-500">
+                    <button id="jump-btn" class="bg-amber-600 hover:bg-amber-500 text-white px-2 py-1 rounded text-xs transition">Go</button>
+                </div>
+            </div>
+
+            <!-- Question Text -->
+            <div class="mb-6">
+                <h2 id="question-en" class="text-lg font-semibold text-white mb-2"></h2>
+                <h3 id="question-hi" class="text-base font-medium text-slate-300"></h3>
+            </div>
+
+            <!-- Options Container -->
+            <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
+                <!-- Dynamic options generated by JS -->
+            </div>
+
+            <!-- Actions & Hint -->
+            <div class="flex flex-wrap justify-between items-center gap-3 pt-2">
+                <button id="hint-btn" class="text-xs text-amber-400 hover:underline focus:outline-none">💡 Show Hint</button>
+                <div class="flex gap-2">
+                    <button id="prev-btn" class="bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded text-sm font-medium transition disabled:opacity-50">Previous</button>
+                    <button id="next-btn" class="bg-amber-600 hover:bg-amber-500 px-4 py-2 rounded text-sm font-medium transition disabled:opacity-50">Next</button>
+                </div>
+            </div>
+
+            <!-- Hint Box -->
+            <div id="hint-box" class="hidden mt-4 p-3 bg-slate-900 border border-amber-500/30 rounded text-xs text-amber-300">
+            </div>
+
+            <!-- Explanation Box -->
+            <div id="explanation-box" class="hidden mt-4 p-4 bg-slate-900 border border-slate-700 rounded text-sm">
+                <span class="font-bold block mb-1" id="result-status"></span>
+                <p id="explanation-text" class="text-slate-300"></p>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-800 border-t border-slate-700 p-3 text-center text-xs text-slate-500">
+        HSSC & Railway Exam Prep Quiz &bull; Bilingual Data Engine
+    </footer>
+
+    <script>
+        const rawDataset = [
+            // Page 1 (45 Questions: 1783 - 1840)
+            { id: 1783, en: "To whom did Appaji Khanderao give Jhajjar area after adopting him?", hi: "अप्पाजी खांडवी ने किसे गोद लेकर झज्जर का क्षेत्र सौंपा?", ans: "George Thomas / जॉर्ज थॉमस", hint: "An Irish adventurer who carved out an independent kingdom in Haryana.", exp: "Appaji Khanderao adopted George Thomas as his son and handed over the administration of the Jhajjar region to him." },
+            { id: 1784, en: "Where is Navdeep Stadium located in Haryana?", hi: "नवदीप स्टेडियम कहाँ स्थित है?", ans: "Jind / जींद", hint: "Located in the heart of Haryana.", exp: "Navdeep Stadium is situated in the Jind district of Haryana." },
+            { id: 1785, en: "Which place was the city of King Ikshvaku during the Mahabharata period?", hi: "महाभारत काल में राजा इक्ष्वाकु की नगरी कौन-सी थी?", ans: "Ramrai / रामराय", hint: "Situated in Jind district.", exp: "Ramrai (in Jind district) was associated with King Ikshvaku during the Mahabharata era." },
+            { id: 1787, en: "With which Rishi is the Aasan Tirth of Jind associated?", hi: "जींद का आसन तीर्थ किस ऋषि से संबंधित है?", ans: "Jamadagni / जमदग्नि", hint: "Father of Lord Parashurama.", exp: "Aasan Tirth in Jind district is historically connected to Maharishi Jamadagni." },
+            { id: 1788, en: "When was Bhuteshwar Temple built by Raghubir Singh?", hi: "रघुवीर सिंह द्वारा भूतेश्वर मंदिर का निर्माण कब किया गया?", ans: "1864 AD / 1864 ई.", hint: "Built in the 1860s.", exp: "Raja Raghubir Singh constructed the famous Bhuteshwar Temple in Jind in 1864." },
+            { id: 1789, en: "Where is the famous Khwaja ki Sarai located in Haryana?", hi: "हरियाणा में प्रसिद्ध ख्वाजा की सराय कहाँ है?", ans: "Faridabad / फरीदाबाद", hint: "An industrial hub near Delhi.", exp: "Khwaja ki Sarai is an ancient monument located in the Faridabad district." },
+            { id: 1790, en: "Where is the famous Chitta Mandir located?", hi: "प्रसिद्ध चिट्टा मंदिर कहाँ है?", ans: "Yamunanagar / यमुनानगर", hint: "Located near the banks of the Yamuna river.", exp: "Chitta Mandir, known for its white Hanuman idol, is in Yamunanagar." },
+            { id: 1791, en: "Hariras book belongs to which 14th-century writer?", hi: "14वीं शताब्दी के साहित्यकार ईसरदास की पुस्तक कौन सी है?", ans: "Hariras / हरिरस", hint: "Written by Isardas.", exp: "Isardas, a prominent literary figure of the 14th century, authored the religious text 'Hariras'." },
+            { id: 1792, en: "Which city was known by the name 'Udaya Nagari' during Ashoka's time?", hi: "अशोक के समय उदया नगरी के नाम से किसे जाना जाता था?", ans: "Fatehabad / फतेहाबाद", hint: "Founded by Firoz Shah Tughlaq later on.", exp: "Fatehabad was historically known as 'Udaya Nagari' during the Ashokan period." },
+            { id: 1793, en: "Sheikh Usman Zinda Peer is associated with which place?", hi: "शेख उरमान जिंदा पीर का संबंध कहाँ से है?", ans: "Panipat / पानीपत", hint: "The city of weavers.", exp: "The tomb/shrine of Sheikh Usman Zinda Peer is located in Panipat." },
+            { id: 1794, en: "Where is Chilli Wala Shri Krishna Temple located?", hi: "चिल्ली वाला श्री कृष्ण मंदिर कहाँ स्थित है?", ans: "Fatehabad / फतेहाबाद", hint: "Also known for the Firoz Shah Palace.", exp: "Chilli Wala Shri Krishna Mandir is situated in Fatehabad district." },
+            { id: 1795, en: "When did the war between Najib ad-Dawlah and Jat King Jawahar Singh take place?", hi: "नजीबुद्दौला और जाट राजा जवाहर सिंह के मध्य युद्ध कब हुआ?", ans: "1764 AD / 1764 ई.", hint: "Same year as the Battle of Buxar.", exp: "The battle between Rohilla chief Najib ad-Dawlah and Maharaja Jawahar Singh occurred in 1764." },
+            { id: 1796, en: "When did the Tilpat War take place between Aurangzeb and Gokula Jat?", hi: "औरंगजेब व गोकुला जाट के मध्य तिलपत का युद्ध कब हुआ?", ans: "1669 AD / 1669 ई.", hint: "Late 17th century.", exp: "The Battle of Tilpat was fought between Mughal Emperor Aurangzeb and Gokula Jat in 1669." },
+            { id: 1798, en: "Where is the tomb of Pranpir Badshah located?", hi: "प्राणपीर बादशाह का मकबरा कहाँ है?", ans: "Hisar / हिसार", hint: "City founded by Firoz Shah Tughlaq.", exp: "The tomb of Pranpir Badshah is a notable historic monument in Hisar." },
+            { id: 1799, en: "Which Haryana musical instrument is shaped like two brass-jointed cups?", hi: "हरियाणा का यह वाद्य यंत्र पीतल के बने दो झांझ वाले कप की आकृति का होता है?", ans: "Manjira / मंजीरा", hint: "Used during devotional bhajans.", exp: "Manjira is a traditional percussion instrument made of two brass cymbals/cups." },
+            { 1800: 1800, en: "Who built Shri Digambar Jain Mandir in Hisar?", hi: "श्री दिगंबर जैन मंदिर हिसार का निर्माण किसने करवाया?", ans: "Shuganchand / शुगनचंद", hint: "Built by a prominent Jain devotee.", exp: "Shri Digambar Jain Mandir in Hisar was constructed by Shuganchand." },
+            { id: 1801, en: "Where is Shri Kaleshwar Mahadev Math located in Haryana?", hi: "हरियाणा में श्री कालेश्वर महादेव मठ कहाँ है?", ans: "Yamunanagar / यमुनानगर", hint: "Near Kalesar National Park.", exp: "Shri Kaleshwar Mahadev Math is located near the Kalesar region in Yamunanagar." },
+            { id: 1802, en: "What is 'Rupya Potda' in Haryanvi tradition?", hi: "हरियाणा में 'रुपया पोतडा' क्या है?", ans: "Ritual on child birth / बच्चा पैदा होने की रस्म", hint: "A cultural tradition following childbirth.", exp: "'Rupya Potda' is a traditional gift/custom observed upon the birth of a newborn in Haryana." },
+            { id: 1803, en: "Pathwari Mata is associated with which ritual?", hi: "पथवारी माता का संबंध है?", ans: "Unmarried girls seeking a suitable spouse / कुआरी कन्या पति कामना के लिए", hint: "Worshipped for marital bliss.", exp: "Pathwari Mata is traditionally worshipped by unmarried girls praying for a good husband." },
+            { id: 1804, en: "When was the Archaeological Museum of Jhajjar established?", hi: "झज्जर का पुरातात्विक संग्रहालय कब बनाया गया?", ans: "1959 AD / 1959 ई.", hint: "Established by Swami Omanand Saraswati.", exp: "The Jhajjar Archaeological Museum, the largest in Haryana, was established in 1959." },
+            { id: 1805, en: "Which place is known as the 'City of 360 Bridges/Vehicles'?", hi: "360 गाड़ियों/बावड़ियों का शहर किसे कहा जाता है?", ans: "Pinjore / पिंजौर", hint: "Famous for Yadavindra Gardens.", exp: "Pinjore is traditionally referred to as the city of 360 baolis/vehicles." },
+            { id: 1806, en: "Where is the Dargah of Syed Sharif located?", hi: "सैयद शरीफ की दरगाह कहाँ स्थित है?", ans: "Hodal / होडल", hint: "Located in Palwal district.", exp: "The shrine of Syed Sharif is situated at Hodal." },
+            { id: 1807, en: "What is the new name of Mustafabad in Haryana?", hi: "मुस्तफाबाद का नया नाम क्या है?", ans: "Saraswati Nagar / सरस्वती नगर", hint: "Renamed after the holy river.", exp: "Mustafabad in Yamunanagar district was officially renamed Saraswati Nagar." },
+            { id: 1809, en: "Where is Chabutra-e-Fateh Mubarak situated?", hi: "चबूतरा ए फतेह मुबारक कहाँ स्थित है?", ans: "Panipat / पानीपत", hint: "Historic battleground city.", exp: "Chabutra-e-Fateh Mubarak is a historical platform located in Panipat." },
+            { id: 1810, en: "Sheikh Anamullah is associated with which region?", hi: "शेख अनाम उल्ला का संबंध है?", ans: "Panipat / पानीपत", hint: "Famous for Sufi saints.", exp: "Sufi saint Sheikh Anamullah is historically linked to Panipat." },
+            { id: 1811, en: "Who settled the town of Samalkha?", hi: "समालखां किसके द्वारा बसाया गया?", ans: "Ismail Khan / इस्माइल खां", hint: "Named after its founder.", exp: "The town of Samalkha in Panipat district was founded by Ismail Khan." },
+            { id: 1812, en: "Who was the Chairman of Haryana Staff Selection Commission (HSSC)?", hi: "हरियाणा कर्मचारी चयन आयोग के अध्यक्ष (पूर्व) कौन रहे?", ans: "Himmat Singh / हिम्मत सिंह", hint: "Prominent administrative appointment.", exp: "Himmat Singh served as the Chairman of HSSC." },
+            { id: 1813, en: "When was the foundation of Mahatma Gandhi Ashram laid in Palwal by Netaji Subhash Chandra Bose?", hi: "नेताजी सुभाष चंद्र बोस द्वारा महात्मा गांधी आश्रम की नींव पलवल में कब रखी गई?", ans: "1938 AD / 1938 ई.", hint: "Late 1930s.", exp: "Netaji Subhash Chandra Bose laid the foundation stone of Mahatma Gandhi Ashram in Palwal in 1938." },
+            { id: 1814, en: "From whom did the King of Sirmour buy Pinjore Garden, and who was the ruler of Patiala then?", hi: "सिरमौर के राजा से अमर सिंह ने पिंजौर गार्डन को खरीदा, अमर सिंह कहाँ के शासक थे?", ans: "Patiala / पटियाला", hint: "Princely state of Punjab/Haryana.", exp: "Raja Amar Singh, ruler of Patiala, acquired the historic Pinjore Garden." },
+            { id: 1815, en: "In which ancient book is Kalka referred to as 'Kalkuta'?", hi: "कालका को (कालकुटा) किस पुस्तक में कहा गया है?", ans: "Ashtadhyayi / अष्टाध्यायी", hint: "Authored by Panini.", exp: "Panini's Sanskrit treatise 'Ashtadhyayi' refers to modern Kalka as Kalkuta." },
+            { id: 1816, en: "On the pattern of which garden was the Mughal Garden (Pinjore) designed?", hi: "मुगल गार्डन किस गार्डन के तर्ज पर बनाया गया था?", ans: "Shalimar Bagh, Lahore / शालीमार बाग, लाहौर", hint: "Famous Mughal garden in Lahore.", exp: "The Pinjore Mughal Garden was modeled after the Shalimar Bagh of Lahore." },
+            { id: 1817, en: "For which industry is the Gurugram-Manesar-Bawal region famous?", hi: "हरियाणा का गुरुग्राम-मानसर-बावल क्षेत्र किस उत्पाद हेतु प्रसिद्ध है?", ans: "Automobile / ऑटोमोबाइल", hint: "Hub for Maruti Suzuki and major OEMs.", exp: "The Gurugram-Manesar-Bawal belt is world-renowned as an automobile manufacturing hub." },
+            { id: 1818, en: "Where is the cluster of seven tombs located in Haryana?", hi: "हरियाणा में सात मकबरों का समूह कहाँ विद्यमान है?", ans: "Jhajjar / झज्जर", hint: "City of martyrs.", exp: "The famous cluster of seven historical tombs is situated in Jhajjar." },
+            { id: 1819, en: "In 1861, King Karam Singh of Patiala built a temple at which place in Haryana?", hi: "पटियाला के रियासत के राजा कर्मसिंह ने 1861 में कहाँ मंदिर बनवाया?", ans: "Panchkula (Mata Mansa Devi) / पंचकूला", hint: "Near Chandigarh.", exp: "Raja Karam Singh of Patiala constructed the main temple at Mata Mansa Devi complex in Panchkula in 1861." },
+            { id: 1820, en: "What is the geographical shape of Haryana state?", hi: "हरियाणा की आकृति कैसी है?", ans: "Rhomboid / विषमबाहु चतुर्भुज", hint: "Irregular quadrilateral.", exp: "The outline map of Haryana resembles an irregular quadrilateral or rhomboid shape." },
+            { id: 1821, en: "When did the construction of Markanda Nangal Dam begin?", hi: "हरियाणा में मारकंडा नांगल बांध का निर्माण कब शुरू हुआ?", ans: "1963 AD / 1963 ई.", hint: "Early 1960s.", exp: "Construction on the Markanda Nangal Dam initiated in the year 1963." },
+            { id: 1822, en: "In which district is the famous Crafts Fair (Surajkund) held in Haryana?", hi: "हरियाणा में लगने वाला हस्तशिल्प मेला (सूरजकुंड) किस जिले में लगता है?", ans: "Faridabad / फरीदाबाद", hint: "Annual international craft fair.", exp: "The world-famous Surajkund International Crafts Mela takes place in Faridabad." },
+            { id: 1823, en: "Where is the origin place of River Markanda?", hi: "मारकंडा नदी का उद्गम स्थल कहाँ से है?", ans: "Dharidhar Hills / धरतीधर पहाड़ियाँ", hint: "Lower Shivalik range in Himachal Pradesh.", exp: "River Markanda originates from the Dharidhar range in the Shivalik hills." },
+            { id: 1824, en: "Where does Somb river meet Pathrala, a tributary of Yamuna?", hi: "सोम्ब पथराला, यमुना नदी की सहायक नदी यमुना में कहाँ मिलती है?", ans: "Mehar Majra / मेहर माजरा", hint: "Yamunanagar district.", exp: "The combined stream of Somb and Pathrala meets the Yamuna River near Mehar Majra." },
+            { id: 1825, en: "Where is Bibi Pur Lake situated in Haryana?", hi: "हरियाणा में बीबीपुर झील कहाँ है?", ans: "Kurukshetra / कुरुक्षेत्र", hint: "Holy city of Haryana.", exp: "Bibi Pur Lake is located in the Kurukshetra district." },
+            { id: 1826, en: "What is the average annual rainfall of Haryana state?", hi: "हरियाणा राज्य की औसत वार्षिक वर्षा क्या है?", ans: "40 - 55 cm / 40-55 सेमी", hint: "Semi-arid to sub-humid region.", exp: "Haryana receives an average annual precipitation ranging between 40 cm to 55 cm." },
+            { id: 1827, en: "In which district is the Golden Creeper village tourism center situated?", hi: "हरियाणा में गोल्डन क्रीपर गांव का पर्यटन केंद्र कहाँ है?", ans: "Gurugram / गुरुग्राम", hint: "Millennium City.", exp: "Golden Creeper eco-tourism center is located in Gurugram district." },
+            { id: 1828, en: "Which district is regarded as the Haryanvi Cultural & Political Capital?", hi: "हरियाणा प्रदेश की हरियाणवी सांस्कृतिक व राजनीतिक राजधानी कौन सा जिला है?", ans: "Rohtak / रोहतक", hint: "Heartland of Haryana politics.", exp: "Rohtak is culturally and politically considered the central nerve of Haryana." },
+            { id: 1829, en: "Which female leader achieved the distinction of becoming a Union Cabinet Minister at a very young age from Haryana?", hi: "हरियाणा के किस नेता को सबसे कम उम्र में केंद्रीय मंत्री बनने का कीर्तिमान प्राप्त है?", ans: "Kumari Selja / कुमारी सैलजा", hint: "Prominent female Congress politician.", exp: "Kumari Selja holds the record for becoming one of the youngest Union Cabinet Ministers from Haryana." },
+            { id: 1830, en: "When was Khanpur Kalan Kanya Gurukul established?", hi: "खानपुर कलां कन्या गुरुकुल की स्थापना कब हुई?", ans: "1936 AD / 1936 ई.", hint: "Founded by Bhagat Phool Singh.", exp: "Khanpur Kalan Kanya Gurukul (now BPS Mahila Vishwavidyalaya) was established in 1936." },
+            { id: 1831, en: "Which village is celebrated for the arrival of the first newspaper in Haryana?", hi: "हरियाणा में अखबार के आगमन का गांव कौन सा है?", ans: "Dharsu (Narnaul) / धरसू नारनौल", hint: "Located in Mahendragarh district.", exp: "Dharsu village near Narnaul is historically associated with the arrival of newspapers in Haryana." },
+
+            // Page 2 (45 Questions: 1841 - 1888)
+            { id: 1841, en: "When was the Haryana State Gaushala Sangh established?", hi: "हरियाणा राज्य गौशाला संघ की स्थापना कब हुई थी?", ans: "1996 AD / 1996 ई.", hint: "Mid-1990s.", exp: "The Haryana State Gaushala Sangh was officially set up in 1996." },
+            { id: 1842, en: "From where was Haryana's first newspaper/magazine published?", hi: "हरियाणा की पहली पत्रिका कहाँ से निकाली गई थी?", ans: "Rewari / रेवाड़ी", hint: "Brass city of Haryana.", exp: "The initial periodical/newspaper of Haryana was brought out from Rewari." },
+            { id: 1843, en: "Whose Dynasty/Rule is described in the Bijolia inscription of Someshvara?", hi: "सोमेश्वर के बिजोलिया अभिलेख में किसका वर्णन है?", ans: "Chauhans / चौहानों का", hint: "Rajput dynasty of Rajsamand/Ajmer.", exp: "The Bijolia Rock Inscription of King Someshvara provides details regarding the Chauhan dynasty." },
+            { id: 1844, en: "Where was a burnt manuscript found in Haryana?", hi: "हरियाणा में जली हुई पांडुलिपि कहाँ से मिली है?", ans: "Agroha / अग्रोहा", hint: "Ancient site in Hisar.", exp: "Ancient burnt manuscript fragments were excavated from the historical site of Agroha." },
+            { id: 1845, en: "Where is the Krantiman Smarak located in Haryana?", hi: "हरियाणा में क्रांतिमान स्मारक कहाँ हैं?", ans: "Hisar / हिसार", hint: "Commemorating the 1857 revolt.", exp: "Krantiman Smarak is established at Hisar to honor freedom fighters." },
+            { id: 1846, en: "When did Banabhatta write the famous 'Harshacharita'?", hi: "बाणभट्ट ने हर्षचरित कब लिखा?", ans: "622 AD / 622 ई.", hint: "7th century AD.", exp: "Banabhatta authored 'Harshacharita', the biography of King Harsha, around 622 AD." },
+            { id: 1847, en: "What did Xuanzang (Hieun Tsang) call India in his autobiography?", hi: "ह्वेनसांग ने अपनी आत्मकथा में भारत को क्या कहा है?", ans: "Moonland (Candra-bhumi) / चंद्रमा की भूमि", hint: "Poetic Chinese term for India (Yintu).", exp: "In his records, Xuanzang described India poetically as 'Candra-bhumi' (Land of the Moon)." },
+            { id: 1848, en: "Where did Banda Bairagi kill Wazir Khan?", hi: "बंदा बैरागी जिसने वजीर खान की हत्या की वह कहाँ का नवाब था?", ans: "Sirhind / सरहिंद", hint: "Governor of Sirhind.", exp: "Banda Singh Bahadur (Banda Bairagi) executed Wazir Khan, who was the Mughal Governor of Sirhind." },
+            { id: 1849, en: "From where did the famous freedom fighter Chandbai belong?", hi: "प्रसिद्ध स्वतंत्रता सेनानी चांदबाई कहाँ से थी?", ans: "Hisar / हिसार", hint: "First woman political prisoner from Haryana.", exp: "Chandbai, a prominent freedom fighter, hailed from Hisar." },
+            { id: 1850, en: "In which district of Haryana was 'National Week' celebrated during the Quit India Movement?", hi: "हरियाणा के किस जिले में भारत छोड़ो आंदोलन के दौरान राष्ट्रीय सप्ताह मनाया गया?", ans: "Hisar / हिसार", hint: "Active center during 1942 movement.", exp: "During the 1942 Quit India Movement, National Week was celebrated with great fervor in Hisar." },
+            { id: 1851, en: "The statue of Chakra Swami in Haryana is related to whom?", hi: "हरियाणा में चक्रस्वामी की मूर्ति का संबंध किससे है?", ans: "Virat Vishnu / विराट विष्णु", hint: "Lord Vishnu's cosmic form.", exp: "The ancient idol of Chakra Swami refers to the cosmic form (Virat Swaroop) of Lord Vishnu." },
+            { id: 1852, en: "Which is the ancient holy site located at the confluence of Saraswati and Aruna rivers?", hi: "प्राचीन सरस्वती अरुणा संगम वाला तीर्थ कौन सा है?", ans: "Pehowa (Kurukshetra) / पेहोवा (कुरुक्षेत्र)", hint: "Famous for Pind Daan rituals.", exp: "Pehowa in Kurukshetra is situated at the sacred confluence of the ancient Saraswati and Aruna rivers." },
+            { id: 1853, en: "Where is the famous Chughal Kothi located in Haryana?", hi: "हरियाणा में प्रसिद्ध चुघाल कोठी कहाँ है?", ans: "Sirsa / सिरसा", hint: "Westernmost district of Haryana.", exp: "Chughal Kothi is a notable historic structure in Sirsa." },
+            { id: 1854, en: "In which district is the Deenbandhu Chhotu Ram Thermal Power Plant located?", hi: "हरियाणा में दीनबंधु छोटू राम ऊर्जा संयंत्र किस जिले में स्थित है?", ans: "Yamunanagar / यमुनानगर", hint: "600 MW coal-based power plant.", exp: "Deenbandhu Chhotu Ram Thermal Power Station is situated in Yamunanagar." },
+            { id: 1855, en: "Which ruler of Ballabhgarh sacrificed his life in the 1857 War of Independence?", hi: "1857 के स्वतंत्रता संग्राम में बल्लभगढ़ के किस राजा ने बलिदान दिया?", ans: "Raja Nahar Singh / नाहर सिंह", hint: "The Lion of Ballabhgarh.", exp: "Raja Nahar Singh, the ruler of Ballabhgarh, led the 1857 uprising in his region and was hanged by the British." },
+            { id: 1856, en: "Which city was discovered/founded by Firoz Shah Tughlaq?", hi: "फिरोजशाह तुगलक द्वारा खोज किया गया शहर है?", ans: "Hisar / हिसार", hint: "Originally named Hisar-e-Firoza.", exp: "Firoz Shah Tughlaq established the fortified city of Hisar (Hisar-e-Firoza) in 1354 AD." },
+            { id: 1857, en: "Where did the armies of Prithviraj Chauhan face the enemy in battle?", hi: "पृथ्वीराज चौहान की सेनाओं का सामना कहाँ हुआ था?", ans: "Tarain / तराइन", hint: "Battles of Tarain (1191, 1192).", exp: "Prithviraj Chauhan fought his historic battles against Muhammad Ghori at Tarain (modern Taraori)." },
+            { id: 1858, en: "Where were copper coins belonging to the era of King Harshavardhana discovered?", hi: "हरियाणा में हर्षवर्धन कालीन ताम्र मुद्राएँ कहाँ से प्राप्त हुई?", ans: "Sonipat / सोनीपत", hint: "Famous for copper seals and inscriptions.", exp: "Harshavardhana-era copper plates/coins (Mudra) were excavated from Sonipat." },
+            { id: 1859, en: "During 1756-57, under whose rule was the Haryana region?", hi: "1756-57 के दौरान हरियाणा राज्य किसके अधीन था?", ans: "Marathas / मराठों के", hint: "Ruled before the British treaty of Surji-Anjangaon.", exp: "During 1756-57, Haryana was under the direct control and hegemony of the Maratha Empire." },
+            { id: 1860, en: "In which district of Haryana is Gujari Mahal situated?", hi: "गुजरी महल हरियाणा के किस जिले में अवस्थित है?", ans: "Hisar / हिसार", hint: "Built by Firoz Shah Tughlaq for Gujari.", exp: "Gujari Mahal was constructed inside the Hisar fort complex by Firoz Shah Tughlaq." },
+            { 1861: 1861, en: "What did Swami Dayananda Saraswati establish first upon reaching Rewari in Haryana?", hi: "स्वामी दयानंद सरस्वती ने हरियाणा के रेवाड़ी पहुँचने पर सर्वप्रथम क्या प्रारंभ किया?", ans: "Gaushala (Cow Shelter) / गौशाला", hint: "First of its kind in North India.", exp: "Swami Dayananda Saraswati established India's first organized Gaushala at Rewari in 1878." },
+            { id: 1862, en: "Why is Agroha Dham famous across India?", hi: "अग्रोहा धाम किस कारण से पूरे भारत में जाना जाता है?", ans: "Because of Maharaja Agrasen / महाराजा अग्रसेन के कारण", hint: "Birthplace/Capital of Agrawal community.", exp: "Agroha Dham is revered nationwide as the ancient capital of King Agrasen, patriarch of Agrawals." },
+            { id: 1863, en: "Which king built the fort at Gohana?", hi: "गोहाना में किले का निर्माण किस राजा के द्वारा हुआ?", ans: "Prithviraj Chauhan / पृथ्वीराज चौहान", hint: "12th-century Rajput King.", exp: "The fort of Gohana (in Sonipat district) was built by the Rajput king Prithviraj Chauhan." },
+            { id: 1864, en: "In which town is Birbal's Chhatta (Chhat) located?", hi: "बीरबल का छाता इमारत हरियाणा के किस नगर में है?", ans: "Narnaul / नारनौल", hint: "Also known as Rai Bal Mukund Das Chhatta.", exp: "Birbal ka Chhatta is a five-storey Mughal-era structure situated in Narnaul." },
+            { id: 1865, en: "During the reign of which emperor did Chinese traveler Xuanzang visit Haryana?", hi: "चीनी यात्री ह्वेनसांग किस सम्राट के समय हरियाणा क्षेत्र में आया था?", ans: "Harshavardhana / हर्षवर्धन", hint: "Ruler of Thanesar.", exp: "Xuanzang visited Thanesar (Kurukshetra) during the reign of Emperor Harshavardhana." },
+            { id: 1866, en: "Which book contains the description of rivers flowing in Thanesar and Kurukshetra region?", hi: "किस पुस्तक में हरियाणा के थानेश्वर और कुरुक्षेत्र के क्षेत्र में बहने वाली नदियों का विवरण किया गया है?", ans: "Vamana Purana / वामन पुराण", hint: "Contains sacred geography of Kurukshetra.", exp: "The Vamana Purana provides detailed descriptions of the 7 sacred rivers of Kurukshetra." },
+            { id: 1867, en: "In which district was Lala Lajpat Rai actively involved during the Swadeshi Movement?", hi: "लाला लाजपत राय ने स्वदेशी आंदोलन में किस जिले से सक्रिय रूप से भाग लिया था?", ans: "Hisar / हिसार", hint: "His primary political Karma-bhoomi in Haryana.", exp: "Lala Lajpat Rai practiced law and actively led political movements from Hisar." },
+            { id: 1868, en: "What name is given to Haryana in the Rigveda?", hi: "ऋग्वेद में हरियाणा का नाम क्या है?", ans: "Rajji Haryana / रजत् हरियाणा", hint: "Ancient Vedic term.", exp: "The Rigveda refers to the region of Haryana as 'Rajji Haryana'." },
+            { id: 1869, en: "Where is the Tomb of Khwaja Khizr located, which was built by Ibrahim Lodi?", hi: "ख्वाजा खिज्र का मकबरा, जिसे इब्राहिम लोदी ने बनवाया किस नगर में स्थित है?", ans: "Sonipat / सोनीपत", hint: "Fine example of Pathan architecture.", exp: "The Tomb of Khwaja Khizr was erected by Ibrahim Lodi in Sonipat between 1522–1524 AD." },
+            { id: 1870, en: "Which powerful clans ruled Haryana in the BC era?", hi: "ईस्वी पूर्व हरियाणा क्षेत्र में किस वंश के पराक्रमी राजा हुए?", ans: "Puru, Bharata & Kuru Clans / पुरु, भरत और कुरु वंश", hint: "Vedic tribal clans.", exp: "Ancient Haryana was ruled by prominent Vedic clans including Puru, Bharata, and Kuru." },
+            { id: 1871, en: "Thanesar was the capital of which famous king?", hi: "थानेश्वर नामक नगर किस प्रसिद्ध राजा के राज्य की राजधानी थी?", ans: "Harshavardhana / हर्षवर्धन", hint: "Pushyabhuti dynasty ruler.", exp: "Thanesar (Sthanvishvara) served as the capital of King Harshavardhana before shifting to Kannauj." },
+            { id: 1872, en: "During the 18th century, which town of Mahendragarh was part of the Jaipur state?", hi: "18वीं शताब्दी के दौरान महेंद्रगढ़ जिले का कौन सा शहर जयपुर राज्य का एक भाग था?", ans: "Narnaul / नारनौल", hint: "Southern border town of Haryana.", exp: "Historically, Narnaul was administered under the princely state of Jaipur during the 18th century." },
+            { id: 1873, en: "Who shifted the Ashokan Topra Pillar to Delhi at Firoz Shah Kotla?", hi: "अशोककालीन टोपरा अभिलेख को किसने दिल्ली के फिरोजशाह कोटला में स्थापित किया था?", ans: "Firoz Shah Tughlaq / फिरोजशाह तुगलक", hint: "14th century Sultan of Delhi.", exp: "Firoz Shah Tughlaq transported the Ashokan Pillar from Topra (Yamunanagar) to Delhi." },
+            { id: 1874, en: "Which district was historically called 'Shrikantha Janapada'?", hi: "किस जिले को श्रीकंठ जनपद कहा जाता था?", ans: "Kurukshetra / कुरुक्षेत्र", hint: "Named after Nagara ruler Shrikantha.", exp: "The region of Kurukshetra was anciently designated as 'Shrikantha Janapada'." },
+            { id: 1875, en: "Fatehabad city was named after Fateh Khan, son of Firoz Shah Tughlaq, in which century?", hi: "फतेहाबाद जिले का नाम इसके प्रशासनिक मुख्यालय कस्बे पर पड़ा है, जिसकी नींव 14वीं सदी में अपने बेटे फतेह खान के नाम पर रखी थी?", ans: "Firoz Shah Tughlaq / फिरोजशाह तुगलक", hint: "Tughlaq dynasty sultan.", exp: "Firoz Shah Tughlaq founded Fatehabad in 1352 AD and named it after his son Fateh Khan." },
+            { id: 1876, en: "By what other name is Ottu Lake known in Haryana?", hi: "ओटू झील को किसी अन्य नाम से जाना जाता है?", ans: "Dhanur Lake / धनुष झील", hint: "Located on Ghaggar river in Sirsa.", exp: "Ottu Reservoir/Lake on the Ghaggar-Hakra River in Sirsa is also termed Dhanur Lake." },
+            { id: 1877, en: "In 1861, after whose name was the famous fort of Mahendragarh named?", hi: "महेंद्रगढ़ के प्रसिद्ध किले का नाम 1861 ई. में किसके नाम पर रखा गया?", ans: "Maharaja Mahendra Singh / महाराजा महेंद्रसिंह", hint: "Ruler of Patiala state.", exp: "Raja Narender Singh named the Kanaud Fort as Mahendragarh Fort in honor of his son Mahendra Singh." },
+            { id: 1879, en: "What was the renamed full form/name of HUDA by Haryana Government?", hi: "हरियाणा सरकार ने HUDA का नाम बदलकर क्या किया है?", ans: "Haryana Shehri Vikas Pradhikaran (HSVP) / हरियाणा शहरी विकास प्राधिकरण", hint: "Urban Development Authority.", exp: "HUDA was officially renamed Haryana Shehri Vikas Pradhikaran (HSVP) in May 2017." },
+            { id: 1880, en: "According to Vedic period, Haryana's mythological history belongs to which clan?", hi: "वैदिक काल के अनुसार हरियाणा पौराणिक वंश की मातृभूमि का इतिहास है?", ans: "Bharata Clan / भरत वंश", hint: "Source of the name Bharat.", exp: "According to Vedic tradition, Haryana was the heartland of the legendary Bharata dynasty." },
+            { id: 1881, en: "What was Haryana called in ancient times?", hi: "प्राचीन काल में हरियाणा को क्या कहते थे?", ans: "Brahmavarta / ब्रह्मावर्त", hint: "Land of Divine Origin.", exp: "Ancient classical texts designate the region between Saraswati and Drishadvati as Brahmavarta." },
+            { id: 1882, en: "Mitathal excavation site in Bhiwani belongs to which civilization?", hi: "हरियाणा में मिताथल भिवानी उत्खनन स्थल किस सभ्यता से सम्बन्धित है?", ans: "Indus Valley Civilization / सिंधु घाटी सभ्यता", hint: "Harappan site excavated by Dr. Suraj Bhan.", exp: "Mitathal in Bhiwani is a prominent Harappan and Indus Valley Civilization site." },
+            { id: 1883, en: "What is the ancient name of Panipat?", hi: "पनप्रस्थ किस जिले का प्राचीन नाम है?", ans: "Panipat / पानीपत", hint: "One of the 5 Patas requested by Pandavas.", exp: "Panipat's ancient Mahabharata-era name was Panaprastha." },
+            { id: 1884, en: "Which archaeological evidence/monument is NOT found in Haryana history?", hi: "हरियाणा के इतिहास के साक्ष्य किस पर नहीं पाए गए हैं?", ans: "Sanchi Stupa / साँची स्तूप", hint: "Located in Raisen district, Madhya Pradesh.", exp: "Sanchi Stupa is located in Madhya Pradesh, hence no geographical link to Haryana history." },
+            { id: 1885, en: "Who was the leader of the Ladwa Revolt in 1845?", hi: "1845 ई. में लाडवा विद्रोह का नेता कौन था?", ans: "Ajeet Singh / अजीत सिंह", hint: "Ruler of Ladwa estate.", exp: "Raja Ajeet Singh led the 1845 armed revolt of Ladwa against the British East India Company." },
+            { id: 1886, en: "Which Mauryan kings ruled over the Haryana region?", hi: "हरियाणा क्षेत्र किस मौर्य राजा के राज्य का भाग रहा?", ans: "Bindusara, Ashoka & Chandragupta Maurya / बिंदुसार, अशोक, चंद्रगुप्त मौर्य", hint: "All major Mauryan emperors.", exp: "Haryana was an integral part of the Mauryan Empire under Chandragupta, Bindusara, and Ashoka." },
+            { id: 1887, en: "In which year did the Non-Cooperation Movement start in Haryana?", hi: "हरियाणा में असहयोग आंदोलन किस वर्ष प्रारंभ हुआ?", ans: "1920 AD / 1920 ई.", hint: "Led nationally by Mahatma Gandhi.", exp: "The Non-Cooperation Movement was launched across Haryana in 1920 under Gandhi Ji's leadership." },
+            { id: 1888, en: "In which district is the ancient Madhogarh Fort situated?", hi: "माधोगढ़ का प्राचीन किला किस जिले में है?", ans: "Mahendragarh / महेंद्रगढ़", hint: "Situated on Madhogarh Hill.", exp: "Madhogarh Fort is located on a hilltop in the Mahendragarh district of Haryana." }
+        ];
+
+        // Generate options programmatically to ensure uniqueness & prevent pattern matching
+        const dummyDistractors = [
+            "Rohtak / रोहतक", "Ambala / अंबाला", "Karnal / करनाल", "Bhiwani / भिवानी",
+            "Rewari / रेवाड़ी", "Sirsa / सिरसा", "Gurugram / गुरुग्राम", "Faridabad / फरीदाबाद",
+            "1757 AD / 1757 ई.", "1857 AD / 1857 ई.", "1947 AD / 1947 ई.", "1966 AD / 1966 ई.",
+            "Harshavardhana / हर्षवर्धन", "Prithviraj Chauhan / पृथ्वीराज चौहान", "Firoz Shah Tughlaq / फिरोजशाह तुगलक"
+        ];
+
+        let questions = rawDataset.map((item, index) => {
+            let options = [item.ans];
+            let distractorPool = dummyDistractors.filter(d => d !== item.ans);
+            
+            // Pick 3 unique random distractors
+            while(options.length < 4) {
+                let randIndex = Math.floor(Math.random() * distractorPool.length);
+                let selected = distractorPool[randIndex];
+                if(!options.includes(selected)) {
+                    options.push(selected);
+                }
+            }
+
+            // Shuffle Options (Fisher-Yates)
+            for (let i = options.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [options[i], options[j]] = [options[j], options[i]];
+            }
+
+            return {
+                ...item,
+                options: options
+            };
+        });
+
+        // App State
+        let currentIndex = 0;
+        let score = 0;
+        let answeredQuestions = {};
+
+        // DOM Elements
+        const questionNumberEl = document.getElementById('question-number');
+        const questionEnEl = document.getElementById('question-en');
+        const questionHiEl = document.getElementById('question-hi');
+        const optionsContainerEl = document.getElementById('options-container');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const hintBtn = document.getElementById('hint-btn');
+        const hintBox = document.getElementById('hint-box');
+        const explanationBox = document.getElementById('explanation-box');
+        const resultStatusEl = document.getElementById('result-status');
+        const explanationTextEl = document.getElementById('explanation-text');
+        const scoreDisplayEl = document.getElementById('score-display');
+        const progressBarEl = document.getElementById('progress-bar');
+        const jumpInput = document.getElementById('jump-input');
+        const jumpBtn = document.getElementById('jump-btn');
+
+        function loadQuestion(index) {
+            const q = questions[index];
+            questionNumberEl.innerText = `Question ${index + 1} of ${questions.length} (ID: #${q.id})`;
+            questionEnEl.innerText = `${index + 1}. ${q.en}`;
+            questionHiEl.innerText = `${q.hi}`;
+
+            // Reset Boxes
+            hintBox.classList.add('hidden');
+            hintBox.innerText = '';
+            explanationBox.classList.add('hidden');
+
+            // Render Options
+            optionsContainerEl.innerHTML = '';
+            const labels = ['A', 'B', 'C', 'D'];
+            
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = `option-btn w-full text-left p-3 rounded-lg border border-slate-700 bg-slate-900/50 hover:bg-slate-700 transition flex items-start gap-3 text-sm text-slate-200`;
+                btn.innerHTML = `<span class="font-bold text-amber-400 bg-slate-800 border border-slate-600 rounded px-2 py-0.5 text-xs">${labels[idx]}</span> <span>${opt}</span>`;
+                
+                if (answeredQuestions[index] !== undefined) {
+                    btn.disabled = true;
+                    if (opt === q.ans) {
+                        btn.classList.add('border-emerald-500', 'bg-emerald-950/40', 'text-emerald-300');
+                    }
+                    if (answeredQuestions[index] === opt && opt !== q.ans) {
+                        btn.classList.add('border-rose-500', 'bg-rose-950/40', 'text-rose-300');
+                    }
+                } else {
+                    btn.onclick = () => selectOption(index, opt);
+                }
+
+                optionsContainerEl.appendChild(btn);
+            });
+
+            // Show explanation if already answered
+            if (answeredQuestions[index] !== undefined) {
+                showExplanation(index, answeredQuestions[index] === q.ans);
+            }
+
+            // Update Navigation Buttons
+            prevBtn.disabled = index === 0;
+            nextBtn.disabled = index === questions.length - 1;
+
+            // Update Progress Bar
+            progressBarEl.style.width = `${((index + 1) / questions.length) * 100}%`;
+        }
+
+        function selectOption(index, selectedOpt) {
+            const q = questions[index];
+            const isCorrect = selectedOpt === q.ans;
+            
+            answeredQuestions[index] = selectedOpt;
+
+            if (isCorrect) {
+                score++;
+            }
+
+            updateScore();
+            loadQuestion(index);
+        }
+
+        function showExplanation(index, isCorrect) {
+            const q = questions[index];
+            explanationBox.classList.remove('hidden');
+            if (isCorrect) {
+                resultStatusEl.innerText = "✓ Correct Answer!";
+                resultStatusEl.className = "font-bold text-emerald-400 block mb-1";
+            } else {
+                resultStatusEl.innerText = `✗ Incorrect! Correct Answer: ${q.ans}`;
+                resultStatusEl.className = "font-bold text-rose-400 block mb-1";
+            }
+            explanationTextEl.innerText = q.exp;
+        }
+
+        function updateScore() {
+            const totalAnswered = Object.keys(answeredQuestions).length;
+            scoreDisplayEl.innerText = `${score} / ${totalAnswered}`;
+        }
+
+        // Event Listeners
+        prevBtn.onclick = () => {
+            if (currentIndex > 0) {
+                currentIndex--;
+                loadQuestion(currentIndex);
+            }
+        };
+
+        nextBtn.onclick = () => {
+            if (currentIndex < questions.length - 1) {
+                currentIndex++;
+                loadQuestion(currentIndex);
+            }
+        };
+
+        hintBtn.onclick = () => {
+            const q = questions[currentIndex];
+            hintBox.innerText = `Hint: ${q.hint}`;
+            hintBox.classList.toggle('hidden');
+        };
+
+        jumpBtn.onclick = () => {
+            const target = parseInt(jumpInput.value) - 1;
+            if (target >= 0 && target < questions.length) {
+                currentIndex = target;
+                loadQuestion(currentIndex);
+            }
+        };
+
+        // Keyboard Navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft' && currentIndex > 0) {
+                currentIndex--;
+                loadQuestion(currentIndex);
+            } else if (e.key === 'ArrowRight' && currentIndex < questions.length - 1) {
+                currentIndex++;
+                loadQuestion(currentIndex);
+            }
+        });
+
+        // Initialize First Question
+        loadQuestion(0);
+    </script>
+<script src="../../quiz-question-controls.js"></script>
+<script src="../../quiz-app-ui-v2.js"></script></body>
+</html>

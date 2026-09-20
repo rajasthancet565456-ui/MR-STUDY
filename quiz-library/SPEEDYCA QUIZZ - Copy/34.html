@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CA 90-Question Interactive Examination Quiz</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+<style id="cosmic-readable-quiz-theme">
+:root{--space:#e8dcff;--panel:#f3eaff;--panel2:#dcc6ff;--edge:#6a45bf;--glow:#d28b28;--accent:#d15f9f;--ink:#2c1b4d;--muted:#66547c;--mist:rgba(106,69,191,.2)}html{background:var(--space)}body{background:radial-gradient(ellipse 62% 45% at 90% -5%,rgba(209,95,159,.28),transparent 62%),radial-gradient(ellipse 55% 40% at 8% 100%,rgba(65,164,207,.26),transparent 64%),var(--space)!important;color:var(--ink)!important;min-height:100vh}body:before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.78;background-image:radial-gradient(circle at 9% 18%,var(--glow) 0 1px,transparent 1.7px),radial-gradient(circle at 26% 69%,var(--edge) 0 .8px,transparent 1.5px),radial-gradient(circle at 68% 24%,var(--accent) 0 1px,transparent 1.8px),radial-gradient(circle at 88% 73%,#47a8d3 0 .8px,transparent 1.5px);background-size:220px 190px,300px 270px,260px 230px,340px 310px;z-index:-1}header{background:linear-gradient(105deg,var(--panel),var(--panel2))!important;border-color:rgba(106,69,191,.25)!important;box-shadow:0 7px 24px rgba(84,48,142,.14)!important}header h1{color:var(--edge)!important;text-shadow:none!important}header p,header .text-slate-400,header .text-indigo-200,header .text-indigo-300{color:var(--muted)!important}main>div,#quiz-card,.bg-slate-800,.bg-slate-900,.bg-indigo-900,.bg-indigo-950{background:linear-gradient(145deg,#f8f0ff,var(--panel))!important;border-color:rgba(106,69,191,.22)!important;color:var(--ink)!important;box-shadow:0 14px 35px rgba(84,48,142,.12)!important}.bg-slate-700,.bg-slate-100,.bg-slate-50{background:#eadffd!important;color:var(--ink)!important}.text-slate-100,.text-slate-200,.text-slate-300,.text-slate-400,.text-white,.text-slate-800,.text-slate-700,.text-slate-600{color:var(--ink)!important}.text-indigo-400,.text-indigo-300,.text-emerald-400,.text-yellow-300{color:var(--edge)!important}.border-slate-700,.border-slate-700\/60,.border-indigo-700,.border-slate-200{border-color:rgba(106,69,191,.25)!important}button:not(.bg-green-600):not(.bg-red-600){background:#f9f2ff!important;color:var(--ink)!important;border:1px solid rgba(106,69,191,.25)!important;box-shadow:0 3px 10px rgba(84,48,142,.09)!important}button.bg-indigo-600,button.bg-slate-800,button.bg-slate-900,button.bg-indigo-900{background:linear-gradient(120deg,var(--edge),var(--accent))!important;color:#fff!important;border:0!important}button.bg-indigo-600 *,button.bg-slate-800 *,button.bg-slate-900 *,button.bg-indigo-900 *{color:#fff!important}button:hover{filter:brightness(1.04);transform:translateY(-1px)}input,select,textarea{background:#f9f2ff!important;border-color:rgba(106,69,191,.35)!important;color:var(--ink)!important}input:focus,select:focus,textarea:focus{outline:none!important;border-color:var(--edge)!important;box-shadow:0 0 0 3px var(--mist)!important}.bg-indigo-500,#progress-bar{background:linear-gradient(90deg,var(--edge),var(--accent),var(--glow))!important}.rounded-2xl{border-radius:1.25rem!important}
+</style></head>
+<body class="bg-slate-900 text-slate-100 min-p-4 md:p-8 flex flex-col items-center justify-center min-h-screen">
+
+    <div class="w-full max-w-4xl bg-slate-800 rounded-2xl shadow-2xl overflow-hidden border border-slate-700 flex flex-col my-auto">
+        <!-- Header -->
+        <div class="bg-slate-900 px-6 py-4 border-b border-slate-700 flex flex-wrap justify-between items-center gap-4">
+            <div>
+                <h1 class="text-xl md:text-2xl font-bold text-sky-400">Current Affairs Master Quiz</h1>
+                <p class="text-xs text-slate-400">Strictly Formulated from Pages 62 & 63 (90 Exam-Grade Questions)</p>
+            </div>
+            <div class="flex items-center gap-4 text-sm">
+                <div class="bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700">
+                    Score: <span id="score-display" class="font-bold text-emerald-400">0</span> / <span id="total-display">90</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="w-full bg-slate-700 h-1.5">
+            <div id="progress-bar" class="bg-sky-500 h-1.5 transition-all duration-300" style="width: 0%;"></div>
+        </div>
+
+        <!-- Quiz Body -->
+        <div class="p-6 md:p-8 flex-grow flex flex-col justify-between">
+            <div>
+                <!-- Meta Info: Q Number & Hint Toggle -->
+                <div class="flex justify-between items-center mb-4">
+                    <span id="question-counter" class="text-xs font-semibold uppercase tracking-wider text-sky-400 bg-sky-950/50 px-3 py-1 rounded-full border border-sky-800">
+                        Question 1 of 90
+                    </span>
+                    <button onclick="toggleHint()" class="text-xs text-amber-400 hover:text-amber-300 bg-amber-950/30 px-3 py-1 rounded-full border border-amber-800/50 transition">
+                        💡 Toggle Hint
+                    </button>
+                </div>
+
+                <!-- Hint Box -->
+                <div id="hint-box" class="hidden mb-4 p-3 bg-amber-950/20 border border-amber-700/50 rounded-lg text-xs text-amber-200">
+                    <strong>Hint:</strong> <span id="hint-text"></span>
+                </div>
+
+                <!-- Question Text -->
+                <h2 id="question-text" class="text-lg md:text-xl font-medium text-slate-100 mb-6 leading-relaxed">
+                    Loading question...
+                </h2>
+
+                <!-- Options Grid -->
+                <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
+                    <!-- Options injected dynamically -->
+                </div>
+
+                <!-- Explanation Box -->
+                <div id="explanation-container" class="hidden p-4 rounded-xl bg-slate-900/80 border border-slate-700 text-sm">
+                    <h4 class="font-semibold text-sky-400 mb-1 flex items-center gap-1.5">
+                        <span>📖</span> Rationale / Explanation:
+                    </h4>
+                    <p id="explanation-text" class="text-slate-300 leading-relaxed"></p>
+                </div>
+            </div>
+
+            <!-- Navigation Controls -->
+            <div class="mt-8 pt-4 border-t border-slate-700 flex flex-wrap justify-between items-center gap-4">
+                <div class="flex items-center gap-2">
+                    <button onclick="prevQuestion()" id="prev-btn" class="px-4 py-2 rounded-lg bg-slate-700 hover:bg-slate-600 text-sm font-medium transition disabled:opacity-40 disabled:cursor-not-allowed">
+                        Previous
+                    </button>
+                    <button onclick="nextQuestion()" id="next-btn" class="px-4 py-2 rounded-lg bg-sky-600 hover:bg-sky-500 text-sm font-medium transition">
+                        Next
+                    </button>
+                </div>
+
+                <!-- Jump to Question -->
+                <div class="flex items-center gap-2 text-sm">
+                    <span class="text-slate-400 text-xs">Jump to:</span>
+                    <input type="number" id="jump-input" min="1" max="90" class="w-16 bg-slate-900 border border-slate-700 rounded-md px-2 py-1 text-center text-slate-200 focus:outline-none focus:border-sky-500 text-xs" placeholder="1-90">
+                    <button onclick="jumpToQuestion()" class="px-3 py-1 bg-slate-700 hover:bg-slate-600 rounded-md text-xs font-medium transition">
+                        Go
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Full dataset containing 90 unique questions sourced strictly from Pages 62 and 63.
+        const quizData = [
+            {
+                q: "As per the report, what is India's infant mortality rate (IMR) according to the Sample Registration System (SRS) Report 2023?",
+                options: ["20", "25", "30", "22"],
+                correct: 1,
+                hint: "It dropped to a record low level.",
+                explanation: "According to the Sample Registration Report 2023, India's infant mortality rate (IMR) has dropped to a record low level of 25."
+            },
+            {
+                q: "Which meeting of the GST Council implemented two main tax slabs (5% and 18%) by merging tax slabs in New Delhi?",
+                options: ["52nd Meeting", "54th Meeting", "56th Meeting", "58th Meeting"],
+                correct: 2,
+                hint: "Held during September 3-4, 2025.",
+                explanation: "During the 56th meeting of the GST Council held on September 3-4, 2025, in New Delhi, tax slabs were merged into two main slabs of 5% and 18%."
+            },
+            {
+                q: "Where was India's first vulture conservation portal launched?",
+                options: ["Assam", "Bihar", "Uttarakhand", "Madhya Pradesh"],
+                correct: 0,
+                hint: "A northeastern state rich in biodiversity.",
+                explanation: "India's first vulture conservation portal was launched in Assam on September 5, 2025."
+            },
+            {
+                q: "Who authored the new cookbook titled 'Vegetables: The Indian Way' launched in London?",
+                options: ["Tarla Dalal", "Camellia Punjabi", "Madhur Jaffrey", "Sanjeev Kapoor"],
+                correct: 1,
+                hint: "Launched on September 5, 2025.",
+                explanation: "Camellia Punjabi launched her new cookbook titled 'Vegetables: The Indian Way' in London on September 5, 2025."
+            },
+            {
+                q: "Who inaugurated the SAMHiTa conference in New Delhi on September 5, 2025?",
+                options: ["Narendra Modi", "Dr. S. Jaishankar", "Amit Shah", "Droupadi Murmu"],
+                correct: 1,
+                hint: "Union Minister of External Affairs.",
+                explanation: "External Affairs Minister Dr. S. Jaishankar inaugurated the SAMHiTa conference in New Delhi on September 5, 2025."
+            },
+            {
+                q: "Which country supported India's Malacca Strait patrol plan on September 6, 2025?",
+                options: ["Malaysia", "Indonesia", "Singapore", "Japan"],
+                correct: 2,
+                hint: "An advanced island nation in Southeast Asia.",
+                explanation: "On September 6, 2025, Singapore supported India's Malacca Strait patrol plan."
+            },
+            {
+                q: "Which state government launched the 'Vishram Griha' (Rest House) project for hospital attendants on September 6, 2025?",
+                options: ["Uttar Pradesh", "Delhi", "Haryana", "Maharashtra"],
+                correct: 1,
+                hint: "Capital territory of India.",
+                explanation: "The Delhi government launched the 'Vishram Griha' project for hospital attendants on September 6, 2025."
+            },
+            {
+                q: "By which year has NITI Aayog planned a strategy to double pulse production?",
+                options: ["2030", "2040", "2047", "2050"],
+                correct: 2,
+                hint: "The milestone year of India's centenary of independence.",
+                explanation: "NITI Aayog set a strategy to double the production of pulses by the year 2047."
+            },
+            {
+                q: "Which organization transferred major defense material technology to industry on September 6, 2025?",
+                options: ["ISRO", "DRDO", "HAL", "BHEL"],
+                correct: 1,
+                hint: "India's premier defense research agency.",
+                explanation: "DRDO transferred major defense material technology to the industry on September 6, 2025."
+            },
+            {
+                q: "Whose memoir book titled 'Mother Mary Comes to Me' was released on September 6, 2025?",
+                options: ["Kiran Desai", "Arundhati Roy", "Jhumpa Lahiri", "Anita Desai"],
+                correct: 1,
+                hint: "A renowned Booker Prize-winning author.",
+                explanation: "The memoir book titled 'Mother Mary Comes to Me' by Arundhati Roy was released on September 6, 2025."
+            },
+            {
+                q: "What is the new increased daily transaction limit for UPI in India?",
+                options: ["Rs. 5 Lakh", "Rs. 7 Lakh", "Rs. 10 Lakh", "Rs. 15 Lakh"],
+                correct: 2,
+                hint: "One million rupees.",
+                explanation: "The daily transaction limit for UPI was increased to Rs. 10 Lakh."
+            },
+            {
+                q: "Who won the US Open 2025 Men's Singles title?",
+                options: ["Novak Djokovic", "Carlos Alcaraz", "Jannik Sinner", "Daniil Medvedev"],
+                correct: 1,
+                hint: "A Spanish tennis phenomenon.",
+                explanation: "Carlos Alcaraz won the US Open 2025 Men's Singles title."
+            },
+            {
+                q: "Which country launched the advanced spy satellite 'Ofeq-19' into orbit?",
+                options: ["UAE", "Israel", "South Korea", "France"],
+                correct: 1,
+                hint: "A Middle Eastern nation known for advanced defense tech.",
+                explanation: "Israel launched the advanced spy satellite 'Ofeq-19'."
+            },
+            {
+                q: "Who was commissioned into the Indian Army Ordnance Corps on September 8, 2025?",
+                options: ["Lt. Parul Dhadwal", "Lt. Gen. Upendra Dwivedi", "Capt. Shiva Chauhan", "Major Swati Rathore"],
+                correct: 0,
+                hint: "A female officer commissioned in September 2025.",
+                explanation: "Lt. Parul Dhadwal was commissioned into the Indian Army Ordnance Corps on September 8, 2025."
+            },
+            {
+                q: "Who won the Italian Grand Prix 2025?",
+                options: ["Lewis Hamilton", "Charles Leclerc", "Max Verstappen", "Lando Norris"],
+                correct: 2,
+                hint: "A dominant Dutch F1 driver.",
+                explanation: "Max Verstappen won the Italian Grand Prix 2025."
+            },
+            {
+                q: "Who won the Best Director award in the Orizzonti category at the Venice Film Festival for her documentary 'Songs of a Forgotten Tree'?",
+                options: ["Payal Kapadia", "Aparna Roy", "Mira Nair", "Guneet Monga"],
+                correct: 1,
+                hint: "Her documentary was titled 'Songs of a Forgotten Tree'.",
+                explanation: "Aparna Roy won the Best Director award in the Orizzonti category for her documentary 'Songs of a Forgotten Tree'."
+            },
+            {
+                q: "Which state government launched yoga and Sudarshan Kriya for prisoners in all district jails on September 9, 2025?",
+                options: ["Madhya Pradesh", "Chhattisgarh", "Uttar Pradesh", "Rajasthan"],
+                correct: 1,
+                hint: "A central-eastern state.",
+                explanation: "The Chhattisgarh government introduced yoga and Sudarshan Kriya for prisoners in all district jails on September 9, 2025."
+            },
+            {
+                q: "C.P. Radhakrishnan was elected as the ____ Vice-President of India.",
+                options: ["13th", "14th", "15th", "16th"],
+                correct: 2,
+                hint: "One more than fourteen.",
+                explanation: "C.P. Radhakrishnan was elected as the 15th Vice-President of India."
+            },
+            {
+                q: "Which state is set to establish a dedicated 'Space City and Defense Centre'?",
+                options: ["Karnataka", "Andhra Pradesh", "Tamil Nadu", "Maharashtra"],
+                correct: 1,
+                hint: "A coastal state in southern India.",
+                explanation: "A Space City and Defense Centre will be established in Andhra Pradesh."
+            },
+            {
+                q: "What medal did India win at the CAFA Nations Cup 2025?",
+                options: ["Gold", "Silver", "Bronze", "No Medal"],
+                correct: 2,
+                hint: "Third place finish.",
+                explanation: "India won the bronze medal at the CAFA Nations Cup 2025."
+            },
+            {
+                q: "What has India's overall literacy rate increased to?",
+                options: ["77.5%", "79.2%", "80.9%", "83.1%"],
+                correct: 2,
+                hint: "Just above 80 percent.",
+                explanation: "India's literacy rate increased to 80.9%."
+            },
+            {
+                q: "Which state was declared fully literate with a literacy rate of 99.3%?",
+                options: ["Kerala", "Goa", "Himachal Pradesh", "Mizoram"],
+                correct: 2,
+                hint: "A northern hilly state.",
+                explanation: "Himachal Pradesh was declared a fully literate state with a 99.3% literacy rate."
+            },
+            {
+                q: "Who was honored with the Camel International Award 2025 on September 9, 2025?",
+                options: ["Yunus Ahmad", "Zakir Hussain", "Amjad Ali Khan", "AR Rahman"],
+                correct: 0,
+                hint: "His first name starts with 'Y'.",
+                explanation: "Yunus Ahmad was honored with the Camel International Award 2025 on September 9, 2025."
+            },
+            {
+                q: "Which country will host the G-20 summit in the year 2026?",
+                options: ["Brazil", "South Africa", "United States", "India"],
+                correct: 2,
+                hint: "North American superpower.",
+                explanation: "The United States will host the G-20 summit in 2026."
+            },
+            {
+                q: "Who was chosen by TIME magazine as 'Kid of the Year 2025'?",
+                options: ["Tejasvi Manoj", "Gitanjali Rao", "Licypriya Kangujam", "Vihaan Talwar"],
+                correct: 0,
+                hint: "First name is Tejasvi.",
+                explanation: "TIME magazine chose Tejasvi Manoj as the 'Kid of the Year 2025'."
+            },
+            {
+                q: "In honor of whom did the RBI issue a special Rs. 100 denomination coin?",
+                options: ["Mahatma Gandhi", "Dr. Bhupen Hazarika", "Rabindranath Tagore", "Sardar Vallabhbhai Patel"],
+                correct: 1,
+                hint: "A legendary cultural icon and artist from Assam.",
+                explanation: "The RBI issued a special Rs. 100 denomination coin in honor of Dr. Bhupen Hazarika."
+            },
+            {
+                q: "Which country developed the MQ-28A Ghost Bat drone to strengthen defense?",
+                options: ["USA", "Australia", "United Kingdom", "France"],
+                correct: 1,
+                hint: "A continent-country in the Southern Hemisphere.",
+                explanation: "Australia developed the MQ-28A Ghost Bat drone to strengthen its defense capabilities."
+            },
+            {
+                q: "Who became the youngest Grandmaster to defeat world champion D. Gukesh in classical chess?",
+                options: ["Abhimanyu Mishra", "Praggnanandhaa", "Dommaraju Gukesh", "Lu Shanglei"],
+                correct: 0,
+                hint: "An Indian-origin American prodigy.",
+                explanation: "Abhimanyu Mishra became the youngest Grandmaster to defeat world champion D. Gukesh in classical chess."
+            },
+            {
+                q: "Which country successfully tested its first indigenous cruise missile named 'Flamingo'?",
+                options: ["Ukraine", "Poland", "Israel", "Taiwan"],
+                correct: 0,
+                hint: "An Eastern European country.",
+                explanation: "Ukraine successfully tested its first indigenous cruise missile named 'Flamingo' on September 10, 2025."
+            },
+            {
+                q: "Who presented the Swachh Vayu Sarvekshan Awards on September 10, 2025?",
+                options: ["Narendra Modi", "Bhupender Yadav", "Amit Shah", "Piyush Goyal"],
+                correct: 1,
+                hint: "Union Minister for Environment, Forest and Climate Change.",
+                explanation: "Union Environment Minister Bhupender Yadav presented the Swachh Vayu Sarvekshan Awards."
+            },
+            {
+                q: "Which state assembly passed the Anti-Conversion Bill 2025 on September 11, 2025?",
+                options: ["Rajasthan", "Madhya Pradesh", "Gujarat", "Haryana"],
+                correct: 0,
+                hint: "The land of royals in western India.",
+                explanation: "The Rajasthan state assembly passed the Anti-Conversion Bill 2025 on September 11, 2025."
+            },
+            {
+                q: "Which ministry launched the 'Adi Sanskriti Digital Learning Platform'?",
+                options: ["Ministry of Culture", "Ministry of Tribal Affairs", "Ministry of Education", "Ministry of Home Affairs"],
+                correct: 1,
+                hint: "Deals with tribal development.",
+                explanation: "The Ministry of Tribal Affairs launched the 'Adi Sanskriti Digital Learning Platform' on September 11, 2025."
+            },
+            {
+                q: "Where was India's first foreign Atal Innovation Centre inaugurated?",
+                options: ["UAE", "Singapore", "Saudi Arabia", "USA"],
+                correct: 0,
+                hint: "A major Gulf nation partner.",
+                explanation: "India's first foreign Atal Innovation Centre was inaugurated in the United Arab Emirates (UAE)."
+            },
+            {
+                q: "Which state's governor Acharya Devvrat was given additional charge as the Governor of Maharashtra?",
+                options: ["Punjab", "Gujarat", "Himachal Pradesh", "Rajasthan"],
+                correct: 1,
+                hint: "Prime Minister Modi's home state.",
+                explanation: "Gujarat Governor Acharya Devvrat was given the additional charge of Governor of Maharashtra."
+            },
+            {
+                q: "Who was posthumously honored with the 'P.V. Narasimha Rao Memorial Award'?",
+                options: ["Manmohan Singh", "Pranab Mukherjee", "Mulayam Singh Yadav", "Sharad Pawar"],
+                correct: 0,
+                hint: "Former Prime Minister and renowned economist.",
+                explanation: "Dr. Manmohan Singh was posthumously honored with the P.V. Narasimha Rao Memorial Award."
+            },
+            {
+                q: "Which country topped the World Talent Ranking 2025, with India placed at 63rd?",
+                options: ["Denmark", "Switzerland", "Singapore", "Sweden"],
+                correct: 1,
+                hint: "A landlocked European nation famous for Alps.",
+                explanation: "Switzerland topped the World Talent Ranking 2025, where India secured the 63rd spot."
+            },
+            {
+                q: "Who became the world's richest person, representing Oracle Corporation?",
+                options: ["Elon Musk", "Jeff Bezos", "Larry Ellison", "Mark Zuckerberg"],
+                correct: 2,
+                hint: "Founder of Oracle.",
+                explanation: "Larry Ellison of Oracle Corporation became the world's richest person."
+            },
+            {
+                q: "Which campaign was launched by the ICC for the Women's World Cup 2025?",
+                options: ["Play to Win", "Will to Win", "Cricket for All", "Women Power"],
+                correct: 1,
+                hint: "Starts with 'Will'.",
+                explanation: "The ICC launched the 'Will to Win' campaign for the Women's World Cup 2025."
+            },
+            {
+                q: "Which country celebrated 'Patriotism Day' on September 11?",
+                options: ["United States", "France", "Russia", "Israel"],
+                correct: 0,
+                hint: "Commemorates the 9/11 victims.",
+                explanation: "Patriotism Day is observed in the United States on September 11."
+            },
+            {
+                q: "Where did IIM Ahmedabad open its first global campus?",
+                options: ["Singapore", "London", "Dubai", "New York"],
+                correct: 2,
+                hint: "A bustling business hub in the UAE.",
+                explanation: "IIM Ahmedabad opened its first global campus in Dubai."
+            },
+            {
+                q: "Which ministry launched the 'Gyan Bharatam Portal'?",
+                options: ["Ministry of Education", "Ministry of Culture", "Ministry of Science and Technology", "Ministry of Information & Broadcasting"],
+                correct: 1,
+                hint: "Preserves heritage and arts.",
+                explanation: "The 'Gyan Bharatam Portal' was launched by the Ministry of Culture."
+            },
+            {
+                q: "Who became Nepal's first female Prime Minister?",
+                options: ["Sushila Karki", "Bidya Devi Bhandari", "Arzu Rana Deuba", "Onsari Gharti Magar"],
+                correct: 0,
+                hint: "Former Chief Justice of Nepal.",
+                explanation: "Sushila Karki became Nepal's first female Prime Minister."
+            },
+            {
+                q: "Which country appointed the world's first AI-Generated Minister named 'Diella'?",
+                options: ["Japan", "Albania", "Estonia", "South Korea"],
+                correct: 1,
+                hint: "A Balkan country in southeastern Europe.",
+                explanation: "Albania appointed the world's first AI-generated minister named 'Diella' on September 12, 2025."
+            },
+            {
+                q: "Which two cities were officially granted the Ramsar Wetland City certificate on September 12, 2025?",
+                options: ["Jaipur and Jodhpur", "Udaipur and Indore", "Varanasi and Ayodhya", "Bhopal and Bhopal"],
+                correct: 1,
+                hint: "City of Lakes and the cleanest commercial city.",
+                explanation: "Udaipur and Indore were officially awarded the Ramsar Wetland City certificate on September 12, 2025."
+            },
+            {
+                q: "Where did India launch SAJEX 2025 to promote jewelry trade?",
+                options: ["Dubai", "Jeddah (Saudi Arabia)", "Doha", "Muscat"],
+                correct: 1,
+                hint: "A major port city in Saudi Arabia.",
+                explanation: "India launched SAJEX 2025 in Jeddah, Saudi Arabia, to boost jewelry trade."
+            },
+            {
+                q: "Where did the Indian Navy commission INS Aravali?",
+                options: ["Visakhapatnam", "Kochi", "Gurugram", "Mumbai"],
+                correct: 2,
+                hint: "A major corporate and urban hub near Delhi/NCR.",
+                explanation: "The Indian Navy commissioned INS Aravali in Gurugram."
+            },
+            {
+                q: "Where did Prime Minister Modi inaugurate the Bairabi-Sairang new railway line?",
+                options: ["Assam", "Mizoram", "Tripura", "Nagaland"],
+                correct: 1,
+                hint: "A northeastern state bordering Myanmar.",
+                explanation: "Prime Minister Modi inaugurated the Bairabi-Sairang new railway line in Mizoram on September 13, 2025."
+            },
+            {
+                q: "Which country will host the 5th Coast Guard Global Summit in 2027?",
+                options: ["Japan", "India", "USA", "Australia"],
+                correct: 1,
+                hint: "Our home country.",
+                explanation: "India will host the 5th Coast Guard Global Summit in 2027."
+            },
+            {
+                q: "Which became India's first government medical college to undergo training on the da Vinci robotic system?",
+                options: ["AIIMS Delhi", "King George's Medical University", "Safdarjung Hospital", "JIPMER Puducherry"],
+                correct: 0,
+                hint: "Premier medical institution in the capital.",
+                explanation: "AIIMS Delhi became India's first government medical college to train on the da Vinci robotic system."
+            },
+            {
+                q: "Where was the 20th World Athletics Championships held?",
+                options: ["Eugene", "Budapest", "Tokyo", "Paris"],
+                correct: 2,
+                hint: "Capital city of Japan.",
+                explanation: "The 20th World Athletics Championships were held in Tokyo."
+            },
+            {
+                q: "What is the name of the app launched by AIIMS Delhi to help students cope with stress?",
+                options: ["AntiStress", "Never Alone", "MindEase", "CalmCampus"],
+                correct: 1,
+                hint: "Translates to 'Not isolated'.",
+                explanation: "AIIMS Delhi launched the 'Never Alone' app to help students cope with stress."
+            },
+            {
+                q: "What medal did the Indian women's hockey team win at the Women's Asia Cup 2025?",
+                options: ["Gold", "Silver", "Bronze", "None"],
+                correct: 1,
+                hint: "Second place finish.",
+                explanation: "The Indian women's hockey team won the silver medal at the Women's Asia Cup 2025."
+            },
+            {
+                q: "Who became the first Indian high jumper to reach the final of the World Athletics Championships?",
+                options: ["Tejaswin Shankar", "Sarvesh Kushare", "Sandeep Kumar", "Jesse Owens"],
+                correct: 1,
+                hint: "First name is Sarvesh.",
+                explanation: "Sarvesh Kushare became the first Indian high jumper to reach the final of the World Athletics Championships."
+            },
+            {
+                q: "Where did Prime Minister Modi inaugurate the world's first bamboo ethanol plant on September 15, 2025?",
+                options: ["Tripura", "Assam", "Meghalaya", "Arunachal Pradesh"],
+                correct: 1,
+                hint: "A major northeastern state.",
+                explanation: "Prime Minister Modi inaugurated the world's first bamboo ethanol plant in Assam on September 15, 2025."
+            },
+            {
+                q: "Where was the 'Rabi Campaign 2025 Conference' held?",
+                options: ["New Delhi", "Lucknow", "Patna", "Chandigarh"],
+                correct: 0,
+                hint: "National capital.",
+                explanation: "The 'Rabi Campaign 2025 Conference' was held in New Delhi."
+            },
+            {
+                q: "The red sand dunes of which state were included in the UNESCO tentative list on September 15, 2025?",
+                options: ["Rajasthan", "Gujarat", "Andhra Pradesh", "Odisha"],
+                correct: 2,
+                hint: "A southern coastal state.",
+                explanation: "The red sand dunes of Andhra Pradesh were included in the UNESCO tentative list on September 15, 2025."
+            },
+            {
+                q: "What medal did Jasmine Lamboria win at the World Boxing Championships 2025?",
+                options: ["Gold", "Silver", "Bronze", "No Medal"],
+                correct: 0,
+                hint: "The highest podium finish.",
+                explanation: "Jasmine Lamboria won the gold medal at the World Boxing Championships 2025 on September 15, 2025."
+            },
+            {
+                q: "Which country topped the ISSF World Cup 2025 medal tally?",
+                options: ["India", "China", "USA", "South Korea"],
+                correct: 1,
+                hint: "East Asian powerhouse.",
+                explanation: "China topped the ISSF World Cup 2025 medal tally."
+            },
+            {
+                q: "Where was the anti-submarine warfare corvette 'Androth' inducted into the Indian Navy?",
+                options: ["Visakhapatnam", "Kolkata", "Mumbai", "Kochi"],
+                correct: 1,
+                hint: "Capital city of West Bengal.",
+                explanation: "Anti-submarine warfare corvette 'Androth' was inducted into the Indian Navy in Kolkata on September 15, 2025."
+            },
+            {
+                q: "Where was the '18th World Congress' held?",
+                options: ["Dubai", "Sharjah (UAE)", "Doha", "Riyadh"],
+                correct: 1,
+                hint: "An emirate adjacent to Dubai.",
+                explanation: "The 18th World Congress was held in Sharjah (UAE)."
+            },
+            {
+                q: "Where did the US, South Korea, and Japan launch the 'Freedom Edge' military exercise?",
+                options: ["Japan", "South Korea", "USA", "Guam"],
+                correct: 1,
+                hint: "East Asian peninsula.",
+                explanation: "The US, South Korea, and Japan launched the 'Freedom Edge' military exercise in South Korea on September 16, 2025."
+            },
+            {
+                q: "Who became Nepal's first female Attorney General?",
+                options: ["Sabita Bhandari", "Sushila Karki", "Khil Raj Regmi", "Mohan Devi"],
+                correct: 0,
+                hint: "First name is Sabita.",
+                explanation: "Sabita Bhandari became the first female Attorney General of Nepal."
+            },
+            {
+                q: "Where did INS Nistar participate in the 'Exercise Pacific Reach 2025'?",
+                options: ["Singapore", "Vietnam", "Indonesia", "Malaysia"],
+                correct: 0,
+                hint: "Lion City island nation.",
+                explanation: "INS Nistar participated in the 'Exercise Pacific Reach 2025' in Singapore."
+            },
+            {
+                q: "Which company became the new title sponsor of the Indian cricket team?",
+                options: ["BYJU'S", "Dream11", "Apollo Tyres", "Mastercard"],
+                correct: 2,
+                hint: "A major tire manufacturer.",
+                explanation: "Apollo Tyres became the new title sponsor of the Indian cricket team."
+            },
+            {
+                q: "Who won the 'FIDE Women's Grand Swiss 2025'?",
+                options: ["Humpy Koneru", "Vaishali Rameshbabu", "Dronavalli Harika", "Divya Deshmukh"],
+                correct: 1,
+                hint: "Sister of Praggnanandhaa.",
+                explanation: "Vaishali Rameshbabu won the 'FIDE Women's Grand Swiss 2025'."
+            },
+            {
+                q: "Where was the 14th Sirarakhong Hathei Chili Festival celebrated?",
+                options: ["Nagaland", "Manipur", "Mizoram", "Assam"],
+                correct: 1,
+                hint: "A northeastern state known for Loktak Lake.",
+                explanation: "The 14th Sirarakhong Hathei Chili Festival was celebrated in Manipur."
+            },
+            {
+                q: "Who was re-appointed as the Executive Director of UN Women for a second term on September 17, 2025?",
+                options: ["Sima Sami Bahous", "Phumzile Mlambo-Ngcuka", "Michelle Bachelet", "António Guterres"],
+                correct: 0,
+                hint: "First name is Dr. Sima.",
+                explanation: "Dr. Sima Sami Bahous was re-appointed as the Executive Director of UN Women on September 17, 2025."
+            },
+            {
+                q: "Which country's footballer Samuel Umtiti retired from football at the age of 31?",
+                options: ["Spain", "France", "Brazil", "Belgium"],
+                correct: 1,
+                hint: "2018 World Cup winner nation in Europe.",
+                explanation: "French footballer Samuel Umtiti retired from football at the age of 31 on September 17, 2025."
+            },
+            {
+                q: "Which country will host the SCO summit in the year 2027?",
+                options: ["India", "China", "Pakistan", "Kazakhstan"],
+                correct: 2,
+                hint: "India's western neighbor.",
+                explanation: "Pakistan will host the SCO summit in the year 2027."
+            },
+            {
+                q: "Who became the world's number one bowler in ICC T20Is?",
+                options: ["Jasprit Bumrah", "Varun Chakaravarthy", "Rashid Khan", "Kuldeep Yadav"],
+                correct: 1,
+                hint: "An Indian mystery spinner.",
+                explanation: "Varun Chakaravarthy became the world's number one bowler in ICC T20Is."
+            },
+            {
+                q: "What did India's unemployment rate drop to by August 2025?",
+                options: ["4.2%", "5.1%", "6.3%", "7.0%"],
+                correct: 1,
+                hint: "Just above five percent.",
+                explanation: "India's unemployment rate dropped to 5.1% in August 2025."
+            },
+            {
+                q: "Which country topped the Global Innovation Index 2025?",
+                options: ["USA", "Sweden", "Switzerland", "Singapore"],
+                correct: 2,
+                hint: "European nation known for watches and banks.",
+                explanation: "Switzerland topped the Global Innovation Index 2025."
+            },
+            {
+                q: "Who became Bihar's first female FIDE Master?",
+                options: ["Mariyam Fatima", "Subhalakshmi", "Nandita", "Priyanka"],
+                correct: 0,
+                hint: "First name is Mariyam.",
+                explanation: "Mariyam Fatima became Bihar's first female FIDE Master."
+            },
+            {
+                q: "Where did Prime Minister Modi inaugurate the country's first 'PM Mitra Park' on September 17, 2025?",
+                options: ["Dhar District (Madhya Pradesh)", "Surat (Gujarat)", "Lucknow (Uttar Pradesh)", "Warangal (Telangana)"],
+                correct: 0,
+                hint: "In Madhya Pradesh on his 75th birthday.",
+                explanation: "Prime Minister Modi inaugurated the country's first 'PM Mitra Park' in Dhar district, Madhya Pradesh, on September 17, 2025."
+            },
+            {
+                q: "What was the theme of the 8th edition of the 'India International Tea Convention 2025' held in Kochi?",
+                options: ["Tea for Tomorrow", "Innovation of Tea Ecosystem for India", "Sustainable Tea Farming", "Global Tea Heritage"],
+                correct: 1,
+                hint: "Focuses on ecosystem innovation for India.",
+                explanation: "The theme of the convention was 'Innovation of Tea Ecosystem for India'."
+            },
+            {
+                q: "Which country tested the Tianlong-3 reusable rocket?",
+                options: ["USA", "China", "Russia", "Japan"],
+                correct: 1,
+                hint: "East Asian space power.",
+                explanation: "China tested the Tianlong-3 reusable rocket."
+            },
+            {
+                q: "Who launched their coffee table book titled 'Wild Africa: My Lens' on September 19, 2025?",
+                options: ["Manish Mundra", "Raghu Rai", "Subodh Gupta", "Dayanita Singh"],
+                correct: 0,
+                hint: "First name is Manish.",
+                explanation: "Manish Mundra launched his coffee table book 'Wild Africa: My Lens' on September 19, 2025."
+            },
+            {
+                q: "Which state's Chief Minister launched the 'Ambu Karangal Scheme'?",
+                options: ["Kerala", "Tamil Nadu", "Karnataka", "Andhra Pradesh"],
+                correct: 1,
+                hint: "A southern state governed by DMK.",
+                explanation: "The Chief Minister of Tamil Nadu launched the 'Ambu Karangal Scheme'."
+            },
+            {
+                q: "Where was the first-ever 'World Teak Conference 2025' held?",
+                options: ["Bengaluru", "Kochi", "Guwahati", "Mysuru"],
+                correct: 1,
+                hint: "Coastal city in Kerala.",
+                explanation: "The first-ever 'World Teak Conference 2025' was held in Kochi."
+            },
+            {
+                q: "Who became the first Indian to take 100 wickets in T20Is?",
+                options: ["Jasprit Bumrah", "Bhuvneshwar Kumar", "Arshdeep Singh", "Hardik Pandya"],
+                correct: 2,
+                hint: "A left-arm pace bowler.",
+                explanation: "Arshdeep Singh became the first Indian to take 100 wickets in T20Is."
+            },
+            {
+                q: "How many political parties were removed from the list by the Election Commission for violating norms on September 20, 2025?",
+                options: ["230", "350", "474", "512"],
+                correct: 2,
+                hint: "Nearly five hundred minus twenty-six.",
+                explanation: "The Election Commission removed 474 political parties from its list for norm violations on September 20, 2025."
+            },
+            {
+                q: "Which became the first state to issue identity cards to Self-Help Group (SHG) members?",
+                options: ["Kerala", "Tamil Nadu", "Odisha", "West Bengal"],
+                correct: 1,
+                hint: "Southern state known for robust SHG networks.",
+                explanation: "Tamil Nadu became the first state to issue identity cards to Self-Help Group members on September 20, 2025."
+            },
+            {
+                q: "Who was chosen for the Dadasaheb Phalke Award for 2023?",
+                options: ["Rajinikanth", "Kamal Haasan", "Mohanlal", "Mammootty"],
+                correct: 2,
+                hint: "A legendary Malayalam cinema superstar.",
+                explanation: "Mohanlal was selected for the Dadasaheb Phalke Award for 2023."
+            },
+            {
+                q: "Which state's Chief Minister announced a monthly allowance of Rs. 1000 for unemployed graduates on September 21, 2025?",
+                options: ["Bihar", "Jharkhand", "Rajasthan", "Chhattisgarh"],
+                correct: 0,
+                hint: "State governed by Nitish Kumar.",
+                explanation: "The Chief Minister of Bihar announced a monthly allowance of Rs. 1000 for unemployed graduates on September 21, 2025."
+            },
+            {
+                q: "Which international organization described India's UPI as a global model for digital payments?",
+                options: ["World Bank", "IMF", "ADB", "WEF"],
+                correct: 1,
+                hint: "International Monetary Fund.",
+                explanation: "The IMF described India's UPI as a global model for digital payments on September 21, 2025."
+            },
+            {
+                q: "Typhoon Mitag struck which country's Guangdong province?",
+                options: ["Philippines", "Japan", "China", "Vietnam"],
+                correct: 2,
+                hint: "Guangdong is a province in this country.",
+                explanation: "Typhoon Mitag struck Guangdong province in China."
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let userAnswers = new Array(quizData.length).fill(null);
+
+        const questionText = document.getElementById("question-text");
+        const optionsContainer = document.getElementById("options-container");
+        const explanationContainer = document.getElementById("explanation-container");
+        const explanationText = document.getElementById("explanation-text");
+        const questionCounter = document.getElementById("question-counter");
+        const scoreDisplay = document.getElementById("score-display");
+        const progressBar = document.getElementById("progress-bar");
+        const prevBtn = document.getElementById("prev-btn");
+        const nextBtn = document.getElementById("next-btn");
+        const jumpInput = document.getElementById("jump-input");
+        const hintBox = document.getElementById("hint-box");
+        const hintText = document.getElementById("hint-text");
+
+        function loadQuestion() {
+            const q = quizData[currentQuestion];
+            questionCounter.textContent = `Question ${currentQuestion + 1} of ${quizData.length}`;
+            questionText.textContent = q.q;
+            
+            // Hint setup
+            hintText.textContent = q.hint;
+            hintBox.classList.add("hidden");
+
+            // Render options
+            optionsContainer.innerHTML = "";
+            q.options.forEach((opt, index) => {
+                const button = document.createElement("button");
+                button.textContent = opt;
+                button.className = "w-full text-left p-4 rounded-xl border border-slate-700 bg-slate-800 hover:bg-slate-700/80 transition font-medium text-sm text-slate-200 flex items-center justify-between";
+                
+                // Check if already answered
+                if (userAnswers[currentQuestion] !== null) {
+                    button.disabled = true;
+                    if (index === q.correct) {
+                        button.classList.add("bg-emerald-950/40", "border-emerald-600", "text-emerald-200");
+                    } else if (index === userAnswers[currentQuestion]) {
+                        button.classList.add("bg-rose-950/40", "border-rose-600", "text-rose-200");
+                    }
+                } else {
+                    button.onclick = () => selectAnswer(index);
+                }
+
+                optionsContainer.appendChild(button);
+            });
+
+            // Explanation visibility
+            if (userAnswers[currentQuestion] !== null) {
+                explanationText.textContent = q.explanation;
+                explanationContainer.classList.remove("hidden");
+            } else {
+                explanationContainer.classList.add("hidden");
+            }
+
+            // Controls state
+            prevBtn.disabled = currentQuestion === 0;
+            nextBtn.textContent = currentQuestion === quizData.length - 1 ? "Finish" : "Next";
+            
+            // Progress update
+            const progress = ((currentQuestion + 1) / quizData.length) * 100;
+            progressBar.style.width = `${progress}%`;
+            scoreDisplay.textContent = score;
+        }
+
+        function selectAnswer(selectedIndex) {
+            const q = quizData[currentQuestion];
+            userAnswers[currentQuestion] = selectedIndex;
+
+            if (selectedIndex === q.correct) {
+                score++;
+            }
+
+            loadQuestion();
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < quizData.length - 1) {
+                currentQuestion++;
+                loadQuestion();
+            } else {
+                alert(`Quiz completed! Your final score is ${score} out of ${quizData.length}.`);
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                loadQuestion();
+            }
+        }
+
+        function jumpToQuestion() {
+            const val = parseInt(jumpInput.value);
+            if (val >= 1 && val <= quizData.length) {
+                currentQuestion = val - 1;
+                loadQuestion();
+                jumpInput.value = "";
+            } else {
+                alert(`Please enter a valid question number between 1 and ${quizData.length}`);
+            }
+        }
+
+        function toggleHint() {
+            hintBox.classList.toggle("hidden");
+        }
+
+        // Initialize Quiz
+        loadQuestion();
+    </script>
+<script src="../../quiz-question-controls.js"></script>
+<script src="../../quiz-app-ui-v2.js"></script></body>
+</html>

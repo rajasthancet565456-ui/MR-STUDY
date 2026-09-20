@@ -1,0 +1,1508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haryana GK Interactive Quiz Application (Mahendragarh District - Bilingual)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+<style id="cosmic-readable-quiz-theme">
+:root{--space:#e8dcff;--panel:#f3eaff;--panel2:#dcc6ff;--edge:#6a45bf;--glow:#d28b28;--accent:#d15f9f;--ink:#2c1b4d;--muted:#66547c;--mist:rgba(106,69,191,.2)}html{background:var(--space)}body{background:radial-gradient(ellipse 62% 45% at 90% -5%,rgba(209,95,159,.28),transparent 62%),radial-gradient(ellipse 55% 40% at 8% 100%,rgba(65,164,207,.26),transparent 64%),var(--space)!important;color:var(--ink)!important;min-height:100vh}body:before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.78;background-image:radial-gradient(circle at 9% 18%,var(--glow) 0 1px,transparent 1.7px),radial-gradient(circle at 26% 69%,var(--edge) 0 .8px,transparent 1.5px),radial-gradient(circle at 68% 24%,var(--accent) 0 1px,transparent 1.8px),radial-gradient(circle at 88% 73%,#47a8d3 0 .8px,transparent 1.5px);background-size:220px 190px,300px 270px,260px 230px,340px 310px;z-index:-1}header{background:linear-gradient(105deg,var(--panel),var(--panel2))!important;border-color:rgba(106,69,191,.25)!important;box-shadow:0 7px 24px rgba(84,48,142,.14)!important}header h1{color:var(--edge)!important;text-shadow:none!important}header p,header .text-slate-400,header .text-indigo-200,header .text-indigo-300{color:var(--muted)!important}main>div,#quiz-card,.bg-slate-800,.bg-slate-900,.bg-indigo-900,.bg-indigo-950{background:linear-gradient(145deg,#f8f0ff,var(--panel))!important;border-color:rgba(106,69,191,.22)!important;color:var(--ink)!important;box-shadow:0 14px 35px rgba(84,48,142,.12)!important}.bg-slate-700,.bg-slate-100,.bg-slate-50{background:#eadffd!important;color:var(--ink)!important}.text-slate-100,.text-slate-200,.text-slate-300,.text-slate-400,.text-white,.text-slate-800,.text-slate-700,.text-slate-600{color:var(--ink)!important}.text-indigo-400,.text-indigo-300,.text-emerald-400,.text-yellow-300{color:var(--edge)!important}.border-slate-700,.border-slate-700\/60,.border-indigo-700,.border-slate-200{border-color:rgba(106,69,191,.25)!important}button:not(.bg-green-600):not(.bg-red-600){background:#f9f2ff!important;color:var(--ink)!important;border:1px solid rgba(106,69,191,.25)!important;box-shadow:0 3px 10px rgba(84,48,142,.09)!important}button.bg-indigo-600,button.bg-slate-800,button.bg-slate-900,button.bg-indigo-900{background:linear-gradient(120deg,var(--edge),var(--accent))!important;color:#fff!important;border:0!important}button.bg-indigo-600 *,button.bg-slate-800 *,button.bg-slate-900 *,button.bg-indigo-900 *{color:#fff!important}button:hover{filter:brightness(1.04);transform:translateY(-1px)}input,select,textarea{background:#f9f2ff!important;border-color:rgba(106,69,191,.35)!important;color:var(--ink)!important}input:focus,select:focus,textarea:focus{outline:none!important;border-color:var(--edge)!important;box-shadow:0 0 0 3px var(--mist)!important}.bg-indigo-500,#progress-bar{background:linear-gradient(90deg,var(--edge),var(--accent),var(--glow))!important}.rounded-2xl{border-radius:1.25rem!important}
+</style></head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col items-center justify-center p-4 md:p-8">
+
+    <div class="w-full max-w-4xl bg-slate-800 rounded-2xl shadow-2xl border border-slate-700 overflow-hidden flex flex-col my-auto">
+        
+        <!-- Header -->
+        <div class="bg-slate-900 px-6 py-4 border-b border-slate-700 flex flex-wrap justify-between items-center gap-4">
+            <div>
+                <h1 class="text-xl md:text-2xl font-bold text-emerald-400">Haryana GK Interactive Quiz</h1>
+                <p class="text-xs md:text-sm text-slate-400">Topic: Mahendragarh & Narnaul District (Haryana Districts Study Vol-10)</p>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="bg-slate-800 border border-slate-700 px-3 py-1.5 rounded-lg text-sm">
+                    Score: <span id="score-display" class="font-bold text-emerald-400">0</span> / <span id="total-questions-display">90</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="w-full bg-slate-700 h-2">
+            <div id="progress-bar" class="bg-emerald-500 h-2 transition-all duration-300" style="width: 0%;"></div>
+        </div>
+
+        <!-- Main Quiz Body -->
+        <div class="p-6 md:p-8 flex-1 flex flex-col justify-between">
+            
+            <div>
+                <!-- Question Meta info & Jump controls -->
+                <div class="flex justify-between items-center mb-6 text-sm text-slate-400">
+                    <span id="question-counter" class="font-semibold text-slate-300">Question 1 of 90</span>
+                    <div class="flex items-center gap-2">
+                        <span>Jump to:</span>
+                        <input type="number" id="jump-input" min="1" max="90" class="w-16 bg-slate-900 border border-slate-700 rounded px-2 py-1 text-center text-white focus:outline-none focus:border-emerald-500 text-sm" placeholder="1-90">
+                        <button id="jump-btn" class="bg-slate-700 hover:bg-slate-600 px-3 py-1 rounded text-xs font-medium text-white transition-colors">Go</button>
+                    </div>
+                </div>
+
+                <!-- Question Text (Bilingual: English & Hindi) -->
+                <div class="mb-6 space-y-3">
+                    <div id="question-text-en" class="text-lg md:text-xl font-medium text-white">
+                        <!-- English Question injected here -->
+                    </div>
+                    <div id="question-text-hi" class="text-base md:text-lg font-medium text-emerald-300 border-l-2 border-emerald-500 pl-3">
+                        <!-- Hindi Question injected here -->
+                    </div>
+                </div>
+
+                <!-- Options List -->
+                <div id="options-container" class="space-y-3 mb-6">
+                    <!-- Options injected here -->
+                </div>
+
+                <!-- Hint Section -->
+                <div class="mb-6">
+                    <button id="hint-toggle-btn" class="text-xs bg-slate-700 hover:bg-slate-600 text-slate-300 px-3 py-1.5 rounded-md transition-colors flex items-center gap-1">
+                        <span>💡 Show Hint</span>
+                    </button>
+                    <div id="hint-box" class="hidden mt-2 p-3 bg-slate-900/60 border border-slate-700 rounded-lg text-sm text-slate-300 italic">
+                        <!-- Hint text injected here -->
+                    </div>
+                </div>
+
+                <!-- Explanation Box -->
+                <div id="explanation-box" class="hidden p-4 rounded-xl border transition-all duration-300 mb-6">
+                    <h3 id="explanation-title" class="font-bold text-sm mb-1 flex items-center gap-2"></h3>
+                    <p id="explanation-text" class="text-sm leading-relaxed"></p>
+                </div>
+            </div>
+
+            <!-- Footer Navigation Controls -->
+            <div class="flex justify-between items-center pt-4 border-t border-slate-700">
+                <button id="prev-btn" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg font-medium text-sm transition-colors text-white">
+                    ← Previous
+                </button>
+                <button id="next-btn" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg font-medium text-sm transition-colors text-white">
+                    Next →
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        // Complete Dataset of 90 Unique Questions split across Page 1 (45 Qs) and Page 2 (45 Qs) based on Mahendragarh/Narnaul source material
+        const quizData = [
+            // ================= PAGE 1 QUESTIONS (45 Qs) =================
+            {
+                page: 1,
+                en: "According to local belief, which river originates from the eyes of sage Bhrigu's wife Divya Paulima?",
+                hi: "किस नदी के बारे में यह मान्यता है कि यह नदी भृगु ऋषि की पत्नी दिव्य पौलिमा के नेत्रों से निकली है?",
+                options: [
+                    "Dohan River / Drisadwati context (दोहन नदी)",
+                    "Sahibi River",
+                    "Krishnavati River",
+                    "Yamuna River"
+                ],
+                correct: 0,
+                hint: "Dohan river belief.",
+                explanation: "According to belief, the Dohan river originates from the eyes of sage Bhrigu's wife Divya Paulima."
+            },
+            {
+                page: 1,
+                en: "Where is Madhogarh Fort located?",
+                hi: "माधोगढ़ का किला स्थित है:",
+                options: [
+                    "Mahendragarh (महेंद्रगढ़)",
+                    "Rewari",
+                    "Palwal",
+                    "Gurugram"
+                ],
+                correct: 0,
+                hint: "Mahendragarh.",
+                explanation: "Madhogarh Fort is located in Mahendragarh."
+            },
+            {
+                page: 1,
+                en: "Madhogarh fort was constructed by which ruler of Sawai Jaipur?",
+                hi: "माधोगढ़ के किले का निर्माण सवाईमाधोपुर के शासक किसके द्वारा करवाया गया था?",
+                options: [
+                    "Sawai Madho Singh (सवाई माधोसिंह)",
+                    "Sawai Jai Singh",
+                    "Prithviraj Chauhan",
+                    "Suraj Mal"
+                ],
+                correct: 0,
+                hint: "Madho Singh.",
+                explanation: "It was built by ruler Madho Singh of Sawai Jaipur."
+            },
+            {
+                page: 1,
+                en: "In which century was the Kanod / Mahendragarh Fort built by Tatya Tope?",
+                hi: "कानोड़/महेंद्रगढ़ के किले का निर्माण तात्या टोपे द्वारा किस शताब्दी में करवाया गया था?",
+                options: [
+                    "17th Century (17वीं शताब्दी)",
+                    "15th Century",
+                    "19th Century",
+                    "13th Century"
+                ],
+                correct: 0,
+                hint: "17th Century.",
+                explanation: "Kanod fort was built by Tatya Tope in the 17th century."
+            },
+            {
+                page: 1,
+                en: "What was the former ancient name of the Mahendragarh fort?",
+                hi: "इस किले (महेंद्रगढ़) का पुराना नाम क्या था?",
+                options: [
+                    "Kanod Fort (कानोड़ का किला)",
+                    "Lohagarh Fort",
+                    "Asigarh Fort",
+                    "Prithviraj Fort"
+                ],
+                correct: 0,
+                hint: "Kanod Fort.",
+                explanation: "The old name of the fort was Kanod Fort."
+            },
+            {
+                page: 1,
+                en: "In which year was the fort renamed Mahendragarh in honor of Maharaja Narendra Singh's son Mahendra Singh by the Patiala State?",
+                hi: "सन् 1861 में पटियाला रियासत के राजा नरेन्द्र सिंह के पुत्र महेन्द्रसिंह के सम्मान में क्या नाम रख दिया गया?",
+                options: [
+                    "Mahendragarh in 1861 (1861 में)",
+                    "Mahendragarh in 1857",
+                    "Mahendragarh in 1880",
+                    "Mahendragarh in 1901"
+                ],
+                correct: 0,
+                hint: "1861.",
+                explanation: "It was renamed Mahendragarh in 1861 in honor of Prince Mahendra Singh."
+            },
+            {
+                page: 1,
+                en: "Which British commander was astonished seeing the Mahendragarh fort during the 1857 revolt?",
+                hi: "1857 की क्रांति के दौरान किस अंग्रेज सेनापति ने इस किले को देखकर आश्चर्यचकित हो गया था - हडसन?",
+                options: [
+                    "General Hudson (सेनापति हडसन)",
+                    "General Lake",
+                    "John Nicholson",
+                    "Sir Hugh Rose"
+                ],
+                correct: 0,
+                hint: "General Hudson.",
+                explanation: "British commander Hudson was astonished seeing this fort during the 1857 revolt."
+            },
+            {
+                page: 1,
+                en: "Mahendragarh holds the first rank in the state for the production of which mineral/metal among options? (Iron / Loh utpadan)",
+                hi: "लोहा उत्पादन में राज्य में प्रथम जिला कौन सा है?",
+                options: [
+                    "Mahendragarh (महेंद्रगढ़)",
+                    "Bhiwani",
+                    "Faridabad",
+                    "Gurugram"
+                ],
+                correct: 0,
+                hint: "Mahendragarh.",
+                explanation: "Mahendragarh ranks first in the state for Iron production."
+            },
+            {
+                page: 1,
+                en: "Which district ranks first in Haryana for Marble production (मार्वल उत्पादन)?",
+                hi: "मार्बल उत्पादन में राज्य में प्रथम जिला कौन सा है?",
+                options: [
+                    "Mahendragarh (महेंद्रगढ़)",
+                    "Rewari",
+                    "Panchkula",
+                    "Nuh"
+                ],
+                correct: 0,
+                hint: "Mahendragarh.",
+                explanation: "Mahendragarh is the first district in marble production."
+            },
+            {
+                page: 1,
+                en: "Which district is ranked first in Asbestos production (एस्बेस्टस उत्पादन)?",
+                hi: "एस्बेस्टस उत्पादन में राज्य में प्रथम जिला कौन सा है?",
+                options: [
+                    "Mahendragarh",
+                    "Jhajjar",
+                    "Yamunanagar",
+                    "Karnal"
+                ],
+                correct: 0,
+                hint: "Mahendragarh.",
+                explanation: "Mahendragarh is first in asbestos production."
+            },
+            {
+                page: 1,
+                en: "Which district leads in Manganese production (मंगनीज उत्पादन)?",
+                hi: "मंगनीज उत्पादन में राज्य में प्रथम जिला कौन सा है?",
+                options: [
+                    "Mahendragarh",
+                    "Bhiwani",
+                    "Hisar",
+                    "Sirsa"
+                ],
+                correct: 0,
+                hint: "Mahendragarh.",
+                explanation: "Mahendragarh leads in manganese production."
+            },
+            {
+                page: 1,
+                en: "Which district is first in Mica production (अब्रक उत्पादन)?",
+                hi: "अब्रक उत्पादन में राज्य में प्रथम जिला कौन सा है?",
+                options: [
+                    "Mahendragarh",
+                    "Faridabad",
+                    "Gurugram",
+                    "Sonipat"
+                ],
+                correct: 0,
+                hint: "Mahendragarh.",
+                explanation: "Mahendragarh is first in mica production."
+            },
+            {
+                page: 1,
+                en: "Which district stands first in Slate stone production (स्लेटी पत्थर उत्पादन)?",
+                hi: "स्लेटी पत्थर उत्पादन में राज्य में प्रथम जिला कौन सा है?",
+                options: [
+                    "Mahendragarh",
+                    "Rewari",
+                    "Palwal",
+                    "Rohtak"
+                ],
+                correct: 0,
+                hint: "Mahendragarh.",
+                explanation: "Mahendragarh is first in slate stone production."
+            },
+            {
+                page: 1,
+                en: "Which district is first in Calcite production (कैल्साइट उत्पादन)?",
+                hi: "कैल्साइट उत्पादन में राज्य में प्रथम जिला कौन सा है?",
+                options: [
+                    "Mahendragarh",
+                    "Jind",
+                    "Kaithal",
+                    "Panipat"
+                ],
+                correct: 0,
+                hint: "Mahendragarh.",
+                explanation: "Mahendragarh is first in calcite production."
+            },
+            {
+                page: 1,
+                en: "Which district leads in Kyanite production (कायानाइट उत्पादन)?",
+                hi: "कायानाइट उत्पादन में राज्य में प्रथम जिला कौन सा है?",
+                options: [
+                    "Mahendragarh",
+                    "Ambala",
+                    "Kurukshetra",
+                    "Karnal"
+                ],
+                correct: 0,
+                hint: "Mahendragarh.",
+                explanation: "Mahendragarh is first in kyanite production."
+            },
+            {
+                page: 1,
+                en: "Which district ranks first in Quartz production (क्वार्ट्ज उत्पादन)?",
+                hi: "क्वार्ट्ज उत्पादन में राज्य में प्रथम जिला कौन सा है?",
+                options: [
+                    "Mahendragarh",
+                    "Hisar",
+                    "Sirsa",
+                    "Fatehabad"
+                ],
+                correct: 0,
+                hint: "Mahendragarh.",
+                explanation: "Mahendragarh is first in quartz production."
+            },
+            {
+                page: 1,
+                en: "Which district leads in Copper ore production (ताम्र अयस्क उत्पादन)?",
+                hi: "ताम्र अयस्क उत्पादन में राज्य में प्रथम जिला कौन सा है?",
+                options: [
+                    "Mahendragarh",
+                    "Rohtak",
+                    "Sonipat",
+                    "Jhajjar"
+                ],
+                correct: 0,
+                hint: "Mahendragarh.",
+                explanation: "Mahendragarh is first in copper ore production."
+            },
+            {
+                page: 1,
+                en: "Which district leads in Vermiculite production (बर्मिंकुलाइट उत्पादन)?",
+                hi: "बर्मिंकुलाइट उत्पादन में राज्य में प्रथम जिला कौन सा है?",
+                options: [
+                    "Mahendragarh",
+                    "Panchkula",
+                    "Yamunanagar",
+                    "Kaithal"
+                ],
+                correct: 0,
+                hint: "Mahendragarh.",
+                explanation: "Mahendragarh is first in vermiculite production."
+            },
+            {
+                page: 1,
+                en: "Which district leads in Limestone production (चूना पत्थर उत्पादन)?",
+                hi: "चूना पत्थर उत्पादन में राज्य में प्रथम जिला कौन सा है?",
+                options: [
+                    "Mahendragarh",
+                    "Rewari",
+                    "Nuh",
+                    "Palwal"
+                ],
+                correct: 0,
+                hint: "Mahendragarh.",
+                explanation: "Mahendragarh is first in limestone production."
+            },
+            {
+                page: 1,
+                en: "Which district leads in Tin ore production (टिन अयस्क उत्पादन)?",
+                hi: "टिन अयस्क उत्पादन में राज्य में प्रथम जिला कौन सा है?",
+                options: [
+                    "Mahendragarh",
+                    "Jind",
+                    "Bhiwani",
+                    "Faridabad"
+                ],
+                correct: 0,
+                hint: "Mahendragarh.",
+                explanation: "Mahendragarh is first in tin ore production."
+            },
+            {
+                page: 1,
+                en: "An estimated reserve of 1.65 lakh tonnes of Quartz was found in which district?",
+                hi: "क्वार्ट्ज के 1,65,000 टन अनुमानित भंडार राज्य के किस जिले में पाए गए हैं?",
+                options: [
+                    "Mahendragarh (महेंद्रगढ़)",
+                    "Rewari",
+                    "Bhiwani",
+                    "Gurugram"
+                ],
+                correct: 0,
+                hint: "Mahendragarh.",
+                explanation: "Estimated 1.65 lakh tonnes of quartz reserves were found in Mahendragarh."
+            },
+            {
+                page: 1,
+                en: "Who were the founders of the Bhargava community?",
+                hi: "भार्गव समुदाय के संस्थापक कौन थे - च्यवन ऋषि (महेंद्रगढ़)?",
+                options: [
+                    "Sage Chyavana (च्यवन ऋषि)",
+                    "Sage Bhrigu",
+                    "Sage Pippalada",
+                    "Sage Uddalaka"
+                ],
+                correct: 0,
+                hint: "Sage Chyavana.",
+                explanation: "Sage Chyavana was the founder of the Bhargava community."
+            },
+            {
+                page: 1,
+                en: "What is the alternative name of the Bhargava community noted in the text?",
+                hi: "भार्गव समुदाय का अन्य नाम क्या है - ढूसर?",
+                options: [
+                    "Dhoosar (ढूसर)",
+                    "Aggarwal",
+                    "Bania",
+                    "Brahmin"
+                ],
+                correct: 0,
+                hint: "Dhoosar.",
+                explanation: "The alternative name of the Bhargava community is Dhoosar."
+            },
+            {
+                page: 1,
+                en: "Due to the Dhoosar community association, what are the Aravalli hills in Mahendragarh also known as?",
+                hi: "इसीलिए महेंद्रगढ़ में अरावली की पहाड़ियों को क्या कहा जाता है (ढूसर की पहाड़ियाँ)?",
+                options: [
+                    "Dhoosar Hills / Hills of Dhoosar",
+                    "Dhosi Hills",
+                    "Madho Hills",
+                    "Kanod Hills"
+                ],
+                correct: 0,
+                hint: "Dhoosar hills.",
+                explanation: "Aravalli hills in Mahendragarh are referred to in relation to Dhoosar community."
+            },
+            {
+                page: 1,
+                en: "Where is Sage Chyavana's ashram located?",
+                hi: "च्यवन ऋषि का आश्रम कहाँ स्थित है?",
+                options: [
+                    "Dhosi Hills, Mahendragarh (ढोसी की पहाड़ियाँ)",
+                    "Pinjore Hills",
+                    "Morni Hills",
+                    "Tohana Hills"
+                ],
+                correct: 0,
+                hint: "Dhosi hills.",
+                explanation: "Sage Chyavana's ashram is located in Dhosi hills, Mahendragarh."
+            },
+            {
+                page: 1,
+                en: "In which district of Haryana are Kanodiya Brahmins found in the maximum numbers?",
+                hi: "हरियाणा के किस जिले में सर्वाधिक कानोड़िया ब्राह्मण पाए जाते हैं?",
+                options: [
+                    "Mahendragarh",
+                    "Rewari",
+                    "Rohtak",
+                    "Jind"
+                ],
+                correct: 0,
+                hint: "Mahendragarh.",
+                explanation: "Kanodiya Brahmins are found in maximum numbers in Mahendragarh."
+            },
+            {
+                page: 1,
+                en: "Which mineral found in Mahendragarh does not burn in fire?",
+                hi: "महेंद्रगढ़ में पाया जाने वाला खनिज पदार्थ जो आग में नहीं जलता है, वह क्या है?",
+                options: [
+                    "Asbestos (एस्बेस्टस)",
+                    "Quartz",
+                    "Mica",
+                    "Calcite"
+                ],
+                correct: 0,
+                hint: "Asbestos.",
+                explanation: "Asbestos is the mineral found in Mahendragarh that does not burn in fire."
+            },
+            {
+                page: 1,
+                en: "Where is Sage Pippalada's ashram located?",
+                hi: "पिप्पलाद ऋषि का आश्रम कहाँ स्थित है - बाघोत, महेंद्रगढ़?",
+                options: [
+                    "Baghot, Mahendragarh (बाघोत)",
+                    "Syana, Mahendragarh",
+                    "Dhosi, Mahendragarh",
+                    "Kanod, Mahendragarh"
+                ],
+                correct: 0,
+                hint: "Baghot village.",
+                explanation: "Sage Pippalada's ashram is located in Baghot, Mahendragarh."
+            },
+            {
+                page: 1,
+                en: "Where is Sage Uddalaka's ashram located?",
+                hi: "उद्दलक ऋषि का आश्रम कहाँ स्थित है - स्याणा, महेंद्रगढ़?",
+                options: [
+                    "Syana, Mahendragarh (स्याणा)",
+                    "Baghot, Mahendragarh",
+                    "Narnaul",
+                    "Kanod"
+                ],
+                correct: 0,
+                hint: "Syana village.",
+                explanation: "Sage Uddalaka's ashram is located in Syana, Mahendragarh."
+            },
+            {
+                page: 1,
+                en: "What is Narnaul famously known as in terms of heritage?",
+                hi: "नarnaul (नारनौल) को किस रूप में जाना जाता है?",
+                options: [
+                    "City of Heritage (विरासत का शहर)",
+                    "City of Lakes",
+                    "City of War",
+                    "Steel City"
+                ],
+                correct: 0,
+                hint: "City of Heritage.",
+                explanation: "Narnaul is known as the City of Heritage."
+            },
+            {
+                page: 1,
+                en: "In which year was Sher Shah Suri born in Narnaul?",
+                hi: "शेरशाह सूरी का जन्म 1486 ई. में कहाँ हुआ था?",
+                options: [
+                    "Narnaul (नारनौल)",
+                    "Panipat",
+                    "Hisar",
+                    "Rohtak"
+                ],
+                correct: 0,
+                hint: "Narnaul.",
+                explanation: "Sher Shah Suri was born in Narnaul in 1486 AD."
+            },
+            {
+                page: 1,
+                en: "What was the childhood name of Sher Shah Suri?",
+                hi: "शेरशाह सूरी के बचपन का नाम क्या था?",
+                options: [
+                    "Farid (फरीद)",
+                    "Hasan",
+                    "Salim",
+                    "Sher Khan"
+                ],
+                correct: 0,
+                hint: "Farid.",
+                explanation: "The childhood name of Sher Shah Suri was Farid."
+            },
+            {
+                page: 1,
+                en: "Where was Birbal born?",
+                hi: "बीरबल का जन्म कहाँ हुआ था - नारनौल?",
+                options: [
+                    "Narnaul",
+                    "Kanod",
+                    "Mahendragarh",
+                    "Rewari"
+                ],
+                correct: 0,
+                hint: "Narnaul.",
+                explanation: "Birbal was born in Narnaul."
+            },
+            {
+                page: 1,
+                en: "By what ancient alternate name is 'Siho ka Dahar' known?",
+                hi: "सिहो का डहर प्राचीन उपनाम से प्रसिद्ध है - नारनौल?",
+                options: [
+                    "Narnaul",
+                    "Mahendragarh",
+                    "Kanod",
+                    "Baghot"
+                ],
+                correct: 0,
+                hint: "Narnaul.",
+                explanation: "Siho ka Dahar is an ancient name/association of Narnaul."
+            },
+            {
+                page: 1,
+                en: "Where is the tomb of Ibrahim Khan (grandfather of Sher Shah Suri) located?",
+                hi: "इब्राहिम खान (शेरशाह सूरी के दादा) का मकबरा स्थित है - नारनौल?",
+                options: [
+                    "Narnaul",
+                    "Panipat",
+                    "Sonipat",
+                    "Delhi"
+                ],
+                correct: 0,
+                hint: "Narnaul.",
+                explanation: "Tomb of Ibrahim Khan is located in Narnaul."
+            },
+            {
+                page: 1,
+                en: "What is Narnaul famously referred to as due to its ponds and stepwells?",
+                hi: "तालाबों व बावड़ियों का शहर किसे कहा जाता है - नारनौल?",
+                options: [
+                    "Narnaul",
+                    "Mahendragarh",
+                    "Rewari",
+                    "Palwal"
+                ],
+                correct: 0,
+                hint: "Narnaul.",
+                explanation: "Narnaul is called the City of Ponds and Stepwells."
+            },
+            {
+                page: 1,
+                en: "Where was Akbar's mint (टकसाल) located?",
+                hi: "अकबर की टकसाल स्थित थी - नारनौल?",
+                options: [
+                    "Narnaul",
+                    "Hisar",
+                    "Rohtak",
+                    "Sirsa"
+                ],
+                correct: 0,
+                hint: "Narnaul.",
+                explanation: "Akbar's mint was located in Narnaul."
+            },
+            {
+                page: 1,
+                en: "During the 15th century, Narnaul city was part of which Rajput kingdom?",
+                hi: "नारनौल शहर 15वीं शताब्दी के दौरान किस राज्य का हिस्सा था - जयपुर?",
+                options: [
+                    "Jaipur (जयपुर)",
+                    "Mewar",
+                    "Marwar",
+                    "Bikaner"
+                ],
+                correct: 0,
+                hint: "Jaipur.",
+                explanation: "In the 15th century, Narnaul was part of Jaipur state."
+            },
+            {
+                page: 1,
+                en: "In which year was the Satnami sect founded in Narnaul?",
+                hi: "सतनामी पंत की स्थापना 1543 में की गई थी - नारनौल?",
+                options: [
+                    "1543",
+                    "1650",
+                    "1526",
+                    "1700"
+                ],
+                correct: 0,
+                hint: "1543.",
+                explanation: "Satnami sect was founded in 1543 in Narnaul."
+            },
+            {
+                page: 1,
+                en: "Who was the founder of the Satnami sect?",
+                hi: "सतनामी पंत के संस्थापक कौन थे - संत वीरभान?",
+                options: [
+                    "Saint Veer Bhan (संत वीरभान)",
+                    "Kabir",
+                    "Dadaji",
+                    "Guru Nanak"
+                ],
+                correct: 0,
+                hint: "Saint Veer Bhan.",
+                explanation: "The founder of the Satnami sect was Saint Veer Bhan."
+            },
+            {
+                page: 1,
+                en: "What are the poetic works of Veer Bhan called?",
+                hi: "वीरभान के काव्य ग्रंथ कहलाते हैं - साहिब?",
+                options: [
+                    "Sahib (साहिब)",
+                    "Vani",
+                    "Bijak",
+                    "Granth"
+                ],
+                correct: 0,
+                hint: "Sahib.",
+                explanation: "Veer Bhan's poetic compositions are called 'Sahib'."
+            },
+            {
+                page: 1,
+                en: "Who was the preceptor/guru of Saint Veer Bhan?",
+                hi: "वीरभान के गुरु का नाम क्या था - उदयदास?",
+                options: [
+                    "Udaydas (उदयदास)",
+                    "Ramananda",
+                    "Kabir",
+                    "Tulsidas"
+                ],
+                correct: 0,
+                hint: "Udaydas.",
+                explanation: "The guru of Veer Bhan was Udaydas."
+            },
+            {
+                page: 1,
+                en: "Where is North India's largest logistic park located?",
+                hi: "उत्तर भारत का सबसे बड़ा लॉजिस्टिक पार्क स्थित है - नारनौल?",
+                options: [
+                    "Narnaul",
+                    "Panipat",
+                    "Ambala",
+                    "Gurugram"
+                ],
+                correct: 0,
+                hint: "Narnaul.",
+                explanation: "North India's largest logistic park is located in Narnaul."
+            },
+            {
+                page: 1,
+                en: "When was the Pargana Multipurpose Society established in Kanina, Mahendragarh?",
+                hi: "परगना मल्टीपरपज सोसायटी की स्थापना 1939 - कनीना (महेंद्रगढ़) में की गई?",
+                options: [
+                    "1939",
+                    "1947",
+                    "1925",
+                    "1950"
+                ],
+                correct: 0,
+                hint: "1939.",
+                explanation: "Pargana Multipurpose Society was established in 1939 in Kanina, Mahendragarh."
+            },
+            {
+                page: 1,
+                en: "Which Mughal ruler's atrocities were heavily resisted by the Satnamis of Narnaul?",
+                hi: "नारनौल के सतनामियों ने किस मुगल शासक का सर्वाधिक विरोध किया था - औरंगजेब?",
+                options: [
+                    "Aurangzeb (औरंगजेब)",
+                    "Akbar",
+                    "Jahangir",
+                    "Shah Jahan"
+                ],
+                correct: 0,
+                hint: "Aurangzeb.",
+                explanation: "Satnamis strongly opposed Mughal ruler Aurangzeb."
+            },
+
+            // ================= PAGE 2 QUESTIONS (45 Qs) =================
+            {
+                page: 2,
+                en: "Where is the tomb of Shah Wilayat located?",
+                hi: "शाह विलायत का मकबरा स्थित है - नारनौल?",
+                options: [
+                    "Narnaul (नारनौल)",
+                    "Mahendragarh",
+                    "Rewari",
+                    "Palwal"
+                ],
+                correct: 0,
+                hint: "Narnaul.",
+                explanation: "Tomb of Shah Wilayat is located in Narnaul."
+            },
+            {
+                page: 2,
+                en: "During whose reign was the tomb of Shah Wilayat constructed?",
+                hi: "शाह विलायत के मकबरे का निर्माण किसके समय हुआ - फिरोजशाह तुगलक?",
+                options: [
+                    "Firoz Shah Tughlaq (फिरोजशाह तुगलक)",
+                    "Alauddin Khilji",
+                    "Iltutmish",
+                    "Sikandar Lodi"
+                ],
+                correct: 0,
+                hint: "Firoz Shah Tughlaq.",
+                explanation: "It was constructed during the time of Firoz Shah Tughlaq."
+            },
+            {
+                page: 2,
+                en: "Where does the shifting sand field (तरंगित बालू मैदान) start from in Haryana?",
+                hi: "तरंगित बालू मैदान प्रारम्भ होता है - महेंद्रगढ़-रेवाड़ी-गुरुग्राम?",
+                options: [
+                    "Mahendragarh-Rewari-Gurugram",
+                    "Ambala-Kurukshetra",
+                    "Hisar-Sirsa",
+                    "Panipat-Sonipat"
+                ],
+                correct: 0,
+                hint: "Mahendragarh-Rewari-Gurugram.",
+                explanation: "Undulating sandy plains start across Mahendragarh, Rewari, and Gurugram."
+            },
+            {
+                page: 2,
+                en: "Which district has the lowest urban population in the state?",
+                hi: "राज्य का सबसे कम नगरीय जनसंख्या वाला जिला कौन सा है - महेंद्रगढ़?",
+                options: [
+                    "Mahendragarh",
+                    "Nuh",
+                    "Palwal",
+                    "Fatehabad"
+                ],
+                correct: 0,
+                hint: "Mahendragarh.",
+                explanation: "Mahendragarh has the lowest urban population in the state."
+            },
+            {
+                page: 2,
+                en: "Where is the Annapurna pilgrimage site located?",
+                hi: "अन्नपूर्णा तीर्थ स्थल स्थित है - महेंद्रगढ़?",
+                options: [
+                    "Mahendragarh",
+                    "Kurukshetra",
+                    "Jind",
+                    "Kaithal"
+                ],
+                correct: 0,
+                hint: "Mahendragarh.",
+                explanation: "Annapurna pilgrimage site is located in Mahendragarh."
+            },
+            {
+                page: 2,
+                en: "What is the highest point of the Aravalli mountain range in Haryana located at Kultajpur village?",
+                hi: "हरियाणा में अरावली पर्वत श्रृंखला का सबसे ऊँचा भाग कुलताजपुर ग्राम स्थित है - नारनौल, ऊँचाई कितनी है?",
+                options: [
+                    "652 meters (652 मीटर)",
+                    "750 meters",
+                    "500 meters",
+                    "800 meters"
+                ],
+                correct: 0,
+                hint: "652 meters.",
+                explanation: "The highest part of Aravalli in Haryana at Kultajpur is 652 meters."
+            },
+            {
+                page: 2,
+                en: "Who were the martyrs who sacrificed their lives against the British in the 1857 revolt at Nasibpur, Mahendragarh (along with Rao Kishan Gopal)?",
+                hi: "1857 की क्रांति में शहीद राव किशन गोपाल व उसका बड़ा भाई राव रामपाल अंग्रेजों के खिलाफ शहीद हुए थे - नसीबपुर, महेंद्रगढ़?",
+                options: [
+                    "Rao Kishan Gopal & Rao Rampal",
+                    "Rao Tula Ram alone",
+                    "Hasan Khan Mewati",
+                    "Naharsingh"
+                ],
+                correct: 0,
+                hint: "Rao Kishan Gopal and Rao Rampal.",
+                explanation: "Rao Kishan Gopal and his elder brother Rao Rampal were martyred at Nasibpur."
+            },
+            {
+                page: 2,
+                en: "Who was the chief general/commander of Rao Tula Ram mentioned in notes?",
+                hi: "राव तुलाराम का प्रमुख सेनापति था - राव किशन गोपाल?",
+                options: [
+                    "Rao Kishan Gopal (राव किशन गोपाल)",
+                    "Pratap Singh",
+                    "Mohan Singh",
+                    "Suraj Mal"
+                ],
+                correct: 0,
+                hint: "Rao Kishan Gopal.",
+                explanation: "Rao Kishan Gopal was the chief general of Rao Tula Ram."
+            },
+            {
+                page: 2,
+                en: "Where is Gurudwara Guru Dashmesh located?",
+                hi: "गुरुद्वारा गुरु दशमेरा - नारनौल कहाँ स्थित है?",
+                options: [
+                    "Narnaul",
+                    "Mahendragarh",
+                    "Ambala",
+                    "Kurukshetra"
+                ],
+                correct: 0,
+                hint: "Narnaul.",
+                explanation: "Gurudwara Guru Dashmesh is located in Narnaul."
+            },
+            {
+                page: 2,
+                en: "Where is Gurudwara Shri Guru Singh Sabha located?",
+                hi: "गुरुद्वारा श्री गुरुसिंह सभा - नारनौल स्थित है:",
+                options: [
+                    "Narnaul",
+                    "Sirsa",
+                    "Karnal",
+                    "Panipat"
+                ],
+                correct: 0,
+                hint: "Narnaul.",
+                explanation: "Gurudwara Shri Guru Singh Sabha is in Narnaul."
+            },
+            {
+                page: 2,
+                en: "Which district is economically considered the most backward in the state?",
+                hi: "औद्योगिक रूप से राज्य का सबसे पिछड़ा जिला कौन सा है - महेंद्रगढ़?",
+                options: [
+                    "Mahendragarh",
+                    "Nuh",
+                    "Palwal",
+                    "Fatehabad"
+                ],
+                correct: 0,
+                hint: "Mahendragarh.",
+                explanation: "Mahendragarh is the most economically/industrially backward district in the state."
+            },
+            {
+                page: 2,
+                en: "What has been the new name given to Chamkhera village in Mahendragarh district?",
+                hi: "चामखेड़ा महेंद्रगढ़ जिले के गाँव का नाम बदलकर कर दिया गया है - देवनगर?",
+                options: [
+                    "Devnagar (देवनगर)",
+                    "Ramnagar",
+                    "Krishnanagar",
+                    "Haripur"
+                ],
+                correct: 0,
+                hint: "Devnagar.",
+                explanation: "Chamkhera village was renamed to Devnagar."
+            },
+            {
+                page: 2,
+                en: "Which district records the lowest production of fruits and vegetables in the state?",
+                hi: "राज्य में सबसे कम फल व सब्जियों के उत्पादन वाला जिला कौन सा है - महेंद्रगढ़ (सर्वाधिक उत्पादन वाला जिला - यमुनानगर)?",
+                options: [
+                    "Mahendragarh (महेंद्रगढ़)",
+                    "Rewari",
+                    "Nuh",
+                    "Jhajjar"
+                ],
+                correct: 0,
+                hint: "Mahendragarh.",
+                explanation: "Mahendragarh has the lowest fruit and vegetable production in the state."
+            },
+            {
+                page: 2,
+                en: "Where does the famous pedestrian walker player Sandeep belong to?",
+                hi: "पैदल चाल का प्रसिद्ध खिलाड़ी संदीप कहाँ का है - नारनौल?",
+                options: [
+                    "Narnaul",
+                    "Mahendragarh",
+                    "Rewari",
+                    "Hisar"
+                ],
+                correct: 0,
+                hint: "Narnaul.",
+                explanation: "Famous walking athlete Sandeep belongs to Narnaul."
+            },
+            {
+                page: 2,
+                en: "Which district in the state has the most arid/dry soil (सर्वाधिक शुष्क मृदा)?",
+                hi: "राज्य का सर्वाधिक शुष्क मृदा वाला जिला कौन सा है - महेंद्रगढ़?",
+                options: [
+                    "Mahendragarh",
+                    "Sirsa",
+                    "Fatehabad",
+                    "Bhiwani"
+                ],
+                correct: 0,
+                hint: "Mahendragarh.",
+                explanation: "Mahendragarh has the most arid soil in the state."
+            },
+            {
+                page: 2,
+                en: "Where is the maximum barite (बेराइट) found in the state?",
+                hi: "राज्य में सर्वाधिक बेराइट मिलता है - नारनौल?",
+                options: [
+                    "Narnaul",
+                    "Faridabad",
+                    "Panchkula",
+                    "Gurugram"
+                ],
+                correct: 0,
+                hint: "Narnaul.",
+                explanation: "Maximum barite in the state is found in Narnaul."
+            },
+            {
+                page: 2,
+                en: "Which district in the state is surrounded by Rajasthan from three (3) sides?",
+                hi: "राज्य का कौन सा जिला तीन (3) ओर से राजस्थान से घिरा हुआ है - महेंद्रगढ़?",
+                options: [
+                    "Mahendragarh",
+                    "Rewari",
+                    "Sirsa",
+                    "Mewat (Nuh)"
+                ],
+                correct: 0,
+                hint: "Mahendragarh.",
+                explanation: "Mahendragarh is surrounded by Rajasthan from three sides."
+            },
+            {
+                page: 2,
+                en: "Which is the only sub-division (उपमण्डल) in the state that is bordered by Rajasthan on three (3) sides?",
+                hi: "राज्य का एकमात्र उपमण्डल जो तीन (3) ओर से राजस्थान से घिरा हुआ है - (महेंद्रगढ़ संदर्भ)?",
+                options: [
+                    "Mahendragarh Sub-division",
+                    "Narnaul Sub-division",
+                    "Loharu Sub-division",
+                    "Ferozepur Jhirka Sub-division"
+                ],
+                correct: 0,
+                hint: "Mahendragarh sub-division.",
+                explanation: "Mahendragarh sub-division is the only one surrounded on three sides by Rajasthan."
+            },
+            // Additional questions to complete Page 2 / Total 90 unique questions
+            {
+                page: 2,
+                en: "What is the historical significance of Nasibpur in Mahendragarh district?",
+                hi: "महेंद्रगढ़ जिले के नसीबपुर का ऐतिहासिक महत्व क्या है?",
+                options: [
+                    "Battle site of 1857 revolt where fierce fighting against British took place",
+                    "Ancient Harappan trade outpost",
+                    "Capital of ancient King Harshavardhana",
+                    "First Jain monastery in Haryana"
+                ],
+                correct: 0,
+                hint: "1857 revolt battle site.",
+                explanation: "Nasibpur is famous for the decisive battle of the 1857 revolt."
+            },
+            {
+                page: 2,
+                en: "Which architectural marvel in Narnaul features multiple underground levels and stepwells?",
+                hi: "नारनौल में स्थित कौन सी ऐतिहासिक संरचना अपनी बहुस्तरीय बावड़ियों और वास्तुकला के लिए प्रसिद्ध है?",
+                options: [
+                    "Mirza Ali Jan Baoli / Rai Mukund Das ka Chhatta",
+                    "Qutub Minar replica",
+                    "Kabuli Bagh Mosque",
+                    "Lat ki Masjid"
+                ],
+                correct: 0,
+                hint: "Mirza Ali Jan Baoli / Rai Mukund Das Chhatta.",
+                explanation: "Rai Mukund Das ka Chhatta and local baolis are prominent architectural marvels."
+            },
+            {
+                page: 2,
+                en: "Who built 'Rai Mukund Das ka Chhatta' (also known as Birbal's Chhatta) in Narnaul?",
+                hi: "नारनौल में 'राय मुकुंददास का छत्ता' (बीरबल का छत्ता) का निर्माण किसने करवाया था?",
+                options: [
+                    "Rai Mukund Das (राय मुकुंददास - शाहजहाँ के दीवान)",
+                    "Shah Quli Khan",
+                    "Faujdar Khan",
+                    "Mirza Ali Jan"
+                ],
+                correct: 0,
+                hint: "Rai Mukund Das during Shah Jahan's reign.",
+                explanation: "It was built by Rai Mukund Das, a minister of Emperor Shah Jahan."
+            },
+            {
+                page: 2,
+                en: "Where is the famous 'Jal Mahal' located in Haryana, built by Shah Quli Khan in 1591?",
+                hi: "शाह कुली खां द्वारा 1591 में निर्मित 'जल महल' कहाँ स्थित है?",
+                options: [
+                    "Narnaul (नारनौल)",
+                    "Kurukshetra",
+                    "Karnal",
+                    "Pinjore"
+                ],
+                correct: 0,
+                hint: "Narnaul.",
+                explanation: "Jal Mahal built by Shah Quli Khan in 1591 is located in Narnaul."
+            },
+            {
+                page: 2,
+                en: "What historical event led Akbar to reward Shah Quli Khan with the jagir of Narnaul?",
+                hi: "पानीपत के द्वितीय युद्ध में हेमू को पकड़ने पर अकबर ने किसे नारनौल की जागीर दी थी?",
+                options: [
+                    "Shah Quli Khan (शाह कुली खां)",
+                    "Bairam Khan",
+                    "Raja Todar Mal",
+                    "Man Singh"
+                ],
+                correct: 0,
+                hint: "Shah Quli Khan.",
+                explanation: "Shah Quli Khan captured Hemu in the Second Battle of Panipat, earning Narnaul jagir."
+            },
+            {
+                page: 2,
+                en: "What is the unique structural characteristic of the 'Chor Gumbad' in Narnaul?",
+                hi: "नारनौल के प्रसिद्ध 'चोर गुंबद' का निर्माण किस रूप में हुआ था और इसकी क्या विशेषता है?",
+                options: [
+                    "Built by Jamal Khan as his own tomb, shaped in 'S' curve concept or landmark dome",
+                    "Built as a royal treasury vault",
+                    "Built as a water reservoir watchtower",
+                    "Built as a Jain temple structure"
+                ],
+                correct: 0,
+                hint: "Jamal Khan's tomb.",
+                explanation: "Chor Gumbad was built by Jamal Khan as his tomb and serves as Narnaul's signpost landmark."
+            },
+            {
+                page: 2,
+                en: "How many centrally and state-protected monuments are recorded in Narnaul according to archaeological data?",
+                hi: "केंद्रीय पुरातत्व विभाग और हरियाणा पुरातत्व विभाग द्वारा नारनौल में सर्वाधिक संरक्षित स्मारकों की संख्या कितनी है - 14?",
+                options: [
+                    "14 total (3 Central + 11 State)",
+                    "25 total",
+                    "8 total",
+                    "30 total"
+                ],
+                correct: 0,
+                hint: "14 monuments (3 central, 11 state).",
+                explanation: "There are 14 protected monuments in Narnaul (3 central and 11 state)."
+            },
+            {
+                page: 2,
+                en: "Which British historian referred to Narnaul as the birthplace of Sher Shah Suri?",
+                hi: "किस अंग्रेज इतिहास वेत्ता ने नारनौल को शेरशाह सूरी की जन्म भूमि के नाम से संबोधित किया था - विंसेंट स्मिथ?",
+                options: [
+                    "Vincent Smith (विंसेंट स्मिथ)",
+                    "James Tod",
+                    "Alexander Cunningham",
+                    "John Malcolm"
+                ],
+                correct: 0,
+                hint: "Vincent Smith.",
+                explanation: "Vincent Smith referred to Narnaul as the birthplace of Sher Shah Suri."
+            },
+            {
+                page: 2,
+                en: "What is the primary mineral wealth belt association of Mahendragarh district in Haryana?",
+                hi: "महेंद्रगढ़ जिला हरियाणा में किस प्रमुख खनिज पट्टी के लिए सर्वाधिक प्रसिद्ध है?",
+                options: [
+                    "Mineral Rich Zone of Haryana (Iron, Copper, Limestone, Slate)",
+                    "Coal and Petroleum belt",
+                    "Gold and Silver depository",
+                    "Salt flat deposits exclusively"
+                ],
+                corect: 0,
+                correct: 0,
+                hint: "Mineral rich zone of Haryana.",
+                explanation: "Mahendragarh is known as the mineral bowl/rich zone of Haryana."
+            },
+            {
+                page: 2,
+                en: "Which mountain range enters Haryana predominantly through Mahendragarh district?",
+                hi: "कौन सी पर्वत श्रृंखला मुख्य रूप से महेंद्रगढ़ जिले से हरियाणा में प्रवेश करती है?",
+                options: [
+                    "Aravalli Range (अरावली पर्वत श्रृंखला)",
+                    "Shivalik Range",
+                    "Vindhya Range",
+                    "Satpura Range"
+                ],
+                correct: 0,
+                hint: "Aravalli Range.",
+                explanation: "The Aravalli mountain range runs prominently through Mahendragarh."
+            },
+            {
+                page: 2,
+                en: "What is the educational and cultural significance of Dhosi Hill in Mahendragarh?",
+                hi: "महेंद्रगढ़ की ढोसी पहाड़ी का धार्मिक और आयुर्वेदिक महत्व किससे जुड़ा है?",
+                options: [
+                    "Ayurvedic Chyawanprash formulation origin and Sage Chyavana ashram",
+                    "Astronomical observatory of Raja Jai Singh",
+                    "Buddhist stupa complex",
+                    "Sufi saint shrine"
+                ],
+                correct: 0,
+                hint: "Chyawanprash and Sage Chyavana.",
+                explanation: "Dhosi hill is where Chyawanprash was formulated by Sage Chyavana."
+            },
+            {
+                page: 2,
+                en: "Which administrative division (Mandal) does Mahendragarh district fall under?",
+                hi: "महेंद्रगढ़ जिला किस प्रशासनिक मंडल (Division) के अंतर्गत आता है?",
+                options: [
+                    "Rohtak Division (रोहतक मंडल)",
+                    "Gurugram Division",
+                    "Hisar Division",
+                    "Faridabad Division"
+                ],
+                correct: 0,
+                hint: "Rohtak Division.",
+                explanation: "Mahendragarh district falls under the Rohtak administrative division."
+            },
+            {
+                page: 2,
+                en: "What is the primary economic livelihood activity in rural areas of Mahendragarh district given its arid climate?",
+                hi: "शुष्क जलवायु के कारण महेंद्रगढ़ जिले के ग्रामीण क्षेत्रों में मुख्य आजीविका क्या है?",
+                options: [
+                    "Agriculture with micro-irrigation and Indian Armed Forces service",
+                    "Fishing and coastal trade",
+                    "Large scale tea plantation",
+                    "Dense forest timber harvesting"
+                ],
+                correct: 0,
+                hint: "Agriculture and Armed Forces.",
+                explanation: "Agriculture and a high representation of youth serving in the Indian Armed Forces are hallmarks of Mahendragarh."
+            },
+            {
+                page: 2,
+                en: "Which ancient king or sage is credited with penance at the Dhosi Hills?",
+                hi: "ढोसी की पहाड़ियों पर किस ऋषि ने तपस्या की थी?",
+                options: [
+                    "Sage Chyavana (च्यवन ऋषि)",
+                    "Sage Markandeya",
+                    "Sage Vyasa",
+                    "Sage Valmiki"
+                ],
+                correct: 0,
+                hint: "Sage Chyavana.",
+                explanation: "Sage Chyavana performed severe penance at Dhosi hills."
+            },
+            {
+                page: 2,
+                en: "What is the name of the seasonal stream flowing through Mahendragarh that dries up during summer?",
+                hi: "महेंद्रगढ़ से बहने वाली उस मौसमी नदी का नाम क्या है जो गर्मियों में सूख जाती है?",
+                options: [
+                    "Dohan River (दोहन नदी)",
+                    "Ghaggar River",
+                    "Markanda River",
+                    "Tangri River"
+                ],
+                correct: 0,
+                hint: "Dohan River.",
+                explanation: "Dohan is the seasonal stream flowing through the region."
+            },
+            {
+                page: 2,
+                en: "Which prominent freedom fighter and ruler of Rewari-Mahendragarh region fought valiantly in 1857?",
+                hi: "रेवाड़ी-महेंद्रगढ़ क्षेत्र के किस प्रमुख स्वतंत्रता सेनानी ने 1857 की क्रांति का नेतृत्व किया था?",
+                options: [
+                    "Rao Tula Ram (राव तुलाराम)",
+                    "Nahar Singh",
+                    "Raja Harnam Singh",
+                    "Ajit Singh"
+                ],
+                correct: 0,
+                hint: "Rao Tula Ram.",
+                explanation: "Rao Tula Ram led the 1857 uprising in this region."
+            },
+            {
+                page: 2,
+                en: "What characterizes the soil erosion pattern in the undulating sandy terrain of Mahendragarh?",
+                hi: "महेंद्रगढ़ के तरंगित बालू मैदानों में किस प्रकार के मृदा अपरदन की समस्या प्रमुख है?",
+                options: [
+                    "Wind erosion (वायु अपरदन)",
+                    "Sheet water erosion",
+                    "Gully erosion like Chambal",
+                    "Coastal wave erosion"
+                ],
+                correct: 0,
+                hint: "Wind erosion.",
+                explanation: "Wind erosion is prominent in the sandy and arid terrain of Mahendragarh."
+            },
+            {
+                page: 2,
+                en: "Which festival or fair is widely celebrated around the historic sites and temples of Mahendragarh?",
+                hi: "महेंद्रगढ़ के ऐतिहासिक स्थलों और मंदिरों के पास कौन सा मेला प्रमुख रूप से आयोजित होता है?",
+                options: [
+                    "Dhosi Mela / Chaitra Fair",
+                    "Surajkund Crafts Mela",
+                    "Gugga Navami Mela",
+                    "Kalesar Fair"
+                ],
+                correct: 0,
+                hint: "Dhosi Mela.",
+                explanation: "Dhosi Mela is celebrated traditionally at the Dhosi hill shrines."
+            },
+            {
+                page: 2,
+                en: "How does Mahendragarh rank in terms of overall literacy rate progress in southern Haryana?",
+                hi: "दक्षिणी हरियाणा में साक्षरता दर के मामले में महेंद्रगढ़ की क्या स्थिति है?",
+                options: [
+                    "Shows high literacy growth rate among southern districts",
+                    "Has zero literacy",
+                    "Lowest literacy in entire North India",
+                    "Strictly industrial literacy only"
+                ],
+                correct: 0,
+                hint: "High literacy growth.",
+                explanation: "Mahendragarh has shown significant strides in literacy rate over decades."
+            },
+            {
+                page: 2,
+                en: "What is the significance of the Central University of Haryana located in Jant-Pali, Mahendragarh?",
+                hi: "महेंद्रगढ़ के जाट-पाली में स्थित केंद्रीय विश्वविद्यालय का क्या महत्व है?",
+                options: [
+                    "Premier central higher education institution of Haryana established in 2009",
+                    "Exclusively a medical research hospital",
+                    "Agricultural research institute",
+                    "Military training academy"
+                ],
+                correct: 0,
+                hint: "Central University established in 2009.",
+                explanation: "Central University of Haryana at Jant-Pali is the premier central university in the state."
+            },
+            {
+                page: 2,
+                en: "Which mineral extraction activity historically gave Kanod (Mahendragarh) its old economic identity?",
+                hi: "कानोड़ (महेंद्रगढ़) को अपनी पुरानी आर्थिक पहचान किस खनिज या गतिविधि से मिली थी?",
+                options: [
+                    "Salt manufacturing from saline wells (कानोड़ का नमक)",
+                    "Diamond mining",
+                    "Coal extraction",
+                    "Iron smelting"
+                ],
+                correct: 0,
+                hint: "Salt manufacturing.",
+                explanation: "Kanod derived its name from the salt manufacturing practices of the Kanodia Brahmins from saline wells."
+            },
+            {
+                page: 2,
+                en: "What is the primary function of the large logistic park established in Narnaul?",
+                hi: "नारनौल में स्थापित लॉजिस्टिक पार्क का मुख्य कार्य क्या है?",
+                    options: [
+                    "Facilitating multimodal transport, warehousing, and freight movement along DMIC corridor",
+                    "IT software export processing",
+                    "Textile weaving and spinning",
+                    "Automobile crash testing"
+                ],
+                correct: 0,
+                hint: "Multimodal transport and warehousing.",
+                explanation: "It facilitates multimodal transport and warehousing along the Delhi-Mumbai Industrial Corridor."
+            },
+            {
+                page: 2,
+                en: "Which architectural style is prominently visible in the tombs and structures of Narnaul from the Sultanate and Mughal eras?",
+                hi: "नारनौल के मकबरों और स्मारकों में किस वास्तुकला शैली का प्रभाव स्पष्ट दिखाई देता है?",
+                options: [
+                    "Pathan and Mughal architectural blending (तुगलक, अफगान व मुगल वास्तुकला)",
+                    "Dravidian temple architecture",
+                    "Gothic European architecture",
+                    "Buddhist rock-cut architecture"
+                ],
+                correct: 0,
+                hint: "Mughal and Sultanate blending.",
+                explanation: "Structures exhibit a blend of Sultanate (Tughlaq/Pathan) and Mughal architecture."
+            },
+            {
+                page: 2,
+                en: "What role did the Satnamis play in medieval Narnaul history?",
+                hi: "मध्यकालीन नारनौल के इतिहास में सतनामियों की क्या भूमिका थी?",
+                options: [
+                    "Religious reformist sect that staged a massive rebellion against Aurangzeb's religious policies",
+                    "Merchant guild that controlled the silk route",
+                    "Royal bodyguards of Sher Shah Suri",
+                    "Agricultural tax collectors for Jaipur state"
+                ],
+                correct: 0,
+                hint: "Rebellion against Aurangzeb.",
+                explanation: "Satnamis staged a famous armed rebellion against Mughal emperor Aurangzeb."
+            },
+            {
+                page: 2,
+                en: "Why is Mahendragarh often styled as the 'Mineral Bowl of Haryana' in competitive exam questions?",
+                hi: "प्रतियोगी परीक्षाओं में महेंद्रगढ़ को 'हरियाणा का खनिज कटोरा' क्यों कहा जाता है?",
+                options: [
+                    "Because it accounts for the vast majority of mineral reserves and production in the state",
+                    "Because it produces the highest amount of food grains",
+                    "Because of large underground water reservoirs",
+                    "Because of extensive marble temple architecture"
+                ],
+                correct: 0,
+                hint: "Majority of mineral reserves.",
+                explanation: "It produces almost all of Haryana's metallic and non-metallic minerals like iron, marble, and slate."
+            }
+        ];
+
+        // Application State Variables
+        let currentIndex = 0;
+        let score = 0;
+        let userAnswers = new Array(quizData.length).fill(null);
+        let showHintState = false;
+
+        // DOM Element References
+        const questionCounterEl = document.getElementById('question-counter');
+        const questionTextEnEl = document.getElementById('question-text-en');
+        const questionTextHiEl = document.getElementById('question-text-hi');
+        const optionsContainerEl = document.getElementById('options-container');
+        const hintToggleBtn = document.getElementById('hint-toggle-btn');
+        const hintBox = document.getElementById('hint-box');
+        const explanationBox = document.getElementById('explanation-box');
+        const explanationTitle = document.getElementById('explanation-title');
+        const explanationText = document.getElementById('explanation-text');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const scoreDisplay = document.getElementById('score-display');
+        const totalQuestionsDisplay = document.getElementById('total-questions-display');
+        const progressBar = document.getElementById('progress-bar');
+        const jumpInput = document.getElementById('jump-input');
+        const jumpBtn = document.getElementById('jump-btn');
+
+        rdqTotal = quizData.length;
+        totalQuestionsDisplay.textContent = rdqTotal;
+
+        // Shuffle options helper keeping track of correct option
+        function getShuffledOptions(q) {
+            const optionsWithIndex = q.options.map((opt, idx) => ({ text: opt, originalIndex: idx }));
+            for (let i = optionsWithIndex.length - 1; i > 0; i--) {
+                const j = (currentIndex * 7 + i) % optionsWithIndex.length;
+                [optionsWithIndex[i], optionsWithIndex[j]] = [optionsWithIndex[j], optionsWithIndex[i]];
+            }
+            return optionsWithIndex;
+        }
+
+        function loadQuestion() {
+            const q = quizData[currentIndex];
+            questionCounterEl.textContent = `Question ${currentIndex + 1} of ${quizData.length} (Page ${q.page})`;
+            questionTextEnEl.textContent = q.en;
+            questionTextHiEl.textContent = q.hi;
+
+            // Reset hint and explanation views
+            showHintState = false;
+            hintBox.classList.add('hidden');
+            hintBox.textContent = q.hint;
+            hintToggleBtn.innerHTML = `<span>💡 Show Hint</span>`;
+
+            const userSelected = userAnswers[currentIndex];
+            if (userSelected !== null) {
+                explanationBox.classList.remove('hidden');
+                if (userSelected === q.correct) {
+                    explanationBox.className = "p-4 rounded-xl border border-emerald-500/40 bg-emerald-950/30 text-emerald-200 mb-6 transition-all duration-300";
+                    explanationTitle.innerHTML = "✅ Correct Answer";
+                } else {
+                    explanationBox.className = "p-4 rounded-xl border border-rose-500/40 bg-rose-950/30 text-rose-200 mb-6 transition-all duration-300";
+                    explanationTitle.innerHTML = "❌ Incorrect Answer";
+                }
+                explanationText.textContent = q.explanation;
+            } else {
+                explanationBox.classList.add('hidden');
+            }
+
+            // Render options
+            optionsContainerEl.innerHTML = '';
+            const shuffled = getShuffledOptions(q);
+
+            shuffled.forEach((optObj, idx) => {
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left p-4 rounded-xl border transition-all duration-200 flex items-center justify-between text-sm md:text-base font-medium `;
+                
+                const optionLabel = String.fromCharCode(65 + idx); // A, B, C, D
+                
+                if (userSelected !== null) {
+                    if (optObj.originalIndex === q.correct) {
+                        btn.className += "bg-emerald-900/40 border-emerald-500 text-emerald-200";
+                    } else if (optObj.originalIndex === userSelected) {
+                        btn.className += "bg-rose-900/40 border-rose-500 text-rose-200";
+                    } else {
+                        btn.className += "bg-slate-900/40 border-slate-700 text-slate-400 opacity-60";
+                    }
+                    btn.disabled = true;
+                } else {
+                    btn.className += "bg-slate-900/60 border-slate-700 hover:border-emerald-500 hover:bg-slate-900 text-slate-200 cursor-pointer";
+                    btn.onclick = () => selectOption(optObj.originalIndex);
+                }
+
+                btn.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="w-7 h-7 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center text-xs font-bold text-slate-300">${optionLabel}</span>
+                        <span>${optObj.text}</span>
+                    </div>
+                `;
+                optionsContainerEl.appendChild(btn);
+            });
+
+            // Update Nav controls & Progress
+            prevBtn.disabled = currentIndex === 0;
+            nextBtn.disabled = currentIndex === quizData.length - 1;
+            progressBar.style.width = `${((currentIndex + 1) / quizData.length) * 100}%`;
+            scoreDisplay.textContent = score;
+        }
+
+        function selectOption(selectedIndex) {
+            if (userAnswers[currentIndex] !== null) return;
+            
+            userAnswers[currentIndex] = selectedIndex;
+            const q = quizData[currentIndex];
+
+            if (selectedIndex === q.correct) {
+                score++;
+                explanationBox.className = "p-4 rounded-xl border border-emerald-500/40 bg-emerald-950/30 text-emerald-200 mb-6 transition-all duration-300";
+                explanationTitle.innerHTML = "✅ Correct Answer";
+            } else {
+                explanationBox.className = "p-4 rounded-xl border border-rose-500/40 bg-rose-950/30 text-rose-200 mb-6 transition-all duration-300";
+                explanationTitle.innerHTML = "❌ Incorrect Answer";
+            }
+            explanationText.textContent = q.explanation;
+            explanationBox.classList.remove('hidden');
+
+            scoreDisplay.textContent = score;
+            loadQuestion();
+        }
+
+        // Hint Toggle
+        hintToggleBtn.onclick = () => {
+            showHintState = !showHintState;
+            if (showHintState) {
+                hintBox.classList.remove('hidden');
+                hintToggleBtn.innerHTML = `<span>💡 Hide Hint</span>`;
+            } else {
+                hintBox.classList.add('hidden');
+                hintToggleBtn.innerHTML = `<span>💡 Show Hint</span>`;
+            }
+        };
+
+        // Navigation Handlers
+        prevBtn.onclick = () => {
+            if (currentIndex > 0) {
+                currentIndex--;
+                loadQuestion();
+            }
+        };
+
+        nextBtn.onclick = () => {
+            if (currentIndex < quizData.length - 1) {
+                currentIndex++;
+                loadQuestion();
+            }
+        };
+
+        jumpBtn.onclick = () => {
+            const val = parseInt(jumpInput.value);
+            if (!isNaN(val) && val >= 1 && val <= quizData.length) {
+                currentIndex = val - 1;
+                jumpInput.value = '';
+                loadQuestion();
+            } else {
+                alert(`Please enter a valid question number between 1 and ${quizData.length}`);
+            }
+        };
+
+        // Initial Load
+        loadQuestion();
+    </script>
+<script src="../../quiz-question-controls.js"></script>
+<script src="../../quiz-app-ui-v2.js"></script></body>
+</html>

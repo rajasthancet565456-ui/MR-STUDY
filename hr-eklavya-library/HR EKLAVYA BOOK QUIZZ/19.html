@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR GK Quiz Application - 80 Questions</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<style id="cosmic-readable-quiz-theme">
+:root{--space:#e8dcff;--panel:#f3eaff;--panel2:#dcc6ff;--edge:#6a45bf;--glow:#d28b28;--accent:#d15f9f;--ink:#2c1b4d;--muted:#66547c;--mist:rgba(106,69,191,.2)}html{background:var(--space)}body{background:radial-gradient(ellipse 62% 45% at 90% -5%,rgba(209,95,159,.28),transparent 62%),radial-gradient(ellipse 55% 40% at 8% 100%,rgba(65,164,207,.26),transparent 64%),var(--space)!important;color:var(--ink)!important;min-height:100vh}body:before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.78;background-image:radial-gradient(circle at 9% 18%,var(--glow) 0 1px,transparent 1.7px),radial-gradient(circle at 26% 69%,var(--edge) 0 .8px,transparent 1.5px),radial-gradient(circle at 68% 24%,var(--accent) 0 1px,transparent 1.8px),radial-gradient(circle at 88% 73%,#47a8d3 0 .8px,transparent 1.5px);background-size:220px 190px,300px 270px,260px 230px,340px 310px;z-index:-1}header{background:linear-gradient(105deg,var(--panel),var(--panel2))!important;border-color:rgba(106,69,191,.25)!important;box-shadow:0 7px 24px rgba(84,48,142,.14)!important}header h1{color:var(--edge)!important;text-shadow:none!important}header p,header .text-slate-400,header .text-indigo-200,header .text-indigo-300{color:var(--muted)!important}main>div,#quiz-card,.bg-slate-800,.bg-slate-900,.bg-indigo-900,.bg-indigo-950{background:linear-gradient(145deg,#f8f0ff,var(--panel))!important;border-color:rgba(106,69,191,.22)!important;color:var(--ink)!important;box-shadow:0 14px 35px rgba(84,48,142,.12)!important}.bg-slate-700,.bg-slate-100,.bg-slate-50{background:#eadffd!important;color:var(--ink)!important}.text-slate-100,.text-slate-200,.text-slate-300,.text-slate-400,.text-white,.text-slate-800,.text-slate-700,.text-slate-600{color:var(--ink)!important}.text-indigo-400,.text-indigo-300,.text-emerald-400,.text-yellow-300{color:var(--edge)!important}.border-slate-700,.border-slate-700\/60,.border-indigo-700,.border-slate-200{border-color:rgba(106,69,191,.25)!important}button:not(.bg-green-600):not(.bg-red-600){background:#f9f2ff!important;color:var(--ink)!important;border:1px solid rgba(106,69,191,.25)!important;box-shadow:0 3px 10px rgba(84,48,142,.09)!important}button.bg-indigo-600,button.bg-slate-800,button.bg-slate-900,button.bg-indigo-900{background:linear-gradient(120deg,var(--edge),var(--accent))!important;color:#fff!important;border:0!important}button.bg-indigo-600 *,button.bg-slate-800 *,button.bg-slate-900 *,button.bg-indigo-900 *{color:#fff!important}button:hover{filter:brightness(1.04);transform:translateY(-1px)}input,select,textarea{background:#f9f2ff!important;border-color:rgba(106,69,191,.35)!important;color:var(--ink)!important}input:focus,select:focus,textarea:focus{outline:none!important;border-color:var(--edge)!important;box-shadow:0 0 0 3px var(--mist)!important}.bg-indigo-500,#progress-bar{background:linear-gradient(90deg,var(--edge),var(--accent),var(--glow))!important}.rounded-2xl{border-radius:1.25rem!important}
+</style></head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between">
+
+    <!-- Header -->
+    <header class="bg-indigo-700 text-white shadow-md py-4 px-6">
+        <div class="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
+            <h1 class="text-xl font-bold tracking-wide">HR GK Exam Practice Quiz (80 Questions)</h1>
+            <div class="flex items-center gap-4 text-sm font-medium">
+                <span id="score-display" class="bg-indigo-800 px-3 py-1 rounded-full">Score: 0 / 80</span>
+                <span id="timer-display" class="bg-indigo-800 px-3 py-1 rounded-full">Time: 00:00</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-3xl mx-auto w-full p-4 sm:p-6 my-auto">
+        
+        <!-- Progress Bar -->
+        <div class="w-full bg-slate-200 h-2.5 rounded-full mb-6 overflow-hidden">
+            <div id="progress-bar" class="bg-indigo-600 h-2.5 transition-all duration-300" style="width: 0%"></div>
+        </div>
+
+        <!-- Quiz Card -->
+        <div id="quiz-card" class="bg-white rounded-xl shadow-lg border border-slate-200 p-6 transition-all">
+            
+            <!-- Question Header info -->
+            <div class="flex justify-between items-center text-xs font-semibold text-slate-500 mb-3">
+                <span id="question-counter">Question 1 of 80</span>
+                <span id="source-badge" class="bg-slate-100 px-2 py-0.5 rounded text-slate-600">Page 1 Source</span>
+            </div>
+
+            <!-- Question Text -->
+            <h2 id="question-text" class="text-lg sm:text-xl font-bold text-slate-900 mb-5 leading-snug">
+                <!-- Question text injected via JS -->
+            </h2>
+
+            <!-- Options Container -->
+            <div id="options-container" class="space-y-3 mb-6">
+                <!-- Options injected via JS -->
+            </div>
+
+            <!-- Hint Section -->
+            <div class="mb-5">
+                <button onclick="toggleHint()" class="text-xs font-semibold text-indigo-600 hover:text-indigo-800 flex items-center gap-1 focus:outline-none">
+                    <span>💡 Toggle Hint</span>
+                </button>
+                <div id="hint-box" class="hidden mt-2 p-3 bg-amber-50 border border-amber-200 text-amber-800 text-sm rounded-lg">
+                    <!-- Hint text injected via JS -->
+                </div>
+            </div>
+
+            <!-- Explanation Box -->
+            <div id="explanation-container" class="hidden mb-6 p-4 bg-emerald-50 border border-emerald-200 rounded-lg text-emerald-900 text-sm">
+                <h4 class="font-bold mb-1">📖 Explanation / Rationale:</h4>
+                <p id="explanation-text"></p>
+            </div>
+
+            <!-- Navigation Controls -->
+            <div class="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-slate-100">
+                <button id="prev-btn" onclick="prevQuestion()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium rounded-lg text-sm transition disabled:opacity-50 disabled:cursor-not-allowed">
+                    ← Previous
+                </button>
+
+                <!-- Jump to Question Input -->
+                <div class="flex items-center gap-2 text-sm">
+                    <span class="text-slate-500">Jump to:</span>
+                    <input type="number" id="jump-input" min="1" max="80" class="w-16 px-2 py-1 border border-slate-300 rounded-md text-center focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="1-80">
+                    <button onclick="jumpToQuestion()" class="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-md text-xs transition">Go</button>
+                </div>
+
+                <button id="next-btn" onclick="nextQuestion()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg text-sm transition">
+                    Next →
+                </button>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-3 text-center text-xs text-slate-500">
+        Haryana GK Interactive Exam Trainer &bull; Bilingual Eng/Hindi
+    </footer>
+
+    <!-- Quiz Logic Script -->
+    <script>
+        const questions = [
+            // --- PAGE 1 QUESTIONS (40 Questions) ---
+            {
+                page: 1,
+                question: "In the year 2021, the Haryana Urdu Academy decided to give awards to how many books and grant aid to how many manuscripts? / वर्ष 2021 में हरियाणा उर्दू अकादमी ने कितनी पुस्तकों को पुरस्कार व कितनी पाण्डुलिपियों को अनुदान देने का निर्णय लिया?",
+                options: [
+                    "14 books and 4 manuscripts / 14 पुस्तकों व 4 पाण्डुलिपियों को",
+                    "10 books and 5 manuscripts / 10 पुस्तकों व 5 पाण्डुलिपियों को",
+                    "20 books and 2 manuscripts / 20 पुस्तकों व 2 पाण्डुलिपियों को",
+                    "8 books and 10 manuscripts / 8 पुस्तकों व 10 पाण्डुलिपियों को"
+                ],
+                answer: 0,
+                hint: "Check the top bullet on Page 1 regarding Urdu Academy's 2021 decision.",
+                explanation: "Haryana Urdu Academy decided to award 14 books and provide grants to 4 manuscripts in 2021. / हरियाणा उर्दू अकादमी ने वर्ष 2021 में 14 पुस्तकों को पुरस्कार व 4 पाण्डुलिपियों को अनुदान देने का फैसला किया।"
+            },
+            {
+                page: 1,
+                question: "When was the Haryana Granth Akademi established? / हरियाणा ग्रन्थ अकादमी की स्थापना कब हुई थी?",
+                options: [
+                    "1975",
+                    "1970",
+                    "1982",
+                    "1996"
+                ],
+                answer: 1,
+                hint: "Established in 1970 with headquarters in Panchkula.",
+                explanation: "Haryana Granth Akademi was established in 1970 and has its headquarters in Panchkula. / हरियाणा ग्रन्थ अकादमी की स्थापना 1970 में हुई और इसका मुख्यालय पंचकुला में है।"
+            },
+            {
+                page: 1,
+                question: "What is the headquarters of Haryana Granth Akademi? / हरियाणा ग्रन्थ अकादमी का मुख्यालय कहाँ स्थित है?",
+                options: [
+                    "Chandigarh / चंडीगढ़",
+                    "Panchkula / पंचकुला",
+                    "Gurugram / गुरुग्राम",
+                    "Rohtak / रोहतक"
+                ],
+                answer: 1,
+                hint: "It shares its headquarters with several other academies in Panchkula.",
+                explanation: "The headquarters of Haryana Granth Akademi is located in Panchkula. / हरियाणा ग्रन्थ अकादमी का मुख्यालय पंचकुला में स्थित है।"
+            },
+            {
+                page: 1,
+                question: "When was Haryana Granth Akademi reorganized? / हरियाणा ग्रन्थ अकादमी का पुनर्गठन कब हुआ था?",
+                options: [
+                    "1 September 2011 / 1 सितम्बर, 2011",
+                    "15 August 2010 / 15 अगस्त, 2010",
+                    "7 June 2013 / 7 जून, 2013",
+                    "27 July 2010 / 27 जुलाई, 2010"
+                ],
+                answer: 0,
+                hint: "It happened on the 1st of September in 2011.",
+                explanation: "Haryana Granth Akademi was reorganized on September 1, 2011. / हरियाणा ग्रन्थ अकादमी का पुनर्गठन 1 सितम्बर, 2011 को हुआ।"
+            },
+            {
+                page: 1,
+                question: "Who is the Vice-Chairman/Director of Haryana Granth Akademi? / हरियाणा ग्रन्थ अकादमी के उपाध्यक्ष/निर्देशक कौन हैं?",
+                options: [
+                    "Shri Virender Singh Chauhan / श्री वीरेंद्र सिंह चौहान",
+                    "Sardar Harpal Singh Gill / सरदार हरपाल सिंह गिल",
+                    "Prof. K.C. Yadav / प्रो. के.सी. यादव",
+                    "Baldev Raj Mahajan / बलदेव राज महाजन"
+                ],
+                answer: 0,
+                hint: "His first name is Virender.",
+                explanation: "Shri Virender Singh Chauhan serves as the Vice-Chairman/Director of Haryana Granth Akademi. / हरियाणा ग्रन्थ अकादमी के उपाध्यक्ष/निर्देशक श्री वीरेंद्र सिंह चौहान हैं।"
+            },
+            {
+                page: 1,
+                question: "Which of the following is the main magazine of Haryana Granth Akademi? / इनमें से कौन सी हरियाणा ग्रन्थ अकादमी की मुख्य पत्रिका है?",
+                options: [
+                    "Sapt Sindhu (Bimonthly) & Katha Samay (Monthly) / सप्त सिन्धु (द्वैमासिक) व कथा समय (मासिक)",
+                    "Shabd Boond (Monthly) / शब्द बूंद (मासिक)",
+                    "Haryana Samvad / हरियाणा संवाद",
+                    "Hari-Gandha / हरि-गंधा"
+                ],
+                answer: 0,
+                hint: "It publishes two magazines: Sapt Sindhu and Katha Samay.",
+                explanation: "Haryana Granth Akademi publishes two main magazines: 'Sapt Sindhu' (bimonthly) and 'Katha Samay' (monthly). / हरियाणा ग्रन्थ अकादमी की मुख्य पत्रिकाएं 'सप्त सिन्धु' (द्वैमासिक) तथा 'कथा समय' (मासिक) हैं।"
+            },
+            {
+                page: 1,
+                question: "To preserve the culture of Haryana, Haryana Granth Akademi published the Granthawali of which prominent folk poets? / हरियाणा की संस्कृति के संरक्षण के लिए हरियाणा ग्रन्थ अकादमी ने किनकी ग्रन्थावली का प्रकाशन किया?",
+                options: [
+                    "Pandit Lakhmi Chand, Pt. Mangeram & Bajeram / पण्डित लखमीचन्द, पं. मांगेराम तथा बाजेराम",
+                    "Surdas & Dayachand Mayak / सूरदास व दयाचंद मय्यड़",
+                    "Baaje Bhagat & Deep Chand Bahman / बाजे भगत व दीपचंद बहमन",
+                    "Tulsi Das & Kabir / तुलसीदास व कबीर"
+                ],
+                answer: 0,
+                hint: "Includes Lakhmi Chand, Mangeram, and Bajeram.",
+                explanation: "Haryana Granth Akademi published Pandit Lakhmi Chand Granthawali, Pt. Mangeram Granthawali, and Bajeram Granthawali. / अकादमी ने पण्डित लखमीचन्द ग्रन्थावली, पं. मांगेराम ग्रन्थावली तथा बाजेराम ग्रन्थावली का प्रकाशन किया है।"
+            },
+            {
+                page: 1,
+                question: "How many total books across how many subjects have been published by Haryana Granth Akademi so far? / हरियाणा ग्रन्थ अकादमी द्वारा अब तक कितने विषयों की कितनी पुस्तकें प्रकाशित की गई हैं?",
+                options: [
+                    "23 subjects and 263 books / 23 विषयों की 263 पुस्तकें",
+                    "10 subjects and 100 books / 10 विषयों की 100 पुस्तकें",
+                    "30 subjects and 500 books / 30 विषयों की 500 पुस्तकें",
+                    "15 subjects and 150 books / 15 विषयों की 150 पुस्तकें"
+                ],
+                answer: 0,
+                hint: "The numbers are 23 and 263.",
+                explanation: "Haryana Granth Akademi has published 263 books across 23 subjects (202 original and 61 in other languages). / अकादमी द्वारा 23 विषयों की 263 पुस्तकों का प्रकाशन किया गया है।"
+            },
+            {
+                page: 1,
+                question: "When was the Haryana Punjabi Sahitya Akademi established? / हरियाणा पंजाबी साहित्य अकादमी की स्थापना कब हुई थी?",
+                options: [
+                    "October 1996 / अक्टूबर, 1996",
+                    "July 2006 / जुलाई, 2006",
+                    "January 1955 / जनवरी, 1955",
+                    "September 1970 / सितम्बर, 1970"
+                ],
+                answer: 0,
+                hint: "Established in October 1996 with headquarters in Panchkula.",
+                explanation: "Haryana Punjabi Sahitya Akademi was established in October 1996. / हरियाणा पंजाबी साहित्य अकादमी की स्थापना अक्टूबर, 1996 में हुई थी।"
+            },
+            {
+                page: 1,
+                question: "Who is the Director of Haryana Punjabi Sahitya Akademi? / हरियाणा पंजाबी साहित्य अकादमी के निर्देशक कौन हैं?",
+                options: [
+                    "Sardar Harpal Singh Gill / सरदार हरपाल सिंह गिल",
+                    "Shri Virender Singh Chauhan / श्री वीरेंद्र सिंह चौहान",
+                    "Prof. K.C. Yadav / प्रो. के.सी. यादव",
+                    "Baldev Raj Mahajan / बलदेव राज महाजन"
+                ],
+                answer: 0,
+                hint: "First name is Harpal Singh.",
+                explanation: "Sardar Harpal Singh Gill is the Director of Haryana Punjabi Sahitya Akademi. / हरियाणा पंजाबी साहित्य अकादमी के निर्देशक सरदार हरपाल सिंह गिल हैं।"
+            },
+            {
+                page: 1,
+                question: "What is the name of the main monthly magazine published by Haryana Punjabi Sahitya Akademi? / हरियाणा पंजाबी साहित्य अकादमी की मुख्य मासिक पत्रिका का क्या नाम है?",
+                options: [
+                    "Shabd Boond / शब्द बूंद",
+                    "Sapt Sindhu / सप्त सिन्धु",
+                    "Katha Samay / कथा समय",
+                    "Punjab Kesari / पंजाब केसरी"
+                ],
+                answer: 0,
+                hint: "It contains 6 children's stories in every issue.",
+                explanation: "The monthly magazine is 'Shabd Boond', which contains 6 children's stories to encourage child authors. / मुख्य पत्रिका 'शब्द बूंद' (मासिक) है।"
+            },
+            {
+                page: 1,
+                question: "What is the primary objective of the children's stories published in 'Shabd Boond' magazine? / 'शब्द बूंद' पत्रिका में छपने वाली बाल कहानियों का मूल उद्देश्य क्या है?",
+                options: [
+                    "To encourage child authors (writers) / बाल लेखक-लेखिकाओं को प्रोत्साहित करना",
+                    "To teach Punjabi grammar / पंजाबी व्याकरण सिखाना",
+                    "To distribute financial grants / वित्तीय अनुदान वितरित करना",
+                    "To promote historical research / ऐतिहासिक अनुसंधान को बढ़ावा देना"
+                ],
+                answer: 0,
+                hint: "It supports young writing talent.",
+                explanation: "The primary objective is to encourage young child authors/writers. / इसका मूल उद्देश्य बाल लेखक-लेखिकाओं को प्रोत्साहित करना है।"
+            },
+            {
+                page: 1,
+                question: "What is the prize money for the 'Haryana Punjabi Gaurav Award' given by Haryana Punjabi Sahitya Akademi? / हरियाणा पंजाबी गौरव पुरस्कार के तहत कितनी प्रदत्त राशि दी जाती है?",
+                options: [
+                    "5 Lakh Rupees / 5 लाख रुपये",
+                    "2 Lakh Rupees / 2 लाख रुपये",
+                    "2.5 Lakh Rupees / 2 लाख 50 हजार रुपये",
+                    "1 Lakh Rupee / 1 लाख रुपये"
+                ],
+                answer: 0,
+                hint: "It is the highest award listed, carrying 5 Lakh rupees.",
+                explanation: "Haryana Punjabi Gaurav Award carries a cash prize of 5 Lakh rupees. / हरियाणा पंजाबी गौरव पुरस्कार के तहत 5 लाख रुपये की राशि दी जाती है।"
+            },
+            {
+                page: 1,
+                question: "What is the prize money for the 'Sant Taran Singh Vahmi Award'? / 'सन्त तरन सिंह वहमी पुरस्कार' के तहत प्रदत्त राशि कितनी है?",
+                options: [
+                    "2 Lakh Rupees / 2 लाख रुपये",
+                    "5 Lakh Rupees / 5 लाख रुपये",
+                    "2.5 Lakh Rupees / 2 लाख 50 हजार रुपये",
+                    "10 Lakh Rupees / 10 लाख रुपये"
+                ],
+                answer: 0,
+                hint: "It carries 2 lakh rupees.",
+                explanation: "Sant Taran Singh Vahmi Award carries a prize money of 2 Lakh rupees. / इस पुरस्कार के तहत प्रदत्त राशि 2 लाख रुपये है।"
+            },
+            {
+                page: 1,
+                question: "What is the prize money for the 'Bhai Santokh Singh Award'? / 'भाई संतोख सिंह पुरस्कार' के तहत प्रदत्त राशि कितनी है?",
+                options: [
+                    "2.5 Lakh Rupees / 2 लाख 50 हजार रुपये",
+                    "2 Lakh Rupees / 2 लाख रुपये",
+                    "5 Lakh Rupees / 5 लाख रुपये",
+                    "1.5 Lakh Rupees / 1.5 लाख रुपये"
+                ],
+                answer: 0,
+                hint: "It is 2.5 lakh rupees.",
+                explanation: "Bhai Santokh Singh Award carries a prize amount of 2.5 Lakh rupees. / भाई संतोख सिंह पुरस्कार की राशि 2 लाख 50 हजार रुपये है।"
+            },
+            {
+                page: 1,
+                question: "What is the prize money for the 'Baba Sheikh Farid Award'? / 'बाबा शेख़ फरीद पुरस्कार' के तहत प्रदत्त राशि कितनी है?",
+                options: [
+                    "2.5 Lakh Rupees / 2 लाख 50 हजार रुपये",
+                    "2 Lakh Rupees / 2 लाख रुपये",
+                    "5 Lakh Rupees / 5 लाख रुपये",
+                    "3 Lakh Rupees / 3 लाख रुपये"
+                ],
+                answer: 0,
+                hint: "Same as Bhai Santokh Singh Award.",
+                explanation: "Baba Sheikh Farid Award carries a prize amount of 2.5 Lakh rupees. / बाबा शेख़ फरीद पुरस्कार की राशि 2 लाख 50 हजार रुपये है।"
+            },
+            {
+                page: 1,
+                question: "When was the Haryana History and Culture Academy established? / हरियाणा इतिहास एवं संस्कृति अकादमी की स्थापना कब हुई थी?",
+                options: [
+                    "July 2006 / जुलाई, 2006",
+                    "October 1996 / अक्टूबर, 1996",
+                    "September 1970 / सितम्बर, 1970",
+                    "August 1947 / अगस्त, 1947"
+                ],
+                answer: 0,
+                hint: "Established in July 2006.",
+                explanation: "Haryana History and Culture Academy was established in July 2006. / हरियाणा इतिहास एवं संस्कृति अकादमी की स्थापना जुलाई, 2006 में हुई थी।"
+            },
+            {
+                page: 1,
+                question: "When was the Haryana History and Culture Academy reorganized? / हरियाणा इतिहास एवं संस्कृति अकादमी का पुनर्गठन कब हुआ था?",
+                options: [
+                    "27 July 2010 / 27 जुलाई, 2010",
+                    "1 September 2011 / 1 सितम्बर, 2011",
+                    "7 June 2013 / 7 जून, 2013",
+                    "15 August 1947 / 15 अगस्त, 1947"
+                ],
+                answer: 0,
+                hint: "Reorganized on July 27, 2010.",
+                explanation: "It was reorganized on July 27, 2010. / इसका पुनर्गठन 27 जुलाई, 2010 को हुआ था।"
+            },
+            {
+                page: 1,
+                question: "When was statutory independence granted to the Haryana History and Culture Academy? / हरियाणा इतिहास एवं संस्कृति अकादमी को वैधानिक स्वतंत्रता कब प्रदान की गई?",
+                options: [
+                    "7 June 2013 / 7 जून, 2013",
+                    "1 September 2011 / 1 सितम्बर, 2011",
+                    "27 July 2010 / 27 जुलाई, 2010",
+                    "17 January 1955 / 17 जनवरी, 1955"
+                ],
+                answer: 0,
+                hint: "Granted on June 7, 2013.",
+                explanation: "Statutory independence was granted on June 7, 2013. / इसे वैधानिक स्वतंत्रता 7 जून, 2013 को प्रदान की गई।"
+            },
+            {
+                page: 1,
+                question: "Who was the founding director of the Haryana History and Culture Academy? / हरियाणा इतिहास एवं संस्कृति अकादमी के संस्थापक निर्देशक कौन थे?",
+                options: [
+                    "Prof. K.C. Yadav (Renowned Historian) / प्रो. के.सी. यादव (प्रसिद्ध इतिहासकार)",
+                    "Shri Virender Singh Chauhan / श्री वीरेंद्र सिंह चौहान",
+                    "Sardar Harpal Singh Gill / सरदार हरपाल सिंह गिल",
+                    "Sir Shadi Lal / सर शादीलाल"
+                ],
+                answer: 0,
+                hint: "He is a famous historian named K.C. Yadav.",
+                explanation: "The founding director was Prof. K.C. Yadav, a famous historian. / अकादमी के संस्थापक निर्देशक प्रो. के.सी. यादव (प्रसिद्ध इतिहासकार) थे।"
+            },
+            {
+                page: 1,
+                question: "Where was the Punjab and Haryana High Court initially established in 1919? / वर्ष 1919 में पंजाब एवं हरियाणा उच्च न्यायालय की सर्वप्रथम स्थापना कहाँ हुई थी?",
+                options: [
+                    "Lahore / लाहौर",
+                    "Shimla / शिमला",
+                    "Chandigarh / चंडीगढ़",
+                    "Delhi / दिल्ली"
+                ],
+                answer: 0,
+                hint: "Old name was Lahore High Court.",
+                explanation: "It was initially established in 1919 at Lahore. / सर्वप्रथम स्थापना 1919 में लाहौर में हुई थी।"
+            },
+            {
+                page: 1,
+                question: "Under which Act was the Lahore High Court established? / लाहौर उच्च न्यायालय की स्थापना किस अधिनियम के तहत हुई थी?",
+                options: [
+                    "GOI Act 1915 / GOI अधिनियम 1915",
+                    "GOI Act 1919 / GOI अधिनियम 1919",
+                    "GOI Act 1935 / GOI अधिनियम 1935",
+                    "Regulating Act 1773 / रेगुलेटिंग एक्ट 1773"
+                ],
+                answer: 0,
+                hint: "Government of India Act 1915.",
+                explanation: "It was established under the Government of India Act 1915. / इसकी स्थापना GOI अधिनियम 1915 के तहत हुई थी।"
+            },
+            {
+                page: 1,
+                question: "Who was the first Chief Justice of the Lahore High Court? / लाहौर उच्च न्यायालय के प्रथम मुख्य न्यायाधीश कौन थे?",
+                options: [
+                    "Sir Shadi Lal (Rewari) / सर शादीलाल (रेवाड़ी)",
+                    "Justice Sheel Nagu / जस्टिस शील नागू",
+                    "Ramlal / रामलाल",
+                    "Mehr Singh / मेहर सिंह"
+                ],
+                answer: 0,
+                hint: "He belonged to Rewari.",
+                explanation: "Sir Shadi Lal from Rewari was the first Chief Justice. / प्रथम मुख्य न्यायाधीश सर शादीलाल (रेवाड़ी) थे।"
+            },
+            {
+                page: 1,
+                question: "What was the previous name of the Punjab and Haryana High Court? / पंजाब व हरियाणा उच्च न्यायालय का पुराना नाम क्या था?",
+                options: [
+                    "Lahore High Court / लाहौर उच्च न्यायालय",
+                    "Delhi High Court / दिल्ली उच्च न्यायालय",
+                    "Shimla High Court / शिमला उच्च न्यायालय",
+                    "Punjab Provincial Court / पंजाब प्रांतीय न्यायालय"
+                ],
+                answer: 0,
+                hint: "It was based in Lahore before partition.",
+                explanation: "Its old name was Lahore High Court. / इसका पुराना नाम लाहौर उच्च न्यायालय था।"
+            },
+            {
+                page: 1,
+                question: "After independence, when was the Punjab and Haryana High Court established at Shimla? / आजादी के बाद शिमला में पंजाब व हरियाणा उच्च न्यायालय की स्थापना कब हुई थी?",
+                options: [
+                    "15 August 1947 / 15 अगस्त, 1947",
+                    "17 January 1955 / 17 जनवरी, 1955",
+                    "1 November 1966 / 1 नवंबर, 1966",
+                    "26 January 1950 / 26 जनवरी, 1950"
+                ],
+                answer: 0,
+                hint: "Independence day in 1947.",
+                explanation: "It was established on August 15, 1947, at Shimla. / आजादी के बाद 15 अगस्त, 1947 को शिमला में स्थापना हुई।"
+            },
+            {
+                page: 1,
+                question: "Who was the Chief Justice of the High Court after independence (at Shimla)? / आजादी के बाद उच्च न्यायालय के मुख्य न्यायाधीश कौन थे?",
+                options: [
+                    "Ramlal / रामलाल",
+                    "Sir Shadi Lal / सर शादीलाल",
+                    "Mehr Singh / मेहर सिंह",
+                    "Sheel Nagu / शील नागू"
+                ],
+                answer: 0,
+                hint: "Justice Ramlal.",
+                explanation: "Ramlal was the Chief Justice at that time. / मुख्य न्यायाधीश रामलाल थे।"
+            },
+            {
+                page: 1,
+                question: "Under which Article of the Punjab Reorganisation Act is the provision for a joint High Court for Punjab and Haryana made? / पंजाब पुनर्गठन एक्ट के किस अनुच्छेद के अंतर्गत पंजाब व हरियाणा के लिए संयुक्त उच्च न्यायालय का प्रावधान किया गया है?",
+                options: [
+                    "Article 21 / अनुच्छेद 21",
+                    "Article 226 / अनुच्छेद 226",
+                    "Article 124 / अनुच्छेद 124",
+                    "Article 356 / अनुच्छेद 356"
+                ],
+                answer: 0,
+                hint: "Article 21 of the Reorganisation Act.",
+                explanation: "It is provided under Article 21. / यह प्रावधान अनुच्छेद 21 के अंतर्गत किया गया है।"
+            },
+            {
+                page: 1,
+                question: "How many total judges have been appointed to the Punjab and Haryana High Court so far (as per page 1)? / अब तक बने कुल न्यायाधीशों की संख्या कितनी है?",
+                options: [
+                    "36",
+                    "54",
+                    "85",
+                    "39"
+                ],
+                answer: 0,
+                hint: "The count given at the bottom right of page 1 is 36.",
+                explanation: "The total number of judges appointed so far mentioned is 36. / अब तक बने कुल न्यायाधीशों की संख्या 36 है।"
+            },
+            {
+                page: 1,
+                question: "Which of the following academies is NOT mentioned on Page 1? / इनमें से कौन सी अकादमी पेज 1 पर उल्लेखित नहीं है?",
+                options: [
+                    "Haryana Sahitya Akademi / हरियाणा साहित्य अकादमी",
+                    "Haryana Urdu Academy / हरियाणा उर्दू अकादमी",
+                    "Haryana Granth Akademi / हरियाणा ग्रन्थ अकादमी",
+                    "Haryana Punjabi Sahitya Akademi / हरियाणा पंजाबी साहित्य अकादमी"
+                ],
+                answer: 0,
+                hint: "Haryana Sahitya Akademi is not on this specific page.",
+                explanation: "Haryana Sahitya Akademi is not covered on this page; Urdu, Granth, Punjabi, and History/Culture academies are. / पेज 1 पर हरियाणा साहित्य अकादमी का उल्लेख नहीं है।"
+            },
+            {
+                page: 1,
+                question: "What is the headquarters of Haryana Urdu Academy? / हरियाणा उर्दू अकादमी का मुख्यालय कहाँ है?",
+                options: [
+                    "Panchkula / पंचकुला (Implied/Standard)",
+                    "Chandigarh / चंडीगढ़",
+                    "Delhi / दिल्ली",
+                    "Gurugram / गुरुग्राम"
+                ],
+                answer: 0,
+                hint: "Like other major state academies, it is in Panchkula.",
+                explanation: "Headquarters is in Panchkula. / मुख्यालय पंचकुला में है।"
+            },
+            {
+                page: 1,
+                question: "How many subjects' books are published by Haryana Granth Akademi? / हरियाणा ग्रन्थ अकादमी द्वारा कितनी पुस्तकों का प्रकाशन कितने विषयों के अंतर्गत है?",
+                options: [
+                    "23 subjects / 23 विषयों",
+                    "10 subjects / 10 विषयों",
+                    "15 subjects / 15 विषयों",
+                    "20 subjects / 20 विषयों"
+                ],
+                answer: 0,
+                hint: "23 subjects.",
+                explanation: "23 subjects. / 23 विषयों के अंतर्गत।"
+            },
+            {
+                page: 1,
+                question: "Out of 263 books published by Haryana Granth Akademi, how many are original books (मौलिक ग्रंथ)? / हरियाणा ग्रन्थ अकादमी की 263 पुस्तकों में से कितने मौलिक ग्रंथ हैं?",
+                options: [
+                    "202 original books / 202 मौलिक ग्रंथ",
+                    "61 original books / 61 मौलिक ग्रंथ",
+                    "150 original books / 150 मौलिक ग्रंथ",
+                    "100 original books / 100 मौलिक ग्रंथ"
+                ],
+                answer: 0,
+                hint: "202 are original, 61 in other languages.",
+                explanation: "202 are original books and 61 are in other languages. / इसमें 202 मौलिक ग्रंथ व 61 अन्य भाषाओं के ग्रंथ हैं।"
+            },
+            {
+                page: 1,
+                question: "Which award has the highest prize money among the Punjabi Akademi awards listed on Page 1? / पेज 1 पर सूचीबद्ध पंजाबी अकादमी पुरस्कारों में से किसकी प्रदत्त राशि सबसे अधिक (5 लाख) है?",
+                options: [
+                    "Haryana Punjabi Gaurav Award / हरियाणा पंजाबी गौरव पुरस्कार",
+                    "Sant Taran Singh Vahmi Award / सन्त तरन सिंह वहमी पुरस्कार",
+                    "Bhai Santokh Singh Award / भाई संतोख सिंह पुरस्कार",
+                    "Baba Sheikh Farid Award / बाबा शेख़ फरीद पुरस्कार"
+                ],
+                answer: 0,
+                hint: "Gaurav Award is 5 Lakh rupees.",
+                explanation: "Haryana Punjabi Gaurav Award has 5 Lakh rupees. / हरियाणा पंजाबी गौरव पुरस्कार की राशि 5 लाख रुपये है।"
+            },
+            {
+                page: 1,
+                question: "Who was the director of Haryana Punjabi Sahitya Akademi mentioned on Page 1? / पेज 1 पर उल्लिखित हरियाणा पंजाबी साहित्य अकादमी के निर्देशक कौन हैं?",
+                options: [
+                    "Sardar Harpal Singh Gill / सरदार हरपाल सिंह गिल",
+                    "Virender Singh Chauhan / वीरेंद्र सिंह चौहान",
+                    "K.C. Yadav / के.सी. यादव",
+                    "Sir Shadi Lal / सर शादीलाल"
+                ],
+                answer: 0,
+                hint: "Harpal Singh Gill.",
+                explanation: "Sardar Harpal Singh Gill. / सरदार हरपाल सिंह गिल।"
+            },
+            {
+                page: 1,
+                question: "In which year was the Haryana History and Culture Academy granted statutory independence? / हरियाणा इतिहास एवं संस्कृति अकादमी को किस वर्ष वैधानिक स्वतंत्रता दी गई?",
+                options: [
+                    "2013",
+                    "2010",
+                    "2006",
+                    "2021"
+                ],
+                answer: 0,
+                hint: "7 June 2013.",
+                explanation: "In 2013 (7 June 2013). / वर्ष 2013 में।"
+            },
+            {
+                page: 1,
+                question: "Where did the Punjab and Haryana High Court operate right after independence in 1947? / 1947 में आजादी के तुरंत बाद पंजाब व हरियाणा उच्च न्यायालय कहाँ संचालित होता था?",
+                options: [
+                    "Shimla / शिमला",
+                    "Lahore / लाहौर",
+                    "Chandigarh / चंडीगढ़",
+                    "Ambala / अम्बाला"
+                ],
+                answer: 0,
+                hint: "Shimla.",
+                explanation: "At Shimla. / शिमला में।"
+            },
+            {
+                page: 1,
+                question: "What is the primary language area for the 'Haryana Punjabi Gaurav Award'? / 'हरियाणा पंजाबी गौरव पुरस्कार' किस क्षेत्र के लिए प्रदत्त किया जाता है?",
+                options: [
+                    "Punjabi language literature / पंजाबी भाषा साहित्य क्षेत्र",
+                    "Urdu poetry / उर्दू शायरी",
+                    "Hindi journalism / हिंदी पत्रकारिता",
+                    "Haryana folk music / हरियाणवी लोक संगीत"
+                ],
+                answer: 0,
+                hint: "Punjabi language literature.",
+                explanation: "Punjabi language literature field. / पंजाबी भाषा साहित्य क्षेत्र।"
+            },
+            {
+                page: 1,
+                question: "Which of the following institutions is NOT an academy mentioned on Page 1? / इनमें से कौन सी संस्था पेज 1 पर उल्लिखित अकादमी नहीं है?",
+                options: [
+                    "Haryana Agricultural University / हरियाणा कृषि विश्वविद्यालय",
+                    "Haryana Granth Akademi / हरियाणा ग्रन्थ अकादमी",
+                    "Haryana Punjabi Sahitya Akademi / हरियाणा पंजाबी साहित्य अकादमी",
+                    "Haryana History and Culture Academy / हरियाणा इतिहास एवं संस्कृति अकादमी"
+                ],
+                answer: 0,
+                hint: "HAU is a university, not among the three academies on page 1.",
+                explanation: "Haryana Agricultural University is not mentioned. / हरियाणा कृषि विश्वविद्यालय पेज पर नहीं है।"
+            },
+            {
+                page: 1,
+                question: "How many books in other languages (besides original) are published by Haryana Granth Akademi? / हरियाणा ग्रन्थ अकादमी द्वारा अन्य भाषाओं के कितने ग्रंथ प्रकाशित किए गए हैं?",
+                options: [
+                    "61",
+                    "202",
+                    "263",
+                    "14"
+                ],
+                answer: 0,
+                hint: "61 books in other languages.",
+                explanation: "61 books. / 61 ग्रंथ।"
+            },
+            {
+                page: 1,
+                question: "What is the native place/town of Sir Shadi Lal, the first Chief Justice of Lahore High Court? / लाहौर उच्च न्यायालय के प्रथम मुख्य न्यायाधीश सर शादीलाल का संबंध किस स्थान से था?",
+                options: [
+                    "Rewari / रेवाड़ी",
+                    "Panchkula / पंचकुला",
+                    "Rohtak / रोहतक",
+                    "Jhajjar / झज्जर"
+                ],
+                answer: 0,
+                hint: "Rewari.",
+                explanation: "Rewari. / रेवाड़ी।"
+            },
+
+            // --- PAGE 2 QUESTIONS (40 Questions) ---
+            {
+                page: 2,
+                question: "Who is the current Chief Justice of Punjab and Haryana High Court (as of 2024 study)? / वर्तमान मुख्य न्यायाधीश कौन हैं?",
+                options: [
+                    "Justice Sheel Nagu / जस्टिस शील नागू",
+                    "Justice Ranjan Gogoi / जस्टिस रंजन गोगोई",
+                    "Justice Tirath Singh Thakur / जस्टिस तीरथ सिंह ठाकुर",
+                    "Justice Mehr Singh / जस्टिस मेहर सिंह"
+                ],
+                answer: 0,
+                hint: "Justice Sheel Nagu.",
+                explanation: "Justice Sheel Nagu is the current Chief Justice. / वर्तमान मुख्य न्यायाधीश जस्टिस शील नागू हैं।"
+            },
+            {
+                page: 2,
+                question: "What is the sanctioned strength of judges in the Punjab and Haryana High Court? / पंजाब व हरियाणा हाई-कोर्ट में कुल जजों की स्वीकृत संख्या कितनी है?",
+                options: [
+                    "85",
+                    "54",
+                    "39",
+                    "40"
+                ],
+                answer: 0,
+                hint: "Sanctioned is 85, current was 54.",
+                explanation: "Sanctioned strength is 85. / स्वीकृत संख्या 85 है।"
+            },
+            {
+                page: 2,
+                question: "As of November 2024, what was the actual number of judges in the Punjab and Haryana High Court? / नवंबर 2024 तक हाई-कोर्ट में जजों की वास्तविक संख्या कितनी थी?",
+                options: [
+                    "54",
+                    "85",
+                    "39",
+                    "36"
+                ],
+                answer: 0,
+                hint: "54 judges.",
+                explanation: "Current number was 54. / वर्तमान संख्या 54 थी।"
+            },
+            {
+                page: 2,
+                question: "What is the number of permanent judges in the Punjab and Haryana High Court? / हाई-कोर्ट में स्थाई न्यायाधीशों की संख्या कितनी है?",
+                options: [
+                    "39",
+                    "54",
+                    "85",
+                    "40"
+                ],
+                answer: 0,
+                hint: "39 permanent judges.",
+                explanation: "Number of permanent judges is 39. / स्थाई न्यायाधीशों की संख्या 39 है।"
+            },
+            {
+                page: 2,
+                question: "Who are the only couple judges (युगल दम्पति) in the Punjab and Haryana High Court? / हाई-कोर्ट में एकमात्र युगल दम्पति न्यायाधीश कौन हैं?",
+                options: [
+                    "Archana Puri & Pritam Puri / अर्चना पुरी व प्रीतम पुरी",
+                    "Kiran Anand Pal & Nirmal Yadav / किरण आनन्द पाल व निर्मल यादव",
+                    "Dayanand & Dayachari / दयानंद व दयाचारी",
+                    "Shadi Lal & Ramlal / शादीलाल व रामलाल"
+                ],
+                answer: 0,
+                hint: "Archana Puri and Pritam Puri.",
+                explanation: "Archana Puri and Pritam Puri are the only couple judges. / एकमात्र युगल दम्पति अर्चना पुरी व प्रीतम पुरी हैं।"
+            },
+            {
+                page: 2,
+                question: "When was the Punjab and Haryana High Court established in Chandigarh? / पंजाब व हरियाणा हाई-कोर्ट की चंडीगढ़ में स्थापना कब हुई थी?",
+                options: [
+                    "17 January 1955 / 17 जनवरी, 1955",
+                    "15 August 1947 / 15 अगस्त, 1947",
+                    "1 November 1966 / 1 नवंबर, 1966",
+                    "6 February 1997 / 6 फरवरी, 1997"
+                ],
+                answer: 0,
+                hint: "January 17, 1955.",
+                explanation: "Established in Chandigarh on January 17, 1955. / चंडीगढ़ में स्थापना 17 जनवरी, 1955 को हुई।"
+            },
+            {
+                page: 2,
+                question: "Which judges from Punjab and Haryana High Court went on to become Supreme Court judges? / पंजाब एवं हरियाणा के कौन से न्यायाधीश सुप्रीम कोर्ट के न्यायाधीश बने?",
+                options: [
+                    "Tirath Singh Thakur & Ranjan Gogoi / तीरथ सिंह ठाकुर व रंजन गोगोई",
+                    "Sheel Nagu & Mehr Singh / शील नागू व मेहर सिंह",
+                    "Amarnath Bhandari & Devi Singh / अमरनाथ भण्डारी व देवी सिंह",
+                    "Sir Shadi Lal & Ramlal / सर शादीलाल व रामलाल"
+                ],
+                answer: 0,
+                hint: "Tirath Singh Thakur and Ranjan Gogoi.",
+                explanation: "Tirath Singh Thakur and Ranjan Gogoi became Supreme Court judges. / तीरथ सिंह ठाकुर व रंजन गोगोई सुप्रीम कोर्ट के न्यायाधीश बने।"
+            },
+            {
+                page: 2,
+                question: "Who was the Chief Justice of Punjab and Haryana High Court on November 1, 1966 (formation of Haryana)? / 1 नवंबर, 1966 को हाई-कोर्ट के मुख्य न्यायाधीश कौन थे?",
+                options: [
+                    "Shri Mehr Singh / श्री मेहर सिंह",
+                    "Amarnath Bhandari / अमरनाथ भण्डारी",
+                    "Devi Singh Tewatia / देवी सिंह तेवतिया",
+                    "Donald Falshaw / डोनॉल्ड फालशां"
+                ],
+                answer: 0,
+                hint: "Shri Mehr Singh.",
+                explanation: "Shri Mehr Singh was the Chief Justice. / मुख्य न्यायाधीश श्री मेहर सिंह थे।"
+            },
+            {
+                page: 2,
+                question: "Who holds the record for the longest tenure as Chief Justice in the state? / राज्य में मुख्य न्यायाधीश के रूप में सबसे लम्बा कार्यकाल किसका रहा है?",
+                options: [
+                    "Amarnath Bhandari (4th) / अमरनाथ भण्डारी",
+                    "Devi Singh Tewatia / देवी सिंह तेवतिया",
+                    "Mehr Singh / मेहर सिंह",
+                    "Sheel Nagu / शील नागू"
+                ],
+                answer: 0,
+                hint: "Amarnath Bhandari.",
+                explanation: "Amarnath Bhandari had the longest tenure. / सबसे लम्बा कार्यकाल अमरनाथ भण्डारी का रहा।"
+            },
+            {
+                page: 2,
+                question: "Who had the shortest tenure as Chief Justice in the state? / राज्य में मुख्य न्यायाधीश के रूप में सबसे छोटा कार्यकाल किसका रहा है?",
+                options: [
+                    "Devi Singh Tewatia (15th) / देवी सिंह तेवतिया",
+                    "Amarnath Bhandari / अमरनाथ भण्डारी",
+                    "Donald Falshaw / डोनॉल्ड फालशां",
+                    "Ramlal / रामलाल"
+                ],
+                answer: 0,
+                hint: "Devi Singh Tewatia.",
+                explanation: "Devi Singh Tewatia had the shortest tenure. / सबसे छोटा कार्यकाल देवी सिंह तेवतिया का रहा।"
+            },
+            {
+                page: 2,
+                question: "Which commission investigated the Jat agitation violence in the state? / राज्य में जाट हिंसा की जांच किस आयोग ने की?",
+                options: [
+                    "Justice S.N. Jha Commission / जस्टिस एस.एन. झा आयोग",
+                    "Justice Dhingra Commission / जस्टिस ढींगरा आयोग",
+                    "Shah Commission / शाह आयोग",
+                    "Venkatachaliah Commission / वेंकटचलैया आयोग"
+                ],
+                answer: 0,
+                hint: "Justice S.N. Jha Commission.",
+                explanation: "Justice S.N. Jha Commission investigated Jat violence. / जाट हिंसा की जांच जस्टिस एस.एन. झा आयोग ने की।"
+            },
+            {
+                page: 2,
+                question: "Which commission investigated the Robert Vadra land deal link in the state? / राज्य में रॉबर्ट वाड्रा लैंड लिंक की जांच किस आयोग ने की?",
+                options: [
+                    "Justice Dhingra Commission / जस्टिस ढींगरा आयोग",
+                    "Justice S.N. Jha Commission / जस्टिस एस.एन. झा आयोग",
+                    "Mahajan Commission / महाजन आयोग",
+                    "Bansi Lal Commission / बंसी लाल आयोग"
+                ],
+                answer: 0,
+                hint: "Justice Dhingra Commission.",
+                explanation: "Justice Dhingra Commission investigated Robert Vadra land link. / रॉबर्ट वाड्रा लैंड लिंक की जांच जस्टिस ढींगरा आयोग ने की।"
+            },
+            {
+                page: 2,
+                question: "Who was the first woman Chief Justice / Judge of the state? / राज्य की प्रथम महिला मुख्य न्यायाधीश कौन थीं?",
+                options: [
+                    "Justice Kiran Anand Pal / न्यायमूर्ति किरण आनन्द पाल",
+                    "Nirmal Yadav / निर्मल यादव",
+                    "Daya Chaudhary / दया चौधरी",
+                    "Archana पुरी / अर्चना पुरी"
+                ],
+                answer: 0,
+                hint: "Justice Kiran Anand Pal.",
+                explanation: "Justice Kiran Anand Pal was the first woman judge/chief justice. / प्रथम महिला न्यायमूर्ति किरण आनन्द पाल थीं।"
+            },
+            {
+                page: 2,
+                question: "Who is the first female judge in the state to be appointed directly from the bar? / बार से सीधे नियुक्त होने वाली राज्य की प्रथम महिला न्यायाधीश कौन हैं?",
+                options: [
+                    "Daya Chaudhary / दया चौधरी",
+                    "Nirmal Yadav / निर्मल यादव",
+                    "Kiran Anand Pal / किरण आनन्द पाल",
+                    "Archana Puri / अर्चना पुरी"
+                ],
+                answer: 0,
+                hint: "Daya Chaudhary.",
+                explanation: "Daya Chaudhary is the first judge appointed directly from the bar. / दया चौधरी बार से सीधे नियुक्त होने वाली प्रथम न्यायाधीश हैं।"
+            },
+            {
+                page: 2,
+                question: "How many total persons have served as both Governor and Chief Justice in Haryana? / हरियाणा के राज्यपाल व मुख्य न्यायाधीश दोनों पदों पर रहने वाले कुल व्यक्तियों की संख्या कितनी है?",
+                options: [
+                    "2",
+                    "1",
+                    "3",
+                    "4"
+                ],
+                answer: 0,
+                hint: "2 persons: Ranjit Singh Narula and Surjit Singh Sandhawalia.",
+                explanation: "Total persons are 2 (Ranjit Singh Narula and Surjit Singh Sandhawalia). / कुल व्यक्तियों की संख्या 2 है।"
+            },
+            {
+                page: 2,
+                question: "When and where was the first court (कचहरी) established in the state? / राज्य की प्रथम कचहरी की स्थापना कब और कहाँ हुई थी?",
+                options: [
+                    "1919 (Jhajjar) / 1919 (झज्जर)",
+                    "1955 (Chandigarh) / 1955 (चंडीगढ़)",
+                    "1947 (Shimla) / 1947 (शिमला)",
+                    "1997 (Karnal) / 1997 (करनाल)"
+                ],
+                answer: 0,
+                hint: "1919 in Jhajjar.",
+                explanation: "First court was established in 1919 at Jhajjar. / प्रथम कचहरी की स्थापना 1919 (झज्जर) में हुई।"
+            },
+            {
+                page: 2,
+                question: "Prithviraj Chauhan's court is associated with which historical structure? / पृथ्वीराज चौहान की कचहरी किससे संबंधित है?",
+                options: [
+                    "Tosham ki Baradari / तोशाम की बारहदरी",
+                    "Jhajjar Kacheri / झज्जर कचहरी",
+                    "Karnal Court / करनाल कचहरी",
+                    "Kurukshetra Bhawan / कुरुक्षेत्र भवन"
+                ],
+                answer: 0,
+                hint: "Tosham ki Baradari.",
+                explanation: "Prithviraj Chauhan's court is Tosham ki Baradari. / पृथ्वीराज चौहान की कचहरी तोशाम की बारहदरी है।"
+            },
+            {
+                page: 2,
+                question: "Where was the first Law College of Haryana established? / हरियाणा का प्रथम लॉ कॉलेज कहाँ स्थापित किया गया था?",
+                options: [
+                    "Panchkula / पंचकुला",
+                    "Sonipat / सोनीपत",
+                    "Gurugram / गुरुग्राम",
+                    "Rohtak / रोहतक"
+                ],
+                answer: 0,
+                hint: "Panchkula.",
+                explanation: "First Law College was in Panchkula. / हरियाणा का प्रथम लॉ कॉलेज पंचकूला में है।"
+            },
+            {
+                page: 2,
+                question: "What is the name of Haryana's first women law university? / हरियाणा की प्रथम महिला लॉ यूनिवर्सिटी कौन सी है?",
+                    options: [
+                    "Dr. B.R. Ambedkar Law University (Sonipat) / डॉ. भीमराव अम्बेडकर लॉ यूनिवर्सिटी (सोनीपत)",
+                    "National Law University (Rohtak) / नेशनल लॉ यूनिवर्सिटी (रोहतक)",
+                    "Kurukshetra Law University / कुरुक्षेत्र लॉ यूनिवर्सिटी",
+                    "Maharshi Dayanand Law Varsity / महर्षि दयानंद लॉ यूनिवर्सिटी"
+                ],
+                answer: 0,
+                hint: "Dr. B.R. Ambedkar Law University in Sonipat.",
+                explanation: "It is Dr. B.R. Ambedkar Law University, Sonipat. / डॉ. भीमराव अम्बेडकर लॉ यूनिवर्सिटी (सोनीपत)।"
+            },
+            {
+                page: 2,
+                question: "Who was the first Advocate General of Haryana state? / हरियाणा राज्य के प्रथम एडवोकेट जनरल कौन थे?",
+                options: [
+                    "Babu Anand Swarup / बाबू आनंद स्वरूप",
+                    "Baldev Raj Mahajan / बलदेव राज महाजन",
+                    "Vir Swami Ramayyan / वीर स्वामी रामाय्यन",
+                    "Mehr Singh / मेहर सिंह"
+                ],
+                answer: 0,
+                hint: "Babu Anand Swarup.",
+                explanation: "Babu Anand Swarup was the first Advocate General. / राज्य के प्रथम एडवोकेट जनरल बाबू आनंद स्वरूप थे।"
+            },
+            {
+                page: 2,
+                question: "Who is the current Advocate General of Haryana, who enjoys cabinet minister status? / वर्तमान एडवोकेट जनरल कौन हैं जिन्हें कैबिनेट मंत्री का दर्जा प्राप्त है?",
+                options: [
+                    "Baldev Raj Mahajan / बलदेव राज महाजन",
+                    "Babu Anand Swarup / बाबू आनंद स्वरूप",
+                    "Sheel Nagu / शील नागू",
+                    "S.N. Jha / एस.एन. झा"
+                ],
+                answer: 0,
+                hint: "Baldev Raj Mahajan.",
+                explanation: "Baldev Raj Mahajan is the Advocate General. / वर्तमान एडवोकेट जनरल बलदेव राज महाजन हैं।"
+            },
+            {
+                page: 2,
+                question: "Which judge of the state was the only one against whom impeachment was initiated though not implemented? / राज्य के एकमात्र न्यायाधीश जिन पर महाभियोग चलाया गया था लेकिन लागू नहीं हुआ?",
+                options: [
+                    "Veer Swami Ramayyan / वीर स्वामी रामाय्यन",
+                    "Donald Falshaw / डोनॉल्ड फालशां",
+                    "Ranjit Singh Narula / रंजीत सिंह नरुला",
+                    "Devi Singh Tewatia / देवी सिंह तेवतिया"
+                ],
+                answer: 0,
+                hint: "Veer Swami Ramayyan.",
+                explanation: "Veer Swami Ramayyan was the judge. / वीर स्वामी रामाय्यन एकमात्र न्यायाधीश थे।"
+            },
+            {
+                page: 2,
+                question: "How many total environmental courts were established in the state on February 6, 1997? / 6 फरवरी, 1997 को राज्य में कुल कितने पर्यावरण न्यायालय स्थापित किए गए थे?",
+                options: [
+                    "Two (Faridabad & Hisar) / दो (फरीदाबाद व हिसार)",
+                    "Three / तीन",
+                    "One / एक",
+                    "Four / चार"
+                ],
+                answer: 0,
+                hint: "Faridabad and Hisar.",
+                explanation: "Two environmental courts (Faridabad and Hisar). / दो पर्यावरण न्यायालय (फरीदाबाद व हिसार)।"
+            },
+            {
+                page: 2,
+                question: "Since November 24, 2015, the environmental court originally at Hisar has been operating at which place? / 24 नवंबर 2015 से हिसार के स्थान पर पर्यावरण न्यायालय कहाँ कार्यरत है?",
+                options: [
+                    "Kurukshetra / कुरुक्षेत्र",
+                    "Karnal / करनाल",
+                    "Gurugram / गुरुग्राम",
+                    "Rohtak / रोहतक"
+                ],
+                answer: 0,
+                hint: "Kurukshetra.",
+                explanation: "It operates at Kurukshetra. / यह कुरुक्षेत्र में कार्यरत है।"
+            },
+            {
+                page: 2,
+                question: "Where is the state's only temporary environmental court located? / राज्य में एकमात्र अस्थायी पर्यावरण न्यायालय कहाँ स्थापित है?",
+                options: [
+                    "Karnal / करनाल",
+                    "Faridabad / फरीदाबाद",
+                    "Hisar / हिसार",
+                    "Kurukshetra / कुरुक्षेत्र"
+                ],
+                answer: 0,
+                hint: "Karnal.",
+                explanation: "Temporary environmental court is at Karnal. / अस्थायी पर्यावरण न्यायालय करनाल में है।"
+            },
+            {
+                page: 2,
+                question: "Family courts are established in how many districts of Haryana? / हरियाणा के कुल कितने जिलों में पारिवारिक न्यायालय हैं?",
+                options: [
+                    "4 (Hisar, Bhiwani, Faridabad, Gurugram) / 4 जिलों में",
+                    "2 districts / 2 जिलों में",
+                    "11 districts / 11 जिलों में",
+                    "10 districts / 10 जिलों में"
+                ],
+                answer: 0,
+                hint: "4 districts.",
+                explanation: "Family courts are in 4 districts (Hisar, Bhiwani, Faridabad, Gurugram). / 4 जिलों (हिसार, भिवानी, फरीदाबाद व गुरुग्राम) में।"
+            },
+            {
+                page: 2,
+                question: "Which district in the state has the highest number of Gram Courts (ग्राम न्यायालय)? / राज्य के किस जिले में सबसे अधिक ग्राम न्यायालय हैं?",
+                options: [
+                    "Bhiwani / भिवानी",
+                    "Hisar / हिसार",
+                    "Gurugram / गुरुग्राम",
+                    "Faridabad / फरीदाबाद"
+                ],
+                answer: 0,
+                hint: "Bhiwani.",
+                explanation: "Bhiwani has the highest number of Gram Courts. / भिवानी जिले में सबसे अधिक ग्राम न्यायालय हैं।"
+            },
+            {
+                page: 2,
+                question: "What is the number of newly formed POCSO courts in Haryana? / हरियाणा में नये गठित पॉक्सो कोर्ट की संख्या कितनी है?",
+                options: [
+                    "16",
+                    "11",
+                    "40",
+                    "39"
+                ],
+                answer: 0,
+                hint: "16 POCSO courts.",
+                explanation: "The number of newly formed POCSO courts is 16. / पॉक्सो कोर्ट की संख्या 16 है।"
+            },
+            {
+                page: 2,
+                question: "How many total rooms and court rooms are there in the Punjab and Haryana High Court building (as per page 2 notes)? / पंजाब व हरियाणा हाईकोर्ट भवन में कुल कमरे और कोर्ट रूम कितने हैं?",
+                options: [
+                    "40 total rooms and 1 court room / 40 कुल कमरे और 1 कोर्ट रूम",
+                    "85 total rooms and 3 court rooms / 85 कुल कमरे और 3 कोर्ट रूम",
+                    "54 total rooms and 2 court rooms / 54 कुल कमरे और 2 कोर्ट रूम",
+                    "11 total rooms and 1 court room / 11 कुल कमरे और 1 कोर्ट रूम"
+                ],
+                answer: 0,
+                hint: "40 rooms and 1 court room.",
+                explanation: "Total rooms: 40, Court room: 1, Bar room: 3. / कुल कमरे 40 तथा कोर्ट रूम 1 है।"
+            },
+            {
+                page: 2,
+                question: "Who was the first Chief Justice of Punjab and Haryana High Court to resign while in office? / अपने पद पर रहते हुए त्यागपत्र देने वाले प्रथम मुख्य न्यायाधीश कौन थे?",
+                options: [
+                    "Donald Falshaw (1961-1966) / डोनॉल्ड फालशां",
+                    "Ranjit Singh Narula / रंजीत सिंह नरुला",
+                    "Jitendra Veer Gupta / जितेन्द्र वीर गुप्ता",
+                    "Mehr Singh / मेहर सिंह"
+                ],
+                answer: 0,
+                hint: "Donald Falshaw.",
+                explanation: "Donald Falshaw was the first. / प्रथम मुख्य न्यायाधीश डोनॉल्ड फालशां थे।"
+            },
+            {
+                page: 2,
+                question: "Where is the state's only special commercial court located? / राज्य में एकमात्र विशेष वाणिज्यिक अदालत कहाँ स्थित है?",
+                options: [
+                    "Gurugram (Established 27 Oct 2017) / गुरुग्राम",
+                    "Faridabad / फरीदाबाद",
+                    "Panchkula / पंचकुला",
+                    "Hisar / हिसार"
+                ],
+                answer: 0,
+                hint: "Gurugram, established Oct 27, 2017.",
+                explanation: "It is located in Gurugram, established on Oct 27, 2017. / एकमात्र विशेष वाणिज्यिक अदालत गुरुग्राम में स्थित है।"
+            },
+            {
+                page: 2,
+                question: "What is the total number of Permanent Lok Adalats (स्थायी लोक अदालतें) in the state? / राज्य में स्थायी लोक अदालतों की संख्या कितनी है?",
+                options: [
+                    "11",
+                    "16",
+                    "4",
+                    "2"
+                ],
+                answer: 0,
+                hint: "11 Lok Adalats.",
+                explanation: "The number of permanent Lok Adalats is 11. / स्थायी लोक अदालतों की संख्या 11 है।"
+            },
+            {
+                page: 2,
+                question: "Which of the following districts has a Permanent Lok Adalat according to the list on Page 2? / पेज 2 की सूची के अनुसार इनमें से किस जिले में स्थायी लोक अदालत है?",
+                options: [
+                    "Rohtak / रोहतक",
+                    "Karnal / करनाल",
+                    "Jhajjar / झज्जर",
+                    " Jind / जींद"
+                ],
+                answer: 0,
+                hint: "Rohtak is listed among the 11 districts.",
+                explanation: "Rohtak is one of the districts with a Permanent Lok Adalat. / रोहतक उनमें से एक है।"
+            },
+            {
+                page: 2,
+                question: "Which judge besides Donald Falshaw also resigned from office while serving? / डोनॉल्ड फालशां के अलावा किन अन्य न्यायाधीशों ने अपने पद पर रहते हुए त्यागपत्र दिया था?",
+                options: [
+                    "Ranjit Singh Narula & Jitendra Veer Gupta / रंजीत सिंह नरुला तथा जितेन्द्र वीर गुप्ता",
+                    "Tirath Singh Thakur & Ranjan Gogoi / तीरथ सिंह ठाकुर व रंजन गोगोई",
+                    "Archana Puri & Pritam Puri / अर्चना पुरी व प्रीतम पुरी",
+                    "Sheel Nagu & Mehr Singh / शील नागू व मेहर सिंह"
+                ],
+                answer: 0,
+                hint: "Narula and Gupta.",
+                explanation: "Ranjit Singh Narula and Jitendra Veer Gupta also resigned while in office. / रंजीत सिंह नरुला तथा जितेन्द्र वीर गुप्ता ने भी त्यागपत्र दिया था।"
+            },
+            {
+                page: 2,
+                question: "How many bar rooms are there in the Punjab and Haryana High Court building complex? / हाईकोर्ट भवन परिसर में कितने बार रूम हैं?",
+                options: [
+                    "3",
+                    "1",
+                    "40",
+                    "11"
+                ],
+                answer: 0,
+                hint: "3 bar rooms.",
+                explanation: "There are 3 bar rooms. / बार रूम की कुल संख्या 3 है।"
+            },
+            {
+                page: 2,
+                question: "What facilities besides court rooms and bar rooms are present in the High Court building complex? / हाईकोर्ट परिसर में कोर्ट रूम और बार रूम के अलावा क्या सुविधा है?",
+                options: [
+                    "One canteen and one library / एक कैंटीन व एक पुस्तकालय",
+                    "Two canteens and two libraries / दो कैंटीन व दो पुस्तकालय",
+                    "A museum and a park / एक संग्रहालय व पार्क",
+                    "A guest house / एक गेस्ट हाउस"
+                ],
+                answer: 0,
+                hint: "One canteen and one library.",
+                explanation: "One canteen and one library are present. / एक कैंटीन व एक पुस्तकालय है।"
+            },
+            {
+                page: 2,
+                question: "Which volume of Haryana District-wise Study is cited for Page 2 content? / पेज 2 की सामग्री के लिए हरियाणा जिलेवार अध्ययन का कौन सा वॉल्यूम है?",
+                options: [
+                    "Vol.-10 (2024) / Vol.-10 (2024)",
+                    "Vol.-1 (2020) / Vol.-1 (2020)",
+                    "Vol.-5 (2022) / Vol.-5 (2022)",
+                    "Vol.-12 (2026) / Vol.-12 (2026)"
+                ],
+                answer: 0,
+                hint: "Vol.-10, 2024.",
+                explanation: "It is Vol.-10, 2024. / यह Vol.-10 (2024) है।"
+            },
+            {
+                page: 2,
+                question: "What rank/status is granted to the Advocate General of the state? / राज्य के एडवोकेट जनरल को कौन सा दर्जा प्राप्त है?",
+                options: [
+                    "Cabinet Minister status / कैबिनेट मंत्री का दर्जा",
+                    "Chief Secretary status / मुख्य सचिव का दर्जा",
+                    "High Court Judge status / हाईकोर्ट जज का दर्जा",
+                    " Governor status / राज्यपाल का दर्जा"
+                ],
+                answer: 0,
+                hint: "Cabinet Minister.",
+                explanation: "Advocate General enjoys cabinet minister rank. / एडवोकेट जनरल को कैबिनेट मंत्री का दर्जा प्राप्त है।"
+            },
+            {
+                page: 2,
+                question: "In which year was the state's sole special commercial court established at Gurugram? / गुरुग्राम में राज्य की एकमात्र विशेष वाणिज्यिक अदालत की स्थापना किस वर्ष हुई थी?",
+                options: [
+                    "2017",
+                    "2015",
+                    "1997",
+                    "2024"
+                ],
+                answer: 0,
+                hint: "27 October 2017.",
+                explanation: "Established on October 27, 2017. / इसकी स्थापना 27 अक्टूबर, 2017 को हुई थी।"
+            },
+            {
+                page: 2,
+                question: "Which of the following commissions is NOT mentioned on Page 2? / इनमें से कौन सा आयोग पेज 2 पर उल्लेखित नहीं है?",
+                options: [
+                    "Shah Commission / शाह आयोग",
+                    "Justice S.N. Jha Commission / जस्टिस एस.एन. झा आयोग",
+                    "Justice Dhingra Commission / जस्टिस ढींगरा आयोग",
+                    "Both S.N. Jha and Dhingra Commissions are mentioned / दोनों एस.एन. झा और ढींगरा आयोग उल्लेखित हैं"
+                ],
+                answer: 0,
+                hint: "Shah Commission is not on page 2.",
+                explanation: "Shah Commission is not mentioned on Page 2. / शाह आयोग का उल्लेख पेज 2 पर नहीं है।"
+            }
+        ];
+
+        let currentIndex = 0;
+        let score = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+        let shuffledOptionsList = [];
+        let timerSeconds = 0;
+        let timerInterval = null;
+
+        // Start Timer
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timerSeconds++;
+                let mins = Math.floor(timerSeconds / 60).toString().padStart(2, '0');
+                let secs = (timerSeconds % 60).toString().padStart(2, '0');
+                document.getElementById('timer-display').innerText = `Time: ${mins}:${secs}`;
+            }, 1000);
+        }
+
+        // Initialize shuffled options for each question once to maintain consistency on navigation
+        function initQuiz() {
+            questions.forEach((q, qIdx) => {
+                let optionsWithIndices = q.options.map((opt, idx) => ({ text: opt, originalIndex: idx }));
+                // Shuffle options
+                for (let i = optionsWithIndices.length - 1; i > 0; i--) {
+                    let j = Math.floor(Math.random() * (i + 1));
+                    [optionsWithIndices[i], optionsWithIndices[j]] = [optionsWithIndices[j], optionsWithIndices[i]];
+                }
+                shuffledOptionsList.push(optionsWithIndices);
+            });
+            startTimer();
+            loadQuestion(0);
+        }
+
+        function loadQuestion(index) {
+            currentIndex = index;
+            const q = questions[index];
+            const shuffledOpts = shuffledOptionsList[index];
+
+            // Update UI headers
+            document.getElementById('question-counter').innerText = `Question ${index + 1} of ${questions.length}`;
+            document.getElementById('source-badge').innerText = `Page ${q.page} Source`;
+            document.getElementById('question-text').innerText = q.question;
+
+            // Update progress bar
+            let progress = ((index + 1) / questions.length) * 100;
+            document.getElementById('progress-bar').style.width = `${progress}%`;
+
+            // Render options
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            let userAns = userAnswers[index];
+
+            shuffledOpts.forEach((optObj, idx) => {
+                let btn = document.createElement('button');
+                btn.className = "w-full text-left p-3.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 font-medium text-slate-700 transition flex items-center justify-between";
+                
+                let optionLetter = String.fromCharCode(65 + idx); // A, B, C, D
+                btn.innerHTML = `<span><strong class="mr-2 text-indigo-600">${optionLetter}.</strong> ${optObj.text}</span>`;
+
+                if (userAns !== null) {
+                    // Already answered
+                    btn.disabled = true;
+                    if (optObj.originalIndex === q.answer) {
+                        btn.classList.remove('bg-white', 'hover:bg-slate-50');
+                        btn.classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-900');
+                    } else if (userAns === optObj.originalIndex) {
+                        btn.classList.remove('bg-white', 'hover:bg-slate-50');
+                        btn.classList.add('bg-rose-100', 'border-rose-500', 'text-rose-900');
+                    }
+                } else {
+                    btn.onclick = () => selectOption(optObj.originalIndex, index);
+                }
+
+                optionsContainer.appendChild(btn);
+            });
+
+            // Hint box handling
+            document.getElementById('hint-box').classList.add('hidden');
+            document.getElementById('hint-box').innerText = q.hint;
+
+            // Explanation box handling
+            const expContainer = document.getElementById('explanation-container');
+            if (userAns !== null) {
+                expContainer.classList.remove('hidden');
+                document.getElementById('explanation-text').innerText = q.explanation;
+            } else {
+                expContainer.classList.add('hidden');
+            }
+
+            // Navigation buttons state
+            document.getElementById('prev-btn').disabled = index === 0;
+            document.getElementById('next-btn').innerText = index === questions.length - 1 ? 'Finish 🏁' : 'Next →';
+            document.getElementById('jump-input').value = index + 1;
+        }
+
+        function selectOption(selectedOriginalIndex, qIdx) {
+            userAnswers[qIdx] = selectedOriginalIndex;
+            const q = questions[qIdx];
+
+            if (selectedOriginalIndex === q.answer) {
+                score++;
+            }
+
+            document.getElementById('score-display').innerText = `Score: ${score} / ${questions.length}`;
+            loadQuestion(qIdx);
+        }
+
+        function nextQuestion() {
+            if (currentIndex < questions.length - 1) {
+                loadQuestion(currentIndex + 1);
+            } else {
+                alert(`Quiz Completed! Your Final Score is ${score} out of ${questions.length}.`);
+            }
+        }
+
+        function prevQuestion() {
+            if (currentIndex > 0) {
+                loadQuestion(currentIndex - 1);
+            }
+        }
+
+        function jumpToQuestion() {
+            const inputVal = parseInt(document.getElementById('jump-input').value);
+            if (inputVal >= 1 && inputVal <= questions.length) {
+                loadQuestion(inputVal - 1);
+            } else {
+                alert(`Please enter a valid question number between 1 and ${questions.length}.`);
+            }
+        }
+
+        function toggleHint() {
+            const hintBox = document.getElementById('hint-box');
+            hintBox.classList.toggle('hidden');
+        }
+
+        // Initialize quiz on load
+        window.onload = initQuiz;
+    </script>
+<script src="../../quiz-question-controls.js"></script>
+<script src="../../quiz-app-ui-v2.js"></script></body>
+</html>

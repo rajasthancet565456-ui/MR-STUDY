@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced English Vocabulary Masterclass Quiz (SSC/RRB/HSSC Exam Prep)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        lavenderBg: '#F0E6FF',
+                        headerBg: '#E5D5FA',
+                        cardBg: '#FBF7FF',
+                        primaryPurple: '#6542C8',
+                        darkPurple: '#30205D',
+                        secondaryPurple: '#7352C9',
+                        lightPurple: '#E9DDF8',
+                        customBorder: '#DCCBF2',
+                        progressTrack: '#DDD9E8',
+                        hoverBg: '#F0E5FF',
+                        mutedText: '#716782',
+                        accentYellow: '#F3A62A',
+                        successGreen: '#10B981',
+                        errorRed: '#EF4444'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #F0E6FF;
+            background-image: linear-gradient(135deg, #F0E6FF 0%, #E5D5FA 100%);
+        }
+    </style>
+</head>
+<body class="h-full font-sans text-darkPurple antialiased flex flex-col justify-between selection:bg-lightPurple selection:text-darkPurple">
+
+    <!-- Sticky Header -->
+    <header class="sticky top-0 z-50 bg-[#E5D5FA]/90 backdrop-blur-md border-b border-customBorder shadow-sm px-4 py-3">
+        <div class="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-3">
+            <div>
+                <h1 class="text-xl sm:text-2xl font-bold text-darkPurple tracking-tight flex items-center gap-2">
+                    <span>✨</span> Blackbook English Vocabulary Pro
+                </h1>
+                <p class="text-xs sm:text-sm text-mutedText">Ultimate OWS & Word Power Masterclass (Exam Level Depth)</p>
+            </div>
+            <div class="flex items-center gap-2 sm:gap-3">
+                <div class="bg-cardBg border border-customBorder px-3 py-1.5 rounded-full text-xs sm:text-sm font-semibold shadow-sm flex items-center gap-1.5">
+                    <span>🏆 Score:</span>
+                    <span id="scoreDisplay" class="text-primaryPurple font-bold">0</span> / <span id="totalPossibleDisplay">100</span>
+                </div>
+                <div class="bg-cardBg border border-customBorder px-3 py-1.5 rounded-full text-xs sm:text-sm font-semibold shadow-sm flex items-center gap-1.5">
+                    <span>🔥 Streak:</span>
+                    <span id="streakDisplay" class="text-accentYellow font-bold">0</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow flex items-center justify-center p-3 sm:p-6">
+        <div class="w-full max-w-3xl bg-cardBg border border-customBorder rounded-3xl shadow-xl p-5 sm:p-8 transition-all duration-300 relative">
+            
+            <!-- Question Metadata Header -->
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-4 text-xs sm:text-sm">
+                <div class="flex items-center gap-2">
+                    <span id="questionBadge" class="bg-lightPurple text-darkPurple font-bold px-3 py-1 rounded-full border border-customBorder">
+                        Question 1 of 100
+                    </span>
+                    <span id="categoryBadge" class="bg-purple-100 text-primaryPurple font-medium px-2.5 py-1 rounded-full hidden sm:inline-block">
+                        One Word Substitution & Vocabulary
+                    </span>
+                </div>
+                <span id="examTarget" class="text-mutedText font-medium italic">SSC / RRB / State PCS Level</span>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="w-full bg-progressTrack h-2.5 rounded-full overflow-hidden mb-6">
+                <div id="progressBar" class="bg-primaryPurple h-full transition-all duration-300 rounded-full" style="width: 1%;"></div>
+            </div>
+
+            <!-- Question Text -->
+            <div class="mb-6">
+                <h2 id="questionText" class="text-lg sm:text-xl font-bold text-darkPurple leading-relaxed">
+                    Loading question...
+                </h2>
+            </div>
+
+            <!-- Options Container -->
+            <div id="optionsContainer" class="space-y-3 mb-6">
+                <!-- Dynamically injected options -->
+            </div>
+
+            <!-- Hint Section -->
+            <div class="mb-6">
+                <button id="hintToggleBtn" onclick="toggleHint()" class="text-xs sm:text-sm font-semibold text-primaryPurple hover:text-darkPurple flex items-center gap-1.5 transition-colors focus:outline-none focus:ring-2 focus:ring-primaryPurple rounded px-2 py-1 bg-lightPurple/50">
+                    <span>💡</span> <span id="hintBtnText">Show Hint</span>
+                </button>
+                <div id="hintBox" class="hidden mt-2 p-3 bg-lightPurple/60 border border-customBorder rounded-xl text-xs sm:text-sm text-darkPurple italic">
+                    <!-- Hint text -->
+                </div>
+            </div>
+
+            <!-- Explanation Box (Revealed on Answer) -->
+            <div id="explanationBox" class="hidden mb-6 p-4 rounded-2xl border transition-all duration-300">
+                <!-- Explanation content -->
+            </div>
+
+            <!-- Navigation Controls -->
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-customBorder">
+                <div class="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-start">
+                    <button id="prevBtn" onclick="prevQuestion()" class="px-4 py-2 bg-lightPurple hover:bg-customBorder text-darkPurple font-semibold rounded-xl text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1">
+                        ← Previous
+                    </button>
+                    <button id="nextBtn" onclick="nextQuestion()" class="px-5 py-2 bg-primaryPurple hover:bg-secondaryPurple text-white font-semibold rounded-xl text-sm transition-colors shadow-sm flex items-center gap-1">
+                        Next →
+                    </button>
+                </div>
+
+                <!-- Jump to Question & Reset -->
+                <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+                    <div class="flex items-center gap-1.5 bg-lavenderBg/80 px-3 py-1.5 rounded-xl border border-customBorder">
+                        <label for="jumpInput" class="text-xs font-medium text-mutedText">Jump Q#:</label>
+                        <input type="number" id="jumpInput" min="1" max="100" class="w-12 bg-white border border-customBorder rounded-lg px-2 py-0.5 text-center text-sm font-semibold text-darkPurple focus:outline-none focus:ring-2 focus:ring-primaryPurple" onkeydown="handleJumpKey(event)">
+                        <button onclick="jumpToQuestion()" class="text-xs font-bold text-primaryPurple hover:underline px-1">Go</button>
+                    </div>
+                    <button onclick="confirmReset()" class="px-3 py-1.5 bg-red-100 hover:bg-red-200 text-red-700 font-semibold rounded-xl text-xs transition-colors" title="Reset Quiz">
+                        Reset
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Sticky Bottom Navigation Bar -->
+    <nav class="sticky bottom-0 z-40 bg-white/90 backdrop-blur-md border-t border-customBorder shadow-lg py-3 px-4">
+        <div class="max-w-3xl mx-auto flex items-center justify-between text-xs sm:text-sm font-medium text-mutedText">
+            <div class="flex items-center gap-2">
+                <span>Navigate using</span>
+                <span class="bg-lightPurple px-2 py-0.5 rounded text-darkPurple font-bold">←</span>
+                <span class="bg-lightPurple px-2 py-0.5 rounded text-darkPurple font-bold">→</span>
+                <span class="hidden sm:inline">keys</span>
+            </div>
+            <div id="statusFooter" class="text-darkPurple font-semibold">
+                Progress: <span id="progressText">1 / 100</span>
+            </div>
+            <div class="flex items-center gap-3">
+                <button onclick="jumpToFirst()" class="hover:text-primaryPurple transition-colors">First</button>
+                <span>|</span>
+                <button onclick="jumpToLast()" class="hover:text-primaryPurple transition-colors">Last</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Quiz Logic Script -->
+    <script>
+        // 100 Unique Exam-Grade Questions based on Blackbook of English Vocabulary (Autocrat to Bellicose and beyond)
+        const quizData = [
+            {
+                q: "Choose the correct One Word Substitution: 'A ruler who has complete power and exercises unrestricted authority without check.'",
+                options: ["Autocrat", "Autonomy", "Autopsy", "Axiom"],
+                correct: 0,
+                hint: "Root 'Auto' (self) + 'kratos' (rule/power). Dictator-like absolute ruler.",
+                explanation: "Autocrat (N.) means a ruler who has complete and absolute power (तानाशाह). Autonomy means self-government. Autopsy is examination of a dead body."
+            },
+            {
+                q: "Identify the correct OWS for: 'A self-governing country or region; freedom to external control.'",
+                options: ["Autocracy", "Autonomy", "Avant-Garde", "Avidity"],
+                correct: 1,
+                hint: "Refers to independence and self-rule of a state or institution.",
+                explanation: "Autonomy (N.) means self-governing country or region (स्वशासन). Autocracy is rule by one person with absolute power."
+            },
+            {
+                q: "What is the technical term for: 'An official examination of a dead body by a doctor in order to discover the cause of death.'",
+                options: ["Postmortem / Autopsy", "Biopsy", "Necropsy on plants", "Avicide"],
+                correct: 0,
+                hint: "Often performed in criminal investigations by medical examiners.",
+                explanation: "Autopsy (N.) is an examination of a corpse to determine cause of death (शव परीक्षण)."
+            },
+            {
+                q: "Choose the OWS for: 'A mass of snow, ice and rocks falling rapidly down a mountainside.'",
+                options: ["Avalanche", "Behemoth", "Blizzard", "Barometer"],
+                correct: 0,
+                hint: "A sudden catastrophic slide of debris or snow down a slope.",
+                explanation: "Avalanche (N.) means a rapid descent of snow, ice, and debris down a mountain (पहाड़ से तेजी से गिरता हुआ बर्फ का ढेर)."
+            },
+            {
+                q: "Select the meaning of the adjective 'Avant-Garde':",
+                options: [
+                    "The group, especially in the arts, regarded as being the most experimental and innovative",
+                    "A person who avoids society and lives in seclusion",
+                    "A soldier stationed in a remote barracks",
+                    "An instrument for measuring atmospheric pressure"
+                ],
+                correct: 0,
+                hint: "French origin meaning vanguard or ahead of its time in artistic expression.",
+                explanation: "Avant-Garde (Adj.) refers to pioneering, experimental, or innovative groups in arts and culture (अपने क्षेत्र में अग्रणी)."
+            },
+            {
+                q: "What does the noun 'Avarice' signify in vocabulary tests?",
+                options: ["Insatiable desire for wealth and riches", "Extreme fear of heights", "Uncontrolled urge to steal books", "Deep love for birds"],
+                correct: 0,
+                hint: "Synonymous with greed, cupidity, and covetousness.",
+                explanation: "Avarice (N.) means extreme or insatiable greed for wealth (लालच)."
+            },
+            {
+                q: "Choose the adjective form corresponding to 'Avarice' (insatiable desire for wealth):",
+                options: ["Avaricious", "Bellicose", "Autocratic", "Bankrupt"],
+                correct: 0,
+                hint: "Ends in '-ious' denoting a characteristic of greed.",
+                explanation: "Avaricious (Adj.) means having or showing an extreme greed for wealth or material gain (लालची)."
+            },
+            {
+                q: "Select the correct OWS: 'A place for keeping birds in a large, confined space or enclosure.'",
+                options: ["Aviary", "Apiary", "Aquarium", "Barracks"],
+                correct: 0,
+                hint: "Root 'avis' means bird. Compare with 'apis' for bees.",
+                explanation: "Aviary (N.) is a large enclosure for keeping birds (पक्षीशाला/चिड़ियाघर). Apiary is for bees."
+            },
+            {
+                q: "What does the term 'Avicide' refer to?",
+                options: ["The killing or deliberate slaughter of birds", "Fear of flying in aircraft", "A rapid downfall of snow", "An instrument to measure wind speed"],
+                correct: 0,
+                hint: "Suffix '-cide' comes from Latin 'caedere' (to kill). Prefix 'avi' means bird.",
+                explanation: "Avicide (N.) means the killing of birds (पक्षियों को मारना)."
+            },
+            {
+                q: "Choose the synonym of 'Avidity' as tested in competitive exams:",
+                options: ["Keen interest, greediness, or intense enthusiasm", "Apathy and indifference", "Senseless chatter or balderdash", "Hostility and bellicosity"],
+                correct: 0,
+                hint: "Driven by eagerness and passion.",
+                explanation: "Avidity (N.) means extreme eagerness, keen interest, or enthusiasm (उत्सुकता)."
+            },
+            {
+                q: "Identify the antonym of the verb 'Avoid':",
+                options: ["Confront, embrace, or encounter", "Shun, evade, or elude", "Discard, reject, or bypass", "Isolate or segregate"],
+                correct: 0,
+                hint: "To stay away from vs to face head-on.",
+                explanation: "Avoid (V.) means to keep away from (दूर रहना). Its antonym is to confront or embrace."
+            },
+            {
+                q: "What is an 'Axiom'?",
+                options: [
+                    "A self-evident truth or rule/principle that most people believe to be true",
+                    "A legal document declaring a person bankrupt",
+                    "A poetic ballad with a rhyme scheme",
+                    "A heavy wooden barrel for storing oil"
+                ],
+                correct: 0,
+                hint: "An established maxim or universally accepted proposition in logic/math.",
+                explanation: "Axiom (N.) is a universally accepted principle or self-evident truth (सिद्धांत)."
+            },
+            {
+                q: "Choose the correct OWS: 'A man who remains unmarried.'",
+                options: ["Bachelor", "Autocrat", "Bankrupt", "Recluse"],
+                correct: 0,
+                hint: "A traditional term for an unmarried man.",
+                explanation: "Bachelor (N.) means a man who has never been married (अविवाहित)."
+            },
+            {
+                q: "Define 'Bakery' in standard vocabulary context:",
+                options: [
+                    "A place where bread and cakes are made or sold",
+                    "A military housing facility for soldiers",
+                    "A storage facility for heavy metal barrels",
+                    "An enclosure for exotic birds"
+                ],
+                correct: 0,
+                hint: "Where flour goods are baked daily.",
+                explanation: "Bakery (N.) is an establishment where baked goods like bread and pastries are produced (ऐसी जगह जहाँ रोटी और केक बनाया जाता है)."
+            },
+            {
+                q: "What does the adjective 'Bald' describe?",
+                options: ["Having little or no hair on the scalp", "Extremely bellicose and aggressive", "Possessing monstrous size like a behemoth", "Completely bankrupt of funds"],
+                correct: 0,
+                hint: "Lacking hair.",
+                explanation: "Bald (Adj.) means lacking hair on the head (गंजा)."
+            },
+            {
+                q: "Identify the meaning of 'Balderdash':",
+                options: ["Senseless, foolish talk or writing; nonsense", "A rhythmic folk ballad", "The protective outer bark of a tree", "Jokes shared among close friends"],
+                correct: 0,
+                hint: "Synonymous with poppycock, eyewash, or hogwash.",
+                explanation: "Balderdash (N.) refers to senseless talk or writing, utter nonsense (बकवास)."
+            },
+            {
+                q: "What is a 'Bale' in commercial terminology?",
+                options: [
+                    "A large tightly bound bundle of raw cotton, hay, or paper for storage or transport",
+                    "A wooden cask used for brewing beer",
+                    "The protective outer layer of plant stems",
+                    "A group of artillery guns operated together"
+                ],
+                correct: 0,
+                hint: "Compressed package of goods.",
+                explanation: "Bale (N.) is a large bundle bound for storage or shipping (गठरी/गट्टा)."
+            },
+            {
+                q: "Choose the correct OWS: 'A poem or song that tells a story and has a regular rhythm and rhyme scheme.'",
+                options: ["Ballad", "Axiom", "Banter", "Bark"],
+                correct: 0,
+                hint: "Traditional narrative musical verse.",
+                explanation: "Ballad (N.) is a narrative poem or song with a regular rhythm/rhyme (गाथागीत)."
+            },
+            {
+                q: "What does 'Bandying' (Verb) mean?",
+                options: [
+                    "Using an idea, term, or name frequently and casually in conversation or passing back and forth",
+                    "Basking in warm sunlight for pleasure",
+                    "Bellowing loudly like a crocodile",
+                    "Filing for legal bankruptcy"
+                ],
+                correct: 0,
+                hint: "Tossing words around back and forth.",
+                explanation: "Bandying (V.) means tossing or discussing an idea/name frequently in casual talk (सविस्तार वर्णन करना / चर्चा करना)."
+            },
+            {
+                q: "Identify the correct OWS: 'One who is unable to pay his debts and legally declared insolvent.'",
+                options: ["Bankrupt", "Avaricious", "Bachelor", "Bellicose"],
+                correct: 0,
+                hint: "Financial ruin and inability to clear dues.",
+                explanation: "Bankrupt (N.) means someone who has run out of money and cannot pay debts (दिवालिया)."
+            },
+            {
+                q: "What is 'Banter'?",
+                options: [
+                    "Playful, friendly, and amusing remarks or teasing exchanged among friends",
+                    "Harsh bellicose threats of war",
+                    "Senseless balderdash and empty talk",
+                    "Official autopsy reports"
+                ],
+                correct: 0,
+                hint: "Good-natured teasing.",
+                explanation: "Banter (N.) refers to lighthearted, witty remarks and joking among companions (मज़ाक)."
+            },
+            {
+                q: "Define 'Bark' as a botanical and physical term:",
+                options: [
+                    "The tough outer protective layer of the stems and roots of woody plants",
+                    "The sharp roar of a crocodile",
+                    "A heavy wooden container for liquid",
+                    "An instrument to measure atmospheric pressure"
+                ],
+                correct: 0,
+                hint: "Tree covering, also canine sound.",
+                explanation: "Bark (N.) is the outer protective layer of a tree trunk (छाल)."
+            },
+            {
+                q: "What does a 'Barometer' measure?",
+                options: ["Atmospheric pressure", "Auditory pitch of animal sounds", "The financial status of bankrupt firms", "The volume of a hay bale"],
+                correct: 0,
+                hint: "Used in meteorology for weather forecasting.",
+                explanation: "Barometer (N.) is an instrument used for measuring atmospheric pressure (वायु-दाब-मापक)."
+            },
+            {
+                q: "Choose the OWS for: 'Buildings or a group of buildings where soldiers live.'",
+                options: ["Barracks", "Aviary", "Bakery", "Behemoth"],
+                correct: 0,
+                hint: "Military quarters.",
+                explanation: "Barracks (N.) are lodging facilities provided for soldiers (सैनिकों के लिए बने घर)."
+            },
+            {
+                q: "What is a 'Barrel'?",
+                options: [
+                    "A cylindrical wooden or metal container in which liquids like beer or oil are stored",
+                    "A tightly packed bundle of agricultural crops",
+                    "A protective layer of woody plants",
+                    "A measurement unit for barometric pressure"
+                ],
+                correct: 0,
+                hint: "Cask or drum for fluids.",
+                explanation: "Barrel (N.) is a cylindrical container for storing liquids like oil or beer (पीपा)."
+            },
+            {
+                q: "Define the verb 'Bask':",
+                options: [
+                    "To revel in and make the most of something pleasing, warm, or relaxing",
+                    "To spread malicious balderdash",
+                    "To roar aggressively like a bellicose beast",
+                    "To avoid financial responsibilities"
+                ],
+                correct: 0,
+                hint: "Lounging in warmth or success.",
+                explanation: "Bask (V.) means to lie exposed to warmth or revel in favorable conditions (आनंद लेना)."
+            },
+            {
+                q: "What does 'Battery' mean in a military context?",
+                options: [
+                    "A group of heavy guns or missile launchers operated together at one place",
+                    "A small portable electrical energy cell",
+                    "An enclosure for keeping predatory birds",
+                    "A legal charge for assault and battery"
+                ],
+                correct: 0,
+                hint: "Artillery unit firing in coordination.",
+                explanation: "Battery (N.) in military terms is a tactical unit of artillery guns or missile launchers (तोपों का समूह जो एक साथ चलाये जाते हैं)."
+            },
+            {
+                q: "Select the correct OWS for: 'Something of monstrous size, enormous power, or colossal scale.'",
+                options: ["Behemoth", "Avalanche", "Barometer", "Avant-Garde"],
+                correct: 0,
+                hint: "Derived from biblical creature of massive proportions.",
+                explanation: "Behemoth (N.) denotes a creature or thing of monstrous size and tremendous power (विशालकाय)."
+            },
+            {
+                q: "What does the adjective 'Bellicose' mean?",
+                options: ["Demonstrating aggression, willingness to fight, or warlike disposition", "Extremely greedy and avaricious", "Unmarried and solitary like a bachelor", "Self-governing and autonomous"],
+                correct: 0,
+                hint: "Root 'bellum' means war.",
+                explanation: "Bellicose (Adj.) describes someone eager or fond of fighting and warfare (लड़ाकू)."
+            },
+            {
+                q: "Identify the meaning of 'Bellow' as a verb:",
+                options: [
+                    "To emit a deep, loud roar, typical of large animals like crocodiles or bulls in distress",
+                    "To speak in gentle banter with friends",
+                    "To examine a dead body thoroughly",
+                    "To calculate barometric pressure changes"
+                ],
+                correct: 0,
+                hint: "A booming, thunderous vocal cry.",
+                explanation: "Bellow (V.) means to make a loud, deep roar-like sound (मगरमच्छ की आवाज / दहाड़ना)."
+            },
+            {
+                q: "Assertion (A): An autocrat exercises total, unchecked power over a state.\nReason (R): Autocracy derives from Greek roots meaning self and rule.\nWhich is correct?",
+                options: [
+                    "Both A and R are true, and R is the correct explanation of A",
+                    "Both A and R are true, but R is NOT the correct explanation of A",
+                    "A is true, but R is false",
+                    "A is false, but R is true"
+                ],
+                correct: 0,
+                hint: "Etymology supports the definition directly.",
+                explanation: "Both statements are correct; 'autos' (self) + 'kratos' (rule) perfectly explains why an autocrat holds absolute rule."
+            },
+            {
+                q: "Which of the following pairings of Word and Hindi Meaning is INCORRECT?",
+                options: [
+                    "Avarice - दानशीलता (Philanthropy)",
+                    "Autopsy - शव परीक्षण",
+                    "Avalanche - बर्फ का ढेर",
+                    "Axiom - सिद्धांत"
+                ],
+                correct: 0,
+                hint: "Avarice means greed (लालच), not philanthropy.",
+                explanation: "Avarice means greed (लालच), whereas philanthropy means charity/donation (दानशीलता)."
+            },
+            {
+                q: "Match List I (Word) with List II (Meaning):\nI. Aviary\t\tA. Killing of birds\nII. Avicide\t\tB. Place for keeping birds\nIII. Avaricious\tC. Greedy for wealth",
+                options: [
+                    "I-B, II-A, III-C",
+                    "I-A, II-B, III-C",
+                    "I-C, II-A, III-B",
+                    "I-B, II-C, III-A"
+                ],
+                correct: 0,
+                hint: "Aviary = birdhouse; Avicide = bird slaughter; Avaricious = greedy.",
+                explanation: "Aviary matches B (bird enclosure), Avicide matches A (killing birds), and Avaricious matches C (greedy)."
+            },
+            {
+                q: "Find the synonym for 'Bellicose':",
+                options: ["Pugnacious / Truculent", "Peaceful / Docile", "Altruistic / Benevolent", "Frugal / Thrifty"],
+                correct: 0,
+                hint: "Looking for warlike or combative synonyms.",
+                explanation: "Bellicose means quarrelsome or warlike, for which pugnacious and truculent are direct synonyms."
+            },
+            {
+                q: "Which word represents 'a firm belief or self-evident proposition accepted as universally true'?",
+                options: ["Axiom", "Balderdash", "Banter", "Bale"],
+                correct: 0,
+                hint: "Fundamental starting point in reasoning.",
+                explanation: "Axiom is a universally accepted foundational truth."
+            },
+            {
+                q: "What is the primary difference between 'Autocracy' and 'Autonomy'?",
+                options: [
+                    "Autocracy is absolute rule by one dictator; Autonomy is self-government and independence",
+                    "Autocracy deals with birds; Autonomy deals with weather",
+                    "Autocracy means bankruptcy; Autonomy means wealth",
+                    "There is no linguistic difference"
+                ],
+                correct: 0,
+                hint: "Dictatorship vs Self-rule.",
+                explanation: "Autocracy refers to absolute power by one leader, while Autonomy refers to self-rule/independence."
+            },
+            {
+                q: "Identify the incorrect statement regarding 'Bankruptcy':",
+                options: [
+                    "It refers to a person who has excess wealth and avarice",
+                    "It describes someone unable to pay off debts",
+                    "It is a legal insolvency status",
+                    "It is common in financial vocabulary tested in SSC exams"
+                ],
+                correct: 0,
+                hint: "Bankruptcy is poverty/debt, not wealth.",
+                explanation: "A bankrupt person lacks money to pay debts, making the first statement false."
+            },
+            {
+                q: "Choose the word that means 'senseless talk or writing; utter nonsense':",
+                options: ["Balderdash", "Banter", "Ballad", "Barometer"],
+                correct: 0,
+                hint: "Sounds like rubbish or baloney.",
+                explanation: "Balderdash is the exact OWS for senseless talk or writing."
+            },
+            {
+                q: "What does 'Avidity' reveal about a candidate's preparation?",
+                options: ["Extreme eagerness and passionate enthusiasm for learning", "Complete lack of interest", "Total insolvency", "Aggressive bellicosity"],
+                correct: 0,
+                hint: "Studying with burning zeal.",
+                explanation: "Avidity denotes intense eagerness or enthusiasm."
+            },
+            {
+                q: "Which instrument is specifically used for recording atmospheric pressure changes?",
+                options: ["Barometer", "Avalanche detector", "Aviary monitor", "Battery gauge"],
+                correct: 0,
+                hint: "Meteorological pressure gauge.",
+                explanation: "Barometer is the meteorological device for atmospheric pressure."
+            },
+            {
+                q: "Select the option that best defines 'Avant-Garde':",
+                options: ["Cutting-edge and experimental in creative fields", "Backward-looking traditionalist", "A solitary bachelor", "A soldier living in barracks"],
+                correct: 0,
+                hint: "Pioneering new artistic styles.",
+                explanation: "Avant-Garde describes groundbreaking or experimental work in arts."
+            },
+            {
+                q: "What is the exact antonym of 'Avarice'?",
+                options: ["Generosity / Altruism", "Greed / Cupidity", "Covetousness", "Selfishness"],
+                correct: 0,
+                hint: "Opposite of hoarding wealth.",
+                explanation: "Avarice is greed; generosity and altruism are its true antonyms."
+            },
+            {
+                q: "Which OWS refers to 'a large tightly compressed bundle of goods like hay or cotton'?",
+                options: ["Bale", "Barrel", "Barometer", "Battery"],
+                correct: 0,
+                hint: "Wrapped tightly for transport.",
+                explanation: "A bale is a bound package of harvested material."
+            },
+            {
+                q: "What is the nature of 'Banter' among colleagues?",
+                options: ["Friendly, joking, and lighthearted repartee", "Bellicose and threatening combat", "Solemn and official autopsy proceedings", "Strict autocratic commands"],
+                correct: 0,
+                hint: "Playful banter.",
+                explanation: "Banter is friendly teasing and joking."
+            },
+            {
+                q: "In botanical science, what is 'Bark'?",
+                options: ["The external protective tissue of woody tree trunks", "The underground root system", "The floral petal formation", "The seed casing"],
+                correct: 0,
+                hint: "Outer tree skin.",
+                explanation: "Bark is the protective outer layer of trees."
+            },
+            {
+                q: "What does 'Behemoth' metaphorically describe in modern English?",
+                options: ["An extremely large and powerful organization, corporation, or entity", "A tiny bird in an aviary", "A simple axiomatic rule", "A short folk ballad"],
+                correct: 0,
+                hint: "Tech giants or mega-corporations.",
+                explanation: "Behemoth describes any massive, powerful organization or creature."
+            },
+            {
+                q: "Choose the correct spelling and meaning:",
+                options: [
+                    "Bellicose (Adj.) - Eager to fight; warlike",
+                    "Avaricious (N.) - A place for birds",
+                    "Autopsy (V.) - To avoid debt",
+                    "Bakery (Adj.) - Completely bald"
+                ],
+                correct: 0,
+                hint: "Bellicose is spelled correctly and means combative.",
+                explanation: "Bellicose is correctly defined as combative or warlike."
+            },
+            {
+                q: "What does 'Bask' imply when someone is resting?",
+                options: ["Enjoying warmth and comfortable luxury or success", "Suffering from extreme poverty", "Filing for bankruptcy", "Engaging in avicide"],
+                correct: 0,
+                hint: "Basking in the glory.",
+                explanation: "Bask means reveling in comfortable warmth or praise."
+            },
+            {
+                q: "Which term describes 'a group of heavy military guns positioned together'?",
+                options: ["Battery", "Barracks", "Barrel", "Bale"],
+                correct: 0,
+                hint: "Artillery battery.",
+                explanation: "Battery refers to coordinated artillery guns."
+            },
+            {
+                q: "What is a 'Bachelor' in standard social taxonomy?",
+                options: ["An unmarried man", "A bankrupt merchant", "An autocratic ruler", "An expert in barometers"],
+                correct: 0,
+                hint: "Single man.",
+                explanation: "Bachelor denotes an unmarried male."
+            },
+            {
+                q: "Identify the correct OWS for: 'Place given to soldiers to live in.'",
+                options: ["Barracks", "Aviary", "Bakery", "Avant-Garde"],
+                correct: 0,
+                hint: "Military dormitories.",
+                explanation: "Barracks are military quarters."
+            },
+            {
+                q: "What does 'Bandying' words mean in a discussion?",
+                options: ["Tossing ideas back and forth casually or repeatedly", "Killing birds in an aviary", "Measuring atmospheric pressure", "Reading a rhyming ballad"],
+                correct: 0,
+                hint: "Exchanging remarks back and forth.",
+                explanation: "Bandying means passing ideas or words back and forth."
+            },
+            {
+                q: "Which word represents the sound made by a crocodile or a loud roar?",
+                options: ["Bellow", "Banter", "Bark", "Balderdash"],
+                correct: 0,
+                hint: "A deep rumbling roar.",
+                explanation: "Bellow is the deep roaring sound of a crocodile or large beast."
+            },
+            {
+                q: "Assertion (A): Avicide is classified under destructive terms ending in '-cide'.\nReason (R): The root 'icide' denotes intentional killing or destruction.\nSelect the correct evaluation:",
+                options: [
+                    "Both A and R are true, and R is the correct explanation of A",
+                    "Both A and R are true, but R is NOT the correct explanation",
+                    "A is true, but R is false",
+                    "A is false, but R is true"
+                ],
+                correct: 0,
+                hint: "Etymology of '-cide' (to cut/kill).",
+                explanation: "Both are correct; avicide involves bird killing based on the root suffix '-cide'."
+            },
+            {
+                q: "Which of these words is an antonym of 'Bellicose'?",
+                options: ["Peaceable / Placid", "Truculent", "Combative", "Aggressive"],
+                correct: 0,
+                hint: "Opposite of warlike.",
+                explanation: "Peaceable and placid are antonyms of bellicose."
+            },
+            {
+                q: "What does 'Autopsy' literally examine?",
+                options: ["A corpse / dead body", "Atmospheric pressure", "Tree bark layers", "Financial statements of bankrupt firms"],
+                correct: 0,
+                hint: "Medical postmortem examination.",
+                explanation: "Autopsy examines a deceased body to find the cause of death."
+            },
+            {
+                q: "Find the odd one out based on word category (Noun vs Adjective):",
+                options: ["Avaricious (Adjective)", "Autocrat (Noun)", "Axiom (Noun)", "Avidity (Noun)"],
+                correct: 0,
+                hint: "Three are nouns; one is an adjective.",
+                explanation: "Avaricious is an adjective, whereas the others listed are nouns."
+            },
+            {
+                q: "What does 'Bakery' produce?",
+                options: ["Bread and cakes", "Heavy artillery batteries", "Wooden oil barrels", "Compressed hay bales"],
+                correct: 0,
+                hint: "Baked goods.",
+                explanation: "Bakery makes bread, cakes, and pastries."
+            },
+            {
+                q: "Which term means 'extreme greed for wealth or material gain'?",
+                options: ["Avarice", "Avidity", "Autonomy", "Banter"],
+                correct: 0,
+                hint: "Synonym of cupidity.",
+                explanation: "Avarice is insatiable wealth greed."
+            },
+            {
+                q: "What is 'Ballad' primarily associated with?",
+                options: ["Poetry and storytelling music", "Military barracks construction", "Barometric pressure recording", "Tree bark extraction"],
+                correct: 0,
+                hint: "Musical narrative verse.",
+                explanation: "Ballad is a narrative poem or song."
+            },
+            {
+                q: "Identify the meaning of 'Avoid':",
+                options: ["To keep away from or prevent happening", "To seek out eagerly", "To roar like a crocodile", "To declare bankruptcy"],
+                correct: 0,
+                hint: "To evade or shun.",
+                explanation: "Avoid means to stay away from or shun."
+            },
+            {
+                q: "What is an 'Aviary'?",
+                options: ["A large cage or enclosure for keeping birds", "A place for baking bread", "A military housing camp", "A storehouse for heavy barrels"],
+                correct: 0,
+                hint: "Bird sanctuary structure.",
+                explanation: "Aviary houses birds in captivity."
+            },
+            {
+                q: "Which word denotes 'a person fond of fighting and warfare'?",
+                options: ["Bellicose", "Bachelor", "Autocrat", "Bankrupt"],
+                correct: 0,
+                hint: "Combative disposition.",
+                explanation: "Bellicose describes a fighter or warlike person."
+            },
+            {
+                q: "What does 'Balderdash' represent in a conversation?",
+                options: ["Nonsense and foolish talk", "Wisdom and axiomatic truth", "Friendly banter", "Avant-garde art"],
+                correct: 0,
+                hint: "Meaningless chatter.",
+                explanation: "Balderdash is utter nonsense."
+            },
+            {
+                q: "What does 'Behemoth' signify when used for a corporate firm?",
+                options: ["A massive, dominating enterprise", "A bankrupt startup", "An autonomous region", "An aviary project"],
+                correct: 0,
+                hint: "Colossal scale business.",
+                explanation: "Behemoth signifies a giant, powerful organization."
+            },
+            {
+                q: "Which device measures barometric pressure?",
+                options: ["Barometer", "Avicide gauge", "Battery meter", "Bale scale"],
+                correct: 0,
+                hint: "Atmospheric instrument.",
+                explanation: "Barometer measures air pressure."
+            },
+            {
+                q: "What is the meaning of 'Bask'?",
+                options: ["To revel in comfortable warmth or pleasure", "To argue belligerently", "To write a ballad", "To cut tree bark"],
+                correct: 0,
+                hint: "Soaking up sunshine.",
+                explanation: "Bask means to enjoy warmth or favorable conditions."
+            },
+            {
+                q: "Identify the correct statement for 'Autonomy':",
+                options: ["It signifies political independence and self-government", "It means absolute dictatorship", "It is the medical study of corpses", "It is a sudden snowslide"],
+                correct: 0,
+                hint: "Self-rule.",
+                explanation: "Autonomy means self-rule and independence."
+            },
+            {
+                q: "What is 'Avidity'?",
+                options: ["Keen enthusiasm and intense eagerness", "Extreme financial greed", "Senseless balderdash", "Baldness of the scalp"],
+                correct: 0,
+                hint: "Burning passion/keenness.",
+                explanation: "Avidity means intense enthusiasm and keenness."
+            },
+            {
+                q: "Which of the following is a synonym of 'Banter'?",
+                    options: ["Repartee / Jest", "Aggression", "Bellicosity", "Avidity"],
+                    correct: 0,
+                    hint: "Light witty conversation.",
+                    explanation: "Banter is synonymous with playful jesting or repartee."
+            },
+            {
+                q: "What does 'Bandying' refer to in speech?",
+                options: ["Passing words or ideas back and forth casually", "Killing birds", "Measuring pressure", "Basking in the sun"],
+                correct: 0,
+                hint: "Tossing dialogue around.",
+                explanation: "Bandying means discussing or exchanging words frequently."
+            },
+            {
+                q: "What is a 'Bale'?",
+                options: ["A bundled package of merchandise or hay", "A wooden drinking barrel", "An outdoor bird cage", "A military gun battery"],
+                correct: 0,
+                hint: "Tightly bound package.",
+                explanation: "A bale is a compressed bundle of goods."
+            },
+            {
+                q: "Define 'Bark':",
+                options: ["The outer protective layer of tree trunks", "The cry of an autocrat", "A bankrupt firm's asset", "A poetic ballad stanza"],
+                correct: 0,
+                hint: "Tree covering.",
+                explanation: "Bark is tree skin/protective layer."
+            },
+            {
+                q: "What does 'Battery' mean in artillery?",
+                options: ["A coordinated group of heavy guns", "A storage battery for electricity", "A cage for birds", "A baker's oven unit"],
+                correct: 0,
+                hint: "Military gun unit.",
+                explanation: "Artillery battery is a group of guns firing together."
+            },
+            {
+                q: "Which word means 'a man who has never married'?",
+                options: ["Bachelor", "Autocrat", "Bankrupt", "Bellicose"],
+                correct: 0,
+                hint: "Unmarried man.",
+                explanation: "Bachelor is an unmarried man."
+            },
+            {
+                q: "What is an 'Axiom' in logic?",
+                options: ["An accepted self-evident truth", "A false statement", "Senseless balderdash", "A legal insolvency notice"],
+                correct: 0,
+                hint: "Fundamental truth.",
+                explanation: "An axiom is a self-evident accepted principle."
+            },
+            {
+                q: "What does 'Avalanche' describe?",
+                options: ["A rapid slide of snow and ice down a mountain", "A heavy rainstorm", "A drop in barometric pressure", "A financial market crash"],
+                correct: 0,
+                hint: "Mountain snow slide.",
+                explanation: "Avalanche is a rapid snow and rock slide."
+            },
+            {
+                q: "What is 'Avicide'?",
+                options: ["The killing of birds", "Love for birds", "Study of bird migration", "Building an aviary"],
+                correct: 0,
+                hint: "Bird slaughter.",
+                explanation: "Avicide is bird killing."
+            },
+            {
+                q: "Define 'Avaricious':",
+                options: ["Greedy for wealth", "Peaceful and calm", "Unmarried and free", "Experimental in arts"],
+                correct: 0,
+                hint: "Extremely money-minded.",
+                explanation: "Avaricious means extremely greedy for wealth."
+            },
+            {
+                q: "What does 'Avant-Garde' represent?",
+                options: ["Innovative and experimental artistic movements", "Conservative traditions", "Military barracks organization", "Bankruptcies in business"],
+                correct: 0,
+                hint: "Cutting-edge creators.",
+                explanation: "Avant-garde represents cutting-edge experimental groups."
+            },
+            {
+                q: "What is 'Bellow'?",
+                options: ["A loud deep roar like a crocodile", "A quiet whisper", "Friendly banter", "Barometric measurement"],
+                correct: 0,
+                hint: "Deep booming sound.",
+                explanation: "Bellow is a loud roaring sound."
+            },
+            {
+                q: "Identify the correct match:",
+                options: ["Barracks - Soldiers' living quarters", "Aviary - Bread making shop", "Bakery - Bird cage", "Barrel - Hay bundle"],
+                correct: 0,
+                hint: "Soldiers live in barracks.",
+                explanation: "Barracks correctly match soldiers' quarters."
+            },
+            {
+                q: "What is 'Bankrupt'?",
+                options: ["Insolvent and unable to pay debts", "Extremely wealthy and avaricious", "Self-governing and autonomous", "Experimental and avant-garde"],
+                correct: 0,
+                hint: "Out of money.",
+                explanation: "Bankrupt means legally insolvent."
+            },
+            {
+                q: "What does 'Bald' mean?",
+                options: ["Lacking hair on the scalp", "Having a loud voice", "Being extremely bellicose", "Living in a barracks"],
+                correct: 0,
+                hint: "Hairless head.",
+                explanation: "Bald means having no hair on the head."
+            },
+            {
+                q: "What is 'Balderdash'?",
+                options: ["Nonsense and foolish talk", "A sacred axiom", "A rhythmic ballad", "A weather barometer"],
+                correct: 0,
+                hint: "Rubbish talk.",
+                explanation: "Balderdash is senseless nonsense."
+            },
+            {
+                q: "Define 'Barometer':",
+                options: ["An instrument for measuring atmospheric pressure", "A device to measure bird population", "A container for oil", "A weapon battery"],
+                correct: 0,
+                hint: "Pressure gauge.",
+                explanation: "Barometer measures atmospheric pressure."
+            },
+            {
+                q: "What is a 'Behemoth'?",
+                options: ["Something of monstrous size or power", "A delicate ballad", "An unmarried bachelor", "A tree bark layer"],
+                correct: 0,
+                hint: "Colossal monster/entity.",
+                explanation: "Behemoth is a colossal or monstrous entity."
+            },
+            {
+                q: "What does 'Bask' mean?",
+                options: ["To revel in warmth and pleasant surroundings", "To engage in avicide", "To create balderdash", "To issue autocratic decrees"],
+                correct: 0,
+                hint: "Soaking up warmth.",
+                explanation: "Bask means to enjoy warmth and comfort."
+            },
+            {
+                q: "Which word means 'keen interest or enthusiasm'?",
+                options: ["Avidity", "Avarice", "Balderdash", "Bellicosity"],
+                correct: 0,
+                hint: "Eager passion.",
+                explanation: "Avidity is keen interest and enthusiasm."
+            },
+            {
+                q: "What is an 'Autocrat'?",
+                options: ["A ruler with absolute and unlimited power", "An independent country", "A medical examiner", "A bird breeder"],
+                correct: 0,
+                hint: "Absolute monarch/dictator.",
+                explanation: "Autocrat is a ruler with complete power."
+            },
+            {
+                q: "What does 'Avoid' mean?",
+                options: ["To keep away from", "To run towards", "To argue bellicosely", "To pack into a bale"],
+                correct: 0,
+                hint: "Shun or evade.",
+                explanation: "Avoid means to keep away from something."
+            },
+            {
+                q: "What is a 'Barrel'?",
+                options: ["A cylindrical container for liquids", "A bundle of hay", "An artillery battery", "A poetic ballad"],
+                correct: 0,
+                hint: "Cask or drum.",
+                explanation: "Barrel is a cylindrical liquid container."
+            },
+            {
+                q: "What is 'Banter'?",
+                options: ["Playful and friendly remarks among friends", "Hostile bellicose threats", "Senseless balderdash", "Autocratic orders"],
+                correct: 0,
+                hint: "Friendly teasing.",
+                explanation: "Banter is lighthearted teasing among friends."
+            },
+            {
+                q: "Define 'Bellicose':",
+                options: ["Inclined to start fights or warlike", "Peaceful and calm", "Generous and altruistic", "Bankrupt and insolvent"],
+                correct: 0,
+                hint: "Combative nature.",
+                explanation: "Bellicose means fond of fighting or warlike."
+            },
+            {
+                q: "What is an 'Axiom'?",
+                options: ["A universally accepted self-evident principle", "A disputed hypothesis", "A foolish piece of balderdash", "A medical autopsy"],
+                correct: 0,
+                hint: "Fundamental truth axiom.",
+                explanation: "Axiom is a self-evident truth."
+            },
+            {
+                q: "What is a 'Ballad'?",
+                options: ["A narrative song or poem with rhyme", "A military barracks song", "An aviation report", "An economic bankruptcy record"],
+                correct: 0,
+                hint: "Storytelling song.",
+                explanation: "Ballad is a story-telling poem/song."
+            },
+            {
+                q: "What does 'Avarice' mean?",
+                options: ["Insatiable greed for wealth", "Generosity of spirit", "Keen enthusiasm", "Absolute autonomy"],
+                correct: 0,
+                hint: "Greediness.",
+                explanation: "Avarice is extreme greed for wealth."
+            },
+            {
+                q: "What is an 'Aviary'?",
+                options: ["A large enclosure for keeping birds", "A factory for baking", "A storage room for barrels", "An artillery battery"],
+                correct: 0,
+                hint: "Bird enclosure.",
+                explanation: "Aviary is a place to keep birds."
+            },
+            {
+                q: "What does 'Bandying' mean?",
+                options: ["Passing words or ideas back and forth", "Killing birds", "Measuring pressure", "Basking in sunlight"],
+                correct: 0,
+                hint: "Exchanging words casually.",
+                explanation: "Bandying is passing ideas/words back and forth."
+            },
+            {
+                q: "What is 'Autopsy'?",
+                options: ["Examination of a dead body to find cause of death", "Self-governing political state", "Rule by an absolute autocrat", "Experimental art movement"],
+                correct: 0,
+                hint: "Postmortem exam.",
+                explanation: "Autopsy is examination of a corpse."
+            },
+            {
+                q: "What is an 'Avalanche'?",
+                options: ["A rapid fall of snow and ice down a mountain", "An atmospheric storm", "A massive behemoth", "A tight hay bale"],
+                correct: 0,
+                hint: "Mountain snow slide.",
+                explanation: "Avalanche is a rapid snow/rock slide."
+            },
+            {
+                q: "What is 'Avicide'?",
+                options: ["The killing of birds", "Love for birds", "Aviary maintenance", "Barometric testing"],
+                correct: 0,
+                hint: "Bird slaughter.",
+                explanation: "Avicide is bird killing."
+            },
+            {
+                q: "What does 'Bachelor' mean?",
+                options: ["An unmarried man", "A bankrupt trader", "An autocrat ruler", "A bellicose soldier"],
+                correct: 0,
+                hint: "Unmarried male.",
+                explanation: "Bachelor is an unmarried man."
+            },
+            {
+                q: "What is 'Bakery'?",
+                options: ["Place where bread and cakes are baked", "Military barracks", "Bird aviary", "Oil storage barrel"],
+                correct: 0,
+                hint: "Bread shop.",
+                explanation: "Bakery is where bread and pastries are made."
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let streak = 0;
+        let userAnswers = new Array(quizData.length).fill(null);
+        let answeredQuestions = new Array(quizData.length).fill(false);
+
+        // DOM Elements
+        const questionBadge = document.getElementById('questionBadge');
+        const progressBar = document.getElementById('progressBar');
+        const questionText = document.getElementById('questionText');
+        const optionsContainer = document.getElementById('optionsContainer');
+        const hintToggleBtn = document.getElementById('hintToggleBtn');
+        const hintBtnText = document.getElementById('hintBtnText');
+        const hintBox = document.getElementById('hintBox');
+        const explanationBox = document.getElementById('explanationBox');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const jumpInput = document.getElementById('jumpInput');
+        const scoreDisplay = document.getElementById('scoreDisplay');
+        const streakDisplay = document.getElementById('streakDisplay');
+        const progressText = document.getElementById('progressText');
+        const totalPossibleDisplay = document.getElementById('totalPossibleDisplay');
+
+        totalPossibleDisplay.textContent = quizData.length;
+        jumpInput.max = quizData.length;
+
+        function loadQuestion(index) {
+            currentQuestionIndex = index;
+            const q = quizData[index];
+
+            // Update badges and progress
+            questionBadge.textContent = `Question ${index + 1} of ${quizData.length}`;
+            progressText.textContent = `${index + 1} / ${quizData.length}`;
+            const progressPercent = ((index + 1) / quizData.length) * 100;
+            progressBar.style.width = `${progressPercent}%`;
+
+            // Set question text
+            questionText.textContent = q.q;
+
+            // Reset hint & explanation
+            hintBox.classList.add('hidden');
+            hintBox.textContent = q.hint;
+            hintBtnText.textContent = "Show Hint";
+            
+            if (answeredQuestions[index]) {
+                explanationBox.innerHTML = `<p class="font-bold mb-1 ${userAnswers[index] === q.correct ? 'text-successGreen' : 'text-errorRed'}">${userAnswers[index] === q.correct ? '✅ Correct!' : '❌ Incorrect.'}</p><p class="text-sm text-darkReference text-darkPurple">${q.explanation}</p>`;
+                explanationBox.className = `mb-6 p-4 rounded-2xl border transition-all duration-300 ${userAnswers[index] === q.correct ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}`;
+                explanationBox.classList.remove('hidden');
+            } else {
+                explanationBox.classList.add('hidden');
+            }
+
+            // Render options
+            optionsContainer.innerHTML = '';
+            q.options.forEach((option, i) => {
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left p-4 rounded-2xl border transition-all duration-200 font-medium text-sm sm:text-base flex items-center justify-between group ${
+                    answeredQuestions[index]
+                        ? i === q.correct
+                            ? 'bg-green-100 border-green-400 text-darkPurple font-bold shadow-sm'
+                            : userAnswers[index] === i
+                                ? 'bg-red-100 border-red-400 text-darkPurple'
+                                : 'bg-white/70 border-customBorder text-mutedText opacity-70'
+                        : userAnswers[index] === i
+                            ? 'bg-lightPurple border-primaryPurple text-darkPurple shadow-sm'
+                            : 'bg-white/80 hover:bg-lightPurple/50 border-customBorder text-darkPurple hover:border-primaryPurple shadow-sm'
+                }`;
+
+                btn.disabled = answeredQuestions[index];
+
+                const optionLetter = String.fromCharCode(65 + i);
+                btn.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="w-7 h-7 rounded-xl bg-lightPurple border border-customBorder flex items-center justify-center text-xs font-bold text-primaryPurple group-hover:bg-primaryPurple group-hover:text-white transition-colors">${optionLetter}</span>
+                        <span>${option}</span>
+                    </div>
+                    ${answeredQuestions[index] && i === q.correct ? '<span class="text-successGreen font-bold">✓</span>' : ''}
+                    ${answeredQuestions[index] && userAnswers[index] === i && i !== q.correct ? '<span class="text-errorRed font-bold">✗</span>' : ''}
+                `;
+
+                btn.onclick = () => selectOption(i);
+                optionsContainer.appendChild(btn);
+            });
+
+            // Nav button states
+            prevBtn.disabled = index === 0;
+            nextBtn.textContent = index === quizData.length - 1 ? 'Finish 🏁' : 'Next →';
+        }
+
+        function selectOption(optionIndex) {
+            if (answeredQuestions[currentQuestionIndex]) return;
+
+            const q = quizData[currentQuestionIndex];
+            userAnswers[currentQuestionIndex] = optionIndex;
+            answeredQuestions[currentQuestionIndex] = true;
+
+            if (optionIndex === q.correct) {
+                score += 1;
+                streak += 1;
+            } else {
+                streak = 0;
+            }
+
+            scoreDisplay.textContent = score;
+            streakDisplay.textContent = streak;
+
+            loadQuestion(currentQuestionIndex);
+        }
+
+        function toggleHint() {
+            if (hintBox.classList.contains('hidden')) {
+                hintBox.classList.remove('hidden');
+                hintBtnText.textContent = "Hide Hint";
+            } else {
+                hintBox.classList.add('hidden');
+                hintBtnText.textContent = "Show Hint";
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < quizData.length - 1) {
+                loadQuestion(currentQuestionIndex + 1);
+            } else {
+                alert(`🎉 Quiz Completed!\nYour Final Score: ${score} / ${quizData.length}\nStreak: ${streak}`);
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                loadQuestion(currentQuestionIndex - 1);
+            }
+        }
+
+        function jumpToQuestion() {
+            const val = parseInt(jumpInput.value);
+            if (!isNaN(val) && val >= 1 && val <= quizData.length) {
+                loadQuestion(val - 1);
+                jumpInput.value = '';
+            } else {
+                alert(`Please enter a valid question number between 1 and ${quizData.length}.`);
+            }
+        }
+
+        function handleJumpKey(event) {
+            if (event.key === 'Enter') {
+                jumpToQuestion();
+            }
+        }
+
+        function jumpToFirst() {
+            loadQuestion(0);
+        }
+
+        function jumpToLast() {
+            loadQuestion(quizData.length - 1);
+        }
+
+        function confirmReset() {
+            if (confirm("Are you sure you want to reset the quiz? All your progress will be cleared.")) {
+                score = 0;
+                streak = 0;
+                userAnswers = new Array(quizData.length).fill(null);
+                answeredQuestions = new Array(quizData.length).fill(false);
+                scoreDisplay.textContent = score;
+                streakDisplay.textContent = streak;
+                loadQuestion(0);
+            }
+        }
+
+        // Keyboard Navigation Support
+        document.addEventListener('keydown', (e) => {
+            // Do not trigger if typing in input fields
+            if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
+                return;
+            }
+
+            if (e.key === 'ArrowLeft') {
+                prevQuestion();
+            } else if (e.key === 'ArrowRight') {
+                nextQuestion();
+            }
+        });
+
+        // Initialize first question on load
+        window.onload = () => {
+            loadQuestion(0);
+        };
+    </script>
+</body>
+</html>

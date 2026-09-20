@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR GK Quiz Application - 80 Bilingual Questions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .fade-in { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+<style id="cosmic-readable-quiz-theme">
+:root{--space:#e8dcff;--panel:#f3eaff;--panel2:#dcc6ff;--edge:#6a45bf;--glow:#d28b28;--accent:#d15f9f;--ink:#2c1b4d;--muted:#66547c;--mist:rgba(106,69,191,.2)}html{background:var(--space)}body{background:radial-gradient(ellipse 62% 45% at 90% -5%,rgba(209,95,159,.28),transparent 62%),radial-gradient(ellipse 55% 40% at 8% 100%,rgba(65,164,207,.26),transparent 64%),var(--space)!important;color:var(--ink)!important;min-height:100vh}body:before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.78;background-image:radial-gradient(circle at 9% 18%,var(--glow) 0 1px,transparent 1.7px),radial-gradient(circle at 26% 69%,var(--edge) 0 .8px,transparent 1.5px),radial-gradient(circle at 68% 24%,var(--accent) 0 1px,transparent 1.8px),radial-gradient(circle at 88% 73%,#47a8d3 0 .8px,transparent 1.5px);background-size:220px 190px,300px 270px,260px 230px,340px 310px;z-index:-1}header{background:linear-gradient(105deg,var(--panel),var(--panel2))!important;border-color:rgba(106,69,191,.25)!important;box-shadow:0 7px 24px rgba(84,48,142,.14)!important}header h1{color:var(--edge)!important;text-shadow:none!important}header p,header .text-slate-400,header .text-indigo-200,header .text-indigo-300{color:var(--muted)!important}main>div,#quiz-card,.bg-slate-800,.bg-slate-900,.bg-indigo-900,.bg-indigo-950{background:linear-gradient(145deg,#f8f0ff,var(--panel))!important;border-color:rgba(106,69,191,.22)!important;color:var(--ink)!important;box-shadow:0 14px 35px rgba(84,48,142,.12)!important}.bg-slate-700,.bg-slate-100,.bg-slate-50{background:#eadffd!important;color:var(--ink)!important}.text-slate-100,.text-slate-200,.text-slate-300,.text-slate-400,.text-white,.text-slate-800,.text-slate-700,.text-slate-600{color:var(--ink)!important}.text-indigo-400,.text-indigo-300,.text-emerald-400,.text-yellow-300{color:var(--edge)!important}.border-slate-700,.border-slate-700\/60,.border-indigo-700,.border-slate-200{border-color:rgba(106,69,191,.25)!important}button:not(.bg-green-600):not(.bg-red-600){background:#f9f2ff!important;color:var(--ink)!important;border:1px solid rgba(106,69,191,.25)!important;box-shadow:0 3px 10px rgba(84,48,142,.09)!important}button.bg-indigo-600,button.bg-slate-800,button.bg-slate-900,button.bg-indigo-900{background:linear-gradient(120deg,var(--edge),var(--accent))!important;color:#fff!important;border:0!important}button.bg-indigo-600 *,button.bg-slate-800 *,button.bg-slate-900 *,button.bg-indigo-900 *{color:#fff!important}button:hover{filter:brightness(1.04);transform:translateY(-1px)}input,select,textarea{background:#f9f2ff!important;border-color:rgba(106,69,191,.35)!important;color:var(--ink)!important}input:focus,select:focus,textarea:focus{outline:none!important;border-color:var(--edge)!important;box-shadow:0 0 0 3px var(--mist)!important}.bg-indigo-500,#progress-bar{background:linear-gradient(90deg,var(--edge),var(--accent),var(--glow))!important}.rounded-2xl{border-radius:1.25rem!important}
+</style></head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col justify-between font-sans">
+
+    <!-- Header -->
+    <header class="bg-slate-800 border-b border-slate-700 shadow-md py-4 px-6 sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div>
+                <h1 class="text-xl font-bold text-amber-400 tracking-wide">Haryana GK Master Quiz</h1>
+                <p class="text-xs text-slate-400">Bilingual (English & Hindi) | 80 Examination Level Questions</p>
+            </div>
+            <div class="flex items-center gap-4 bg-slate-900 px-4 py-2 rounded-lg border border-slate-700">
+                <div class="text-sm font-medium">Score: <span id="score-val" class="text-emerald-400 font-bold">0</span> / <span id="total-val">80</span></div>
+                <div class="h-4 w-px bg-slate-700"></div>
+                <div class="text-sm font-medium">Page Range: <span id="page-indicator" class="text-cyan-400 font-bold">Page 1</span></div>
+            </div>
+        </div>
+        <!-- Progress Bar -->
+        <div class="max-w-4xl mx-auto w-full bg-slate-700 h-1.5 mt-3 rounded-full overflow-hidden">
+            <div id="progress-bar" class="bg-amber-400 h-full w-0 transition-all duration-300"></div>
+        </div>
+    </header>
+
+    <!-- Main Quiz Container -->
+    <main class="max-w-3xl mx-auto w-full px-4 py-6 flex-grow flex flex-col justify-center">
+        <div id="quiz-card" class="bg-slate-800 border border-slate-700 rounded-2xl shadow-xl p-6 sm:p-8 relative fade-in">
+            
+            <!-- Question Meta Info -->
+            <div class="flex justify-between items-center text-xs text-slate-400 mb-4">
+                <span id="q-badge" class="bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2.5 py-1 rounded-full font-semibold">Question 1 of 80</span>
+                <span id="source-page-badge" class="bg-slate-700 text-cyan-300 px-2.5 py-1 rounded-full font-medium">Source: Page 1 (Q1-40)</span>
+            </div>
+
+            <!-- Question Text -->
+            <div class="mb-6 space-y-2">
+                <h2 id="question-text-en" class="text-lg sm:text-xl font-semibold text-white leading-snug"></h2>
+                <h3 id="question-text-hi" class="text-base sm:text-lg font-medium text-amber-200/90 leading-relaxed font-serif"></h3>
+            </div>
+
+            <!-- Options Grid -->
+            <div id="options-container" class="grid grid-cols-1 gap-3 mb-6">
+                <!-- Dynamic Options Inserted Here -->
+            </div>
+
+            <!-- Hint Section -->
+            <div class="mb-6">
+                <button onclick="toggleHint()" id="hint-btn" class="text-xs text-cyan-400 hover:text-cyan-300 flex items-center gap-1 font-medium transition-colors">
+                    <span>💡 Show Hint</span>
+                </button>
+                <div id="hint-box" class="hidden mt-2 p-3 bg-slate-900/60 border border-cyan-500/20 rounded-lg text-xs text-cyan-200/90">
+                    <span class="font-semibold text-cyan-400">Hint:</span> <span id="hint-text"></span>
+                </div>
+            </div>
+
+            <!-- Explanation Box -->
+            <div id="explanation-box" class="hidden mb-6 p-4 bg-emerald-950/40 border border-emerald-500/30 rounded-xl text-sm text-emerald-200/90 fade-in">
+                <div class="font-bold text-emerald-400 mb-1 flex items-center gap-1.5">
+                    <span>📖 Rationale / Explanation:</span>
+                </div>
+                <p id="explanation-text"></p>
+            </div>
+
+            <!-- Controls & Navigation Footer -->
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-4 pt-4 border-t border-slate-700/60">
+                <div class="flex items-center gap-2 w-full sm:w-auto">
+                    <button onclick="prevQuestion()" id="prev-btn" class="px-4 py-2 rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-200 font-medium text-sm transition-colors disabled:opacity-40 disabled:cursor-not-allowed">Previous</button>
+                    <button onclick="nextQuestion()" id="next-btn" class="px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-semibold text-sm transition-colors flex-grow sm:flex-grow-0">Next</button>
+                </div>
+
+                <div class="flex items-center gap-2 text-sm w-full sm:w-auto justify-end">
+                    <label for="jump-input" class="text-slate-400 text-xs">Jump to Q:</label>
+                    <input type="number" id="jump-input" min="1" max="80" class="w-16 bg-slate-900 border border-slate-700 text-white text-center rounded-md py-1 px-2 text-sm focus:outline-none focus:border-amber-400">
+                    <button onclick="jumpToQuestion()" class="px-3 py-1 bg-slate-700 hover:bg-slate-600 text-white rounded-md text-xs font-medium transition-colors">Go</button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-4 text-xs text-slate-500 border-t border-slate-800">
+        Haryana GK Examination Portal &bull; Designed with Tailwind CSS & JavaScript
+    </footer>
+
+    <!-- Script Application Logic -->
+    <script>
+        // 80 Structured Bilingual Questions split evenly across Page 1 (Q1-40) and Page 2 (Q41-80) derived from textbook inputs
+        const questionsData = [
+            // --- PAGE 1: QUESTIONS 1 to 40 ---
+            {
+                id: 1, page: 1,
+                en: "Who is the author of the literary work 'Barahmasa - Hazarat Khairshah (Sufi Sant) Khoj'?",
+                hi: "'बारहमासा - हजरत खैरशाह (सुफी संत) खोज' साहित्यिक कृति के रचयिता कौन हैं?",
+                options: ["Rajaram Shastri", "Satya Nityanand", "Jaynarayan Kaushik", "Rameshchandra Jain"],
+                answer: 0,
+                hint: "He is a prominent scholar associated with early research works listed on Page 1.",
+                explanation: "Rajaram Shastri is documented as the author/researcher of 'Barahmasa - Hazarat Khairshah (Sufi Sant) Khoj'."
+            },
+            {
+                id: 2, page: 1,
+                en: "In which medium/format is 'Haryanvi Bhasha Mein Barahkhadi' composed?",
+                hi: "'हरियाणवी भाषा में बारहखड़ी' किस रूप में रचित है?",
+                options: ["Satya Nityanand", "Pooja Sharma", "Udaybhanu Hans", "Surdas"],
+                answer: 0,
+                hint: "Look at the second entry under the top-left section of Page 1.",
+                explanation: "'हरियाणवी भाषा में बारहखड़ी' was composed by Satya Nityanand (सतय नित्यानन्द)."
+            },
+            {
+                id: 3, page: 1,
+                en: "Which famous novels were authored by Jaynarayan Kaushik?",
+                hi: "जयनारायण कौशिक द्वारा रचित प्रसिद्ध उपन्यास कौन से हैं?",
+                options: ["'Maati Ka Mol', 'Bhooji Suhaagan'", "'Mehandi Rache Haath'", "'Thanesari Ramayan'", "'Jeevan Mein Haar'"],
+                answer: 0,
+                hint: "They deal with soil value and a roasted bride title metaphorically.",
+                explanation: "Jaynarayan Kaushik wrote the novels 'Maati Ka Mol' and 'Bhooji Suhaagan'."
+            },
+            {
+                id: 4, page: 1,
+                en: "Who is the author of the book 'Mehandi Rache Haath'?",
+                hi: "'मेहंदी रचे हाथ' पुस्तक के लेखक कौन हैं?",
+                options: ["Rameshchandra Jain", "Pandit Kishanchand Sharma", "Rammehar", "Pandit Nekiram Sharma"],
+                answer: 0,
+                hint: "Found right below Jaynarayan Kaushik's novels on Page 1.",
+                explanation: "'Mehandi Rache Haath' is authored by Rameshchandra Jain (रमेशचन्द्र जैन)."
+            },
+            {
+                id: 5, page: 1,
+                en: "Pandit Kishanchand Sharma is recognized as a pioneer of which medium?",
+                hi: "पं. किशनचन्द शर्मा को किस माध्यम का जनक माना जाता है?",
+                options: ["Radio Program 'Phoolon Ke Rang Geeton Ke Sang'", "Radio Drama 'Taaku Jhagdu Ka Manchan'", "Weekly Paper 'Bharat Nirman'", "Urdu Weekly 'Khair Sandesh'"],
+                answer: 0,
+                hint: "Think about flowers, colors, and songs on radio.",
+                explanation: "Pandit Kishanchand Sharma is acknowledged as the pioneer of the radio program 'Phoolon Ke Rang Geeton Ke Sang'."
+            },
+            {
+                id: 6, page: 1,
+                en: "Who staged/directed the radio drama 'Taaku Jhagdu Ka Manchan'?",
+                hi: "रेडियो नाटक 'ताकू झगडू का मंचन' किसने किया?",
+                options: ["Rammehar", "Pandit Nekiram Sharma", "Dr. Shyam Sakha", "Sri Udaybhanu Hans"],
+                answer: 0,
+                hint: "His name starts with 'Ram'.",
+                explanation: "Rammehar is credited for the radio drama staging of 'Taaku Jhagdu Ka Manchan'."
+            },
+            {
+                id: 7, page: 1,
+                en: "From which place did Pandit Nekiram Sharma publish the 'Sandesh' newspaper in 1930?",
+                hi: "पं. नेकीराम शर्मा ने 1930 में 'संदेश' समाचार पत्र का प्रकाशन कहाँ से किया?",
+                options: ["Bhiwani", "Rohtak", "Ambala", "Jhajjar"],
+                answer: 0,
+                hint: "A major district of Haryana known as the city of iron/presents, matching the entry tag.",
+                explanation: "Pandit Nekiram Sharma published the 'Sandesh' newspaper in 1930 from Bhiwani (भिवानी)."
+            },
+            {
+                id: 8, page: 1,
+                en: "Who is associated with the literary magazine 'Masi-Kagaz'?",
+                hi: "साहित्यिक पत्रिका 'मसि-कागज' से कौन संबंधित हैं?",
+                options: ["Dr. Shyam Sakha", "Lala Murlidhar", "Banarsi Das Gupta", "Swadesh Deepak"],
+                answer: 0,
+                hint: "He bears 'Shyam Sakha' in his name.",
+                explanation: "Dr. Shyam Sakha is associated with the magazine 'Masi-Kagaz'."
+            },
+            {
+                id: 9, page: 1,
+                en: "Which of the following works is attributed to Sri Udaybhanu Hans?",
+                hi: "निम्नलिखित में से कौन सी रचना श्री उदयभानु हंस की है?",
+                options: ["'Desh Mein Desh Hariyana', 'Sant Sipahi', 'Hariyana Gaurav Gatha'", "'Barahmasa'", "'Maati Ka Mol'", "'Thanesari Ramayan'"],
+                answer: 0,
+                hint: "Includes titles like 'Sant Sipahi' and 'Hariyana Gaurav Gatha'.",
+                explanation: "Sri Udaybhanu Hans authored works including 'Desh Mein Desh Hariyana', 'Sant Sipahi', and 'Hariyana Gaurav Gatha'."
+            },
+            {
+                id: 10, page: 1,
+                en: "Who authored the composition 'Thanesari Ramayan'?",
+                hi: "'थानेसरी रामायण' की रचना किसने की है?",
+                options: ["Ahmad Bakhsh Khan", "Karanvir Arora", "Surdas", "Krishna Bachal"],
+                answer: 0,
+                hint: "A Muslim scholar name listed under Thanesari literature.",
+                explanation: "'Thanesari Ramayan' was written by Ahmad Bakhsh Khan (अहमद बख्श खां)."
+            },
+            {
+                id: 11, page: 1,
+                en: "Who wrote the novel 'Legends of Karn' (लीजेण्ड्स ऑफ़ कर्ण उपन्यास)?",
+                hi: "'लीजेण्ड्स ऑफ़ कर्ण' उपन्यास के लेखक कौन हैं?",
+                options: ["Karanvir Arora", "Ahmad Bakhsh Khan", "Rajaram Shastri", "Vidhyadhar Shastri"],
+                answer: 0,
+                hint: "His first name resembles the mythological character 'Karn'.",
+                explanation: "Karanvir Arora is the author of the novel 'Legends of Karn'."
+            },
+            {
+                id: 12, page: 1,
+                en: "Mahakavi Surdas is famously known for which monumental poetic compositions?",
+                hi: "महाकवि सूरदास किस प्रसिद्ध काव्य रचनाओं के लिए जाने जाते हैं?",
+                options: ["'Sattais Sahastra Shlok', 'Krishna Kavya', 'Sawa Lakh Pado V Mantro Ki Rachna'", "'Thanesari Ramayan'", "'Bihari Satasai'", "'Bijak Par Tika'"],
+                answer: 0,
+                hint: "Involves 27 thousand shlokas and one and a quarter lakh verses.",
+                explanation: "Surdas is credited with 'Sattais Sahastra Shlok', 'Krishna Kavya', and 'Sawa Lakh Pado v Mantro ki Rachna'."
+            },
+            {
+                id: 13, page: 1,
+                en: "Who is the author of 'Amanat-e-Shahid'?",
+                hi: "'अमानत-ए-शहीद' के रचयिता कौन हैं?",
+                options: ["Krishna Bachal", "Lala Murlidhar", "Banarsi Das Gupta", "Raja Sal Sain"],
+                answer: 0,
+                hint: "Listed right under Surdas's literary section.",
+                explanation: "'Amanat-e-Shahid' was written by Krishna Bachal (कृष्णा बाछल)."
+            },
+            {
+                id: 14, page: 1,
+                en: "When did Lala Murlidhar launch the Urdu weekly newspaper 'Khair Sandesh'?",
+                hi: "लाला मुरलीधर ने उर्दू साप्ताहिक समाचार पत्र 'खैर संदेश' किस वर्ष निकाला?",
+                options: ["1889", "1930", "1905", "1857"],
+                answer: 0,
+                hint: "Late 19th-century year (18xx).",
+                explanation: "Lala Murlidhar launched the Urdu weekly newspaper 'Khair Sandesh' in 1889."
+            },
+            {
+                id: 15, page: 1,
+                en: "Who is known as the composer of Alha songs from Sirsa?",
+                hi: "सिरसा से आल्हा गीतों के रचयिता कौन हैं?",
+                options: ["Veer Malkhan", "Banarsi Das Gupta", "Swadesh Deepak", "Gulam Hussain Shah"],
+                answer: 0,
+                hint: "His first name means brave ('Veer').",
+                explanation: "Veer Malkhan from Sirsa is noted as the composer of Alha songs (आल्हा गीतों का रचयिता)."
+            },
+            {
+                id: 16, page: 1,
+                en: "Who published the weekly newspaper 'Apna Desh / Hariyana Kesari'?",
+                hi: "'अपना देश / हरियाणा केसरी' साप्ताहिक समाचार पत्र किसने प्रकाशित किया?",
+                options: ["Banarsi Das Gupta", "Lala Murlidhar", "Pandit Nekiram Sharma", "Sri Ram Sharma"],
+                answer: 0,
+                hint: "He also wrote a book on Panchayati Raj.",
+                explanation: "'Apna Desh / Hariyana Kesari' was a weekly newspaper published by Banarsi Das Gupta."
+            },
+            {
+                id: 17, page: 1,
+                en: "Who authored the book titled 'Panchayati Raj Kyon Aur Kaise'?",
+                hi: "'पंचायती राज क्यों और कैसे' पुस्तक के लेखक कौन हैं?",
+                options: ["Banarsi Das Gupta", "Raja Sal Sain", "Swadesh Deepak", "Baanbhatt"],
+                answer: 0,
+                hint: "Same author who published 'Apna Desh'.",
+                explanation: "Banarsi Das Gupta authored the book 'Panchayati Raj Kyon Aur Kaise'."
+            },
+            {
+                id: 18, page: 1,
+                en: "From which century does the Sang text 'Kurukshetra Granth' by Raja Sal Sain belong?",
+                hi: "राजा सल सैन द्वारा रचित सांग 'कुरुक्षेत्र ग्रंथ' किस शताब्दी का है?",
+                options: ["14th Century (14वीं शताब्दी)", "16th Century", "19th Century", "12th Century"],
+                answer: 0,
+                hint: "Matches the medieval century format listed in the text.",
+                explanation: "The Sang text 'Kurukshetra Granth' by Raja Sal Sain belongs to the 14th century (14वीं शताब्दी)."
+            },
+            {
+                id: 19, page: 1,
+                en: "Who wrote the famous drama 'Court Martial'?",
+                hi: "प्रसिद्ध नाटक 'कोर्ट मार्शल' के लेखक कौन हैं?",
+                options: ["Swadesh Deepak", "Gulam Hussain Shah", "Rajaram Shastri", "Mohan Chopra"],
+                answer: 0,
+                hint: "He is also famous for 'Sabse Lambi Raat' / dramatic art forms.",
+                explanation: "The drama 'Court Martial' was written by Swadesh Deepak (स्वदेश दीपक)."
+            },
+            {
+                id: 20, page: 1,
+                en: "Who authored 'Dahine Hath Ka Shankh'?",
+                hi: "'दाहिने हाथ का शंख' के रचनाकार कौन हैं?",
+                options: ["Gulam Hussain Shah", "Ahmad Bakhsh Khan", "Karanvir Arora", "Brahmanand"],
+                answer: 0,
+                hint: "His name contains 'Hussain Shah'.",
+                explanation: "'Dahine Hath Ka Shankh' was authored by Gulam Hussain Shah (गुलाम हुसैन शाह)."
+            },
+            {
+                id: 21, page: 1,
+                en: "Who is the author of 'Ikh Ki Kheti', 'Jhadu-Firi', and 'Phuffa Phudhani'?",
+                hi: "'इख की खेती', 'झाड़ू-फिरी' और 'फुफ्फा फुधणी' के लेखक कौन हैं?",
+                options: ["Rajaram Shastri", "Pandit Vidhyadhar Shastri", "Tulsi Sharma 'Dinesh'", "Lala Chandragupta"],
+                answer: 0,
+                hint: "Same author who wrote Barahmasa research on page 1 top-left.",
+                explanation: "Rajaram Shastri authored 'Ikh Ki Kheti', 'Jhadu-Firi', and 'Phuffa Phudhani'."
+            },
+            {
+                id: 22, page: 1,
+                en: "Who wrote 'Gangaji Tere Khet Mein'?",
+                hi: "'गंगाजी तेरे खेत में' रचना किसकी है?",
+                options: ["Pandit Vidhyadhar Shastri", "Rajaram Shastri", "Vishambharnath Kaushik", "Sri Ram Sharma"],
+                answer: 0,
+                hint: "He is a Pandit with 'Vidhyadhar' in his name.",
+                explanation: "'Gangaji Tere Khet Mein' was written by Pandit Vidhyadhar Shastri (पं. विद्याधर शास्त्री)."
+            },
+            {
+                id: 23, page: 1,
+                en: "Which prominent author from Ambala wrote 'Chand Masik Patrika', 'Tai Prasiddha Kahani', and 'Raksha Bandhan Kahani'?",
+                hi: "अम्बाला के किस प्रसिद्ध साहित्यकार ने 'चाँद मासिक पत्रिका', 'ताई प्रसिद्ध कहानी', 'रक्षा बंधन कहानी' लिखीं?",
+                options: ["Vishambharnath Kaushik (Ambala)", "Tulsi Sharma 'Dinesh'", "Lala Chandragupta", "Balmukund Gupta"],
+                answer: 0,
+                hint: "His surname is Kaushik, based in Ambala.",
+                explanation: "Vishambharnath Kaushik from Ambala wrote 'Chand Masik Patrika', 'Tai', and 'Raksha Bandhan'."
+            },
+            {
+                id: 24, page: 1,
+                en: "Who authored 'Purushottam Mahakavya', 'Bhakti Bharti', 'Satyagrahi Prahlad', 'Shyam Satsai', and 'Matwali Meera' from Bhiwani?",
+                hi: "भिवानी के किस रचनाकार ने 'पुरुषोत्तम महाकाव्य', 'भक्त भारती', 'सत्याग्रही प्रह्लाद', 'श्याम सतसई' और 'मत्वाली मीरा' लिखीं?",
+                options: ["Tulsi Sharma 'Dinesh' (Bhiwani)", "Pandit Nekiram Sharma", "Sri Ram Sharma", "Nischaldas"],
+                answer: 0,
+                hint: "His pen name or middle name is 'Dinesh'.",
+                explanation: "Tulsi Sharma 'Dinesh' from Bhiwani authored these classical poetical works."
+            },
+            {
+                id: 25, page: 1,
+                en: "Who published the weekly magazine 'Bharat Nirman' from Rohtak?",
+                hi: "रोहतक से साप्ताहिक पत्रिका 'भारत निर्माण' का प्रकाशन किसने किया?",
+                options: ["Lala Chandragupta, Rohtak", "Banarsi Das Gupta", "Lala Murlidhar", "Balmukund Gupta"],
+                answer: 0,
+                hint: "A Lala based in Rohtak.",
+                explanation: "Lala Chandragupta from Rohtak published the weekly magazine 'Bharat Nirman'."
+            },
+            {
+                id: 26, page: 1,
+                en: "Which dramatic works are associated with Raja Harshavardhana listed on Page 1?",
+                hi: "पेज 1 पर सूचीबद्ध राजा हर्षवर्धन से संबंधित नाटक कौन से हैं?",
+                options: ["Ratnavali, Naganandam, Priyadershini", "Court Martial", "Malvikagnimitram", "Abhijnanasakuntalam"],
+                answer: 0,
+                hint: "Classic Sanskrit plays written by the ancient ruler.",
+                explanation: "Raja Harshavardhana's classical Sanskrit plays include Ratnavali, Naganandam, and Priyadershini (रलावली, नागानन्दम्, प्रियदर्शनी)."
+            },
+            {
+                id: 27, page: 1,
+                en: "Who authored commentaries/works like 'Bijak Par Tika' and 'Hinjar Bodh'?",
+                hi: "'बीजक पर टीका', 'हिंजर बोध' किसकी रचनाएँ हैं?",
+                options: ["Sant Garibdas", "Sant Nischaldas", "Sant Illai", "Guru Gorakhnath"],
+                answer: 0,
+                hint: "A revered saint from Chhudani village, Jhajjar.",
+                explanation: "'Bijak Par Tika' and 'Hinjar Bodh' are works by Sant Garibdas (संत गरीबदास)."
+            },
+            {
+                id: 28, page: 1,
+                en: "Which philosophical books were authored by Sant Nischaldas?",
+                hi: "संत निश्चलदास द्वारा रचित दार्शनिक पुस्तकें कौन सी हैं?",
+                options: ["Vichar Sagar, Vritti Sagar, Yukti Prakash, Vritti Deepika", "Bijak Par Tika", "Hariyana Ka Itihas", "Subodh Sindhu"],
+                answer: 0,
+                hint: "All 4 titles contain words like Sagar, Prakash, and Deepika.",
+                explanation: "Sant Nischaldas authored 'Vichar Sagar, Vritti Sagar, Yukti Prakash, Vritti Deepika'."
+            },
+            {
+                id: 29, page: 1,
+                en: "Who authored 'Hariyana Ka Itihas', 'Hariyana Navratan', and 'Hariyana Tilak' from Jhajjar?",
+                hi: "झज्जर के किस लेखक ने 'हरियाणा का इतिहास', 'हरियाणा नवरत्न' और 'हरियाणा तिलक' लिखे?",
+                options: ["Pandit Sriram Sharma (Jhajjar)", "Banarsi Das Gupta", "Pandit Nekiram Sharma", "Balmukund Gupta"],
+                answer: 0,
+                hint: "A freedom fighter and historian from Jhajjar.",
+                explanation: "Pandit Sriram Sharma from Jhajjar authored 'Hariyana Ka Itihas', 'Hariyana Navratan', and 'Hariyana Tilak'."
+            },
+            {
+                id: 30, page: 1,
+                en: "The epic work 'Naurenge Ishq' is based on a Sang by which Mahakavi?",
+                hi: "महाकाव्य 'नौरेंगे इश्क' किस महाकवि के सांग पर आधारित पुस्तक है?",
+                options: ["Mahakavi Shyam Malik", "Mahakavi Surdas", "Mahakavi Kalidas", "Mahakavi Tulsi Sharma"],
+                answer: 0,
+                hint: "His name has 'Shyam Malik'.",
+                explanation: "'Naurenge Ishq' is a book based on the Sang of Mahakavi Shyam Malik (महाकवि श्याम मलिक)."
+            },
+            {
+                id: 31, page: 1,
+                en: "Who is the author of 'Angad Paya', 'Bharat Vilap', and 'Satyavati Katha' written in the 14th century?",
+                hi: "14वीं शताब्दी में रचित 'अंगद पैजा', 'भरत विलाप', 'सत्यवती कथा' के रचयिता कौन हैं?",
+                options: ["Sant Illai", "Sant Garibdas", "Ahmad Bakhsh Khan", "Surdas"],
+                answer: 0,
+                hint: "A medieval saint/poet listed on Page 1.",
+                explanation: "Sant Illai (संत ईल्लै) wrote these literary pieces in the 14th century."
+            },
+            {
+                id: 32, page: 1,
+                en: "What is the title of the collection of emergency articles, poems, columns, and news compiled under Page 1?",
+                hi: "पेज 1 पर संकलित आपातकालीन लेखों, कविताओं, स्तम्भ व समाचार पत्रों के संग्रह का नाम क्या है?",
+                options: ["Shubh Jyotsna (शुभ ज्योत्स्ना)", "Hariyana Tilak", "Masi-Kagaz", "Bharat Nirman"],
+                answer: 0,
+                hint: "Means auspicious moonlight.",
+                explanation: "The compilation of emergency writings is titled 'Shubh Jyotsna'."
+            },
+            {
+                id: 33, page: 1,
+                en: "Who is noted as the author/compiler of '84 Vaishnav'?",
+                hi: "'84 वैष्णव' के संकलनकर्ता कौन हैं?",
+                options: ["Hariram", "Sridhar", "Maldev", "Bhagwati Das"],
+                answer: 0,
+                hint: "Name starts with 'H'.",
+                explanation: "Hariram (हरिराम) is listed as the compiler of '84 Vaishnav'."
+            },
+            {
+                id: 34, page: 1,
+                en: "Which Hindi newspapers were edited/published by Balmukund Gupta?",
+                hi: "बालमुकुन्द गुप्त द्वारा संपादित/प्रकाशित हिंदी पत्र कौन से थे?",
+                options: ["Hindustan, Hind Bangwasi, Bharat Mitra, Shivshambhu Ke Chithhe", "Sandesh", "Khair Sandesh", "Bharat Nirman"],
+                answer: 0,
+                hint: "Includes famous satirical letters of 'Shivshambhu Ke Chithhe'.",
+                explanation: "Balmukund Gupta edited prominent Hindi papers like Hindustan, Hind Bangwasi, Bharat Mitra, and authored 'Shivshambhu Ke Chithhe'."
+            },
+            {
+                id: 35, page: 1,
+                en: "Who is the author of the ancient classical work 'Harshacharita'?",
+                hi: "प्राचीन प्रसिद्ध कृति 'हर्ष चरित' की रचना किसने की है?",
+                options: ["Banabhatta (बाणभट्ट)", "Brahmanand", "Kalidas", "Harshavardhana"],
+                answer: 0,
+                hint: "Court poet of King Harsha.",
+                explanation: "'Harshacharita' was written by the renowned ancient court poet Banabhatta (बाणभट्ट)."
+            },
+            {
+                id: 36, page: 1,
+                en: "Who authored 'Gyanoday Ki Rachna'?",
+                hi: "'ज्ञानोदय की रचना' के रचनाकार कौन हैं?",
+                options: ["Brahmanand (ब्रह्मानंद)", "Banabhatta", "Surdas", "Sant Nischaldas"],
+                answer: 0,
+                hint: "His name ends with 'anand'.",
+                explanation: "'Gyanoday Ki Rachna' is attributed to Brahmanand."
+            },
+            {
+                id: 37, page: 1,
+                en: "Which literary figure is credited with researching 'Barahmasa' on Page 1?",
+                hi: "पेज 1 पर 'बारहमासा' की खोज से किस साहित्यकार का नाम जुड़ा है?",
+                options: ["Rajaram Shastri", "Satya Nityanand", "Jaynarayan Kaushik", "Rameshchandra Jain"],
+                answer: 0,
+                hint: "First item on the left column.",
+                explanation: "Rajaram Shastri is credited with the research work on Barahmasa - Hazarat Khairshah."
+            },
+            {
+                id: 38, page: 1,
+                en: "What was the primary focus of Lala Murlidhar's contribution in 1889?",
+                hi: "1889 में लाला मुरलीधर का मुख्य साहित्यिक योगदान क्या था?",
+                options: ["Publishing 'Khair Sandesh' Urdu weekly newspaper", "Writing 'Court Martial'", "Staging 'Taaku Jhagdu'", "Editing 'Bharat Mitra'"],
+                answer: 0,
+                hint: "Look up the year 1889 on Page 1.",
+                explanation: "Lala Murlidhar launched the Urdu weekly newspaper 'Khair Sandesh' in 1889."
+            },
+            {
+                id: 39, page: 1,
+                en: "Which district association is primarily noted for Pt. Sriram Sharma's historical texts?",
+                hi: "पं. श्रीराम शर्मा के ऐतिहासिक ग्रंथों के साथ किस जिले का संबंध मुख्य रूप से जुड़ा है?",
+                options: ["Jhajjar (झज्जर)", "Bhiwani", "Rohtak", "Ambala"],
+                answer: 0,
+                hint: "Hometown of Pt. Sriram Sharma mentioned on Page 1.",
+                explanation: "Pandit Sriram Sharma hailed from Jhajjar (झज्जर)."
+            },
+            {
+                id: 40, page: 1,
+                en: "Whose Sang work formed the basis of 'Naurenge Ishq'?",
+                hi: "'नौरेंगे इश्क' किस महाकवि के सांग पर आधारित है?",
+                options: ["Mahakavi Shyam Malik", "Mahakavi Surdas", "Ahmad Bakhsh Khan", "Raja Sal Sain"],
+                answer: 0,
+                hint: "Checked under Mahakavi section on Page 1.",
+                explanation: "'Naurenge Ishq' is based on the Sang book of Mahakavi Shyam Malik."
+            },
+
+            // --- PAGE 2: QUESTIONS 41 to 80 ---
+            {
+                id: 41, page: 2,
+                en: "Who is the author of the literary works 'Baahen', 'Need Ke Aage', 'Ek Chhaya', 'Main Toota Hua Aadmi', and 'Peele Patte'?",
+                hi: "'बाहें', 'नीड़ के आगे', 'एक छाया', 'मैं टूटा हुआ आदमी', और 'पीले पत्ते' के लेखक कौन हैं?",
+                options: ["Sri Mohan Chopra", "Swadesh Deepak", "Sri Udaybhanu Hans", "Vishambharnath Kaushik"],
+                answer: 0,
+                hint: "A renowned novelist and writer featured prominently on Page 2 top-left.",
+                explanation: "Sri Mohan Chopra is the author of these modern Hindi literary pieces."
+            },
+            {
+                id: 42, page: 2,
+                en: "Who authored novels like 'Band Darwaza' and 'Akela Aadmi Upanyas'?",
+                hi: "'बन्द दरवाजा' और 'अकेला आदमी उपन्यास' किसने लिखे हैं?",
+                options: ["Sri Mohan Chopra", "Rajkumar Nijat", "Vishnu Prabhakar", "Balmukund Gupta"],
+                answer: 0,
+                hint: "Same author who wrote 'Peele Patte'.",
+                explanation: "Sri Mohan Chopra wrote 'Band Darwaza' and 'Akela Aadmi Upanyas'."
+            },
+            {
+                id: 43, page: 2,
+                en: "Who is recognized as 'Hariyana Ka Prasiddha Natyakar' (Famous Playwright of Haryana)?",
+                hi: "हरियाणा का प्रसिद्ध नाटककार किसे माना जाता है?",
+                options: ["Swadesh Deepak (स्वदेश दीपक)", "Sri Udaybhanu Hans", "Mohan Chopra", "Balmukund Gupta"],
+                answer: 0,
+                hint: "Also wrote 'Court Martial' and 'Bhandar/Khatmak Vidhi'.",
+                explanation: "Swadesh Deepak is acclaimed as the renowned playwright of Haryana."
+            },
+            {
+                id: 44, page: 2,
+                en: "Who is honored as 'Hariyana Ka Prasiddha Mahakavyakar' (Famous Epic Poet of Haryana)?",
+                hi: "हरियाणा का प्रसिद्ध महाकाव्यकार किसे कहा जाता है?",
+                options: ["Sri Udaybhanu Hans (श्री उदयभानु हंस)", "Swadesh Deepak", "Mohan Chopra", "Surdas"],
+                answer: 0,
+                hint: "State poet of Haryana who wrote 'Sant Sipahi'.",
+                explanation: "Sri Udaybhanu Hans is designated as the famous epic poet of Haryana."
+            },
+            {
+                id: 45, page: 2,
+                en: "Who authored the novel 'Saye Apne-Apne Saath'?",
+                hi: "'साये अपने-अपने साथ' उपन्यास के रचयिता कौन हैं?",
+                options: ["Rajkumar Nijat", "Sri Mohan Chopra", "Vishnu Prabhakar", "Kiran Chopra"],
+                answer: 0,
+                hint: "His surname is Nijat.",
+                explanation: "'Saye Apne-Apne Saath' was authored by Rajkumar Nijat (राजकुमार निजात्)."
+            },
+            {
+                id: 46, page: 2,
+                en: "Which works were written by Vishnu Prabhakar as listed on Page 2?",
+                hi: "पेज 2 पर सूचीबद्ध विष्णु प्रभाकर की प्रमुख रचनाएँ कौन सी हैं?",
+                options: ["Aadi V Ant, Sangharsh Ke Baad, Mera Watan, Dharati, Abhi Bhi Ghum Rahi Hai, Pul Tootne Se Pehle", "Court Martial", "Tai", "Ganga Ji Tere Khet Mein"],
+                answer: 0,
+                hint: "Includes titles like 'Mera Watan' and 'Pul Tootne Se Pehle'.",
+                explanation: "Vishnu Prabhakar authored 'Aadi V Ant, Sangharsh Ke Baad, Mera Watan, Dharati, Abhi Bhi Ghum Rahi Hai, Pul Tootne Se Pehle'."
+            },
+            {
+                id: 47, page: 2,
+                en: "Who are the authors/creators of stories and works like 'Raksha Bandhan', 'Tai', 'Galp Mandir', 'Chitrashala', and 'Paris Ki Nartaki'?",
+                hi: "'रक्षा बन्धन', 'ताई', 'गल्प मंदिर', 'चित्रशाला', 'पेरिस की नर्तकी' जैसी कहानियों व कृतियों के रचनाकार कौन हैं?",
+                options: ["Vishambharnath Kaushik, Ambala", "Mohan Chopra", "Balmukund Gupta", "Alhad Bikaneri"],
+                answer: 0,
+                hint: "Famous short story writer from Ambala.",
+                explanation: "Vishambharnath Kaushik from Ambala authored these classic story collections."
+            },
+            {
+                id: 48, page: 2,
+                en: "Who is designated as 'Hariyana Ka Prasiddha Nibandhakar' (Famous Essayist of Haryana)?",
+                hi: "हरियाणा का प्रसिद्ध निबंधकार किसे माना जाता है?",
+                options: ["Balmukund Gupta (बालमुकुन्द गुप्त)", "Mohan Chopra", "Vishambharnath Kaushik", "Swadesh Deepak"],
+                answer: 0,
+                hint: "Author of 'Shivshambhu Ke Chithhe'.",
+                explanation: "Balmukund Gupta is acknowledged as the famous essayist of Haryana."
+            },
+            {
+                id: 49, page: 2,
+                en: "Who is designated as 'Hariyana Ka Prasiddha Upanyasakar' (Famous Novelist of Haryana)?",
+                hi: "हरियाणा का प्रसिद्ध उपन्यासकार किसे माना जाता है?",
+                options: ["Sri Mohan Chopra (श्री मोहन चोपड़ा)", "Swadesh Deepak", "Balmukund Gupta", "Vishambharnath Kaushik"],
+                answer: 0,
+                hint: "Author of 'Peele Patte' and 'Band Darwaza'.",
+                explanation: "Sri Mohan Chopra is celebrated as the prominent novelist of Haryana."
+            },
+            {
+                id: 50, page: 2,
+                en: "Who is recognized as 'Hariyana Ka Prasiddha Kahanikar' (Famous Storyteller of Haryana)?",
+                hi: "हरियाणा का प्रसिद्ध कहानीकार किसे माना जाता है?",
+                options: ["Sri Vishambharnath Kaushik (श्री बिशम्भरनाथ कौशिक)", "Balmukund Gupta", "Mohan Chopra", "Swadesh Deepak"],
+                answer: 0,
+                hint: "Author of 'Tai' and 'Raksha Bandhan'.",
+                explanation: "Sri Vishambharnath Kaushik is recognized as the famous short-story writer of Haryana."
+            },
+            {
+                id: 51, page: 2,
+                en: "In Haryana, which person wrote satirical humorous essays under the name 'Divyachakshu'?",
+                hi: "हरियाणा में किस व्यक्ति ने 'दिव्यचक्षु' नाम से हास्य व्यंग्यपूर्ण निबंध लिखे हैं?",
+                options: ["Vishambharnath Kaushik", "Surender Sharma", "Alhad Bikaneri", "Swadesh Deepak"],
+                answer: 0,
+                hint: "Same Ambala author who wrote 'Tai'.",
+                explanation: "Vishambharnath Kaushik wrote satirical essays under the pen name 'Divyachakshu'."
+            },
+            {
+                id: 52, page: 2,
+                en: "Who is referred to as the creator of the narrative art form ('Kathatmak Vidhi ke Rachnakar') in the state?",
+                hi: "राज्य में 'कथात्मक विधा का रचनाकार' किसे कहा जाता है?",
+                options: ["Swadesh Deepak (स्वदेश दीपक)", "Mohan Chopra", "Vishnu Prabhakar", "Udaybhanu Hans"],
+                answer: 0,
+                hint: "Famous playwright from Haryana.",
+                explanation: "Swadesh Deepak is designated as the creator of narrative art/form in the state."
+            },
+            {
+                id: 53, page: 2,
+                en: "Who authored the coffee-table book titled 'Kiran Chopra'?",
+                hi: "कॉफी टेबल पुस्तक 'किरण चोपड़ा' किसने लिखी है?",
+                options: ["Kiran Chopra (किरण चोपड़ा)", "Mohan Chopra", "Alhad Bikaneri", "Surender Sharma"],
+                answer: 0,
+                hint: "The title matches the author's name.",
+                explanation: "Kiran Chopra authored the coffee-table book named after her."
+            },
+            {
+                id: 54, page: 2,
+                en: "Who wrote the poetry book 'Kavita Ab To Aasu Poonchh'?",
+                hi: "कविता पुस्तक 'कविता अब तो आंसू पोंछ' के रचयिता कौन हैं?",
+                options: ["Alhad Bikaneri (अल्हड़ बीकानेरी)", "Surender Sharma", "Kiran Chopra", "Khushiram Sharma"],
+                answer: 0,
+                hint: "A famous humorous poet.",
+                explanation: "'Kavita Ab To Aasu Poonchh' was written by Alhad Bikaneri."
+            },
+            {
+                id: 55, page: 2,
+                en: "Which popular humorous works/poems are associated with Hasya Kavi Surender Sharma?",
+                hi: "हास्य कवि सुरेंद्र शर्मा से संबंधित लोकप्रिय रचनाएँ कौन सी हैं?",
+                options: ["Mansarovar Ke Kawwe, Buddhimanon Ki Moorkhtayein, Bado-Bado Ke Utpaad", "Kavita Ab To Aasu Poonchh", "Fagun Aaya", "Sajha Seer"],
+                answer: 0,
+                hint: "Involves crows of Mansarovar and intelligence follies.",
+                explanation: "Surender Sharma authored humorous works like 'Mansarovar Ke Kawwe', 'Buddhimanon Ki Moorkhtayein', and 'Bado-Bado Ke Utpaad'."
+            },
+            {
+                id: 56, page: 2,
+                en: "According to Page 2, a manuscript written by which literary figure contains 49 ragas and 182 verses (पदों का संकलन)?",
+                hi: "पेज 2 के अनुसार राज्य के किस साहित्यकार द्वारा लिखी गई पांडुलिपि में 49 राग एवं 182 पदों का संकलन है?",
+                options: ["Guru Gorakhnath (गुरु गोरखनाथ)", "Khushiram Sharma", "Chouranginath", "Sant Garibdas"],
+                answer: 0,
+                hint: "A foundational Nath sect spiritual leader.",
+                explanation: "Guru Gorakhnath's written manuscript contains 49 ragas and 182 verses."
+            },
+            {
+                id: 57, page: 2,
+                en: "Who authored the literary pieces 'Rana Nimantran', 'Guru Govind Singh', and 'Yudh Charit'?",
+                hi: "'राणा निमंत्रण', 'गुरु गोविंद सिंह' और 'युद्ध चरित' के रचयिता कौन हैं?",
+                options: ["Khushiram Sharma (खुशीराम शर्मा)", "Guru Gorakhnath", "Chouranginath", "Ramphal Chahal"],
+                answer: 0,
+                hint: "Listed under the upper-right section of Page 2.",
+                explanation: "Khushiram Sharma authored 'Rana Nimantran', 'Guru Govind Singh', and 'Yudh Charit'."
+            },
+            {
+                id: 58, page: 2,
+                en: "Who authored 'Pran Sankali' and 'Shri Nath Ashtak'?",
+                hi: "'प्राण सांकली' और 'श्रीनाथ अष्टक' किसकी रचनाएँ हैं?",
+                options: ["Nath Sahityakar Chouranginath (नाथ साहित्यकार चौरंगीनाथ)", "Guru Gorakhnath", "Khushiramish", "Sant Garibdas"],
+                answer: 0,
+                hint: "A prominent Nath literary saint.",
+                explanation: "'Pran Sankali' and 'Shri Nath Ashtak' were authored by Nath literary figure Chouranginath."
+            },
+            {
+                id: 59, page: 2,
+                en: "Who is the author of the Sanskrit language text 'Shri Bhagat Phool Singh Charitram'?",
+                hi: "संस्कृत भाषा ग्रंथ 'श्री भगत फूल सिंह चरित्रम्' के लेखक कौन हैं?",
+                options: ["Pandit Vidyanidhi (पं. विद्यानिधि)", "Maharishi Valmiki", "Maharishi Vedvyas", "Sant Garibdas"],
+                answer: 0,
+                hint: "A scholar holding 'Vidyanidhi' title.",
+                explanation: "'Shri Bhagat Phool Singh Charitram' in Sanskrit was written by Pandit Vidyanidhi."
+            },
+            {
+                id: 60, page: 2,
+                en: "What are the major honors conferred by the Haryana Sanskrit Academy as listed on Page 2?",
+                hi: "पेज 2 पर सूचीबद्ध हरियाणा संस्कृत अकादमी के प्रमुख सम्मान कौन से हैं?",
+                options: ["Maharishi Valmiki Samman, Maharishi Banabhatta Samman, Maharishi Vedvyas Samman", "Pandit Lakhmichand Samman", "Bhai Santokh Singh Samman", "Sant Taran Singh Vehmi Samman"],
+                answer: 0,
+                hint: "Named after ancient sage-poets like Valmiki and Vedvyas.",
+                explanation: "The prominent awards include Maharishi Valmiki Samman, Maharishi Banabhatta Samman, and Maharishi Vedvyas Samman under 'Sanskrit Gaurav Samman'."
+            },
+            {
+                id: 61, page: 2,
+                en: "Where was Sant Garibdas born, who composed Amritwani in Haryanvi language?",
+                hi: "हरियाणवी भाषा में अमृतवाणी लिखने वाले संत गरीबदास का जन्म कहाँ हुआ था?",
+                options: ["Chhudani Village, Jhajjar (छूडानी गांव, झज्जर)", "Nimhadi Village, Bhiwani", "Ambala", "Rohtak"],
+                answer: 0,
+                hint: "Explicitly noted in parentheses under Amritwani entry on Page 2.",
+                explanation: "Sant Garibdas, who wrote Amritwani in Haryanvi, was born in Chhudani village, Jhajjar."
+            },
+            {
+                id: 62, page: 2,
+                en: "Which awards are part of the 'Haryana Punjabi Gaurav Samman' categories?",
+                hi: "'हरियाणा पंजाबी गौरव सम्मान' के अंतर्गत कौन से प्रमुख पुरस्कार आते हैं?",
+                options: ["Bhai Santokh Singh Samman, Sant Taran Singh Vehmi Samman", "Maharishi Valmiki Samman", "Pandit Lakhmichand Samman", "Maharishi Vedvyas Samman"],
+                answer: 0,
+                hint: "Includes honors named after Bhai Santokh Singh.",
+                explanation: "Bhai Santokh Singh Samman and Sant Taran Singh Vehmi Samman are key awards under the Haryana Punjabi Academy."
+            },
+            {
+                id: 63, page: 2,
+                en: "Who authored 'Zeher Ka Pyala', 'Fagun Aaya', 'Sajha Seer', 'Aaya Sai Basant', 'Darpan Kuchh Na Bole', and 'Aadami Naam Na Haariyo'?",
+                hi: "'जहर का प्याला', 'फागुन आया', 'साझा सीर', 'आया सै बसन्त', 'दर्पण कुछ न बोले', और 'आदमी नाम ना हारियो' के रचनाकार कौन हैं?",
+                options: ["Ramphal Chahal, Nimhadi Village, Bhiwani", "Surender Sharma", "Alhad Bikaneri", "Mohan Chopra"],
+                answer: 0,
+                hint: "A writer from Nimhadi village, Bhiwani.",
+                explanation: "Ramphal Chahal from Nimhadi village, Bhiwani authored these works."
+            },
+            {
+                id: 64, page: 2,
+                en: "In which year were writers awarded the 'Pt. Lakhmichand Samman' by the Haryana Government for contribution to Haryanvi literature?",
+                hi: "हरियाणा सरकार द्वारा वर्ष 2004 में 'पं. लख्मीचन्द सम्मान' किस क्षेत्र में योगदान हेतु दिया गया?",
+                options: ["Haryana Literature Field (हरियाणा साहित्य क्षेत्र)", "Sanskrit Promotion", "Punjabi Academy Services", "Journalism"],
+                answer: 0,
+                hint: "Noted in the prominent note box on Page 2.",
+                explanation: "It was awarded for contribution to the Haryana literature field by the Haryana government in 2004."
+            },
+            {
+                id: 65, page: 2,
+                en: "Who are noted as the classical/famous Jain literary figures of the state ('Rajya Ke Prasiddha Jain Sahityakar') on Page 2?",
+                hi: "पेज 2 के अनुसार राज्य के प्रसिद्ध जैन साहित्यकार कौन हैं?",
+                options: ["Pushpadant, Sridhar, Maldev, Bhagwati Das, Sundar Das, Lohacharya, Vijayanand Suri", "Guru Gorakhnath", "Chouranginath", "Hariram"],
+                answer: 0,
+                hint: "Includes historical names like Pushpadant and Sridhar.",
+                explanation: "Pushpadant, Sridhar, Maldev, Bhagwati Das, Sundar Das, Lohacharya, and Vijayanand Suri are listed as famous Jain literary figures."
+            },
+            {
+                id: 66, page: 2,
+                en: "What language's Amritsari/Amritwani work is attributed to Sant Garibdas?",
+                hi: "संत गरीबदास द्वारा रचित 'अमृतवाणी' किस भाषा में है?",
+                options: ["Haryanvi Language", "Sanskrit", "Punjabi", "Urdu"],
+                answer: 0,
+                hint: "Mentioned right under Chhudani village birth note.",
+                explanation: "Amritwani was written in Haryanvi language by Sant Garibdas."
+            },
+            {
+                id: 67, page: 2,
+                en: "Which village is associated with writer Ramphal Chahal?",
+                hi: "लेखक रामफल चहल का संबंध किस गाँव से है?",
+                options: ["Nimhadi Village, Bhiwani", "Chhudani Village, Jhajjar", "Ambala", "Rohtak"],
+                answer: 0,
+                hint: "Listed beside Ramphal Chahal's book bracket on Page 2.",
+                explanation: "Ramphal Chahal belongs to Nimhadi village in Bhiwani."
+            },
+            {
+                id: 68, page: 2,
+                en: "What is the primary category of 'Maharishi Valmiki Samman' as per Page 2?",
+                hi: "पेज 2 के अनुसार 'महर्षि वाल्मीकि सम्मान' किस अकादमी का मुख्य सम्मान है?",
+                options: ["Haryana Sanskrit Academy", "Haryana Punjabi Academy", "Haryana Sahitya Akademi", "Haryana Urdu Akademi"],
+                answer: 0,
+                hint: "Listed under Sanskrit Gaurav Samman bracket.",
+                explanation: "It is a key award of the Haryana Sanskrit Academy."
+            },
+            {
+                id: 69, page: 2,
+                en: "Who authored 'Yudh Charit'?",
+                hi: "'युद्ध चरित' के लेखक कौन हैं?",
+                options: ["Khushiram Sharma", "Guru Gorakhnath", "Chouranginath", "Sri Mohan Chopra"],
+                answer: 0,
+                hint: "Grouped with 'Rana Nimantran' on Page 2.",
+                explanation: "Khushiram Sharma authored 'Yudh Charit'."
+            },
+            {
+                id: 70, page: 2,
+                en: "Which novel by Rajkumar Nijat is featured on Page 2?",
+                hi: "राजकुमार निजात् का कौन सा उपन्यास पेज 2 पर दिया गया है?",
+                options: ["Saye Apne-Apne Saath", "Peele Patte", "Band Darwaza", "Akela Aadmi"],
+                answer: 0,
+                hint: "Starts with 'Saye'.",
+                explanation: "Rajkumar Nijat's novel featured is 'Saye Apne-Apne Saath'."
+            },
+            {
+                id: 71, page: 2,
+                en: "Who wrote 'Aadi V Ant' and 'Sangharsh Ke Baad'?",
+                hi: "'आदि व अन्त' और 'संघर्ष के बाद' किसने लिखे हैं?",
+                options: ["Vishnu Prabhakar", "Sri Mohan Chopra", "Rajkumar Nijat", "Swadesh Deepak"],
+                answer: 0,
+                hint: "Listed under Vishnu Prabhakar's works list.",
+                explanation: "Vishnu Prabhakar authored 'Aadi V Ant' and 'Sangharsh Ke Baad'."
+            },
+            {
+                id: 72, page: 2,
+                en: "What genre does 'Mansarovar Ke Kawwe' by Surender Sharma belong to?",
+                hi: "सुरेंद्र शर्मा की रचना 'मानसरोवर के कौवे' किस विधा से संबंधित है?",
+                options: ["Humorous/Satirical (हास्य व्यंग्य)", "Epic Poetry", "Historical Drama", "Philosophical Discourse"],
+                answer: 0,
+                hint: "Written by Hasya Kavi Surender Sharma.",
+                explanation: "It belongs to humorous and satirical literature by Hasya Kavi Surender Sharma."
+            },
+            {
+                id: 73, page: 2,
+                en: "Who is the author of 'Baahen' and 'Need Ke Aage'?",
+                hi: "'बाहें' और 'नीड़ के आगे' के रचनाकार कौन हैं?",
+                options: ["Sri Mohan Chopra", "Swadesh Deepak", "Vishnu Prabhakar", "Rajkumar Nijat"],
+                answer: 0,
+                hint: "Top-left section of Page 2.",
+                explanation: "Sri Mohan Chopra authored 'Baahen' and 'Need Ke Aage'."
+            },
+            {
+                id: 74, page: 2,
+                en: "Which honor was established by the Haryana Government in 2004 for literature contribution?",
+                hi: "हरियाणा सरकार द्वारा साहित्य क्षेत्र में योगदान हेतु 2004 में कौन सा सम्मान शुरू किया गया था?",
+                options: ["Pandit Lakhmichand Samman", "Maharishi Valmiki Samman", "Bhai Santokh Singh Samman", "Kalidas Samman"],
+                answer: 0,
+                hint: "Named after legendary folk poet Lakhmichand in the note box.",
+                explanation: "Pandit Lakhmichand Samman was awarded by the Haryana Government starting in 2004."
+            },
+            {
+                id: 75, page: 2,
+                en: "Who is listed among the Jain literary figures ('Rajya Ke Prasiddha Jain Sahityakar')?",
+                hi: "राज्य के प्रसिद्ध जैन साहित्यकार के रूप में किसे सूचीबद्ध किया गया है?",
+                options: ["Pushpadant", "Guru Gorakhnath", "Chouranginath", "Khushiram Sharma"],
+                answer: 0,
+                hint: "First name in the Jain authors block on Page 2 bottom-right.",
+                explanation: "Pushpadant is listed among the prominent Jain literary figures."
+            },
+            {
+                id: 76, page: 2,
+                en: "Who authored 'Pran Sankali'?",
+                hi: "'प्राण सांकली' के लेखक कौन हैं?",
+                options: ["Chouranginath", "Guru Gorakhnath", "Khushiram Sharma", "Hariram"],
+                answer: 0,
+                hint: "Nath saint author.",
+                explanation: "'Pran Sankali' was authored by Chouranginath."
+            },
+            {
+                id: 77, page: 2,
+                en: "Which book of poems was written by Alhad Bikaneri?",
+                hi: "अल्हड़ बीकानेरी द्वारा रचित कविता पुस्तक कौन सी है?",
+                options: ["Kavita Ab To Aasu Poonchh", "Mansarovar Ke Kawwe", "Fagun Aaya", "Sajha Seer"],
+                answer: 0,
+                hint: "Includes 'Aasu Poonchh' in title.",
+                explanation: "Alhad Bikaneri wrote 'Kavita Ab To Aasu Poonchh'."
+            },
+            {
+                id: 78, page: 2,
+                en: "What type of literary work is 'Shri Nath Ashtak'?",
+                hi: "'श्रीनाथ अष्टक' किस प्रकार की साहित्यिक रचना है?",
+                options: ["Nath Literature by Chouranginath", "Jain Epic", "Sanskrit Play", "Modern Essay"],
+                answer: 0,
+                hint: "Associated with Nath Sahityakar Chouranginath.",
+                explanation: "It is a Nath literary composition by Chouranginath."
+            },
+            {
+                id: 79, page: 2,
+                en: "Who authored 'Pul Tootne Se Pehle'?",
+                hi: "'पुल टूटने से पहले' के रचनाकार कौन हैं?",
+                options: ["Vishnu Prabhakar", "Sri Mohan Chopra", "Rajkumar Nijat", "Swadesh Deepak"],
+                answer: 0,
+                hint: "Listed under Vishnu Prabhakar's stories/novels.",
+                explanation: "'Pul Tootne Se Pehle' was written by Vishnu Prabhakar."
+            },
+            {
+                id: 80, page: 2,
+                en: "Which award falls under the Haryana Punjabi Academy main recognitions?",
+                hi: "हरियाणा पंजाबी अकादमी के प्रमुख सम्मानों के अंतर्गत कौन सा सम्मान आता है?",
+                options: ["Bhai Santokh Singh Samman", "Maharishi Valmiki Samman", "Maharishi Vedvyas Samman", "Banabhatta Samman"],
+                answer: 0,
+                hint: "Named after Bhai Santokh Singh.",
+                explanation: "Bhai Santokh Singh Samman is one of the premier awards of the Haryana Punjabi Academy."
+            }
+        ];
+
+        let currentIndex = 0;
+        let score = 0;
+        let userAnswers = new Array(questionsData.length).fill(null);
+        let shuffledOptionsCache = {};
+
+        // DOM Elements
+        const scoreValElem = document.getElementById('score-val');
+        const pageIndicatorElem = document.getElementById('page-indicator');
+        const progressBarElem = document.getElementById('progress-bar');
+        const qBadgeElem = document.getElementById('q-badge');
+        const sourcePageBadgeElem = document.getElementById('source-page-badge');
+        const questionTextEnElem = document.getElementById('question-text-en');
+        const questionTextHiElem = document.getElementById('question-text-hi');
+        const optionsContainerElem = document.getElementById('options-container');
+        const hintBtnElem = document.getElementById('hint-btn');
+        const hintBoxElem = document.getElementById('hint-box');
+        const hintTextElem = document.getElementById('hint-text');
+        const explanationBoxElem = document.getElementById('explanation-box');
+        const explanationTextElem = document.getElementById('explanation-text');
+        const prevBtnElem = document.getElementById('prev-btn');
+        const nextBtnElem = document.getElementById('next-btn');
+        const jumpInputElem = document.getElementById('jump-input');
+
+        function getShuffledOptions(qIndex) {
+            if (shuffledOptionsCache[qIndex]) {
+                return shuffledOptionsCache[qIndex];
+            }
+            const q = questionsData[qIndex];
+            const optionsWithOriginalIndices = q.options.map((opt, idx) => ({ text: opt, originalIndex: idx }));
+            
+            // Deterministic pseudo-shuffle based on question id to ensure stability across navigation
+            for (let i = optionsWithOriginalIndices.length - 1; i > 0; i--) {
+                let j = (q.id * 17 + i * 31) % (i + 1);
+                [optionsWithOriginalIndices[i], optionsWithOriginalIndices[j]] = [optionsWithOriginalIndices[j], optionsWithOriginalIndices[i]];
+            }
+            
+            shuffledOptionsCache[qIndex] = optionsWithOriginalIndices;
+            return optionsWithOriginalIndices;
+        }
+
+        function loadQuestion(index) {
+            currentIndex = index;
+            const q = questionsData[index];
+
+            // Update Badges & Meta
+            qBadgeElem.innerText = `Question ${index + 1} of 80`;
+            sourcePageBadgeElem.innerText = `Source: Page ${q.page} (${q.page === 1 ? 'Q1-40' : 'Q41-80'})`;
+            pageIndicatorElem.innerText = `Page ${q.page}`;
+            
+            // Progress Bar & Score
+            progressBarElem.style.width = `${((index + 1) / 80) * 100}%`;
+            scoreValElem.innerText = score;
+
+            // Question Text
+            questionTextEnElem.innerText = `${index + 1}. ${q.en}`;
+            questionTextHiElem.innerText = q.hi;
+
+            // Hide Hint & Explanation initially or restore state
+            hintBoxElem.classList.add('hidden');
+            hintBtnElem.innerHTML = "<span>💡 Show Hint</span>";
+            hintTextElem.innerText = q.hint;
+            explanationTextElem.innerText = q.explanation;
+
+            const shuffledOpts = getShuffledOptions(index);
+            optionsContainerElem.innerHTML = '';
+
+            const selectedOption = userAnswers[index];
+            if (selectedOption !== null) {
+                explanationBoxElem.classList.remove('hidden');
+            } else {
+                explanationBoxElem.classList.add('hidden');
+            }
+
+            shuffledOpts.forEach((optObj, idx) => {
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left p-3.5 rounded-xl border transition-all flex items-center justify-between text-sm sm:text-base font-medium `;
+                
+                let btnStyle = "bg-slate-900/50 border-slate-700 hover:border-slate-500 text-slate-200";
+                
+                if (selectedOption !== null) {
+                    btn.disabled = true;
+                    if (optObj.originalIndex === q.answer) {
+                        btnStyle = "bg-emerald-900/40 border-emerald-500 text-emerald-200 font-semibold";
+                    } else if (selectedOption === optObj.originalIndex) {
+                        btnStyle = "bg-rose-900/40 border-rose-500 text-rose-200";
+                    } else {
+                        btnStyle = "bg-slate-900/30 border-slate-800 text-slate-500 opacity-50";
+                    }
+                }
+
+                btn.className += btnStyle;
+                btn.innerHTML = `<span><span class="inline-block w-6 font-bold text-slate-400">${String.fromCharCode(65 + idx)}.</span> ${optObj.text}</span>`;
+                
+                if (selectedOption === null) {
+                    btn.onclick = () => selectOption(optObj.originalIndex);
+                }
+
+                optionsContainerElem.appendChild(btn);
+            });
+
+            prevBtnElem.disabled = currentIndex === 0;
+            nextBtnElem.innerText = currentIndex === questionsData.length - 1 ? "Finish Quiz" : "Next";
+            jumpInputElem.value = currentIndex + 1;
+        }
+
+        function selectOption(originalIndex) {
+            if (userAnswers[currentIndex] !== null) return; // already answered
+            
+            userAnswers[currentIndex] = originalIndex;
+            const q = questionsData[currentIndex];
+
+            if (originalIndex === q.answer) {
+                score++;
+                scoreValElem.innerText = score;
+            }
+
+            explanationBoxElem.classList.remove('hidden');
+            loadQuestion(currentIndex); // reload to apply color coding
+        }
+
+        function toggleHint() {
+            if (hintBoxElem.classList.contains('hidden')) {
+                hintBoxElem.classList.remove('hidden');
+                hintBtnElem.innerHTML = "<span>💡 Hide Hint</span>";
+            } else {
+                hintBoxElem.classList.add('hidden');
+                hintBtnElem.innerHTML = "<span>💡 Show Hint</span>";
+            }
+        }
+
+        function nextQuestion() {
+            if (currentIndex < questionsData.length - 1) {
+                loadQuestion(currentIndex + 1);
+            } else {
+                showCompletionSummary();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentIndex > 0) {
+                loadQuestion(currentIndex - 1);
+            }
+        }
+
+        function jumpToQuestion() {
+            let val = parseInt(jumpInputElem.value) - 1;
+            if (val >= 0 && val < questionsData.length) {
+                loadQuestion(val);
+            } else {
+                alert("Please enter a valid question number between 1 and 80.");
+            }
+        }
+
+        function showCompletionSummary() {
+            const card = document.getElementById('quiz-card');
+            card.innerHTML = `
+                <div class="text-center py-8 space-y-4 fade-in">
+                    <div class="inline-flex p-4 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-full text-4xl mb-2">🏆</div>
+                    <h2 class="text-2xl font-bold text-white">Quiz Completed Successfully!</h2>
+                    <p class="text-slate-300">You have completed all 80 examination-level bilingual questions.</p>
+                    <div class="bg-slate-900 border border-slate-700 p-6 rounded-2xl max-w-xs mx-auto my-6">
+                        <div class="text-xs text-slate-400 uppercase tracking-wider mb-1">Final Score</div>
+                        <div class="text-4xl font-extrabold text-emerald-400">${score} <span class="text-slate-500 text-2xl">/ 80</span></div>
+                        <div class="text-xs text-slate-400 mt-2">Percentage: ${((score / 80) * 100).toFixed(1)}%</div>
+                    </div>
+                    <button onclick="resetQuiz()" class="px-6 py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl transition-colors shadow-lg">Retake Quiz</button>
+                </div>
+            `;
+        }
+
+        function resetQuiz() {
+            currentIndex = 0;
+            score = 0;
+            userAnswers = new Array(questionsData.length).fill(null);
+            shuffledOptionsCache = {};
+            // Rebuild card structure if completed
+            location.reload();
+        }
+
+        // Initialize First Question
+        window.onload = () => {
+            loadQuestion(0);
+        };
+    </script>
+<script src="../../quiz-question-controls.js"></script>
+<script src="../../quiz-app-ui-v2.js"></script></body>
+</html>

@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate English Vocabulary Mastery Quiz (SSC, RRB & State Exams)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        lavender: {
+                            50: '#FBF7FF',
+                            100: '#F0E6FF',
+                            200: '#E5D5FA',
+                            300: '#DCCBF2',
+                            400: '#DDD9E8',
+                            500: '#7352C9',
+                            600: '#6542C8',
+                            700: '#30205D',
+                            800: '#231642',
+                            900: '#180E2E',
+                        },
+                        accent: {
+                            DEFAULT: '#F3A62A',
+                            hover: '#e09520'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #F0E6FF;
+            background-image: radial-gradient(#E5D5FA 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+        .quiz-card-shadow {
+            box-shadow: 0 10px 30px -5px rgba(101, 66, 200, 0.08), 0 4px 12px -2px rgba(48, 32, 93, 0.04);
+        }
+    </style>
+</head>
+<body class="min-h-screen text-lavender-700 flex flex-col justify-between selection:bg-lavender-200 selection:text-lavender-900">
+
+    <!-- HEADER -->
+    <header class="sticky top-0 z-50 bg-[#E5D5FA]/90 backdrop-blur-md border-b border-lavender-300 shadow-sm transition-all">
+        <div class="max-w-4xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-lavender-600 text-white flex items-center justify-center font-bold text-lg shadow-md">
+                    📖
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-lavender-800 text-base sm:text-lg tracking-tight">Ultimate English Vocabulary Mastery</h1>
+                    <p class="text-xs text-lavender-600 font-medium">Advanced One-Word Substitutions & Word Roots (SSC / RRB / Exams)</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-2">
+                <div class="px-3 py-1.5 rounded-full bg-white/80 border border-lavender-300 text-xs font-semibold text-lavender-800 shadow-sm flex items-center space-x-1.5">
+                    <span>🏆 Score:</span>
+                    <span id="score-display" class="font-bold text-lavender-600">0</span>
+                    <span class="text-lavender-400">/</span>
+                    <span id="total-score-display">100</span>
+                </div>
+                <div class="px-3 py-1.5 rounded-full bg-lavender-600 text-white text-xs font-bold shadow-sm" id="progress-pill">
+                    Q 1 / 100
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <main class="max-w-3xl w-full mx-auto px-4 py-6 sm:py-8 flex-grow flex flex-col justify-center">
+        
+        <!-- QUIZ CARD -->
+        <div class="bg-[#FBF7FF] border border-lavender-300 rounded-3xl p-6 sm:p-8 quiz-card-shadow transition-all duration-300 relative overflow-hidden">
+            
+            <!-- Question Meta Header (Subtopic badge removed as requested) -->
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-4 text-xs font-semibold text-lavender-600">
+                <div class="flex items-center space-x-2">
+                    <span id="question-badge" class="px-2.5 py-1 rounded-lg bg-lavender-200/70 text-lavender-800 uppercase tracking-wider text-[10px]">Exam Practice</span>
+                </div>
+                <span id="question-counter-meta" class="font-bold text-lavender-500">Question 1 of 100</span>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="w-full bg-[#DDD9E8] rounded-full h-2 mb-6 overflow-hidden">
+                <div id="progress-bar" class="bg-lavender-600 h-2 rounded-full transition-all duration-300" style="width: 1%;"></div>
+            </div>
+
+            <!-- Question Text -->
+            <div class="mb-6">
+                <h2 id="question-text" class="text-xl sm:text-2xl font-extrabold text-lavender-800 leading-snug">
+                    Loading question...
+                </h2>
+            </div>
+
+            <!-- Answer Options Container -->
+            <div id="options-container" class="space-y-3 mb-6">
+                <!-- Options injected dynamically -->
+            </div>
+
+            <!-- Hint Section -->
+            <div class="mb-6">
+                <button id="hint-toggle-btn" onclick="toggleHint()" class="inline-flex items-center space-x-1.5 text-xs font-bold text-lavender-600 hover:text-lavender-800 bg-lavender-200/50 hover:bg-lavender-200 px-3 py-1.5 rounded-xl transition-all">
+                    <span>💡</span>
+                    <span id="hint-btn-text">Reveal Hint</span>
+                </button>
+                <div id="hint-box" class="hidden mt-2.5 p-3.5 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-900 font-medium leading-relaxed animate-fadeIn">
+                    <span class="font-bold">Hint:</span> <span id="hint-text"></span>
+                </div>
+            </div>
+
+            <!-- Explanation Box (Revealed on Answer) -->
+            <div id="explanation-box" class="hidden p-4 rounded-2xl bg-lavender-100/70 border border-lavender-300 text-xs sm:text-sm text-lavender-800 space-y-2 animate-fadeIn">
+                <div class="flex items-center space-x-2 font-bold text-lavender-900">
+                    <span id="explanation-icon">📘</span>
+                    <span id="explanation-title">Explanation & Mastery Notes</span>
+                </div>
+                <p id="explanation-text" class="leading-relaxed text-lavender-700 font-medium"></p>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- STICKY BOTTOM NAVIGATION PANEL -->
+    <nav class="sticky bottom-0 z-40 bg-white/95 backdrop-blur-md border-t border-lavender-300 shadow-lg py-3 px-4">
+        <div class="max-w-3xl mx-auto flex flex-wrap items-center justify-between gap-3">
+            
+            <!-- Prev / Next Buttons -->
+            <div class="flex items-center space-x-2">
+                <button id="prev-btn" onclick="prevQuestion()" class="px-4 py-2 rounded-xl bg-lavender-100 hover:bg-lavender-200 text-lavender-800 font-bold text-xs sm:text-sm flex items-center space-x-1 transition-all disabled:opacity-40 disabled:cursor-not-allowed">
+                    <span>←</span>
+                    <span class="hidden sm:inline">Previous</span>
+                </button>
+                <button id="next-btn" onclick="nextQuestion()" class="px-4 py-2 rounded-xl bg-lavender-600 hover:bg-lavender-700 text-white font-bold text-xs sm:text-sm flex items-center space-x-1 shadow-md transition-all">
+                    <span class="hidden sm:inline">Next</span>
+                    <span>→</span>
+                </button>
+            </div>
+
+            <!-- Jump to Question & Reset -->
+            <div class="flex items-center space-x-2">
+                <div class="flex items-center space-x-1.5 bg-lavender-100/70 border border-lavender-300 rounded-xl px-2.5 py-1">
+                    <span class="text-[11px] font-bold text-lavender-700 hidden sm:inline">Jump to Q:</span>
+                    <input type="number" id="jump-input" min="1" max="100" class="w-12 bg-white border border-lavender-300 rounded-lg text-center text-xs font-bold py-1 text-lavender-800 focus:outline-none focus:ring-2 focus:ring-lavender-500" placeholder="1">
+                    <button onclick="jumpToQuestion()" class="px-2.5 py-1 bg-lavender-600 hover:bg-lavender-700 text-white rounded-lg text-xs font-bold transition-all shadow-sm">Go</button>
+                </div>
+                <button onclick="confirmReset()" class="px-3 py-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 font-bold text-xs transition-all flex items-center space-x-1" title="Reset Quiz">
+                    <span>🔄</span>
+                    <span class="hidden md:inline">Reset</span>
+                </button>
+            </div>
+
+        </div>
+    </nav>
+
+    <!-- JAVASCRIPT LOGIC & 100 UNIQUE QUESTIONS -->
+    <script>
+        const quizData = [
+            // --- ARTICULATE / ARTICULATION / ARTIST (1-12) ---
+            {
+                id: 1,
+                badge: "One-Word Substitution",
+                subtopic: "Articulate",
+                question: "Choose the single word for: 'Good at expressing ideas, feelings clearly in words; having or showing the ability to speak fluently and coherently.'",
+                options: ["Articulate", "Ascetic", "Ascribe", "Audible"],
+                correct: 0,
+                hint: "Starts with 'Ar-', related to clear speech and fluency.",
+                explanation: "Articulate (Adjective) means having or showing the ability to speak fluently and coherently. Synonym: Eloquent, Expressive. Antonym: Inarticulate, Tongue-tied."
+            },
+            {
+                id: 2,
+                badge: "Synonym & Usage",
+                subtopic: "Articulate",
+                question: "In an interview, candidate Rohan was praised because he was highly ________ and presented his complex technical ideas without hesitation.",
+                options: ["Articulate", "Audible", "Askance", "Austere"],
+                correct: 0,
+                hint: "Refers to clear and effective expression.",
+                explanation: "Correct answer is 'Articulate'. It describes someone who expresses thoughts with absolute clarity and fluency."
+            },
+            {
+                id: 3,
+                badge: "One-Word Substitution",
+                subtopic: "Articulation",
+                question: "Identify the term for: 'The ability to communicate effectively and express oneself clearly in writing and speaking.'",
+                options: ["Articulation", "Autobiography", "Atonement", "Assent"],
+                correct: 0,
+                hint: "The noun form corresponding to clear verbal or written expression.",
+                explanation: "Articulation (Noun) is the formation of clear and distinct sounds in speech or the clear presentation of ideas in writing/speaking."
+            },
+            {
+                id: 4,
+                badge: "Statement Analysis",
+                subtopic: "Articulate",
+                question: "Which of the following statements regarding the word 'Articulate' is INCORRECT?",
+                options: [
+                    "It can function as both an adjective and a verb.",
+                    "Its antonym is inarticulate or stammering.",
+                    "It refers specifically to someone who is mute or unable to produce any sound.",
+                    "An articulate speaker is appreciated in debates and group discussions."
+                ],
+                correct: 2,
+                hint: "Check whether articulate means mute or the exact opposite.",
+                explanation: "Option C is incorrect because 'articulate' means fluent and clear in speech, whereas mute/speechless is the opposite. Articulate can mean to pronounce clearly (verb) or fluent (adjective)."
+            },
+            {
+                id: 5,
+                badge: "One-Word Substitution",
+                subtopic: "Artist",
+                question: "What is the one-word substitution for: 'One who practices one of the fine arts such as painting, sculpting, or music.'",
+                options: ["Artist", "Auditor", "Astrologer", "Assailant"],
+                correct: 0,
+                hint: "A creative creator of fine arts.",
+                explanation: "Artist (Noun) is a person who creates paintings, drawings, sculptures, or engages in performing arts."
+            },
+            {
+                id: 6,
+                badge: "Synonym Matching",
+                subtopic: "Articulate",
+                question: "Choose the closest synonym for 'Articulate' among the following options:",
+                options: ["Eloquent", "Obscure", "Vague", "Timid"],
+                correct: 0,
+                hint: "Look for a word meaning fluent and persuasive.",
+                explanation: "'Eloquent' is a direct synonym for articulate, meaning fluent or persuasive in speaking or writing."
+            },
+            {
+                id: 7,
+                badge: "Grammar & Root",
+                subtopic: "Articulation",
+                question: "What is the primary grammatical category (Part of Speech) of the word 'Articulation' as listed in standard vocab lexicons?",
+                options: ["Noun (N.)", "Adjective (Adj.)", "Verb (V.)", "Adverb (Adv.)"],
+                correct: 0,
+                hint: "Words ending in '-tion' are typically what part of speech?",
+                explanation: "Articulation is a Noun (N.). It denotes the act or manner of articulating words or ideas."
+            },
+            {
+                id: 8,
+                badge: "Fill in the Blank",
+                subtopic: "Articulate",
+                question: "Despite his nervousness, the student managed to ________ his thoughts clearly during the viva examination.",
+                options: ["Articulate", "Ascribe", "Assent", "Audit"],
+                correct: 0,
+                hint: "Needs a verb meaning to express clearly.",
+                explanation: "Here 'articulate' is used as a verb meaning to pronounce or express distinctly."
+            },
+            {
+                id: 9,
+                badge: "Antonym Check",
+                subtopic: "Articulate",
+                question: "Which of the following is an ANTONYM of 'Articulate'?",
+                options: ["Inarticulate", "Fluent", "Coherent", "Expressive"],
+                correct: 0,
+                hint: "Opposite of clear and fluent.",
+                explanation: "'Inarticulate' is the direct antonym, meaning spoken indistinctly or lacking the ability to express oneself clearly."
+            },
+            {
+                id: 10,
+                badge: "Contextual Vocab",
+                subtopic: "Artist",
+                question: "Identify the word from the given definition: 'A skilled practitioner in any of the fine arts.'",
+                options: ["Artist", "Assailant", "Auditor", "Astronaut"],
+                correct: 0,
+                hint: "Creativity and fine arts are the key markers.",
+                explanation: "Artist denotes someone skilled in fine arts."
+            },
+            {
+                id: 11,
+                badge: "Idiomatic Usage",
+                subtopic: "Articulate",
+                question: "When a lawyer presents an argument with supreme clarity and logical connection, we call their presentation:",
+                options: ["Articulate and coherent", "Askance and vague", "Austere and harsh", "Audible and silent"],
+                correct: 0,
+                hint: "Logical and clear.",
+                explanation: "An articulate presentation is clear, logical, and easy to follow."
+            },
+            {
+                id: 12,
+                badge: "Root Word Analysis",
+                subtopic: "Articulate",
+                question: "The root 'articulus' in Latin relates to joints or dividing into sections. In language, an articulate person is one who:",
+                options: ["Joints/connects words and ideas clearly and distinctly", "Breaks down rules of grammar", "Stutters continuously", "Avoids speaking in public"],
+                correct: 0,
+                hint: "Connecting thoughts smoothly like well-fitted joints.",
+                explanation: "Articulate implies connecting parts of speech clearly so meaning is distinct and seamless."
+            },
+
+            // --- ASCETIC / ASCRIBING (13-24) ---
+            {
+                id: 13,
+                badge: "One-Word Substitution",
+                subtopic: "Ascetic",
+                question: "Choose the single word for: 'One who denies oneself ordinary bodily pleasures, often for religious or spiritual discipline.'",
+                options: ["Ascetic", "Atheist", "Astronaut", "Autocrat"],
+                correct: 0,
+                hint: "Monks or hermits living a life of severe self-discipline.",
+                explanation: "Ascetic (Noun/Adjective) is a person who practices severe self-discipline and abstains from physical pleasures. Synonym: Hermit, Recluse, Stoic."
+            },
+            {
+                id: 14,
+                badge: "Contextual Vocab",
+                subtopic: "Ascetic",
+                question: "Swami Ji lived an extremely ________ life in the Himalayas, sleeping on a bare floor and eating simple vegetarian food.",
+                options: ["Ascetic", "Audible", "Authentic", "Assaulting"],
+                correct: 0,
+                hint: "Deals with severe self-denial and simplicity.",
+                explanation: "'Ascetic' describes a lifestyle characterized by severe abstinence and asceticism."
+            },
+            {
+                id: 15,
+                badge: "One-Word Substitution",
+                subtopic: "Ascribe",
+                question: "Identify the term for: 'To attribute a cause or characteristic to something or someone.'",
+                options: ["Ascribe", "Assent", "Audit", "Articulate"],
+                correct: 0,
+                hint: "To assign credit or blame to a source.",
+                explanation: "Ascribe (Verb) means to attribute something to a specified cause, source, or author (e.g., 'to ascribe success to hard work')."
+            },
+            {
+                id: 16,
+                badge: "Statement Analysis",
+                subtopic: "Ascetic",
+                question: "Which of the following statements about an 'Ascetic' is correct?",
+                options: [
+                    "An ascetic indulges in luxurious banquets and expensive garments.",
+                    "An ascetic leads a rigorous life of self-denial and spiritual austerity.",
+                    "An ascetic is an official who inspects financial accounts.",
+                    "An ascetic believes firmly in atheism and scientific materialism."
+                ],
+                correct: 1,
+                hint: "Self-denial and austerity.",
+                explanation: "Option B is correct. Ascetics practice strict self-discipline and reject worldly luxuries."
+            },
+            {
+                id: 17,
+                badge: "Synonym Matching",
+                subtopic: "Ascribe",
+                question: "Which word is a strong synonym for 'Ascribe'?",
+                options: ["Attribute", "Deny", "Absolve", "Reject"],
+                correct: 0,
+                hint: "To assign or credit something.",
+                explanation: "'Attribute' is synonymous with ascribe. Both mean assigning a quality or cause to someone/something."
+            },
+            {
+                id: 18,
+                badge: "Fill in the Blank",
+                subtopic: "Ascribe",
+                question: "Historians tend to ________ the sudden downfall of the empire to economic mismanagement rather than foreign invasion.",
+                options: ["Ascribe", "Articulate", "Audit", "Assent"],
+                correct: 0,
+                hint: "Assign reason or cause.",
+                explanation: "'Ascribe' fits perfectly when attributing a historical event to a specific cause."
+            },
+            {
+                id: 19,
+                badge: "Antonym Check",
+                subtopic: "Ascetic",
+                question: "What is the antonym of 'Ascetic'?",
+                options: ["Hedonistic", "Spartan", "Austere", "Abstemious"],
+                correct: 0,
+                hint: "Someone devoted to pleasure and self-gratification.",
+                explanation: "'Hedonistic' (devoted to pleasure) is the exact antonym of ascetic."
+            },
+            {
+                id: 20,
+                badge: "Grammar & Root",
+                subtopic: "Ascribe",
+                question: "What part of speech is the word 'Ascribe'?",
+                options: ["Verb (V.)", "Noun (N.)", "Adjective (Adj.)", "Adverb (Adv.)"],
+                correct: 0,
+                hint: "Action word meaning to assign or attribute.",
+                explanation: "Ascribe is a Verb (V.)."
+            },
+            {
+                id: 21,
+                badge: "One-Word Substitution",
+                subtopic: "Askance",
+                question: "Choose the word for: 'Nations or individuals that do not trust each other, looking upon each other with suspicion or disapproval.'",
+                options: ["Askance", "Audible", "Authentic", "Assenting"],
+                correct: 0,
+                hint: "Looking sideways with distrust.",
+                explanation: "Askance (Adverb/Adjective) means with an attitude or look of suspicion or disapproval (e.g., 'to look askance at a proposal')."
+            },
+            {
+                id: 22,
+                badge: "Contextual Vocab",
+                subtopic: "Askance",
+                question: "When the politician promised tax-free luxury cars for everyone, experienced economists looked ________ at his claims.",
+                options: ["Askance", "Articulately", "Audibly", "Autocratically"],
+                correct: 0,
+                hint: "With suspicion and skepticism.",
+                explanation: "Looking 'askance' means viewing with distrust or skepticism."
+            },
+            {
+                id: 23,
+                badge: "Statement Analysis",
+                subtopic: "Ascribe",
+                question: "In sentence construction, 'to ascribe a book to an author' means:",
+                options: [
+                    "To claim that the author wrote the book.",
+                    "To burn the book publicly.",
+                    "To audit the royalty accounts of the book.",
+                    "To translate the book into another language."
+                ],
+                correct: 0,
+                hint: "Attributing authorship.",
+                explanation: "Ascribing a work to someone means attributing authorship or origin to them."
+            },
+            {
+                id: 24,
+                badge: "Synonym Check",
+                subtopic: "Askance",
+                question: "Which phrase best captures the meaning of 'look askance'?",
+                options: ["Look with suspicion and mistrust", "Look with total admiration", "Look with closed eyes", "Look through a telescope"],
+                correct: 0,
+                hint: "Distrustful glance.",
+                explanation: "To look askance means to view with suspicion or mistrust."
+            },
+
+            // --- ASSAILANT / ASSASSIN / ASSENT / ASSERTIVE (25-40) ---
+            {
+                id: 25,
+                badge: "One-Word Substitution",
+                subtopic: "Assailant",
+                question: "What is the one-word substitution for: 'A person who physically attacks another.'",
+                options: ["Assailant", "Assent", "Auditor", "Astrologer"],
+                correct: 0,
+                hint: "Someone who commits an assault.",
+                explanation: "Assailant (Noun) is a person who physically attacks another person."
+            },
+            {
+                id: 26,
+                badge: "One-Word Substitution",
+                subtopic: "Assassin",
+                question: "Choose the single word for: 'A person who kills somebody, especially for political reasons or hire.'",
+                options: ["Assassin", "Ascetic", "Atheist", "Astronaut"],
+                correct: 0,
+                hint: "Hired killer or political executioner.",
+                explanation: "Assassin (Noun) refers to someone who murders an important person for political or monetary motives."
+            },
+            {
+                id: 27,
+                badge: "One-Word Substitution",
+                subtopic: "Assent",
+                question: "Identify the term for: 'To agree to a request, an idea, or a suggestion formally.'",
+                options: ["Assent", "Ascribe", "Audit", "Articulate"],
+                correct: 0,
+                hint: "Official agreement or consent.",
+                explanation: "Assent (Verb/Noun) means the expression of approval or agreement, especially official agreement by a governing body."
+            },
+            {
+                id: 28,
+                badge: "One-Word Substitution",
+                subtopic: "Assertive",
+                question: "What is the term for: 'The quality of being politely firm and demanding, expressing one's views with confidence.'",
+                options: ["Assertive", "Audible", "Austere", "Askance"],
+                correct: 0,
+                hint: "Confident and self-assured without being aggressive.",
+                explanation: "Assertive (Adjective) means having or showing a confident and forceful personality, standing up for one's rights politely."
+            },
+            {
+                id: 29,
+                badge: "Contextual Vocab",
+                subtopic: "Assassin",
+                question: "The historical thriller detailed how the secret society plotted the ________ of the archduke.",
+                options: ["Assassination", "Asceticism", "Auditing", "Articulation"],
+                correct: 0,
+                hint: "Political murder noun form.",
+                explanation: "Assassination is the noun form of the act committed by an assassin."
+            },
+            {
+                id: 30,
+                badge: "Synonym Matching",
+                subtopic: "Assent",
+                question: "Which of the following is a direct synonym for 'Assent'?",
+                options: ["Consent", "Dissent", "Refusal", "Protest"],
+                correct: 0,
+                hint: "Agreement vs disagreement.",
+                explanation: "'Consent' is a synonym for assent. Dissent and refusal are antonyms."
+            },
+            {
+                id: 31,
+                badge: "Statement Analysis",
+                subtopic: "Assertive",
+                question: "Which statement best distinguishes 'Assertive' from 'Aggressive'?",
+                options: [
+                    "Assertive is polite yet firm in expressing views, whereas aggressive violates others' boundaries with hostility.",
+                    "Assertive means timid and shy, whereas aggressive means loud.",
+                    "There is no difference; both are negative traits.",
+                    "Assertive refers to financial accounting audits."
+                ],
+                correct: 0,
+                hint: "Firm and polite vs hostile.",
+                explanation: "Option A is accurate. Assertiveness is healthy self-expression without aggression."
+            },
+            {
+                id: 32,
+                badge: "Fill in the Blank",
+                subtopic: "Assent",
+                question: "The bill passed by Parliament will become law once the President gives his official ________.",
+                options: ["Assent", "Audit", "Ascribe", "Asylum"],
+                correct: 0,
+                hint: "Presidential signature of agreement.",
+                explanation: "Presidential assent is the formal approval required for legislation."
+            },
+            {
+                id: 33,
+                badge: "Grammar & Root",
+                subtopic: "Assailant",
+                question: "What part of speech is 'Assailant'?",
+                options: ["Noun (N.)", "Verb (V.)", "Adjective (Adj.)", "Adverb (Adv.)"],
+                correct: 0,
+                hint: "A person who does something.",
+                explanation: "Assailant is a Noun (N.) denoting the attacker."
+            },
+            {
+                id: 34,
+                badge: "Antonym Check",
+                subtopic: "Assent",
+                question: "What is the antonym of 'Assent'?",
+                options: ["Dissent", "Acquiesce", "Agree", "Concur"],
+                correct: 0,
+                hint: "Disagreement.",
+                explanation: "'Dissent' means to hold or express opinions that are different from previously commonly held views; it is the antonym of assent."
+            },
+            {
+                id: 35,
+                badge: "Contextual Vocab",
+                subtopic: "Assailant",
+                question: "The CCTV footage clearly captured the ________ fleeing the scene after the robbery.",
+                options: ["Assailant", "Auditor", "Astrologer", "Ascetic"],
+                correct: 0,
+                hint: "The person who attacked/robbed.",
+                explanation: "Assailant fits the context of someone committing an attack."
+            },
+            {
+                id: 36,
+                badge: "Synonym Check",
+                subtopic: "Assertive",
+                question: "Choose the closest synonym for 'Assertive':",
+                options: ["Confident", "Submissive", "Diffident", "Reticent"],
+                correct: 0,
+                hint: "Self-assured.",
+                explanation: "'Confident' is a close synonym. Submissive, diffident, and reticent are antonyms."
+            },
+            {
+                id: 37,
+                badge: "Statement Analysis",
+                subtopic: "Assassin",
+                question: "Why is an 'assassin' distinguished from a common murderer in legal terminology?",
+                options: [
+                    "An assassin typically kills for political motives, ideology, or hire, targeting prominent figures.",
+                    "An assassin only kills during wartime.",
+                    "An assassin never uses weapons.",
+                    "An assassin's crimes are always pardoned."
+                ],
+                correct: 0,
+                hint: "Political or targeted motive.",
+                explanation: "Option A accurately reflects the specialized definition of an assassin."
+            },
+            {
+                id: 38,
+                badge: "Fill in the Blank",
+                subtopic: "Assertive",
+                keyword: "assertive",
+                question: "In modern workplace training, employees are encouraged to be ________ rather than passive when communicating project requirements.",
+                options: ["Assertive", "Ascetic", "Askance", "Audible"],
+                correct: 0,
+                hint: "Standing up for oneself professionally.",
+                explanation: "Assertive behavior ensures clear, respectful communication of needs."
+            },
+            {
+                id: 39,
+                badge: "Root Word Analysis",
+                subtopic: "Assent",
+                question: "The prefix 'ad-' (to) combined with 'sentire' (to feel) forms 'Assent', which etymologically means:",
+                options: ["To feel toward or agree with someone's sentiment", "To send away a letter", "To sense danger", "To feel lonely"],
+                correct: 0,
+                hint: "Feeling in agreement.",
+                explanation: "Assent derives from feeling or thinking the same way toward a proposition."
+            },
+            {
+                id: 40,
+                badge: "Contextual Vocab",
+                subtopic: "Assailant",
+                question: "The police apprehended the ________ within hours of the violent street confrontation.",
+                options: ["Assailant", "Artist", "Astronaut", "Auditor"],
+                correct: 0,
+                hint: "The attacker.",
+                explanation: "Assailant is the precise term for an attacker."
+            },
+
+            // --- ASTROLOGER / ASTROLOGY / ASTRONAUT / ASTRONOMY (41-56) ---
+            {
+                id: 41,
+                badge: "One-Word Substitution",
+                subtopic: "Astrologer",
+                question: "Choose the single word for: 'One who tells future events from the stars and planetary positions.'",
+                options: ["Astrologer", "Astronomer", "Auditor", "Ascetic"],
+                correct: 0,
+                hint: "Deals with horoscopes and zodiac signs.",
+                explanation: "Astrologer (Noun) is a person who uses astrology to divine the future and character traits based on celestial bodies."
+            },
+            {
+                id: 42,
+                badge: "One-Word Substitution",
+                subtopic: "Astrology",
+                question: "Identify the term for: 'The pseudo-science/practice of foretelling events by mapping stars and planetary movements.'",
+                options: ["Astrology", "Astronomy", "Autobiography", "Auditing"],
+                correct: 0,
+                hint: "Focuses on horoscopes and destiny.",
+                explanation: "Astrology (Noun) is the study of the supposed influence of star and planet positions on human affairs and terrestrial events."
+            },
+            {
+                id: 43,
+                badge: "One-Word Substitution",
+                subtopic: "Astronaut",
+                question: "What is the one-word substitution for: 'A person engaged in or trained for spaceflight.'",
+                options: ["Astronaut", "Astrologer", "Assailant", "Atheist"],
+                correct: 0,
+                hint: "Space traveler (cosmonaut equivalent).",
+                explanation: "Astronaut (Noun) is a person trained to travel in a spacecraft."
+            },
+            {
+                id: 44,
+                badge: "One-Word Substitution",
+                subtopic: "Astronomy",
+                question: "Choose the term for: 'The scientific study of celestial bodies like sun, moon, stars, planets, and galaxies.'",
+                options: ["Astronomy", "Astrology", "Atonement", "Autocracy"],
+                correct: 0,
+                hint: "Pure scientific branch of space physics.",
+                explanation: "Astronomy (Noun) is the branch of science that deals with celestial objects, space, and the physical universe as a whole."
+            },
+            {
+                id: 45,
+                badge: "Statement Analysis",
+                subtopic: "Astronomy vs Astrology",
+                question: "What is the primary difference between 'Astronomy' and 'Astrology'?",
+                options: [
+                    "Astronomy is an empirical science studying celestial physics, whereas astrology is a belief system linking stars to human destinies.",
+                    "Astronomy deals with stars while astrology deals with ocean tides.",
+                    "They are identical terms used interchangeably in scientific literature.",
+                    "Astrology is conducted in space, whereas astronomy is done on Earth."
+                ],
+                correct: 0,
+                hint: "Science vs divination/belief.",
+                explanation: "Option A correctly contrasts astronomy (hard science) with astrology (divinatory practice)."
+            },
+            {
+                id: 46,
+                badge: "Contextual Vocab",
+                subtopic: "Astronaut",
+                question: "Rakesh Sharma became a national hero when he orbited the Earth as India's premier ________.",
+                options: ["Astronaut", "Astrologer", "Auditor", "Ascetic"],
+                correct: 0,
+                hint: "Spaceflight crew member.",
+                explanation: "Astronaut is the correct term for a spaceflight traveler."
+            },
+            {
+                id: 47,
+                badge: "Fill in the Blank",
+                subtopic: "Astronomy",
+                question: "Modern ________ relies heavily on advanced space telescopes like James Webb to observe distant galaxies.",
+                options: ["Astronomy", "Astrology", "Autocracy", "Atheism"],
+                correct: 0,
+                hint: "Scientific study of the universe.",
+                explanation: "Astronomy is the scientific study of celestial bodies."
+            },
+            {
+                id: 48,
+                badge: "Grammar & Root",
+                subtopic: "Astronaut",
+                question: "The Greek root 'astron' means star and 'nautēs' means sailor. Therefore, an astronaut literally translates to:",
+                options: ["Sailor among the stars", "Stargazer on land", "Writer of star stories", "Builder of telescopes"],
+                correct: 0,
+                hint: "Star + Sailor.",
+                explanation: "Etymologically, astronaut means star-sailor."
+            },
+            {
+                id: 49,
+                badge: "Contextual Vocab",
+                subtopic: "Astrologer",
+                question: "People often consult an ________ before fixing wedding dates or auspicious occasions.",
+                options: ["Astrologer", "Astronomer", "Auditor", "Assailant"],
+                correct: 0,
+                hint: "Horoscope reader.",
+                explanation: "An astrologer forecasts events and auspicious times using planetary charts."
+            },
+            {
+                id: 50,
+                badge: "Statement Analysis",
+                subtopic: "Astronomy",
+                question: "Which of the following topics would NOT be studied under 'Astronomy'?",
+                options: [
+                    "Zodiac sign compatibility for romantic marriages",
+                    "Supernovae explosions and black hole accretion disks",
+                    "Orbital mechanics of planetary satellites",
+                    "Cosmic microwave background radiation"
+                ],
+                correct: 0,
+                hint: "Zodiac is astrology, not astronomy.",
+                explanation: "Zodiac compatibility falls under astrology, whereas the rest are core astronomical and astrophysical sciences."
+            },
+            {
+                id: 51,
+                badge: "Synonym Check",
+                subtopic: "Astronaut",
+                question: "Which Russian term is synonymous with 'Astronaut'?",
+                options: ["Cosmonaut", "Atheist", "Ascetic", "Autocrat"],
+                correct: 0,
+                hint: "Soviet space traveler.",
+                explanation: "Cosmonaut is the Russian equivalent of astronaut."
+            },
+            {
+                id: 52,
+                badge: "Fill in the Blank",
+                subtopic: "Astrology",
+                question: "Critics argue that ________ lacks empirical evidence, treating it as superstition rather than science.",
+                options: ["Astrology", "Astronomy", "Auditing", "Articulation"],
+                correct: 0,
+                hint: "Star-based fortune telling.",
+                explanation: "Astrology is frequently debated for lacking scientific verifiability."
+            },
+            {
+                id: 53,
+                badge: "Grammar & Root",
+                subtopic: "Astronomy",
+                question: "What is the suffix '-nomogy / -nomy' derived from in 'Astronomy'?",
+                options: ["Nomos (laws or arrangement)", "Nomen (name)", "Nectar (drink)", "Nautilus (shell)"],
+                correct: 0,
+                hint: "Laws of the stars.",
+                explanation: "Astronomy combines 'astro' (stars) + 'nomos' (laws/system)."
+            },
+            {
+                id: 54,
+                badge: "Contextual Vocab",
+                subtopic: "Astronomer",
+                question: "Who among the following is a famous historical astronomer who formulated laws of planetary motion?",
+                options: ["Johannes Kepler", "Nostradamus", "Alexander the Great", "Julius Caesar"],
+                correct: 0,
+                hint: "Laws of planetary motion.",
+                explanation: "Johannes Kepler was a pioneering astronomer and mathematician."
+            },
+            {
+                id: 55,
+                badge: "Statement Analysis",
+                subtopic: "Astronaut",
+                question: "Which of the following physical training regimes is essential for an astronaut?",
+                options: [
+                    "Zero-gravity parabolic flights and centrifuge training",
+                    "Deep-sea diving and mountain climbing exclusively",
+                    "Horoscope chart reading and palmistry",
+                    "Financial accounting audits"
+                ],
+                correct: 0,
+                hint: "G-force and weightlessness preparation.",
+                explanation: "Astronauts undergo intense G-force centrifuge and weightlessness training."
+            },
+            {
+                id: 56,
+                badge: "Synonym Matching",
+                subtopic: "Astronomy",
+                question: "Astrophysics and cosmology are closely related sister disciplines of:",
+                options: ["Astronomy", "Astrology", "Asylum", "Autocracy"],
+                correct: 0,
+                hint: "Scientific study of the cosmos.",
+                explanation: "Astronomy encompasses astrophysics and cosmology."
+            },
+
+            // --- ASYLUM / ATHEIST / ATONEMENT / AUDIBLE (57-72) ---
+            {
+                id: 57,
+                badge: "One-Word Substitution",
+                subtopic: "Asylum",
+                question: "Choose the single word for: 'A place that provides refuge, or a hospital where mentally ill patients could be cared for over long periods.'",
+                options: ["Asylum", "Auditorium", "Autocracy", "Ascetic"],
+                correct: 0,
+                hint: "Safe haven or psychiatric institution.",
+                explanation: "Asylum (Noun) means sanctuary, shelter, or a psychiatric hospital."
+            },
+            {
+                id: 58,
+                badge: "One-Word Substitution",
+                subtopic: "Atheist",
+                question: "Identify the term for: 'One who doesn't believe in the existence of God or divine powers.'",
+                options: ["Atheist", "Ascetic", "Astrologer", "Artist"],
+                correct: 0,
+                hint: "Prefix 'a-' (without) + 'theos' (god).",
+                explanation: "Atheist (Noun) is a person who disbelieves or lacks belief in the existence of God or gods."
+            },
+            {
+                id: 59,
+                badge: "One-Word Substitution",
+                subtopic: "Atonement",
+                question: "What is the one-word substitution for: 'An action of making amends for a wrong or injury.'",
+                options: ["Atonement", "Audit", "Articulation", "Asylum"],
+                correct: 0,
+                hint: "Repentance and making up for mistakes.",
+                explanation: "Atonement (Noun) is reparation or expiation for a wrong or injury."
+            },
+            {
+                id: 60,
+                badge: "One-Word Substitution",
+                subtopic: "Audible",
+                question: "Choose the term for: 'That can be heard clearly without strain.'",
+                options: ["Audible", "Authentic", "Austere", "Articulate"],
+                correct: 0,
+                hint: "Derived from audio / hearing.",
+                explanation: "Audible (Adjective) means able to be heard aloud."
+            },
+            {
+                id: 61,
+                badge: "Contextual Vocab",
+                subtopic: "Asylum",
+                question: "Political dissidents sought diplomatic ________ in the foreign embassy to escape persecution.",
+                options: ["Asylum", "Auditing", "Astrology", "Atonement"],
+                correct: 0,
+                hint: "Protection and refuge.",
+                explanation: "Political asylum is protection granted by a nation to someone fleeing persecution."
+            },
+            {
+                id: 62,
+                badge: "Antonym Check",
+                subtopic: "Atheist",
+                question: "What is the direct antonym of 'Atheist'?",
+                options: ["Theist", "Agnostic", "Heretic", "Skeptic"],
+                correct: 0,
+                hint: "One who believes in God.",
+                explanation: "'Theist' (believer in God) is the direct antonym of atheist."
+            },
+            {
+                id: 63,
+                badge: "Fill in the Blank",
+                subtopic: "Atonement",
+                question: "The repentant criminal offered community service as a sincere act of ________ for his past crimes.",
+                options: ["Atonement", "Astronomy", "Auditing", "Autocracy"],
+                correct: 0,
+                hint: "Making amends.",
+                explanation: "Atonement refers to acts compensating for past wrongs."
+            },
+            {
+                id: 64,
+                badge: "Statement Analysis",
+                subtopic: "Audible",
+                question: "Which of the following describes something that is NOT 'audible'?",
+                options: ["A whisper so faint that nobody in the room can pick up any sound", "A loud siren echoing across the city", "A rock concert speaker system at full blast", "A telephone ring tone in a quiet hallway"],
+                correct: 0,
+                hint: "Faint whisper below hearing threshold.",
+                explanation: "Option A describes inaudible sound (too faint to be heard)."
+            },
+            {
+                id: 65,
+                badge: "Synonym Matching",
+                subtopic: "Atonement",
+                question: "Choose the closest synonym for 'Atonement':",
+                options: ["Redemption", "Transgression", "Offense", "Violation"],
+                correct: 0,
+                hint: "Salvation and making amends.",
+                explanation: "'Redemption' or 'Expiation' are close synonyms to atonement."
+            },
+            {
+                id: 66,
+                badge: "Grammar & Root",
+                subtopic: "Audible",
+                question: "The Latin root 'audire' means 'to hear'. Which other word shares this root?",
+                options: ["Auditorium", "Autograph", "Astronomy", "Ascetic"],
+                correct: 0,
+                hint: "Place for hearing.",
+                explanation: "'Auditorium' shares the root 'audire' (hearing place)."
+            },
+            {
+                id: 67,
+                badge: "Contextual Vocab",
+                subtopic: "Atheist",
+                question: "Because he based all his worldviews purely on empirical science and logical deduction without divine intervention, he identified as an ________.",
+                options: ["Atheist", "Astrologer", "Ascetic", "Autocrat"],
+                correct: 0,
+                hint: "Non-believer in deities.",
+                explanation: "Atheist fits the non-belief profile."
+            },
+            {
+                id: 68,
+                badge: "Statement Analysis",
+                subtopic: "Asylum",
+                question: "Historically, the term 'asylum' had dual meanings. What were they?",
+                options: ["A sanctuary for refugees/criminals and an institution for psychiatric care.",
+                    "A spacecraft launching pad and a school.",
+                    "A financial bank and a court of law.",
+                    "A library and a gymnasium."
+                ],
+                correct: 0,
+                hint: "Refuge vs mental hospital.",
+                explanation: "Option A correctly captures both traditional dictionary definitions (refuge/sanctuary and psychiatric hospital)."
+            },
+            {
+                id: 69,
+                badge: "Fill in the Blank",
+                subtopic: "Audible",
+                question: "Please speak into the microphone so that your voice is ________ to everyone in the back rows.",
+                options: ["Audible", "Askance", "Austere", "Authentic"],
+                correct: 0,
+                hint: "Capable of being heard.",
+                explanation: "Audible means clear enough to be heard."
+            },
+            {
+                id: 70,
+                badge: "Synonym Check",
+                subtopic: "Asylum",
+                question: "Choose the synonym for 'Asylum' when used in the context of refuge:",
+                options: ["Sanctuary", "Danger", "Exposure", "Peril"],
+                correct: 0,
+                hint: "Safe shelter.",
+                explanation: "Sanctuary is a direct synonym for asylum."
+            },
+            {
+                id: 71,
+                badge: "Grammar & Root",
+                subtopic: "Atheist",
+                question: "What is the noun form representing the philosophical belief system of an atheist?",
+                options: ["Atheism", "Atheistic", "Atheize", "Atheistically"],
+                correct: 0,
+                hint: "Ending in '-ism'.",
+                explanation: "Atheism is the noun doctrine or belief system."
+            },
+            {
+                id: 72,
+                badge: "Contextual Vocab",
+                subtopic: "Atonement",
+                question: "In literature, characters often embark on epic quests as an act of ________ for tragic mistakes.",
+                options: ["Atonement", "Auditing", "Astronomy", "Askance"],
+                correct: 0,
+                hint: "Making amends.",
+                explanation: "Atonement is the standard term for making amends."
+            },
+
+            // --- AUDIT / AUDITOR / AUDITORIUM / AUSTERE (73-88) ---
+            {
+                id: 73,
+                badge: "One-Word Substitution",
+                subtopic: "Audit",
+                question: "Choose the single word for: 'An official inspection of a company's or an individual's financial accounts and records.'",
+                options: ["Audit", "Autocracy", "Asylum", "Astrology"],
+                correct: 0,
+                hint: "Financial books examination.",
+                explanation: "Audit (Noun) is an official inspection of accounts, typically by an independent body."
+            },
+            {
+                id: 74,
+                badge: "One-Word Substitution",
+                subtopic: "Auditor",
+                question: "Identify the term for: 'One who makes an official examination of accounts and financial records.'",
+                options: ["Auditor", "Assailant", "Astrologer", "Ascetic"],
+                correct: 0,
+                hint: "Professional financial examiner.",
+                explanation: "Auditor (Noun) is a person authorized to inspect and verify financial accounts."
+            },
+            {
+                id: 75,
+                badge: "One-Word Substitution",
+                subtopic: "Auditorium",
+                question: "What is the one-word substitution for: 'A building or hall where an audience sits for performances, lectures, or concerts.'",
+                options: ["Auditorium", "Asylum", "Autobiography", "Autocracy"],
+                correct: 0,
+                hint: "Large seating hall for spectators.",
+                explanation: "Auditorium (Noun) is the part of a theatre, concert hall, or public building in which the audience sits."
+            },
+            {
+                id: 76,
+                badge: "One-Word Substitution",
+                subtopic: "Austere",
+                question: "Choose the term for: 'Severe or strict in manner, attitude, or appearance; unadorned and simple.'",
+                options: ["Austere", "Audible", "Authentic", "Articulate"],
+                correct: 0,
+                hint: "Stern, strict, or plain.",
+                explanation: "Austere (Adjective) means severe or strict in manner, lacking luxuries or ornamentation (e.g., austere monastic rooms)."
+            },
+            {
+                id: 77,
+                badge: "Contextual Vocab",
+                subtopic: "Audit",
+                question: "The tax department ordered a rigorous ________ after noticing discrepancies in the corporate balance sheet.",
+                options: ["Audit", "Asylum", "Atonement", "Astronomy"],
+                correct: 0,
+                hint: "Financial check.",
+                explanation: "Audit is the systematic examination of accounts."
+            },
+            {
+                id: 78,
+                badge: "Statement Analysis",
+                subtopic: "Auditor",
+                question: "Which of the following is the primary responsibility of a certified 'Auditor'?",
+                options: [
+                    "To examine financial statements and ensure compliance with accounting standards.",
+                    "To forecast weather and map stars.",
+                    "To write autobiographies for politicians.",
+                    "To design theatrical auditoriums."
+                ],
+                correct: 0,
+                hint: "Checking accounts.",
+                explanation: "Option A accurately defines an auditor's professional role."
+            },
+            {
+                id: 79,
+                badge: "Fill in the Blank",
+                subtopic: "Auditorium",
+                question: "Over one thousand students gathered inside the university ________ for the annual convocation ceremony.",
+                options: ["Auditorium", "Asylum", "Audit", "Autocracy"],
+                correct: 0,
+                hint: "Large public hall.",
+                explanation: "Auditorium is the correct venue term."
+            },
+            {
+                id: 80,
+                badge: "Synonym Matching",
+                subtopic: "Austere",
+                question: "Choose the closest synonym for 'Austere':",
+                options: ["Stern", "Luxurious", "Extravagant", "Ornate"],
+                correct: 0,
+                hint: "Strict and unadorned.",
+                explanation: "'Stern' is a direct synonym. Luxurious, extravagant, and ornate are antonyms."
+            },
+            {
+                id: 81,
+                badge: "Antonym Check",
+                subtopic: "Austere",
+                question: "What is the antonym of 'Austere'?",
+                options: ["Luxurious", "Spartan", "Severe", "Strict"],
+                correct: 0,
+                hint: "Opposite of plain and strict.",
+                explanation: "'Luxurious' is the antonym of austere."
+            },
+            {
+                id: 82,
+                badge: "Grammar & Root",
+                subtopic: "Audit",
+                question: "The word 'audit' comes from the Latin 'audire' (to hear). Historically, why were financial accounts called an audit?",
+                options: [
+                    "Because accounts were formerly checked orally by hearing them read aloud before being written.",
+                    "Because auditors listened to music while working.",
+                    "Because accountants spoke in code.",
+                    "Because audits were announced through loudspeakers."
+                ],
+                correct: 0,
+                hint: "Oral verification in ancient times.",
+                explanation: "Historically, accounts were examined by hearing them read aloud."
+            },
+            {
+                id: 83,
+                badge: "Contextual Vocab",
+                subtopic: "Austere",
+                question: "The monk's cell contained only a wooden bed and a desk, reflecting his ________ lifestyle.",
+                options: ["Austere", "Audible", "Articulate", "Authentic"],
+                correct: 0,
+                hint: "Plain and unadorned.",
+                explanation: "Austere describes severe simplicity."
+            },
+            {
+                id: 84,
+                badge: "Statement Analysis",
+                subtopic: "Auditorium",
+                question: "Which architectural feature is most crucial for a large concert auditorium?",
+                options: [
+                    "Acoustic design to ensure clear sound propagation for the audience",
+                    "Medical psychiatric wards",
+                    "Financial account balancing ledgers",
+                    "Star-mapping telescopes on the roof"
+                ],
+                correct: 0,
+                hint: "Sound quality for audience.",
+                explanation: "Acoustics are paramount in auditoriums."
+            },
+            {
+                id: 85,
+                badge: "Fill in the Blank",
+                subtopic: "Auditor",
+                question: "Independent ________ pointed out several loopholes in the company's internal control mechanisms.",
+                options: ["Auditors", "Astronauts", "Astrologers", "Assailants"],
+                correct: 0,
+                hint: "Financial inspectors.",
+                explanation: "Auditors inspect financial controls."
+            },
+            {
+                id: 86,
+                badge: "Synonym Check",
+                subtopic: "Audit",
+                question: "Which of the following terms is synonymous with conducting an 'Audit'?",
+                options: ["Inspection", "Neglect", "Creation", "Abandonment"],
+                correct: 0,
+                hint: "Thorough check.",
+                explanation: "Inspection is synonymous with audit."
+            },
+            {
+                id: 87,
+                badge: "Grammar & Root",
+                subtopic: "Austere",
+                question: "What part of speech is 'Austere'?",
+                options: ["Adjective (Adj.)", "Noun (N.)", "Verb (V.)", "Adverb (Adv.)"],
+                correct: 0,
+                hint: "Describes a noun (e.g., austere lifestyle).",
+                explanation: "Austere is an Adjective."
+            },
+            {
+                id: 88,
+                badge: "Contextual Vocab",
+                subtopic: "Austere",
+                question: "The government announced ________ economic measures to control runaway inflation and national debt.",
+                options: ["Austere", "Audible", "Articulate", "Authentic"],
+                correct: 0,
+                hint: "Strict economic cutbacks.",
+                explanation: "Austerity measures refer to strict economic policies."
+            },
+
+            // --- AUTHENTIC / AUTOBIOGRAPHY / AUTOCRACY (89-100) ---
+            {
+                id: 89,
+                badge: "One-Word Substitution",
+                subtopic: "Authentic",
+                question: "Choose the single word for: 'Made or done in the traditional or original way; something that is genuine and not a copy.'",
+                options: ["Authentic", "Audible", "Austere", "Articulate"],
+                correct: 0,
+                hint: "Real, genuine, trustworthy.",
+                explanation: "Authentic (Adjective) means of undisputed origin; genuine."
+            },
+            {
+                id: 90,
+                badge: "One-Word Substitution",
+                subtopic: "Autobiography",
+                question: "Identify the term for: 'The life history of a person written by himself.'",
+                options: ["Autobiography", "Autocracy", "Audit", "Asylum"],
+                correct: 0,
+                hint: "Self-written life story.",
+                explanation: "Autobiography (Noun) is an account of a person's life written by that person."
+            },
+            {
+                id: 91,
+                badge: "One-Word Substitution",
+                subtopic: "Autocracy",
+                question: "What is the one-word substitution for: 'A system of government of a country in which one person has complete and unlimited power.'",
+                options: ["Autocracy", "Astronomy", "Atonement", "Auditorium"],
+                correct: 0,
+                hint: "Rule by one absolute ruler.",
+                explanation: "Autocracy (Noun) is a system of government by one person with absolute power."
+            },
+            {
+                id: 92,
+                badge: "Contextual Vocab",
+                subtopic: "Authentic",
+                question: "Experts verified that the 17th-century painting was ________ after analyzing the canvas and signature.",
+                options: ["Authentic", "Audible", "Austere", "Askance"],
+                correct: 0,
+                hint: "Genuine article.",
+                explanation: "Authentic means genuine and verified."
+            },
+            {
+                id: 93,
+                badge: "Statement Analysis",
+                subtopic: "Autobiography",
+                question: "What distinguishes an 'Autobiography' from a 'Biography'?",
+                options: [
+                    "An autobiography is written by the subject themselves, whereas a biography is written by another author.",
+                    "An autobiography is always fictional.",
+                    "A biography is written in poetry only.",
+                    "There is no difference between them."
+                ],
+                correct: 0,
+                hint: "Self-written vs written by someone else.",
+                explanation: "Option A correctly explains the author distinction."
+            },
+            {
+                id: 94,
+                badge: "Antonym Check",
+                subtopic: "Authentic",
+                question: "What is the antonym of 'Authentic'?",
+                options: ["Counterfeit", "Genuine", "Real", "Original"],
+                correct: 0,
+                hint: "Fake or forged.",
+                explanation: "'Counterfeit' or 'Fake' is the antonym of authentic."
+            },
+            {
+                id: 95,
+                badge: "Fill in the Blank",
+                subtopic: "Autocracy",
+                question: "The citizens staged a massive revolution to overthrow the brutal ________ and establish a democratic republic.",
+                options: ["Autocracy", "Auditorium", "Astronomy", "Asceticism"],
+                correct: 0,
+                hint: "Absolute dictatorship by one ruler.",
+                explanation: "Autocracy is absolute single-person rule."
+            },
+            {
+                id: 96,
+                badge: "Synonym Matching",
+                subtopic: "Authentic",
+                question: "Choose the closest synonym for 'Authentic':",
+                options: ["Genuine", "Spurious", "Bogus", "Fake"],
+                correct: 0,
+                hint: "Real and true.",
+                explanation: "'Genuine' is a direct synonym. Spurious, bogus, and fake are antonyms."
+            },
+            {
+                id: 97,
+                badge: "Grammar & Root",
+                subtopic: "Autobiography",
+                question: "The Greek prefix 'auto-' means 'self', 'bios' means 'life', and 'graphein' means 'to write'. Combined, autobiography means:",
+                options: ["Self-life-writing", "Star-studying", "Money-counting", "Speech-making"],
+                correct: 0,
+                hint: "Self + life + write.",
+                explanation: "Autobiography translates literally to writing about one's own life."
+            },
+            {
+                id: 98,
+                badge: "Contextual Vocab",
+                subtopic: "Autocracy",
+                question: "Under strict ________, freedom of speech and press censorship are routinely enforced by the supreme ruler.",
+                options: ["Autocracy", "Astronomy", "Atonement", "Asylum"],
+                correct: 0,
+                hint: "Single-ruler absolute system.",
+                explanation: "Autocracy suppresses dissent under absolute rule."
+            },
+            {
+                id: 99,
+                badge: "Statement Analysis",
+                subtopic: "Authentic",
+                question: "Which documents require an 'authentic' certification when applying for official competitive examinations?",
+                options: [
+                    "Educational marksheets, identity proofs, and caste/category certificates.",
+                    "Fictional novels and comic books.",
+                    "Horoscope prediction charts.",
+                    "Movie scripts and theatrical plays."
+                ],
+                correct: 0,
+                hint: "Official exam paperwork.",
+                explanation: "Option A correctly identifies official verified documents."
+            },
+            {
+                id: 100,
+                badge: "Comprehensive Review",
+                subtopic: "Mastery Review",
+                question: "Reflecting on all terms covered (Articulate to Autocracy), which of the following pairs correctly matches a vocabulary word with its precise definition?",
+                options: [
+                    "Ascetic: One who denies oneself ordinary bodily pleasures",
+                    "Atheist: One who strongly believes in multiple gods",
+                    "Auditor: One who forecasts future star events",
+                    "Asylum: A commercial marketplace for trading stocks"
+                ],
+                correct: 0,
+                hint: "Review ascetic definition from item 148.",
+                explanation: "Ascetic correctly matches self-denial of bodily pleasures. The other options contain mismatched definitions."
+            }
+        ];
+
+        // Quiz State Variables
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let userAnswers = new Array(quizData.length).fill(null);
+        let answeredQuestions = new Array(quizData.length).fill(false);
+
+        // DOM Elements
+        const questionTextEl = document.getElementById('question-text');
+        const optionsContainerEl = document.getElementById('options-container');
+        const scoreDisplayEl = document.getElementById('score-display');
+        const totalScoreDisplayEl = document.getElementById('total-score-display');
+        const progressPillEl = document.getElementById('progress-pill');
+        const progressBarEl = document.getElementById('progress-bar');
+        const questionBadgeEl = document.getElementById('question-badge');
+        const questionCounterMetaEl = document.getElementById('question-counter-meta');
+        const prevBtnEl = document.getElementById('prev-btn');
+        const nextBtnEl = document.getElementById('next-btn');
+        const jumpInputEl = document.getElementById('jump-input');
+        const hintToggleBtnEl = document.getElementById('hint-toggle-btn');
+        const hintBtnTextEl = document.getElementById('hint-btn-text');
+        const hintBoxEl = document.getElementById('hint-box');
+        const hintTextEl = document.getElementById('hint-text');
+        const explanationBoxEl = document.getElementById('explanation-box');
+        const explanationTextEl = document.getElementById('explanation-text');
+
+        totalScoreDisplayEl.textContent = quizData.length;
+        jumpInputEl.max = quizData.length;
+
+        function loadQuestion(index) {
+            if (index < 0 || index >= quizData.length) return;
+            currentQuestionIndex = index;
+            const q = quizData[currentQuestionIndex];
+
+            // Update Meta & Badges (Subtopic badge omitted from UI)
+            questionBadgeEl.textContent = q.badge;
+            questionCounterMetaEl.textContent = `Question ${currentQuestionIndex + 1} of ${quizData.length}`;
+            progressPillEl.textContent = `Q ${currentQuestionIndex + 1} / ${quizData.length}`;
+            
+            // Progress Bar
+            const progressPercent = ((currentQuestionIndex + 1) / quizData.length) * 100;
+            progressBarEl.style.width = `${progressPercent}%`;
+
+            // Question Text
+            questionTextEl.textContent = q.question;
+
+            // Options Rendering & Shuffling persistence
+            optionsContainerEl.innerHTML = '';
+            
+            q.options.forEach((option, optIdx) => {
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left p-4 rounded-2xl border transition-all duration-200 font-semibold text-sm sm:text-base flex items-center justify-between group `;
+                
+                const isSelected = userAnswers[currentQuestionIndex] === optIdx;
+                const isAnswered = answeredQuestions[currentQuestionIndex];
+
+                if (isAnswered) {
+                    if (optIdx === q.correct) {
+                        btn.className += `bg-emerald-50 border-emerald-300 text-emerald-900 shadow-sm`;
+                    } else if (isSelected && optIdx !== q.correct) {
+                        btn.className += `bg-rose-50 border-rose-300 text-rose-900 shadow-sm`;
+                    } else {
+                        btn.className += `bg-white/60 border-lavender-300 text-lavender-700 opacity-60`;
+                    }
+                    btn.disabled = true;
+                } else {
+                    if (isSelected) {
+                        btn.className += `bg-lavender-200 border-lavender-500 text-lavender-900 shadow-md ring-2 ring-lavender-400`;
+                    } else {
+                        btn.className += `bg-white hover:bg-lavender-100/70 border-lavender-300 text-lavender-800 hover:border-lavender-400 shadow-sm`;
+                    }
+                    btn.disabled = false;
+                }
+
+                btn.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <span class="w-7 h-7 rounded-xl bg-lavender-100 group-hover:bg-lavender-200 text-lavender-800 flex items-center justify-center text-xs font-bold transition-colors">
+                            ${String.fromCharCode(65 + optIdx)}
+                        </span>
+                        <span>${option}</span>
+                    </div>
+                    ${isAnswered && optIdx === q.correct ? '<span class="text-emerald-600 font-bold text-lg">✓</span>' : ''}
+                    ${isAnswered && isSelected && optIdx !== q.correct ? '<span class="text-rose-600 font-bold text-lg">✗</span>' : ''}
+                `;
+
+                btn.onclick = () => selectOption(optIdx);
+                optionsContainerEl.appendChild(btn);
+            });
+
+            // Hint Box State
+            hintBoxEl.classList.add('hidden');
+            hintBtnTextEl.textContent = 'Reveal Hint';
+            hintTextEl.textContent = q.hint;
+
+            // Explanation Box State
+            if (answeredQuestions[currentQuestionIndex]) {
+                explanationBoxEl.classList.remove('hidden');
+                explanationTextEl.textContent = q.explanation;
+            } else {
+                explanationBoxEl.classList.add('hidden');
+            }
+
+            // Navigation Buttons State
+            prevBtnEl.disabled = currentQuestionIndex === 0;
+            if (currentQuestionIndex === quizData.length - 1) {
+                nextBtnEl.innerHTML = `<span>Finish</span> <span>🎉</span>`;
+            } else {
+                nextBtnEl.innerHTML = `<span class="hidden sm:inline">Next</span> <span>→</span>`;
+            }
+
+            jumpInputEl.value = currentQuestionIndex + 1;
+        }
+
+        function selectOption(optIdx) {
+            if (answeredQuestions[currentQuestionIndex]) return;
+
+            userAnswers[currentQuestionIndex] = optIdx;
+            answeredQuestions[currentQuestionIndex] = true;
+
+            const q = quizData[currentQuestionIndex];
+            if (optIdx === q.correct) {
+                score++;
+                scoreDisplayEl.textContent = score;
+            }
+
+            loadQuestion(currentQuestionIndex);
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < quizData.length - 1) {
+                loadQuestion(currentQuestionIndex + 1);
+            } else {
+                alert(`Quiz Completed! 🌟\nYour Final Score: ${score} / ${quizData.length}\nYou have successfully reviewed and mastered all key vocabulary terms for lifetime retention!`);
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                loadQuestion(currentQuestionIndex - 1);
+            }
+        }
+
+        function jumpToQuestion() {
+            const val = parseInt(jumpInputEl.value);
+            if (!isNaN(val) && val >= 1 && val <= quizData.length) {
+                loadQuestion(val - 1);
+            } else {
+                alert(`Please enter a valid question number between 1 and ${quizData.length}.`);
+                jumpInputEl.value = currentQuestionIndex + 1;
+            }
+        }
+
+        function toggleHint() {
+            if (hintBoxEl.classList.contains('hidden')) {
+                hintBoxEl.classList.remove('hidden');
+                hintBtnTextEl.textContent = 'Hide Hint';
+            } else {
+                hintBoxEl.classList.add('hidden');
+                hintBtnTextEl.textContent = 'Reveal Hint';
+            }
+        }
+
+        function confirmReset() {
+            if (confirm("Are you sure you want to reset the quiz? All progress and scores will be cleared.")) {
+                currentQuestionIndex = 0;
+                score = 0;
+                scoreDisplayEl.textContent = score;
+                userAnswers = new Array(quizData.length).fill(null);
+                answeredQuestions = new Array(quizData.length).fill(false);
+                loadQuestion(0);
+            }
+        }
+
+        // Keyboard Navigation
+        document.addEventListener('keydown', (e) => {
+            if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
+                if (e.key === 'Enter' && document.activeElement === jumpInputEl) {
+                    jumpToQuestion();
+                }
+                return;
+            }
+
+            if (e.key === 'ArrowLeft') {
+                prevQuestion();
+            } else if (e.key === 'ArrowRight') {
+                nextQuestion();
+            }
+        });
+
+        // Initial Load
+        loadQuestion(0);
+    </script>
+</body>
+</html>

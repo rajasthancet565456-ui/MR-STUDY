@@ -1,0 +1,1601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master English Vocabulary & One-Word Substitutions Quiz</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        lavenderBg: '#F0E6FF',
+                        headerBg: '#E5D5FA',
+                        cardBg: '#FBF7FF',
+                        primaryPurple: '#6542C8',
+                        darkPurple: '#30205D',
+                        secondaryPurple: '#7352C9',
+                        lightPurple: '#E9DDF8',
+                        customBorder: '#DCCBF2',
+                        progressTrack: '#DDD9E8',
+                        hoverBg: '#F0E5FF',
+                        mutedText: '#716782',
+                        accentYellow: '#F3A62A',
+                        successGreen: '#10B981',
+                        errorRed: '#EF4444'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #F0E6FF 0%, #E5D5FA 100%);
+            color: #30205D;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between text-darkPurple selection:bg-lightPurple selection:text-darkPurple">
+
+    <!-- Sticky Header -->
+    <header class="sticky top-0 z-50 bg-headerBg/90 backdrop-blur-md border-b border-customBorder px-4 py-3 shadow-sm">
+        <div class="max-w-4xl mx-auto flex flex-wrap items-center justify-between gap-3">
+            <div>
+                <h1 class="text-lg md:text-xl font-bold text-darkPurple flex items-center gap-2">
+                    <span>📚</span> Advanced Vocabulary & OWS Master Quiz
+                </h1>
+                <p class="text-xs text-mutedText">Comprehensive exam-level practice (SSC, RRB, State Exams)</p>
+            </div>
+            <div class="flex items-center gap-3">
+                <div class="bg-cardBg border border-customBorder px-3 py-1.5 rounded-full text-xs font-semibold shadow-sm flex items-center gap-1.5">
+                    <span>🏆 Score:</span>
+                    <span id="score-display" class="text-primaryPurple font-bold">0</span>/<span id="total-score-display">100</span>
+                </div>
+                <div class="bg-cardBg border border-customBorder px-3 py-1.5 rounded-full text-xs font-semibold shadow-sm flex items-center gap-1.5">
+                    <span>📊 Progress:</span>
+                    <span id="progress-percent" class="text-primaryPurple font-bold">0%</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Quiz Container -->
+    <main class="flex-grow flex items-center justify-center p-4 sm:p-6">
+        <div class="w-full max-w-3xl bg-cardBg border border-customBorder rounded-2xl shadow-xl p-6 sm:p-8 transition-all duration-300 relative">
+            
+            <!-- Question Header Info -->
+            <div class="flex flex-wrap items-center justify-between text-xs font-semibold text-mutedText mb-3 gap-2">
+                <span id="question-counter" class="bg-lightPurple text-primaryPurple px-3 py-1 rounded-full border border-customBorder">Question 1 of 100</span>
+                <span id="question-badge" class="bg-headerBg text-darkPurple px-3 py-1 rounded-full border border-customBorder">Topic: One-Word Substitution & Vocab</span>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="w-full bg-progressTrack h-2.5 rounded-full mb-6 overflow-hidden">
+                <div id="progress-bar" class="bg-primaryPurple h-full transition-all duration-300 rounded-full" style="width: 1%"></div>
+            </div>
+
+            <!-- Question Display -->
+            <div class="mb-6">
+                <h2 id="question-text" class="text-xl sm:text-2xl font-bold text-darkPurple leading-snug">
+                    Loading question...
+                </h2>
+            </div>
+
+            <!-- Answer Options Container -->
+            <div id="options-container" class="space-y-3 mb-6">
+                <!-- Options injected via JS -->
+            </div>
+
+            <!-- Hint Section -->
+            <div class="mb-6">
+                <button onclick="toggleHint()" class="text-xs font-semibold text-secondaryPurple hover:text-primaryPurple flex items-center gap-1.5 bg-lightPurple/50 hover:bg-lightPurple px-3 py-1.5 rounded-lg border border-customBorder transition-colors">
+                    <span>💡</span> <span id="hint-btn-text">Show Hint</span>
+                </button>
+                <div id="hint-box" class="hidden mt-2 p-3 bg-headerBg/50 border border-customBorder rounded-xl text-xs text-darkPurple italic">
+                    <!-- Hint text -->
+                </div>
+            </div>
+
+            <!-- Explanation / Rationale Box -->
+            <div id="explanation-box" class="hidden p-4 rounded-xl border mb-6 text-sm transition-all duration-300">
+                <!-- Explanation injected here -->
+            </div>
+
+            <!-- Navigation Controls (Inside Card) -->
+            <div class="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-customBorder">
+                <button id="prev-btn" onclick="prevQuestion()" class="px-4 py-2 rounded-xl text-sm font-semibold bg-lightPurple text-darkPurple border border-customBorder hover:bg-customBorder transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1">
+                    ← Previous
+                </button>
+                <div class="flex items-center gap-2">
+                    <span class="text-xs font-semibold text-mutedText hidden sm:inline">Jump to Q:</span>
+                    <input type="number" id="jump-input" min="1" max="100" class="w-16 px-2 py-1 text-center text-sm bg-lavenderBg border border-customBorder rounded-lg focus:outline-none focus:ring-2 focus:ring-primaryPurple" placeholder="1-100">
+                    <button onclick="jumpToQuestion()" class="px-3 py-1 text-sm font-semibold bg-primaryPurple text-white rounded-lg hover:bg-secondaryPurple transition-colors shadow-sm">Go</button>
+                </div>
+                <button id="next-btn" onclick="nextQuestion()" class="px-4 py-2 rounded-xl text-sm font-semibold bg-primaryPurple text-white hover:bg-secondaryPurple transition-colors shadow-sm flex items-center gap-1">
+                    Next →
+                </button>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Sticky Bottom Navigation Bar -->
+    <nav class="sticky bottom-0 z-40 bg-white/90 backdrop-blur-md border-t border-customBorder px-4 py-3 shadow-lg">
+        <div class="max-w-4xl mx-auto flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-2">
+                <button onclick="prevQuestion()" class="px-3 py-1.5 text-xs sm:text-sm font-semibold bg-lightPurple text-darkPurple rounded-lg border border-customBorder hover:bg-customBorder transition-colors">
+                    ← Prev
+                </button>
+                <button onclick="nextQuestion()" class="px-3 py-1.5 text-xs sm:text-sm font-semibold bg-primaryPurple text-white rounded-lg hover:bg-secondaryPurple transition-colors shadow-sm">
+                    Next →
+                </button>
+            </div>
+            <div class="text-xs font-semibold text-mutedText">
+                Question <span id="current-q-num">1</span> of <span id="total-q-num">100</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <button onclick="resetQuiz()" class="px-3 py-1.5 text-xs sm:text-sm font-semibold bg-errorRed/10 text-errorRed border border-errorRed/30 rounded-lg hover:bg-errorRed/20 transition-colors">
+                    Reset Quiz
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Quiz Complete Modal -->
+    <div id="completion-modal" class="hidden fixed inset-0 z-50 bg-darkPurple/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-cardBg border border-customBorder rounded-2xl max-w-md w-full p-6 text-center shadow-2xl animate-fade-in">
+            <div class="text-5xl mb-3">🎉</div>
+            <h3 class="text-2xl font-bold text-darkPurple mb-2">Quiz Completed!</h3>
+            <p class="text-sm text-mutedText mb-4">You have successfully completed all 100 exam-level vocabulary questions based on the study material.</p>
+            <div class="bg-lavenderBg border border-customBorder p-4 rounded-xl mb-6">
+                <p class="text-sm font-semibold text-mutedText">Final Score</p>
+                <p id="final-score-text" class="text-3xl font-extrabold text-primaryPurple">0 / 100</p>
+            </div>
+            <button onclick="resetQuiz()" class="w-full py-3 bg-primaryPurple text-white font-semibold rounded-xl hover:bg-secondaryPurple transition-colors shadow-md">
+                Retake Quiz & Master Again
+            </button>
+        </div>
+    </div>
+
+    <!-- JavaScript Quiz Application Logic -->
+    <script>
+        // 100 Unique Exam-Level Questions covering words SN 93 to 117 + Roots, Synonyms, Antonyms, and Applications
+        const quizData = [
+            // Anesthetist (93)
+            {
+                q: "Which of the following describes 'A medical specialist who administers drugs for relieving pain during surgery'?",
+                options: ["Anesthetist", "Anaemia", "Analgesic", "Antidote"],
+                answer: 0,
+                hint: "Prefix relates to anesthesia/insensibility to pain.",
+                explanation: "Anesthetist is a medical specialist who administers anesthetics to eliminate pain during surgical procedures. Root 'an-' means without, 'aesthesia' means sensation."
+            },
+            {
+                q: "Identify the correct synonym for 'Anesthetist' in a clinical or surgical context:",
+                options: ["Anaesthesiologist", "Apothecary", "Antiquarian", "Anthropologist"],
+                answer: 0,
+                hint: "A physician specializing in perioperative care and pain relief.",
+                explanation: "An anesthesiologist / anesthetist specializes in administering anesthetics. Apothecary is a pharmacist; Antiquarian deals in antiques."
+            },
+            {
+                q: "In terms of word roots, what does the prefix 'An-' or 'Ana-' typically signify in medical terms like 'Anesthetist'?",
+                options: ["Without or absence of", "Against or opposite", "Around or surrounding", "Through or across"],
+                answer: 0,
+                hint: "Think of words like anonymous (without name) or anesthesia (without sensation).",
+                explanation: "The Greek prefix 'an-' or 'ana-' frequently implies lack, without, or backward/excess. In anesthesia, it means absence of feeling/pain."
+            },
+            {
+                q: "Statement I: An Anesthetist performs major surgeries independently. Statement II: An Anesthetist specializes in pain management and administering anesthesia during operations. Which is correct?",
+                options: ["Only Statement II is correct", "Only Statement I is correct", "Both Statement I and II are correct", "Neither Statement I nor II is correct"],
+                answer: 0,
+                hint: "Surgeries are performed by surgeons; anesthetists manage the pain and vitals.",
+                explanation: "Surgeons operate while anesthetists manage patient vital signs and pain control. Thus, Statement II is correct and I is incorrect."
+            },
+            {
+                q: "Which suffix in 'Anesthetist' denotes a person who practices or performs a specialized activity?",
+                options: ["-ist", "-ism", "-ity", "-ize"],
+                answer: 0,
+                hint: "Like artist, scientist, or chemist.",
+                explanation: "The suffix '-ist' denotes a person who performs a certain action, profession, or is devoted to a particular study."
+            },
+
+            // Anile (94)
+            {
+                q: "What is the meaning of the one-word substitution 'Anile'?",
+                options: ["Like a weak old woman", "Related to animal instincts", "Extremely ancient book", "Pertaining to annual events"],
+                answer: 0,
+                hint: "Derives from Latin 'anus' meaning old woman.",
+                explanation: "Anile describes characteristics resembling a feeble, infirm old woman, often implying dotage or senile weakness."
+            },
+            {
+                q: "Which of the following is an appropriate antonym for the word 'Anile'?",
+                options: ["Vigorous and youthful", "Senile and frail", "Cowardly and timid", "Secretive and anonymous"],
+                answer: 0,
+                hint: "Opposite of weak old woman characteristics.",
+                explanation: "Since anile means frail or weak like an old woman, its antonym relates to vigor, youthfulness, and strength."
+            },
+            {
+                q: "Identify the correct contextual sentence usage for the word 'Anile':",
+                options: [
+                    "Her anile submission and trembling voice betrayed her extreme old age and frailty.",
+                    "The anile artifact was discovered beneath the ancient temple ruins.",
+                    "He gave an anile speech full of brilliant scientific formulas.",
+                    "The company announced an anile profit increase for the fiscal year."
+                ],
+                answer: 0,
+                hint: "Look for frailty or old-woman-like weakness.",
+                explanation: "Option A correctly uses 'anile' to describe frailty and weakness associated with advanced age."
+            },
+            {
+                q: "Assertion (A): The word 'Anile' is frequently used in modern competitive exams to test rare Latin roots. Reason (R): It stems from the Latin root 'anus' meaning a mature or old woman. Which is correct?",
+                options: ["Both (A) and (R) are true, and (R) is the correct explanation of (A)", "Both (A) and (R) are true, but (R) is NOT the correct explanation", "(A) is true, but (R) is false", "(A) is false, but (R) is true"],
+                answer: 0,
+                hint: "Etymology supports both statements.",
+                explanation: "'Anile' derives directly from Latin 'anus' (old woman). Exams test this specifically for its unique etymology."
+            },
+            {
+                q: "Which word shares the closest semantic field with 'Anile'?",
+                options: ["Senile", "Juvenile", "Virile", "Puerile"],
+                answer: 0,
+                hint: "Associated with advanced age and physical/mental decline.",
+                explanation: "Senile relates to old age and infirmity. Juvenile = youth; Virile = manly strength; Puerile = childish."
+            },
+
+            // Animosity (95)
+            {
+                q: "Choose the correct one-word substitution for 'A strong dislike or hostility':",
+                options: ["Animosity", "Anomality", "Anonymity", "Anxiety"],
+                answer: 0,
+                hint: "Starts with 'Anim-' meaning spirit or feeling of active hatred.",
+                explanation: "Animosity means strong hostility, active ill will, or bitter enmity between individuals or groups."
+            },
+            {
+                q: "What is a primary antonym of 'Animosity'?",
+                options: ["Amity", "Animosity is its own antonym", "Apathy", "Antipathy"],
+                answer: 0,
+                hint: "Think of friendship and peaceful relations (Amity).",
+                explanation: "Amity means friendship and peaceful harmony, which is the direct antonym of animosity (hostility)."
+            },
+            {
+                q: "Which of the following words are synonyms of 'Animosity'?",
+                options: ["Enmity, hostility, rancor", "Amity, cordiality, goodwill", "Apathy, indifference, lethargy", "Anonymity, obscurity, namelessness"],
+                answer: 0,
+                hint: "Words meaning deep hatred or bitterness.",
+                explanation: "Enmity, hostility, and rancor all denote severe dislike and animosity."
+            },
+            {
+                q: "Which root forms the base of 'Animosity', signifying spirit, mind, or life?",
+                options: ["Anim-", "Anti-", "Anthropo-", "Ann-"],
+                answer: 0,
+                hint: "Also found in words like animate and magnanimous.",
+                explanation: "The root 'anim-' relates to breath, spirit, or feeling. Animosity is spirited hostility."
+            },
+            {
+                q: "Spot the INCORRECT statement regarding 'Animosity':",
+                options: [
+                    "It is an adjective describing a peaceful person.",
+                    "It is a noun indicating active hatred.",
+                    "It can lead to friction and conflict between nations.",
+                    "Its synonyms include malice and hostility."
+                ],
+                answer: 0,
+                hint: "Check the grammatical category.",
+                explanation: "Animosity is a noun (-ity suffix), not an adjective. Thus, option A is incorrect."
+            },
+
+            // Annihilate (96)
+            {
+                q: "What does the verb 'Annihilate' mean?",
+                options: ["To destroy completely", "To calculate annually", "To delay indefinitely", "To create from nothing"],
+                answer: 0,
+                hint: "Root 'nihil' means nothing. Reducing to nothing.",
+                explanation: "Annihilate means to destroy completely or reduce to nothing (from Latin 'ad nihilum' - to nothing)."
+            },
+            {
+                q: "Identify the correct synonyms for 'Annihilate':",
+                options: ["Obliterate, eradicate, decimate", "Construct, preserve, initiate", "Anticipate, expect, await", "Acknowledge, accept, admit"],
+                answer: 0,
+                hint: "Words meaning total wiping out.",
+                explanation: "Obliterate, eradicate, and decimate all involve destroying or wiping out completely."
+            },
+            {
+                q: "What is the antonym of 'Annihilate'?",
+                options: ["Create or resurrect", "Destroy or demolish", "Analyse or dissect", "Abolish or terminate"],
+                answer: 0,
+                hint: "Opposite of destroying completely.",
+                explanation: "To create, build, or resurrect is the opposite of annihilating."
+            },
+            {
+                q: "Etymologically, the root 'nihil' in 'Annihilate' translates to:",
+                options: ["Nothing", "New", "Name", "Night"],
+                answer: 0,
+                hint: "Think of the word 'nihilism' (belief in nothing).",
+                explanation: "'Nihil' means nothing. Annihilate literally means to bring to nothing."
+            },
+            {
+                q: "Which sentence correctly demonstrates the usage of 'Annihilate'?",
+                options: [
+                    "The massive nuclear blast threatened to annihilate the entire city.",
+                    "She decided to annihilate her notebook with neat handwriting.",
+                    "The accountant will annihilate the annual budget report by noon.",
+                    "They planned to annihilate a warm welcome for the guests."
+                ],
+                answer: 0,
+                hint: "Requires complete destruction context.",
+                explanation: "Option A correctly uses annihilate in the context of total destruction."
+            },
+
+            // Anniversary (97)
+            {
+                q: "What is the one-word substitution for 'The date on which an event happened in some previous year'?",
+                options: ["Anniversary", "Annuity", "Anomaly", "Antiquarian"],
+                answer: 0,
+                hint: "Root 'annus' means year.",
+                explanation: "An anniversary is the yearly recurrence of the date of a past event."
+            },
+            {
+                q: "The root 'annus' or 'anni' in 'Anniversary' means:",
+                options: ["Year", "Circle", "Old", "Hidden"],
+                answer: 0,
+                hint: "Annual, biennial, perennial all share this root.",
+                explanation: "'Annus' is Latin for year."
+            },
+            {
+                q: "Which of the following represents a 25th anniversary?",
+                options: ["Silver jubilee", "Golden jubilee", "Diamond jubilee", "Centenary"],
+                answer: 0,
+                hint: "Precious metal associated with 25 years.",
+                explanation: "A 25th anniversary is a silver jubilee; 50th is golden; 60th is diamond; 100th is centenary."
+            },
+            {
+                q: "Spot the correct classification of 'Anniversary':",
+                options: ["Noun", "Verb", "Adjective", "Adverb"],
+                answer: 0,
+                hint: "It is a specific day or celebration.",
+                explanation: "Anniversary functions primarily as a noun (e.g., their wedding anniversary)."
+            },
+            {
+                q: "Which word is etymologically related to 'Anniversary' through the root for 'year'?",
+                options: ["Annual", "Anonymous", "Antidote", "Aphasia"],
+                answer: 0,
+                hint: "Happening once a year.",
+                explanation: "'Annual' shares the exact same Latin root ('annus' = year)."
+            },
+
+            // Annuity (98)
+            {
+                q: "What is the meaning of 'Annuity'?",
+                options: ["A fixed sum paid annually", "An annual celebration of an event", "An abnormal deviation from rule", "An anonymous literary work"],
+                answer: 0,
+                hint: "Financial term involving yearly payments.",
+                explanation: "Annuity refers to a fixed sum of money paid to someone each year, typically for the rest of their life."
+            },
+            {
+                q: "In financial contexts, an annuity is best described as:",
+                options: ["An investment stream providing periodic income", "A sudden penalty tax", "A total destruction of assets", "An unwritten contract"],
+                answer: 0,
+                hint: "Regular yearly payout.",
+                explanation: "An annuity is a financial product that pays out a fixed stream of payments, especially to retired people."
+            },
+            {
+                q: "Which suffix in 'Annuity' denotes state, condition, or quality?",
+                options: ["-ity", "-ist", "-ate", "-ism"],
+                answer: 0,
+                hint: "Similar to curiosity or sanity.",
+                explanation: "The suffix '-ity' forms abstract nouns indicating a state or condition."
+            },
+            {
+                q: "Which of the following words shares the root 'annu-' (year) with Annuity?",
+                options: ["Superannuation", "Anonymity", "Antipathy", "Anthropology"],
+                answer: 0,
+                hint: "Pertaining to retirement/years of service.",
+                explanation: "Superannuation relates to regular payment made into a fund during an employee's working years."
+            },
+            {
+                q: "Assertion (A): Annuity and Anniversary both derive from the Latin root for year. Reason (R): Both terms deal with yearly occurrences or payments. Which is correct?",
+                options: ["Both (A) and (R) are true, and (R) is the correct explanation of (A)", "Both (A) and (R) are true, but (R) is NOT the correct explanation", "(A) is true, but (R) is false", "(A) is false, but (R) is true"],
+                answer: 0,
+                hint: "Both words share 'annu/anni'.",
+                explanation: "Both words are built on the Latin root 'annus' (year), governing yearly payments (annuity) and yearly dates (anniversary)."
+            },
+
+            // Anomaly (99)
+            {
+                q: "What is the one-word substitution for 'Departure from common rule, standard, or normal type'?",
+                options: ["Anomaly", "Antonym", "Anonymity", "Anarchy"],
+                answer: 0,
+                hint: "Something irregular or abnormal.",
+                explanation: "Anomaly refers to something that deviates from what is standard, normal, or expected."
+            },
+            {
+                q: "Identify synonyms for 'Anomaly':",
+                options: ["Irregularity, aberration, deviation", "Normality, regularity, standard", "Anonymity, obscurity, namelessness", "Amity, harmony, concord"],
+                answer: 0,
+                hint: "Words meaning deviation from the norm.",
+                explanation: "Irregularity, aberration, and deviation mean an exception or anomaly."
+            },
+            {
+                q: "What is the direct antonym of 'Anomaly'?",
+                options: ["Normality", "Aberration", "Oddity", "Eccentricity"],
+                answer: 0,
+                hint: "State of conforming to standard rule.",
+                explanation: "Normality is the state of being usual, typical, or standard, acting as the antonym to anomaly."
+            },
+            {
+                q: "Which adjective is derived from 'Anomaly' to describe something irregular?",
+                options: ["Anomalous", "Anonymous", "Apathetic", "Antiquated"],
+                answer: 0,
+                hint: "Ending in '-ous'.",
+                explanation: "Anomalous means deviating from the standard or expected rule."
+            },
+            {
+                q: "Spot the correct sentence using 'Anomaly':",
+                options: [
+                    "The sudden spike in temperature during winter was a striking meteorological anomaly.",
+                    "He wrote an anomaly article for the local newspaper without revealing his name.",
+                    "She felt a deep anomaly towards her coworkers.",
+                    "The medic gave him an anomaly to cure the poison."
+                ],
+                answer: 0,
+                hint: "Anomaly refers to an irregularity.",
+                explanation: "Option A correctly uses anomaly to describe an irregular weather event."
+            },
+
+            // Anonymous (100)
+            {
+                q: "What is the one-word substitution for 'Whose names are not known / An unknown author'?",
+                options: ["Anonymous", "Antiquarian", "Anesthetist", "Anthology"],
+                answer: 0,
+                hint: "Prefix 'a-'/'an-' (without) + 'onym' (name).",
+                explanation: "Anonymous describes a person, author, or work having no known name or identity."
+            },
+            {
+                q: "The root 'onym' in 'Anonymous' translates to:",
+                options: ["Name", "Number", "Knowledge", "Nature"],
+                answer: 0,
+                hint: "Also seen in pseudonym (false name) and antonym (opposite name).",
+                explanation: "'Onym' or 'onoma' is Greek for name."
+            },
+            {
+                q: "Identify synonyms for 'Anonymous':",
+                options: ["Nameless, incognito, unidentified", "Famous, renowned, celebrated", "Explicit, clear, obvious", "Anomalous, irregular, odd"],
+                answer: 0,
+                hint: "Without a recognized name.",
+                explanation: "Nameless, incognito, and unidentified all mean anonymous."
+            },
+            {
+                q: "What is the noun form of 'Anonymous' representing the state of keeping one's name secret?",
+                options: ["Anonymity", "Animosity", "Antipathy", "Anoxia"],
+                answer: 0,
+                hint: "Ending in '-ity'.",
+                explanation: "Anonymity is the condition of being anonymous."
+            },
+            {
+                q: "Which of the following is an antonym for 'Anonymous'?",
+                options: ["Identified", "Nameless", "Unattributed", "Incognito"],
+                answer: 0,
+                hint: "Having a known, specified name.",
+                explanation: "Identified means having a known identity, making it the antonym of anonymous."
+            },
+
+            // Anorexia (101)
+            {
+                q: "What is the one-word substitution for 'Obsessive desire to lose weight by refusing to eat'?",
+                options: ["Anorexia", "Aphasia", "Apathy", "Anarchy"],
+                answer: 0,
+                hint: "Eating disorder characterized by self-starvation.",
+                explanation: "Anorexia nervosa (or anorexia) is an eating disorder characterized by an obsessive desire to lose weight by refusing to eat."
+            },
+            {
+                q: "Etymologically, 'orexis' in 'Anorexia' means:",
+                options: ["Appetite or desire", "Weight or mass", "Fear or dread", "Sleep or rest"],
+                answer: 0,
+                hint: "An- (without) + orexis (appetite).",
+                explanation: "'Orexis' is Greek for appetite. Anorexia literally means without appetite."
+            },
+            {
+                q: "Which word shares the root '-orexia' (appetite)?",
+                options: ["Dysorexia (abnormal appetite)", "Anatomy", "Antipathy", "Annuity"],
+                answer: 0,
+                hint: "Abnormal or altered appetite.",
+                explanation: "Dysorexia refers to a depraved or impaired appetite."
+            },
+            {
+                q: "Spot the correct medical category for 'Anorexia':",
+                options: ["Psychological and eating disorder", "Infectious viral disease", "Neurological speech impairment", "Financial investment instrument"],
+                answer: 0,
+                hint: "Related to food intake and psychological perception.",
+                explanation: "Anorexia is a complex psychological eating disorder."
+            },
+            {
+                q: "Which adjective describes a person suffering from anorexia?",
+                options: ["Anorexic", "Anomally", "Anile", "Apathetic"],
+                answer: 0,
+                hint: "Derived adjective form.",
+                explanation: "Anorexic describes someone affected by anorexia."
+            },
+
+            // Anthology (102)
+            {
+                q: "What is the one-word substitution for 'A collection of poems, stories, etc., written by different people and published together in a book'?",
+                options: ["Anthology", "Anniversary", "Anomaly", "Antithesis"],
+                answer: 0,
+                hint: "Root 'anthos' means flower; gathering flowers (of speech/poetry).",
+                explanation: "An anthology is a published collection of poems or other pieces of writing by various authors."
+            },
+            {
+                q: "The Greek root 'anthos' in 'Anthology' means:",
+                options: ["Flower", "Human", "Year", "Name"],
+                answer: 0,
+                hint: "Gathering literary flowers.",
+                explanation: "'Anthos' is Greek for flower. An anthology was originally a 'bouquet' of literary selections."
+            },
+            {
+                q: "Identify synonyms for 'Anthology':",
+                options: ["Compendium, collection, miscellany", "Novel, biography, autobiography", "Dictionary, glossary, lexicon", "Thesis, dissertation, treatise"],
+                answer: 0,
+                hint: "A compilation of diverse works.",
+                explanation: "Compendium and collection are direct synonyms for anthology."
+            },
+            {
+                q: "Which sentence correctly illustrates an 'Anthology'?",
+                options: [
+                    "The professor published an anthology of 20th-century Dalit short stories.",
+                    "She wrote an anthology song about her childhood memories.",
+                    "The accountant calculated the annual anthology of taxes.",
+                    "He took an anthology pill to cure his headache."
+                ],
+                answer: 0,
+                hint: "Collection of literary pieces.",
+                explanation: "Option A correctly describes an anthology as a collection of short stories."
+            },
+            {
+                q: "Spot the INCORRECT statement about 'Anthology':",
+                options: [
+                    "It is authored strictly by one single writer containing only their personal diary entries.",
+                    "It can feature poems and essays from multiple different authors.",
+                    "It functions as a noun.",
+                    "It stems from Greek roots meaning a collection of flower-like literary pieces."
+                ],
+                answer: 0,
+                hint: "Anthologies feature multiple authors.",
+                explanation: "Anthologies collect works by *different* people, not just one single author's diary. Hence A is incorrect."
+            },
+
+            // Anthropologist (103) & Anthropology (104)
+            {
+                q: "What is the one-word substitution for 'One who studies the evolution of mankind'?",
+                options: ["Anthropologist", "Antiquarian", "Anesthetist", "Archaeologist"],
+                answer: 0,
+                hint: "Root 'anthrop-' means human.",
+                explanation: "An anthropologist is an expert in or student of anthropology (human societies, cultures, and physical development)."
+            },
+            {
+                q: "What is the one-word substitution for 'The study of human race, especially its origin, development, customs, and beliefs'?",
+                options: ["Anthropology", "Anatomy", "Antithesis", "Anarchy"],
+                answer: 0,
+                hint: "Study (-ology) of humans (anthrop-).",
+                explanation: "Anthropology is the scientific study of humans, human behavior, and societies in the past and present."
+            },
+            {
+                q: "The Greek root 'anthrop-' in Anthropology and Anthropologist means:",
+                options: ["Human", "Animal", "Plant", "Artifact"],
+                answer: 0,
+                hint: "Philanthropy (love of humans) uses this root.",
+                explanation: "'Anthropos' is Greek for human being or mankind."
+            },
+            {
+                q: "Which of the following words combines 'anthrop-' with the root for 'mankind/man' and 'hate'?",
+                options: ["Misanthrope", "Philanthropist", "Anthropoid", "Anthropocentric"],
+                answer: 0,
+                hint: "Mis- (hate) + anthrope (human).",
+                explanation: "A misanthrope is someone who dislikes humankind and avoids human society."
+            },
+            {
+                q: "Which suffix in 'Anthropology' means 'the study of' or 'science of'?",
+                options: ["-ology", "-ist", "-y", "-ic"],
+                answer: 0,
+                hint: "Biology, sociology, geology.",
+                explanation: "The suffix '-ology' denotes a subject of study or branch of knowledge."
+            },
+
+            // Anticipate (105)
+            {
+                q: "What does the verb 'Anticipate' mean?",
+                options: ["Look forward to / expect beforehand", "Destroy completely", "Calculate annually", "Dislike strongly"],
+                answer: 0,
+                hint: "To foresee or take action before something happens.",
+                explanation: "Anticipate means to regard as probable; to expect or look forward to something."
+            },
+            {
+                q: "Identify synonyms for 'Anticipate':",
+                options: ["Foresee, expect, await", "Annihilate, destroy, demolish", "Forget, ignore, overlook", "Retreat, recede, withdraw"],
+                answer: 0,
+                hint: "Words meaning expecting in advance.",
+                explanation: "Foresee, expect, and await are standard synonyms for anticipate."
+            },
+            {
+                q: "What is the noun form of 'Anticipate'?",
+                options: ["Anticipation", "Antipathy", "Anomality", "Anonymity"],
+                answer: 0,
+                hint: "Ending in '-tion'.",
+                explanation: "Anticipation is the noun form indicating the action of anticipating."
+            },
+            {
+                q: "Which sentence correctly uses 'Anticipate'?",
+                options: [
+                    "We eagerly anticipate the release of the new exam syllabus.",
+                    "She tried to anticipate the ancient vase into pieces.",
+                    "The doctor gave him an anticipate to cure the poison.",
+                    "His anile behavior made everyone anticipate."
+                ],
+                answer: 0,
+                hint: "Looking forward to an event.",
+                explanation: "Option A correctly uses anticipate in the context of looking forward to an event."
+            },
+            {
+                q: "Etymologically, what does the prefix 'anti-' or root connection imply in anticipate?",
+                options: ["Before / in advance (from ante-)", "Against or opposite", "Without or lacking", "Yearly recurrence"],
+                answer: 0,
+                hint: "Though spelled anti-, here it links to Latin 'ante' (before).",
+                explanation: "While 'anti-' often means against, 'anticipate' stems from Latin 'anticipare' (to take before), related to 'ante' (before)."
+            },
+
+            // Antidote (106)
+            {
+                q: "What is the one-word substitution for 'A medicine to nullify the effect of poison or another medicine'?",
+                options: ["Antidote", "Antithesis", "Antonym", "Anesthetist"],
+                answer: 0,
+                hint: "Prefix 'anti-' (against) + 'dote' (given).",
+                explanation: "An antidote is a medicine taken or given to counteract a poison."
+            },
+            {
+                q: "The prefix 'anti-' in 'Antidote' means:",
+                options: ["Against or opposite", "Before or in front", "Without or lacking", "Yearly or annual"],
+                answer: 0,
+                hint: "Antibiotic, antipathy, antisocial.",
+                explanation: "'Anti-' is a Greek prefix meaning against, opposing, or relieving."
+            },
+            {
+                q: "Identify synonyms for 'Antidote':",
+                options: ["Cure, countermeasure, remedy", "Poison, toxin, venom", "Disease, affliction, malady", "Anomaly, irregularity, quirk"],
+                answer: 0,
+                hint: "Something that neutralizes poison.",
+                explanation: "Cure, countermeasure, and remedy act against poisons or negative effects."
+            },
+            {
+                q: "What is the direct antonym of 'Antidote' in terms of toxic effect?",
+                options: ["Poison or toxin", "Cure or remedy", "Vaccine or serum", "Antiseptic or sanitizer"],
+                answer: 0,
+                hint: "What the antidote neutralizes.",
+                explanation: "Poison or toxin is what an antidote counters."
+            },
+            {
+                q: "Spot the correct sentence usage of 'Antidote':",
+                options: [
+                    "Prompt administration of the correct antidote saved the snakebite victim's life.",
+                    "The antique dealer found an antidote in the museum.",
+                    "She felt a strong antidote of animosity toward her rival.",
+                    "The annual annuity acted as a financial antidote."
+                ],
+                answer: 0,
+                hint: "Medical treatment against poison.",
+                explanation: "Option A correctly uses antidote for neutralizing poison."
+            },
+
+            // Antipathy (107)
+            {
+                q: "What is the one-word substitution for 'Strong dislike between two persons / A deep-seated feeling of aversion'?",
+                options: ["Antipathy", "Animosity", "Anthology", "Anomaly"],
+                answer: 0,
+                hint: "Anti- (against) + pathos (feeling).",
+                explanation: "Antipathy is a deep-seated feeling of aversion, dislike, or hostility between individuals."
+            },
+            {
+                q: "The Greek root 'pathos' in 'Antipathy' means:",
+                options: ["Feeling, suffering, or passion", "Disease or sickness", "Human or mankind", "Name or title"],
+                answer: 0,
+                hint: "Empathy, sympathy, apathy all share this root.",
+                explanation: "'Pathos' relates to feeling, emotion, or suffering."
+            },
+            {
+                q: "Identify synonyms for 'Antipathy':",
+                options: ["Aversion, hostility, antagonism", "Sympathy, affinity, attraction", "Apathy, indifference, lethargy", "Anonymity, obscurity, secrecy"],
+                answer: 0,
+                hint: "Deep dislike or opposition in feeling.",
+                explanation: "Aversion, hostility, and antagonism are strong synonyms for antipathy."
+            },
+            {
+                q: "What is the antonym of 'Antipathy'?",
+                options: ["Affinity or sympathy", "Animosity or hatred", "Apathy or coldness", "Anomaly or strangeness"],
+                answer: 0,
+                hint: "Natural liking or attraction.",
+                explanation: "Affinity or sympathy represents a natural liking or attraction, opposing antipathy."
+            },
+            {
+                q: "Assertion (A): Antipathy and Empathy both share the root 'pathos'. Reason (R): Both words describe emotional states or feelings toward something or someone. Which is correct?",
+                options: ["Both (A) and (R) are true, and (R) is the correct explanation of (A)", "Both (A) and (R) are true, but (R) is NOT the correct explanation", "(A) is true, but (R) is false", "(A) is false, but (R) is true"],
+                answer: 0,
+                hint: "Pathos = feeling.",
+                explanation: "Both words are built upon 'pathos' (feeling): antipathy is against feeling (dislike), empathy is in-feeling (understanding)."
+            },
+
+            // Antiquarian (108)
+            {
+                q: "What is the one-word substitution for 'One who studies/deals in antique things'?",
+                options: ["Antiquarian", "Anthropologist", "Anesthetist", "Anarchist"],
+                answer: 0,
+                hint: "Derived from 'antique' / ancient things.",
+                explanation: "An antiquarian is a person who studies or collects antiques or ancient works of art and rare books."
+            },
+            {
+                q: "Identify synonyms for 'Antiquarian':",
+                options: ["Collector of antiques, archivist, historian of relics", "Modernist, innovator, futurist", "Anesthetist, surgeon, clinician", "Anthropologist, sociologist"],
+                answer: 0,
+                hint: "Someone dealing with old artifacts.",
+                explanation: "An archivist or collector of antiques shares the role of an antiquarian."
+            },
+            {
+                q: "What is the base root of 'Antiquarian'?",
+                options: ["Antiquus (ancient/old)", "Anthos (flower)", "Annus (year)", "Animus (spirit)"],
+                answer: 0,
+                hint: "Relates to antiquity.",
+                explanation: "The Latin root 'antiquus' means ancient or old."
+            },
+            {
+                q: "Which adjective form describes objects or styles belonging to a distant past?",
+                options: ["Antiquated", "Anomalous", "Anorexic", "Apathetic"],
+                answer: 0,
+                hint: "Old-fashioned or outdated.",
+                explanation: "Antiquated means old-fashioned or outdated, derived from the same root."
+            },
+            {
+                q: "Spot the correct sentence usage of 'Antiquarian':",
+                options: ["The antiquarian spent decades collecting rare manuscripts and 17th-century coins.", "She hired an antiquarian to administer pain relief during her surgery.", "The antiquarian antidote cured the patient instantly.", "He felt an antiquarian towards his enemy."],
+                answer: 0,
+                hint: "Dealing in ancient relics.",
+                explanation: "Option A correctly uses antiquarian for someone dealing in ancient items and manuscripts."
+            },
+
+            // Antithesis (109)
+            {
+                q: "What is the one-word substitution for 'The exact opposite'?",
+                options: ["Antithesis", "Antonym", "Anomaly", "Antidote"],
+                answer: 0,
+                hint: "Anti- (against) + thesis (position/proposition).",
+                explanation: "Antithesis is a person or thing that is the direct opposite of someone or something else."
+            },
+            {
+                q: "Identify synonyms for 'Antithesis':",
+                options: ["Reverse, contrary, antipode", "Duplicate, twin, copy", "Synonym, equivalent, match", "Anomaly, irregularity, oddity"],
+                answer: 0,
+                hint: "Direct opposition or inverse.",
+                explanation: "Reverse, contrary, and antipode mean exact opposites."
+            },
+            {
+                q: "What is the adjective form of 'Antithesis'?",
+                options: ["Antithetical", "Antiquated", "Anomalous", "Apathetic"],
+                answer: 0,
+                hint: "Ending in '-ical'.",
+                explanation: "Antithetical means directly opposed or contrasted."
+            },
+            {
+                q: "Which root in 'Antithesis' means a proposition, statement, or thesis?",
+                options: ["Thesis", "Anti", "Pathos", "Anim"],
+                answer: 0,
+                hint: "A thesis is a placed proposition.",
+                explanation: "'Thesis' comes from Greek meaning to place or a proposition placed."
+            },
+            {
+                q: "Spot the correct sentence usage of 'Antithesis':",
+                options: [
+                    "Cruelty is the absolute antithesis of kindness and compassion.",
+                    "The doctor prescribed an antithesis to cure the snake venom.",
+                    "She published an antithesis of her favourite poems.",
+                    "He received an antithesis payment every year."
+                ],
+                answer: 0,
+                hint: "Direct opposite concept.",
+                explanation: "Option A correctly uses antithesis to denote the exact opposite."
+            },
+
+            // Antonym (110)
+            {
+                q: "What is the one-word substitution for 'Words which are opposite in meaning'?",
+                options: ["Antonym", "Synonym", "Homonym", "Acronym"],
+                answer: 0,
+                hint: "Anti- (against) + onym (name).",
+                explanation: "An antonym is a word opposite in meaning to another (e.g., bad and good)."
+            },
+            {
+                q: "What is the term for words that have the same or nearly the same meaning?",
+                options: ["Synonym", "Antonym", "Homonym", "Anonymous"],
+                answer: 0,
+                hint: "Syn- (together) + onym (name).",
+                explanation: "A synonym is a word or phrase that means exactly or nearly the same as another."
+            },
+            {
+                q: "Which root element is common to both 'Antonym' and 'Anonymous'?",
+                options: ["-onym (name)", "Anti- (against)", "Ann- (year)", "Anim- (spirit)"],
+                answer: 0,
+                hint: "Refers to naming.",
+                explanation: "Both words share '-onym', deriving from the Greek word for name."
+            },
+            {
+                q: "What is the antonym of the word 'Antonym'?",
+                options: ["Synonym", "Homonym", "Acronym", "Pseudonym"],
+                answer: 0,
+                hint: "Words with same meaning vs opposite meaning.",
+                explanation: "Synonym is the direct antonym/counterpart to antonym."
+            },
+            {
+                q: "Spot the correct statement regarding antonyms in English vocabulary examinations:",
+                options: [
+                    "Testing antonyms checks a candidate's precision in vocabulary and semantic range.",
+                    "Antonyms always have the exact same spelling except for the prefix.",
+                    "An antonym is a word that sounds identical to another word.",
+                    "Antonyms are never asked in competitive exams like SSC or RRB."
+                ],
+                answer: 0,
+                hint: "Exams test vocabulary depth.",
+                explanation: "Option A accurately describes the testing purpose of antonyms in competitive exams."
+            },
+
+            // Apartheid (111)
+            {
+                q: "What is the one-word substitution for 'A policy that segregates people on the basis of race / Policy of racial discrimination'?",
+                options: ["Apartheid", "Anarchy", "Autocracy", "Aristocracy"],
+                answer: 0,
+                hint: "Historically associated with South Africa.",
+                explanation: "Apartheid was a system of institutionalized racial segregation and discrimination in South Africa."
+            },
+            {
+                q: "Etymologically, the Afrikaans/Dutch word 'Apartheid' literally translates to:",
+                options: ["Apartness", "Togetherness", "Racial equality", "State governance"],
+                answer: 0,
+                hint: "Apart + heid (-hood/ness).",
+                explanation: "'Apartheid' literally means 'apartness' in Afrikaans."
+            },
+            {
+                q: "Identify synonyms for 'Apartheid':",
+                options: ["Racial segregation, discrimination, apartheid system", "Integration, harmony, equality", "Democracy, freedom, liberty", "Anonymity, obscurity"],
+                answer: 0,
+                hint: "System of segregation.",
+                explanation: "Racial segregation and discrimination are synonymous with the practices of apartheid."
+            },
+            {
+                q: "Which historical figure is globally renowned for dismantling Apartheid in South Africa?",
+                options: ["Nelson Mandela", "Mahatma Gandhi", "Abraham Lincoln", "Martin Luther King Jr."],
+                answer: 0,
+                hint: "Spent 27 years in prison before becoming president.",
+                explanation: "Nelson Mandela led the movement to abolish apartheid and became South Africa's first black president."
+            },
+            {
+                q: "Spot the correct sentence usage of 'Apartheid':",
+                options: [
+                    "The global community united to impose sanctions against the regime enforcing apartheid.",
+                    "She took an apartheid to cure her medical condition.",
+                    "The antiquarian discovered an apartheid manuscript.",
+                    "He anticipated an apartheid in the stock market."
+                ],
+                answer: 0,
+                hint: "Racial segregation policy.",
+                explanation: "Option A correctly uses apartheid in its historical and sociopolitical context."
+            },
+
+            // Apartment (112)
+            {
+                q: "What is the one-word substitution for 'A set of rooms forming one residence in a building'?",
+                options: ["Apartment", "Anthology", "Apiary", "Annuity"],
+                answer: 0,
+                hint: "Self-contained housing unit in a multi-story building.",
+                explanation: "An apartment is a suite of rooms forming one residence, typically in a larger building."
+            },
+            {
+                q: "Identify synonyms for 'Apartment':",
+                options: ["Flat, condominium, suite", "Mansion, estate, villa", "Tent, cabin, hut", "Hangar, warehouse, silo"],
+                answer: 0,
+                hint: "Common alternate term for flat.",
+                explanation: "Flat and condominium are direct synonyms for apartment."
+            },
+            {
+                q: "What is the primary root origin of 'Apartment'?",
+                options: ["Italian 'appartamento' (to separate)", "Greek 'anthos' (flower)", "Latin 'annus' (year)", "Arabic 'amir' (commander)"],
+                answer: 0,
+                hint: "Derived from separating private rooms.",
+                explanation: "It derives from Italian 'appartamento', meaning separated rooms."
+            },
+            {
+                q: "Spot the correct grammatical category for 'Apartment':",
+                options: ["Noun", "Verb", "Adjective", "Adverb"],
+                answer: 0,
+                hint: "A physical dwelling place.",
+                explanation: "Apartment is a noun."
+            },
+            {
+                q: "Which sentence correctly uses 'Apartment'?",
+                options: [
+                    "They rented a cozy two-bedroom apartment near the city center.",
+                    "The scientist examined the apartment under a microscope.",
+                    "She wrote an apartment about her travels abroad.",
+                    "He took an apartment to neutralize the poison."
+                ],
+                answer: 0,
+                hint: "Residential dwelling.",
+                explanation: "Option A correctly uses apartment as a place of residence."
+            },
+
+            // Apathetic / Apathy (113, 114)
+            {
+                q: "What is the one-word substitution for 'Showing or feeling no interest, enthusiasm, or concern'?",
+                options: ["Apathetic", "Anile", "Antiquarian", "Anomalous"],
+                answer: 0,
+                hint: "A- (without) + pathos (feeling).",
+                explanation: "Apathetic describes someone showing or feeling no interest, enthusiasm, or concern."
+            },
+            {
+                q: "What is the noun form representing 'The feeling of not being interested in or enthusiastic'?",
+                options: ["Apathy", "Animosity", "Antipathy", "Annuity"],
+                answer: 0,
+                hint: "Absence of passion or emotion.",
+                explanation: "Apathy is lack of interest, enthusiasm, or concern."
+            },
+            {
+                q: "Identify synonyms for 'Apathetic':",
+                options: ["Indifferent, unconcerned, lethargic", "Enthusiastic, passionate, zealous", "Hostile, antagonistic, rancorous", "Anxious, fearful, worried"],
+                answer: 0,
+                hint: "Lacking care or emotion.",
+                explanation: "Indifferent, unconcerned, and lethargic are synonyms for apathetic."
+            },
+            {
+                q: "What is the antonym of 'Apathetic'?",
+                options: ["Passionate or enthusiastic", "Indifferent or cold", "Hostile or bitter", "Anomalous or odd"],
+                answer: 0,
+                hint: "Full of intense feeling or interest.",
+                explanation: "Passionate and enthusiastic are direct antonyms of apathetic."
+            },
+            {
+                q: "Assertion (A): An apathetic person displays deep passion and enthusiasm for social causes. Reason (R): The prefix 'a-' means with or complete. Which is correct?",
+                options: ["Both (A) and (R) are false", "Both (A) and (R) are true", "(A) is true, but (R) is false", "(A) is false, but (R) is true"],
+                answer: 0,
+                hint: "A- means without; apathetic means without feeling.",
+                explanation: "Both statements are false. Apathetic means lacking enthusiasm, and 'a-' means without, not with."
+            },
+
+            // Aphasia (115)
+            {
+                q: "What is the one-word substitution for 'Loss of speech due to medical problem'?",
+                options: ["Aphasia", "Anorexia", "Apiary", "Anemia"],
+                answer: 0,
+                hint: "A- (without) + phasis (speech).",
+                explanation: "Aphasia is a neurological condition causing loss of ability to understand or express speech."
+            },
+            {
+                q: "The Greek root 'phasis' or 'phem' in 'Aphasia' relates to:",
+                options: ["Speech or speaking", "Sight or vision", "Hearing or sound", "Movement or action"],
+                answer: 0,
+                hint: "Euphemism, blasphemy share this root.",
+                explanation: "'Phasis' relates to speech and speaking."
+            },
+            {
+                q: "Identify synonyms for 'Aphasia':",
+                options: ["Speech impairment, loss of speech, language disorder", "Loss of appetite, self-starvation", "Total destruction, annihilation", "Racial segregation, apartheid"],
+                answer: 0,
+                hint: "Medical disorder affecting communication.",
+                explanation: "Speech impairment and language disorder are clinical synonyms/descriptions for aphasia."
+            },
+            {
+                q: "Spot the correct medical specialty that treats conditions like 'Aphasia':",
+                options: ["Neurology and speech-language pathology", "Cardiology and heart surgery", "Orthopedics and bone fractures", "Dermatology and skin care"],
+                answer: 0,
+                hint: "Relates to brain and communication.",
+                explanation: "Aphasia results from brain damage (like stroke); neurologists and speech pathologists treat it."
+            },
+            {
+                q: "Which sentence correctly illustrates 'Aphasia'?",
+                options: [
+                    "Following the stroke, the patient suffered from aphasia, struggling to find the right words.",
+                    "The antiquarian discovered an aphasia manuscript in the library.",
+                    "She felt a deep aphasia toward her lazy colleagues.",
+                    "The government implemented a strict aphasia policy."
+                ],
+                answer: 0,
+                hint: "Speech loss due to brain trauma.",
+                explanation: "Option A correctly uses aphasia as a medical condition involving speech loss."
+            },
+
+            // Apiary (116)
+            {
+                q: "What is the one-word substitution for 'A place where bees are kept'?",
+                options: ["Apiary", "Aviary", "Aquarium", "Sanctuary"],
+                answer: 0,
+                hint: "Latin 'apis' means bee.",
+                explanation: "An apiary is a location where beehives of honeybees are kept."
+            },
+            {
+                q: "What is the difference between an 'Apiary' and an 'Aviary'?",
+                options: ["Apiary keeps bees; Aviary keeps birds", "Apiary keeps birds; Aviary keeps bees", "Apiary keeps fish; Aviary keeps reptiles", "Apiary keeps horses; Aviary keeps dogs"],
+                answer: 0,
+                hint: "Apis = bee, Avis = bird.",
+                explanation: "Apiary comes from 'apis' (bee), whereas aviary comes from 'avis' (bird)."
+            },
+            {
+                q: "What is a person who keeps and cares for bees in an apiary called?",
+                options: ["Apiarist / Beekeeper", "Antiquarian", "Anesthetist", "Anthropologist"],
+                answer: 0,
+                hint: "Also known as a beekeeper.",
+                explanation: "An apiarist (or beekeeper) maintains bee colonies."
+            },
+            {
+                q: "The Latin root 'apis' in 'Apiary' translates to:",
+                options: ["Bee", "Bird", "Fish", "Horse"],
+                answer: 0,
+                hint: "Honey-producing insect.",
+                explanation: "'Apis' is Latin for bee."
+            },
+            {
+                q: "Spot the correct sentence usage of 'Apiary':",
+                options: [
+                    "The local farmer set up an apiary to harvest organic wildflower honey.",
+                    "She visited the municipal apiary to watch exotic parrots fly.",
+                    "The surgeon inspected the patient's apiary before the operation.",
+                    "He wrote an apiary about his ancestors."
+                ],
+                answer: 0,
+                hint: "Place for keeping bees.",
+                explanation: "Option A correctly uses apiary as a place where bees are kept for honey."
+            },
+
+            // Apologize (117)
+            {
+                q: "What is the one-word substitution for 'To express regret for something that one has done wrong'?",
+                options: ["Apologize", "Anticipate", "Annihilate", "Appreciate"],
+                answer: 0,
+                hint: "Saying sorry for a fault.",
+                explanation: "To apologize means to express regret for something that one has done wrong."
+            },
+            {
+                q: "Identify synonyms for 'Apologize':",
+                options: ["Express regret, say sorry, make amends", "Boast, brag, gloat", "Accuse, blame, condemn", "Destroy, annihilate, obliterate"],
+                answer: 0,
+                hint: "Admitting fault and asking forgiveness.",
+                explanation: "Expressing regret and saying sorry are direct synonyms for apologizing."
+            },
+            {
+                q: "What is the noun form of 'Apologize'?",
+                options: ["Apology", "Antipathy", "Animosity", "Apartheid"],
+                answer: 0,
+                hint: "Ending in '-gy'.",
+                explanation: "An apology is a regretful acknowledgement of an offense or failure."
+            },
+            {
+                q: "Etymologically, Greek 'apo-' (away from) + 'logos' (speech) originally formed 'apologia' meaning:",
+                options: ["A speech in defense / justification", "An expression of sorrow", "A total destruction", "An annual payment"],
+                answer: 0,
+                hint: "Originally a legal defense speech.",
+                explanation: "'Apologia' originally meant a formal defense or speech in defense, which later evolved into expressing regret."
+            },
+            {
+                q: "Spot the correct sentence usage of 'Apologize':",
+                options: [
+                    "He had the integrity to apologize immediately after realizing his mistake.",
+                    "She decided to apologize the entire building into ashes.",
+                    "The doctor gave an apologize to cure the poison.",
+                    "They celebrated their wedding apologize after ten years."
+                ],
+                answer: 0,
+                hint: "Expressing regret for a mistake.",
+                explanation: "Option A correctly uses apologize for expressing regret for an error."
+            },
+
+            // Advanced Comprehensive & Mixed Exam Review Questions (Questions 56 to 100)
+            {
+                q: "Match List I (Words) with List II (Meanings):\n(a) Annihilate - 1. Exact opposite\n(b) Antithesis - 2. Destroy completely\n(c) Anomaly - 3. Departure from common rule\n(d) Antidote - 4. Medicine against poison\nChoose the correct code:",
+                options: ["a-2, b-1, c-3, d-4", "a-1, b-2, c-4, d-3", "a-3, b-4, c-1, d-2", "a-4, b-3, c-2, d-1"],
+                answer: 0,
+                hint: "Check individual definitions learned earlier.",
+                explanation: "Annihilate = destroy completely (2); Antithesis = exact opposite (1); Anomaly = departure from norm (3); Antidote = medicine against poison (4)."
+            },
+            {
+                q: "Which of the following words is INCORRECTLY matched with its root/meaning?",
+                options: ["Apiary: A place where birds are kept", "Anthology: A collection of literary pieces", "Anachronism: Belonging to another time", "Anonymity: State of being nameless"],
+                answer: 0,
+                hint: "Check apiary vs aviary.",
+                explanation: "Apiary is a place where *bees* are kept, not birds (birds are kept in an aviary). Thus, option A is incorrect."
+            },
+            {
+                q: "Which prefix means 'against' in medical and vocabulary terms like Antidote and Antipathy?",
+                options: ["Anti-", "An-", "Ann-", "Anim-"],
+                answer: 0,
+                hint: "Opposing or counteracting.",
+                explanation: "The prefix 'anti-' means against or opposing."
+            },
+            {
+                q: "What is the study of human societies, cultures, and physical development called?",
+                options: ["Anthropology", "Anatomy", "Antiquarianism", "Apiology"],
+                answer: 0,
+                hint: "Root 'anthrop-' = human.",
+                explanation: "Anthropology is the scientific study of humans."
+            },
+            {
+                q: "Which of the following best describes 'Annuity'?",
+                options: ["A fixed sum paid annually", "An annual event date", "An abnormal anomaly", "An anonymous author"],
+                answer: 0,
+                hint: "Financial yearly payment.",
+                explanation: "Annuity refers to a fixed annual financial payment."
+            },
+            {
+                q: "Choose the word that means 'A strong dislike or hostility between two persons':",
+                options: ["Antipathy", "Animosity", "Apathy", "Anarchy"],
+                answer: 0,
+                hint: "Deep-seated aversion or feeling against.",
+                explanation: "Antipathy represents a deep-seated feeling of aversion and dislike."
+            },
+            {
+                q: "What is a medical specialist who administers pain-relieving drugs during surgery called?",
+                options: ["Anesthetist", "Apothecary", "Antiquarian", "Anthropologist"],
+                answer: 0,
+                hint: "Administers anesthesia.",
+                explanation: "Anesthetist is the correct one-word substitution."
+            },
+            {
+                q: "Which word means 'Like a weak old woman'?",
+                options: ["Anile", "Juvenile", "Puerile", "Virile"],
+                answer: 0,
+                hint: "Derived from Latin 'anus'.",
+                explanation: "Anile means resembling a frail, weak old woman."
+            },
+            {
+                q: "What is the term for 'Whose names are not known / unknown author'?",
+                options: ["Anonymous", "Antiquarian", "Anomalous", "Apathetic"],
+                answer: 0,
+                hint: "Without a name.",
+                explanation: "Anonymous means having no known name or author."
+            },
+            {
+                q: "Which word denotes 'An obsessive desire to lose weight by refusing to eat'?",
+                options: ["Anorexia", "Aphasia", "Apathy", "Anemia"],
+                answer: 0,
+                hint: "Eating disorder.",
+                explanation: "Anorexia is characterized by self-starvation."
+            },
+            {
+                q: "What is 'An anthology'?",
+                options: ["A collection of poems or stories by different authors", "An annual financial payment", "An exact opposite statement", "A medical countermeasure against poison"],
+                answer: 0,
+                hint: "Literary bouquet.",
+                explanation: "Anthology is a collection of literary works by different authors."
+            },
+            {
+                q: "What does 'Anticipate' mean?",
+                options: ["To look forward to / expect beforehand", "To destroy completely", "To separate racially", "To lose the power of speech"],
+                answer: 0,
+                hint: "Foreseeing an event.",
+                explanation: "Anticipate means to expect or look forward to."
+            },
+            {
+                q: "What is an 'Antidote'?",
+                options: ["A medicine to nullify poison", "A policy of racial segregation", "A set of rooms in a building", "A fixed yearly income"],
+                answer: 0,
+                hint: "Neutralizes toxins.",
+                explanation: "Antidote counteracts poison."
+            },
+            {
+                q: "Who is an 'Antiquarian'?",
+                options: ["One who studies or deals in antique things", "One who studies human evolution", "One who keeps bees", "One who administers anesthesia"],
+                answer: 0,
+                hint: "Dealer in antiques.",
+                explanation: "An antiquarian studies or trades antiques."
+            },
+            {
+                q: "What is the 'Antithesis'?",
+                options: ["The exact opposite", "A yearly celebration", "A speech in defense", "An unknown writer"],
+                answer: 0,
+                hint: "Direct contrast.",
+                explanation: "Antithesis means the direct opposite."
+            },
+            {
+                q: "What is an 'Antonym'?",
+                options: ["A word opposite in meaning", "A word with identical meaning", "A nameless author", "A medical speech disorder"],
+                answer: 0,
+                hint: "Opposite meaning word.",
+                explanation: "Antonym is a word opposite in meaning."
+            },
+            {
+                q: "What was 'Apartheid'?",
+                options: ["A policy of racial segregation and discrimination", "A fixed annual financial sum", "An obsessive eating disorder", "A collection of literary stories"],
+                answer: 0,
+                hint: "South African system.",
+                explanation: "Apartheid was institutionalized racial segregation."
+            },
+            {
+                q: "What is an 'Apartment'?",
+                options: ["A set of rooms forming one residence in a building", "A place where bees are kept", "A medical cure for poison", "An exact opposite concept"],
+                answer: 0,
+                hint: "Residential flat.",
+                explanation: "Apartment is a residential suite of rooms."
+            },
+            {
+                q: "What does 'Apathetic' mean?",
+                options: ["Showing or feeling no interest, enthusiasm, or concern", "Destroying something completely", "Acting like an old woman", "Studying ancient relics"],
+                answer: 0,
+                hint: "Lacking emotion or care.",
+                explanation: "Apathetic means showing no interest or concern."
+            },
+            {
+                q: "What is 'Aphasia'?",
+                options: ["Loss of speech due to a medical problem", "Loss of appetite", "Departure from common rule", "Fear of mankind"],
+                answer: 0,
+                hint: "Neurological speech loss.",
+                explanation: "Aphasia is the medical loss of speech."
+            },
+            {
+                q: "What is an 'Apiary'?",
+                options: ["A place where bees are kept", "A place where birds are kept", "A place where antique items are sold", "A medical clinic for surgery"],
+                answer: 0,
+                hint: "Bee farm.",
+                explanation: "Apiary is a bee yard/hive location."
+            },
+            {
+                q: "What does it mean to 'Apologize'?",
+                options: ["To express regret for something one has done wrong", "To anticipate future events", "To destroy an object completely", "To study human evolution"],
+                answer: 0,
+                hint: "Saying sorry.",
+                explanation: "To apologize is to express regret for a mistake."
+            },
+            {
+                q: "Assertion (A): An anomaly is something that strictly adheres to the standard rule. Reason (R): The prefix 'an-' indicates conformity and regularity. Which is correct?",
+                options: ["Both (A) and (R) are false", "Both (A) and (R) are true", "(A) is true, but (R) is false", "(A) is false, but (R) is true"],
+                answer: 0,
+                hint: "Anomaly = deviation; An- = without/not.",
+                explanation: "Both statements are false. Anomaly means a deviation from the norm, and 'an-' means without/not conforming."
+            },
+            {
+                q: "Which word root signifies 'year' in Anniversary and Annuity?",
+                options: ["Annus", "Animus", "Anthos", "Anthropos"],
+                answer: 0,
+                hint: "Latin for year.",
+                explanation: "Annus is Latin for year."
+            },
+            {
+                q: "Which of the following terms is a noun indicating lack of interest or emotion?",
+                options: ["Apathy", "Apathetic", "Antithetical", "Anomalous"],
+                answer: 0,
+                hint: "Noun ending in '-y'.",
+                explanation: "Apathy is the noun; apathetic is the adjective."
+            },
+            {
+                q: "What is the primary function of an Antidote?",
+                options: ["To counteract poison", "To accelerate disease", "To cause memory loss", "To record history"],
+                answer: 0,
+                hint: "Neutralizing toxins.",
+                explanation: "Antidotes counteract poisons."
+            },
+            {
+                q: "Which of the following is an example of an Anthropologist's work?",
+                options: ["Studying the customs, origins, and development of human societies", "Analyzing financial annuity portfolios", "Administering anesthesia during operations", "Keeping bees in an apiary"],
+                answer: 0,
+                hint: "Study of humans.",
+                explanation: "Anthropologists study human societies and origins."
+            },
+            {
+                q: "What does 'Annihilate' mean in a military or scientific context?",
+                options: ["To obliterate or destroy completely", "To calculate yearly taxes", "To preserve historical artifacts", "To anticipate future battles"],
+                answer: 0,
+                hint: "Total wiping out.",
+                explanation: "Annihilate means complete destruction."
+            },
+            {
+                q: "Which word best characterizes someone who hates or distrusts mankind?",
+                options: ["Misanthrope", "Philanthropist", "Antiquarian", "Anesthetist"],
+                answer: 0,
+                hint: "Mis- (hate) + anthrope (human).",
+                explanation: "A misanthrope hates humanity."
+            },
+            {
+                q: "What is the antonym of 'Animosity'?",
+                options: ["Amity", "Antipathy", "Enmity", "Hostility"],
+                answer: 0,
+                hint: "Friendship and peace.",
+                explanation: "Amity means friendship, opposing animosity."
+            },
+            {
+                q: "Which term describes a book containing poems or stories by many different authors?",
+                options: ["Anthology", "Biography", "Dictionary", "Lexicon"],
+                answer: 0,
+                hint: "Literary collection.",
+                explanation: "Anthology is a collection of diverse writings."
+            },
+            {
+                q: "What is the term for a disease or condition where someone loses the ability to speak?",
+                options: ["Aphasia", "Anorexia", "Anemia", "Apocrypha"],
+                answer: 0,
+                hint: "Speech loss.",
+                explanation: "Aphasia is speech loss due to brain trauma."
+            },
+            {
+                q: "Which of the following words means 'Like a weak old woman' and is tested in SSC exams?",
+                options: ["Anile", "Juvenile", "Virile", "Puerile"],
+                answer: 0,
+                hint: "Latin 'anus'.",
+                explanation: "Anile means frail like an old woman."
+            },
+            {
+                q: "What is the meaning of 'Anomaly'?",
+                options: ["A deviation from the common rule or standard", "A fixed annual payment", "An official book of antonyms", "A medical cure for poison"],
+                answer: 0,
+                hint: "Irregularity.",
+                explanation: "Anomaly is an irregularity or departure from the norm."
+            },
+            {
+                q: "Which prefix means 'without' or 'absence of' in words like Anonymous and Anorexia?",
+                options: ["An- / A-", "Anti-", "Ann-", "Anim-"],
+                answer: 0,
+                hint: "Lack of name or appetite.",
+                explanation: "The prefix 'an-' or 'a-' denotes absence or without."
+            },
+            {
+                q: "What is the primary role of an Antiquarian?",
+                options: ["Collecting and studying antiques or rare ancient items", "Administering drugs for surgery", "Studying bee behavior in an apiary", "Writing annual financial reports"],
+                answer: 0,
+                hint: "Antique specialist.",
+                explanation: "An antiquarian deals in and studies antiques."
+            },
+            {
+                q: "Which of the following is synonymous with 'Antithesis'?",
+                options: ["Direct opposite", "Exact duplicate", "Similar synonym", "Annual celebration"],
+                answer: 0,
+                hint: "Polar opposite.",
+                explanation: "Antithesis means direct opposite."
+            },
+            {
+                q: "What does 'Apartheid' refer to in modern political history?",
+                options: ["Institutionalized racial segregation in South Africa", "A peaceful treaty between two nations", "An economic annuity system", "A medical treatment for aphasia"],
+                answer: 0,
+                hint: "Apartness policy.",
+                explanation: "Apartheid was South Africa's racial segregation system."
+            },
+            {
+                q: "Which word represents a fixed sum of money paid yearly?",
+                options: ["Annuity", "Antidote", "Anthology", "Anomaly"],
+                answer: 0,
+                hint: "Yearly payout.",
+                explanation: "Annuity is a yearly financial payment."
+            },
+            {
+                q: "Final Mastery Check: If a person feels intense hostility, active ill will, and bitter enmity toward another, which word best describes their state?",
+                options: ["Animosity", "Apathy", "Amity", "Anonymity"],
+                answer: 0,
+                hint: "Active hatred.",
+                explanation: "Animosity represents strong hostility and active ill will."
+            }
+        ];
+
+        // Quiz State Variables
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let userAnswers = new Array(quizData.length).fill(null);
+        let answeredQuestions = new Array(quizData.length).fill(false);
+
+        // DOM Elements
+        const questionCounterEl = document.getElementById('question-counter');
+        const questionBadgeEl = document.getElementById('question-badge');
+        const progressBarEl = document.getElementById('progress-bar');
+        const progressPercentEl = document.getElementById('progress-percent');
+        const questionTextEl = document.getElementById('question-text');
+        const optionsContainerEl = document.getElementById('options-container');
+        const hintBtnTextEl = document.getElementById('hint-btn-text');
+        const hintBoxEl = document.getElementById('hint-box');
+        const explanationBoxEl = document.getElementById('explanation-box');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const scoreDisplayEl = document.getElementById('score-display');
+        const totalScoreDisplayEl = document.getElementById('total-score-display');
+        const currentQNumEl = document.getElementById('current-q-num');
+        const totalQNumEl = document.getElementById('total-q-num');
+        const jumpInputEl = document.getElementById('jump-input');
+        const completionModalEl = document.getElementById('completion-modal');
+        const finalScoreTextEl = document.getElementById('final-score-text');
+
+        totalScoreDisplayEl.textContent = quizData.length;
+        totalQNumEl.textContent = quizData.length;
+        jumpInputEl.max = quizData.length;
+
+        // Shuffle options for randomization requirement while preserving correct answer mapping
+        let shuffledOptionsCache = {};
+
+        function getShuffledOptions(qObj, index) {
+            if (shuffledOptionsCache[index]) {
+                return shuffledOptionsCache[index];
+            }
+            // Map original index to text and correctness
+            let opts = qObj.options.map((opt, i) => ({
+                text: opt,
+                isCorrect: i === qObj.answer
+            }));
+            // Fisher-Yates shuffle
+            for (let i = opts.length - 1; i > 0; i--) {
+                let j = Math.floor(Math.random() * (i + 1));
+                [opts[i], opts[j]] = [opts[j], opts[i]];
+            }
+            shuffledOptionsCache[index] = opts;
+            return opts;
+        }
+
+        function loadQuestion(index) {
+            currentQuestionIndex = index;
+            const q = quizData[index];
+
+            // Update Counters & Progress
+            questionCounterEl.textContent = `Question ${index + 1} of ${quizData.length}`;
+            currentQNumEl.textContent = index + 1;
+            const percent = Math.round(((index + 1) / quizData.length) * 100);
+            progressBarEl.style.width = percent + '%';
+            progressPercentEl.textContent = percent + '%';
+
+            // Question Text
+            questionTextEl.textContent = q.q;
+
+            // Hide Hint & Explanation initially or restore state
+            hintBoxEl.classList.add('hidden');
+            hintBtnTextEl.textContent = 'Show Hint';
+
+            // Render Options
+            optionsContainerEl.innerHTML = '';
+            const randomizedOpts = getShuffledOptions(q, index);
+
+            randomizedOpts.forEach((optObj, optIdx) => {
+                const btn = document.createElement('button');
+                btn.className = 'w-full text-left p-4 rounded-xl border border-customBorder bg-lavenderBg hover:bg-lightPurple/60 transition-all font-medium text-darkPurple flex items-center justify-between group focus:outline-none focus:ring-2 focus:ring-primaryPurple';
+                
+                let optionLetter = String.fromCharCode(65 + optIdx); // A, B, C, D
+                btn.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-lg bg-headerBg border border-customBorder flex items-center justify-center font-bold text-primaryPurple text-xs shadow-sm">${optionLetter}</span>
+                        <span class="text-sm sm:text-base">${optObj.text}</span>
+                    </div>
+                `;
+
+                // Check if user already answered this question
+                if (answeredQuestions[index]) {
+                    btn.disabled = true;
+                    if (optObj.isCorrect) {
+                        btn.className = 'w-full text-left p-4 rounded-xl border-2 border-successGreen bg-successGreen/10 font-medium text-darkPurple flex items-center justify-between cursor-default';
+                    } else if (userAnswers[index] === optIdx) {
+                        btn.className = 'w-full text-left p-4 rounded-xl border-2 border-errorRed bg-errorRed/10 font-medium text-darkPurple flex items-center justify-between cursor-default';
+                    } else {
+                        btn.className = 'w-full text-left p-4 rounded-xl border border-customBorder bg-lavenderBg/50 opacity-60 font-medium text-darkPurple flex items-center justify-between cursor-default';
+                    }
+                } else {
+                    btn.onclick = () => selectOption(optIdx, randomizedOpts);
+                }
+
+                optionsContainerEl.appendChild(btn);
+            });
+
+            // Restore Explanation if already answered
+            if (answeredQuestions[index]) {
+                explanationBoxEl.classList.remove('hidden');
+                const isCorrect = randomizedOpts[userAnswers[index]].isCorrect;
+                if (isCorrect) {
+                    explanationBoxEl.className = 'p-4 rounded-xl border border-successGreen/40 bg-successGreen/10 text-darkPurple text-sm transition-all duration-300';
+                    explanationBoxEl.innerHTML = `<p class="font-bold text-successGreen mb-1">✅ Correct Answer!</p><p>${q.explanation}</p>`;
+                } else {
+                    explanationBoxEl.className = 'p-4 rounded-xl border border-errorRed/40 bg-errorRed/10 text-darkPurple text-sm transition-all duration-300';
+                    explanationBoxEl.innerHTML = `<p class="font-bold text-errorRed mb-1">❌ Incorrect.</p><p>${q.explanation}</p>`;
+                }
+            } else {
+                explanationBoxEl.classList.add('hidden');
+            }
+
+            // Navigation Buttons State
+            prevBtn.disabled = index === 0;
+            if (index === quizData.length - 1) {
+                nextBtn.textContent = 'Finish Quiz 🏁';
+            } else {
+                nextBtn.textContent = 'Next →';
+            }
+        }
+
+        function selectOption(selectedOptIdx, randomizedOpts) {
+            if (answeredQuestions[currentQuestionIndex]) return;
+
+            answeredQuestions[currentQuestionIndex] = true;
+            userAnswers[currentQuestionIndex] = selectedOptIdx;
+
+            const isCorrect = randomizedOpts[selectedOptIdx].isCorrect;
+            if (isCorrect) {
+                score++;
+                scoreDisplayEl.textContent = score;
+            }
+
+            // Refresh view to show correct/incorrect colors
+            loadQuestion(currentQuestionIndex);
+
+            // Check if all answered or reached end
+            if (answeredQuestions.every(val => val === true)) {
+                setTimeout(() => {
+                    showCompletionModal();
+                }, 1200);
+            }
+        }
+
+        function toggleHint() {
+            const q = quizData[currentQuestionIndex];
+            if (hintBoxEl.classList.contains('hidden')) {
+                hintBoxEl.textContent = `💡 Hint: ${q.hint}`;
+                hintBoxEl.classList.remove('hidden');
+                hintBtnTextEl.textContent = 'Hide Hint';
+            } else {
+                hintBoxEl.classList.add('hidden');
+                hintBtnTextEl.textContent = 'Show Hint';
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < quizData.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion(currentQuestionIndex);
+            } else {
+                showCompletionModal();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion(currentQuestionIndex);
+            }
+        }
+
+        function jumpToQuestion() {
+            const val = parseInt(jumpInputEl.value);
+            if (!isNaN(val) && val >= 1 && val <= quizData.length) {
+                currentQuestionIndex = val - 1;
+                loadQuestion(currentQuestionIndex);
+                jumpInputEl.value = '';
+            } else {
+                alert(`Please enter a valid question number between 1 and ${quizData.length}.`);
+            }
+        }
+
+        function showCompletionModal() {
+            finalScoreTextEl.textContent = `${score} / ${quizData.length}`;
+            completionModalEl.classList.remove('hidden');
+        }
+
+        function resetQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            userAnswers.fill(null);
+            answeredQuestions.fill(false);
+            shuffledOptionsCache = {};
+            scoreDisplayEl.textContent = '0';
+            completionModalEl.classList.add('hidden');
+            loadQuestion(0);
+        }
+
+        // Keyboard Navigation Support
+        document.addEventListener('keydown', (e) => {
+            // Prevent interference when typing in inputs
+            if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) {
+                if (e.key === 'Enter' && document.activeElement === jumpInputEl) {
+                    jumpToQuestion();
+                }
+                return;
+            }
+
+            if (e.key === 'ArrowLeft') {
+                prevQuestion();
+            } else if (e.key === 'ArrowRight') {
+                nextQuestion();
+            }
+        });
+
+        // Initial Load
+        loadQuestion(0);
+    </script>
+</body>
+</html>

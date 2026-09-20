@@ -1,0 +1,1527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Vocabulary Mastery Quiz - SSC & Competitive Exams</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F0E6FF;
+            background-image: radial-gradient(circle at 10% 20%, #E9DDF8 0%, #F0E6FF 90%);
+        }
+        /* Custom scrollbar and smooth transitions */
+        * {
+            transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
+        }
+    </style>
+</head>
+<body class="min-h-screen text-[#30205D] flex flex-col justify-between selection:bg-[#E9DDF8] selection:text-[#6542C8]">
+
+    <!-- Sticky Header -->
+    <header class="sticky top-0 z-50 bg-[#E5D5FA]/90 backdrop-blur-md border-b border-[#DCCBF2] px-4 py-3 shadow-sm">
+        <div class="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+                <div class="bg-[#6542C8] text-white p-2 rounded-xl shadow-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold text-[#30205D] leading-tight">Vocab Mastery Suite</h1>
+                    <p class="text-xs text-[#716782]">Advanced One-Word Substitutions & Synonyms (SSC / RRB Level)</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-2 flex-wrap justify-center">
+                <div class="bg-[#FBF7FF] border border-[#DCCBF2] px-3 py-1.5 rounded-full text-xs font-semibold shadow-inner flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    Score: <span id="score-display" class="text-[#6542C8] font-bold">0</span> / <span id="total-score-display">0</span>
+                </div>
+                <div class="bg-[#FBF7FF] border border-[#DCCBF2] px-3 py-1.5 rounded-full text-xs font-semibold shadow-inner">
+                    Accuracy: <span id="accuracy-display" class="text-[#6542C8] font-bold">0%</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Quiz Container -->
+    <main class="max-w-3xl w-full mx-auto px-4 py-6 flex-grow flex flex-col justify-center">
+        
+        <!-- Quiz Card -->
+        <div id="quiz-card" class="bg-[#FBF7FF] border border-[#DCCBF2] rounded-3xl shadow-xl p-6 sm:p-8 relative overflow-hidden">
+            
+            <!-- Question Meta Header -->
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+                <div class="flex items-center gap-2">
+                    <span id="question-number-badge" class="bg-[#E9DDF8] text-[#6542C8] text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Question 1 of 80</span>
+                    <span id="question-category-badge" class="bg-purple-100 text-[#7352C9] text-xs font-medium px-2.5 py-0.5 rounded-full">Vocabulary & OWS</span>
+                </div>
+                <span id="difficulty-badge" class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800">Exam Level</span>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="w-full bg-[#DDD9E8] rounded-full h-2 mb-6 overflow-hidden">
+                <div id="progress-bar" class="bg-[#6542C8] h-2 rounded-full transition-all duration-300" style="width: 1%;"></div>
+            </div>
+
+            <!-- Question Text -->
+            <div class="mb-6">
+                <h2 id="question-text" class="text-lg sm:text-xl font-bold text-[#30205D] leading-snug">
+                    Loading question...
+                </h2>
+            </div>
+
+            <!-- Answer Options Container -->
+            <div id="options-container" class="space-y-3 mb-6">
+                <!-- Dynamically injected options -->
+            </div>
+
+            <!-- Hint Section -->
+            <div class="mb-6">
+                <button id="hint-toggle-btn" onclick="toggleHint()" class="text-xs font-semibold text-[#7352C9] hover:text-[#6542C8] flex items-center gap-1.5 focus:outline-none focus:ring-2 focus:ring-[#6542C8] rounded px-1 py-0.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                    </svg>
+                    <span>💡 Toggle Hint</span>
+                </button>
+                <div id="hint-box" class="hidden mt-2 p-3 bg-purple-50 border border-purple-200 rounded-xl text-xs text-[#52446e] leading-relaxed">
+                    <!-- Hint text -->
+                </div>
+            </div>
+
+            <!-- Explanation / Rationale Box (Revealed on selection) -->
+            <div id="explanation-box" class="hidden p-4 rounded-2xl border text-sm transition-all duration-300 mb-2">
+                <div class="flex items-center gap-2 font-bold mb-1" id="explanation-header">
+                    <!-- Correct/Incorrect icon & title -->
+                </div>
+                <p id="explanation-text" class="text-xs sm:text-sm text-[#4A3D66] leading-relaxed">
+                    <!-- Detailed Rationale -->
+                </p>
+            </div>
+
+            <!-- Navigation Controls inside Card for mobile convenience -->
+            <div class="flex items-center justify-between pt-4 border-t border-[#DCCBF2] mt-6">
+                <button id="prev-btn" onclick="prevQuestion()" class="px-4 py-2 rounded-xl text-xs font-semibold bg-[#E9DDF8] text-[#30205D] hover:d-opacity-90 disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1 shadow-sm">
+                    ← Previous
+                </button>
+                <button id="next-btn" onclick="nextQuestion()" class="px-5 py-2 rounded-xl text-xs font-semibold bg-[#6542C8] text-white hover:bg-[#5333a8] flex items-center gap-1 shadow-md">
+                    Next →
+                </button>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Sticky Bottom Navigation Panel -->
+    <nav class="sticky bottom-0 z-40 bg-[#FBF7FF]/95 backdrop-blur-md border-t border-[#DCCBF2] px-4 py-3 shadow-lg">
+        <div class="max-w-4xl mx-auto flex flex-wrap items-center justify-between gap-3">
+            
+            <!-- Jump to Question -->
+            <div class="flex items-center gap-2">
+                <label for="jump-input" class="text-xs font-semibold text-[#716782] hidden sm:inline">Jump to Q:</label>
+                <div class="flex items-center">
+                    <input type="number" id="jump-input" min="1" max="80" placeholder="Q#" 
+                        class="w-16 px-2.5 py-1.5 text-xs bg-white border border-[#DCCBF2] rounded-l-xl focus:outline-none focus:ring-2 focus:ring-[#6542C8] text-center font-medium"
+                        onkeydown="if(event.key==='Enter') jumpToQuestionInput()">
+                    <button onclick="jumpToQuestionInput()" class="bg-[#6542C8] text-white px-3 py-1.5 text-xs font-semibold rounded-r-xl hover:bg-[#5333a8] transition-colors">
+                        Go
+                    </button>
+                </div>
+            </div>
+
+            <!-- Center quick status / navigation pills -->
+            <div class="hidden md:flex items-center gap-1 text-xs text-[#716782] font-medium">
+                <span>Use <kbd class="px-1.5 py-0.5 bg-white border border-purple-200 rounded text-[10px]">←</kbd> <kbd class="px-1.5 py-0.5 bg-white border border-purple-200 rounded text-[10px]">→</kbd> arrows to navigate</span>
+            </div>
+
+            <!-- Reset & Finish Controls -->
+            <div class="flex items-center gap-2">
+                <button onclick="resetQuizWithConfirmation()" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-rose-100 text-rose-700 hover:bg-rose-200 transition-colors flex items-center gap-1 shadow-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                    Reset Quiz
+                </button>
+            </div>
+
+        </div>
+    </nav>
+
+    <!-- Custom Modal for Alerts/Confirmations -->
+    <div id="custom-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-[#FBF7FF] border border-[#DCCBF2] rounded-3xl max-w-sm w-full p-6 shadow-2xl text-center">
+            <h3 id="modal-title" class="text-base font-bold text-[#30205D] mb-2">Confirmation</h3>
+            <p id="modal-message" class="text-xs text-[#716782] mb-6">Are you sure you want to reset your progress?</p>
+            <div class="flex items-center justify-center gap-3">
+                <button id="modal-cancel-btn" onclick="closeModal()" class="px-4 py-2 rounded-xl text-xs font-semibold bg-gray-200 text-gray-700 hover:bg-gray-300">Cancel</button>
+                <button id="modal-confirm-btn" class="px-4 py-2 rounded-xl text-xs font-semibold bg-[#6542C8] text-white hover:bg-[#5333a8]">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const quizData = [
+            // Entry 53: Alien
+            {
+                id: 1,
+                category: "Entry 53: Foreigner & Extraterrestrial",
+                difficulty: "SSC CGL (Tier 1)",
+                question: "Which of the following terms describes a person belonging to a foreign country, or a fictional being originating from another world?",
+                options: [
+                    { text: "Alien (N.)", correct: true },
+                    { text: "Alumnus (N.)", correct: false },
+                    { text: "Altruist (N.)", correct: false },
+                    { text: "Ambassador (N.)", correct: false }
+                ],
+                hint: "Hindi meaning: अजन्बी, विदेशी, अन्य ग्रह का प्राणी. It is also used in sci-fi for beings from outer space.",
+                explanation: "Correct Answer: Alien (N.). An 'alien' refers to a foreigner or someone from another planet. Root Latin 'alius' meaning other."
+            },
+            {
+                id: 2,
+                category: "Entry 53: Synonym & Usage",
+                difficulty: "RRB NTPC",
+                question: "In the context of legal terminology and nationality, which of the following is a direct synonym for 'Alien' when referring to a non-citizen resident?",
+                options: [
+                    { text: "Non-resident / Foreign national", correct: true },
+                    { text: "Indigenous native", correct: false },
+                    { text: "Alma mater", correct: false },
+                    { text: "Alumnus", correct: false }
+                ],
+                hint: "Think of a person residing in a country without holding its citizenship.",
+                explanation: "Correct Answer: Non-resident / Foreign national. An alien is legally a person who is not a citizen of the country in which they live."
+            },
+            {
+                id: 3,
+                category: "Entry 53: Antonym Practice",
+                difficulty: "State PCS",
+                question: "Choose the most appropriate antonym for 'Alien' in the sense of a person belonging to one's own country or community:",
+                options: [
+                    { text: "Native / Citizen", correct: true },
+                    { text: "Extraterrestrial", correct: false },
+                    { text: "Foreign", correct: false },
+                    { text: "Outlander", correct: false }
+                ],
+                hint: "Opposite of a foreigner or stranger.",
+                explanation: "Correct Answer: Native / Citizen. While 'alien' denotes someone foreign or external, 'native' or 'citizen' denotes someone belonging locally."
+            },
+            {
+                id: 4,
+                category: "Entry 53: Statement Analysis",
+                difficulty: "SSC CHSL",
+                question: "Consider the following statements regarding the word 'Alien':\n1. It can function both as a noun and an adjective.\n2. In scientific context, it refers exclusively to legal immigrants.\nWhich statement(s) is/are correct?",
+                options: [
+                    { text: "Only 1 is correct", correct: true },
+                    { text: "Only 2 is correct", correct: false },
+                    { text: "Both 1 and 2 are correct", correct: false },
+                    { text: "Neither 1 nor 2 is correct", correct: false }
+                ],
+                hint: "Alien can describe foreign customs (adj) or an extraterrestrial creature (noun).",
+                explanation: "Correct Answer: Only 1 is correct. 'Alien' is versatile—functioning as a noun (a foreigner/creature) and an adjective (unfamiliar or foreign)."
+            },
+
+            // Entry 54: Alimony
+            {
+                id: 5,
+                category: "Entry 54: Legal & Financial Vocabulary",
+                difficulty: "SSC CGL (Tier 2)",
+                question: "What is the term for the financial allowance paid to a former spouse or partner after a legal separation or divorce is finalized?",
+                options: [
+                    { text: "Alimony (N.)", correct: true },
+                    { text: "Alluvium (N.)", correct: false },
+                    { text: "Altar (N.)", correct: false },
+                    { text: "Almanac (N.)", correct: false }
+                ],
+                hint: "Hindi meaning: गुजारा भत्ता / छोड़े हुए साथी के लिये दिया जाने वाला धन.",
+                explanation: "Correct Answer: Alimony (N.). It is court-ordered financial support paid by one spouse to the other after marital dissolution."
+            },
+            {
+                id: 6,
+                category: "Entry 54: Contextual Application",
+                difficulty: "Banking / SSC",
+                question: "In family law litigation, the primary objective of granting 'Alimony' is to ensure:",
+                options: [
+                    { text: "Financial equity and sustenance for the dependent spouse post-divorce", correct: true },
+                    { text: "Punishment for marital discord", correct: false },
+                    { text: "Division of corporate stocks only", correct: false },
+                    { text: "Charitable donation to state welfare funds", correct: false }
+                ],
+                hint: "It helps maintain the standard of living enjoyed during marriage.",
+                explanation: "Correct Answer: Financial equity and sustenance for the dependent spouse post-divorce. Alimony bridges financial gaps."
+            },
+            {
+                id: 7,
+                category: "Entry 54: Word Etymology",
+                difficulty: "State Exams",
+                question: "The legal term 'Alimony' has its etymological roots in Latin 'alimonia', which primarily relates to:",
+                options: [
+                    { text: "Nourishment or sustenance", correct: true },
+                    { text: "Mountain climbing", correct: false },
+                    { text: "Flowing water deposits", correct: false },
+                    { text: "Astronomical calendars", correct: false }
+                ],
+                hint: "Derived from 'alere' meaning to nourish.",
+                explanation: "Correct Answer: Nourishment or sustenance. Originally signifying provision of food and livelihood."
+            },
+            {
+                id: 8,
+                category: "Entry 54: Statement Check",
+                difficulty: "RRB NTPC",
+                question: "Which of the following is NOT a correct characteristic of Alimony?",
+                options: [
+                    { text: "It is a one-time charitable gift given to strangers.", correct: true },
+                    { text: "It is regulated by court decrees or legal agreements.", correct: false },
+                    { text: "It aims to support the financially dependent ex-partner.", correct: false },
+                    { text: "It can be paid in periodic installments or lump sum.", correct: false }
+                ],
+                hint: "Is alimony a gift to strangers?",
+                explanation: "Correct Answer: It is a one-time charitable gift given to strangers. Alimony is strictly a legal matrimonial obligation, not charity."
+            },
+
+            // Entry 55: Allegory
+            {
+                id: 9,
+                category: "Entry 55: Literary Devices",
+                difficulty: "SSC CGL",
+                question: "A story, play, picture, or artistic work in which each character and event symbolizes a deeper moral, spiritual, or political truth is known as:",
+                options: [
+                    { text: "Allegory (N.)", correct: true },
+                    { text: "Alliteration (N.)", correct: false },
+                    { text: "Ambience (N.)", correct: false },
+                    { text: "Almanac (N.)", correct: false }
+                ],
+                hint: "Hindi meaning: नीति कथा / प्रतीक कथा.",
+                explanation: "Correct Answer: Allegory (N.). Famous examples include George Orwell's 'Animal Farm' or John Bunyan's 'The Pilgrim's Progress'."
+            },
+            {
+                id: 10,
+                category: "Entry 55: Literary Comparison",
+                difficulty: "State PCS",
+                question: "How does an 'Allegory' differ primarily from a standard fable or literal narrative?",
+                options: [
+                    { text: "Every element carries a dual meaning representing abstract ideas like justice, vice, or truth.", correct: true },
+                    { text: "It contains no characters whatsoever.", correct: false },
+                    { text: "It must be written exclusively in verse rhyme.", correct: false },
+                    { text: "It is restricted to scientific data representation.", correct: false }
+                ],
+                hint: "Look for symbolic representation of abstract qualities.",
+                explanation: "Correct Answer: Every element carries a dual meaning representing abstract ideas. It functions as an extended metaphor."
+            },
+            {
+                id: 11,
+                category: "Entry 55: Synonyms",
+                difficulty: "SSC CHSL",
+                question: "Which of the following is closest in meaning to 'Allegory'?",
+                options: [
+                    { text: "Parable / Metaphorical narrative", correct: true },
+                    { text: "Direct autobiography", correct: false },
+                    { text: "Mathematical theorem", correct: false },
+                    { text: "Geological survey report", correct: false }
+                ],
+                hint: "A symbolic story conveying a hidden meaning.",
+                explanation: "Correct Answer: Parable / Metaphorical narrative. Both use symbolic storytelling to convey deeper truths."
+            },
+            {
+                id: 12,
+                category: "Entry 55: False Statement",
+                difficulty: "RRB Group D",
+                question: "Which of the following statements about 'Allegory' is FALSE?",
+                options: [
+                    { text: "It is always a factual, unbellished historical news report.", correct: true },
+                    { text: "Characters in an allegory often personify vices or virtues.", correct: false },
+                    { text: "It uses symbolic fiction to convey moral lessons.", correct: false },
+                    { text: "The Pilgrim's Progress is a classic literary allegory.", correct: false }
+                ],
+                hint: "Allegory is fictional and symbolic, not a dry news report.",
+                explanation: "Correct Answer: It is always a factual, unbellished historical news report. Allegory is imaginative literature, not journalism."
+            },
+
+            // Entry 56: Alliteration
+            {
+                id: 13,
+                category: "Entry 56: Phonetic & Poetic Devices",
+                difficulty: "SSC CGL",
+                question: "What is the literary term for words that begin with the same letter, syllable, or sound, such as 'She sells seashells'?",
+                options: [
+                    { text: "Alliteration (N.)", correct: true },
+                    { text: "Allegory (N.)", correct: false },
+                    { text: "Ambiguity (N.)", correct: false },
+                    { text: "Altimetry (N.)", correct: false }
+                ],
+                hint: "Hindi meaning: अनुप्रास अलंकार. Repetition of initial consonant sounds.",
+                explanation: "Correct Answer: Alliteration (N.). Used extensively in poetry and tongue twisters for musicality and rhythm."
+            },
+            {
+                id: 14,
+                category: "Entry 56: Linguistic Analysis",
+                difficulty: "State Exams",
+                question: "In the phrase 'Peter Piper picked a peck of pickled peppers', the prominent stylistic device utilized is:",
+                options: [
+                    { text: "Alliteration", correct: true },
+                    { text: "Alimony", correct: false },
+                    { text: "Alluvium", correct: false },
+                    { text: "Amaxophobia", correct: false }
+                ],
+                hint: "Notice the repetition of the 'P' sound at the start of words.",
+                explanation: "Correct Answer: Alliteration. The repetition of the consonant sound 'p' at the beginning of adjacent words."
+            },
+            {
+                id: 15,
+                category: "Entry 56: Purpose in Literature",
+                difficulty: "RRB NTPC",
+                question: "Why do poets and copywriters employ 'Alliteration' in their compositions?",
+                options: [
+                    { text: "To create a catchy rhythm, aesthetic appeal, and memorable cadence", correct: true },
+                    { text: "To obscure the true meaning of the text", correct: false },
+                    { text: "To calculate mountain elevations", correct: false },
+                    { text: "To deposit river silt", correct: false }
+                ],
+                hint: "It makes slogans and poetry rhythmic and catchy.",
+                explanation: "Correct Answer: To create a catchy rhythm, aesthetic appeal, and memorable cadence."
+            },
+            {
+                id: 16,
+                category: "Entry 56: Incorrect Statement",
+                difficulty: "SSC CHSL",
+                question: "Identify the INCORRECT statement regarding Alliteration:",
+                options: [
+                    { text: "It requires repetition of vowel sounds at the end of clauses (rhyme).", correct: true },
+                    { text: "It involves identical initial consonant sounds in close proximity.", correct: false },
+                    { text: "It is common in tongue twisters and advertising slogans.", correct: false },
+                    { text: "It is a phonetic stylistic device.", correct: false }
+                ],
+                hint: "Alliteration focuses on initial consonant sounds, not end rhyme.",
+                explanation: "Correct Answer: It requires repetition of vowel sounds at the end of clauses (rhyme). That describes rhyme, not alliteration."
+            },
+
+            // Entry 57: Alluvium
+            {
+                id: 17,
+                category: "Entry 57: Geographical & Geological Terms",
+                difficulty: "SSC CGL / RRB",
+                question: "What is the geological term for soil, clay, or silt deposited by flowing water, typically over floodplains or riverbeds?",
+                options: [
+                    { text: "Alluvium (N.)", correct: true },
+                    { text: "Altar (N.)", correct: false },
+                    { text: "Almanac (N.)", correct: false },
+                    { text: "Altitude (N.)", correct: false }
+                ],
+                hint: "Hindi meaning: पानी के बहाव द्वारा बिछाई गयी मिट्टी (Silt/Sediment).",
+                explanation: "Correct Answer: Alluvium (N.). Highly fertile soil deposited by rivers, crucial for agriculture (e.g., Indo-Gangetic plains)."
+            },
+            {
+                id: 18,
+                category: "Entry 57: Contextual Usage",
+                difficulty: "State PCS",
+                question: "Agricultural productivity in river valleys like the Ganges is immensely boosted due to the rich mineral deposits known as:",
+                options: [
+                    { text: "Alluvium", correct: true },
+                    { text: "Alimony", correct: false },
+                    { text: "Amateur work", correct: false },
+                    { text: "Ambience", correct: false }
+                ],
+                hint: "Sediment carried and deposited by running water.",
+                explanation: "Correct Answer: Alluvium. Alluvial soil is renowned for its high fertility due to river silt deposits."
+            },
+            {
+                id: 19,
+                category: "Entry 57: Synonyms",
+                difficulty: "SSC CGL",
+                question: "Which of the following words is a direct synonym for 'Alluvium'?",
+                    options: [
+                    { text: "Silt / Detritus / River sediment", correct: true },
+                    { text: "Volcanic magma", correct: false },
+                    { text: "Dry desert sand", correct: false },
+                    { text: "Glacial bedrock", correct: false }
+                ],
+                hint: "Fine particle deposits left by water flow.",
+                explanation: "Correct Answer: Silt / Detritus / River sediment. Alluvium consists of loose clay, silt, sand, or gravel deposited by running water."
+            },
+            {
+                id: 20,
+                category: "Entry 57: Statement Check",
+                difficulty: "RRB NTPC",
+                question: "Which statement about Alluvium is accurate?",
+                options: [
+                    { text: "It is typically very fertile and supports intensive farming.", correct: true },
+                    { text: "It is formed exclusively by volcanic explosions.", correct: false },
+                    { text: "It is found only on mountain peaks above 5,000 meters.", correct: false },
+                    { text: "It has no relation to rivers or water bodies.", correct: false }
+                ],
+                hint: "Think of river deltas and fertile plains.",
+                explanation: "Correct Answer: It is typically very fertile and supports intensive farming. River basins rich in alluvium are agricultural hubs."
+            },
+
+            // Entry 58: Alma Mater
+            {
+                id: 21,
+                category: "Entry 58: Educational Vocabulary",
+                difficulty: "SSC CGL",
+                question: "What is the Latin phrase used to designate the school, college, or university in which one has been educated?",
+                options: [
+                    { text: "Alma Mater (N.)", correct: true },
+                    { text: "Alumnus (N.)", correct: false },
+                    { text: "Altar (N.)", correct: false },
+                    { text: "Almanac (N.)", correct: false }
+                ],
+                hint: "Hindi meaning: जहाँ शिक्षा पाई वह संस्था. Literally translates to 'bountiful mother' in Latin.",
+                explanation: "Correct Answer: Alma Mater (N.). Refers affectionately to one's former educational institution."
+            },
+            {
+                id: 22,
+                category: "Entry 58: Etymology & Literal Meaning",
+                difficulty: "State Exams",
+                question: "Literally translated from Latin, what does 'Alma Mater' mean?",
+                options: [
+                    { text: "Nourishing mother", correct: true },
+                    { text: "Wise teacher", correct: false },
+                    { text: "Ancient temple", correct: false },
+                    { text: "Foreign traveler", correct: false }
+                ],
+                hint: "Alma = nourishing/kind; Mater = mother.",
+                explanation: "Correct Answer: Nourishing mother. Symbolizes how the school nourishes students with knowledge."
+            },
+            {
+                id: 23,
+                category: "Entry 58: Sentence Usage",
+                difficulty: "SSC CHSL",
+                question: "Identify the correct sentence using 'Alma Mater':",
+                options: [
+                    { text: "He donated a generous sum to his alma mater for building a new computer lab.", correct: true },
+                    { text: "She drove her alma mater across the international border.", correct: false },
+                    { text: "The scientist calculated the alma mater of the mountain peak.", correct: false },
+                    { text: "They wrote an alma mater poem with identical consonant sounds.", correct: false }
+                ],
+                hint: "You donate or return to your school/college.",
+                explanation: "Correct Answer: He donated a generous sum to his alma mater for building a new computer lab."
+            },
+            {
+                id: 24,
+                category: "Entry 58: False Statement",
+                difficulty: "RRB Group D",
+                question: "Which statement regarding 'Alma Mater' is incorrect?",
+                options: [
+                    { text: "It refers to a current preschool student enrolled today.", correct: true },
+                    { text: "It is a Latin phrase.", correct: false },
+                    { text: "It denotes the school or university from which someone graduated.", correct: false },
+                    { text: "Alumni often feel deep nostalgia for their alma mater.", correct: false }
+                ],
+                hint: "An alma mater is the institution, not the fresh student.",
+                explanation: "Correct Answer: It refers to a current preschool student enrolled today. Alma mater is the institution, whereas a student is an alumnus/alumna."
+            },
+
+            // Entry 59: Almanac
+            {
+                id: 25,
+                category: "Entry 59: Reference & Astronomical Books",
+                difficulty: "SSC CGL",
+                question: "What is the name for an annual publication containing astronomical or meteorological tables, calendar data, tide predictions, and other statistics?",
+                options: [
+                    { text: "Almanac (N.)", correct: true },
+                    { text: "Altar (N.)", correct: false },
+                    { text: "Altimeter (N.)", correct: false },
+                    { text: "Alluvium (N.)", correct: false }
+                ],
+                hint: "Hindi meaning: पंचांग / वार्षिक खगोलीय व मौसमी विवरणिका.",
+                explanation: "Correct Answer: Almanac (N.). Essential historical reference book providing yearly calendars, weather forecasts, and astrological/astronomical data."
+            },
+            {
+                id: 26,
+                category: "Entry 59: Functional Purpose",
+                difficulty: "State PCS",
+                question: "Historically, farmers and navigators relied heavily on an 'Almanac' primarily for:",
+                options: [
+                    { text: "Predicting seasonal weather patterns, planting schedules, and tidal movements", correct: true },
+                    { text: "Reading fictional allegories and poems", correct: false },
+                    { text: "Calculating mountain heights above sea level", correct: false },
+                    { text: "Draughting legal divorce alimony settlements", correct: false }
+                ],
+                hint: "Calendars and celestial data help in agriculture and navigation.",
+                explanation: "Correct Answer: Predicting seasonal weather patterns, planting schedules, and tidal movements."
+            },
+            {
+                id: 27,
+                category: "Entry 59: Synonyms",
+                difficulty: "SSC CHSL",
+                question: "Which term is synonymous with 'Almanac' in terms of an annual statistical and calendar record?",
+                options: [
+                    { text: "Yearbook / Calendar compendium", correct: true },
+                    { text: "Fictional novel", correct: false },
+                    { text: "Legal statute book", correct: false },
+                    { text: "Geological map", correct: false }
+                ],
+                hint: "An annual reference book.",
+                explanation: "Correct Answer: Yearbook / Calendar compendium. An almanac compiles data annually."
+            },
+            {
+                id: 28,
+                category: "Entry 59: Statement Check",
+                difficulty: "RRB NTPC",
+                question: "Which of the following is correct about an Almanac?",
+                options: [
+                    { text: "It is updated annually and contains calendar and astronomical statistics.", correct: true },
+                    { text: "It is a geological term for river silt deposition.", correct: false },
+                    { text: "It is a phobia of driving cars.", correct: false },
+                    { text: "It is a device used to measure altitude.", correct: false }
+                ],
+                hint: "Review entry 59 definition.",
+                explanation: "Correct Answer: It is updated annually and contains calendar and astronomical statistics."
+            },
+
+            // Entry 60: Alpinism
+            {
+                id: 29,
+                category: "Entry 60: Sports & Mountaineering",
+                difficulty: "SSC CGL",
+                question: "What is the term for mountain climbing, especially the sport of high-altitude, technical mountaineering?",
+                options: [
+                    { text: "Alpinism (N.)", correct: true },
+                    { text: "Amaxophobia (N.)", correct: false },
+                    { text: "Alliteration (N.)", correct: false },
+                    { text: "Altruism (N.)", correct: false }
+                ],
+                hint: "Hindi meaning: पर्वतारोहण (derived from the Alps).",
+                explanation: "Correct Answer: Alpinism (N.). Mountaineering specifically associated with scaling high, snowy mountain ranges."
+            },
+            {
+                id: 30,
+                category: "Entry 60: Contextual Skill",
+                difficulty: "State Exams",
+                question: "An expert practitioner of 'Alpinism' requires mastery in:",
+                options: [
+                    { text: "Ice axe techniques, rope handling, and surviving extreme weather at high altitudes", correct: true },
+                    { text: "Drafting legal divorce contracts and alimony", correct: false },
+                    { text: "Measuring atmospheric pressure with an altimeter", correct: false },
+                    { text: "Writing allegorical fairy tales", correct: false }
+                ],
+                hint: "Mountaineering in alpine conditions.",
+                explanation: "Correct Answer: Ice axe techniques, rope handling, and surviving extreme weather at high altitudes."
+            },
+            {
+                id: 31,
+                category: "Entry 60: Synonyms",
+                difficulty: "SSC CHSL",
+                question: "Which word is closest in meaning to 'Alpinism'?",
+                options: [
+                    { text: "Mountaineering / Alpinist scaling", correct: true },
+                    { text: "Deep-sea diving", correct: false },
+                    { text: "Flatland sprinting", correct: false },
+                    { text: "Agricultural ploughing", correct: false }
+                ],
+                hint: "Scaling high peaks.",
+                explanation: "Correct Answer: Mountaineering / Alpinist scaling."
+            },
+            {
+                id: 32,
+                category: "Entry 60: False Statement",
+                difficulty: "RRB Group D",
+                question: "Identify the INCORRECT statement regarding Alpinism:",
+                options: [
+                    { text: "It is an indoor sedentary board game played on a table.", correct: true },
+                    { text: "It involves climbing steep snow, ice, and rock mountains.", correct: false },
+                    { text: "The term originates from the Alps mountain range in Europe.", correct: false },
+                    { text: "It requires specialized physical endurance and gear.", correct: false }
+                ],
+                hint: "Is alpinism an indoor board game?",
+                explanation: "Correct Answer: It is an indoor sedentary board game played on a table. Alpinism is rigorous outdoor mountaineering."
+            },
+
+            // Entry 61: Altar
+            {
+                id: 33,
+                category: "Entry 61: Religious & Architectural Vocabulary",
+                difficulty: "SSC CGL",
+                question: "What is the term for a table or flat surface where religious offerings, sacrifices, or sacred rites are made to a deity?",
+                options: [
+                    { text: "Altar (N.)", correct: true },
+                    { text: "Altimeter (N.)", correct: false },
+                    { text: "Alumni (N.)", correct: false },
+                    { text: "Alluvium (N.)", correct: false }
+                ],
+                hint: "Hindi meaning: वह स्थान या मेज जहाँ भगवान पर चढ़ाने वाली सामग्रियाँ रखी जाती हैं.",
+                explanation: "Correct Answer: Altar (N.). A consecrated table or raised structure in a place of worship."
+            },
+            {
+                id: 34,
+                category: "Entry 34 / 61: Homophone Distinction",
+                difficulty: "SSC CGL / CHSL",
+                question: "Choose the correct homophonic pair distinction between 'Altar' and 'Alter':",
+                options: [
+                    { text: "Altar = sacred table for offerings; Alter = to modify or change something", correct: true },
+                    { text: "Altar = mountain climber; Alter = river sediment", correct: false },
+                    { text: "Altar = foreign country; Alumni = graduate", correct: false },
+                    { text: "Altar = fear of cars; Ambience = atmosphere", correct: false }
+                ],
+                hint: "Altar has an 'a' (sacred table); Alter has an 'e' (to change).",
+                explanation: "Correct Answer: Altar = sacred table for offerings; Alter = to modify or change something. A classic English homophone trap."
+            },
+            {
+                id: 35,
+                category: "Entry 61: Synonyms",
+                difficulty: "State PCS",
+                question: "In architectural and religious contexts, which term is synonymous with 'Altar'?",
+                options: [
+                    { text: "Sanctuary table / Shrine table / Communion table", correct: true },
+                    { text: "Astronomical almanac", correct: false },
+                    { text: "Flowing river alluvium", correct: false },
+                    { text: "Ambidextrous tool", correct: false }
+                ],
+                hint: "A holy table in a temple or church.",
+                explanation: "Correct Answer: Sanctuary table / Shrine table / Communion table."
+            },
+            {
+                id: 36,
+                category: "Entry 61: Statement Check",
+                difficulty: "RRB NTPC",
+                question: "Which of the following is correct regarding an Altar?",
+                options: [
+                    { text: "It is a sacred focal point in temples, churches, or places of worship.", correct: true },
+                    { text: "It is a meteorological instrument for measuring barometric height.", correct: false },
+                    { text: "It is a legal agreement for divorce financial support.", correct: false },
+                    { text: "It is a story symbolizing political truths.", correct: false }
+                ],
+                hint: "Relates to worship and deities.",
+                explanation: "Correct Answer: It is a sacred focal point in temples, churches, or places of worship."
+            },
+
+            // Entry 62: Altimeter
+            {
+                id: 37,
+                category: "Entry 62: Scientific & Measurement Instruments",
+                difficulty: "SSC CGL",
+                question: "What is the name of the scientific instrument used to measure the altitude (height above sea level) of land or aircraft?",
+                options: [
+                    { text: "Altimeter (N.)", correct: true },
+                    { text: "Almanac (N.)", correct: false },
+                    { text: "Ambidextrous (Adj.)", correct: false },
+                    { text: "Ambience (N.)", correct: false }
+                ],
+                hint: "Hindi meaning: ऊँचाई नापने का यंत्र.",
+                explanation: "Correct Answer: Altimeter (N.). Commonly used in aviation and mountaineering to gauge height based on atmospheric pressure."
+            },
+            {
+                id: 38,
+                category: "Entry 62: Working Principle",
+                difficulty: "State Exams",
+                question: "Most standard barometric altimeters determine altitude by measuring changes in:",
+                options: [
+                    { text: "Atmospheric pressure (which decreases as altitude increases)", correct: true },
+                    { text: "Oceanic alluvium sediment depth", correct: false },
+                    { text: "The grammatical alliteration of spoken words", correct: false },
+                    { text: "The amount of alimony paid in court", correct: false }
+                ],
+                hint: "Air pressure drops higher up in the atmosphere.",
+                explanation: "Correct Answer: Atmospheric pressure. As altitude increases, air pressure drops, which the altimeter translates into height."
+            },
+            {
+                id: 39,
+                category: "Entry 62: Synonyms",
+                difficulty: "SSC CHSL",
+                question: "Which of the following describes the function of an Altimeter?",
+                options: [
+                    { text: "Height-measuring device / Elevation gauge", correct: true },
+                    { text: "Device to measure water salinity", correct: false },
+                    { text: "Instrument to calculate star positions annually", correct: false },
+                    { text: "Tool to measure car speed", correct: false }
+                ],
+                hint: "Alt = height; meter = measure.",
+                explanation: "Correct Answer: Height-measuring device / Elevation gauge."
+            },
+            {
+                id: 40,
+                category: "Entry 62: False Statement",
+                difficulty: "RRB Group D",
+                question: "Which statement about an Altimeter is FALSE?",
+                options: [
+                    { text: "It is a religious table used for offerings in a temple.", correct: true },
+                    { text: "Pilots rely on it during flight navigation to maintain safe clearance.", correct: false },
+                    { text: "Mountaineers use pocket altimeters to check their climbing elevation.", correct: false },
+                    { text: "It operates on barometric pressure principles.", correct: false }
+                ],
+                hint: "An altar is for worship; an altimeter measures height.",
+                explanation: "Correct Answer: It is a religious table used for offerings in a temple. That describes an altar, not an altimeter."
+            },
+
+            // Entry 63: Altitude
+            {
+                id: 41,
+                category: "Entry 63: Geographical & Spatial Terms",
+                difficulty: "SSC CGL",
+                question: "What is the term for the height of an object or point measured above sea level or ground level?",
+                options: [
+                    { text: "Altitude (N.)", correct: true },
+                    { text: "Altimeter (N.)", correct: false },
+                    { text: "Alluvium (N.)", correct: false },
+                    { text: "Ambience (N.)", correct: false }
+                ],
+                hint: "Hindi meaning: समुद्र तल से ऊँचाई.",
+                explanation: "Correct Answer: Altitude (N.). Distance upwards or vertical elevation."
+            },
+            {
+                id: 42,
+                category: "Entry 63: Scientific Correlation",
+                difficulty: "State PCS",
+                question: "As a climber ascends to a very high 'altitude', what environmental change occurs most notably?",
+                options: [
+                    { text: "Atmospheric oxygen levels and air pressure decrease significantly", correct: true },
+                    { text: "River alluvium deposits increase dramatically", correct: false },
+                    { text: "Alimony payments automatically double", correct: false },
+                    { text: "Alliteration in speech becomes impossible", correct: false }
+                ],
+                hint: "Thin air at mountain peaks.",
+                explanation: "Correct Answer: Atmospheric oxygen levels and air pressure decrease significantly, causing altitude sickness if unacclimatized."
+            },
+            {
+                id: 43,
+                category: "Entry 63: Synonyms",
+                difficulty: "SSC CHSL",
+                question: "Which of the following is a direct synonym for 'Altitude'?",
+                options: [
+                    { text: "Elevation / Height / Vertical distance", correct: true },
+                    { text: "Depth / Seabed floor", correct: false },
+                    { text: "Horizontal breadth", correct: false },
+                    { text: "Surface area", correct: false }
+                ],
+                hint: "Synonym for vertical height.",
+                explanation: "Correct Answer: Elevation / Height / Vertical distance."
+            },
+            {
+                id: 44,
+                category: "Entry 63: Statement Check",
+                difficulty: "RRB NTPC",
+                question: "Which statement regarding Altitude is correct?",
+                options: [
+                    { text: "It measures vertical elevation above a reference datum like sea level.", correct: true },
+                    { text: "It is an instrument used to record rainfall.", correct: false },
+                    { text: "It is a psychological fear of driving vehicles.", correct: false },
+                    { text: "It refers to soil deposited by rivers.", correct: false }
+                ],
+                hint: "Altitude is vertical distance.",
+                explanation: "Correct Answer: It measures vertical elevation above a reference datum like sea level."
+            },
+
+            // Entry 64: Altruist
+            {
+                id: 45,
+                category: "Entry 64: Character & Personality Traits",
+                difficulty: "SSC CGL",
+                question: "Who is someone who makes charitable donations and unselfish contributions intended for the welfare of other people without expecting personal gain?",
+                options: [
+                    { text: "Altruist (N.)", correct: true },
+                    { text: "Amateur (N.)", correct: false },
+                    { text: "Alien (N.)", correct: false },
+                    { text: "Alumnus (N.)", correct: false }
+                ],
+                hint: "Hindi meaning: परोपकारी / जो दूसरों की भलाई बिना स्वार्थ करे.",
+                explanation: "Correct Answer: Altruist (N.). Driven by selfless concern for the well-being of others."
+            },
+            {
+                id: 46,
+                category: "Entry 64: Antonyms",
+                difficulty: "SSC CGL / Tier 2",
+                question: "Choose the most precise antonym for 'Altruist':",
+                options: [
+                    { text: "Egoist / Selfish person / Misanthrope", correct: true },
+                    { text: "Philanthropist", correct: false },
+                    { text: "Humanitarian", correct: false },
+                    { text: "Benefactor", correct: false }
+                ],
+                hint: "Opposite of selflessness is selfishness (egoism).",
+                explanation: "Correct Answer: Egoist / Selfish person / Misanthrope. An egoist cares only for self-gain, unlike an altruist."
+            },
+            {
+                id: 47,
+                category: "Entry 64: Sentence Application",
+                difficulty: "State Exams",
+                question: "Identify the sentence that best exemplifies an 'Altruist':",
+                options: [
+                    { text: "She quietly donated half her wealth to fund education for underprivileged orphans.", correct: true },
+                    { text: "He refused to share his notes because he wanted to top the exam alone.", correct: false },
+                    { text: "The pilot calibrated the altimeter before takeoff.", correct: false },
+                    { text: "The lawyer argued for higher alimony payments in court.", correct: false }
+                ],
+                hint: "Unselfish giving to help others.",
+                explanation: "Correct Answer: She quietly donated half her wealth to fund education for underprivileged orphans."
+            },
+            {
+                id: 48,
+                category: "Entry 64: False Statement",
+                difficulty: "RRB Group D",
+                question: "Which of the following statements about an Altruist is FALSE?",
+                options: [
+                    { text: "An altruist always acts purely out of greedy, selfish motives.", correct: true },
+                    { text: "Mother Teresa is widely regarded as a global symbol of altruism.", correct: false },
+                    { text: "Altruism involves selfless regard for the welfare of others.", correct: false },
+                    { text: "An altruist finds joy in helping fellow human beings.", correct: false }
+                ],
+                hint: "Altruism is the exact opposite of greed.",
+                explanation: "Correct Answer: An altruist always acts purely out of greedy, selfish motives. False; altruism is defined by selflessness."
+            },
+
+            // Entry 65: Alumnus
+            {
+                id: 49,
+                category: "Entry 65: Education & Academic Terms",
+                difficulty: "SSC CGL",
+                question: "What is the term for a former student (male or general) of a school, college, or university who has graduated or attended it?",
+                options: [
+                    { text: "Alumnus (N.)", correct: true },
+                    { text: "Altruist (N.)", correct: false },
+                    { text: "Amateur (N.)", correct: false },
+                    { text: "Ambassador (N.)", correct: false }
+                ],
+                hint: "Hindi meaning: भूतपूर्व छात्र (Plural: Alumni).",
+                explanation: "Correct Answer: Alumnus (N.). Note gender variants: Alumnus (male singular), Alumna (female singular), Alumni (plural male/mixed), Alumnae (female plural)."
+            },
+            {
+                id: 50,
+                category: "Entry 65: Grammatical Nuance",
+                difficulty: "SSC CGL / English Grammar",
+                question: "In formal grammar, what is the correct plural form of 'Alumnus' when referring to a group of male or mixed-gender graduates?",
+                options: [
+                    { text: "Alumni", correct: true },
+                    { text: "Alumnuses", correct: false },
+                    { text: "Alumnae", correct: false },
+                    { text: "Alumnis", correct: false }
+                ],
+                hint: "Latin second-declension masculine plural ending in '-i'.",
+                explanation: "Correct Answer: Alumni. 'Alumnae' is strictly for female graduates."
+            },
+            {
+                id: 51,
+                category: "Entry 65: Contextual Usage",
+                difficulty: "State PCS",
+                question: "When Harvard University hosts its annual homecoming, thousands of ________ gather to celebrate their graduation years.",
+                options: [
+                    { text: "Alumni", correct: true },
+                    { text: "Altimeters", correct: false },
+                    { text: "Alluviums", correct: false },
+                    { text: "Almanacs", correct: false }
+                ],
+                hint: "Plural of former graduates attending a college reunion.",
+                explanation: "Correct Answer: Alumni."
+            },
+            {
+                id: 52,
+                category: "Entry 65: Statement Check",
+                difficulty: "RRB NTPC",
+                question: "Which of the following is correct regarding the term Alumnus?",
+                options: [
+                    { text: "It denotes a graduate or former student of a specific institution.", correct: true },
+                    { text: "It refers to a teacher currently employed at a primary school.", correct: false },
+                    { text: "It means a mountain climbing expedition.", correct: false },
+                    { text: "It is a legal document specifying alimony divorce pay.", correct: false }
+                ],
+                hint: "Refers to former students/graduates.",
+                explanation: "Correct Answer: It denotes a graduate or former student of a specific institution."
+            },
+
+            // Entry 66: Amateur
+            {
+                id: 53,
+                category: "Entry 66: Skills & Professional Vocabulary",
+                difficulty: "SSC CGL",
+                question: "Who is someone who engages in an activity, sport, or art for pleasure rather than as a professional, or someone who is inept at a particular activity?",
+                options: [
+                    { text: "Amateur (N.)", correct: true },
+                    { text: "Altruist (N.)", correct: false },
+                    { text: "Ambassador (N.)", correct: false },
+                    { text: "Alumnus (N.)", correct: false }
+                ],
+                hint: "Hindi meaning: शौकीन / व्यक्ति /अनुभवहीन.",
+                explanation: "Correct Answer: Amateur (N.). Can denote a non-professional enthusiast or someone lacking expert skill."
+            },
+            {
+                id: 54,
+                category: "Entry 66: Antonyms",
+                difficulty: "SSC CGL / Tier 2",
+                question: "Choose the exact antonym for 'Amateur' in the sense of a skilled expert:",
+                options: [
+                    { text: "Professional / Expert / Connoisseur", correct: true },
+                    { text: "Novice", correct: false },
+                    { text: "Tyro", correct: false },
+                    { text: "Dilettante", correct: false }
+                ],
+                hint: "Opposite of an amateur hobbyist is a paid professional expert.",
+                explanation: "Correct Answer: Professional / Expert / Connoisseur. Professionals earn their living through specialized mastery."
+            },
+            {
+                id: 55,
+                category: "Entry 66: Synonyms",
+                difficulty: "SSC CHSL",
+                question: "Which of the following words are synonyms for 'Amateur' when implying lack of professional polish?",
+                options: [
+                    { text: "Novice / Tyro / Dabbler / Non-professional", correct: true },
+                    { text: "Master craftsman / Virtuoso", correct: false },
+                    { text: "Veteran specialist", correct: false },
+                    { text: "Seasoned expert", correct: false }
+                ],
+                hint: "Beginner or hobbyist.",
+                explanation: "Correct Answer: Novice / Tyro / Dabbler / Non-professional."
+            },
+            {
+                id: 56,
+                category: "Entry 66: False Statement",
+                difficulty: "RRB Group D",
+                question: "Which statement about an Amateur is FALSE?",
+                options: [
+                    { text: "An amateur is always a highly paid, certified veteran master of the craft.", correct: true },
+                    { text: "The word can describe someone playing a sport purely for enjoyment.", correct: false },
+                    { text: "It can also describe someone who is inexperienced or inept at a task.", correct: false },
+                    { text: "Its root relates to the French/Latin word for lover (amare).", correct: false }
+                ],
+                hint: "Amateurs do things for love/hobby, not as elite paid masters.",
+                explanation: "Correct Answer: An amateur is always a highly paid, certified veteran master of the craft. False; amateurs lack professional mastery."
+            },
+
+            // Entry 67: Amaxophobia
+            {
+                id: 67, // Entry 67
+                category: "Entry 67: Phobias & Psychological Terms",
+                difficulty: "SSC CGL / Advanced OWS",
+                question: "What is the clinical or specific phobia term for an abnormal, persistent fear of riding in a car or driving vehicles?",
+                options: [
+                    { text: "Amaxophobia (N.)", correct: true },
+                    { text: "Claustrophobia (N.)", correct: false },
+                    { text: "Acrophobia (N.)", correct: false },
+                    { text: "Agoraphobia (N.)", correct: false }
+                ],
+                hint: "Hindi meaning: वाहनों या कार में बैठने/सफर करने का डर.",
+                explanation: "Correct Answer: Amaxophobia (N.). Derived from Greek 'amaxa' (wagon/carriage) and 'phobos' (fear)."
+            },
+            {
+                id: 68,
+                category: "Entry 67: Psychological Context",
+                difficulty: "State Exams",
+                question: "A person suffering from 'Amaxophobia' would experience extreme panic or anxiety when:",
+                options: [
+                    { text: "Attempting to travel as a passenger or driver in an automobile", correct: true },
+                    { text: "Climbing high mountain altitudes (Alpinism)", correct: false },
+                    { text: "Reading an annual meteorological almanac", correct: false },
+                    { text: "Making religious offerings at an altar", correct: false }
+                ],
+                hint: "Fear of motor vehicles and car rides.",
+                explanation: "Correct Answer: Attempting to travel as a passenger or driver in an automobile."
+            },
+            {
+                id: 69,
+                category: "Entry 67: Synonyms",
+                difficulty: "SSC CHSL",
+                question: "Which of the following best defines Amaxophobia?",
+                options: [
+                    { text: "Morbid fear of riding in cars/vehicles", correct: true },
+                    { text: "Fear of high altitudes", correct: false },
+                    { text: "Fear of open spaces", correct: false },
+                    { text: "Fear of foreign people", correct: false }
+                ],
+                hint: "Car travel anxiety.",
+                explanation: "Correct Answer: Morbid fear of riding in cars/vehicles."
+            },
+            {
+                id: 70,
+                category: "Entry 67: Statement Check",
+                difficulty: "RRB NTPC",
+                question: "Which statement regarding Amaxophobia is correct?",
+                options: [
+                    { text: "It is an anxiety disorder centered around vehicles and driving.", correct: true },
+                    { text: "It is a literary device involving identical consonant sounds.", correct: false },
+                    { text: "It is financial support given after divorce.", correct: false },
+                    { text: "It is soil deposited by running river water.", correct: false }
+                ],
+                hint: "Phobia associated with cars/vehicles.",
+                explanation: "Correct Answer: It is an anxiety disorder centered around vehicles and driving."
+            },
+
+            // Entry 68: Ambassador
+            {
+                id: 71,
+                category: "Entry 68: Diplomacy & International Relations",
+                difficulty: "SSC CGL",
+                question: "What is the title given to a diplomatic representative sent by one sovereign state as its accredited minister to represent it in another foreign country?",
+                options: [
+                    { text: "Ambassador (N.)", correct: true },
+                    { text: "Altruist (N.)", correct: false },
+                    { text: "Alumnus (N.)", correct: false },
+                    { text: "Amateur (N.)", correct: false }
+                ],
+                hint: "Hindi meaning: राजदूत.",
+                explanation: "Correct Answer: Ambassador (N.). Highest-ranking diplomatic official stationed abroad."
+            },
+            {
+                id: 72,
+                category: "Entry 68: Diplomatic Immunity",
+                difficulty: "State PCS",
+                question: "In international law, ambassadors are typically granted which special status to ensure they can perform diplomatic duties without political interference?",
+                options: [
+                    { text: "Diplomatic immunity", correct: true },
+                    { text: "Mandatory alimony obligations", correct: false },
+                    { text: "Alpinism climbing licenses", correct: false },
+                    { text: "Almanac publication rights", correct: false }
+                ],
+                hint: "Protection from local prosecution while posted abroad.",
+                explanation: "Correct Answer: Diplomatic immunity. Exempts diplomats from local jurisdiction under the Vienna Convention."
+            },
+            {
+                id: 73,
+                category: "Entry 68: Synonyms",
+                difficulty: "SSC CHSL",
+                question: "Which term is synonymous with 'Ambassador'?",
+                options: [
+                    { text: "Diplomat / Envoy / Emissary / Plenipotentiary", correct: true },
+                    { text: "Foreign alien trespasser", correct: false },
+                    { text: "Amateur hobbyist", correct: false },
+                    { text: "Altruistic donor", correct: false }
+                ],
+                hint: "Official state envoy.",
+                explanation: "Correct Answer: Diplomat / Envoy / Emissary / Plenipotentiary."
+            },
+            {
+                id: 74,
+                category: "Entry 68: False Statement",
+                difficulty: "RRB Group D",
+                question: "Which statement about an Ambassador is FALSE?",
+                options: [
+                    { text: "An ambassador represents their home government in a foreign embassy.", correct: false },
+                    { text: "They engage in international diplomacy and foster bilateral ties.", correct: false },
+                    { text: "They hold the highest diplomatic rank among foreign envoys.", correct: false },
+                    { text: "An ambassador is a person suffering from car-riding phobia.", correct: true }
+                ],
+                hint: "Check option D carefully.",
+                explanation: "Correct Answer: An ambassador is a person suffering from car-riding phobia. False; that is amaxophobia."
+            },
+
+            // Entry 69: Ambidextrous
+            {
+                id: 75,
+                category: "Entry 69: Human Anatomy & Abilities",
+                difficulty: "SSC CGL",
+                question: "What is the term for a person who is able to use the left hand and the right hand equally well with equal ease and precision?",
+                options: [
+                    { text: "Ambidextrous (Adj.)", correct: true },
+                    { text: "Ambiguous (Adj.)", correct: false },
+                    { text: "Altruistic (Adj.)", correct: false },
+                    { text: "Amateur (Adj.)", correct: false }
+                ],
+                hint: "Hindi meaning: उभयहस्त (दोनों हाथों से समान रूप से काम करने वाला).",
+                explanation: "Correct Answer: Ambidextrous (Adj.). Derived from Latin 'ambi-' (both) and 'dexter' (right/favourable)."
+            },
+            {
+                id: 76,
+                category: "Entry 69: Practical Advantage",
+                difficulty: "State Exams",
+                question: "In sports such as cricket or tennis, an athlete who is 'ambidextrous' possesses the distinct advantage of:",
+                options: [
+                    { text: "Playing shots or bowling effectively with either the left or right hand", correct: true },
+                    { text: "Climbing vertical mountains without ropes (alpinism)", correct: false },
+                    { text: "Calculating annual almanac tides", correct: false },
+                    { text: "Refusing to ride in motor vehicles (amaxophobia)", correct: false }
+                ],
+                hint: "Using both hands equally well.",
+                explanation: "Correct Answer: Playing shots or bowling effectively with either the left or right hand."
+            },
+            {
+                id: 77,
+                category: "Entry 69: Synonyms",
+                difficulty: "SSC CHSL",
+                question: "Which of the following is synonymous with 'Ambidextrous'?",
+                options: [
+                    { text: "Two-handed / Equally skilled with both hands", correct: true },
+                    { text: "One-handed / Clumsy", correct: false },
+                    { text: "Foreign or alien", correct: false },
+                    { text: "Unclear and doubtful", correct: false }
+                ],
+                hint: "Both hands skilled.",
+                explanation: "Correct Answer: Two-handed / Equally skilled with both hands."
+            },
+            {
+                id: 78,
+                category: "Entry 69: Statement Check",
+                difficulty: "RRB NTPC",
+                question: "Which statement regarding Ambidextrous is accurate?",
+                options: [
+                    { text: "It describes someone with equal dexterity in both left and right hands.", correct: true },
+                    { text: "It describes a document with multiple confusing interpretations.", correct: false },
+                    { text: "It describes soil deposited by water flow.", correct: false },
+                    { text: "It describes a religious altar in a church.", correct: false }
+                ],
+                hint: "Dexterity refers to hand skill.",
+                explanation: "Correct Answer: It describes someone with equal dexterity in both left and right hands."
+            },
+
+            // Entry 70: Ambience
+            {
+                id: 79,
+                category: "Entry 70: Environment & Atmosphere",
+                difficulty: "SSC CGL",
+                question: "What is the term for the character, mood, and atmosphere of a place or the surrounding environment?",
+                options: [
+                    { text: "Ambience (N.)", correct: true },
+                    { text: "Ambiguity (N.)", correct: false },
+                    { text: "Alluvium (N.)", correct: false },
+                    { text: "Altar (N.)", correct: false }
+                ],
+                hint: "Hindi meaning: वातावरण, माहौल.",
+                explanation: "Correct Answer: Ambience (N.). The distinctive atmosphere or mood generated by a setting or location."
+            },
+            {
+                id: 80,
+                category: "Entry 70: Synonyms",
+                difficulty: "State PCS",
+                question: "Which of the following is a direct synonym for 'Ambience'?",
+                options: [
+                    { text: "Atmosphere / Mood / Climate / Surroundings", correct: true },
+                    { text: "Legal divorce allowance", correct: false },
+                    { text: "Mountain climbing gear", correct: false },
+                    { text: "River silt deposit", correct: false }
+                ],
+                hint: "Vibe or atmosphere of a room/place.",
+                explanation: "Correct Answer: Atmosphere / Mood / Climate / Surroundings."
+            },
+            {
+                id: 81,
+                category: "Entry 70: Sentence Application",
+                difficulty: "SSC CHSL",
+                question: "Identify the correct usage of 'Ambience':",
+                options: [
+                    { text: "The candlelit restaurant featured a warm, romantic ambience that delighted all guests.", correct: true },
+                    { text: "She used an altimeter to measure the ambience of the ocean floor.", correct: false },
+                    { text: "The ambassador suffered from severe ambience while driving.", correct: false },
+                    { text: "He checked the alma mater for astronomical weather tables.", correct: false }
+                ],
+                hint: "Refers to the mood/atmosphere of a place.",
+                explanation: "Correct Answer: The candlelit restaurant featured a warm, romantic ambience that delighted all guests."
+            },
+            {
+                id: 82,
+                category: "Entry 70: False Statement",
+                difficulty: "RRB Group D",
+                question: "Which statement about Ambience is FALSE?",
+                options: [
+                    { text: "It refers exclusively to a legal court document granting alimony.", correct: true },
+                    { text: "It describes the mood or feeling of a physical location.", correct: false },
+                    { text: "A cozy cafe often cultivates a relaxing and welcoming ambience.", correct: false },
+                    { text: "It is synonymous with atmosphere and surroundings.", correct: false }
+                ],
+                hint: "Ambience is atmospheric mood, not a legal paper.",
+                explanation: "Correct Answer: It refers exclusively to a legal court document granting alimony."
+            },
+
+            // Entry 71: Ambiguous
+            {
+                id: 83,
+                category: "Entry 71: Clarity & Meaning",
+                difficulty: "SSC CGL (Tier 1/2)",
+                question: "What is the term for something capable of being understood in either of two or more possible senses, and therefore not definite or clear?",
+                options: [
+                    { text: "Ambiguous (Adj.)", correct: true },
+                    { text: "Ambidextrous (Adj.)", correct: false },
+                    { text: "Altruistic (Adj.)", correct: false },
+                    { text: "Alien (Adj.)", correct: false }
+                ],
+                hint: "Hindi meaning: संदिग्धार्या/अस्पष्ट (Open to multiple interpretations).",
+                explanation: "Correct Answer: Ambiguous (Adj.). Lacking clarity or having multiple possible meanings."
+            },
+            {
+                id: 84,
+                category: "Entry 71: Antonyms",
+                difficulty: "SSC CGL / Tier 2",
+                question: "Choose the precise antonym for 'Ambiguous':",
+                options: [
+                    { text: "Clear / Explicit / Unambiguous / Definitive", correct: true },
+                    { text: "Vague", correct: false },
+                    { text: "Equivocal", correct: false },
+                    { text: "Obscure", correct: false }
+                ],
+                hint: "Opposite of unclear or doubtful is clear and explicit.",
+                explanation: "Correct Answer: Clear / Explicit / Unambiguous / Definitive."
+            },
+            {
+                id: 85,
+                category: "Entry 71: Synonyms",
+                difficulty: "State Exams",
+                question: "Which of the following words are synonyms for 'Ambiguous'?",
+                options: [
+                    { text: "Vague / Equivocal / Obscure / Enigmatic", correct: true },
+                    { text: "Crystal clear / Precise", correct: false },
+                    { text: "Unmistakable", correct: false },
+                    { text: "Categorical", correct: false }
+                ],
+                hint: "Uncertain or open to multiple interpretations.",
+                explanation: "Correct Answer: Vague / Equivocal / Obscure / Enigmatic."
+            },
+            {
+                id: 86,
+                category: "Entry 71: Statement Analysis",
+                difficulty: "RRB NTPC",
+                question: "Consider the statements about 'Ambiguous':\n1. It describes instructions that can be interpreted in several different ways.\n2. Its noun form is 'ambiguity'.\nWhich statement(s) is/are correct?",
+                options: [
+                    { text: "Both 1 and 2 are correct", correct: true },
+                    { text: "Only 1 is correct", correct: false },
+                    { text: "Only 2 is correct", correct: false },
+                    { text: "Neither 1 nor 2 is correct", correct: false }
+                ],
+                hint: "Both meaning and noun form are accurate.",
+                explanation: "Correct Answer: Both 1 and 2 are correct. Ambiguous instructions create confusion, and ambiguity is the corresponding noun."
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let userAnswers = {}; // Stores { questionIndex: selectedOptionIndex }
+        let shuffledOptionsMap = {}; // Stores shuffled options order per question index
+
+        // Initialize Quiz
+        function initQuiz() {
+            document.getElementById('total-score-display').textContent = quizData.length;
+            document.getElementById('jump-input').max = quizData.length;
+            
+            // Pre-shuffle options for each question so order remains consistent during session navigation
+            quizData.forEach((q, qIdx) => {
+                let originalIndices = q.options.map((_, i) => i);
+                // Fisher-Yates shuffle
+                for (let i = originalIndices.length - 1; i > 0; i--) {
+                    let j = Math.floor(Math.random() * (i + 1));
+                    [originalIndices[i], originalIndices[j]] = [originalIndices[j], originalIndices[i]];
+                }
+                shuffledOptionsMap[qIdx] = originalIndices;
+            });
+
+            loadQuestion();
+        }
+
+        // Load Question into DOM
+        function loadQuestion() {
+            const q = quizData[currentQuestionIndex];
+            
+            // Update badges & progress
+            document.getElementById('question-number-badge').textContent = `Question ${currentQuestionIndex + 1} of ${quizData.length}`;
+            document.getElementById('question-category-badge').textContent = q.category;
+            document.getElementById('difficulty-badge').textContent = q.difficulty;
+            
+            const progressPercent = ((currentQuestionIndex + 1) / quizData.length) * 100;
+            document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+
+            // Question Text
+            document.getElementById('question-text').textContent = q.question;
+
+            // Hint
+            const hintBox = document.getElementById('hint-box');
+            hintBox.textContent = q.hint;
+            hintBox.classList.add('hidden');
+
+            // Render Shuffled Options
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            const shuffledIndices = shuffledOptionsMap[currentQuestionIndex];
+            const selectedOpt = userAnswers[currentQuestionIndex];
+
+            shuffledIndices.forEach((originalOptIdx, displayIdx) => {
+                const opt = q.options[originalOptIdx];
+                const optionLetter = String.fromCharCode(65 + displayIdx); // A, B, C, D
+                
+                const isSelected = selectedOpt === originalOptIdx;
+                let btnClasses = "w-full text-left p-4 rounded-2xl border transition-all duration-200 flex items-center justify-between text-sm sm:text-base font-medium shadow-sm ";
+                
+                if (selectedOpt !== undefined) {
+                    // Answer already submitted for this question
+                    if (opt.correct) {
+                        btnClasses += "bg-emerald-50 border-emerald-300 text-emerald-900 shadow-emerald-100 ";
+                    } else if (isSelected && !opt.correct) {
+                        btnClasses += "bg-rose-50 border-rose-300 text-rose-900 shadow-rose-100 ";
+                    } else {
+                        btnClasses += "bg-[#FBF7FF] border-[#DCCBF2] text-[#30205D] opacity-60 ";
+                    }
+                } else {
+                    btnClasses += "bg-[#FBF7FF] hover:bg-purple-50/70 border-[#DCCBF2] text-[#30205D] hover:border-[#7352C9]";
+                }
+
+                const button = document.createElement('button');
+                button.className = btnClasses;
+                button.disabled = selectedOpt !== undefined;
+                button.onclick = () => selectOption(originalOptIdx);
+
+                button.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="w-7 h-7 rounded-xl bg-[#E9DDF8] text-[#6542C8] flex items-center justify-center text-xs font-bold shrink-0">${optionLetter}</span>
+                        <span>${opt.text}</span>
+                    </div>
+                    ${selectedOpt !== undefined && opt.correct ? '<span class="text-emerald-600 font-bold text-xs bg-emerald-100 px-2 py-1 rounded-lg">Correct ✓</span>' : ''}
+                    ${selectedOpt !== undefined && isSelected && !opt.correct ? '<span class="text-rose-600 font-bold text-xs bg-rose-100 px-2 py-1 rounded-lg">Your Choice ✗</span>' : ''}
+                `;
+                optionsContainer.appendChild(button);
+            });
+
+            // Explanation Box
+            const explanationBox = document.getElementById('explanation-box');
+            if (selectedOpt !== undefined) {
+                explanationBox.classList.remove('hidden');
+                const isCorrect = q.options[selectedOpt].correct;
+                const headerEl = document.getElementById('explanation-header');
+                const textEl = document.getElementById('explanation-text');
+
+                if (isCorrect) {
+                    explanationBox.className = "p-4 rounded-2xl border border-emerald-200 bg-emerald-50/80 text-sm mb-2";
+                    headerEl.innerHTML = '<span class="text-emerald-700 flex items-center gap-1.5"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg> Correct Answer!</span>';
+                } else {
+                    explanationBox.className = "p-4 rounded-2xl border border-rose-200 bg-rose-50/80 text-sm mb-2";
+                    headerEl.innerHTML = '<span class="text-rose-700 flex items-center gap-1.5"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/></svg> Incorrect Choice</span>';
+                }
+                textEl.textContent = q.explanation;
+            } else {
+                explanationBox.classList.add('hidden');
+            }
+
+            // Update Navigation buttons
+            document.getElementById('prev-btn').disabled = currentQuestionIndex === 0;
+            const nextBtn = document.getElementById('next-btn');
+            if (currentQuestionIndex === quizData.length - 1) {
+                nextBtn.textContent = "Finish Quiz 🎉";
+            } else {
+                nextBtn.textContent = "Next →";
+            }
+        }
+
+        // Handle Option Selection
+        function selectOption(optionIndex) {
+            if (userAnswers[currentQuestionIndex] !== undefined) return; // Already answered
+
+            userAnswers[currentQuestionIndex] = optionIndex;
+            const q = quizData[currentQuestionIndex];
+
+            if (q.options[optionIndex].correct) {
+                score++;
+            }
+
+            updateScoreUI();
+            loadQuestion(); // Reload to show correct/incorrect states and explanations
+        }
+
+        // Update Score and Accuracy display
+        function updateScoreUI() {
+            document.getElementById('score-display').textContent = score;
+            const answeredCount = Object.keys(userAnswers).length;
+            if (answeredCount > 0) {
+                const accuracy = Math.round((score / answeredCount) * 100);
+                document.getElementById('accuracy-display').textContent = `${accuracy}%`;
+            } else {
+                document.getElementById('accuracy-display').textContent = `0%`;
+            }
+        }
+
+        // Navigation Functions
+        function nextQuestion() {
+            if (currentQuestionIndex < quizData.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion();
+            } else {
+                showCompletionModal();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion();
+            }
+        }
+
+        function jumpToQuestionInput() {
+            const input = document.getElementById('jump-input');
+            const qNum = parseInt(input.value);
+            if (!isNaN(qNum) && qNum >= 1 && qNum <= quizData.length) {
+                currentQuestionIndex = qNum - 1;
+                loadQuestion();
+                input.value = '';
+            } else {
+                showModal("Invalid Question", `Please enter a valid question number between 1 and ${quizData.length}.`, false);
+            }
+        }
+
+        // Hint Toggle
+        function toggleHint() {
+            const hintBox = document.getElementById('hint-box');
+            hintBox.classList.toggle('hidden');
+        }
+
+        // Reset Quiz with Confirmation
+        function resetQuizWithConfirmation() {
+            showModal("Reset Quiz", "Are you sure you want to restart the quiz? All progress and answers will be cleared.", true, () => {
+                score = 0;
+                userAnswers = {};
+                currentQuestionIndex = 0;
+                updateScoreUI();
+                initQuiz();
+                closeModal();
+            });
+        }
+
+        // Completion Modal
+        function showCompletionModal() {
+            const percentage = Math.round((score / quizData.length) * 100);
+            let message = `You have completed the entire vocabulary mastery suite!<br><br>Final Score: <b>${score} / ${quizData.length}</b> (${percentage}%)`;
+            if (percentage >= 85) {
+                message += "<br><br>🌟 Outstanding mastery! You are fully prepared for competitive English vocabulary exams.";
+            } else {
+                message += "<br><br>💡 Good effort! Review the explanations and retry to achieve 100% mastery.";
+            }
+            showModal("Quiz Completed!", message, true, () => {
+                score = 0;
+                userAnswers = {};
+                currentQuestionIndex = 0;
+                updateScoreUI();
+                initQuiz();
+                closeModal();
+            }, "Retake Quiz");
+        }
+
+        // Modal Helpers
+        function showModal(title, message, showConfirm = true, onConfirm = null, confirmText = "Confirm") {
+            const modal = document.getElementById('custom-modal');
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-message').innerHTML = message;
+            
+            const confirmBtn = document.getElementById('modal-confirm-btn');
+            confirmBtn.textContent = confirmText;
+            if (onConfirm) {
+                confirmBtn.onclick = onConfirm;
+            } else {
+                confirmBtn.onclick = closeModal;
+            }
+            
+            const cancelBtn = document.getElementById('modal-cancel-btn');
+            cancelBtn.style.display = showConfirm ? 'block' : 'none';
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('custom-modal').classList.add('hidden');
+        }
+
+        // Keyboard Navigation (Arrow Keys & Enter)
+        document.addEventListener('keydown', (e) => {
+            // Ignore if typing inside input fields (except jump input enter)
+            if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+                return;
+            }
+
+            if (e.key === 'ArrowLeft') {
+                prevQuestion();
+            } else if (e.key === 'ArrowRight') {
+                nextQuestion();
+            }
+        });
+
+        // Window onload initialization
+        window.onload = function() {
+            initQuiz();
+        };
+    </script>
+</body>
+</html>

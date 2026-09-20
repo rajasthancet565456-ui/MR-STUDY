@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate English Vocabulary Mastery Quiz (SSC & Competitive Exams)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        lavenderBg: '#F0E6FF',
+                        headerBg: '#E5D5FA',
+                        cardBg: '#FBF7FF',
+                        primaryPurple: '#6542C8',
+                        darkPurple: '#30205D',
+                        secondaryPurple: '#7352C9',
+                        lightPurple: '#E9DDF8',
+                        borderPurple: '#DCCBF2',
+                        progressTrack: '#DDD9E8',
+                        hoverBg: '#F0E5FF',
+                        mutedText: '#716782',
+                        accentYellow: '#F3A62A'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-lavenderBg min-h-screen text-darkPurple font-sans flex flex-col justify-between selection:bg-lightPurple selection:text-darkPurple">
+
+    <!-- Sticky Header -->
+    <header class="sticky top-0 z-50 bg-headerBg/90 backdrop-blur-md border-b border-borderPurple shadow-sm px-4 py-3">
+        <div class="max-w-4xl mx-auto flex flex-wrap items-center justify-between gap-3">
+            <div>
+                <h1 class="text-lg md:text-xl font-bold text-darkPurple tracking-tight">English Vocabulary Masterclass</h1>
+                <p class="text-xs text-mutedText">Blackbook OWS (SN 251 - 277) • Comprehensive Exam Quiz</p>
+            </div>
+            <div class="flex items-center gap-2">
+                <div class="bg-cardBg border border-borderPurple px-3 py-1.5 rounded-full text-xs font-semibold shadow-inner flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-primaryPurple animate-pulse"></span>
+                    <span>Score: <span id="score-display">0</span> / <span id="total-score-display">100</span></span>
+                </div>
+                <div class="bg-primaryPurple text-white px-3 py-1.5 rounded-full text-xs font-bold shadow">
+                    Q <span id="current-q-badge">1</span>/<span id="total-q-badge">100</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Quiz Container -->
+    <main class="flex-grow flex items-center justify-center p-4 md:p-6">
+        <div class="w-full max-w-3xl bg-cardBg border border-borderPurple rounded-3xl shadow-xl p-6 md:p-10 transition-all duration-300 relative">
+            
+            <!-- Question Metadata / Header -->
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+                <span id="question-category-badge" class="text-xs font-semibold px-3 py-1 bg-lightPurple text-primaryPurple rounded-full uppercase tracking-wide">One Word Substitution</span>
+                <span id="question-number-label" class="text-xs font-bold text-mutedText">Question 1 of 100</span>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="w-full bg-progressTrack h-2.5 rounded-full overflow-hidden mb-6">
+                <div id="progress-bar" class="bg-primaryPurple h-full transition-all duration-300 rounded-full" style="width: 1%;"></div>
+            </div>
+
+            <!-- Question Text -->
+            <h2 id="question-text" class="text-xl md:text-2xl font-bold text-darkPurple mb-6 leading-snug">
+                Loading question...
+            </h2>
+
+            <!-- Answer Options Container -->
+            <div id="options-container" class="space-y-3 mb-6">
+                <!-- Dynamically injected options -->
+            </div>
+
+            <!-- Hint Section -->
+            <div class="mb-6">
+                <button id="hint-toggle-btn" onclick="toggleHint()" class="text-xs font-semibold text-secondaryPurple hover:text-darkPurple flex items-center gap-1.5 transition-colors focus:outline-none">
+                    <span>💡 Toggle Hint</span>
+                </button>
+                <div id="hint-box" class="hidden mt-2 p-3 bg-lightPurple/50 border border-borderPurple rounded-xl text-xs text-darkPurple italic">
+                    <!-- Hint text -->
+                </div>
+            </div>
+
+            <!-- Explanation / Rationale Box (Revealed on Answer) -->
+            <div id="explanation-box" class="hidden p-4 rounded-2xl bg-lightPurple/70 border border-borderPurple text-sm text-darkPurple mb-6 transition-all duration-300">
+                <div class="font-bold mb-1 flex items-center gap-1.5 text-primaryPurple">
+                    <span>📖 Exam Rationale & Word Deep Dive</span>
+                </div>
+                <p id="explanation-text" class="leading-relaxed"></p>
+            </div>
+
+            <!-- Navigation Controls (In-card) -->
+            <div class="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-borderPurple">
+                <button onclick="prevQuestion()" id="prev-btn" class="px-5 py-2.5 rounded-xl border border-borderPurple bg-white text-darkPurple font-medium text-sm hover:bg-hoverBg disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-sm">
+                    ← Previous
+                </button>
+                <div class="flex items-center gap-2">
+                    <span class="text-xs font-medium text-mutedText hidden sm:inline">Jump to Q:</span>
+                    <input type="number" id="jump-input" min="1" max="100" class="w-16 px-2.5 py-1.5 text-center text-sm bg-white border border-borderPurple rounded-xl focus:outline-none focus:ring-2 focus:ring-primaryPurple" placeholder="1">
+                    <button onclick="jumpToQuestion()" class="px-3 py-1.5 bg-primaryPurple text-white text-xs font-semibold rounded-xl hover:bg-secondaryPurple transition-all shadow">Go</button>
+                </div>
+                <button onclick="nextQuestion()" id="next-btn" class="px-5 py-2.5 rounded-xl bg-primaryPurple text-white font-medium text-sm hover:bg-secondaryPurple transition-all shadow-md">
+                    Next →
+                </button>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Sticky Bottom Navigation Panel -->
+    <nav class="sticky bottom-0 z-40 bg-white/90 backdrop-blur-md border-t border-borderPurple shadow-lg py-3 px-4">
+        <div class="max-w-4xl mx-auto flex flex-wrap items-center justify-between gap-3 text-xs">
+            <div class="flex items-center gap-2">
+                <button onclick="prevQuestion()" class="px-3 py-1.5 rounded-lg border border-borderPurple bg-cardBg hover:bg-hoverBg font-medium text-darkPurple transition">← Prev</button>
+                <button onclick="nextQuestion()" class="px-3 py-1.5 rounded-lg bg-primaryPurple text-white hover:bg-secondaryPurple font-medium transition">Next →</button>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="font-medium text-mutedText">Jump:</span>
+                <input type="number" id="bottom-jump-input" min="1" max="100" class="w-14 px-2 py-1 text-center bg-cardBg border border-borderPurple rounded-lg text-xs focus:ring-1 focus:ring-primaryPurple" placeholder="Q#">
+                <button onclick="bottomJump()" class="px-2.5 py-1 bg-darkPurple text-white rounded-lg font-medium hover:bg-primaryPurple transition">Go</button>
+            </div>
+            <div>
+                <button onclick="resetQuiz()" class="px-3 py-1.5 rounded-lg border border-red-200 bg-red-50 text-red-600 font-medium hover:bg-red-100 transition">Reset Quiz</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Script: Quiz Database & Logic -->
+    <script>
+        const questions = [
+            // --- BUNGLE (251) ---
+            {
+                id: 1,
+                category: "One Word Substitution",
+                question: "Choose the correct one-word substitution: To carry out a task clumsily or incompetently.",
+                options: ["Bungle", "Buoy", "Burglar", "Cache"],
+                answer: 0,
+                hint: "To mess up or botch a job.",
+                explanation: "Bungle (V.) means to carry out a task clumsily or incompetently. Hindi meaning: गड़बड़ करना[cite: 10]."
+            },
+            {
+                id: 2,
+                category: "Synonym & Usage",
+                question: "Which of the following is a direct synonym for the verb 'Bungle'?",
+                options: ["Botch / Mishandle", "Execute perfectly", "Administer", "Facilitate"],
+                answer: 0,
+                hint: "Doing something awkwardly with errors.",
+                explanation: "'Botch' and 'mishandle' are synonyms for bungle. Antonyms include master, succeed, or perform smoothly."
+            },
+            {
+                id: 3,
+                category: "Statement Analysis",
+                question: "Consider the statements regarding 'Bungle':\n1. It is primarily used as a noun representing a successful achievement.\n2. In a sentence, it means to fumble or mess up an operation.\nWhich of the following is/are correct?",
+                options: ["Only 2 is correct", "Only 1 is correct", "Both 1 and 2 are correct", "Neither 1 nor 2 is correct"],
+                answer: 0,
+                hint: "Statement 1 misstates its success aspect.",
+                explanation: "Statement 1 is incorrect because bungle is a verb (or noun of failure, not success). Statement 2 correctly identifies fumbling an operation."
+            },
+            {
+                id: 4,
+                category: "Sentence Completion",
+                question: "Fill in the blank: 'Because of poor preparation, the new manager managed to _____ the entire presentation.'",
+                options: ["bungle", "buoy", "cache", "burrow"],
+                answer: 0,
+                hint: "Messing up due to incompetence.",
+                explanation: "'Bungle' fits the context of messing up a task clumsily[cite: 10]."
+            },
+
+            // --- BUOY (252) ---
+            {
+                id: 5,
+                category: "One Word Substitution",
+                question: "A floating container anchored to the sea bottom, used for directing ships and warning them of possible danger:",
+                options: ["Buoy", "Burglar", "Byre", "Cacographer"],
+                answer: 0,
+                hint: "Floating navigation marker in water.",
+                explanation: "Buoy (N.) is a floating anchored container used for maritime direction and safety. Hindi meaning: पथ प्रदर्शन चिह्न के रूप में लगाया हुआ पात्र[cite: 10]."
+            },
+            {
+                id: 6,
+                category: "Phonetics & Spelling",
+                question: "Which word is often confused in pronunciation with 'Buoy' and means a life-saving ring?",
+                options: ["Lifebuoy", "Bouquet", "Bower", "Boutique"],
+                answer: 0,
+                hint: "Sounds similar and relates to floating safety devices.",
+                explanation: "Lifebuoy is a buoyant ring designed to save drowning individuals."
+            },
+            {
+                id: 7,
+                category: "Figurative Meaning",
+                question: "When someone says 'Her cheerful words helped to buoy his spirits', what does 'buoy' mean metaphorically?",
+                options: ["To lift or keep afloat / uplift", "To sink into depression", "To anchor securely", "To weigh down"],
+                answer: 0,
+                hint: "Keeping things afloat.",
+                explanation: "Metaphorically, to buoy someone means to support or uplift their mood or confidence."
+            },
+            {
+                id: 8,
+                category: "Grammar & Class",
+                question: "What is the primary grammatical class of 'Buoy'?",
+                options: ["Noun (also used as verb)", "Adjective only", "Preposition", "Conjunction"],
+                answer: 0,
+                hint: "Names a floating marker.",
+                explanation: "Buoy functions primarily as a Noun (N.)[cite: 10]."
+            },
+
+            // --- BUREAUCRACY (253) ---
+            {
+                id: 9,
+                category: "One Word Substitution",
+                question: "A government run by officials in a state:",
+                options: ["Bureaucracy", "Autocracy", "Plutocracy", "Oligarchy"],
+                answer: 0,
+                hint: "Rule by administrative departments and officials.",
+                explanation: "Bureaucracy (N.) refers to a government run by officials. Hindi meaning: नौकरशाही[cite: 10]."
+            },
+            {
+                id: 10,
+                category: "Exam Frequency Check (*)",
+                question: "Notice the asterisk (*) next to 'Bureaucracy*' in the Blackbook list. This indicates:",
+                options: ["High frequency and importance in previous SSC examinations", "An archaic spelling", "A foreign idiom", "An optional vocabulary item"],
+                answer: 0,
+                hint: "Starred items show high exam recurrence.",
+                explanation: "Asterisks (*) highlight terms frequently tested across SSC CGL/CHSL exams."
+            },
+            {
+                id: 11,
+                category: "Synonym / Characteristic",
+                question: "Which characteristic is most commonly associated with a rigid 'bureaucracy'?",
+                options: ["Red tape and administrative delays", "Instant grassroots decision making", "Complete anarchy", "Direct democratic voting"],
+                answer: 0,
+                hint: "Excessive paperwork and rules.",
+                explanation: "Bureaucracy is frequently criticized for red tape, slow processing, and rigid official rules."
+            },
+            {
+                id: 12,
+                category: "Grammar & Spelling",
+                question: "Identify the correct spelling of the government system run by officials:",
+                options: ["Bureaucracy", "Bureucracy", "Beurocracy", "Bureaucracy"],
+                answer: 0,
+                hint: "Starts with 'bureau' + 'cracy'.",
+                explanation: "'Bureaucracy' is the correct spelling, frequently appearing in SSC spelling error tests."
+            },
+
+            // --- BURGLAR (254) ---
+            {
+                id: 13,
+                category: "One Word Substitution",
+                question: "A person who enters a building illegally in order to steal:",
+                options: ["Burglar", "Cannibal", "Brigand", "Cacographer"],
+                answer: 0,
+                hint: "Breaks into homes/buildings to commit theft.",
+                explanation: "Burglar (N.) is a person who enters a building illegally to steal. Hindi meaning: सेंधमार[cite: 10]."
+            },
+            {
+                id: 14,
+                category: "Legal Distinction",
+                question: "In criminal law, what distinguishes a 'burglar' from a common 'robber'?",
+                options: ["A burglar illegally breaks into a structure; a robber uses force/threat against a person", "A burglar only steals cars", "A burglar works in broad daylight", "There is no legal difference"],
+                answer: 0,
+                hint: "Property entry vs personal confrontation.",
+                explanation: "Burglary involves illegal entry into a building with intent to commit a crime, whereas robbery involves face-to-face force or intimidation."
+            },
+            {
+                id: 15,
+                category: "Verb Form",
+                question: "What is the corresponding verb form for the noun 'Burglar'?",
+                options: ["To burgle / burglarize", "To burglary", "To burglar", "To burg"],
+                answer: 0,
+                hint: "Action of committing burglary.",
+                explanation: "The verb form is 'to burgle' or 'to burglarize'."
+            },
+            {
+                id: 16,
+                category: "Exam Note (*)",
+                question: "Why does 'Burglar*' feature an asterisk in the source text?",
+                options: ["High examination importance for SSC OWS and spelling", "It is an obsolete term", "It is a slang word", "It has no plural"],
+                answer: 0,
+                hint: "Recurring exam pattern.",
+                explanation: "Asterisk indicates high yield for competitive tests."
+            },
+
+            // --- BURROW (255) ---
+            {
+                id: 17,
+                category: "One Word Substitution",
+                question: "Hole excavated by an animal as a dwelling:",
+                options: ["Burrow", "Byre", "Cache", "Carcass"],
+                answer: 0,
+                hint: "Underground tunnel or den dug by rabbits or moles.",
+                explanation: "Burrow (N.) is a hole excavated by an animal as a dwelling. Hindi meaning: बिल[cite: 10]."
+            },
+            {
+                id: 18,
+                category: "Verbal Usage",
+                question: "As a verb, what does 'to burrow' mean?",
+                options: ["To dig a hole or tunnel into or under something", "To climb a tree", "To fly high", "To build a nest on branches"],
+                answer: 0,
+                hint: "Digging underground.",
+                explanation: "To burrow means to tunnel underground, just like rabbits or badgers."
+            },
+            {
+                id: 19,
+                category: "Synonym Match",
+                question: "Which term is synonymous with an animal's 'burrow'?",
+                options: ["Tunnel / Den / Warren", "Boulevard", "Bouquet", "Bower"],
+                answer: 0,
+                hint: "Underground shelter.",
+                explanation: "A den or warren is synonymous with an animal burrow."
+            },
+            {
+                id: 20,
+                category: "Grammar Check",
+                question: "What part of speech is 'Burrow'?",
+                options: ["Noun and Verb", "Adjective only", "Adverb only", "Conjunction"],
+                answer: 0,
+                hint: "Can be both a home (noun) and the action of digging (verb).",
+                explanation: "Burrow functions as both a Noun and a Verb in English vocabulary[cite: 10]."
+            },
+
+            // --- BUZZ (256) ---
+            {
+                id: 21,
+                category: "One Word Substitution",
+                question: "The sound made by bees:",
+                options: ["Buzz", "Cacophony", "Cadence", "Carnage"],
+                answer: 0,
+                hint: "Low humming sound of insects.",
+                explanation: "Buzz (V.) represents the sound made by bees. Hindi meaning: भिन्नभिननाहट[cite: 10]."
+            },
+            {
+                id: 22,
+                category: "Onomatopoeia Classification",
+                question: "Linguistically, words like 'Buzz' that imitate natural sounds are classified as:",
+                options: ["Onomatopoeic words", "Portmanteaus", "Acronyms", "Eponyms"],
+                answer: 0,
+                hint: "Words sounding like their meaning.",
+                explanation: "'Buzz' is a classic example of onomatopoeia, where the phonetic structure mimics the actual sound."
+            },
+            {
+                id: 23,
+                category: "Figurative Context",
+                question: "In modern terminology, 'generating a buzz' means:",
+                options: ["Creating exciting rumors, talk, or public interest", "Making a bee farm", "Causing traffic congestion", "Writing a legal contract"],
+                answer: 0,
+                hint: "Excitement and chatter.",
+                explanation: "Metaphorically, a buzz refers to widespread excitement or discussion about a topic."
+            },
+            {
+                id: 24,
+                category: "Grammar Check",
+                question: "What part of speech is 'Buzz'?",
+                options: ["Verb (also used as noun)", "Adjective", "Preposition", "Pronoun"],
+                answer: 0,
+                hint: "Action or sound name.",
+                explanation: "Buzz functions as a Verb and Noun[cite: 10]."
+            },
+
+            // --- BYRE (257) ---
+            {
+                id: 25,
+                category: "One Word Substitution",
+                question: "Place where cows are sheltered:",
+                options: ["Byre", "Burrow", "Brewery", "Cache"],
+                answer: 0,
+                hint: "Barn or shed specifically for cattle.",
+                explanation: "Byre (N.) is a place where cows are sheltered. Hindi meaning: गौशाला[cite: 10]."
+            },
+            {
+                id: 26,
+                category: "Synonym Match",
+                question: "Which of the following is a direct synonym for 'Byre'?",
+                options: ["Cowshed / Barn", "Boutique", "Boulevard", "Bower"],
+                answer: 0,
+                hint: "Shelter for cattle.",
+                explanation: "A cowshed or barn is synonymous with a byre."
+            },
+            {
+                id: 27,
+                category: "Distractor Check",
+                question: "Distinguish between 'Byre' and 'Brewery'. What is the function of a brewery?",
+                options: ["Manufactures beer", "Shelters cows", "Stores treasure", "Makes clothes"],
+                answer: 0,
+                hint: "Beer production plant.",
+                explanation: "Breweries manufacture beer; byres shelter cattle[cite: 10]."
+            },
+            {
+                id: 28,
+                category: "Grammar & Class",
+                question: "What part of speech is 'Byre'?",
+                options: ["Noun", "Verb", "Adjective", "Adverb"],
+                answer: 0,
+                hint: "Names a physical structure.",
+                explanation: "Byre is a Noun (N.)[cite: 10]."
+            },
+
+            // --- CACHE (258) ---
+            {
+                id: 29,
+                category: "One Word Substitution",
+                question: "A group of things that have been hidden in some place:",
+                options: ["Cache", "Carcass", "Coterie", "Caravan"],
+                answer: 0,
+                hint: "Hidden stash of valuables or supplies.",
+                explanation: "Cache (N.) means a hidden stash of items. Hindi meaning: गुप्त भंडार[cite: 10]."
+            },
+            {
+                id: 30,
+                category: "Computing Context",
+                question: "In computer science, what is a 'cache memory'?",
+                options: ["A high-speed auxiliary memory storing frequently used data for quick access", "A permanent hard drive storage", "An erased trash folder", "A network cable"],
+                answer: 0,
+                hint: "Fast temporary data storage.",
+                explanation: "In computing, cache stores frequently used data for rapid retrieval."
+            },
+            {
+                id: 31,
+                category: "Spelling and Pronunciation Trap",
+                question: "How is 'Cache' correctly pronounced?",
+                options: ["Like 'cash'", "Like 'kay-chay'", "Like 'catchy'", "Like 'caching'"],
+                answer: 0,
+                hint: "Rhymes with cash.",
+                explanation: "Despite its French spelling, 'cache' is pronounced identically to 'cash'."
+            },
+            {
+                id: 32,
+                category: "Grammar Check",
+                question: "What part of speech is 'Cache'?",
+                options: ["Noun and Verb", "Adjective only", "Adverb only", "Conjunction"],
+                answer: 0,
+                hint: "Can be a hidden store (noun) or to store secretly (verb).",
+                explanation: "Cache functions as both a Noun and a Verb[cite: 10]."
+            },
+
+            // --- CACOGRAPHER (259) ---
+            {
+                id: 33,
+                category: "One Word Substitution",
+                question: "One who is bad in spellings:",
+                options: ["Cacographer", "Calligrapher", "Lexicographer", "Cartographer"],
+                answer: 0,
+                hint: "Person with poor spelling and handwriting skills.",
+                explanation: "Cacographer (N.) is someone bad at spelling. Hindi meaning: अशुद्ध वर्तनी वाला[cite: 10]."
+            },
+            {
+                id: 34,
+                category: "Root Word Analysis",
+                question: "The prefix 'Caco-' in Cacographer is derived from Greek meaning:",
+                options: ["Bad, harsh, or ugly", "Good or beautiful", "Fast or quick", "Ancient or old"],
+                answer: 0,
+                hint: "Opposite of 'eu-' or 'calli-'.",
+                explanation: "'Caco-' means bad or harsh (as in cacophony or cacography)."
+            },
+            {
+                id: 35,
+                category: "Antonym Match",
+                question: "Who is the direct antonym of a 'cacographer' in terms of writing skill?",
+                options: ["Calligrapher (one skilled in beautiful handwriting)", "Cacophony", "Burglar", "Botanist"],
+                answer: 0,
+                hint: "Master of beautiful script.",
+                explanation: "A calligrapher excels in beautiful writing, whereas a cacographer has poor spelling/writing[cite: 10]."
+            },
+            {
+                id: 36,
+                category: "Grammar & Class",
+                question: "What part of speech is 'Cacographer'?",
+                options: ["Noun", "Verb", "Adjective", "Adverb"],
+                answer: 0,
+                hint: "Names a person.",
+                explanation: "Cacographer is a Noun (N.)[cite: 10]."
+            },
+
+            // --- CACOPHONY (260) ---
+            {
+                id: 37,
+                category: "One Word Substitution",
+                question: "Harsh or discordant sound // Loud confusing disagreeable sounds // An incongruous or chaotic mixture:",
+                options: ["Cacophony", "Cadence", "Cacography", "Caravan"],
+                answer: 0,
+                hint: "A loud unpleasant mixture of jarring sounds.",
+                explanation: "Cacophony (N.) means harsh, discordant sounds. Hindi meaning: कोलाहल, कर्कश ध्वनि[cite: 10]."
+            },
+            {
+                id: 38,
+                category: "Synonym & Antonym",
+                question: "What is the direct antonym of 'Cacophony'?",
+                options: ["Euphony (pleasant, harmonious sound)", "Noise", "Din", "Racket"],
+                answer: 0,
+                hint: "Eu- prefix means good/pleasant.",
+                explanation: "'Euphony' means pleasing or sweet sound, serving as the exact antonym to cacophony."
+            },
+            {
+                id: 39,
+                category: "Exam Frequency (*)",
+                question: "Why does 'Cacophony*' have an asterisk in the Blackbook vocabulary list?",
+                options: ["Extremely high recurrence in SSC CGL/CHSL synonym and OWS rounds", "It is an obsolete technical term", "It has no antonym", "It is spelled incorrectly"],
+                answer: 0,
+                hint: "High-yield competitive exam word.",
+                explanation: "Asterisks (*) mark high-yield vocabulary frequently tested in government recruitment exams."
+            },
+            {
+                id: 40,
+                category: "Grammar Check",
+                question: "What part of speech is 'Cacophony'?",
+                options: ["Noun", "Verb", "Adjective", "Adverb"],
+                answer: 0,
+                hint: "Names a sound condition.",
+                explanation: "Cacophony is a Noun (N.)[cite: 10]."
+            },
+
+            // --- CADAVEROUS (261) ---
+            {
+                id: 41,
+                category: "One Word Substitution",
+                question: "Completely lifeless and unresponsive // Resembling a corpse:",
+                options: ["Cadaverous", "Cadence", "Callous", "Cardinal"],
+                answer: 0,
+                hint: "Pale, gaunt, and looking like a dead body.",
+                explanation: "Cadaverous (Adj.) means resembling a corpse, pale, or gaunt. Hindi meaning: शव की तरह[cite: 10]."
+            },
+            {
+                id: 42,
+                category: "Synonym Match",
+                question: "Which of the following is a direct synonym for 'Cadaverous'?",
+                options: ["Gaunt / Pale / Emaciated", "Vibrant and energetic", "Robust and healthy", "Colorful"],
+                answer: 0,
+                hint: "Extremely thin and pale like a corpse.",
+                explanation: "'Gaunt' and 'emaciated' describe a sickly, corpse-like appearance."
+            },
+            {
+                id: 43,
+                category: "Root Word Link",
+                question: "The word 'Cadaverous' is derived from 'cadaver', which refers to:",
+                options: ["A dead body or corpse", "A living plant", "A running stream", "A written document"],
+                answer: 0,
+                hint: "Medical term for a corpse.",
+                explanation: "A cadaver is a dead human body used for medical dissection."
+            },
+            {
+                id: 44,
+                category: "Grammar Check",
+                question: "What part of speech is 'Cadaverous'?",
+                options: ["Adjective", "Noun", "Verb", "Adverb"],
+                answer: 0,
+                hint: "Describes a person's appearance.",
+                explanation: "Cadaverous is an Adjective (Adj.)[cite: 10]."
+            },
+
+            // --- CADENCE (262) ---
+            {
+                id: 45,
+                category: "One Word Substitution",
+                question: "Rhythmic flow of sounds or words:",
+                options: ["Cadence", "Cacophony", "Carnage", "Carcass"],
+                answer: 0,
+                hint: "Musical rise and fall of voice or rhythm.",
+                explanation: "Cadence (N.) refers to a rhythmic flow of sounds or words. Hindi meaning: लय[cite: 10]."
+            },
+            {
+                id: 46,
+                category: "Musical / Poetic Context",
+                question: "In poetry and music, 'cadence' helps to establish:",
+                options: ["Flow, beat, and structural resolution", "Complete silence", "Harsh noise", "Total chaos"],
+                answer: 0,
+                hint: "Rhythmic modulation.",
+                explanation: "Cadence provides musical or poetic rhythm and inflection points."
+            },
+            {
+                id: 47,
+                category: "Synonym Match",
+                question: "Which word is synonymous with 'Cadence'?",
+                options: ["Rhythm / Tempo / Inflection", "Cacophony", "Stillness", "Silence"],
+                answer: 0,
+                hint: "Measured beat or flow.",
+                explanation: "Rhythm and tempo are direct synonyms for cadence."
+            },
+            {
+                id: 48,
+                category: "Grammar & Form",
+                question: "What part of speech is 'Cadence'?",
+                options: ["Noun", "Verb", "Adjective", "Adverb"],
+                answer: 0,
+                hint: "Names a flow or rhythm.",
+                explanation: "Cadence is a Noun (N.)[cite: 10]."
+            },
+
+            // --- CALF (263) ---
+            {
+                id: 49,
+                category: "One Word Substitution",
+                question: "The young of a cow:",
+                options: ["Calf", "Brood", "Carcass", "Carnage"],
+                answer: 0,
+                hint: "Baby bovine.",
+                explanation: "Calf (N.) is the young of a cow. Hindi meaning: बछड़ा[cite: 10]."
+            },
+            {
+                id: 50,
+                category: "Secondary Meaning",
+                question: "Aside from being a young cow, what is the anatomical meaning of 'calf'?",
+                options: ["The fleshy back part of the human leg below the knee", "The muscle in the forearm", "The shoulder joint", "The neck bone"],
+                answer: 0,
+                hint: "Lower leg muscle.",
+                explanation: "Anatomically, the calf is the back portion of the lower leg."
+            },
+            {
+                id: 51,
+                category: "Plural Form Test",
+                question: "What is the correct plural form of the noun 'Calf'?",
+                options: ["Calves", "Calfs", "Calveses", "Calv"],
+                answer: 0,
+                hint: "Irregular plural ending in -ves.",
+                explanation: "The plural of calf is calves (similar to leaf/leaves, thief/thieves)."
+            },
+            {
+                id: 52,
+                category: "Grammar Check",
+                question: "What part of speech is 'Calf'?",
+                options: ["Noun", "Verb", "Adjective", "Adverb"],
+                answer: 0,
+                hint: "Names an animal young or body part.",
+                explanation: "Calf is a Noun (N.)[cite: 10]."
+            },
+
+            // --- CALLIGRAPHER (264) ---
+            {
+                id: 53,
+                category: "One Word Substitution",
+                question: "A person who is skilled at producing beautiful handwriting:",
+                options: ["Calligrapher", "Cacographer", "Botanist", "Burglar"],
+                answer: 0,
+                hint: "Expert in decorative, artistic handwriting.",
+                explanation: "Calligrapher (N.) is someone skilled at producing beautiful handwriting. Hindi meaning: सुलेखक[cite: 10]."
+            },
+            {
+                id: 54,
+                category: "Root Word Analysis",
+                question: "The prefix 'Calli-' in Calligrapher stems from Greek 'kallos', meaning:",
+                options: ["Beauty", "Bad", "Hidden", "Loud"],
+                answer: 0,
+                hint: "Opposite of caco-.",
+                explanation: "'Calli-' means beauty (beautiful writing)."
+            },
+            {
+                id: 55,
+                category: "Contrasting Term",
+                question: "Who is the direct opposite of a 'calligrapher'?",
+                options: ["Cacographer (one with poor spelling/handwriting)", "Lexicographer", "Botanist", "Philatelist"],
+                answer: 0,
+                hint: "Bad writer/speller.",
+                explanation: "A cacographer writes poorly, whereas a calligrapher creates artistic, beautiful writing[cite: 10]."
+            },
+            {
+                id: 56,
+                category: "Grammar & Class",
+                question: "What part of speech is 'Calligrapher'?",
+                options: ["Noun", "Verb", "Adjective", "Adverb"],
+                answer: 0,
+                hint: "Names a professional person.",
+                explanation: "Calligrapher is a Noun (N.)[cite: 10]."
+            },
+
+            // --- CALLIGRAPHY (265) ---
+            {
+                id: 57,
+                category: "One Word Substitution",
+                question: "The art of beautiful handwriting:",
+                options: ["Calligraphy", "Cacography", "Cartography", "Lexicography"],
+                answer: 0,
+                hint: "Decorative penmanship art form.",
+                explanation: "Calligraphy (N.) is the art of beautiful handwriting. Hindi meaning: सुलेख[cite: 10]."
+            },
+            {
+                id: 58,
+                category: "Tool Association",
+                question: "Which specific tool is traditionally associated with practicing 'calligraphy'?",
+                options: ["Dip pens, fountain pens, or brush pens", "Ballpoint pens used quickly", "Standard office staplers", "Calculators"],
+                answer: 0,
+                hint: "Specialized ink pens.",
+                explanation: "Calligraphers use specialized nib pens and brushes to create artistic letterforms."
+            },
+            {
+                id: 59,
+                category: "Synonym Match",
+                question: "Which term is synonymous with artistic penmanship?",
+                options: ["Penmanship / Script lettering", "Cacography", "Scribbling", "Typing"],
+                answer: 0,
+                hint: "Art of writing well.",
+                explanation: "Penmanship or artistic script lettering is synonymous with calligraphy."
+            },
+            {
+                id: 60,
+                category: "Grammar Check",
+                question: "What part of speech is 'Calligraphy'?",
+                options: ["Noun", "Verb", "Adjective", "Adverb"],
+                answer: 0,
+                hint: "Names an art form.",
+                explanation: "Calligraphy is a Noun (N.)[cite: 10]."
+            },
+
+            // --- CALLOUS (266) ---
+            {
+                id: 61,
+                category: "One Word Substitution",
+                question: "A man devoid of kind feeling and sympathy:",
+                options: ["Callous", "Compassionate", "Altruistic", "Philanthropic"],
+                answer: 0,
+                hint: "Cruel, hardened, and unsympathetic.",
+                explanation: "Callous (Adj.) means hard-hearted, devoid of sympathy. Hindi meaning: कठोर, संवेदनाहीन[cite: 10]."
+            },
+            {
+                id: 62,
+                category: "Synonym & Antonym",
+                question: "What is the direct antonym for 'Callous'?",
+                options: ["Compassionate / Empathetic / Kind", "Heartless", "Apathetic", "Cruel"],
+                answer: 0,
+                hint: "Full of care and empathy.",
+                explanation: "Compassionate and empathetic are antonyms of callous. Heartless and cruel are synonyms."
+            },
+            {
+                id: 63,
+                category: "Exam Frequency (*)",
+                question: "Why does 'Callous*' have an asterisk in the Blackbook vocabulary index?",
+                options: ["High examination frequency in SSC synonym/antonym and OWS questions", "It is an obsolete term", "It has no synonyms", "It is a foreign phrase"],
+                answer: 0,
+                hint: "High-yield exam word.",
+                explanation: "Asterisks (*) highlight terms that repeatedly appear in competitive recruitment exams."
+            },
+            {
+                id: 64,
+                category: "Grammar Check",
+                question: "What part of speech is 'Callous'?",
+                options: ["Adjective (also used as verb)", "Noun only", "Adverb only", "Conjunction"],
+                answer: 0,
+                hint: "Describes a person's emotional state.",
+                explanation: "Callous is primarily an Adjective (Adj.)[cite: 10]."
+            },
+
+            // --- CAMOUFLAGE (267) ---
+            {
+                id: 65,
+                category: "One Word Substitution",
+                question: "That which makes it difficult to recognize the presence or real nature of something:",
+                options: ["Camouflage", "Cacophony", "Cadence", "Carcass"],
+                answer: 0,
+                hint: "Protective coloration or disguise blending into surroundings.",
+                explanation: "Camouflage (N./V.) means disguise or concealment. Hindi meaning: छुप जाना[cite: 10]."
+            },
+            {
+                id: 66,
+                category: "Biological / Military Context",
+                question: "In nature, animals like chameleons use camouflage primarily to:",
+                options: ["Hide from predators or ambush prey", "Attract mates through bright colors", "Absorb excess sunlight", "Communicate over long distances"],
+                answer: 0,
+                hint: "Concealment for survival.",
+                explanation: "Camouflage allows animals and soldiers to blend into their environment for concealment."
+            },
+            {
+                id: 67,
+                category: "Exam Note (*)",
+                question: "Why is 'Camouflage*' marked with an asterisk in standard OWS vocab lists?",
+                options: ["Frequent testing in SSC spelling and meaning questions", "It is an outdated military term", "It has no spelling variations", "It is a noun only"],
+                answer: 0,
+                hint: "High exam frequency.",
+                explanation: "Asterisks (*) indicate high-yield words tested frequently in government exams."
+            },
+            {
+                id: 68,
+                category: "Grammar & Class",
+                question: "What part of speech is 'Camouflage'?",
+                options: ["Noun and Verb", "Adjective only", "Adverb only", "Preposition"],
+                answer: 0,
+                hint: "Can be a disguise (noun) or to disguise (verb).",
+                explanation: "Camouflage functions as both a Noun and a Verb[cite: 10]."
+            },
+
+            // --- CANNIBAL (268) ---
+            {
+                id: 69,
+                category: "One Word Substitution",
+                question: "A person who eats human flesh:",
+                options: ["Cannibal", "Carnivore", "Herbivore", "Omnivore"],
+                answer: 0,
+                hint: "Eats members of the same species.",
+                explanation: "Cannibal (N.) is a person who eats human flesh. Hindi meaning: नरभक्षक[cite: 10]."
+            },
+            {
+                id: 70,
+                category: "Animal Kingdom Context",
+                question: "In biology, cannibalism refers to:",
+                options: ["An organism eating another organism of the same species", "An animal eating only plants", "An animal eating insects", "A plant eating sunlight"],
+                answer: 0,
+                hint: "Same species consumption.",
+                explanation: "Cannibalism occurs when an animal or human consumes flesh of its own species."
+            },
+            {
+                id: 71,
+                category: "Distractor Test",
+                question: "Distinguish between 'Cannibal' and 'Carnivore'. What does a carnivore eat?",
+                options: ["Meat / flesh of animals", "Human flesh exclusively", "Plants only", "Fruits and grains"],
+                answer: 0,
+                hint: "General meat eater.",
+                explanation: "Carnivores eat animal meat generally, whereas cannibals eat human flesh[cite: 10]."
+            },
+            {
+                id: 72,
+                category: "Grammar Check",
+                question: "What part of speech is 'Cannibal'?",
+                options: ["Noun", "Verb", "Adjective", "Adverb"],
+                answer: 0,
+                hint: "Names a person/creature.",
+                explanation: "Cannibal is a Noun (N.)[cite: 10]."
+            },
+
+            // --- CANOPHILIA (269) ---
+            {
+                id: 73,
+                category: "One Word Substitution",
+                question: "Love for dogs:",
+                options: ["Canophilia", "Ailurophilia", "Bibliophilia", "Zoophilia"],
+                answer: 0,
+                hint: "Philia for canine animals.",
+                explanation: "Canophilia (N.) means love for dogs. Hindi meaning: कुत्ते से प्यार[cite: 10]."
+            },
+            {
+                id: 74,
+                category: "Root Word Analysis",
+                question: "The root 'Cano-' in Canophilia relates to:",
+                options: ["Dogs (canines)", "Cats", "Birds", "Horses"],
+                answer: 0,
+                hint: "Canine family.",
+                explanation: "'Cano-' or 'canis' refers to dogs."
+            },
+            {
+                id: 75,
+                category: "Comparative Philias",
+                question: "What is 'Ailurophilia' in contrast to canophilia?",
+                options: ["Love for cats", "Love for books", "Love for horses", "Love for water"],
+                answer: 0,
+                hint: "Feline affinity.",
+                explanation: "Ailurophilia is love for cats, whereas canophilia is love for dogs[cite: 10]."
+            },
+            {
+                id: 76,
+                category: "Grammar Check",
+                question: "What part of speech is 'Canophilia'?",
+                options: ["Noun", "Verb", "Adjective", "Adverb"],
+                answer: 0,
+                hint: "Names an affinity/condition.",
+                explanation: "Canophilia is a Noun (N.)[cite: 10]."
+            },
+
+            // --- CAPITALIST (270) ---
+            {
+                id: 77,
+                category: "One Word Substitution",
+                question: "A person who has money especially invested in business:",
+                options: ["Capitalist", "Proletariat", "Pauper", "Mendicant"],
+                answer: 0,
+                hint: "Investor of capital in commercial enterprises.",
+                explanation: "Capitalist (N.) is a person with money invested in business. Hindi meaning: पूंजीवादी[cite: 10]."
+            },
+            {
+                id: 78,
+                category: "Economic Philosophy",
+                question: "Capitalism as an economic system is characterized by:",
+                options: ["Private ownership of production and free-market competition", "State-controlled distribution of all goods", "Zero trade", "Communal property sharing"],
+                answer: 0,
+                hint: "Free market and private enterprise.",
+                explanation: "Capitalism relies on private capital investment, private property, and market competition."
+            },
+            {
+                id: 79,
+                category: "Synonym Match",
+                question: "Which of the following is synonymous with a wealthy investor or 'capitalist'?",
+                options: ["Financier / Investor / Entrepreneur", "Pauper", "Wage laborer", "Beggar"],
+                answer: 0,
+                hint: "Person providing capital.",
+                explanation: "A financier or investor is synonymous with a capitalist."
+            },
+            {
+                id: 80,
+                category: "Grammar Check",
+                question: "What part of speech is 'Capitalist'?",
+                options: ["Noun (also used as adjective)", "Verb only", "Preposition", "Conjunction"],
+                answer: 0,
+                hint: "Names a person or economic actor.",
+                explanation: "Capitalist functions as a Noun and Adjective[cite: 10]."
+            },
+
+            // --- CARAVAN (271) ---
+            {
+                id: 81,
+                category: "One Word Substitution",
+                question: "House or shelter of a gipsy // A group of people, especially traders or pilgrims, travelling together across a desert:",
+                options: ["Caravan", "Carcass", "Cache", "Cacophony"],
+                answer: 0,
+                hint: "Traveling convoy across deserts or nomads' mobile home.",
+                explanation: "Caravan (N.) means a traveling group of traders/pilgrims or gipsy shelter. Hindi meaning: काफ़िला[cite: 10]."
+            },
+            {
+                id: 82,
+                category: "Historical Context",
+                question: "Historically, why did merchants travel in a 'caravan' across trade routes like the Silk Road?",
+                options: ["For mutual protection against bandits and desert hazards", "To race each other", "To enjoy scenic views", "Government travel mandate"],
+                answer: 0,
+                hint: "Safety in numbers.",
+                explanation: "Traveling in caravans offered safety in numbers against desert bandits and harsh conditions."
+            },
+            {
+                id: 83,
+                category: "Exam Frequency (*)",
+                question: "Why does 'Caravan*' have an asterisk in Blackbook OWS lists?",
+                options: ["Frequent appearance in SSC competitive exam questions", "It is an archaic medical term", "It has no plural form", "It is a slang word"],
+                answer: 0,
+                hint: "High exam utility.",
+                explanation: "Asterisk (*) indicates high recurrence in previous years' exams."
+            },
+            {
+                id: 84,
+                category: "Grammar Check",
+                question: "What part of speech is 'Caravan'?",
+                options: ["Noun", "Verb", "Adjective", "Adverb"],
+                answer: 0,
+                hint: "Names a group or vehicle.",
+                explanation: "Caravan is a Noun (N.)[cite: 10]."
+            },
+
+            // --- CARCASS (272) ---
+            {
+                id: 85,
+                category: "One Word Substitution",
+                question: "The dead body of an animal:",
+                options: ["Carcass", "Cadaver", "Cacophony", "Caravan"],
+                answer: 0,
+                hint: "Remains of a dead animal.",
+                explanation: "Carcass (N.) is the dead body of an animal. Hindi meaning: पशु शव[cite: 10]."
+            },
+            {
+                id: 86,
+                category: "Distinction Check",
+                question: "What is the primary difference between a 'cadaver' and a 'carcass'?",
+                options: ["A cadaver refers to a human corpse, while a carcass refers to an animal body", "A carcass refers to humans only", "They are identical in all contexts", "A cadaver is alive"],
+                answer: 0,
+                hint: "Human vs Animal dead body.",
+                explanation: "Cadaver is strictly used for human bodies (especially in medicine), whereas carcass refers to dead animals[cite: 10]."
+            },
+            {
+                id: 87,
+                category: "Synonym Match",
+                question: "Which of the following is a direct synonym for 'Carcass'?",
+                options: ["Corpse / Remains / Skeletal remains", "Living creature", "Botanical specimen", "Buoy"],
+                answer: 0,
+                hint: "Animal corpse.",
+                explanation: "Corpse or animal remains are synonymous with carcass."
+            },
+            {
+                id: 88,
+                category: "Grammar Check",
+                question: "What part of speech is 'Carcass'?",
+                options: ["Noun", "Verb", "Adjective", "Adverb"],
+                answer: 0,
+                hint: "Names a physical object.",
+                explanation: "Carcass is a Noun (N.)[cite: 10]."
+            },
+
+            // --- CARDINAL (273) ---
+            {
+                id: 89,
+                category: "One Word Substitution",
+                question: "Something which is considered to be very important:",
+                options: ["Cardinal", "Cadence", "Cacophony", "Carcass"],
+                answer: 0,
+                hint: "Principal, primary, or fundamental.",
+                explanation: "Cardinal (Adj./N.) means primary or of fundamental importance. Hindi meaning: मुख्य / प्रधान[cite: 10]."
+            },
+            {
+                id: 90,
+                category: "Collocational Usage",
+                question: "In standard English collocation, what is a 'cardinal sin' or 'cardinal rule'?",
+                options: ["A fundamental, primary, or most serious rule/sin", "A minor unimportant mistake", "A religious ceremony only", "A mathematical formula"],
+                answer: 0,
+                hint: "Most important rule.",
+                explanation: "Cardinal denotes primary importance (e.g., cardinal rules, cardinal directions)."
+            },
+            {
+                id: 91,
+                category: "Secondary Definition",
+                question: "In the context of numbers or religion, 'cardinal' can also refer to:",
+                options: ["A high-ranking ecclesiastical official in the Catholic Church (or cardinal numbers like 1, 2, 3)", "A type of desert vehicle", "A horse headgear", "An animal burrow"],
+                answer: 0,
+                hint: "Church official or counting numbers.",
+                explanation: "Cardinal numbers indicate quantity (one, two), and cardinal is also a senior Catholic prelate."
+            },
+            {
+                id: 92,
+                category: "Grammar Check",
+                question: "What part of speech is 'Cardinal' in the phrase 'cardinal rule'?",
+                options: ["Adjective", "Verb", "Adverb", "Preposition"],
+                answer: 0,
+                hint: "Modifies the noun rule.",
+                explanation: "Cardinal functions as an Adjective when describing primary importance[cite: 10]."
+            },
+
+            // --- CARDIOLOGIST (274) ---
+            {
+                id: 93,
+                category: "One Word Substitution",
+                question: "A doctor who specializes in the study or treatment of heart diseases:",
+                options: ["Cardiologist", "Neurologist", "Dermatologist", "Botanist"],
+                answer: 0,
+                hint: "Medical specialist for the cardiovascular system.",
+                explanation: "Cardiologist (N.) is a heart specialist doctor. Hindi meaning: हृदय रोग विशेषज्ञ[cite: 10]."
+            },
+            {
+                id: 94,
+                category: "Root Word Breakdown",
+                question: "The root 'Cardio-' in Cardiologist refers to:",
+                options: ["The heart", "The brain", "The skin", "The bones"],
+                answer: 0,
+                hint: "Cardiac health.",
+                explanation: "'Cardio-' originates from Greek meaning heart."
+            },
+            {
+                id: 95,
+                category: "Exam Frequency (*)",
+                question: "Why does 'Cardiologist*' feature an asterisk in the Blackbook medical OWS list?",
+                options: ["Frequent appearance in SSC medical vocabulary questions", "It is an obsolete title", "It is spelled incorrectly", "It has no plural form"],
+                answer: 0,
+                hint: "High exam utility.",
+                explanation: "Asterisks (*) highlight high-yield medical practitioner terms frequently asked in exams."
+            },
+            {
+                id: 96,
+                category: "Grammar Check",
+                question: "What part of speech is 'Cardiologist'?",
+                options: ["Noun", "Verb", "Adjective", "Adverb"],
+                answer: 0,
+                hint: "Names a medical professional.",
+                explanation: "Cardiologist is a Noun (N.)[cite: 10]."
+            },
+
+            // --- CARDIOLOGY (275) ---
+            {
+                id: 97,
+                category: "One Word Substitution",
+                question: "The study of the heart and its action and disease:",
+                options: ["Cardiology", "Neurology", "Dermatology", "Botany"],
+                answer: 0,
+                hint: "Branch of medicine dealing with cardiac disorders.",
+                explanation: "Cardiology (N.) is the medical study of the heart. Hindi meaning: हृदय विज्ञान[cite: 10]."
+            },
+            {
+                id: 98,
+                category: "Analogy Test",
+                question: "Cardiology : Heart :: Neurology : _____?",
+                options: ["Brain / Nervous system", "Skin", "Plants", "Stomach"],
+                answer: 0,
+                hint: "Neuro relates to nerves/brain.",
+                explanation: "Cardiology studies the heart; neurology studies the nervous system and brain."
+            },
+            {
+                id: 99,
+                category: "Synonym / Field Match",
+                question: "Which medical department handles cardiac surgeries and treatments?",
+                options: ["Cardiology department", "Orthopedic ward", "Ophthalmology clinic", "Pharmacy"],
+                answer: 0,
+                hint: "Heart treatment wing.",
+                explanation: "The cardiology department specializes in heart care[cite: 10]."
+            },
+            {
+                id: 100,
+                category: "Grammar Check",
+                question: "What part of speech is 'Cardiology'?",
+                options: ["Noun", "Verb", "Adjective", "Adverb"],
+                answer: 0,
+                hint: "Names a scientific branch.",
+                explanation: "Cardiology is a Noun (N.)[cite: 10]."
+            }
+        ];
+
+        let currentIndex = 0;
+        let score = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+        let answeredState = new Array(questions.length).fill(false);
+
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const scoreDisplay = document.getElementById('score-display');
+        const currentQBadge = document.getElementById('current-q-badge');
+        const totalQBadge = document.getElementById('total-q-badge');
+        const totalScoreDisplay = document.getElementById('total-score-display');
+        const progressBar = document.getElementById('progress-bar');
+        const questionNumberLabel = document.getElementById('question-number-label');
+        const questionCategoryBadge = document.getElementById('question-category-badge');
+        const hintBox = document.getElementById('hint-box');
+        const explanationBox = document.getElementById('explanation-box');
+        const explanationText = document.getElementById('explanation-text');
+        const jumpInput = document.getElementById('jump-input');
+        const bottomJumpInput = document.getElementById('bottom-jump-input');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+
+        totalScoreDisplay.textContent = questions.length;
+        totalQBadge.textContent = questions.length;
+
+        function loadQuestion(index) {
+            if (index < 0 || index >= questions.length) return;
+            currentIndex = index;
+            const q = questions[currentIndex];
+
+            questionNumberLabel.textContent = `Question ${currentIndex + 1} of ${questions.length}`;
+            currentQBadge.textContent = currentIndex + 1;
+            questionCategoryBadge.textContent = q.category;
+            questionText.textContent = q.question;
+
+            // Progress bar update
+            const progressPct = ((currentIndex + 1) / questions.length) * 100;
+            progressBar.style.width = `${progressPct}%`;
+
+            // Hint setup
+            hintBox.textContent = q.hint;
+            hintBox.classList.add('hidden');
+
+            // Explanation setup
+            if (answeredState[currentIndex]) {
+                explanationText.textContent = q.explanation;
+                explanationBox.classList.remove('hidden');
+            } else {
+                explanationBox.classList.add('hidden');
+            }
+
+            // Render Options
+            optionsContainer.innerHTML = '';
+            q.options.forEach((opt, i) => {
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left p-4 rounded-2xl border transition-all flex items-center justify-between font-medium text-sm md:text-base shadow-sm `;
+                
+                const isSelected = userAnswers[currentIndex] === i;
+                const isAnswered = answeredState[currentIndex];
+
+                if (isAnswered) {
+                    if (i === q.answer) {
+                        btn.className += `bg-green-50 border-green-300 text-green-900 shadow-md`;
+                    } else if (isSelected) {
+                        btn.className += `bg-red-50 border-red-300 text-red-900 shadow-md`;
+                    } else {
+                        btn.className += `bg-white/60 border-borderPurple text-darkPurple/60`;
+                    }
+                    btn.disabled = true;
+                } else {
+                    btn.className += `bg-white border-borderPurple text-darkPurple hover:bg-hoverBg hover:border-primaryPurple focus:outline-none focus:ring-2 focus:ring-primaryPurple`;
+                    btn.onclick = () => selectOption(i);
+                }
+
+                btn.innerHTML = `
+                    <span><strong class="mr-2 text-primaryPurple">${String.fromCharCode(65 + i)}.</strong> ${opt}</span>
+                    <span class="text-xs font-bold">${isAnswered && i === q.answer ? '✅ Correct' : (isAnswered && isSelected ? '❌ Your Choice' : '')}</span>
+                `;
+                optionsContainer.appendChild(btn);
+            });
+
+            prevBtn.disabled = currentIndex === 0;
+            nextBtn.textContent = currentIndex === questions.length - 1 ? 'Finish 🏁' : 'Next →';
+            jumpInput.value = currentIndex + 1;
+            bottomJumpInput.value = currentIndex + 1;
+        }
+
+        function selectOption(selectedIndex) {
+            if (answeredState[currentIndex]) return;
+            userAnswers[currentIndex] = selectedIndex;
+            answeredState[currentIndex] = true;
+
+            const q = questions[currentIndex];
+            if (selectedIndex === q.answer) {
+                score++;
+                scoreDisplay.textContent = score;
+            }
+
+            explanationText.textContent = q.explanation;
+            explanationBox.classList.remove('hidden');
+
+            loadQuestion(currentIndex);
+        }
+
+        function nextQuestion() {
+            if (currentIndex < questions.length - 1) {
+                loadQuestion(currentIndex + 1);
+            } else {
+                alert(`Quiz Completed! 🎉 Your final score is ${score} out of ${questions.length}. Excellent work mastering your English Vocabulary!`);
+            }
+        }
+
+        function prevQuestion() {
+            if (currentIndex > 0) {
+                loadQuestion(currentIndex - 1);
+            }
+        }
+
+        function toggleHint() {
+            hintBox.classList.toggle('hidden');
+        }
+
+        function jumpToQuestion() {
+            const val = parseInt(jumpInput.value);
+            if (!isNaN(val) && val >= 1 && val <= questions.length) {
+                loadQuestion(val - 1);
+            } else {
+                alert(`Please enter a valid question number between 1 and ${questions.length}.`);
+            }
+        }
+
+        function bottomJump() {
+            const val = parseInt(bottomJumpInput.value);
+            if (!isNaN(val) && val >= 1 && val <= questions.length) {
+                loadQuestion(val - 1);
+            } else {
+                alert(`Please enter a valid question number between 1 and ${questions.length}.`);
+            }
+        }
+
+        function resetQuiz() {
+            if (confirm("Are you sure you want to reset the quiz? All your progress will be cleared.")) {
+                score = 0;
+                scoreDisplay.textContent = score;
+                userAnswers = new Array(questions.length).fill(null);
+                answeredState = new Array(questions.length).fill(false);
+                loadQuestion(0);
+            }
+        }
+
+        // Keyboard Navigation Support
+        document.addEventListener('keydown', (e) => {
+            if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+                if (e.key === 'Enter') {
+                    if (document.activeElement === jumpInput) jumpToQuestion();
+                    if (document.activeElement === bottomJumpInput) bottomJump();
+                }
+                return;
+            }
+
+            if (e.key === 'ArrowLeft') {
+                prevQuestion();
+            } else if (e.key === 'ArrowRight') {
+                nextQuestion();
+            }
+        });
+
+        // Initialize first question on load
+        window.onload = () => {
+            loadQuestion(0);
+        };
+    </script>
+</body>
+</html>

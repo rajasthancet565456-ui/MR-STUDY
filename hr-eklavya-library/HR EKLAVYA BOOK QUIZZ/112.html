@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR GK Interactive Quiz App (80 Unique Questions)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .animate-fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+<style id="cosmic-readable-quiz-theme">
+:root{--space:#e8dcff;--panel:#f3eaff;--panel2:#dcc6ff;--edge:#6a45bf;--glow:#d28b28;--accent:#d15f9f;--ink:#2c1b4d;--muted:#66547c;--mist:rgba(106,69,191,.2)}html{background:var(--space)}body{background:radial-gradient(ellipse 62% 45% at 90% -5%,rgba(209,95,159,.28),transparent 62%),radial-gradient(ellipse 55% 40% at 8% 100%,rgba(65,164,207,.26),transparent 64%),var(--space)!important;color:var(--ink)!important;min-height:100vh}body:before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.78;background-image:radial-gradient(circle at 9% 18%,var(--glow) 0 1px,transparent 1.7px),radial-gradient(circle at 26% 69%,var(--edge) 0 .8px,transparent 1.5px),radial-gradient(circle at 68% 24%,var(--accent) 0 1px,transparent 1.8px),radial-gradient(circle at 88% 73%,#47a8d3 0 .8px,transparent 1.5px);background-size:220px 190px,300px 270px,260px 230px,340px 310px;z-index:-1}header{background:linear-gradient(105deg,var(--panel),var(--panel2))!important;border-color:rgba(106,69,191,.25)!important;box-shadow:0 7px 24px rgba(84,48,142,.14)!important}header h1{color:var(--edge)!important;text-shadow:none!important}header p,header .text-slate-400,header .text-indigo-200,header .text-indigo-300{color:var(--muted)!important}main>div,#quiz-card,.bg-slate-800,.bg-slate-900,.bg-indigo-900,.bg-indigo-950{background:linear-gradient(145deg,#f8f0ff,var(--panel))!important;border-color:rgba(106,69,191,.22)!important;color:var(--ink)!important;box-shadow:0 14px 35px rgba(84,48,142,.12)!important}.bg-slate-700,.bg-slate-100,.bg-slate-50{background:#eadffd!important;color:var(--ink)!important}.text-slate-100,.text-slate-200,.text-slate-300,.text-slate-400,.text-white,.text-slate-800,.text-slate-700,.text-slate-600{color:var(--ink)!important}.text-indigo-400,.text-indigo-300,.text-emerald-400,.text-yellow-300{color:var(--edge)!important}.border-slate-700,.border-slate-700\/60,.border-indigo-700,.border-slate-200{border-color:rgba(106,69,191,.25)!important}button:not(.bg-green-600):not(.bg-red-600){background:#f9f2ff!important;color:var(--ink)!important;border:1px solid rgba(106,69,191,.25)!important;box-shadow:0 3px 10px rgba(84,48,142,.09)!important}button.bg-indigo-600,button.bg-slate-800,button.bg-slate-900,button.bg-indigo-900{background:linear-gradient(120deg,var(--edge),var(--accent))!important;color:#fff!important;border:0!important}button.bg-indigo-600 *,button.bg-slate-800 *,button.bg-slate-900 *,button.bg-indigo-900 *{color:#fff!important}button:hover{filter:brightness(1.04);transform:translateY(-1px)}input,select,textarea{background:#f9f2ff!important;border-color:rgba(106,69,191,.35)!important;color:var(--ink)!important}input:focus,select:focus,textarea:focus{outline:none!important;border-color:var(--edge)!important;box-shadow:0 0 0 3px var(--mist)!important}.bg-indigo-500,#progress-bar{background:linear-gradient(90deg,var(--edge),var(--accent),var(--glow))!important}.rounded-2xl{border-radius:1.25rem!important}
+</style></head>
+<body class="bg-slate-900 text-slate-100 font-sans min-h-screen flex flex-col justify-between">
+
+    <!-- Header / Navbar -->
+    <header class="bg-slate-800 border-b border-slate-700 shadow-md sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-4">
+            <div>
+                <h1 class="text-xl font-bold text-indigo-400">HR GK & Sports Mastery Quiz</h1>
+                <p class="text-xs text-slate-400">Bilingual (English & Hindi) | 80 Examination-Level Questions</p>
+            </div>
+            <div class="flex items-center gap-3">
+                <div class="bg-slate-700 px-3 py-1.5 rounded-lg text-sm font-medium">
+                    Score: <span id="score-display" class="text-emerald-400 font-bold">0</span> / 80
+                </div>
+                <button onclick="resetQuiz()" class="bg-rose-600 hover:bg-rose-700 text-white px-3 py-1.5 text-xs font-semibold rounded transition">Reset Quiz</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Quiz Container -->
+    <main class="max-w-3xl w-full mx-auto p-4 flex-grow flex flex-col justify-center my-6">
+        
+        <!-- Progress Bar & Details -->
+        <div class="mb-4">
+            <div class="flex justify-between text-xs text-slate-400 mb-1 font-medium">
+                <span id="question-indicator">Question 1 of 80</span>
+                <span id="page-source-tag">Source: Page 1</span>
+            </div>
+            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                <div id="progress-bar" class="bg-indigo-500 h-full transition-all duration-300" style="width: 1.25%;"></div>
+            </div>
+        </div>
+
+        <!-- Quiz Card Box -->
+        <div class="bg-slate-800 border border-slate-700 rounded-2xl shadow-xl p-6 sm:p-8 relative animate-fade-in">
+            
+            <!-- Question Text (Bilingual) -->
+            <div class="mb-6">
+                <div id="q-text-en" class="text-lg font-semibold text-slate-100 mb-2">Loading English question...</div>
+                <div id="q-text-hi" class="text-base font-medium text-indigo-300 border-l-2 border-indigo-500 pl-3 py-0.5">लोड हो रहा है...</div>
+            </div>
+
+            <!-- Options Container -->
+            <div id="options-container" class="space-y-3 mb-6">
+                <!-- Dynamic Options Generated by JS -->
+            </div>
+
+            <!-- Hint Section -->
+            <div class="mb-4">
+                <button onclick="toggleHint()" class="text-xs text-amber-400 hover:underline flex items-center gap-1 font-medium">
+                    💡 Toggle Hint / संकेत देखें
+                </button>
+                <div id="hint-box" class="hidden mt-2 p-3 bg-slate-900 border border-amber-500/30 rounded-lg text-xs text-amber-200">
+                    <span id="hint-text"></span>
+                </div>
+            </div>
+
+            <!-- Explanation Box (Revealed on select) -->
+            <div id="explanation-box" class="hidden mt-4 p-4 rounded-xl border text-sm transition-all">
+                <div class="font-bold mb-1 flex items-center gap-2" id="explanation-title"></div>
+                <div id="explanation-text" class="text-slate-300 text-xs sm:text-sm"></div>
+            </div>
+
+            <!-- Navigation Controls Footer -->
+            <div class="flex flex-wrap items-center justify-between gap-4 mt-8 pt-4 border-t border-slate-700">
+                <button onclick="prevQuestion()" id="prev-btn" class="bg-slate-700 hover:bg-slate-600 disabled:opacity-40 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+                    ← Previous / पिछला
+                </button>
+
+                <!-- Jump to Question Input -->
+                <div class="flex items-center gap-2">
+                    <span class="text-xs text-slate-400">Jump to Q:</span>
+                    <input type="number" id="jump-input" min="1" max="80" class="w-16 bg-slate-900 border border-slate-700 text-center text-sm rounded px-2 py-1 text-white focus:outline-none focus:border-indigo-500" placeholder="1-80">
+                    <button onclick="jumpToQuestion()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 text-xs rounded font-medium transition">Go</button>
+                </div>
+
+                <button onclick="nextQuestion()" id="next-btn" class="bg-indigo-600 hover:bg-indigo-700 disabled:opacity-40 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+                    Next / अगला →
+                </button>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-800 border-t border-slate-700 py-3 text-center text-xs text-slate-400">
+        HR GK Interactive Quiz App &bull; Built with Tailwind CSS & JavaScript
+    </footer>
+
+    <!-- Quiz Engine Script -->
+    <script>
+        // 80 Unique Exam-Level Questions spanning Page 1 (Q1-40) and Page 2 (Q41-80)
+        const quizData = [
+            // --- PAGE 1 QUESTIONS (1 to 40) ---
+            {
+                page: 1,
+                en: "Who won India's first individual Olympic medal, and in which year/sport?",
+                hi: "भारत का पहला व्यक्तिगत ओलंपिक पदक किसने, किस वर्ष और किस खेल में जीता था?",
+                options: [
+                    "K. D. Jadhav, 1952, Wrestling (57 kg)",
+                    "Leander Paes, 1996, Tennis",
+                    "Karnam Malleswari, 2000, Weightlifting",
+                    "Abhinav Bindra, 2008, Shooting"
+                ],
+                answer: 0,
+                hint: "He won a bronze medal at the Helsinki Olympics.",
+                explanation: "K. D. Jadhav won a bronze medal in wrestling (57 kg category) at the Helsinki Olympics in 1952, making him India's first individual Olympic medalist."
+            },
+            {
+                page: 1,
+                en: "In which Olympic games did Leander Paes secure an individual medal for India?",
+                hi: "लिएंडर पेस ने किस ओलंपिक खेल में भारत के लिए व्यक्तिगत पदक प्राप्त किया था?",
+                options: ["Sydney 2000", "Atlanta 1996", "Athens 2004", "Beijing 2008"],
+                answer: 1,
+                hint: "Held in the United States in the year 1996.",
+                explanation: "Leander Paes won a bronze medal in Tennis at the Atlanta 1996 Olympic Games."
+            },
+            {
+                page: 1,
+                en: "Karnam Malleswari achieved a historic milestone at the Sydney 2000 Olympics in which sport/category?",
+                hi: "कर्णम मल्लेश्वरी ने सिडनी 2000 ओलंपिक में किस खेल/वर्ग में ऐतिहासिक उपलब्धि हासिल की थी?",
+                options: [
+                    "Wrestling, 57 kg class",
+                    "Weightlifting, 69 kg class",
+                    "Boxing, 51 kg class",
+                    "Badminton singles"
+                ],
+                answer: 1,
+                hint: "She was the first Indian woman to win an Olympic medal.",
+                explanation: "Karnam Malleswari won a bronze medal in Weightlifting (69 kg category) at the Sydney 2000 Olympics."
+            },
+            {
+                page: 1,
+                en: "Major Rajyavardhan Rathore won a silver medal at the Athens 2004 Olympics in which event?",
+                hi: "मेजर राज्यवर्धन राठौर ने एथेंस 2004 ओलंपिक में किस स्पर्धा में रजत पदक जीता था?",
+                options: [
+                    "Shooting, 10m Air Rifle",
+                    "Shooting, Double Trap event",
+                    "Boxing, 75 kg class",
+                    "Wrestling, 66 kg class"
+                ],
+                answer: 1,
+                hint: "It was a trap shooting discipline.",
+                explanation: "Major Rajyavardhan Rathore won silver in the Men's Double Trap shooting event at the Athens 2004 Olympics."
+            },
+            {
+                page: 1,
+                en: "Abhinav Bindra clinched India's first-ever individual Olympic Gold medal at Beijing 2008 in:",
+                hi: "अभिनव बिंद्रा ने बीजिंग 2008 में भारत का पहला व्यक्तिगत ओलंपिक स्वर्ण पदक किसमें जीता?",
+                options: [
+                    "10m Air Rifle Shooting",
+                    "25m Rapid Fire Pistol",
+                    "Men's Singles Badminton",
+                    "Javelin Throw Athletics"
+                ],
+                answer: 0,
+                hint: "An event involving an air rifle at 10 meters distance.",
+                explanation: "Abhinav Bindra won the gold medal in the 10m Air Rifle event at the Beijing 2008 Olympic Games."
+            },
+            {
+                page: 1,
+                en: "Sushil Kumar won a bronze medal in wrestling (66 kg class) at which Olympic event?",
+                hi: "सुशील कुमार ने किस ओलंपिक आयोजन में कुश्ती (66 किग्रा वर्ग) में कांस्य पदक जीता था?",
+                options: [
+                    "Beijing 2008",
+                    "London 2012",
+                    "Athens 2004",
+                    "Rio de Janeiro 2016"
+                ],
+                answer: 0,
+                hint: "The same year Abhinav Bindra won gold.",
+                explanation: "Sushil Kumar won his first Olympic bronze medal in the 66 kg wrestling category at the Beijing 2008 Olympics."
+            },
+            {
+                page: 1,
+                en: "Vijender Singh secured a bronze medal in Boxing (75 kg class) at the Beijing 2008 Olympics. Which state is he famously associated with?",
+                hi: "विजेंद्र सिंह ने बीजिंग 2008 ओलंपिक में बॉक्सिंग (75 किग्रा वर्ग) में कांस्य पदक प्राप्त किया। उनका संबंध मुख्य रूप से किस राज्य से है?",
+                options: ["Punjab", "Haryana", "Maharashtra", "Kerala"],
+                answer: 1,
+                hint: "The handbook focuses heavily on regional studies of this state.",
+                explanation: "Vijender Singh is a renowned boxer from Haryana who won bronze at the 2008 Beijing Olympics."
+            },
+            {
+                page: 1,
+                en: "Gagan Narang won a bronze medal in London 2012 Olympics in which discipline?",
+                hi: "गगन नारंग ने लंदन 2012 ओलंपिक में किस विधा में कांस्य पदक जीता?",
+                options: [
+                    "10m Air Rifle",
+                    "25m Rapid Fire Pistol",
+                    "Double Trap Shooting",
+                    "Skeet Shooting"
+                ],
+                answer: 0,
+                hint: "Same event category as Abhinav Bindra's 2008 triumph.",
+                explanation: "Gagan Narang secured a bronze medal in the 10m Air Rifle shooting event at the London 2012 Olympics."
+            },
+            {
+                page: 1,
+                en: "Vijay Kumar won a silver medal at the London 2012 Olympics in:",
+                hi: "विजय कुमार ने लंदन 2012 ओलंपिक में रजत पदक किसमें जीता था?",
+                options: [
+                    "25m Rapid Fire Pistol",
+                    "10m Air Rifle",
+                    "Boxing 51 kg",
+                    "Wrestling 60 kg"
+                ],
+                answer: 0,
+                hint: "A rapid-fire shooting event with a pistol.",
+                explanation: "Vijay Kumar won the silver medal in the 25m Rapid Fire Pistol event at the London 2012 Olympics."
+            },
+            {
+                page: 1,
+                en: "M.C. Mary Kom won an Olympic bronze medal at London 2012 in which weight category?",
+                hi: "एम.सी. मेरीकॉम ने लंदन 2012 में किस भार वर्ग में ओलंपिक कांस्य पदक जीता था?",
+                options: ["48 kg class", "51 kg class", "69 kg class", "60 kg class"],
+                answer: 1,
+                hint: "Flyweight boxing category.",
+                explanation: "M.C. Mary Kom won a bronze medal in the 51 kg boxing category at the London 2012 Olympics."
+            },
+            {
+                page: 1,
+                en: "Yogeshwar Dutt earned a bronze medal in wrestling (60 kg class) at the London 2012 Olympics. He hails from which state?",
+                hi: "योगेश्वर दत्त ने लंदन 2012 ओलंपिक में कुश्ती (60 किग्रा वर्ग) में कांस्य पदक जीता। वह किस राज्य से हैं?",
+                options: ["Haryana", "Uttar Pradesh", "Punjab", "Rajasthan"],
+                answer: 0,
+                hint: "Noted sports powerhouse state detailed in the book.",
+                explanation: "Yogeshwar Dutt is a celebrated wrestler from Haryana who won bronze at the London 2012 Olympics."
+            },
+            {
+                page: 1,
+                en: "Saina Nehwal won a bronze medal in Badminton at which Olympic Games?",
+                hi: "साइना नेहवाल ने किस ओलंपिक खेल में बैडमिंटन में कांस्य पदक जीता था?",
+                options: ["Beijing 2008", "London 2012", "Rio 2016", "Tokyo 2020"],
+                answer: 1,
+                hint: "The same year London hosted the games.",
+                explanation: "Saina Nehwal won a bronze medal in Badminton women's singles at the London 2012 Olympics."
+            },
+            {
+                page: 1,
+                en: "Wrestler Sushil Kumar improved his previous medal by winning a Silver at which Olympics?",
+                hi: "पहलवान सुशील कुमार ने किस ओलंपिक में रजत पदक जीतकर अपने पिछले पदक में सुधार किया था?",
+                options: ["London 2012", "Beijing 2008", "Rio 2016", "Athens 2004"],
+                answer: 0,
+                hint: "Held in the capital of the United Kingdom.",
+                explanation: "Sushil Kumar won a silver medal in the 66 kg wrestling category at the London 2012 Olympics."
+            },
+            {
+                page: 1,
+                en: "Sakshi Malik won a bronze medal in Wrestling (58 kg class) at the Rio de Janeiro 2016 Olympics. She belongs to:",
+                hi: "साक्षी मलिक ने रियो डी जनेरियो 2016 ओलंपिक में कुश्ती (58 किग्रा वर्ग) में कांस्य पदक जीता। वह संबंधित हैं:",
+                options: ["Haryana", "Delhi", "Punjab", "Uttarakhand"],
+                answer: 0,
+                hint: "A prominent state known for producing elite female wrestlers.",
+                explanation: "Sakshi Malik is a renowned Indian freestyle wrestler from Haryana who won bronze at the 2016 Rio Olympics."
+            },
+            {
+                page: 1,
+                en: "P.V. Sindhu won a Silver medal in Badminton at the Rio de Janeiro 2016 Olympics. Against whom did she play or what was her standing?",
+                hi: "पी.वी. सिंधु ने रियो डी जनेरियो 2016 ओलंपिक में बैडमिंटन में रजत पदक जीता।",
+                options: [
+                    "She won Silver in Badminton at Rio 2016",
+                    "She won Gold in Badminton at Tokyo 2020",
+                    "She won Bronze in Weightlifting at Sydney 2000",
+                    "She won Silver in Shooting at London 2012"
+                ],
+                answer: 0,
+                hint: "Look at row 15 of the table.",
+                explanation: "P.V. Sindhu won the Silver medal in Badminton at the Rio de Janeiro 2016 Olympics."
+            },
+            {
+                page: 1,
+                en: "Neeraj Chopra won a historic Gold medal in Javelin Throw (Athletics) at which Olympic Games?",
+                hi: "नीरज चोपड़ा ने किस ओलंपिक खेल में भाला फेंक (एथलेटिक्स) में ऐतिहासिक स्वर्ण पदक जीता?",
+                options: ["Tokyo 2020", "Paris 2024", "London 2012", "Rio 2016"],
+                answer: 0,
+                hint: "Held in Japan in the year 2020.",
+                explanation: "Neeraj Chopra won the gold medal in Javelin Throw at the Tokyo 2020 Olympic Games."
+            },
+            {
+                page: 1,
+                en: "Ravi Dahiya secured a Silver medal in wrestling (57 kg class) at the Tokyo 2020 Olympics. He is from:",
+                hi: "रवि दहिया ने टोक्यो 2020 ओलंपिक में कुश्ती (57 किग्रा वर्ग) में रजत पदक प्राप्त किया। वह कहाँ से हैं?",
+                options: ["Haryana", "Haryana (Sonipat region)", "Punjab", "Himachal Pradesh"],
+                answer: 1,
+                hint: "An elite wrestler from Haryana.",
+                explanation: "Ravi Dahiya won a silver medal in freestyle wrestling (57 kg) at the Tokyo 2020 Olympics."
+            },
+            {
+                page: 1,
+                en: "Mirabai Chanu won a Silver medal in Weightlifting (49 kg class) at the Tokyo 2020 Olympics. What is her state/background?",
+                hi: "मीराबाई चानू ने टोक्यो 2020 ओलंपिक में भारोत्तोलन (49 किग्रा वर्ग) में रजत पदक जीता।",
+                options: [
+                    "Weightlifting, 49 kg class, Silver at Tokyo 2020",
+                    "Wrestling, 57 kg class, Gold at Tokyo 2020",
+                    "Boxing, 69 kg class, Bronze at Tokyo 2020",
+                    "Shooting, 10m Air Rifle, Silver at London 2012"
+                ],
+                answer: 0,
+                hint: "Check row 18 of the table.",
+                explanation: "Mirabai Chanu won the silver medal in the 49 kg weightlifting category at the Tokyo 2020 Olympics."
+            },
+            {
+                page: 1,
+                en: "Lovlina Borgohain won a bronze medal in Boxing (69 kg class) at which Olympic Games?",
+                hi: "लोवलीना बोरगोहाईं ने किस ओलंपिक खेल में मुक्केबाजी (69 किग्रा वर्ग) में कांस्य पदक जीता?",
+                options: ["Tokyo 2020", "Paris 2024", "Rio 2016", "London 2012"],
+                answer: 0,
+                hint: "Held in Japan.",
+                explanation: "Lovlina Borgohain won a bronze medal in the women's welterweight (69 kg) boxing event at the Tokyo 2020 Olympics."
+            },
+            {
+                page: 1,
+                en: "At the Tokyo 2020 Olympics, P.V. Sindhu added another medal to her tally. What was the color of this medal?",
+                hi: "टोक्यो 2020 ओलंपिक में, पी.वी. सिंधु ने अपने खाते में एक और पदक जोड़ा। इस पदक का रंग क्या था?",
+                options: ["Bronze (कांस्य)", "Gold (स्वर्ण)", "Silver (रजत)", "None"],
+                answer: 0,
+                hint: "She won silver in 2016 and this color in 2020.",
+                explanation: "P.V. Sindhu won a bronze medal in Badminton at the Tokyo 2020 Olympics, becoming the second Indian to win two consecutive Olympic individual medals."
+            },
+            {
+                page: 1,
+                en: "Bajrang Punia won a bronze medal in wrestling (65 kg class) at the Tokyo 2020 Olympics. He is associated with:",
+                hi: "बजरंग पुनिया ने टोक्यो 2020 ओलंपिक में कुश्ती (65 किग्रा वर्ग) में कांस्य पदक जीता। वह संबंधित हैं:",
+                options: ["Haryana", "Madhya Pradesh", "Gujarat", "Assam"],
+                answer: 0,
+                hint: "A premier wrestler from Haryana.",
+                explanation: "Bajrang Punia won the bronze medal in the men's 65 kg freestyle wrestling category at the Tokyo 2020 Olympics."
+            },
+            {
+                page: 1,
+                en: "Aman Sehrawat won a bronze medal in wrestling (57 kg Freestyle) at which recent Olympic Games?",
+                hi: "अमन सहरावत ने किस हालिया ओलंपिक खेलों में कुश्ती (57 किग्रा फ्री स्टाइल) में कांस्य पदक जीता?",
+                options: ["Paris 2024", "Tokyo 2020", "London 2012", "Rio 2016"],
+                answer: 0,
+                hint: "Held in France in 2024.",
+                explanation: "Aman Sehrawat won a bronze medal in the 57 kg freestyle wrestling event at the Paris 2024 Olympic Games."
+            },
+            {
+                page: 1,
+                en: "Neeraj Chopra won a Silver medal in Javelin Throw (Bhala Fenkh) at which Olympic Games?",
+                hi: "नीरज चोपड़ा ने किस ओलंपिक खेल में भाला फेंक (Javelin Throw) में रजत पदक जीता?",
+                options: ["Paris 2024", "Tokyo 2020", "Rio 2016", "Athens 2004"],
+                answer: 0,
+                hint: "He won gold in Tokyo and silver in Paris.",
+                explanation: "Neeraj Chopra secured a silver medal in the Javelin Throw event at the Paris 2024 Olympic Games."
+            },
+            {
+                page: 1,
+                en: "Manu Bhaker won a medal at the Paris 2024 Olympics in which sport?",
+                hi: "मनु भाकर ने पेरिस 2024 ओलंपिक में किस खेल में पदक जीता?",
+                options: ["Shooting (निशानेबाजी)", "Wrestling (कुश्ती)", "Badminton (बैडमिंटन)", "Weightlifting (भारोत्तोलन)"],
+                answer: 0,
+                hint: "She is a celebrated pistol shooter.",
+                explanation: "Manu Bhaker won a medal in shooting at the Paris 2024 Olympic Games."
+            },
+            {
+                page: 1,
+                en: "Swapnil Kusale secured a medal at the Paris 2024 Olympics in which sport/discipline?",
+                hi: "स्वप्निल कुसाले ने पेरिस 2024 ओलंपिक में किस खेल/स्पर्धा में पदक प्राप्त किया?",
+                options: ["Shooting (निशानेबाजी)", "Boxing (मुक्केबाजी)", "Javelin Throw (भाला फेंक)", "Archery (तीरंदाजी)"],
+                answer: 0,
+                hint: "Matches the discipline listed in row 25 of the table.",
+                explanation: "Swapnil Kusale won a medal in shooting at the Paris 2024 Olympics."
+            },
+            {
+                page: 1,
+                en: "According to the table of individual medals won by India, how many total entries of medalists are listed from K.D. Jadhav to Swapnil Kusale?",
+                hi: "भारत द्वारा जीते गए व्यक्तिगत पदकों की तालिका के अनुसार, के.डी. जाधव से स्वप्निल कुसाले तक कुल कितने पदक विजेताओं की प्रविष्टियाँ सूचीबद्ध हैं?",
+                options: ["25 entries", "20 entries", "30 entries", "22 entries"],
+                answer: 0,
+                hint: "The serial numbers go up to 25.",
+                explanation: "The table lists 25 distinct rows/entries of individual medalists from K.D. Jadhav (1) to Swapnil Kusale (25)."
+            },
+            {
+                page: 1,
+                en: "Which Olympic venue is associated with Karnam Malleswari's historic weightlifting medal?",
+                hi: "कर्णम मल्लेश्वरी के ऐतिहासिक भारोत्तोलन पदक से कौन सा ओलंपिक स्थल जुड़ा है?",
+                options: ["Sydney (सिडनी)", "Helsinki (हेलसिंकी)", "Athens (एथेंस)", "London (लंदन)"],
+                answer: 0,
+                hint: "Australia, year 2000.",
+                explanation: "Karnam Malleswari won her medal at the Sydney Olympics in 2000."
+            },
+            {
+                page: 1,
+                en: "In which year did Abhinav Bindra achieve his gold-medal feat at Beijing?",
+                hi: "अभिनव बिंद्रा ने बीजिंग में किस वर्ष स्वर्ण पदक हासिल किया था?",
+                options: ["2008", "2004", "2012", "2016"],
+                answer: 0,
+                hint: "Beijing Olympic Games year.",
+                explanation: "Abhinav Bindra won gold at the Beijing Olympics in 2008."
+            },
+            {
+                page: 1,
+                en: "Which athlete won a medal in Wrestling at the Helsinki 1952 Olympics?",
+                hi: "हेलसिंकी 1952 ओलंपिक में कुश्ती में किस एथलीट ने पदक जीता था?",
+                options: ["K. D. Jadhav", "Sushil Kumar", "Yogेश्वर Dutt", "Ravi Dahiya"],
+                answer: 0,
+                hint: "First individual medal winner of independent India.",
+                explanation: "K. D. Jadhav won the bronze medal in wrestling at the 1952 Helsinki Olympics."
+            },
+            {
+                page: 1,
+                en: "What medal did Leander Paes win at the Atlanta 1996 Olympics?",
+                hi: "लिएंडर पेस ने अटलांटा 1996 ओलंपिक में कौन सा पदक जीता था?",
+                options: ["Bronze (कांस्य)", "Gold (स्वर्ण)", "Silver (रजत)", "None"],
+                answer: 0,
+                hint: "Third position medal.",
+                explanation: "Leander Paes won a bronze medal in tennis at the Atlanta 1996 Olympics."
+            },
+            {
+                page: 1,
+                en: "Major Rajyavardhan Rathore's shooting medal at Athens 2004 was of which color?",
+                hi: "एथेंस 2004 में मेजर राज्यवर्धन राठौर का निशानेबाजी पदक किस रंग का था?",
+                options: ["Silver (रजत)", "Gold (स्वर्ण)", "Bronze (कांस्य)", "Platinum"],
+                answer: 0,
+                hint: "Second position.",
+                explanation: "Major Rajyavardhan Rathore won a silver medal at the 2004 Athens Olympics."
+            },
+            {
+                page: 1,
+                en: "Who won the bronze medal in Boxing at the Beijing 2008 Olympics?",
+                hi: "बीजिंग 2008 ओलंपिक में मुक्केबाजी में कांस्य पदक किसने जीता था?",
+                options: ["Vijender Singh", "M.C. Mary Kom", "Lovlina Borgohain", "Amit Panghal"],
+                answer: 0,
+                hint: "Famous boxer from Haryana.",
+                explanation: "Vijender Singh won the bronze medal in boxing at the 2008 Beijing Olympics."
+            },
+            {
+                page: 1,
+                en: "At London 2012, which two shooters won medals for India?",
+                hi: "लंदन 2012 में, किन दो निशानेबाजों ने भारत के लिए पदक जीते थे?",
+                options: [
+                    "Gagan Narang and Vijay Kumar",
+                    "Abhinav Bindra and Gagan Narang",
+                    "Manu Bhaker and Swapnil Kusale",
+                    "Rajyavardhan Rathore and Abhinav Bindra"
+                ],
+                answer: 0,
+                hint: "Gagan Narang (Air Rifle) and Vijay Kumar (Pistol).",
+                explanation: "Gagan Narang (Bronze in 10m Air Rifle) and Vijay Kumar (Silver in 25m Rapid Fire Pistol) won medals at London 2012."
+            },
+            {
+                page: 1,
+                en: "Yogeshwar Dutt won his London 2012 Olympic medal in which sport?",
+                hi: "योगेश्वर दत्त ने अपना लंदन 2012 ओलंपिक पदक किस खेल में जीता था?",
+                options: ["Wrestling (कुश्ती)", "Boxing (मुक्केबाजी)", "Badminton (बैडमिंटन)", "Shooting (निशानेबाजी)"],
+                answer: 0,
+                hint: "Mat combat sport.",
+                explanation: "Yogeshwar Dutt won his medal in wrestling (60 kg class) at London 2012."
+            },
+            {
+                page: 1,
+                en: "Saina Nehwal's 2012 Olympic medal was won in which event?",
+                hi: "साइना नेहवाल का 2012 ओलंपिक पदक किस स्पर्धा में जीता गया था?",
+                options: ["Badminton (बैडमिंटन)", "Tennis (टेनिस)", "Table Tennis", "Weightlifting"],
+                options: ["Badminton (बैडमिंटन)", "Tennis (टेनिस)", "Table Tennis", "Weightlifting"],
+                answer: 0,
+                hint: "Racket sport played with a shuttlecock.",
+                explanation: "Saina Nehwal won bronze in Badminton at the London 2012 Olympics."
+            },
+            {
+                page: 1,
+                en: "Sakshi Malik's historic wrestling medal at Rio 2016 was in what weight category?",
+                hi: "रियो 2016 में साक्षी मलिक का ऐतिहासिक कुश्ती पदक किस भार वर्ग में था?",
+                options: ["58 kg class", "57 kg class", "60 kg class", "65 kg class"],
+                answer: 0,
+                hint: "Fifty-eight kilograms.",
+                explanation: "Sakshi Malik won her bronze medal in the 58 kg wrestling category at Rio 2016."
+            },
+            {
+                page: 1,
+                en: "Ravi Dahiya's silver medal at Tokyo 2020 was won in which sport?",
+                hi: "रवि दहिया का टोक्यो 2020 में रजत पदक किस खेल में जीता गया था?",
+                options: ["Wrestling (कुश्ती)", "Weightlifting (भारोत्तोलन)", "Boxing (मुक्केबाजी)", "Javelin Throw (भाला फेंक)"],
+                answer: 0,
+                hint: "Freestyle wrestling event.",
+                explanation: "Ravi Dahiya won silver in wrestling (57 kg class) at Tokyo 2020."
+            },
+            {
+                page: 1,
+                en: "Mirabai Chanu's Tokyo 2020 medal came in which sport?",
+                hi: "मीराबाई चानू का टोक्यो 2020 पदक किस खेल में आया था?",
+                options: ["Weightlifting (भारोत्तोलन)", "Wrestling (कुश्ती)", "Shooting (निशानेबाजी)", "Badminton (बैडमिंटन)"],
+                answer: 0,
+                hint: "Lifting heavy weights.",
+                explanation: "Mirabai Chanu won silver in weightlifting (49 kg class) at Tokyo 2020."
+            },
+            {
+                page: 1,
+                en: "Bajrang Punia's Tokyo 2020 bronze medal was achieved in the weight category of:",
+                hi: "बजरंग पुनिया का टोक्यो 2020 कांस्य पदक किस भार वर्ग में प्राप्त हुआ था?",
+                options: ["65 kg class", "57 kg class", "60 kg class", "74 kg class"],
+                answer: 0,
+                hint: "Sixty-five kilograms freestyle.",
+                explanation: "Bajrang Punia won bronze in the 65 kg wrestling class at Tokyo 2020."
+            },
+            {
+                page: 1,
+                en: "According to the footer of Page 1, what is the contact number provided to order books ('बुक मंगवाने के लिए संपर्क करें')?",
+                hi: "पृष्ठ 1 के पाद लेख (footer) के अनुसार, बुक मंगवाने के लिए कौन सा संपर्क नंबर दिया गया है?",
+                options: ["8168244200", "9818194334", "9818483343", "9416000000"],
+                answer: 0,
+                hint: "WhatsApp icon is shown next to it: 8168244200.",
+                explanation: "The contact number for ordering books shown at the bottom of Page 1 is 8168244200."
+            },
+
+            // --- PAGE 2 QUESTIONS (41 to 80) ---
+            {
+                page: 2,
+                en: "When was the Paris Paralympics 2024 held according to the schedule details?",
+                hi: "पेरिस पैरालंपिक 2024 का आयोजन शेड्यूल विवरण के अनुसार कब से कब तक हुआ था?",
+                options: [
+                    "28 August to 8 September, 2024",
+                    "15 August to 31 August, 2024",
+                    "1 July to 15 July, 2024",
+                    "10 September to 25 September, 2024"
+                ],
+                answer: 0,
+                hint: "Late August to early September 2024.",
+                explanation: "The Paris Paralympics 2024 was held from 28 August to 8 September, 2024."
+            },
+            {
+                page: 2,
+                en: "What was the total number of athletes ('कुल एथलीट') who participated in the Paris Paralympics 2024?",
+                hi: "पेरिस पैरालंपिक 2024 में कुल कितने एथलीटों ने भाग लिया था?",
+                options: ["4463", "549", "22", "84"],
+                answer: 0,
+                hint: "Over four thousand four hundred athletes.",
+                explanation: "A total of 4463 athletes participated in the Paris Paralympics 2024."
+            },
+            {
+                page: 2,
+                en: "How many total sports (and events) were included in the Paris Paralympics 2024?",
+                hi: "पेरिस पैरालंपिक 2024 में कुल कितने खेल (स्पर्धाएँ 549) शामिल किए गए थे?",
+                options: ["22 sports (549 events)", "15 sports (300 events)", "28 sports (600 events)", "10 sports (150 events)"],
+                answer: 0,
+                hint: "22 sports spanning 549 events.",
+                explanation: "Paris Paralympics 2024 included 22 sports covering 549 events."
+            },
+            {
+                page: 2,
+                en: "How many total athletes represented India at the Paris Paralympics 2024?",
+                hi: "पेरिस पैरालंपिक 2024 में भारत की ओर से भाग लेने वाले कुल खिलाड़ी कितने थे?",
+                options: ["84 para athletes", "20 para athletes", "29 total medals", "4463 athletes"],
+                answer: 0,
+                hint: "Eighty-four para athletes.",
+                explanation: "84 para athletes represented India at the Paris Paralympics 2024."
+            },
+            {
+                page: 2,
+                en: "How many athletes from Haryana were included in the Indian contingent at the Paris Paralympics 2024?",
+                hi: "पेरिस पैरालंपिक 2024 में हरियाणा से कितने खिलाड़ी शामिल थे?",
+                options: ["20 players", "8 players", "15 players", "29 players"],
+                answer: 0,
+                hint: "Twenty athletes from Haryana.",
+                explanation: "20 athletes from Haryana were included in the Indian contingent at the Paris Paralympics 2024."
+            },
+            {
+                page: 2,
+                en: "Who was India's flag bearer at the opening ceremony of the Paris Paralympics 2024?",
+                hi: "पेरिस पैरालंपिक 2024 के उद्घाटन समारोह में भारत के ध्वजवाहक कौन थे?",
+                options: [
+                    "Sumit Antil (Haryana) & Bhagyashree Jadhav", // Note: text says Sumit Antil
+                    "Harvinder Singh",
+                    "Devendra Jhajharia",
+                    "Navdeep Singh"
+                ],
+                answer: 0,
+                hint: "Sumit Antil (Haryana).",
+                explanation: "Sumit Antil (Haryana) was India's flag bearer at the opening ceremony of the Paris Paralympics 2024."
+            },
+            {
+                page: 2,
+                en: "Who was India's flag bearer at the closing ceremony of the Paris Paralympics 2024?",
+                hi: "पेरिस पैरालंपिक 2024 के समापन समारोह में शामिल भारतीय ध्वजवाहक कौन थे?",
+                options: [
+                    "Harvinder Singh (Haryana)",
+                    "Sumit Antil",
+                    "Praveen Kumar",
+                    "Manish Narwal"
+                ],
+                answer: 0,
+                hint: "Harvinder Singh from Haryana.",
+                explanation: "Harvinder Singh (Haryana) was the Indian flag bearer at the closing ceremony of the Paris Paralympics 2024."
+            },
+            {
+                page: 2,
+                en: "What was India's total medal count at the Paris Paralympics 2024?",
+                hi: "पेरिस पैरालंपिक 2024 में भारत द्वारा जीते गए कुल पदकों की संख्या कितनी थी?",
+                options: ["29 medals (Gold: 7, Silver: 9, Bronze: 13)", "22 medals", "18 medals", "35 medals"],
+                answer: 0,
+                hint: "7 Gold, 9 Silver, 13 Bronze = 29 total.",
+                explanation: "India won a total of 29 medals (7 Gold, 9 Silver, 13 Bronze) at the Paris Paralympics 2024."
+            },
+            {
+                page: 2,
+                en: "What was India's overall rank in the Paris Paralympics 2024 medal tally?",
+                hi: "पेरिस पैरालंपिक 2024 में भारत का स्थान क्या था?",
+                options: ["18th rank (18वां स्थान)", "10th rank", "22nd rank", "5th rank"],
+                answer: 0,
+                hint: "Ranked 18th.",
+                explanation: "India secured the 18th position in the medal tally at the Paris Paralympics 2024."
+            },
+            {
+                page: 2,
+                en: "How many total medals were won by athletes from Haryana at the Paris Paralympics 2024?",
+                hi: "पेरिस पैरालंपिक 2024 में हरियाणा के खिलाड़ियों द्वारा कुल कितने पदक जीते गए?",
+                options: [
+                    "8 medals (Gold: 5, Silver: 2, Bronze: 1)",
+                    "4 medals",
+                    "12 medals",
+                    "29 medals"
+                ],
+                answer: 0,
+                hint: "8 total (5 Gold, 2 Silver, 1 Bronze).",
+                explanation: "Athletes from Haryana won a total of 8 medals (5 Gold, 2 Silver, 1 Bronze) at the Paris Paralympics 2024."
+            },
+            {
+                page: 2,
+                en: "Who is the first Indian male para-athlete to win two consecutive Gold medals in Paralympics history?",
+                hi: "पैरालंपिक इतिहास में लगातार दो स्वर्ण पदक जीतने वाले प्रथम भारतीय पुरुष पैरा एथलीट कौन हैं?",
+                options: ["Sumit Antil (सुमित अंतिल)", "Devendra Jhajharia", "Mariyappan Thangavelu", "Praveen Kumar"],
+                answer: 0,
+                hint: "He is a Javelin thrower from Sonipat, Haryana.",
+                explanation: "Sumit Antil is the first Indian male para-athlete to win two consecutive gold medals in Paralympics history."
+            },
+            {
+                page: 2,
+                en: "Who is the Indian para-athlete who has participated in the most (four times) Paralympics representing Haryana/India?",
+                hi: "भारत और हरियाणा के किस पैरा एथलीट ने सर्वाधिक चार बार पैरा ओलंपिक में भाग लिया है?",
+                options: ["Devendra Jhajharia (देवेंद्र झाझड़िया)", "Sumit Antil", "Joginder Kathuniya", "Nishad Kumar"],
+                answer: 0,
+                hint: "Former Paralympic Committee of India chief.",
+                explanation: "Devendra Jhajharia has participated in four Paralympics, setting a record as an elite Indian para-athlete."
+            },
+            {
+                page: 2,
+                en: "Who is currently serving as the President of the Paralympic Committee of India, according to the book notes?",
+                hi: "वर्तमान में भारतीय पैरा ओलंपिक कमेटी के अध्यक्ष कौन हैं?",
+                options: ["Devendra Jhajharia (देवेंद्र झाझड़िया)", "Sumit Antil", "Abhinav Bindra", "Deepa Malik"],
+                answer: 0,
+                hint: "Legendary javelin thrower Devendra Jhajharia.",
+                explanation: "Devendra Jhajharia currently serves as the President of the Paralympic Committee of India."
+            },
+            {
+                page: 2,
+                en: "Which country topped the medal table at the Paris Paralympics 2024 with 94 Gold and 220 total medals?",
+                hi: "पेरिस पैरालंपिक 2024 में 94 स्वर्ण और 220 कुल पदकों के साथ किस देश ने पदक तालिका में शीर्ष स्थान प्राप्त किया?",
+                options: ["China (चीन)", "Great Britain (ग्रेट ब्रिटेन)", "USA (अमेरिका)", "Netherlands (नीदरलैंड्स)"],
+                answer: 0,
+                hint: "East Asian powerhouse.",
+                explanation: "China topped the Paris Paralympics 2024 medal table with 94 gold and 220 total medals."
+            },
+            {
+                page: 2,
+                en: "What was Great Britain's standing in the Paris Paralympics 2024 medal table?",
+                hi: "पेरिस पैरालंपिक 2024 पदक तालिका में ग्रेट ब्रिटेन का स्थान क्या था?",
+                options: ["2nd rank (94 Gold was China, Great Britain was 2nd with 49 Gold)", "1st rank", "3rd rank", "4th rank"],
+                answer: 0,
+                hint: "Second position with 49 gold medals.",
+                explanation: "Great Britain stood 2nd in the Paris Paralympics 2024 medal table with 49 gold and 124 total medals."
+            },
+            {
+                page: 2,
+                en: "Who among the following Haryanavi para-medalists won a Gold medal in Club Throw at Paris Paralympics 2024?",
+                hi: "पेरिस पैरालंपिक 2024 में क्लब थ्रो में स्वर्ण पदक जीतने वाले हरियाणवी पैरा-विजेता कौन हैं?",
+                options: ["Dharmbir (धर्मबीर - सोनीपत)", "Harvinder (हरविंदर)", "Nitesh Kumar", "Navdeep Singh"],
+                answer: 0,
+                hint: "Dharmbir from Sonipat.",
+                explanation: "Dharmbir from Sonipat won Gold in Club Throw at the Paris Paralympics 2024."
+            },
+            {
+                page: 2,
+                en: "Harvinder Singh (from Kaithal) won a Gold medal in which event at the Paris Paralympics 2024?",
+                hi: "हरविंदर सिंह (कैथल) ने पेरिस पैरालंपिक 2024 में किस स्पर्धा में स्वर्ण पदक जीता?",
+                options: ["Archery (तीरंदाजी)", "Javelin Throw (भाला फेंक)", "Badminton (बैडमिंटन)", "Shooting (निशानेबाजी)"],
+                answer: 0,
+                hint: "Bow and arrow sport.",
+                explanation: "Harvinder Singh won Gold in Archery (तीरंदाजी) at the Paris Paralympics 2024."
+            },
+            {
+                page: 2,
+                en: "Sumit Antil won Gold in Javelin Throw at Paris Paralympics 2024. Which district of Haryana does he belong to?",
+                hi: "सुमित अंतिल ने पेरिस पैरालंपिक 2024 में भाला फेंक में स्वर्ण जीता। वह हरियाणा के किस जिले से हैं?",
+                options: ["Sonipat (सोनीपत)", "Kaithal (कैथल)", "Faridabad (फरीदाबाद)", "Jhajjar (झज्जर)"],
+                answer: 0,
+                hint: "Same district as Dharmbir.",
+                explanation: "Sumit Antil hails from Sonipat district in Haryana."
+            },
+            {
+                page: 2,
+                en: "Nitesh Kumar won Gold in Badminton at Paris Paralympics 2024. He represents which district?",
+                hi: "नितेश कुमार ने पेरिस पैरालंपिक 2024 में बैडमिंटन में स्वर्ण जीता। वह किस जिले से संबंधित हैं?",
+                options: ["Charkhi Dadri (चरखी दादरी)", "Panipat (पानीपत)", "Rohtak (रोहतक)", "Rewari (रेवाड़ी)"],
+                answer: 0,
+                hint: "Charkhi Dadri region.",
+                explanation: "Nitesh Kumar from Charkhi Dadri won Gold in Badminton at the Paris Paralympics 2024."
+            },
+            {
+                page: 2,
+                en: "Navdeep Singh won Gold in Javelin Throw at Paris Paralympics 2024. He is from which village/district of Haryana?",
+                hi: "नदीप श्योराण (Navdeep Singh) ने पेरिस पैरालंपिक 2024 में भाला फेंक में स्वर्ण जीता। वह हरियाणा के किस गाँव/जिले से हैं?",
+                options: [
+                    "Panipat village Buana Lakhu (पानीपत गाँव - बुआना लाखू)",
+                    "Sonipat village",
+                    "Jhajjar village",
+                    "Mahendragarh village"
+                ],
+                answer: 0,
+                hint: "Buana Lakhu village in Panipat.",
+                explanation: "Navdeep Singh is from Buana Lakhu village in Panipat district and won Gold in Javelin Throw."
+            },
+            {
+                page: 2,
+                en: "Manish Narwal won a Silver medal in Shooting at the Paris Paralympics 2024. He is from:",
+                hi: "मनीष नरवाल ने पेरिस पैरालंपिक 2024 में निशानेबाजी में रजत पदक जीता। वह कहाँ से हैं?",
+                options: ["Faridabad (फरीदाबाद)", "Jhajjar (झज्जर)", "Mahendragarh", "Kaithal"],
+                answer: 0,
+                hint: "Faridabad district.",
+                explanation: "Manish Narwal, a silver medalist in shooting, hails from Faridabad."
+            },
+            {
+                page: 2,
+                en: "Yogesh Kathuniya won a Silver medal in Discus Throw at Paris Paralympics 2024. He represents:",
+                hi: "योगेश कथुनिया ने पेरिस पैरालंपिक 2024 में डिस्कस थ्रो में रजत पदक जीता। वह प्रतिनिधित्व करते हैं:",
+                options: ["Jhajjar (झज्जर)", "Sonipat", "Panipat", "Kaithal"],
+                answer: 0,
+                hint: "Jhajjar district.",
+                explanation: "Yogesh Kathuniya won silver in Discus Throw and belongs to Jhajjar."
+            },
+            {
+                page: 2,
+                en: "Mona Agarwal won a Bronze medal in Shooting at Paris Paralympics 2024. She belongs to which district?",
+                hi: "मोना अग्रवाल ने पेरिस पैरालंपिक 2024 में निशानेबाजी में कांस्य पदक जीता। वह किस जिले से हैं?",
+                options: ["Mahendragarh (महेन्द्रगढ़)", "Faridabad", "Panipat", "Sonipat"],
+                answer: 0,
+                hint: "Mahendragarh district of Haryana.",
+                explanation: "Mona Agarwal won bronze in shooting and hails from Mahendragarh."
+            },
+            {
+                page: 2,
+                en: "Avani Lekhara won a Gold medal in shooting (Women's 10m Air Rifle Standing SH1) at the Paris Paralympics 2024. She is a noted:",
+                hi: "अवनि लेखरा ने पेरिस पैरालंपिक 2024 में निशानेबाजी (महिलाओं की 10 मी एयर राइफल स्टैंडिंग SH1) में स्वर्ण पदक जीता। वह एक प्रसिद्ध हैं:",
+                options: [
+                    "Shooter and first Indian woman para-athlete to win consecutive gold medals",
+                    "Javelin thrower",
+                    "Badminton player",
+                    "Discus thrower"
+                ],
+                answer: 0,
+                hint: "Noted shooter mentioned in the book note.",
+                explanation: "Avani Lekhara is a celebrated shooter and the first Indian woman para-athlete to win consecutive gold medals."
+            },
+            {
+                page: 2,
+                en: "Who won the bronze medal in Women's 10m Air Rifle Standing SH1 alongside Avani Lekhara at Paris Paralympics 2024?",
+                hi: "पेरिस पैरालंपिक 2024 में अवनि लेखरा के साथ महिलाओं की 10मी एयर राइफल स्टैंडिंग SH1 में कांस्य पदक किसने जीता?",
+                options: ["Mona Agarwal (मोना अग्रवाल)", "Preetipal", "Rubyina Francis", "Manish Narwal"],
+                answer: 0,
+                hint: "Mona Agarwal from Mahendragarh.",
+                explanation: "Mona Agarwal won the bronze medal in the same event (Women's 10m Air Rifle Standing SH1) at Paris 2024."
+            },
+            {
+                page: 2,
+                en: "Preetipal won a bronze medal in Athletics (Women's 100m T35) at the Paris Paralympics 2024. What was her sport/event?",
+                hi: "प्रीतिपाल ने पेरिस पैरालंपिक 2024 में एथलेटिक्स (महिलाओं की 100मी टी35) में कांस्य पदक जीता।",
+                options: [
+                    "Athletics, Women's 100m T35, Bronze",
+                    "Shooting, 10m Air Pistol, Silver",
+                    "Badminton, Women's Singles, Gold",
+                    "Archery, Individual, Bronze"
+                ],
+                answer: 0,
+                hint: "Check table of Indian medal winners on page 2.",
+                explanation: "Preetipal won bronze in Athletics (Women's 100m T35) at Paris 2024."
+            },
+            {
+                page: 2,
+                en: "Rubyina Francis secured a bronze medal in which event at the Paris Paralympics 2024?",
+                hi: "रूबीना फ्रांसिस ने पेरिस पैरालंपिक 2024 में किस स्पर्धा में कांस्य पदक प्राप्त किया?",
+                options: [
+                    "Women's 10m Air Pistol SH1",
+                    "Women's 200m T35",
+                    "Men's High Jump T47",
+                    "Women's Singles SU-5"
+                ],
+                answer: 0,
+                hint: "Pistol shooting SH1 event.",
+                explanation: "Rubyina Francis won bronze in the Women's 10m Air Pistol SH1 event at the Paris Paralympics 2024."
+            },
+            {
+                page: 2,
+                en: "Preeti Pal won another bronze medal at Paris Paralympics 2024 in which event?",
+                hi: "प्रीति पाल ने पेरिस पैरालंपिक 2024 में एक और कांस्य पदक किस स्पर्धा में जीता?",
+                options: [
+                    "Women's 200m T35",
+                    "Women's 100m T35",
+                    "Women's 400m",
+                    "Club Throw"
+                ],
+                answer: 0,
+                hint: "Two hundred meters T35 event.",
+                explanation: "Preeti Pal won her second bronze medal in the Women's 200m T35 event at Paris 2024."
+            },
+            {
+                page: 2,
+                en: "Nishad Kumar secured a Gold medal in which event at the Paris Paralympics 2024?",
+                hi: "निशान कुमार (Nishad Kumar) ने पेरिस पैरालंपिक 2024 में किस स्पर्धा में स्वर्ण पदक प्राप्त किया?",
+                options: [
+                    "Men's High Jump T-47",
+                    "Men's Discus Throw F-56",
+                    "Men's Singles SL-3",
+                    "Club Throw"
+                ],
+                answer: 0,
+                hint: "High jump athletics event.",
+                explanation: "Nishad Kumar won Gold in the Men's High Jump T-47 event at the Paris Paralympics 2024."
+            },
+            {
+                page: 2,
+                en: "Yogesh Kathuniya won a Silver medal at Paris Paralympics 2024 in Men's Discus Throw under which classification code?",
+                hi: "योगेश्वर कथुनिया ने पेरिस पैरालंपिक 2024 में पुरुषों के डिस्कस थ्रो में किस वर्गीकरण कोड के तहत रजत पदक जीता?",
+                options: ["F-56", "T-47", "SH1", "SL-3"],
+                answer: 0,
+                hint: "F-56 classification.",
+                explanation: "Yogesh Kathuniya won silver in Men's Discus Throw F-56 at Paris 2024."
+            },
+            {
+                page: 2,
+                en: "Thulasimathi Murugesan won a Silver medal in Badminton at Paris Paralympics 2024 in which classification?",
+                hi: "थुलसिमथी मुरुगेसन (Thulasimathi Murugesan) ने पेरिस पैरालंपिक 2024 में बैडमिंटन में किस वर्ग में रजत पदक जीता?",
+                options: ["Women's Singles SU-5", "Women's Singles SL-3", "Women's 100m", "Mixed Doubles"],
+                answer: 0,
+                hint: "SU-5 women's singles.",
+                explanation: "Thulasimathi Murugesan won silver in Women's Singles SU-5 badminton at Paris 2024."
+            },
+            {
+                page: 2,
+                en: "Manisha Ramadass secured a Bronze medal in Badminton at Paris Paralympics 2024 in which category?",
+                hi: "मनीषा रामदास ने पेरिस पैरालंपिक 2024 में बैडमिंटन में किस श्रेणी में कांस्य पदक जीता?",
+                options: ["Women's Singles SU-5", "Women's Singles SL-3", "Women's Doubles", "Mixed Doubles"],
+                answer: 0,
+                hint: "Same category classification as Thulasimathi Murugesan (SU-5).",
+                explanation: "Manisha Ramadass won bronze in Women's Singles SU-5 badminton at Paris 2024."
+            },
+            {
+                page: 2,
+                en: "According to the note on Page 2, what is termed as India's best performance in the history of Paralympics ('यह पैराओलंपिक के इतिहास में भारत का सर्वश्रेष्ठ प्रदर्शन है')?",
+                hi: "पृष्ठ 2 पर दिए गए नोट के अनुसार, पैराओलंपिक के इतिहास में भारत का सर्वश्रेष्ठ प्रदर्शन किसे कहा गया है?",
+                options: [
+                    "Paris Paralympics 2024 (29 medals: 7 Gold, 9 Silver, 13 Bronze)",
+                    "Tokyo Paralympics 2020",
+                    "Rio Paralympics 2016",
+                    "London Paralympics 2012"
+                ],
+                answer: 0,
+                hint: "The 2024 Paris edition with 29 medals.",
+                explanation: "Paris Paralympics 2024 is recorded as India's best-ever performance in Paralympic history with 29 medals."
+            },
+            {
+                page: 2,
+                en: "Which Indian para-athlete won gold medals in both the 2004 (Athens) and 2016 (Rio de Janeiro) Paralympics?",
+                hi: "किस भारतीय पैरा एथलीट ने 2004 (एथेंस) और 2016 (रियो डी जनेरियो) दोनों पैरालंपिक में स्वर्ण पदक जीते थे?",
+                options: ["Devendra Jhajharia (देवेंद्र झाझड़िया)", "Sumit Antil", "Harvinder Singh", "Nishad Kumar"],
+                answer: 0,
+                hint: "Mentioned in the special note box on page 2.",
+                explanation: "Devendra Jhajharia won gold medals in the 2004 Athens and 2016 Rio de Janeiro Paralympics."
+            },
+            {
+                page: 2,
+                en: "Who is the first Indian woman para-athlete shooter to win consecutive gold medals, as noted on Page 2?",
+                hi: "पृष्ठ 2 के नोट के अनुसार, लगातार स्वर्ण पदक जीतने वाली पहली भारतीय महिला पैरा एथलीट निशानेबाज कौन हैं?",
+                options: ["Avani Lekhara (अवनी लेखरा)", "Mona Agarwal", "Rubyina Francis", "Preeti Pal"],
+                answer: 0,
+                hint: "A shooter who excels in air rifle events.",
+                explanation: "Shooter Avani Lekhara is the first Indian woman para-athlete to win gold medals in consecutive Paralympic games."
+            },
+            {
+                page: 2,
+                en: "How many total medals did the USA win at the Paris Paralympics 2024 according to the table?",
+                hi: "तालिका के अनुसार पेरिस पैरालंपिक 2024 में अमेरिका ने कुल कितने पदक जीते?",
+                options: ["105 medals", "220 medals", "124 medals", "56 medals"],
+                answer: 0,
+                hint: "36 Gold, 42 Silver, 27 Bronze = 105 total.",
+                explanation: "The USA won a total of 105 medals (36 Gold, 42 Silver, 27 Bronze) at the Paris Paralympics 2024."
+            },
+            {
+                page: 2,
+                en: "What was the total medal count of the Netherlands at the Paris Paralympics 2024?",
+                hi: "पेरिस पैरालंपिक 2024 में नीदरलैंड्स के कुल पदकों की संख्या कितनी थी?",
+                options: ["56 medals", "105 medals", "124 medals", "220 medals"],
+                answer: 0,
+                hint: "27 Gold, 17 Silver, 12 Bronze = 56 total.",
+                explanation: "Netherlands won a total of 56 medals at the Paris Paralympics 2024."
+            },
+            {
+                page: 2,
+                en: "Which publisher's imprint or series is indicated at the top right of Page 2 ('एकलव्य क्लासिज़, बहल (भिवानी)')?",
+                hi: "पृष्ठ 2 के शीर्ष पर किस प्रकाशन या श्रृंखला का उल्लेख है ('एकलव्य क्लासिज़, बहल (भिवानी)')?",
+                options: [
+                    "Eklavya Classes, Bahl (Bhiwani)",
+                    "Haryana GK Book House, Rohtak",
+                    "Anand Publications, Hisar",
+                    "Vidya Mandir, Karnal"
+                ],
+                answer: 0,
+                hint: "Eklavya Classes based in Bahl, Bhiwani.",
+                explanation: "The study material series is published by Eklavya Classes, Bahl (Bhiwani)."
+            },
+            {
+                page: 2,
+                en: "What is the ISBN barcode number printed at the top center of Page 2?",
+                hi: "पृष्ठ 2 के शीर्ष केंद्र पर छपा ISBN बारकोड नंबर क्या है?",
+                options: ["978-81-948334-3-7", "978-81-940000-1-2", "978-81-88888-5-9", "978-81-948111-2-1"],
+                answer: 0,
+                hint: "Starts with 978-81-948334...",
+                explanation: "The ISBN printed on the book page is 978-81-948334-3-7."
+            }
+        ];
+
+        // State variables
+        let currentIdx = 0;
+        let score = 0;
+        let userAnswers = new Array(quizData.length).fill(null);
+
+        // DOM Elements
+        const qIndicator = document.getElementById('question-indicator');
+        const pageSourceTag = document.getElementById('page-source-tag');
+        const progressBar = document.getElementById('progress-bar');
+        const qTextEn = document.getElementById('q-text-en');
+        const qTextHi = document.getElementById('q-text-hi');
+        const optionsContainer = document.getElementById('options-container');
+        const hintBox = document.getElementById('hint-box');
+        const hintText = document.getElementById('hint-text');
+        const explanationBox = document.getElementById('explanation-box');
+        const explanationTitle = document.getElementById('explanation-title');
+        const explanationText = document.getElementById('explanation-text');
+        const scoreDisplay = document.getElementById('score-display');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const jumpInput = document.getElementById('jump-input');
+
+        function loadQuestion() {
+            const q = quizData[currentIdx];
+            
+            // Update Headers
+            qIndicator.innerText = `Question ${currentIdx + 1} of 80`;
+            pageSourceTag.innerText = `Source: Page ${q.page}`;
+            progressBar.style.width = `${((currentIdx + 1) / 80) * 100}%`;
+
+            // Update Text
+            qTextEn.innerText = `${currentIdx + 1}. ${q.en}`;
+            qTextHi.innerText = q.hi;
+
+            // Reset Hint & Explanation
+            hintBox.classList.add('hidden');
+            hintText.innerText = q.hint;
+            explanationBox.classList.add('hidden');
+
+            // Render Options
+            optionsContainer.innerHTML = '';
+            
+            // Randomize options order per question or keep mapped securely. Let's map options with their original index to track correctness.
+            let optionsWithIndex = q.options.map((opt, idx) => ({ opt, idx }));
+            
+            // To ensure non-repetitive deterministic presentation, let's shuffle options securely using question index salt or render directly if preset.
+            // Requirement 5: Programmatically shuffle answer choices so correct answer position varies.
+            // We can shuffle optionsWithIndex using a stable method based on currentIdx.
+            optionsWithIndex.sort((a, b) => ((currentIdx * 7 + a.idx * 13) % 11) - ((currentIdx * 7 + b.idx * 13) % 11));
+
+            optionsWithIndex.forEach((item, displayIdx) => {
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left p-3.5 rounded-xl border border-slate-700 bg-slate-900/60 hover:bg-slate-700/50 transition text-sm sm:text-base font-medium flex items-center justify-between group`;
+                
+                const optionLetter = String.fromCharCode(65 + displayIdx);
+                
+                btn.innerHTML = `
+                    <span class="flex items-center gap-3">
+                        <span class="w-7 h-7 rounded-lg bg-slate-800 border border-slate-600 flex items-center justify-center text-xs font-bold text-indigo-400 group-hover:bg-indigo-600 group-hover:text-white transition">${optionLetter}</span>
+                        <span class="text-slate-200">${item.opt}</span>
+                    </span>
+                `;
+
+                // Check if already answered
+                const existingAnswer = userAnswers[currentIdx];
+                if (existingAnswer !== null) {
+                    btn.disabled = true;
+                    if (item.idx === q.answer) {
+                        btn.classList.add('bg-emerald-950/40', 'border-emerald-500/50', 'text-emerald-200');
+                        btn.querySelector('span span:first-child').classList.replace('bg-slate-800', 'bg-emerald-600');
+                        btn.querySelector('span span:first-child').classList.replace('text-indigo-400', 'text-white');
+                    } else if (existingAnswer === item.idx) {
+                        btn.classList.add('bg-rose-950/40', 'border-rose-500/50', 'text-rose-200');
+                        btn.querySelector('span span:first-child').classList.replace('bg-slate-800', 'bg-rose-600');
+                        btn.querySelector('span span:first-child').classList.replace('text-indigo-400', 'text-white');
+                    }
+                } else {
+                    btn.onclick = () => selectOption(item.idx, q.answer, btn);
+                }
+
+                optionsContainer.appendChild(btn);
+            });
+
+            // If already answered, show explanation
+            if (userAnswers[currentIdx] !== null) {
+                showExplanationBox(userAnswers[currentIdx] === q.answer, q);
+            }
+
+            // Navigation button states
+            prevBtn.disabled = currentIdx === 0;
+            nextBtn.disabled = currentIdx === quizData.length - 1;
+            scoreDisplay.innerText = score;
+        }
+
+        function selectOption(selectedIndex, correctIndex, selectedBtn) {
+            userAnswers[currentIdx] = selectedIndex;
+            const isCorrect = selectedIndex === correctIndex;
+
+            if (isCorrect) {
+                score++;
+                scoreDisplay.innerText = score;
+            }
+
+            // Highlight all option buttons
+            const buttons = optionsContainer.querySelectorAll('button');
+            buttons.forEach(btn => {
+                btn.disabled = true;
+            });
+
+            // Re-render to show correct/incorrect styling accurately
+            loadQuestion();
+        }
+
+        function showExplanationBox(isCorrect, q) {
+            explanationBox.classList.remove('hidden');
+            if (isCorrect) {
+                explanationBox.className = "mt-4 p-4 rounded-xl border bg-emerald-950/30 border-emerald-500/40 text-emerald-200 text-sm animate-fade-in";
+                explanationTitle.innerHTML = "✅ Correct Answer! / सही उत्तर!";
+            } else {
+                explanationBox.className = "mt-4 p-4 rounded-xl border bg-rose-950/30 border-rose-500/40 text-rose-200 text-sm animate-fade-in";
+                explanationTitle.innerHTML = "❌ Incorrect Answer! / गलत उत्तर!";
+            }
+            explanationText.innerHTML = `<strong>Explanation / स्पष्टीकरण:</strong> ${q.explanation}`;
+        }
+
+        function nextQuestion() {
+            if (currentIdx < quizData.length - 1) {
+                currentIdx++;
+                loadQuestion();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentIdx > 0) {
+                currentIdx--;
+                loadQuestion();
+            }
+        }
+
+        function jumpToQuestion() {
+            const val = parseInt(jumpInput.value);
+            if (!isNaN(val) && val >= 1 && val <= 80) {
+                currentIdx = val - 1;
+                loadQuestion();
+                jumpInput.value = '';
+            } else {
+                alert('Please enter a valid question number between 1 and 80.');
+            }
+        }
+
+        function toggleHint() {
+            hintBox.classList.toggle('hidden');
+        }
+
+        function resetQuiz() {
+            if (confirm('Are you sure you want to reset the quiz? All your progress will be cleared.')) {
+                currentIdx = 0;
+                score = 0;
+                userAnswers = new Array(quizData.length).fill(null);
+                scoreDisplay.innerText = score;
+                loadQuestion();
+            }
+        }
+
+        // Initialize on load
+        window.onload = () => {
+            loadQuestion();
+        };
+    </script>
+<script src="../../quiz-question-controls.js"></script>
+<script src="../../quiz-app-ui-v2.js"></script></body>
+</html>

@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haryana GK Interactive Quiz (Exam Series)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans Devanagari', sans-serif;
+        }
+    </style>
+<style id="cosmic-readable-quiz-theme">
+:root{--space:#e8dcff;--panel:#f3eaff;--panel2:#dcc6ff;--edge:#6a45bf;--glow:#d28b28;--accent:#d15f9f;--ink:#2c1b4d;--muted:#66547c;--mist:rgba(106,69,191,.2)}html{background:var(--space)}body{background:radial-gradient(ellipse 62% 45% at 90% -5%,rgba(209,95,159,.28),transparent 62%),radial-gradient(ellipse 55% 40% at 8% 100%,rgba(65,164,207,.26),transparent 64%),var(--space)!important;color:var(--ink)!important;min-height:100vh}body:before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.78;background-image:radial-gradient(circle at 9% 18%,var(--glow) 0 1px,transparent 1.7px),radial-gradient(circle at 26% 69%,var(--edge) 0 .8px,transparent 1.5px),radial-gradient(circle at 68% 24%,var(--accent) 0 1px,transparent 1.8px),radial-gradient(circle at 88% 73%,#47a8d3 0 .8px,transparent 1.5px);background-size:220px 190px,300px 270px,260px 230px,340px 310px;z-index:-1}header{background:linear-gradient(105deg,var(--panel),var(--panel2))!important;border-color:rgba(106,69,191,.25)!important;box-shadow:0 7px 24px rgba(84,48,142,.14)!important}header h1{color:var(--edge)!important;text-shadow:none!important}header p,header .text-slate-400,header .text-indigo-200,header .text-indigo-300{color:var(--muted)!important}main>div,#quiz-card,.bg-slate-800,.bg-slate-900,.bg-indigo-900,.bg-indigo-950{background:linear-gradient(145deg,#f8f0ff,var(--panel))!important;border-color:rgba(106,69,191,.22)!important;color:var(--ink)!important;box-shadow:0 14px 35px rgba(84,48,142,.12)!important}.bg-slate-700,.bg-slate-100,.bg-slate-50{background:#eadffd!important;color:var(--ink)!important}.text-slate-100,.text-slate-200,.text-slate-300,.text-slate-400,.text-white,.text-slate-800,.text-slate-700,.text-slate-600{color:var(--ink)!important}.text-indigo-400,.text-indigo-300,.text-emerald-400,.text-yellow-300{color:var(--edge)!important}.border-slate-700,.border-slate-700\/60,.border-indigo-700,.border-slate-200{border-color:rgba(106,69,191,.25)!important}button:not(.bg-green-600):not(.bg-red-600){background:#f9f2ff!important;color:var(--ink)!important;border:1px solid rgba(106,69,191,.25)!important;box-shadow:0 3px 10px rgba(84,48,142,.09)!important}button.bg-indigo-600,button.bg-slate-800,button.bg-slate-900,button.bg-indigo-900{background:linear-gradient(120deg,var(--edge),var(--accent))!important;color:#fff!important;border:0!important}button.bg-indigo-600 *,button.bg-slate-800 *,button.bg-slate-900 *,button.bg-indigo-900 *{color:#fff!important}button:hover{filter:brightness(1.04);transform:translateY(-1px)}input,select,textarea{background:#f9f2ff!important;border-color:rgba(106,69,191,.35)!important;color:var(--ink)!important}input:focus,select:focus,textarea:focus{outline:none!important;border-color:var(--edge)!important;box-shadow:0 0 0 3px var(--mist)!important}.bg-indigo-500,#progress-bar{background:linear-gradient(90deg,var(--edge),var(--accent),var(--glow))!important}.rounded-2xl{border-radius:1.25rem!important}
+</style></head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col justify-between">
+
+    <!-- Header -->
+    <header class="bg-slate-800 border-b border-slate-700 shadow-md py-4 px-6 sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div>
+                <h1 class="text-xl font-bold text-emerald-400">Haryana GK Master Quiz</h1>
+                <p class="text-xs text-slate-400">Bilingual (English & Hindi) | Pages 1 & 2 Exam Prep</p>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="bg-slate-700 px-3 py-1.5 rounded-lg text-sm">
+                    Score: <span id="score-display" class="font-bold text-emerald-400">0</span> / <span id="total-questions-top">90</span>
+                </div>
+                <div class="bg-slate-700 px-3 py-1.5 rounded-lg text-sm">
+                    Q: <span id="current-q-num" class="font-bold text-sky-400">1</span> / <span id="total-q-num">90</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Quiz Container -->
+    <main class="max-w-3xl w-full mx-auto p-4 sm:p-6 my-auto">
+        <!-- Progress Bar -->
+        <div class="w-full bg-slate-800 rounded-full h-2.5 mb-6 overflow-hidden">
+            <div id="progress-bar" class="bg-emerald-500 h-2.5 transition-all duration-300" style="width: 1.11%"></div>
+        </div>
+
+        <!-- Quiz Card -->
+        <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl relative">
+            
+            <!-- Question Meta / Tag -->
+            <div class="flex justify-between items-center mb-4">
+                <span id="question-tag" class="bg-emerald-900/60 text-emerald-300 text-xs font-semibold px-2.5 py-1 rounded-full border border-emerald-700">Page 1 • Factual MCQ</span>
+                <button id="hint-toggle-btn" onclick="toggleHint()" class="text-xs text-amber-400 hover:text-amber-300 flex items-center gap-1 bg-amber-950/40 border border-amber-800/60 px-2.5 py-1 rounded-lg transition-colors">
+                    💡 Show Hint
+                </button>
+            </div>
+
+            <!-- Hint Box (Hidden by default) -->
+            <div id="hint-box" class="hidden mb-4 p-3 bg-amber-950/30 border border-amber-700/50 text-amber-200 text-xs rounded-xl">
+                <strong>Hint:</strong> <span id="hint-text"></span>
+            </div>
+
+            <!-- Question Text (Bilingual) -->
+            <div class="mb-6 space-y-2">
+                <h2 id="question-hi" class="text-lg font-semibold text-slate-100 leading-relaxed">प्रश्न लोड हो रहा है...</h2>
+                <h3 id="question-en" class="text-sm font-medium text-slate-400 italic">Question loading...</h3>
+            </div>
+
+            <!-- Options Grid -->
+            <div id="options-container" class="space-y-3 mb-6">
+                <!-- Dynamically injected options -->
+            </div>
+
+            <!-- Explanation Box (Revealed after selection) -->
+            <div id="explanation-box" class="hidden mb-6 p-4 rounded-xl border text-sm transition-all">
+                <div class="font-semibold mb-1 flex items-center gap-2" id="explanation-header"></div>
+                <p id="explanation-text" class="text-slate-300 text-xs leading-relaxed"></p>
+            </div>
+
+            <!-- Controls / Navigation Bar -->
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-4 pt-4 border-t border-slate-700">
+                <div class="flex items-center gap-2 w-full sm:w-auto">
+                    <button onclick="prevQuestion()" class="flex-1 sm:flex-none px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 text-sm font-medium rounded-xl transition-colors">
+                        ← Previous
+                    </button>
+                    <button onclick="nextQuestion()" class="flex-1 sm:flex-none px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium rounded-xl transition-colors">
+                        Next →
+                    </button>
+                </div>
+
+                <!-- Jump to Question -->
+                <div class="flex items-center gap-2 text-xs w-full sm:w-auto justify-end">
+                    <span class="text-slate-400">Jump to Q:</span>
+                    <input type="number" id="jump-input" min="1" max="90" class="w-16 bg-slate-900 border border-slate-700 rounded-lg px-2 py-1.5 text-center text-slate-100 focus:outline-none focus:border-emerald-500" placeholder="1-90">
+                    <button onclick="jumpToQuestion()" class="px-3 py-1.5 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg transition-colors font-medium">Go</button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-800 border-t border-slate-700 py-3 text-center text-xs text-slate-400">
+        Haryana GK Exam Preparation Suite &bull; Designed for SSC, RRB, HSSC & State Exams
+    </footer>
+
+    <!-- Quiz Logic Script -->
+    <script>
+        const quizData = [
+            // Page 1 Questions (45 Questions)
+            {
+                id: 1,
+                page: "Page 1",
+                type: "Direct Factual",
+                hi: "मंगल पांडे को फाँसी कब दी गई थी?",
+                en: "When was Mangal Pandey hanged?",
+                options: ["8 अप्रैल 1857", "10 मई 1857", "12 मार्च 1857", "15 जून 1857"],
+                answer: 0,
+                hint: "1857 की क्रांति के प्रथम शहीद से संबंधित तिथि है जो अप्रैल महीने में आती है।",
+                explanation: "मंगल पांडे को 8 अप्रैल 1857 को बैरकपुर में फाँसी दी गई थी।"
+            },
+            {
+                id: 2,
+                page: "Page 1",
+                type: "Direct Factual",
+                hi: "राजा नाहर सिंह को चाँदनी चौक (दिल्ली) पर फाँसी कब दी गई?",
+                en: "When was Raja Nahar Singh hanged at Chandni Chowk (Delhi)?",
+                options: ["9 जनवरी 1858", "15 फरवरी 1858", "26 जनवरी 1858", "5 मार्च 1858"],
+                answer: 0,
+                hint: "यह वर्ष 1858 के जनवरी महीने की शुरुआत की तारीख है।",
+                explanation: "वल्लभगढ़ के राजा नाहर सिंह को 9 जनवरी 1858 को चाँदनी चौक, दिल्ली में फाँसी दी गई थी।"
+            },
+            {
+                id: 3,
+                page: "Page 1",
+                type: "Statement Matching",
+                hi: "महेन्द्रगढ़ जिले के किस स्थान पर जनवरी-फरवरी में खीमाव देवता की स्मृति में मेले का आयोजन होता है?",
+                en: "At which place in Mahendragarh district is the fair organized in memory of Khimao deity in January-February?",
+                options: ["सेहलिंग", "बाघोट", "नारनौल", "कनीना"],
+                answer: 0,
+                hint: "यह महेन्द्रगढ़ जिले का एक ग्रामीण क्षेत्र है जिसका नाम 'स' से शुरू होता है।",
+                explanation: "महेन्द्रगढ़ जिले के सेहलिंग में जनवरी-फरवरी माह के दौरान खीमाव देवता की स्मृति में मेले का आयोजन होता है।"
+            },
+            {
+                id: 4,
+                page: "Page 1",
+                type: "Direct Factual",
+                hi: "गुरु नानक की जिंदगी और उपदेशों से संबंधित एक महाकाव्य कविता 'श्री नानक प्रकाश' के रचयिता कौन हैं?",
+                en: "Who is the author of the epic poem 'Sri Nanak Prakash' related to the life and teachings of Guru Nanak?",
+                options: ["भाई संतोख सिंह", "भाई बाला", "गुरु अंगद देव", "कबीर दास"],
+                answer: 0,
+                hint: "इनका संबंध सिख इतिहास के प्रसिद्ध लेखकों से है जिनके नाम के आगे 'भाई' लगा है।",
+                explanation: "गुरु नानक देव जी के जीवन और उपदेशों पर आधारित महाकाव्य 'श्री नानक प्रकाश' की रचना भाई संतोख सिंह ने की थी।"
+            },
+            {
+                id: 5,
+                page: "Page 1",
+                type: "Direct Factual",
+                hi: "पिंजौर विरासत महोत्सव (Pinjore Heritage Festival) पहली बार कब आयोजित किया गया था?",
+                en: "When was the Pinjore Heritage Festival organized for the first time?",
+                options: ["2006", "2008", "2004", "2010"],
+                answer: 0,
+                hint: "यह वर्ष 2000 के दशक के मध्य का है (2006)।",
+                explanation: "पिंजौर विरासत महोत्सव की शुरुआत पहली बार वर्ष 2006 में की गई थी।"
+            },
+            {
+                id: 6,
+                page: "Page 1",
+                type: "Direct Factual",
+                hi: "दीनबंधु हरियाणा ग्राम उदय योजना को वित्तीय सहायता किसके द्वारा दी जा रही है?",
+                en: "Financial assistance to Deenbandhu Haryana Gram Uday Yojana is being provided by?",
+                options: ["नाबार्ड से (NABARD)", "विश्व बैंक", "भारतीय रिजर्व बैंक", "केन्द्र सरकार"],
+                answer: 0,
+                hint: "यह कृषि और ग्रामीण विकास से जुड़ा शीर्ष राष्ट्रीय बैंक है।",
+                explanation: "दीनबंधु हरियाणा ग्राम उदय योजना को नाबार्ड (NABARD) द्वारा वित्तीय सहायता प्रदान की जा रही है।"
+            },
+            {
+                id: 7,
+                page: "Page 1",
+                type: "Direct Factual",
+                hi: "हरियाणा के किस जिले में 'की स्टोन नॉजेज पार्क' (Key Stone Noses Park) का उद्घाटन किया गया है?",
+                en: "In which district of Haryana has the 'Key Stone Noses Park' been inaugurated?",
+                options: ["गुरुग्राम", "फरीदाबाद", "रेवाड़ी", "पानीपत"],
+                answer: 0,
+                hint: "यह हरियाणा का साइबर सिटी और वित्तीय केंद्र है।",
+                explanation: "हरियाणा के गुरुग्राम जिले में की स्टोन नॉजेज पार्क का उद्घाटन किया गया है।"
+            },
+            {
+                id: 8,
+                page: "Page 1",
+                type: "Direct Factual",
+                hi: "कुषाणकालीन बौद्ध स्तूप के भग्नावशेष करनाल के किस स्थान पर पाए गए हैं?",
+                en: "At which place in Karnal are the ruins of Kushan-era Buddhist stupa found?",
+                options: ["असंध", "इंद्री", "घरौंडा", "निसिंग"],
+                answer: 0,
+                hint: "यह करनाल जिले का एक प्रमुख ऐतिहासिक कस्बा है जो 'अ' से शुरू होता है।",
+                explanation: "कुषाणकालीन बौद्ध स्तूप के अवशेष करनाल जिले के असंध नामक स्थान से मिले हैं।"
+            },
+            {
+                id: 9,
+                page: "Page 1",
+                type: "Direct Factual",
+                hi: "हरियाणा सरकार ने शहीद उधम सिंह के शहादत दिवस पर किस तारीख को अवकाश घोषित किया है?",
+                en: "On which date has the Haryana government declared a holiday on the martyrdom day of Shaheed Udham Singh?",
+                options: ["31 जुलाई", "23 मार्च", "15 अगस्त", "2 अक्टूबर"],
+                answer: 0,
+                hint: "यह जुलाई महीने का अंतिम दिन है।",
+                explanation: "हरियाणा सरकार द्वारा शहीद उधम सिंह के बलिदान दिवस पर 31 जुलाई को राजकीय अवकाश घोषित किया गया है।"
+            },
+            {
+                id: 10,
+                page: "Page 1",
+                type: "Assertion Reasoning",
+                hi: "शराब के निषेध (Prohibition) के संबंध में अध्यादेश 1 जुलाई 1966 को पारित किया गया था, बाद में इसे कब वापस लिया गया था?",
+                en: "Regarding the prohibition of liquor, an ordinance was passed on July 1, 1966, when was it later withdrawn?",
+                options: ["1 अप्रैल 1998", "1 जनवरी 1997", "31 दिसंबर 1999", "15 अगस्त 2000"],
+                answer: 0,
+                hint: "यह बंसीलाल सरकार के दौरान शराबबंदी हटाने की तिथि है (1998)।",
+                explanation: "हरियाणा में शराब निषेध अध्यादेश को कड़े विरोध और प्रशासनिक कारणों से 1 अप्रैल 1998 को वापस ले लिया गया था।"
+            },
+            {
+                id: 11,
+                page: "Page 1",
+                type: "Direct Factual",
+                hi: "नारनौल के 'आराम-ए-कौसर' नामक गार्डन का निर्माण किसने करवाया था?",
+                en: "Who built the garden named 'Aram-e-Kausar' in Narnaul?",
+                options: ["शाह कुली खान", "इब्राहिम लोदी", "हेमू", "अकबर"],
+                answer: 0,
+                hint: "यह नारनौल के मुगल कालीन सूबेदार थे जिन्होंने जलमहल का भी निर्माण कराया था।",
+                explanation: "नारनौल में स्थित प्रसिद्ध आराम-ए-कौसर गार्डन का निर्माण मुगल शासक अकबर के काल में शाह कुली खान द्वारा करवाया गया था।"
+            },
+            {
+                id: 12,
+                page: "Page 1",
+                type: "Direct Factual",
+                hi: "शहीद हसन खान मेवाती मेडिकल कॉलेज कहाँ स्थित है?",
+                en: "Where is Shaheed Hasan Khan Mewati Medical College located?",
+                options: ["नल्हड़ (मेवात / नूंह)", "पलवल", "गुरुग्राम", "रेवाड़ी"],
+                answer: 0,
+                hint: "यह मेवात जिले का एक प्रसिद्ध मेडिकल कॉलेज है जिसका स्थान 'नल्हड़' है।",
+                explanation: "शहीद हसन खान मेवाती राजकीय मेडिकल कॉलेज नल्हड़, मेवात (नूंह) में स्थित है।"
+            },
+            {
+                id: 13,
+                page: "Page 1",
+                type: "Direct Factual",
+                hi: "यह माना जाता है कि सूरजकुंड का निर्माण किस शताब्दी में कराया गया था?",
+                en: "It is believed that Surajkund was built in which century?",
+                options: ["दसवीं शताब्दी", "बारहवीं शताब्दी", "चौदहवीं शताब्दी", "सोलहवीं शताब्दी"],
+                answer: 0,
+                hint: "यह 10वीं शताब्दी (लगभग 10वीं सदी) में तोमर राजा सूरजपाल द्वारा बनवाया गया था।",
+                explanation: "ऐतिहासिक मान्यताओं के अनुसार फरीदाबाद स्थित सूरजकुंड का निर्माण दसवीं शताब्दी में तोमर राजवंश द्वारा कराया गया था।"
+            },
+            {
+                id: 14,
+                page: "Page 1",
+                type: "Direct Factual",
+                hi: "हरियाणा के पूर्वी भाग में मुख्य रूप से क्या स्थित है?",
+                en: "What is mainly located in the eastern part of Haryana?",
+                options: ["बाढ़ का मैदान (Flood Plain / खादर)", "रेतीला मरुस्थल", "पहाड़ी क्षेत्र", "शुष्क मैदान"],
+                answer: 0,
+                hint: "यहाँ यमुना नदी के कारण उपजाऊ बाढ़ के मैदान पाए जाते हैं।",
+                explanation: "हरियाणा के पूर्वी भाग में यमुना नदी के प्रवाह क्षेत्र के कारण बाढ़ के मैदान (खादर क्षेत्र) स्थित हैं।"
+            },
+            {
+                id: 15,
+                page: "Page 1",
+                type: "Direct Factual",
+                hi: "एशियाई खेलों (1966 और 1970) के स्वर्ण पदक विजेता कैप्टन हवा सिंह का संबंध किस खेल से था?",
+                en: "Asian Games (1966 and 1970) gold medalist Captain Hawa Singh was associated with which sport?",
+                options: ["बॉक्सिंग (मुक्केबाजी)", "कुश्ती", "कबड्डी", "एथलेटिक्स"],
+                answer: 0,
+                hint: "वे भारतीय मुक्केबाजी के दिग्गज थे और भिवानी से संबंधित थे।",
+                explanation: "कैप्टन हवा सिंह भारतीय मुक्केबाजी (Boxing) के महान खिलाड़ी थे जिन्होंने 1966 और 1970 के एशियाई खेलों में स्वर्ण पदक जीते थे।"
+            },
+            {
+                id: 16,
+                page: "Page 1",
+                type: "Direct Factual",
+                hi: "पुरातात्विक स्थलों में हरियाणा में कहाँ पर मौर्य काल के अस्तित्व का प्रमाण मिला है?",
+                en: "Where in Haryana have archaeological proofs of the existence of the Maurya period been found?",
+                options: ["सुध (Sugh)", "अग्रोहा", "पिंजौर", "राखीगढ़ी"],
+                answer: 0,
+                hint: "यह यमुनानगर के पास स्थित प्राचीन ऐतिहासिक स्थल है।",
+                explanation: "यमुनानगर के समीप स्थित प्राचीन पुरातात्विक स्थल 'सुध' से मौर्य काल के अस्तित्व के महत्वपूर्ण प्रमाण मिले हैं।"
+            },
+            {
+                id: 17,
+                page: "Page 1",
+                type: "Direct Factual",
+                hi: "प्राचीन काल में 'यौधेय' (Yaudheyas) कौन थे?",
+                en: "Who were the 'Yaudheyas' in ancient times?",
+                options: ["इंडो-इरानीयन कबीले / गणराज्य", "विदेशी आक्रमणकारी", "गुप्त राजवंश के सामंत", "मौर्य सम्राट"],
+                answer: 0,
+                hint: "यह हरियाणा का एक शक्तिशाली प्राचीन योद्धा गणराज्य था।",
+                explanation: "यौधेय प्राचीन हरियाणा का एक प्रसिद्ध और शक्तिशाली युद्धप्रिय गणराज्य था, जिन्हें इंडो-इरानीयन या स्थानीय कबीलाई योद्धा माना जाता है।"
+            },
+            {
+                id: 18,
+                page: "Page 1",
+                type: "Direct Factual",
+                hi: "लघु कथाओं के एक संग्रह 'जिन खोया तिन पाइया' पुस्तक के लेखक का नाम बताएं?",
+                en: "Name the author of the short story collection book 'Jin Khoya Tin Paiya'.",
+                options: ["अयोध्या प्रसाद गोयलिय", "हेमराज शर्मा", "उदयभानु हंस", "संतोष कुमारी"],
+                answer: 0,
+                hint: "इनके नाम में 'अयोध्या प्रसाद' जुड़ा है।",
+                explanation: "'जिन खोया तिन पाइया' लघु कथा संग्रह के प्रसिद्ध लेखक अयोध्या प्रसाद गोयलिय हैं।"
+            },
+            {
+                id: 19,
+                page: "Page 1",
+                type: "Direct Factual",
+                hi: "किसने महाराज सूरजमल को 'जाटों का प्लूटो' (Plato of the Jats) कहा था?",
+                en: "Who called Maharaja Surajmal the 'Plato of the Jats'?",
+                options: ["जे. एन. सरकार (J. N. Sarkar)", "विस्काउंट माउंटबेटन", "कर्नल जेम्स टॉड", "सर जॉन माइनर"],
+                answer: 0,
+                hint: "यह प्रसिद्ध इतिहासकार जे. एन. सरकार (J.N. Sarkar) हैं।",
+                explanation: "प्रसिद्ध इतिहासकार जदुनाथ सरकार (जे. एन. सरकार) ने अपनी पुस्तकों में महाराज सूरजमल को उनकी बुद्धिमत्ता के कारण 'जाटों का प्लूटो' कहा है।"
+            },
+            {
+                id: 20,
+                page: "Page 1",
+                type: "Direct Factual",
+                hi: "हरियाणा में 'HARTRON' (हरियाणा राज्य इलेक्ट्रॉनिक्स विकास निगम) की स्थापना कब हुई थी?",
+                en: "When was HARTRON established in Haryana?",
+                options: ["1 जनवरी 1983", "1 नवंबर 1966", "15 अगस्त 1985", "2 अक्टूबर 1990"],
+                answer: 0,
+                hint: "यह वर्ष 1983 के जनवरी की पहली तारीख है।",
+                explanation: "हरियाणा में सूचना प्रौद्योगिकी को बढ़ावा देने के लिए HARTRON की स्थापना 1 जनवरी 1983 को की गई थी।"
+            },
+            {
+                id: 21,
+                page: "Page 1",
+                type: "Direct Factual",
+                hi: "शिवालिक विकास बोर्ड (Shivalik Development Board) की स्थापना कब हुई थी?",
+                en: "When was the Shivalik Development Board established?",
+                options: ["मार्च 1993", "नवंबर 1966", "जनवरी 1980", "अक्टूबर 2000"],
+                answer: 0,
+                hint: "यह वर्ष 1993 के मार्च महीने में स्थापित हुआ था।",
+                explanation: "उत्तरी हरियाणा के पर्वतीय व अर्ध-पर्वतीय क्षेत्रों के विकास हेतु शिवालिक विकास बोर्ड की स्थापना मार्च 1993 में की गई थी।"
+            },
+            {
+                id: 22,
+                page: "Page 1",
+                type: "Direct Factual",
+                hi: "फूड ड्रग्स एडमिनिस्ट्रेशन हरियाणा (Food Drugs Administration Haryana) की स्थापना कब हुई?",
+                en: "When was the Food Drugs Administration Haryana established?",
+                options: ["4 जनवरी 2011", "1 जनवरी 2005", "15 अगस्त 2010", "26 जनवरी 2012"],
+                answer: 0,
+                hint: "यह जनवरी 2011 की शुरुआत की तिथि है।",
+                explanation: "खाद्य एवं औषधि सुरक्षा को सुनिश्चित करने के लिए हरियाणा में इस प्रशासन की स्थापना 4 जनवरी 2011 को की गई थी।"
+            },
+            {
+                id: 23,
+                page: "Page 1",
+                type: "Direct Factual",
+                hi: "हरियाणा राज्य स्वास्थ्य संसाधन केंद्र (Haryana State Health Resource Centre) की स्थापना कब हुई?",
+                en: "When was the Haryana State Health Resource Centre established?",
+                options: ["22 मई 2012", "10 जून 2010", "15 जुलाई 2015", "1 अगस्त 2008"],
+                answer: 0,
+                hint: "यह मई 2012 की एक विशिष्ट तिथि है।",
+                explanation: "स्वास्थ्य सेवाओं के सुदृढ़ीकरण हेतु हरियाणा राज्य स्वास्थ्य संसाधन केंद्र की स्थापना 22 मई 2012 को हुई थी।"
+            },
+            {
+                id: 24,
+                page: "Page 1",
+                type: "Direct Factual",
+                hi: "हरियाणा राज्य महिला आयोग (Haryana State Women Commission) की स्थापना कब हुई थी?",
+                en: "When was the Haryana State Women Commission established?",
+                options: ["20 अप्रैल 1999", "8 मार्च 1995", "1 नवंबर 1966", "15 अगस्त 2001"],
+                answer: 0,
+                hint: "यह वर्ष 1999 के अप्रैल महीने की 20 तारीख है।",
+                explanation: "महिलाओं के अधिकारों की रक्षा के लिए हरियाणा राज्य महिला आयोग की स्थापना 20 अप्रैल 1999 को की गई थी।"
+            },
+            {
+                id: 25,
+                page: "Page 1",
+                type: "Direct Factual",
+                hi: "हरियाणा राज्य कृषि विपणन बोर्ड (Haryana State Agricultural Marketing Board) की स्थापना कब की गई?",
+                en: "When was the Haryana State Agricultural Marketing Board established?",
+                options: ["1 अगस्त 1969", "1 नवंबर 1966", "15 जनवरी 1972", "2 अक्टूबर 1975"],
+                answer: 0,
+                hint: "यह गठन के कुछ वर्षों बाद अगस्त 1969 में स्थापित हुआ था।",
+                explanation: "कृषि उपज के विपणन और मंडियों के नियंत्रण के लिए हरियाणा राज्य कृषि विपणन बोर्ड की स्थापना 1 अगस्त 1969 को की गई थी।"
+            },
+            {
+                id: 26,
+                page: "Page 1",
+                type: "Direct Factual",
+                hi: "हरियाणा का पहला CFI गाँव कौन सा है?",
+                en: "Which is the first CFI village of Haryana?",
+                options: ["बिनोला (गुरुग्राम)", "सुल्तानपुर", "रतिपुर", "ढहकन"],
+                answer: 0,
+                hint: "यह गुरुग्राम जिले का एक प्रसिद्ध गाँव है।",
+                explanation: "गुरुग्राम जिले में स्थित 'बिनोला' को हरियाणा का पहला CFI (कार्बन फ्री / कॉर्पोरेट फोक्स्ड ग्राम) गाँव घोषित किया गया है।"
+            },
+            {
+                id: 27,
+                page: "Page 1",
+                type: "Direct Factual",
+                hi: "हरियाणा में ग्रामीण अंचल में जब कोई ऊँची आवाज़ में बोलता है या संदेश लगाता है, उसे क्या कहते हैं?",
+                en: "What is it called in rural Haryana when someone speaks or calls out in a loud voice?",
+                options: ["हलकावत", "डंकारा", "उच्चारण", "भाषण"],
+                answer: 0,
+                hint: "यह एक पारंपरिक ग्रामीण शब्द है जो 'ह' से शुरू होता है।",
+                explanation: "हरियाणा की लोक संस्कृति व शब्दावली में ऊँची आवाज़ लगाने या पुकारने की क्रिया को 'हलकावत' कहा जाता है।"
+            },
+            {
+                id: 28,
+                page: "Page 1",
+                type: "Direct Factual",
+                hi: "1200 यूनानी सिक्के (बैक्टीरियन सिक्के) हरियाणा में कहाँ से मिले हैं?",
+                en: "1200 Greek (Bactrian) coins have been found from where in Haryana?",
+                options: ["सोनीपत", "रोहतक", "हिसार", "अग्रोहा"],
+                answer: 0,
+                hint: "यह ढोल और नगाड़ों के शहर के रूप में प्रसिद्ध जिला है (सोनीपत)।",
+                explanation: "हरियाणा के सोनीपत जिले से लगभग 1200 यूनानी (बैक्टीरियन) सिक्के प्राप्त हुए हैं, जो प्राचीन व्यापारिक संबंधों को दर्शाते हैं।"
+            },
+            {
+                id: 29,
+                page: "Page 1",
+                type: "Direct Factual",
+                hi: "आधे दिहरम (Half Dirham) सिक्के हरियाणा में मुख्य रूप से कहाँ से मिले हैं?",
+                en: "Where are half-dirham coins mainly found in Haryana?",
+                options: ["खोहरीपत / मोहरीपत", "नारनौल", "कुरुक्षेत्र", "सिरसा"],
+                answer: 0,
+                hint: "यह पुरातात्विक खोजों में वर्णित स्थल है।",
+                explanation: "ऐतिहासिक स्रोतों के अनुसार हरियाणा में आधे दिहरम सिक्के विशेष पुरातात्विक स्थलों (जैसे खोहरीपत आदि) से प्राप्त हुए हैं।"
+            },
+            {
+                id: 30,
+                page: "Page 1",
+                type: "Direct Factual",
+                hi: "शिव की 'मुखलिंगम' (Mukalinga) मूर्ति हरियाणा में कहाँ से मिली है?",
+                en: "Where was the Mukalinga idol of Lord Shiva found in Haryana?",
+                options: ["रोहतक व देरी (जींद)", "पानीपत व करनाल", "अंबाला व कुरुक्षेत्र", "रेवाड़ी व महेंद्रगढ़"],
+                answer: 0,
+                hint: "यह रोहतक और जींद के क्षेत्रों से संबंधित है।",
+                explanation: "भगवान शिव की दुर्लभ मुखलिंगम मूर्ति हरियाणा में रोहतक और देरी (जींद) क्षेत्र से प्राप्त हुई है।"
+            },
+            {
+                id: 31,
+                page: "Page 1",
+                type: "Direct Factual",
+                hi: "मौर्यकालीन स्तूप व अवशेष हरियाणा में मुख्य रूप से कहाँ से मिलते हैं?",
+                en: "Maurya-period stupas and remains are mainly found from where in Haryana?",
+                options: ["हिसार व फतेहाबाद", "गुरुग्राम व फरीदाबाद", "जींद व रोहतक", "पानीपत व सोनीपत"],
+                answer: 0,
+                hint: "इन जिलों का संबंध पश्चिमी हरियाणा के प्राचीन टीलों से है।",
+                explanation: "मौर्यकाल से संबंधित स्तूपों और अवशेषों के प्रमाण हिसार और फतेहाबाद जिलों के विभिन्न पुरातात्विक स्थलों से मिलते हैं।"
+            },
+            {
+                id: 32,
+                page: "Page 1",
+                type: "Direct Factual",
+                hi: "किस शिलालेख से प्राचीन मंदिर के निर्माण की जानकारी मिलती है?",
+                en: "Which inscription gives information about the construction of an ancient temple?",
+                options: ["प्रतिहार राजा महेन्द्र पाल का पेहोवा शिलालेख (महेन्द्रगढ़ अभिलेख)", "अशोक का टोपरा शिलालेख", "सुधा का अभिलेख", "कुरुक्षेत्र स्तंभ लेख"],
+                answer: 0,
+                hint: "यह पेहोवा से प्राप्त प्रतिहार शासक महेन्द्रपाल का अभिलेख है।",
+                explanation: "प्रतिहार राजा महेन्द्रपाल के पेहोवा शिलालेख से तत्कालीन मंदिरों के निर्माण और धार्मिक गतिविधियों की महत्वपूर्ण जानकारी मिलती है।"
+            },
+            {
+                id: 33,
+                page: "Page 1",
+                type: "Direct Factual",
+                hi: "प्रतिहार वंश का सर्वाधिक शक्तिशाली एवं प्रतापी राजा कौन था?",
+                en: "Who was the most powerful and valiant king of the Pratihar dynasty?",
+                options: ["मिहिरभोज (Bhoja I)", "नागभट्ट प्रथम", "रामभद्र", "महेन्द्रपाल प्रथम"],
+                answer: 0,
+                hint: "इन्हें भोज प्रथम के नाम से भी जाना जाता है और इनकी राजधानी कन्नौज थी।",
+                explanation: "गुर्जर-प्रतिहार वंश का सबसे प्रतापी और शक्तिशाली शासक राजा मिहिरभोज था।"
+            },
+            {
+                id: 34,
+                page: "Page 1",
+                type: "Direct Factual",
+                hi: "राजा मिहिरभोज की राजधानी कहाँ थी?",
+                en: "Where was the capital of King Mihirbhoj?",
+                options: ["कन्नौज", "उज्जैन", "थानेश्वर", "पाटलिपुत्र"],
+                answer: 0,
+                hint: "यह उत्तर प्रदेश का ऐतिहासिक शहर है जो गंगा नदी के किनारे है।",
+                explanation: "प्रतिहार सम्राट मिहिरभोज की मुख्य राजधानी कन्नौज (Kannauj) थी।"
+            },
+            {
+                id: 35,
+                page: "Page 1",
+                type: "Direct Factual",
+                hi: "गुर्जर-प्रतिहार वंश का अंतिम राजा कौन था?",
+                en: "Who was the last king of the Gurjara-Pratihara dynasty?",
+                options: ["यशपाल", "राज्यपाल", "त्रिलोचनपाल", "विजयपुर"],
+                answer: 0,
+                hint: "इनका नाम 'यश' से शुरू होता है।",
+                explanation: "गुर्जर-प्रतिहार राजवंश का अंतिम शासक यशपाल था, जिसके पतन के बाद इस साम्राज्य का अंत हो गया।"
+            },
+            {
+                id: 36,
+                page: "Page 1",
+                type: "Direct Factual",
+                hi: "दिल्ली नगर की स्थापना तोमर नरेश अनंगपाल ने कब की थी?",
+                en: "When did Tomar king Anangpal found the city of Delhi?",
+                options: ["11वीं सदी के मध्य में", "9वीं सदी के शुरुआत में", "13वीं सदी के अंत में", "10वीं सदी में"],
+                answer: 0,
+                hint: "यह 11वीं शताब्दी का मध्यकाल था।",
+                explanation: "तोमर वंश के राजा अनंगपाल द्वितीय ने 11वीं सदी के मध्य में ढिल्लिका (दिल्ली) की स्थापना की थी।"
+            },
+            {
+                id: 37,
+                page: "Page 1",
+                type: "Direct Factual",
+                hi: "रेवाड़ी की नींव किसके समय डाली गई थी?",
+                en: "During whose time was the foundation of Rewari laid?",
+                options: ["गद्दी बालनी के अधीन, सरदार नंदराम और औरंगजेब के समय", "अकबर के समय", "शेरशाह सूरी के समय", "बाबर के समय"],
+                answer: 0,
+                hint: "इसमें सरदार नंदराम और मुगल सम्राट औरंगजेब का काल शामिल है।",
+                explanation: "रेवाड़ी शहर की नींव और उसका विकास गद्दी बालनी के अधीन तथा सरदार नंदराम द्वारा औरंगजेब के शासनकाल में रखा गया था।"
+            },
+            {
+                id: 38,
+                page: "Page 1",
+                type: "Direct Factual",
+                hi: "सरदार नंदराम की मृत्यु के बाद रेवाड़ी की गढ़ी पर कौन बैठा?",
+                en: "Who sat on the throne of Rewari after the death of Sardar Nandram?",
+                options: ["उसका ज्येष्ठ पुत्र बालकिशन", "उसका भाई राव गुजरमल", "उसका पोता", "कोई नहीं"],
+                answer: 0,
+                hint: "यह उनका बड़ा बेटा था जिसका नाम बालकिशन था।",
+                explanation: "सरदार नंदराम की मृत्यु के पश्चात उनका बड़ा पुत्र बालकिशन रेवाड़ी की गढ़ी पर उत्तराधिकारी बना।"
+            },
+            {
+                id: 39,
+                page: "Page 1",
+                type: "Direct Factual",
+                hi: "बालकिशन का उत्तराधिकारी कौन था?",
+                en: "Who was the successor of Balkishan?",
+                options: ["उसका छोटा भाई राव गुजरमल", "उसका पुत्र", "उसका चचेरा भाई", "नंदराम का मित्र"],
+                answer: 0,
+                hint: "वह बालकिशन का छोटा भाई था।",
+                explanation: "युद्ध में बालकिशन के वीरगति को प्राप्त होने के बाद उनका छोटा भाई राव गुजरमल उनका उत्तराधिकारी बना।"
+            },
+            {
+                id: 40,
+                page: "Page 1",
+                type: "Direct Factual",
+                hi: "मेवात के किस शासक ने मोहम्मद गौरी की सेना को कड़ी चुनौती दी थी?",
+                en: "Which ruler of Mewat gave a tough challenge to Mahmud Ghori's army?",
+                options: ["हेमराज", "हसन खान मेवाती", "बहादुर खान", "राव तुलाराम"],
+                answer: 0,
+                hint: "इनका नाम 'हेमराज' था।",
+                explanation: "मेवात क्षेत्र के शासक हेमराज ने प्रारंभिक संघर्षों में मोहम्मद गौरी की सेना को कड़ी चुनौती दी थी।"
+            },
+            {
+                id: 41,
+                page: "Page 1",
+                type: "Direct Factual",
+                hi: "कैथल के भंडारों ने मोहन सिंह के नेतृत्व में मुगलों के विरुद्ध कब विद्रोह किया था?",
+                en: "When did the Bhandars of Kaithal revolt against the Mughals under the leadership of Mohan Singh?",
+                options: ["1530 ई. में", "1556 ई. में", "1605 ई. में", "1707 ई. में"],
+                answer: 0,
+                hint: "यह बाबर के शासनकाल का अंतिम वर्ष (1530 ई.) था।",
+                explanation: "कैथल के भंडारों (स्थानीय सरदारों) ने मोहन सिंह के नेतृत्व में 1530 ईसवी में मुगलों के खिलाफ विद्रोह किया था।"
+            },
+            {
+                id: 42,
+                page: "Page 1",
+                type: "Direct Factual",
+                hi: "मुगल सम्राट हुतायुं (हुमायूँ) ने अपने भाई हिन्दाल को कहाँ की सरकार (शासन) सौंपी थी?",
+                en: "Where did Mughal emperor Humayun assign the administration to his brother Hindal?",
+                options: ["मेवात", "पानीपत", "रेवाड़ी", "हिसार"],
+                answer: 0,
+                hint: "यह हरियाणा का दक्षिण-पूर्वी क्षेत्र है जो मेवात कहलाता है।",
+                explanation: "हुमायूँ ने अपने साम्राज्य के विभाजन के दौरान अपने भाई हिन्दाल को मेवात क्षेत्र की जागीर व शासन सौंपा था।"
+            },
+            {
+                id: 43,
+                page: "Page 1",
+                type: "Direct Factual",
+                hi: "हुमायूँ ने अपने दूसरे भाई कामरान को कहाँ की सरकार (प्रशासनिक क्षेत्र) सौंपी थी?",
+                en: "Where did Humayun assign the administration to his brother Kamran?",
+                options: ["मेवात / क्षेत्र विशेष", "लाहौर व पंजाब क्षेत्र", "दिल्ली", "आगरा"],
+                answer: 0,
+                hint: "राज्यों के बँटवारे के अंतर्गत कामरान को भी क्षेत्र दिया गया था।",
+                explanation: "ऐतिहासिक विवरण के अनुसार हुमायूँ ने कामरान और अन्य भाइयों में साम्राज्य के विभिन्न प्रान्तों का बँटवारा किया था जिसमें मेवात व अन्य क्षेत्र शामिल थे।"
+            },
+            {
+                id: 44,
+                page: "Page 1",
+                type: "Direct Factual",
+                hi: "छछरौली का प्रसिद्ध विद्रोह कब हुआ था?",
+                en: "When did the famous revolt of Chhachhrauli take place?",
+                options: ["1818 ई. (नेतृत्व जोधा सिंह)", "1857 ई.", "1764 ई.", "1905 ई."],
+                answer: 0,
+                hint: "यह वर्ष 1818 है जिसमें जोधा सिंह ने नेतृत्व किया था।",
+                explanation: "अंगेजों के विरुद्ध छछरौली का विद्रोह 1818 ईसवी में हुआ था, जिसका नेतृत्व जोधा सिंह ने किया था।"
+            },
+            {
+                id: 45,
+                page: "Page 1",
+                type: "Direct Factual",
+                hi: "मेवातियों का प्रथम प्रमुख युद्ध कब हुआ था?",
+                en: "When did the first major war of the Mewatis take place?",
+                options: ["1248 ई. में (बलबन के समय)", "1398 ई. (तिमूर आक्रमण)", "1526 ई. (पानीपत का युद्ध)", "1192 ई."],
+                answer: 0,
+                hint: "यह दिल्ली सल्तनत काल में ग गयासुद्दीन बलबन के समय (1248 ई.) हुआ था।",
+                explanation: "मेवातियों का सुल्तानों के विरुद्ध प्रथम ऐतिहासिक संघर्ष 1248 ईसवी में बलबन के समय हुआ था।"
+            },
+
+            // Page 2 Questions (45 Questions)
+            {
+                id: 46,
+                page: "Page 2",
+                type: "Direct Factual",
+                hi: "कांग्रेस के दूसरे (1886 में) कलकत्ता अधिवेशन में हरियाणा का प्रतिनिधित्व किसने किया था?",
+                en: "Who represented Haryana in the second (1886) Calcutta session of Congress?",
+                options: ["पं. दीनदयाल, लाला मुरलीधर, बालमुकुंद गुप्त", "लाला लाजपत राय", "नेकीराम शर्मा", "सर छोटूराम"],
+                answer: 0,
+                hint: "इनमें दीनदयाल, लाला मुरलीधर और बालमुकुंद गुप्त शामिल थे।",
+                explanation: "कांग्रेस के 1886 के कलकत्ता अधिवेशन में हरियाणा की ओर से पं. दीनदयाल, लाला मुरलीधर और बालमुकुंद गुप्त ने भाग लिया था।"
+            },
+            {
+                id: 47,
+                page: "Page 2",
+                type: "Direct Factual",
+                hi: "लाला लाजपतराय ने अपनी वकालत की पढ़ाई कहाँ से पूरी की थी?",
+                en: "From where did Lala Lajpat Rai complete his law studies?",
+                options: ["लाहौर से", "आगरा से", "दिल्ली से", "कलकत्ता से"],
+                answer: 0,
+                hint: "यह पंजाब का ऐतिहासिक शिक्षा केंद्र था (लाहौर)।",
+                explanation: "लाला लाजपतराय ने अपनी वकालत की शिक्षा और शुरुआती अभ्यास लाहौर से पूरा किया था।"
+            },
+            {
+                id: 48,
+                page: "Page 2",
+                type: "Direct Factual",
+                hi: "रोहतक जिले में 12 अक्टूबर 1888 को कांग्रेस की प्रथम सार्वजनिक सभा की अध्यक्षता किसने की थी?",
+                en: "Who presided over the first public meeting of Congress in Rohtak district on October 12, 1888?",
+                options: ["तुर्राबाज खाँ / लाला मुरलीधर (स्थानीय नेतृत्व)", "पं. दीनदयाल", "नेकीराम शर्मा", "शमीम अहमद"],
+                answer: 0,
+                hint: "यह रोहतक की पहली सभा थी जिसमें लाला मुरलीधर व अन्य नेता प्रमुख थे।",
+                explanation: "रोहतक में 12 अक्टूबर 1888 को आयोजित कांग्रेस की पहली सार्वजनिक सभा में स्थानीय प्रमुख नेताओं ने भूमिका निभाई थी।"
+            },
+            {
+                id: 49,
+                page: "Page 2",
+                type: "Direct Factual",
+                hi: "हरियाणा के किस प्रसिद्ध पत्रकार ने 'मार्ले-मिंटो सुधारों' का खुलकर विरोध किया था?",
+                en: "Which famous journalist of Haryana openly opposed the 'Morley-Minto Reforms'?",
+                options: ["बालमुकुंद गुप्त", "श्रीराम शर्मा", "नेकीराम शर्मा", "किशन लाल जैन"],
+                answer: 0,
+                hint: "इनके लेख 'शिव शंभू के चिट्ठे' बहुत प्रसिद्ध हैं।",
+                explanation: "हरियाणा के प्रख्यात पत्रकार और लेखक बालमुकुंद गुप्त ने मार्ले-मिंटो सुधारों और अंग्रेजों की दमनकारी नीतियों का खुलकर विरोध किया था।"
+            },
+            {
+                id: 50,
+                page: "Page 2",
+                type: "Direct Factual",
+                hi: "मार्ले-मिंटो सुधारों के तहत हरियाणा के किन जिलों को प्रशासनिक रूप से शिमला के साथ जोड़ा गया था?",
+                en: "Under the Morley-Minto Reforms, which districts of Haryana were administratively linked with Shimla?",
+                options: ["अंबाला व करनाल", "रोहतक व हिसार", "गुरुग्राम व महेंद्रगढ़", "जींद व पानीपत"],
+                answer: 0,
+                hint: "यह अंबाला और करनाल जिले थे।",
+                explanation: "मार्ले-मिंटो सुधारों तथा प्रशासनिक फेरबदल के दौरान अंबाला और करनाल जिलों के कुछ प्रशासनिक संबंध शिमला मंडल के साथ जोड़े गए थे।"
+            },
+            {
+                id: 51,
+                page: "Page 2",
+                type: "Direct Factual",
+                hi: "10 मार्च को रोहतक में 'कृषक मजदूर सम्मेलन' का आयोजन किसने किया था?",
+                en: "Who organized the 'Peasant-Worker Conference' in Rohtak on March 10?",
+                options: ["अर्जुन सेठी", "सर छोटूराम", "नेकीराम शर्मा", "लाला श्याम लाल"],
+                answer: 0,
+                hint: "इनका नाम अर्जुन सेठी था।",
+                explanation: "रोहतक में 10 मार्च को कृषक मजदूर सम्मेलन का आयोजन राष्ट्रवादी नेता अर्जुन सेठी के प्रयासों से हुआ था।"
+            },
+            {
+                id: 52,
+                page: "Page 2",
+                type: "Direct Factual",
+                hi: "लोहारू रियासत के शासक अमीमुद्दीन के अत्याचारों के खिलाफ हिसार में किसने आंदोलन किया था?",
+                en: "Who led a movement in Hisar against the atrocities of Aminuddin, the ruler of Loharu princely state?",
+                options: ["पं. नेकीराम शर्मा ने", "चौधरी छोटूराम ने", "श्रीराम शर्मा ने", "मूलचंद जैन ने"],
+                answer: 0,
+                hint: "यह हरियाणा केसरी पंडित नेकीराम शर्मा थे।",
+                explanation: "लोहारू के नवाब अमीमुद्दीन के अत्याचारों के विरुद्ध हिसार और भिवानी क्षेत्र में पं. नेकीराम शर्मा ने जोरदार आंदोलन चलाया था।"
+            },
+            {
+                id: 53,
+                page: "Page 2",
+                type: "Direct Factual",
+                hi: "हरियाणा गठन के समय लोकसभा अध्यक्ष (Speaker of Lok Sabha) कौन थे?",
+                en: "Who was the Lok Sabha Speaker at the time of Haryana's formation?",
+                options: ["हुकुम सिंह", "नीलम संजीव रेड्डी", "जी. वी. मावलंकर", "सरदार हुकुम सिंह"],
+                answer: 0,
+                hint: "इनका नाम सरदार हुकुम सिंह था।",
+                explanation: "1 नवंबर 1966 को जब हरियाणा का गठन हुआ, उस समय लोकसभा के अध्यक्ष सरदार हुकुम सिंह थे (उन्हीं की संस्तुति पर संसदीय समिति बनी थी)।"
+            },
+            {
+                id: 54,
+                page: "Page 2",
+                type: "Direct Factual",
+                hi: "हरियाणा गठन के समय राज्यसभा के सभापति कौन थे?",
+                en: "Who was the Rajya Sabha Chairman at the time of Haryana's formation?",
+                options: ["डॉ. जाकिर हुसैन", "डॉ. सर्वपल्ली राधाकृष्णन", "वी. वी. गिरि", "बी. डी. जट्टी"],
+                answer: 0,
+                hint: "वे देश के उपराष्ट्रपति भी थे (डॉ. जाकिर हुसैन)।",
+                explanation: "हरियाणा गठन (1966) के समय डॉ. जाकिर हुसैन देश के उपराष्ट्रपति होने के नाते राज्यसभा के सभापति थे।"
+            },
+            {
+                id: 55,
+                page: "Page 2",
+                type: "Direct Factual",
+                hi: "वर्ष 1966 में हरियाणा गठन के समय भारत के महान्यायवादी (Attorney General) कौन थे?",
+                en: "Who was the Attorney General of India at the time of Haryana's formation in 1966?",
+                options: ["सी. के. दफ्तरी (C. K. Daphtary)", "एम. सी. सीतलवाड़", "निसार अहमद", "के. के. वेणुगोपाल"],
+                answer: 0,
+                hint: "इनका नाम सी. के. दफ्तरी था।",
+                explanation: "1966 में हरियाणा राज्य के गठन के वक्त भारत के महान्यायवादी सी. के. दफ्तरी थे।"
+            },
+            {
+                id: 56,
+                page: "Page 2",
+                type: "Direct Factual",
+                hi: "सबसे पहले अलग पंजाब सूबे (सिक्ख राज्य) की मांग कब उठी थी?",
+                en: "When was the demand for a separate Punjab Suba (Sikh State) raised for the first time?",
+                options: ["1948 में मास्टर तारा सिंह के पत्र 'अजीत' के द्वारा", "1956 में", "1960 में", "1947 में"],
+                answer: 0,
+                hint: "यह वर्ष 1948 में मास्टर तारा सिंह के समाचार पत्र 'अजीत' के माध्यम से उठी थी।",
+                explanation: "स्वतंत्रता के तुरंत बाद 1948 में मास्टर तारा सिंह द्वारा अपने पत्र 'अजीत' के माध्यम से सबसे पहले अलग पंजाबी सूबे की मांग उठाई गई थी।"
+            },
+            {
+                id: 57,
+                page: "Page 2",
+                type: "Direct Factual",
+                hi: "राज्य पुनर्गठन से संबंधित 'फज़ल अली आयोग' (Fazal Ali Commission) का गठन कब हुआ था?",
+                en: "When was the 'Fazal Ali Commission' related to States Reorganization formed?",
+                options: ["29 दिसंबर 1953", "15 अगस्त 1947", "26 जनवरी 1950", "1 नवंबर 1956"],
+                answer: 0,
+                hint: "यह दिसंबर 1953 की तारीख है।",
+                explanation: "राज्य पुनर्गठन आयोग (फज़ल अली आयोग) का गठन 29 दिसंबर 1953 को किया गया था।"
+            },
+            {
+                id: 58,
+                page: "Page 2",
+                type: "Direct Factual",
+                hi: "प्रभाकर वर्धन थानेसर के राजा कब बने थे?",
+                en: "When did Prabhakardhana become the king of Thanesar?",
+                options: ["580 ई.", "606 ई.", "550 ई.", "620 ई."],
+                answer: 0,
+                hint: "यह छठी शताब्दी का अंत (लगभग 580 ई.) है।",
+                explanation: "पुष्यभूति वंश के प्रभावशाली शासक प्रभाकर वर्धन लगभग 580 ईसवी में थानेसर के सिंहासन पर बैठे थे।"
+            },
+            {
+                id: 59,
+                page: "Page 2",
+                type: "Direct Factual",
+                hi: "सन 1849 में सिक्खों की हार के बाद हरियाणा को किसके द्वारा हड़प लिया गया था?",
+                en: "After the defeat of the Sikhs in 1849, Haryana was annexed by whom?",
+                options: ["अंग्रेजों द्वारा (British East India Company)", "मुगलों द्वारा", "मराठों द्वारा", "सिंधिया द्वारा"],
+                answer: 0,
+                hint: "द्वितीय आंग्ल-सिख युद्ध के बाद अंग्रेजों ने पंजाब व हरियाणा पर अधिकार किया था।",
+                explanation: "वर्ष 1849 में द्वितीय आंग्ल-सिख युद्ध में सिखों की पराजय के पश्चात अंग्रेजों ने पूर्ण रूप से इस क्षेत्र को अपने साम्राज्य में मिला लिया था।"
+            },
+            {
+                id: 60,
+                page: "Page 2",
+                type: "Direct Factual",
+                hi: "हरियाणा में किसे 'पुरातात्विक भूमि एवं अवशेष अधिनियम 1958' के तहत राष्ट्रीय विरासत घोषित किया गया है?",
+                en: "What has been declared a national heritage in Haryana under the 'Ancient Monuments and Archaeological Sites and Remains Act 1958'?",
+                options: ["शेखचिल्ली की कब्र (Tomb of Sheikh Chilli)", "गुजरी महल", "काबुली बाग मस्जिद", "सूरजकुंड"],
+                answer: 0,
+                hint: "यह कुरुक्षेत्र (थ्ानेसर) में स्थित शेखचिल्ली का मकबरा है।",
+                explanation: "कुरुक्षेत्र के थानेसर में स्थित 'शेखचिल्ली की कब्र' को इस अधिनियम के तहत राष्ट्रीय संरक्षित स्मारक व विरासत घोषित किया गया है।"
+            },
+            {
+                id: 61,
+                page: "Page 2",
+                type: "Direct Factual",
+                hi: "हरियाणा के उद्योग और वाणिज्य विभाग द्वारा किस जिले में एक 'टेक्साटाइल पार्क' प्रस्तावित किया गया है?",
+                en: "In which district has a 'Textile Park' been proposed by the Industries and Commerce Department of Haryana?",
+                options: ["सिरसा", "पानीपत", "गुरुग्राम", "फरीदाबाद"],
+                answer: 0,
+                hint: "यह सिरसा जिला है।",
+                explanation: "हरियाणा के उद्योग एवं वाणिज्य विभाग द्वारा सिरसा जिले में नया टेक्सटाइल पार्क स्थापित करने का प्रस्ताव है।"
+            },
+            {
+                id: 62,
+                page: "Page 2",
+                type: "Direct Factual",
+                hi: "हरियाणा की कौन सी नदी मानसून के दौरान व्यापक बाढ़ लाती है और उसका अतिरिक्त पानी सनीसा झील तक ले जाया जाता है?",
+                en: "Which river of Haryana brings widespread floods during the monsoon and its excess water is carried to Sanisa Lake?",
+                options: ["मारकंडा नदी (Markanda River)", "घग्गर नदी", "यमुना नदी", "टंगरी नदी"],
+                answer: 0,
+                hint: "इस नदी का प्राचीन नाम अरुणा था (मारकंडा नदी)।",
+                explanation: "मारकंडा नदी मानसून के दौरान अपने क्षेत्र में बाढ़ लाती है, और इसके अतिरिक्त पानी को सनीसा झील (कुरुक्षेत्र) में मोड़ा जाता है।"
+            },
+            {
+                id: 63,
+                page: "Page 2",
+                type: "Direct Factual",
+                hi: "प्रभाकर वर्धन की मृत्यु कब हुई थी?",
+                en: "When did Prabhakardhana die?",
+                options: ["605 ई.", "606 ई.", "612 ई.", "590 ई."],
+                answer: 0,
+                hint: "यह राजा हर्षवर्धन के राजरोहण से ठीक पहले 605 ईसवी है।",
+                explanation: "वर्धन राजवंश के राजा प्रभाकर वर्धन की मृत्यु 605 ईसवी में हुई थी, जिसके बाद राज्यवर्धन शासक बने।"
+            },
+            {
+                id: 64,
+                page: "Page 2",
+                type: "Direct Factual",
+                hi: "हरियाणा में किस शहर को 'सोलर सिटी' (Solar City) के रूप में विकसित किया जा रहा है?",
+                en: "Which city in Haryana is being developed as a 'Solar City'?",
+                options: ["गुरुग्राम", "करनाल", "पंचकूला", "रोहतक"],
+                answer: 0,
+                hint: "यह साइबर सिटी गुरुग्राम है।",
+                explanation: "अक्षय ऊर्जा को बढ़ावा देने के लिए गुरुग्राम जिले को सोलर सिटी के रूप में विकसित किया जा रहा है।"
+            },
+            {
+                id: 65,
+                page: "Page 2",
+                type: "Direct Factual",
+                hi: "हरियाणा में 'मुख्यमंत्री मुफ्त इलाज योजना' की शुरुआत कब हुई थी?",
+                en: "When was the 'Chief Minister Free Treatment Scheme' launched in Haryana?",
+                options: ["जनवरी 2014", "मार्च 2012", "अगस्त 2015", "नवंबर 2010"],
+                answer: 0,
+                hint: "यह जनवरी 2014 की शुरुआत है।",
+                explanation: "सार्वजनिक स्वास्थ्य सुविधाओं को बेहतर करने हेतु हरियाणा में मुख्यमंत्री मुफ्त इलाज योजना की शुरुआत जनवरी 2014 में हुई थी।"
+            },
+            {
+                id: 66,
+                page: "Page 2",
+                type: "Direct Factual",
+                hi: "हरियाणा में 'मिड-डे मील योजना' (Mid-Day Meal Scheme) की शुरुआत कब की गई थी?",
+                en: "When was the 'Mid-Day Meal Scheme' started in Haryana?",
+                options: ["15 अगस्त 2004", "26 जनवरी 2001", "1 नवंबर 2000", "2 अक्टूबर 2005"],
+                answer: 0,
+                hint: "यह स्वतंत्रता दिवस 2004 की तिथि है।",
+                explanation: "स्कूली बच्चों के पोषण स्तर को सुधारने के लिए हरियाणा में मिड-डे मील योजना औपचारिक तौर पर 15 अगस्त 2004 से लागू की गई।"
+            },
+            {
+                id: 67,
+                page: "Page 2",
+                type: "Direct Factual",
+                hi: "हरियाणा में 'प्रियदर्शनी आवास योजना' की शुरुआत कब की गई थी?",
+                en: "When was the 'Priyadarshini Awas Yojana' launched in Haryana?",
+                options: ["8 जून 2013", "15 जनवरी 2011", "2 अक्टूबर 2014", "10 मार्च 2012"],
+                answer: 0,
+                hint: "यह जून 2013 की 8 तारीख है।",
+                explanation: "आर्थिक रूप से कमजोर वर्गों के लिए प्रियदर्शनी आवास योजना की शुरुआत 8 जून 2013 को की गई थी।"
+            },
+            {
+                id: 68,
+                page: "Page 2",
+                type: "Direct Factual",
+                hi: "हरियाणा राज्य सहकारी कृषि एवं ग्रामीण विकास बैंक (पंचकूला) की स्थापना कब हुई?",
+                en: "When was the Haryana State Cooperative Agriculture and Rural Development Bank (Panchkula) established?",
+                options: ["1 नवंबर 1966", "15 अगस्त 1970", "2 अक्टूबर 1975", "1 जनवरी 1980"],
+                answer: 0,
+                hint: "यह हरियाणा गठन की तिथि (1 नवंबर 1966) है।",
+                explanation: "ग्रामीण वित्त पोषण के लिए इस बैंक की स्थापना राज्य के गठन के साथ ही 1 नवंबर 1966 को की गई थी।"
+            },
+            {
+                id: 69,
+                page: "Page 2",
+                type: "Direct Factual",
+                hi: "हाफेड (CONFED / HAFED सहकारिता निकाय) या कॉन्फेड (CONFED) की स्थापना कब की गई?",
+                en: "When was CONFED established?",
+                options: ["1 नवंबर 1966", "7 जून 1973", "15 मार्च 1980", "21 दिसंबर 1985"],
+                answer: 0,
+                hint: "यह भी 1 नवंबर 1966 को स्थापित हुआ था।",
+                explanation: "हरियाणा में उपभोक्ता सहकारी संघ (CONFED) की स्थापना 1 नवंबर 1966 को की गई थी।"
+            },
+            {
+                id: 70,
+                page: "Page 2",
+                type: "Direct Factual",
+                hi: "हरियाणा राज्य सहकारी आवास प्रसंघ (Haryana State Cooperative Housing Federation) की स्थापना कब की गई?",
+                en: "When was the Haryana State Cooperative Housing Federation established?",
+                options: ["7 जून 1973", "1 नवंबर 1966", "15 अगस्त 1975", "20 जनवरी 1982"],
+                answer: 0,
+                hint: "यह वर्ष 1973 के जून महीने की 7 तारीख है।",
+                explanation: "सहकारी आवास गतिविधियों को बढ़ावा देने के लिए इस प्रसंघ की स्थापना 7 जून 1973 को की गई थी।"
+            },
+            {
+                id: 71,
+                page: "Page 2",
+                type: "Direct Factual",
+                hi: "पंचायती राज संस्थाओं में चुनाव के लिए न्यूनतम शैक्षणिक योग्यता तय करने वाला हरियाणा कौन सा राज्य बना और विधेयक कब पारित हुआ?",
+                en: "Haryana passed the Panchayati Raj Amendment Bill prescribing minimum educational qualifications for elections on which date?",
+                options: ["10 अक्टूबर 2015", "15 नवंबर 2014", "26 जनवरी 2016", "1 अगस्त 2013"],
+                answer: 0,
+                hint: "यह अक्टूबर 2015 का ऐतिहासिक विधेयक है।",
+                explanation: "पंचायती राज चुनावों में शैक्षणिक योग्यता अनिवार्य करने वाला हरियाणा देश का दूसरा राज्य बना, और इसका संशोधन विधेयक 10 अक्टूबर 2015 को पारित हुआ।"
+            },
+            {
+                id: 72,
+                page: "Page 2",
+                type: "Direct Factual",
+                hi: "प्रसिद्ध 'श्याम जी का मेला' हरियाणा में किस स्थान पर लगता है?",
+                en: "At which place in Haryana is the famous 'Shyam Ji Fair' held?",
+                options: ["दुबलधन माजरा (झज्जर)", "बेरी", "पहोवा", "पिहोवा"],
+                answer: 0,
+                hint: "यह दुबलधन माजरा में आयोजित होता है।",
+                explanation: "श्याम जी का प्रसिद्ध मेला झज्जर जिले के दुबलधन माजरा में आयोजित किया जाता है।"
+            },
+            {
+                id: 73,
+                page: "Page 2",
+                type: "Direct Factual",
+                hi: "प्रसिद्ध 'अदिति मंदिर' हरियाणा के किस जिले में स्थित है?",
+                en: "In which district of Haryana is the famous 'Aditi Temple' located?",
+                options: ["करनाल (अमीन / अभिमन्युपुर)", "कुरुक्षेत्र", "अंबाला", "जींद"],
+                answer: 0,
+                hint: "यह करनाल जिले में स्थित है।",
+                explanation: "पौराणिक महत्व का अदिति मंदिर करनाल जिले (अमीन ग्राम) में स्थित है।"
+            },
+            {
+                id: 74,
+                page: "Page 2",
+                type: "Direct Factual",
+                hi: "हरियाणा में किस ऐतिहासिक इमारत को 'दिल्ली सल्तनत का ताजमहल' कहा जाता है?",
+                en: "Which historical building in Haryana is called the 'Taj Mahal of Delhi Sultanate'?",
+                options: ["गुजरी महल (हिसार)", "शेखचिल्ली का मकबरा", "काबुली बाग मस्जिद", "लाट की मस्जिद"],
+                answer: 0,
+                hint: "यह हिसार का गुजरी महल है जो फिरोजशाह तुगलक ने बनवाया था।",
+                explanation: "अपनी भव्य वास्तुकला के कारण हिसार के 'गुजरी महल' को दिल्ली सल्तनत का ताजमहल कहा जाता है।"
+            },
+            {
+                id: 75,
+                page: "Page 2",
+                type: "Direct Factual",
+                hi: "प्रसिद्ध 'रत्वई नृत्य' (Ratwai Dance) मुख्य रूप से किसके द्वारा किया जाता है?",
+                en: "The famous 'Ratwai Dance' is mainly performed by whom?",
+                options: ["मेवात क्षेत्र में महिलाओं व पुरुषों का सामूहिक नृत्य", "केवल पुरुषों द्वारा", "केवल अविवाहित युवतियों द्वारा", "हरियाणा के उत्तरी जिलों में"],
+                answer: 0,
+                hint: "यह मेवात का लोक नृत्य है जिसमें स्त्री-पुरुष भाग लेते हैं।",
+                explanation: "रत्वई नृत्य मेवात (नूंह) क्षेत्र का प्रसिद्ध लोकनृत्य है, जो महिलाओं और पुरुषों द्वारा सामूहिक रूप से किया जाता है।"
+            },
+            {
+                id: 76,
+                page: "Page 2",
+                type: "Direct Factual",
+                hi: "5 दिसंबर 1947 को किसके विशेष आग्रह पर महात्मा गांधी मेवात आए थे?",
+                en: "At whose special request did Mahatma Gandhi visit Mewat on December 5, 1947?",
+                options: ["यासीन खां (Chaudhary Yasin Khan)", "खान अब्दुल गफ्फार खान", "हसन खान मेवाती", "मौलाना आज़ाद"],
+                answer: 0,
+                hint: "इनका संबंध चौधरी यासीन खां से है।",
+                explanation: "चौधरी यासीन खां के आग्रह पर महात्मा गांधी 5 दिसंबर 1947 को मेवात आए थे ताकि वहाँ के निवासियों को ढांढस बंधाया जा सके।"
+            },
+            {
+                id: 77,
+                page: "Page 2",
+                type: "Direct Factual",
+                hi: "प्रसिद्ध 'सरसईनाथ का मेला' हरियाणा के किस जिले में लगता है?",
+                en: "In which district of Haryana is the famous 'Sarsainath Fair' held?",
+                options: ["सिरसा", "हिसार", "भिवानी", "फतेहाबाद"],
+                answer: 0,
+                hint: "नाम से ही स्पष्ट है - यह सिरसा में आयोजित होता है।",
+                explanation: "सरसईनाथ का मेला हरियाणा के सिरसा जिले में आयोजित किया जाता है।"
+            },
+            {
+                id: 78,
+                page: "Page 2",
+                type: "Direct Factual",
+                hi: "हरियाणा में 'घनाढ्य लोगों की नगरी' (Rich Merchants Town) किसे कहा जाता है?",
+                en: "Which place in Haryana is called the 'City of Wealthy People'?",
+                options: ["बेरी (झज्जर)", "पेहोवा", "रोहतक", "हांसी"],
+                answer: 0,
+                hint: "यह झज्जर जिले का ऐतिहासिक कस्बा बेरी है।",
+                explanation: "अपने प्राचीन व्यापारिक इतिहास और समृद्ध व्यापारियों के कारण झज्जर जिले के 'बेरी' कस्बे को घनाढ्य लोगों की नगरी कहा गया है।"
+            },
+            {
+                id: 79,
+                page: "Page 2",
+                type: "Direct Factual",
+                hi: "हरियाणा में 'लैदर हब' (Leather Hub) के रूप में किस जिले/कस्बे को विकसित किया जा रहा है?",
+                en: "Which place in Haryana is being developed as a 'Leather Hub'?",
+                options: ["बहादुगढ़ (झज्जर)", "सोनीपत", "गुरुग्राम", "फरीदाबाद"],
+                answer: 0,
+                hint: "यह झज्जर जिले का औद्योगिक शहर बहादुगढ़ है।",
+                explanation: "जूता उद्योग और चमड़ा उत्पादों के निर्माण के कारण बहादुगढ़ को लैदर हब के रूप में विकसित किया जा रहा है।"
+            },
+            {
+                id: 80,
+                page: "Page 2",
+                type: "Direct Factual",
+                hi: "प्रसिद्ध 'मिर्जापुर का टीला' (Mirzapur Mound) किस जिले में स्थित है?",
+                en: "In which district is the famous 'Mirzapur Mound' located?",
+                options: ["कुरुक्षेत्र", "अंबाला", "यमुनानगर", "करनाल"],
+                answer: 0,
+                hint: "यह कुरुक्षेत्र जिले के अंतर्गत आता है।",
+                explanation: "पुरातात्विक महत्व का मिर्जापुर टीला हरियाणा के कुरुक्षेत्र जिले में स्थित है।"
+            },
+            {
+                id: 81,
+                page: "Page 2",
+                type: "Direct Factual",
+                hi: "दीनबंधु छोटूराम ताप विद्युत संयंत्र (Yamunanagar) की उत्पादन क्षमता कितनी है?",
+                en: "What is the generation capacity of Deenbandhu Chhotu Ram Thermal Power Station?",
+                options: ["600 M.W. (यमुनानगर)", "500 M.W.", "750 M.W.", "1000 M.W."],
+                answer: 0,
+                hint: "इसकी क्षमता 600 मेगावाट है।",
+                explanation: "यमुनानगर जिले में स्थित दीनबंधु छोटूराम थर्मल पावर प्लांट की कुल उत्पादन क्षमता 600 मेगावाट (MW) है।"
+            },
+            {
+                id: 82,
+                page: "Page 2",
+                type: "Direct Factual",
+                hi: "अन्नपूर्णा तीर्थ स्थल हरियाणा के किस जिले में स्थित है?",
+                en: "In which district of Haryana is the Annapurna Pilgrimage spot located?",
+                options: ["महेन्द्रगढ़", "रेवाड़ी", "गुरुग्राम", "झज्जर"],
+                answer: 0,
+                hint: "यह महेंद्रगढ़ जिले से संबंधित है।",
+                explanation: "अन्नपूर्णा तीर्थ स्थल हरियाणा के महेंद्रगढ़ जिले में अवस्थित है।"
+            },
+            {
+                id: 83,
+                page: "Page 2",
+                type: "Direct Factual",
+                hi: "बाघोट (Mahendragarh) में स्थित प्रसिद्ध शिव मंदिर का निर्माण किसने करवाया था?",
+                en: "Who built the famous Shiva temple located in Baghot (Mahendragarh)?",
+                options: ["इक्ष्वाकु राजा दिलीप सिंह ने", "राजा अनंगपाल ने", "महाराजा सूरजमल ने", "सम्राट हर्षवर्धन ने"],
+                answer: 0,
+                hint: "इनका संबंध इक्ष्वाकु वंश के राजा दिलीप सिंह से है।",
+                explanation: "महेंद्रगढ़ के बाघोट में स्थित प्राचीन शिव मंदिर का निर्माण इक्ष्वाकु राजा दिलीप सिंह द्वारा करवाया गया था।"
+            },
+            {
+                id: 84,
+                page: "Page 2",
+                type: "Direct Factual",
+                hi: "भार्गव (ढोसर) समुदाय के पौराणिक संस्थापक कौन माने जाते हैं?",
+                en: "Who is considered the mythological founder of the Bhargava (Dhosar) community?",
+                options: ["च्यवन ऋषि (Chavana)", "परशुराम", "विश्वामित्र", "वशिष्ठ"],
+                answer: 0,
+                hint: "इनका संबंध ढोसी पहाड़ी और च्यवन ऋषि से है।",
+                explanation: "भार्गव (ढोसर) समुदाय के मूल संस्थापक महर्षि च्यवन ऋषि (च्यवन प्राश वाले) को माना जाता है।"
+            },
+            {
+                id: 85,
+                page: "Page 2",
+                type: "Direct Factual",
+                hi: "केंद्रीय पुरातत्व विभाग द्वारा 3 तथा हरियाणा पुरातत्व विभाग द्वारा 11 सर्वाधिक संरक्षित स्मारक किस जिले में स्थित हैं?",
+                en: "In which district are 3 centrally protected and 11 state-protected monuments located?",
+                options: ["महेन्द्रगढ़", "कुरुक्षेत्र", "अंबाला", "रोहतक"],
+                answer: 0,
+                hint: "यह महेंद्रगढ़ जिला है।",
+                explanation: "ऐतिहासिक धरोहरों की बहुलता के कारण महेंद्रगढ़ जिले में केंद्रीय और राज्य संरक्षित स्मारकों की संख्या काफी अधिक है।"
+            },
+            {
+                id: 86,
+                page: "Page 2",
+                type: "Direct Factual",
+                hi: "हरियाणा में नवीन पद्धति (Modern Planning) से बसाया गया पहला शहर कौन सा है?",
+                en: "Which is the first planned city built with modern methods in Haryana?",
+                options: ["करनाल (या टाउन प्लानिंग आधारित)", "फरीदाबाद", "पंचकूला", "गुरुग्राम"],
+                answer: 0,
+                hint: "यह करनाल शहर है।",
+                explanation: "ऐतिहासिक स्रोतों और नगर नियोजन के अनुसार हरियाणा में नवीन पद्धति से व्यवस्थित रूप से बसाया जाने वाला शुरुआती शहर करनाल है।"
+            },
+            {
+                id: 87,
+                page: "Page 2",
+                type: "Direct Factual",
+                hi: "जार्ज थॉमस ने करनाल को अपने अधिकार में कब लिया था?",
+                en: "When did George Thomas take Karnal under his control?",
+                options: ["1797 में", "1803 में", "1785 में", "1810 में"],
+                answer: 0,
+                hint: "यह वर्ष 1797 है।",
+                explanation: "आयरिश सैन्य शासक जार्ज थॉमस ने 1797 ईसवी में करनाल क्षेत्र पर अपना अधिकार स्थापित किया था।"
+            },
+            {
+                id: 88,
+                page: "Page 2",
+                type: "Direct Factual",
+                hi: "वेदव्यास के पिता 'पाराशर ऋषि' का आश्रम हरियाणा में कहाँ स्थित था?",
+                en: "Where was the ashram of sage Parashara (father of Ved Vyasa) located in Haryana?",
+                options: ["बहलोलपूर (करनाल)", "कुरुक्षेत्र", "पहोवा", "जींद"],
+                answer: 0,
+                hint: "यह करनाल के पास बहलोलपूर है।",
+                explanation: "महर्षि वेदव्यास के पिता पाराशर ऋषि का प्राचीन आश्रम करनाल के बहलोलपूर क्षेत्र में स्थित था।"
+            },
+            {
+                id: 89,
+                page: "Page 2",
+                type: "Direct Factual",
+                hi: "हरियाणा का सबसे ऊँचा गिरजाघर (Church) कहाँ स्थित है?",
+                en: "Where is the tallest church in Haryana located?",
+                options: ["केंटोनमेंट (करनाल)", "अंबाला छावनी", "पानीपत", "रोहतक"],
+                answer: 0,
+                hint: "यह करनाल छावनी (केंटोनमेंट) में है।",
+                explanation: "हरियाणा का सबसे ऊँचा और ऐतिहासिक गिरजाघर करनाल कैंटोनमेंट (छावनी) क्षेत्र में स्थित है।"
+            },
+            {
+                id: 90,
+                page: "Page 2",
+                type: "Direct Factual",
+                hi: "स्काई लार्क कॉम्प्लेक्स (Sky Lark Complex) और देश का पहला 'बेंटोनाइट सल्फर प्लांट' कहाँ खोला गया था?",
+                en: "Where was Sky Lark Complex and the country's first Bentonite Sulphur Plant opened?",
+                options: ["पानीपत", "सोनीपत", "करनाल", "अंबाला"],
+                answer: 0,
+                hint: "यह पानीपत जिला है जहाँ जी.टी. रोड पर स्काई लार्क स्थित है।",
+                explanation: "प्रसिद्ध पर्यटन परिसर 'स्काई लार्क' तथा देश का पहला बेंटोनाइट सल्फर प्लांट पानीपत जिले में स्थित हैं।"
+            }
+        ];
+
+        let currentIndex = 0;
+        let score = 0;
+        let userAnswers = new Array(quizData.length).fill(null);
+
+        function loadQuestion() {
+            const q = quizData[currentIndex];
+            
+            // Update metadata
+            document.getElementById('question-tag').innerText = `${q.page} • ${q.type}`;
+            document.getElementById('current-q-num').innerText = currentIndex + 1;
+            document.getElementById('total-q-num').innerText = quizData.length;
+            document.getElementById('total-questions-top').innerText = quizData.length;
+
+            // Update progress bar
+            const progressPercent = ((currentIndex + 1) / quizData.length) * 100;
+            document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+
+            // Update Question text
+            document.getElementById('question-hi').innerText = `${currentIndex + 1}. ${q.hi}`;
+            document.getElementById('question-en').innerText = q.en;
+
+            // Update Hint
+            document.getElementById('hint-text').innerText = q.hint;
+            document.getElementById('hint-box').classList.add('hidden');
+
+            // Render Options
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-3.5 rounded-xl border border-slate-700 bg-slate-900/50 hover:bg-slate-700/50 text-slate-200 text-sm transition-all flex items-center justify-between group";
+                
+                const isAnswered = userAnswers[currentIndex] !== null;
+                const selectedOpt = userAnswers[currentIndex];
+
+                if (isAnswered) {
+                    btn.disabled = true;
+                    if (idx === q.answer) {
+                        btn.className = "w-full text-left p-3.5 rounded-xl border border-emerald-500 bg-emerald-950/40 text-emerald-200 text-sm flex items-center justify-between";
+                    } else if (selectedOpt === idx) {
+                        btn.className = "w-full text-left p-3.5 rounded-xl border border-rose-500 bg-rose-950/40 text-rose-200 text-sm flex items-center justify-between";
+                    }
+                }
+
+                btn.innerHTML = `
+                    <span><span class="font-semibold mr-2 text-slate-400 group-hover:text-emerald-400">${String.fromCharCode(65 + idx)}.</span> ${opt}</span>
+                `;
+
+                if (!isAnswered) {
+                    btn.onclick = () => selectOption(idx);
+                }
+
+                optionsContainer.appendChild(btn);
+            });
+
+            // Handle Explanation Box
+            const explanationBox = document.getElementById('explanation-box');
+            if (userAnswers[currentIndex] !== null) {
+                showExplanation(q, userAnswers[currentIndex] === q.answer);
+            } else {
+                explanationBox.classList.add('hidden');
+            }
+        }
+
+        function selectOption(selectedIdx) {
+            const q = quizData[currentIndex];
+            userAnswers[currentIndex] = selectedIdx;
+
+            const isCorrect = selectedIdx === q.answer;
+            if (isCorrect) {
+                score++;
+                document.getElementById('score-display').innerText = score;
+            }
+
+            loadQuestion();
+        }
+
+        function showExplanation(q, isCorrect) {
+            const box = document.getElementById('explanation-box');
+            const header = document.getElementById('explanation-header');
+            const text = document.getElementById('explanation-text');
+
+            box.classList.remove('hidden');
+            if (isCorrect) {
+                box.className = "mb-6 p-4 rounded-xl border border-emerald-600/50 bg-emerald-950/30 text-emerald-200 text-sm transition-all";
+                header.innerHTML = "✅ Correct Answer!";
+            } else {
+                box.className = "mb-6 p-4 rounded-xl border border-rose-600/50 bg-rose-950/30 text-rose-200 text-sm transition-all";
+                header.innerHTML = `❌ Incorrect. Correct Option was: <span class="text-emerald-400 font-bold">${String.fromCharCode(65 + q.answer)}</span>`;
+            }
+            text.innerText = q.explanation;
+        }
+
+        function toggleHint() {
+            const hintBox = document.getElementById('hint-box');
+            hintBox.classList.toggle('hidden');
+        }
+
+        function nextQuestion() {
+            if (currentIndex < quizData.length - 1) {
+                currentIndex++;
+                loadQuestion();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                loadQuestion();
+            }
+        }
+
+        function jumpToQuestion() {
+            const input = document.getElementById('jump-input');
+            const target = parseInt(input.value) - 1;
+            if (!isNaN(target) && target >= 0 && target < quizData.length) {
+                currentIndex = target;
+                loadQuestion();
+                input.value = '';
+            } else {
+                alert("Please enter a valid question number between 1 and 90.");
+            }
+        }
+
+        // Initialize Quiz on load
+        window.onload = loadQuestion;
+    </script>
+<script src="../../quiz-question-controls.js"></script>
+<script src="../../quiz-app-ui-v2.js"></script></body>
+</html>

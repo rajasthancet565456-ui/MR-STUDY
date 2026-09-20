@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR GK Interactive Quiz - 80 Questions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+<style id="cosmic-readable-quiz-theme">
+:root{--space:#e8dcff;--panel:#f3eaff;--panel2:#dcc6ff;--edge:#6a45bf;--glow:#d28b28;--accent:#d15f9f;--ink:#2c1b4d;--muted:#66547c;--mist:rgba(106,69,191,.2)}html{background:var(--space)}body{background:radial-gradient(ellipse 62% 45% at 90% -5%,rgba(209,95,159,.28),transparent 62%),radial-gradient(ellipse 55% 40% at 8% 100%,rgba(65,164,207,.26),transparent 64%),var(--space)!important;color:var(--ink)!important;min-height:100vh}body:before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.78;background-image:radial-gradient(circle at 9% 18%,var(--glow) 0 1px,transparent 1.7px),radial-gradient(circle at 26% 69%,var(--edge) 0 .8px,transparent 1.5px),radial-gradient(circle at 68% 24%,var(--accent) 0 1px,transparent 1.8px),radial-gradient(circle at 88% 73%,#47a8d3 0 .8px,transparent 1.5px);background-size:220px 190px,300px 270px,260px 230px,340px 310px;z-index:-1}header{background:linear-gradient(105deg,var(--panel),var(--panel2))!important;border-color:rgba(106,69,191,.25)!important;box-shadow:0 7px 24px rgba(84,48,142,.14)!important}header h1{color:var(--edge)!important;text-shadow:none!important}header p,header .text-slate-400,header .text-indigo-200,header .text-indigo-300{color:var(--muted)!important}main>div,#quiz-card,.bg-slate-800,.bg-slate-900,.bg-indigo-900,.bg-indigo-950{background:linear-gradient(145deg,#f8f0ff,var(--panel))!important;border-color:rgba(106,69,191,.22)!important;color:var(--ink)!important;box-shadow:0 14px 35px rgba(84,48,142,.12)!important}.bg-slate-700,.bg-slate-100,.bg-slate-50{background:#eadffd!important;color:var(--ink)!important}.text-slate-100,.text-slate-200,.text-slate-300,.text-slate-400,.text-white,.text-slate-800,.text-slate-700,.text-slate-600{color:var(--ink)!important}.text-indigo-400,.text-indigo-300,.text-emerald-400,.text-yellow-300{color:var(--edge)!important}.border-slate-700,.border-slate-700\/60,.border-indigo-700,.border-slate-200{border-color:rgba(106,69,191,.25)!important}button:not(.bg-green-600):not(.bg-red-600){background:#f9f2ff!important;color:var(--ink)!important;border:1px solid rgba(106,69,191,.25)!important;box-shadow:0 3px 10px rgba(84,48,142,.09)!important}button.bg-indigo-600,button.bg-slate-800,button.bg-slate-900,button.bg-indigo-900{background:linear-gradient(120deg,var(--edge),var(--accent))!important;color:#fff!important;border:0!important}button.bg-indigo-600 *,button.bg-slate-800 *,button.bg-slate-900 *,button.bg-indigo-900 *{color:#fff!important}button:hover{filter:brightness(1.04);transform:translateY(-1px)}input,select,textarea{background:#f9f2ff!important;border-color:rgba(106,69,191,.35)!important;color:var(--ink)!important}input:focus,select:focus,textarea:focus{outline:none!important;border-color:var(--edge)!important;box-shadow:0 0 0 3px var(--mist)!important}.bg-indigo-500,#progress-bar{background:linear-gradient(90deg,var(--edge),var(--accent),var(--glow))!important}.rounded-2xl{border-radius:1.25rem!important}
+</style></head>
+<body class="bg-slate-50 text-slate-800 min-p-4 flex flex-col min-h-screen">
+    <!-- Header -->
+    <header class="bg-indigo-700 text-white shadow-md py-4 px-6 mb-6">
+        <div class="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <div>
+                <h1 class="text-2xl font-bold">Haryana GK Interactive Quiz</h1>
+                <p class="text-indigo-200 text-sm">Bilingual (English & Hindi) | 80 Exam-Level Questions (Pages 105-106)</p>
+            </div>
+            <div class="flex items-center gap-4 bg-indigo-800 px-4 py-2 rounded-lg border border-indigo-600">
+                <div class="text-center">
+                    <span class="block text-xs text-indigo-300">Score</span>
+                    <span id="score-display" class="font-bold text-lg">0 / 80</span>
+                </div>
+                <div class="h-8 w-px bg-indigo-600"></div>
+                <div class="text-center">
+                    <span class="block text-xs text-indigo-300">Progress</span>
+                    <span id="progress-display" class="font-bold text-lg">1 / 80</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Quiz Container -->
+    <main class="max-w-3xl mx-auto w-full px-4 flex-grow mb-12">
+        <!-- Progress Bar -->
+        <div class="w-full bg-slate-200 h-2.5 rounded-full mb-6 overflow-hidden">
+            <div id="progress-bar" class="bg-indigo-600 h-2.5 rounded-full transition-all duration-300" style="width: 1.25%;"></div>
+        </div>
+
+        <!-- Question Card -->
+        <div id="question-card" class="bg-white rounded-2xl shadow-lg border border-slate-100 p-6 md:p-8 relative">
+            <div class="flex justify-between items-center mb-4">
+                <span id="question-badge" class="px-3 py-1 bg-indigo-50 text-indigo-700 text-xs font-semibold rounded-full uppercase tracking-wider">Page 1 | Q1</span>
+                <button id="hint-toggle" class="text-xs text-amber-600 bg-amber-50 hover:bg-amber-100 px-3 py-1.5 rounded-lg font-medium transition flex items-center gap-1">
+                    💡 Toggle Hint
+                </button>
+            </div>
+
+            <!-- Hint Box -->
+            <div id="hint-box" class="hidden mb-4 p-3 bg-amber-50 border-l-4 border-amber-400 text-amber-800 text-sm rounded-r-lg">
+                <span class="font-semibold">Hint:</span> <span id="hint-text"></span>
+            </div>
+
+            <!-- Question Text (Bilingual) -->
+            <div class="mb-6 space-y-2">
+                <h2 id="q-text-en" class="text-lg md:text-xl font-semibold text-slate-900 leading-snug"></h2>
+                <h2 id="q-text-hi" class="text-base md:text-lg font-medium text-indigo-900 leading-snug"></h2>
+            </div>
+
+            <!-- Options Grid -->
+            <div id="options-container" class="space-y-3 mb-6">
+                <!-- Dynamic options injected here -->
+            </div>
+
+            <!-- Explanation Box -->
+            <div id="explanation-box" class="hidden mt-6 p-4 rounded-xl border text-sm transition-all">
+                <h3 id="explanation-title" class="font-bold mb-1 flex items-center gap-2"></h3>
+                <p id="explanation-text" class="text-slate-700 leading-relaxed"></p>
+            </div>
+        </div>
+
+        <!-- Navigation Controls -->
+        <div class="flex flex-col sm:flex-row justify-between items-center gap-4 mt-6">
+            <button id="prev-btn" class="w-full sm:w-auto px-5 py-2.5 bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 font-medium rounded-xl shadow-sm transition disabled:opacity-50 disabled:cursor-not-allowed">
+                ← Previous
+            </button>
+            
+            <div class="flex items-center gap-2 w-full sm:w-auto justify-center">
+                <span class="text-sm text-slate-500">Jump to:</span>
+                <input type="number" id="jump-input" min="1" max="80" class="w-16 px-2 py-1.5 text-center border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="1-80">
+                <button id="jump-btn" class="px-3 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-700 text-sm font-medium rounded-lg transition">Go</button>
+            </div>
+
+            <button id="next-btn" class="w-full sm:w-auto px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-xl shadow-md transition">
+                Next →
+            </button>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-500">
+        Haryana GK Interactive Assessment &bull; Designed for Competitive Exams (SSC, RRB, HSSC, State PCS)
+    </footer>
+
+    <script>
+        const quizData = [
+            // --- PAGE 1 (Questions 1 - 40) ---
+            {
+                page: 1, qNum: 1,
+                en: "According to the administrative records of Mahendragarh, how many protected monuments/structures are listed under the state government?",
+                hi: "महेंद्रगढ़ के प्रशासनिक अभिलेखों के अनुसार, राज्य सरकार के अधीन कितनी संरक्षित इमारतें/स्मारक सूचीबद्ध हैं?",
+                options: [
+                    "34 protected monuments",
+                    "44 protected monuments",
+                    "54 protected monuments",
+                    "24 protected monuments"
+                ],
+                answer: 1,
+                hint: "Check the top heading note regarding Mahendragarh state protected monuments.",
+                explanation: "The state government lists 44 protected buildings/monuments in Mahendragarh (राज्य सरकार के 44 संरक्षित इमारतें/स्मारक निम्न हैं)."
+            },
+            {
+                page: 1, qNum: 2,
+                en: "The European/British built cemetery located in Ambala Cantonment was constructed during which period?",
+                hi: "अंबाला छावनी में स्थित यूरोपीय/अंग्रेजों द्वारा निर्मित कब्रिस्तान का निर्माण किस काल में हुआ था?",
+                options: [
+                    "1875-1878",
+                    "1899-1902",
+                    "1910-1913",
+                    "1850-1853"
+                ],
+                answer: 1,
+                hint: "Look at item #1 under Mahendragarh protected monuments list.",
+                explanation: "The European/British built cemetery in Ambala Cantt was constructed between 1899-1902 (निर्मित- 1899-1902)."
+            },
+            {
+                page: 1, qNum: 3,
+                en: "What was the primary construction unit (material) used in the European/British cemetery at Ambala Cantonment?",
+                hi: "अंबाला छावनी स्थित यूरोपीय/अंग्रेजों के कब्रिस्तान में मुख्य निर्माण इकाई (सामग्री) क्या थी?",
+                options: ["Stone (पत्थर)", "Brick (ईंट)", "Lime Plaster (प्लास्टर)", "Wood (लकड़ी)"],
+                answer: 1,
+                hint: "Most brick structures on this page share this exact construction material unit.",
+                explanation: "The construction unit used was Brick (निर्माण इकाई- ईंट)."
+            },
+            {
+                page: 1, qNum: 4,
+                en: "The Buddhist Stupa of Chaneti is located in which district of Haryana?",
+                hi: "चनेटी का बौद्ध स्तूप हरियाणा के किस जिले में स्थित है?",
+                options: ["Ambala", "Kurukshetra", "Yamunanagar", "Karnal"],
+                answer: 2,
+                hint: "Refer to item #2: 'बुद्धिस्ट स्तूप, चनेटी- यमुनानगर'.",
+                explanation: "The Buddhist Stupa of Chaneti is located in Yamunanagar district (बुद्धिस्ट स्तूप, चनेटी- यमुनानगर)."
+            },
+            {
+                page: 1, qNum: 5,
+                en: "During which historical era was the Buddhist Stupa at Chaneti (Yamunanagar) constructed?",
+                hi: "चनेटी (यमुनानगर) के बौद्ध स्तूप का निर्माण किस काल में हुआ था?",
+                options: ["3rd Century BCE (3 शताब्दी ईसा पूर्व)", "5th Century CE", "1st Century CE", "Mauryan Emperor Ashoka's Later Period"],
+                answer: 0,
+                hint: "Look at the construction date of item #2.",
+                explanation: "It was constructed in the 3rd Century BCE (निर्मित- 3 शताब्दी ईसा पूर्व)."
+            },
+            {
+                page: 1, qNum: 6,
+                en: "Ancient historical sites Sudh, Amadalpur, and Dayalgarh village are situated in which district?",
+                hi: "प्राचीन स्थल सुध, अमदलपुर व दयालगढ़ गाँव, किस जिले में स्थित हैं?",
+                options: ["Yamunanagar", "Panchkula", "Kurukshetra", "Kaithal"],
+                answer: 0,
+                hint: "Check item #3 under the list.",
+                explanation: "These ancient sites are located in Yamunanagar (प्राचीन स्थल सुध- अमदलपुर व दयालगढ़ गाँव, यमुनानगर)."
+            },
+            {
+                page: 1, qNum: 7,
+                en: "The ancient sites of Sudh, Amadalpur, and Dayalgarh in Yamunanagar date back to which period?",
+                hi: "यमुनानगर के सुध, अमदलपुर व दयालगढ़ के प्राचीन स्थलों का निर्माण काल क्या है?",
+                options: [
+                    "1st-3rd Century CE",
+                    "5-12th Century BCE (5-12वीं शताब्दी ईसा पूर्व)",
+                    "15th Century CE",
+                    "Harappan Era"
+                ],
+                answer: 1,
+                hint: "Check item #3 construction period.",
+                explanation: "They date back to the 5th-12th Century BCE (निर्मित- 5-12वीं शताब्दी ईसा पूर्व)."
+            },
+            {
+                page: 1, qNum: 8,
+                en: "Bhima Devi Temple and Takiya Baba Fakir are located in which district?",
+                hi: "भीमा देवी मंदिर व तकिया बाबा फकीर किस जिले में स्थित हैं?",
+                options: ["Panchkula", "Ambala", "Karnal", "Panipat"],
+                answer: 0,
+                hint: "Check item #4 on page 105.",
+                explanation: "They are located in Panchkula (भीमा देवी मंदिर व तकिया बाबा फकीर- पंचकुला)."
+            },
+            {
+                page: 1, qNum: 9,
+                en: "The Bhima Devi Temple and Takiya Baba Fakir complex in Panchkula was built during which centuries?",
+                hi: "पंचकुला के भीमा देवी मंदिर व तकिया बाबा फकीर का निर्माण किस शताब्दी के दौरान हुआ था?",
+                options: ["5-7th Century", "8-11th Century (8-11वीं शताब्दी)", "14-16th Century", "18-19th Century"],
+                answer: 1,
+                hint: "Look at item #4 construction timeline.",
+                explanation: "It was built during the 8th-11th Century (निर्मित- 8-11वीं शताब्दी)."
+            },
+            {
+                page: 1, qNum: 10,
+                en: "Nahan Kothi is a prominent historical landmark located in:",
+                hi: "नाहन कोठी एक प्रमुख ऐतिहासिक स्थल है जो कहाँ स्थित है?",
+                options: ["Panchkula (पंचकुला)", "Yamunanagar", "Kurukshetra", "Kaithal"],
+                answer: 0,
+                hint: "Item #5 in the list.",
+                explanation: "Nahan Kothi is located in Panchkula (नाहन कोठी- पंचकुला)."
+            },
+            {
+                page: 1, qNum: 11,
+                en: "Nahan Kothi in Panchkula was constructed during which century?",
+                hi: "पंचकुला की नाहन कोठी का निर्माण किस शताब्दी में हुआ था?",
+                options: ["17th Century", "18th Century", "19th Century (19वीं शताब्दी)", "20th Century"],
+                answer: 2,
+                hint: "Check item #5 construction date.",
+                explanation: "It was built in the 19th Century (निर्मित- 19वीं शताब्दी)."
+            },
+            {
+                page: 1, qNum: 12,
+                en: "The ancient Shiva Temple at Pehowa is located in which district?",
+                hi: "पेਿਹवा का प्राचीन शिव मंदिर किस जिले में स्थित है?",
+                options: ["Kurukshetra (कुरुक्षेत्र)", "Karnal", "Jind", "Fatehabad"],
+                answer: 0,
+                hint: "Item #6: 'प्राचीन शिव मंदिर- पिहोवा, कुरुक्षेत्र'.",
+                explanation: "Pehowa is in Kurukshetra district (प्राचीन शिव मंदिर- पिहोवा, कुरुक्षेत्र)."
+            },
+            {
+                page: 1, qNum: 13,
+                en: "What is the primary construction material unit of the ancient Shiva Temple in Pehowa, Kurukshetra?",
+                hi: "कुरुक्षेत्र के पिहोवा स्थित प्राचीन शिव मंदिर की मुख्य निर्माण इकाई क्या है?",
+                options: ["Brick (ईंट)", "Stone/Pathar (पत्थर/पथरी)", "Wood", "Mud mortar"],
+                answer: 1,
+                hint: "Check item #6 construction unit carefully.",
+                explanation: "The construction unit is Stone/Pathar (निर्माण इकाई- पत्थर/पथरी)."
+            },
+            {
+                page: 1, qNum: 14,
+                en: "Vishwamitra ka Teela is located at which historical town in Haryana?",
+                hi: "विश्वामित्र का टीला हरियाणा के किस ऐतिहासिक नगर में स्थित है?",
+                options: ["Pehowa, Kurukshetra (पिहोवा, कुरुक्षेत्र)", "Thanesar", "Badshahi Pul", "Salwan"],
+                answer: 0,
+                hint: "Item #7 in the text.",
+                explanation: "Vishwamitra ka Teela is located in Pehowa, Kurukshetra (विश्वामित्र का टीला- पिहोवा, कुरुक्षेत्र)."
+            },
+            {
+                page: 1, qNum: 15,
+                en: "Vishwamitra ka Teela in Pehowa dates back to which period?",
+                hi: "पिहोवा, कुरुक्षेत्र स्थित विश्वामित्र का टीला किस काल से संबंधित है?",
+                options: ["8-9th Century (8-9वीं शताब्दी)", "3rd Century BCE", "1540 CE", "Harappan period"],
+                answer: 0,
+                hint: "Check item #7 details.",
+                explanation: "It dates back to the 8-9th Century (निर्मित- 8-9वीं शताब्दी, निर्मित इकाई- ईंट)."
+            },
+            {
+                page: 1, qNum: 16,
+                en: "The Buddhist Stupa in Kurukshetra district was constructed during which period?",
+                hi: "कुरुक्षेत्र में स्थित बौद्ध स्तूप (बुद्ध स्तूप) का निर्माण किस काल में हुआ था?",
+                options: [
+                    "1-8th Century BCE (1-8वीं शताब्दी ईसा पूर्व)",
+                    "5th Century CE",
+                    "15th Century CE",
+                    "19th Century"
+                ],
+                answer: 0,
+                hint: "Check item #8 on page 105.",
+                explanation: "It was constructed in the 1-8th Century BCE (निर्मित- 1-8वीं शताब्दी ईसा पूर्व)."
+            },
+            {
+                page: 1, qNum: 17,
+                en: "Purana Badshahi Pul is located at Uchaswan village in which district?",
+                hi: "पुराना बादशाही पुल, उच्चास्वां गांव किस जिले में स्थित है?",
+                options: ["Karnal (करनाल)", "Kaithal", "Panipat", "Sonipat"],
+                answer: 0,
+                hint: "Item #9: 'पुराना बादशाही पुल- उच्चास्वां गांव, करनाल'.",
+                explanation: "It is located in Karnal district (पुराना बादशाही पुल- उच्चास्वां गांव, करनाल)."
+            },
+            {
+                page: 1, qNum: 18,
+                en: "When was the Purana Badshahi Pul at Uchaswan village, Karnal constructed?",
+                hi: "करनाल के उच्चास्वां गांव स्थित पुराना बादशाही पुल का निर्माण कब हुआ था?",
+                options: ["1540-1544 CE (1540-1544 ईस्वी)", "1767-1843 CE", "1351-1388 CE", "1999-1902"],
+                answer: 0,
+                hint: "Check item #9 construction years.",
+                explanation: "It was constructed between 1540-1544 CE (निर्मित- 1540-1544 ईस्वी)."
+            },
+            {
+                page: 1, qNum: 19,
+                en: "The ancient Shiva Temple at Salwan Village is located in which district?",
+                hi: "सालवान गांव का प्राचीन शिव मंदिर किस जिले में स्थित है?",
+                options: ["Karnal (करनाल)", "Kaithal", "Jind", "Rohtak"],
+                answer: 0,
+                hint: "Item #10: 'प्राचीन शिव मंदिर- सालवान गांव, करनाल'.",
+                explanation: "It is located in Karnal district (प्राचीन शिव मंदिर- सालवान गांव, करनाल)."
+            },
+            {
+                page: 1, qNum: 20,
+                en: "Victoria Memorial Hall is a famous landmark located in which district of Haryana?",
+                hi: "विक्टोरिया मेमोरियल हॉल हरियाणा के किस जिले में स्थित एक प्रसिद्ध ऐतिहासिक स्थल है?",
+                options: ["Karnal (करनाल)", "Kaithal", "Ambala", "Panchkula"],
+                answer: 0,
+                hint: "Item #11: 'विक्टोरिया मेमोरियल हॉल- करनाल'.",
+                explanation: "Victoria Memorial Hall is located in Karnal (विक्टोरिया मेमोरियल हॉल- करनाल)."
+            },
+            {
+                page: 1, qNum: 21,
+                en: "Victoria Memorial Hall in Karnal was built during which century?",
+                hi: "करनाल के विक्टोरिया मेमोरियल हॉल का निर्माण किस शताब्दी में हुआ था?",
+                options: ["18-19th Century", "19th Century (19वीं शताब्दी)", "16th Century", "17th Century"],
+                answer: 1,
+                hint: "Check item #11 construction time.",
+                explanation: "It was built in the 19th Century (निर्मित- 19वीं शताब्दी)."
+            },
+            {
+                page: 1, qNum: 22,
+                en: "Sheikh Tayyab's Tomb (शेख तैयब का मकबरा) is located in which district?",
+                hi: "शेख तैयब का मकबरा किस जिले में स्थित है?",
+                options: ["Kaithal (कैथल)", "Karnal", "Kurukshetra", "Jind"],
+                answer: 0,
+                hint: "Item #12: 'शेख तैयब का मकबरा- कैथल'.",
+                explanation: "It is located in Kaithal district (शेख तैयब का मकबरा- कैथल)."
+            },
+            {
+                page: 1, qNum: 23,
+                en: "Sheikh Tayyab's Tomb in Kaithal was constructed during which century?",
+                hi: "कैथल के शेख तैयब के मकबरे का निर्माण किस शताब्दी में हुआ था?",
+                options: ["16th Century (16वीं शताब्दी)", "18th Century", "19th Century", "14th Century"],
+                answer: 0,
+                hint: "Check item #12 construction period.",
+                explanation: "It was constructed in the 16th Century (निर्मित- 16वीं शताब्दी)."
+            },
+            {
+                page: 1, qNum: 24,
+                en: "It Baoli (ईंट बाओली) is located in which district?",
+                hi: "ईंट बाओली कहाँ स्थित है?",
+                options: ["Kaithal (कैथल)", "Karnal", "Nuh", "Palwal"],
+                answer: 0,
+                hint: "Item #13: 'ईंट बाओली- कैथल'.",
+                explanation: "It Baoli is located in Kaithal (ईंट बाओली- कैथल)."
+            },
+            {
+                page: 1, qNum: 25,
+                en: "The It Baoli in Kaithal was constructed during 1767-1843 by whom?",
+                hi: "कैथल की ईंट बाओली का निर्माण 1767-1843 के दौरान किसके द्वारा कराया गया था?",
+                options: ["By Bhai Rulers (भाई शासकों द्वारा)", "By Mughal Emperors", "By British Officers", "By Pushyabhuti Kings"],
+                answer: 0,
+                hint: "Check item #13 construction details.",
+                explanation: "It was constructed by Bhai rulers (निर्मित- 1767-1843 (भाई शासकों द्वारा))."
+            },
+            {
+                page: 1, qNum: 26,
+                en: "Dehra Mandir at Bhond Village is located in Firozpur Jhirka block of which district?",
+                hi: "सोंड गांव, फिरोजपुर झिरका का डेहरा मंदिर किस जिले के अंतर्गत आता है?",
+                options: ["Nuh (नूंह)", "Mahendragarh", "Palwal", "Faridabad"],
+                answer: 0,
+                hint: "Item #14: 'देहरा मन्दिर- भोंड गांव, फिरोजपुर झिरका, नूंह'.",
+                explanation: "It is located in Nuh district (देहरा मन्दिर- भोंड गांव, फिरोजपुर झिरका, नूंह)."
+            },
+            {
+                page: 1, qNum: 27,
+                en: "Dehra Mandir at Bhond village (Nuh) was constructed in which year?",
+                hi: "भोंड गांव (नूंह) के डेहरा मंदिर का निर्माण किस वर्ष हुआ था?",
+                options: ["1451 CE (1451 ईस्वी)", "1589 CE", "1733 CE", "1560 CE"],
+                answer: 0,
+                hint: "Check item #14 construction year.",
+                explanation: "It was constructed in 1451 CE (निर्मित- 1451 ईस्वी)."
+            },
+            {
+                page: 1, qNum: 28,
+                en: "What is the construction unit/material of Dehra Mandir at Bhond village, Nuh?",
+                hi: "नूंह के भोंड गांव स्थित डेहरा मंदिर की निर्माण इकाई क्या है?",
+                options: ["Stone/Pathari (पत्थर/पथरी)", "Brick (ईंट)", "Wood and Mud", "Lime Plaster"],
+                answer: 0,
+                hint: "Check item #14 construction unit.",
+                explanation: "The construction material is stone/pathari (निर्माण इकाई- पत्थर/पथरी)."
+            },
+            {
+                page: 1, qNum: 29,
+                en: "Prachin Balu Teela (प्राचीन बालू टीला) is located in which district?",
+                hi: "प्राचीन बालू टीला किस जिले में स्थित है?",
+                options: ["Kaithal (कैथल)", "Karnal", "Jind", "Fatehabad"],
+                answer: 0,
+                hint: "Item #15: 'प्राचीन बालू टीला- कैथल'.",
+                explanation: "It is located in Kaithal district (प्राचीन बालू टीला- कैथल)."
+            },
+            {
+                page: 1, qNum: 30,
+                en: "Prachin Balu Teela in Kaithal dates back to which period?",
+                hi: "कैथल का प्राचीन बालू टीला किस काल से संबंधित है?",
+                options: ["3500-2000 BCE (3500-2000 ईसा पूर्व)", "1-8th Century BCE", "17th Century", "18th Century"],
+                answer: 0,
+                hint: "Check item #15 date.",
+                explanation: "It dates back to 3500-2000 BCE (निर्मित- 3500-2000 ईसा पूर्व)."
+            },
+            {
+                page: 1, qNum: 31,
+                en: "Prachin Gumbad (प्राचीन गुंबद) is located in which district?",
+                hi: "प्राचीन गुंबद कहाँ स्थित है?",
+                options: ["Palwal (पलवल)", "Nuh", "Faridabad", "Gurugram"],
+                answer: 0,
+                hint: "Item #16: 'प्राचीन गुंबद- पलवल'.",
+                explanation: "It is located in Palwal (प्राचीन गुंबद- पलवल)."
+            },
+            {
+                page: 1, qNum: 32,
+                en: "Prachin Gumbad in Palwal was constructed in which century?",
+                hi: "पलवल के प्राचीन गुंबद का निर्माण किस शताब्दी में हुआ था?",
+                options: ["17th Century (17वीं शताब्दी)", "15th Century", "19th Century", "13th Century"],
+                answer: 0,
+                hint: "Check item #16 century.",
+                explanation: "It was constructed in the 17th Century (निर्मित- 17वीं शताब्दी)."
+            },
+            {
+                page: 1, qNum: 33,
+                en: "Prachin Kila Safidon (प्राचीन किला सफीदों) is located in which district?",
+                hi: "प्राचीन किला सफीदों किस जिले में स्थित है?",
+                options: ["Jind (जींद)", "Kaithal", "Karnal", "Panipat"],
+                answer: 0,
+                hint: "Item #17: 'प्राचीन किला सफीदों- सफीदों, जींद'.",
+                explanation: "It is located in Jind district (प्राचीन किला सफीदों- सफीदों, जींद)."
+            },
+            {
+                page: 1, qNum: 34,
+                en: "Prachin Kila Safidon in Jind was constructed in which century?",
+                hi: "जींद के सफीदों स्थित प्राचीन किले का निर्माण किस शताब्दी में हुआ था?",
+                options: ["18th Century (18वीं शताब्दी)", "16th Century", "19th Century", "14th Century"],
+                answer: 0,
+                hint: "Check item #17 construction period.",
+                explanation: "It was constructed in the 18th Century (निर्मित- 18वीं शताब्दी)."
+            },
+            {
+                page: 1, qNum: 35,
+                en: "Prachin Teela Kirsola (प्राचीन टीला किसोला) is associated with which ancient civilization?",
+                hi: "प्राचीन टीला किसोला (जींद) किस प्राचीन सभ्यता से संबंधित है?",
+                options: ["Harappan Civilization (हड़प्पा सभ्यता)", "Vedic Period", "Mauryan Period", "Gupta Period"],
+                answer: 0,
+                hint: "Check item #18: 'प्राचीन टीला किसोला- जींद, निर्मित- हड़प्पा सभ्यता'.",
+                explanation: "It is associated with the Harappan civilization (निर्मित- हड़प्पा सभ्यता)."
+            },
+            {
+                page: 1, qNum: 36,
+                en: "Bhirrana ancient site (भिरडाना की पुरानी साइट) is located in which district?",
+                hi: "भिरडाना की पुरानी साइट किस जिले में स्थित है?",
+                options: ["Fatehabad (फतेहाबाद)", "Hisar", "Sirsa", "Jind"],
+                answer: 0,
+                hint: "Item #19: 'भिरडाना की पुरानी साइट- फतेहाबाद'.",
+                explanation: "It is located in Fatehabad district (भिरडाना की पुरानी साइट- फतेहाबाद)."
+            },
+            {
+                page: 1, qNum: 37,
+                en: "The ancient site of Bhirrana in Fatehabad dates back to which era?",
+                hi: "फतेहाबाद स्थित भिरडाना की प्राचीन साइट किस काल से संबंधित है?",
+                options: ["3500-2000 BCE (3500-2000 ईसा पूर्व)", "1540 CE", "18th Century", "12-14th Century"],
+                answer: 0,
+                hint: "Check item #19 date.",
+                explanation: "It dates back to 3500-2000 BCE (निर्मित- 3500-2000 ईसा पूर्व)."
+            },
+            {
+                page: 1, qNum: 38,
+                en: "According to the description of Bhirrana site in item 19, what kind of residential pits and floors were found?",
+                hi: "भिरडाना साइट के विवरण के अनुसार किस प्रकार के आवास गड्ढे और फर्श पाए गए थे?",
+                options: [
+                    "Yellow alluvial soil of Saraswati valley leveled with Pd IB (सरस्वती घाटी के पीले जलोढ़ के साथ समतल किए गए)",
+                    "Black cotton soil with stone flooring",
+                    "Red sand with wooden planks",
+                    "Granite blocks with lime plaster"
+                ],
+                answer: 0,
+                hint: "Read the detailed description under item #19 on page 105.",
+                explanation: "Residential pits and floors leveled with yellow alluvium of Saraswati valley with Pd IB (आवास गड्ढे और फर्श सरस्वती घाटी के पीले जलोढ़, Pd IB के साथ समतल किए गए थे)."
+            },
+            {
+                page: 1, qNum: 39,
+                en: "At Bhirrana, what was used to construct massive fortification walls as per the site details?",
+                hi: "भिरडाना में विशाल किलेबंदी की दीवार के निर्माण के लिए किसका उपयोग किया गया था?",
+                options: [
+                    "Mud bricks (sun-dried bricks - धूप सेंकने वाली ईंटें) and Pd 11A structures",
+                    "Burnt red bricks with marble",
+                    "Granite stone blocks",
+                    "Interlocking wooden logs"
+                ],
+                answer: 0,
+                hint: "Check the end of item #19 description.",
+                explanation: "Sun-dried bricks (धूप सेंकने वाली ईंटों) were used for city walls (शहर मिट्टी की ईंटों (धूप सेंकने वाली ईंटों) से बने होते थे)."
+            },
+            {
+                page: 1, qNum: 40,
+                en: "Which of the following protected monuments/sites listed on page 105 is correctly paired with its district?",
+                hi: "पृष्ठ 105 पर सूचीबद्ध निम्नलिखित में से कौन सा संरक्षित स्मारक/स्थल अपने जिले के साथ सही सुमेलित है?",
+                options: [
+                    "Buddhist Stupa, Chaneti - Yamunanagar",
+                    "Victoria Memorial Hall - Ambala",
+                    "Sheikh Tayyab's Tomb - Karnal",
+                    "Dehra Mandir - Mahendragarh"
+                ],
+                answer: 0,
+                hint: "Review item #2 in the list.",
+                explanation: "Buddhist Stupa, Chaneti is correctly paired with Yamunanagar (बुद्धिस्ट स्तूप, चनेटी- यमुनानगर)."
+            },
+
+            // --- PAGE 2 (Questions 41 - 80) ---
+            {
+                page: 2, qNum: 41,
+                en: "Kunthal old site (कुणाल की पुरानी साइट) is located in which district?",
+                hi: "कुणाल की पुरानी साइट किस जिले में स्थित है?",
+                options: ["Fatehabad (फतेहाबाद)", "Hisar", "Sirsa", "Jind"],
+                answer: 0,
+                hint: "Item #20 on page 106: 'कुणाल की पुरानी साइट- फतेहाबाद'.",
+                explanation: "Kunthal/Kunaal site is located in Fatehabad district (कुणाल की पुरानी साइट- फतेहाबाद)."
+            },
+            {
+                page: 2, qNum: 42,
+                en: "According to the note under item 20, Kunaal holds what distinction in Haryana?",
+                hi: "आइटम 20 के तहत नोट के अनुसार, कुणाल हरियाणा में क्या विशेषता रखता है?",
+                options: [
+                    "It is Haryana's oldest village (कुणाल हरियाणा का सबसे प्राचीन गांव है)",
+                    "It is Haryana's largest Harappan city",
+                    "It is the only site with gold ornaments",
+                    "It has the tallest minaret"
+                ],
+                answer: 0,
+                hint: "Check the note below item #20.",
+                explanation: "Note: Kunaal is Haryana's oldest village (नोट: कुणाल हरियाणा का सबसे प्राचीन गांव है)."
+            },
+            {
+                page: 2, qNum: 43,
+                en: "Char Qutub Dargah/Makbara is located at Hansi in which district?",
+                hi: "चार कुतुब दरगाह/मकबरा, हांसी किस जिले में स्थित है?",
+                options: ["Hisar (हिसार)", "Bhiwani", "Sirsa", "Fatehabad"],
+                answer: 0,
+                hint: "Item #21: 'चार कुतुब दरगाह/मकबरा- हांसी, हिसार'.",
+                explanation: "Hansi is located in Hisar district (चार कुतुब दरगाह/मकबरा- हांसी, हिसार)."
+            },
+            {
+                page: 2, qNum: 44,
+                en: "Char Qutub Dargah at Hansi was built during which period?",
+                hi: "हांसी की चार कुतुब दरगाह का निर्माण किस काल में हुआ था?",
+                options: ["12-14th Century (12-14वीं शताब्दी)", "16th Century", "18th Century", "19th Century"],
+                answer: 0,
+                hint: "Check item #21 construction period.",
+                explanation: "It was built during the 12-14th Century (निर्मित- 12-14वीं शताब्दी)."
+            },
+            {
+                page: 2, qNum: 45,
+                en: "Jahaz Kothi is located in which district?",
+                hi: "जहाज कोठी कहाँ स्थित है?",
+                options: ["Hisar (हिसार)", "Gurugram", "Rohtak", "Karnal"],
+                answer: 0,
+                hint: "Item #22: 'जहाज कोठी- हिसार'.",
+                explanation: "Jahaz Kothi is located in Hisar (जहाज कोठी- हिसार)."
+            },
+            {
+                page: 2, qNum: 46,
+                en: "What important note is mentioned regarding the location of Jahaz Kothi in Hisar?",
+                hi: "हिसार में जहाज कोठी के स्थान के संबंध में क्या महत्वपूर्ण नोट दिया गया है?",
+                options: [
+                    "An ancient Jain temple existed at the place of Jahaz Kothi (जहाज कोठी के स्थान पर प्राचीन जैन मंदिर था)",
+                    "It was built over an Ashokan pillar",
+                    "It was originally a Buddhist monastery",
+                    "It was Gandhiji's resting place"
+                ],
+                answer: 0,
+                hint: "Check the note under item #22.",
+                explanation: "Note: An ancient Jain temple existed at the site of Jahaz Kothi (नोट: जहाज कोठी के स्थान पर प्राचीन जैन मंदिर था)."
+            },
+            {
+                page: 2, qNum: 47,
+                en: "Sheesh Mahal (शीश महल) is located at Farrukhnagar in which district?",
+                hi: "शीश महल, फर्रुखनगर किस जिले में स्थित है?",
+                options: ["Gurugram (गुरुग्राम)", "Faridabad", "Rewari", "Nuh"],
+                answer: 0,
+                hint: "Item #23: 'शीश महल- फर्रुखनगर, गुरुग्राम'.",
+                explanation: "Farrukhnagar is in Gurugram district (शीश महल- फर्रुखनगर, गुरुग्राम)."
+            },
+            {
+                page: 2, qNum: 48,
+                en: "When was the Sheesh Mahal at Farrukhnagar constructed?",
+                hi: "फर्रुखनगर के शीश महल का निर्माण कब हुआ था?",
+                options: ["1733 CE (1733 में)", "1589 CE", "1560 CE", "1750 CE"],
+                answer: 0,
+                hint: "Check item #23 construction year.",
+                explanation: "It was constructed in 1733 CE (निर्मित- 1733 में)."
+            },
+            {
+                page: 2, qNum: 49,
+                en: "Makbara and Pir Turkman's Mosque (मकबरा और पीर तुर्कमान की मस्जिद) is located in which district?",
+                hi: "मकबरा और पीर तुर्कमान की मस्जिद कहाँ स्थित है?",
+                options: [
+                    "Narnaul, Mahendragarh (नारौल, महेंद्रगढ़)",
+                    "Nuh",
+                    "Rewari",
+                    "Palwal"
+                ],
+                answer: 0,
+                hint: "Item #24: 'मकबरा और पीर तुर्कमान की मस्जिद- नारनौल, महेंद्रगढ़'.",
+                explanation: "It is located in Narnaul, Mahendragarh (मकबरा और पीर तुर्कमान की मस्जिद- नारनौल, महेंद्रगढ़)."
+            },
+            {
+                page: 2, qNum: 50,
+                en: "Tripolia Gateways (त्रिपोलिया गेटवे) are located in Narnaul, which is part of which district?",
+                hi: "त्रिपोलिया गेटवे नारनौल में स्थित है, जो किस जिले के अंतर्गत आता है?",
+                options: ["Mahendragarh (महेंद्रगढ़)", "Rewari", "Bhiwani", "Jhajjar"],
+                answer: 0,
+                hint: "Item #25: 'त्रिपोलिया गेटवे- नारनौल, महेंद्रगढ़'.",
+                explanation: "Narnaul is in Mahendragarh district (त्रिपोलिया गेटवे- नारनौल, महेंद्रगढ़)."
+            },
+            {
+                page: 2, qNum: 51,
+                en: "Shah Nizam ka Makbara (शाह निजाम का मकबरा) is located in Narnaul, Mahendragarh. It was built in which century?",
+                hi: "शाह निजाम का मकबरा, नारनौल (महेंद्रगढ़) का निर्माण किस शताब्दी में हुआ था?",
+                options: ["16th Century (16वीं शताब्दी)", "18th Century", "14th Century", "19th Century"],
+                answer: 0,
+                hint: "Check item #26 century.",
+                explanation: "It was built in the 16th Century (निर्मित- 16वीं शताब्दी, निर्मित इकाई- पत्थर)."
+            },
+            {
+                page: 2, qNum: 52,
+                en: "Choor Gumbad (चौर गुंबद) located in Narnaul, Mahendragarh was constructed during which years?",
+                hi: "नारनौल, महेंद्रगढ़ स्थित चौर गुंबद का निर्माण किस वर्ष के दौरान हुआ था?",
+                options: ["1351-1388 CE (1351-1388 ईस्वी)", "1560-1605 CE", "1767-1843 CE", "1540-1544 CE"],
+                answer: 0,
+                hint: "Check item #27 construction years.",
+                explanation: "It was constructed during 1351-1388 CE (निर्मित- 1351-1388 ईस्वी)."
+            },
+            {
+                page: 2, qNum: 53,
+                en: "Shobha Sarovar (शोभा सरोवर) is located in Narnaul, Mahendragarh. It was constructed in which century?",
+                hi: "शोभा सरोवर, नारनौल (महेंद्रगढ़) का निर्माण किस शताब्दी में हुआ था?",
+                options: ["18th Century (18वीं शताब्दी)", "16th Century", "17th Century", "19th Century"],
+                answer: 0,
+                hint: "Check item #28 century.",
+                explanation: "It was built in the 18th Century (निर्मित- 18वीं शताब्दी)."
+            },
+            {
+                page: 2, qNum: 54,
+                en: "Chatra Rai Balmukund Das ki Chhatri (छत्ता राय बालमुकुंद दास की छतरी) is located in Narnaul, Mahendragarh. When was it built?",
+                hi: "छत्ता राय बालमुकुंद दास की छतरी, नारनौल (महेंद्रगढ़) का निर्माण कब हुआ था?",
+                options: ["17th Century (17वीं शताब्दी)", "15th Century", "19th Century", "13th Century"],
+                answer: 0,
+                hint: "Check item #29 century.",
+                explanation: "It was built in the 17th Century (निर्मित- 17वीं शताब्दी)."
+            },
+            {
+                page: 2, qNum: 55,
+                en: "Mirza Alijan ki Takhat va Bawdi (मिर्जा अलीजान की तख्त व बावड़ी) is located in Narnaul, Mahendragarh. When was it built?",
+                hi: "मिर्जा अलीजान की तख्त व बावड़ी, नारनौल (महेंद्रगढ़) का निर्माण कब हुआ था?",
+                options: ["1560-1605 (1560-1605)", "1351-1388", "1767-1843", "1861-1873"],
+                answer: 0,
+                hint: "Check item #30 years.",
+                explanation: "It was built during 1560-1605 (निर्मित- 1560-1605)."
+            },
+            {
+                page: 2, qNum: 56,
+                en: "Jayanti Archaeological Museum (जयंती पुरातत्व संग्रहालय) is located in which district?",
+                hi: "जयंती पुरातत्व संग्रहालय किस जिले में स्थित है?",
+                options: ["Jind (जींद)", "Kaithal", "Karnal", "Rohtak"],
+                answer: 0,
+                hint: "Item #31: 'जयंती पुरातत्व संग्रहालय- जींद'.",
+                explanation: "It is located in Jind district (जयंती पुरातत्व संग्रहालय- जींद)."
+            },
+            {
+                page: 2, qNum: 57,
+                en: "When was the Jayanti Archaeological Museum in Jind established/inaugurated?",
+                hi: "जींद के जयंती पुरातत्व संग्रहालय की स्थापना कब हुई थी?",
+                options: [
+                    "28 July, 2007 (28 जुलाई, 2007)",
+                    "22 December, 2001",
+                    "15 August, 2000",
+                    "8 February, 2011"
+                ],
+                answer: 0,
+                hint: "Check item #31 establishment date.",
+                explanation: "It was established on 28 July, 2007 (स्थापना- 28 जुलाई, 2007)."
+            },
+            {
+                page: 2, qNum: 58,
+                en: "Guru Teg Bahadur Memorial Museum is located at Barah Khalsa Rai, Sonipat. When was it established?",
+                hi: "गुरु तेग बहादुर स्मारक संग्रहालय, बारह खालसा राय, सोनीपत की स्थापना कब हुई थी?",
+                options: [
+                    "22 December, 2001 (22 दिसम्बर, 2001)",
+                    "28 July, 2007",
+                    "15 August, 2000",
+                    "2000"
+                ],
+                answer: 0,
+                hint: "Check item #32 establishment date.",
+                explanation: "It was established on 22 December, 2001 (स्थापना- 22 दिसम्बर, 2001)."
+            },
+            {
+                page: 2, qNum: 59,
+                en: "Guru Gobind Singh Marshal Art Museum is located at Kapal Mochan in which district?",
+                hi: "गुरु गोबिंद सिंह मार्शल आर्ट संग्रहालय, कपालमोचन किस जिले में स्थित है?",
+                options: ["Yamunanagar (यमुनानगर)", "Kurukshetra", "Ambala", "Karnal"],
+                answer: 0,
+                hint: "Item #33: 'गुरु गोबिंद सिंह मार्शल आर्ट संग्रहालय- कपालमोचन, यमुनानगर'.",
+                explanation: "Kapal Mochan is in Yamunanagar district (गुरु गोबिंद सिंह मार्शल आर्ट संग्रहालय- कपालमोचन, यमुनानगर)."
+            },
+            {
+                page: 2, qNum: 60,
+                en: "When was the Guru Gobind Singh Marshal Art Museum at Kapal Mochan inaugurated?",
+                hi: "कपालमोचन (यमुनानगर) के गुरु गोबिंद सिंह मार्शल आर्ट संग्रहालय का उद्घाटन कब हुआ था?",
+                options: [
+                    "15 August, 2000 (15 अगस्त, 2000)",
+                    "28 July, 2007",
+                    "22 December, 2001",
+                    "8 February, 2011"
+                ],
+                answer: 0,
+                hint: "Check item #33 inauguration date.",
+                explanation: "It was inaugurated on 15 August, 2000 (स्थापना- 15 अगस्त, 2000)."
+            },
+            {
+                page: 2, qNum: 61,
+                en: "Deenbandhu Sir Chhotu Ram Memorial Museum is located in which district?",
+                hi: "दीनबंधु सर छोटूराम स्मारक संग्रहालय किस जिले में स्थित है?",
+                options: ["Rohtak (रोहतक)", "Sonipat", "Jind", "Jhajjar"],
+                answer: 0,
+                hint: "Item #34: 'दीनबंधु सर छोटूराम स्मारक संग्रहालय- रोहतक'.",
+                explanation: "It is located in Rohtak district (दीनबंधु सर छोटूराम स्मारक संग्रहालय- रोहतक)."
+            },
+            {
+                page: 2, qNum: 62,
+                en: "When was the Deenbandhu Sir Chhotu Ram Memorial Museum in Rohtak constructed/built?",
+                hi: "रोहतक के दीनबंधु सर छोटूराम स्मारक संग्रहालय का निर्माण कब हुआ था?",
+                options: [
+                    "8 February, 2011 (8 फरवरी, 2011)",
+                    "2000",
+                    "15 August, 2000",
+                    "28 July, 2007"
+                ],
+                answer: 0,
+                hint: "Check item #34 construction date.",
+                explanation: "It was built on 8 February, 2011 (निर्मित- 8 फरवरी, 2011)."
+            },
+            {
+                page: 2, qNum: 63,
+                en: "Panipat Museum / Bijhaul Panipat (बिजौल पानीपत) museum was constructed in which year?",
+                hi: "पानीपत संग्रहालय (बिजौल, पानीपत) का निर्माण किस वर्ष में हुआ था?",
+                options: [
+                    "Year 2000 (सन् 2000 में)",
+                    "2007",
+                    "2011",
+                    "1990"
+                ],
+                answer: 0,
+                hint: "Item #35: 'पानीपत संग्रहालय बिझौल पानीपत- बिझौल, पानीपत. निर्मित- सन् 2000 में'.",
+                explanation: "It was constructed in the year 2000 (निर्मित- सन् 2000 में)."
+            },
+            {
+                page: 2, qNum: 64,
+                en: "Karn Kot (कर्ण कोट) ancient site is located at Bhattu Village in which district?",
+                hi: "कर्ण कोट (भट्टू गांव) प्राचीन स्थल किस जिले में स्थित है?",
+                options: ["Fatehabad (फतेहाबाद)", "Hisar", "Sirsa", "Jind"],
+                answer: 0,
+                hint: "Item #36: 'कर्ण कोट- भट्टू गांव, फतेहाबाद'.",
+                explanation: "It is located in Fatehabad district (कर्ण कोट- भट्टू गांव, फतेहाबाद)."
+            },
+            {
+                page: 2, qNum: 65,
+                en: "Karn Kot site in Fatehabad dates back to which period?",
+                hi: "फतेहाबाद के कर्ण कोट स्थल का संबंध किस काल से है?",
+                options: [
+                    "Harappan/Harappa Kalin (हड़प्पा कालीन)",
+                    "Mauryan Period",
+                    "Mughal Era",
+                    "British Period"
+                ],
+                answer: 0,
+                hint: "Check item #36 period.",
+                explanation: "It is Harappan-era / Harappa Kalin (निर्मित- हड़प्पा कालीन)."
+            },
+            {
+                page: 2, qNum: 66,
+                en: "In which year was Karn Kot (Fatehabad) given the status of a state monument?",
+                hi: "कर्ण कोट (फतेहाबाद) को किस वर्ष राज्य स्मारक का दर्जा दिया गया था?",
+                options: [
+                    "2020 (Notification June 2018/2020)",
+                    "2005",
+                    "2011",
+                    "2015"
+                ],
+                answer: 0,
+                hint: "Check item #36 state monument status date.",
+                explanation: "It received state monument status in 2020 (राज्य स्मारक का दर्जा- 2020 (अधिसूचित जून, 2018))."
+            },
+            {
+                page: 2, qNum: 67,
+                en: "Tob Complex (टॉब कॉम्प्लेक्स) is located in which district?",
+                hi: "टॉब कॉम्प्लेक्स कहाँ स्थित है?",
+                options: ["Nuh (नूंह)", "Palwal", "Faridabad", "Gurugram"],
+                answer: 0,
+                hint: "Item #37: 'टॉब कॉम्प्लेक्स- नूंह'.",
+                explanation: "Tob Complex is located in Nuh district (टॉब कॉम्प्लेक्स- नूंह)."
+            },
+            {
+                page: 2, qNum: 68,
+                en: "During which era was the Tob Complex in Nuh built/constructed?",
+                hi: "नूंह के टॉब कॉम्प्लेक्स का निर्माण किस काल में हुआ था?",
+                options: [
+                    "During British rule (1861-1873) (अंग्रेजों के शासनकाल (1861-1873))",
+                    "Mughal Era",
+                    "Harappan Period",
+                    "Mauryan Period"
+                ],
+                answer: 0,
+                hint: "Check item #37 construction period.",
+                explanation: "It was built during British rule (1861-1873) (निर्मित- अंग्रेजों के शासनकाल (1861-1873))."
+            },
+            {
+                page: 2, qNum: 69,
+                en: "Dharoud Kheda (धरौंद खेड़ा) village is located in which district?",
+                hi: "धरौंद खेड़ा गांव किस जिले में स्थित है?",
+                options: ["Jind (जींद)", "Kaithal", "Karnal", "Hisar"],
+                answer: 0,
+                hint: "Item #38: 'धरौंद खेड़ा- धरौंद खेड़ा गांव, जींद'.",
+                explanation: "It is located in Jind district (धरौंद खेड़ा- धरौंद खेड़ा गांव, जींद)."
+            },
+            {
+                page: 2, qNum: 70,
+                en: "Dharoud Kheda site in Jind is associated with which ancient period?",
+                hi: "जींद के धरौंद खेड़ा स्थल का संबंध किस प्राचीन काल से है?",
+                options: [
+                    "Harappan (हड़प्पा कालीन)",
+                    "Gupta Period",
+                    "Sultanate Period",
+                    "Medieval Period"
+                ],
+                answer: 0,
+                hint: "Check item #38 construction period.",
+                explanation: "It belongs to the Harappan era (निर्मित- हड़प्पा कालीन)."
+            },
+            {
+                page: 2, qNum: 71,
+                en: "Loharu Fort (लोहारू का किला) is located in which district?",
+                hi: "लोहारू का किला किस जिले में स्थित है?",
+                options: ["Bhiwani (भिवानी)", "Mahendragarh", "Hisar", "Rewari"],
+                answer: 0,
+                hint: "Item #39: 'लोहारू का किला- लोहारू, भिवानी'.",
+                explanation: "Loharu Fort is located in Bhiwani district (लोहारू का किला- लोहारू, भिवानी)."
+            },
+            {
+                page: 2, qNum: 72,
+                en: "When was the Loharu Fort built, and by whom?",
+                hi: "लोहारू का किला कब और किसके द्वारा बनवाया गया था?",
+                options: [
+                    "1570 by Arjun Dev, feudatory of Jaipur ruler (1570 (जयपुर राजा के सामंत अर्जुन देव द्वारा))",
+                    "1733 by a Mughal noble",
+                    "1861 by British",
+                    "1351 by Firoz Shah Tughlaq"
+                ],
+                answer: 0,
+                hint: "Check item #39 details.",
+                explanation: "It was built in 1570 by Arjun Dev, feudatory of Jaipur ruler (निर्मित- 1570 (जयपुर राजा के सामंत अर्जुन देव द्वारा))."
+            },
+            {
+                page: 2, qNum: 73,
+                en: "When was the Loharu Fort granted the status of state monument by the Haryana Government?",
+                hi: "हरियाणा सरकार द्वारा लोहारू के किले को राज्य स्मारक का दर्जा कब दिया गया?",
+                options: [
+                    "2020 (June 2018 notification)",
+                    "2007",
+                    "2011",
+                    "2000"
+                ],
+                answer: 0,
+                hint: "Check item #39 status date.",
+                explanation: "It was given state monument status in 2020 (राज्य सरकार द्वारा स्मारक का दर्जा- 2020 (अधिसूचित जून, 2018))."
+            },
+            {
+                page: 2, qNum: 74,
+                en: "Which museum listed on page 106 was inaugurated by the then Governor Dr. A.R. Kidwai?",
+                hi: "पृष्ठ 106 पर सूचीबद्ध कौन से संग्रहालय का उद्घाटन तत्कालीन राज्यपाल डॉ. ए.आर. किदवई द्वारा किया गया था?",
+                options: [
+                    "Jayanti Archaeological Museum, Jind (जयंती पुरातत्व संग्रहालय- जींद)",
+                    "Panipat Museum",
+                    "Deenbandhu Sir Chhotu Ram Museum",
+                    "Guru Gobind Singh Marshal Art Museum"
+                ],
+                answer: 0,
+                hint: "Check item #31 inauguration details.",
+                explanation: "Jayanti Archaeological Museum, Jind was inaugurated by Dr. A.R. Kidwai (जयंती पुरातत्व संग्रहालय- जींद, उद्घाटन- पूर्व राज्यपाल डॉ. ए.आर. किदवई द्वारा)."
+            },
+            {
+                page: 2, qNum: 75,
+                en: "Which museum on page 106 was inaugurated by then Chief Minister Om Prakash Chautala?",
+                hi: "पृष्ठ 106 पर किस संग्रहालय का उद्घाटन तत्कालीन मुख्यमंत्री चौ. ओम प्रकाश चौटाला द्वारा किया गया था?",
+                options: [
+                    "Guru Teg Bahadur Memorial Museum, Sonipat (गुरु तेग बहादुर स्मारक संग्रहालय, बारह खालसा राय, सोनीपत)",
+                    "Deenbandhu Sir Chhotu Ram Museum",
+                    "Panipat Museum",
+                    "Jayanti Archaeological Museum"
+                ],
+                answer: 0,
+                hint: "Check item #32 inauguration details.",
+                explanation: "Guru Teg Bahadur Memorial Museum was inaugurated by CM Om Prakash Chautala (गुरु तेग बहादुर स्मारक संग्रहालय, सोनीपत, उद्घाटन- चौ. ओम प्रकाश चौटाला द्वारा)."
+            },
+            {
+                page: 2, qNum: 76,
+                en: "Which museum was inaugurated by the then State Minister of Agriculture Jasvinder Singh Sandhu?",
+                hi: "किस संग्रहालय का उद्घाटन तत्कालीन राज्य कृषि मंत्री जसविंदर सिंह संधू द्वारा किया गया था?",
+                options: [
+                    "Guru Gobind Singh Marshal Art Museum, Kapal Mochan (गुरु गोबिंद सिंह मार्शल आर्ट संग्रहालय- कपालमोचन, यमुनानगर)",
+                    "Jayanti Museum",
+                    "Panipat Museum",
+                    "Jahaz Kothi"
+                ],
+                answer: 0,
+                hint: "Check item #33 inauguration info.",
+                explanation: "Guru Gobind Singh Marshal Art Museum at Kapal Mochan was inaugurated by Jasvinder Singh Sandhu (गुरु गोबिंद सिंह मार्शल आर्ट संग्रहालय- कपालमोचन, उद्घाटन- राज्य कृषि मंत्री जसविंदर सिंह संधू)."
+            },
+            {
+                page: 2, qNum: 77,
+                en: "Which museum on page 106 was inaugurated by then Chief Minister Bhupinder Singh Hooda?",
+                hi: "पृष्ठ 106 पर किस संग्रहालय का उद्घाटन तत्कालीन मुख्यमंत्री श्री भूपेंद्र सिंह हुड्डा द्वारा किया गया था?",
+                options: [
+                    "Deenbandhu Sir Chhotu Ram Memorial Museum, Rohtak (दीनबंधु सर छोटूराम स्मारक संग्रहालय- रोहतक)",
+                    "Guru Teg Bahadur Museum",
+                    "Panipat Museum",
+                    "Jayanti Museum"
+                ],
+                answer: 0,
+                hint: "Check item #34 inauguration details.",
+                explanation: "Deenbandhu Sir Chhotu Ram Memorial Museum in Rohtak was inaugurated by Bhupinder Singh Hooda (दीनबंधु सर छोटूराम स्मारक संग्रहालय- रोहतक, उद्घाटन- मुख्यमंत्री श्री भूपेंद्र सिंह हुड्डा द्वारा)."
+            },
+            {
+                page: 2, qNum: 78,
+                en: "Which among the following sites on page 106 is known specifically as Haryana's oldest village?",
+                hi: "पृष्ठ 106 पर निम्नलिखित में से किस स्थल को विशेष रूप से हरियाणा का सबसे प्राचीन गांव कहा गया है?",
+                options: [
+                    "Kunaal / Kunthal (कुणाल)",
+                    "Bhirrana",
+                    "Karn Kot",
+                    "Dharoud Kheda"
+                ],
+                answer: 0,
+                hint: "Check item #20 note.",
+                explanation: "Kunaal is noted as Haryana's oldest village (नोट: कुणाल हरियाणा का सबसे प्राचीन गांव है)."
+            },
+            {
+                page: 2, qNum: 79,
+                en: "What was originally present at the site where Jahaz Kothi in Hisar stands today?",
+                hi: "हिसार में जहां जहाज कोठी स्थित है, उसके स्थान पर मूल रूप से क्या था?",
+                options: [
+                    "An ancient Jain temple (प्राचीन जैन मंदिर)",
+                    "A Buddhist stupa",
+                    "A Mughal palace",
+                    "A Harappan granary"
+                ],
+                answer: 0,
+                hint: "Check note under item #22.",
+                explanation: "Note under item #22 states that an ancient Jain temple was located at the site of Jahaz Kothi (जहाज कोठी के स्थान पर प्राचीन जैन मंदिर था)."
+            },
+            {
+                page: 2, qNum: 80,
+                en: "Which of the following historical monuments/sites from page 106 is paired with Narnaul, Mahendragarh correctly?",
+                hi: "पृष्ठ 106 के निम्नलिखित ऐतिहासिक स्मारकों/स्थलों में से कौन सा नारनौल, महेंद्रगढ़ के साथ सही सुमेलित है?",
+                options: [
+                    "Tripolia Gateways (त्रिपोलिया गेटवे)",
+                    "Char Qutub Dargah",
+                    "Sheesh Mahal",
+                    "Loharu Fort"
+                ],
+                answer: 0,
+                hint: "Review item #25.",
+                explanation: "Tripolia Gateways is located in Narnaul, Mahendragarh (त्रिपोलिया गेटवे- नारनौल, महेंद्रगढ़)."
+            }
+        ];
+
+        let currentIndex = 0;
+        let score = 0;
+        let userAnswers = new Array(quizData.length).fill(null);
+
+        // DOM Elements
+        const scoreDisplay = document.getElementById('score-display');
+        const progressDisplay = document.getElementById('progress-display');
+        const progressBar = document.getElementById('progress-bar');
+        const questionBadge = document.getElementById('question-badge');
+        const hintToggle = document.getElementById('hint-toggle');
+        const hintBox = document.getElementById('hint-box');
+        const hintText = document.getElementById('hint-text');
+        const qTextEn = document.getElementById('q-text-en');
+        const qTextHi = document.getElementById('q-text-hi');
+        const optionsContainer = document.getElementById('options-container');
+        const explanationBox = document.getElementById('explanation-box');
+        const explanationTitle = document.getElementById('explanation-title');
+        const explanationText = document.getElementById('explanation-text');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const jumpInput = document.getElementById('jump-input');
+        const jumpBtn = document.getElementById('jump-btn');
+
+        function loadQuestion() {
+            const q = quizData[currentIndex];
+            
+            // Header updates
+            progressDisplay.textContent = `${currentIndex + 1} / ${quizData.length}`;
+            progressBar.style.width = `${((currentIndex + 1) / quizData.length) * 100}%`;
+            questionBadge.textContent = `Page ${q.page} | Q${q.qNum} (Total #${currentIndex + 1})`;
+
+            // Hint
+            hintText.textContent = q.hint;
+            hintBox.classList.add('hidden');
+
+            // Text
+            qTextEn.textContent = `${currentIndex + 1}. ${q.en}`;
+            qTextHi.textContent = q.hi;
+
+            // Options
+            optionsContainer.innerHTML = '';
+            
+            let optionsWithIndex = q.options.map((opt, idx) => ({ text: opt, originalIdx: idx }));
+            
+            // Deterministic shuffle based on question index seed
+            optionsWithIndex.sort((a, b) => {
+                let seed = (currentIndex + 1) * 13;
+                return (stringHash(a.text + seed) % 3) - 1;
+            });
+
+            optionsWithIndex.forEach((item, displayIdx) => {
+                const btn = document.createElement('button');
+                btn.className = 'w-full text-left p-4 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 hover:border-indigo-300 transition flex items-center justify-between group shadow-sm';
+                
+                const letter = String.fromCharCode(65 + displayIdx);
+                
+                btn.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-lg bg-slate-100 group-hover:bg-indigo-100 text-slate-600 group-hover:text-indigo-700 font-semibold flex items-center justify-center text-sm transition">${letter}</span>
+                        <span class="text-slate-800 font-medium">${item.text}</span>
+                    </div>
+                `;
+
+                const isAnswerSelected = userAnswers[currentIndex] !== null;
+                const selectedOriginalIdx = userAnswers[currentIndex];
+
+                if (isAnswerSelected) {
+                    btn.disabled = true;
+                    if (item.originalIdx === q.answer) {
+                        btn.classList.add('bg-emerald-50', 'border-emerald-300', 'text-emerald-900');
+                        btn.querySelector('span').classList.remove('bg-slate-100', 'text-slate-600');
+                        btn.querySelector('span').classList.add('bg-emerald-200', 'text-emerald-800');
+                    } else if (item.originalIdx === selectedOriginalIdx) {
+                        btn.classList.add('bg-rose-50', 'border-rose-300', 'text-rose-900');
+                        btn.querySelector('span').classList.remove('bg-slate-100', 'text-slate-600');
+                        btn.querySelector('span').classList.add('bg-rose-200', 'text-rose-800');
+                    }
+                } else {
+                    btn.onclick = () => selectOption(item.originalIdx, q.answer);
+                }
+
+                optionsContainer.appendChild(btn);
+            });
+
+            // Explanation box state
+            if (userAnswers[currentIndex] !== null) {
+                const isCorrect = userAnswers[currentIndex] === q.answer;
+                explanationBox.classList.remove('hidden');
+                if (isCorrect) {
+                    explanationBox.className = "mt-6 p-4 rounded-xl border bg-emerald-50 border-emerald-200 text-emerald-900 text-sm transition-all";
+                    explanationTitle.innerHTML = "✅ Correct Answer!";
+                } else {
+                    explanationBox.className = "mt-6 p-4 rounded-xl border bg-rose-50 border-rose-200 text-rose-900 text-sm transition-all";
+                    explanationTitle.innerHTML = "❌ Incorrect Answer.";
+                }
+                explanationText.textContent = q.explanation;
+            } else {
+                explanationBox.classList.add('hidden');
+            }
+
+            // Buttons state
+            prevBtn.disabled = currentIndex === 0;
+            nextBtn.textContent = currentIndex === quizData.length - 1 ? 'Finish Quiz 🏁' : 'Next →';
+        }
+
+        function stringHash(str) {
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                hash = (hash << 5) - hash + str.charCodeAt(i);
+                hash |= 0;
+            }
+            return Math.abs(hash);
+        }
+
+        function selectOption(selectedOriginalIdx, correctOriginalIdx) {
+            userAnswers[currentIndex] = selectedOriginalIdx;
+            
+            const isCorrect = selectedOriginalIdx === correctOriginalIdx;
+            if (isCorrect) {
+                score++;
+            }
+            scoreDisplay.textContent = `${score} / ${quizData.length}`;
+
+            loadQuestion();
+        }
+
+        hintToggle.onclick = () => {
+            hintBox.classList.toggle('hidden');
+        };
+
+        prevBtn.onclick = () => {
+            if (currentIndex > 0) {
+                currentIndex--;
+                loadQuestion();
+            }
+        };
+
+        nextBtn.onclick = () => {
+            if (currentIndex < quizData.length - 1) {
+                currentIndex++;
+                loadQuestion();
+            } else {
+                alert(`Quiz Completed! Your Final Score is ${score} out of ${quizData.length}. Excellent work preparing for your Haryana GK exams!`);
+            }
+        };
+
+        jumpBtn.onclick = () => {
+            let val = parseInt(jumpInput.value);
+            if (!isNaN(val) && val >= 1 && val <= quizData.length) {
+                currentIndex = val - 1;
+                loadQuestion();
+                jumpInput.value = '';
+            } else {
+                alert(`Please enter a valid question number between 1 and ${quizData.length}`);
+            }
+        };
+
+        // Initial load
+        loadQuestion();
+    </script>
+<script src="../../quiz-question-controls.js"></script>
+<script src="../../quiz-app-ui-v2.js"></script></body>
+</html>

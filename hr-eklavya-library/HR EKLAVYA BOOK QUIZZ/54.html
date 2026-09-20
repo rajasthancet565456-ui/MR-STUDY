@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haryana GK Interactive Quiz - 80 Questions (Bilingual)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .transition-all { transition: all 0.3s ease; }
+    </style>
+<style id="cosmic-readable-quiz-theme">
+:root{--space:#e8dcff;--panel:#f3eaff;--panel2:#dcc6ff;--edge:#6a45bf;--glow:#d28b28;--accent:#d15f9f;--ink:#2c1b4d;--muted:#66547c;--mist:rgba(106,69,191,.2)}html{background:var(--space)}body{background:radial-gradient(ellipse 62% 45% at 90% -5%,rgba(209,95,159,.28),transparent 62%),radial-gradient(ellipse 55% 40% at 8% 100%,rgba(65,164,207,.26),transparent 64%),var(--space)!important;color:var(--ink)!important;min-height:100vh}body:before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.78;background-image:radial-gradient(circle at 9% 18%,var(--glow) 0 1px,transparent 1.7px),radial-gradient(circle at 26% 69%,var(--edge) 0 .8px,transparent 1.5px),radial-gradient(circle at 68% 24%,var(--accent) 0 1px,transparent 1.8px),radial-gradient(circle at 88% 73%,#47a8d3 0 .8px,transparent 1.5px);background-size:220px 190px,300px 270px,260px 230px,340px 310px;z-index:-1}header{background:linear-gradient(105deg,var(--panel),var(--panel2))!important;border-color:rgba(106,69,191,.25)!important;box-shadow:0 7px 24px rgba(84,48,142,.14)!important}header h1{color:var(--edge)!important;text-shadow:none!important}header p,header .text-slate-400,header .text-indigo-200,header .text-indigo-300{color:var(--muted)!important}main>div,#quiz-card,.bg-slate-800,.bg-slate-900,.bg-indigo-900,.bg-indigo-950{background:linear-gradient(145deg,#f8f0ff,var(--panel))!important;border-color:rgba(106,69,191,.22)!important;color:var(--ink)!important;box-shadow:0 14px 35px rgba(84,48,142,.12)!important}.bg-slate-700,.bg-slate-100,.bg-slate-50{background:#eadffd!important;color:var(--ink)!important}.text-slate-100,.text-slate-200,.text-slate-300,.text-slate-400,.text-white,.text-slate-800,.text-slate-700,.text-slate-600{color:var(--ink)!important}.text-indigo-400,.text-indigo-300,.text-emerald-400,.text-yellow-300{color:var(--edge)!important}.border-slate-700,.border-slate-700\/60,.border-indigo-700,.border-slate-200{border-color:rgba(106,69,191,.25)!important}button:not(.bg-green-600):not(.bg-red-600){background:#f9f2ff!important;color:var(--ink)!important;border:1px solid rgba(106,69,191,.25)!important;box-shadow:0 3px 10px rgba(84,48,142,.09)!important}button.bg-indigo-600,button.bg-slate-800,button.bg-slate-900,button.bg-indigo-900{background:linear-gradient(120deg,var(--edge),var(--accent))!important;color:#fff!important;border:0!important}button.bg-indigo-600 *,button.bg-slate-800 *,button.bg-slate-900 *,button.bg-indigo-900 *{color:#fff!important}button:hover{filter:brightness(1.04);transform:translateY(-1px)}input,select,textarea{background:#f9f2ff!important;border-color:rgba(106,69,191,.35)!important;color:var(--ink)!important}input:focus,select:focus,textarea:focus{outline:none!important;border-color:var(--edge)!important;box-shadow:0 0 0 3px var(--mist)!important}.bg-indigo-500,#progress-bar{background:linear-gradient(90deg,var(--edge),var(--accent),var(--glow))!important}.rounded-2xl{border-radius:1.25rem!important}
+</style></head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col justify-between">
+
+    <!-- Header -->
+    <header class="bg-indigo-700 text-white shadow-md py-4 px-6 sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
+            <div>
+                <h1 class="text-xl font-bold tracking-wide">Haryana GK Master Quiz (80 Qs)</h1>
+                <p class="text-xs text-indigo-200">Bilingual (English & Hindi) | Exam-Level Depth</p>
+            </div>
+            <div class="flex items-center gap-4 text-sm">
+                <div class="bg-indigo-800 px-3 py-1.5 rounded-lg border border-indigo-600">
+                    Score: <span id="score-display" class="font-bold text-emerald-400">0</span> / <span id="total-display">80</span>
+                </div>
+                <div class="bg-indigo-800 px-3 py-1.5 rounded-lg border border-indigo-600">
+                    Q: <span id="current-q-num" class="font-bold">1</span> / 80
+                </div>
+            </div>
+        </div>
+        <!-- Progress Bar -->
+        <div class="max-w-4xl mx-auto w-full bg-indigo-900 h-2 rounded-full mt-3 overflow-hidden">
+            <div id="progress-bar" class="bg-emerald-400 h-full w-0 transition-all"></div>
+        </div>
+    </header>
+
+    <!-- Main Quiz Container -->
+    <main class="max-w-3xl mx-auto w-full p-4 sm:p-6 my-4 flex-grow">
+        <div id="quiz-card" class="bg-white rounded-2xl shadow-xl p-6 sm:p-8 border border-slate-100 relative">
+            
+            <!-- Question Meta -->
+            <div class="flex justify-between items-center text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-3">
+                <span id="question-category" class="bg-indigo-50 px-2.5 py-1 rounded-md">Page 1: Historical Events & Rulers</span>
+                <button id="hint-toggle-btn" onclick="toggleHint()" class="text-amber-600 bg-amber-50 hover:bg-amber-100 px-2.5 py-1 rounded-md transition-all flex items-center gap-1">
+                    💡 Toggle Hint
+                </button>
+            </div>
+
+            <!-- Hint Box -->
+            <div id="hint-box" class="hidden bg-amber-50 border-l-4 border-amber-500 p-3 text-sm text-amber-800 mb-4 rounded-r-lg">
+                <span class="font-semibold">Hint:</span> <span id="hint-text"></span>
+            </div>
+
+            <!-- Question Text (Bilingual) -->
+            <div class="mb-6 space-y-2">
+                <h2 id="q-text-en" class="text-lg sm:text-xl font-bold text-slate-900"></h2>
+                <h3 id="q-text-hi" class="text-base sm:text-lg font-medium text-indigo-900"></h3>
+            </div>
+
+            <!-- Options Grid -->
+            <div id="options-container" class="grid grid-cols-1 gap-3 mb-6">
+                <!-- Dynamically injected options -->
+            </div>
+
+            <!-- Explanation Box -->
+            <div id="explanation-box" class="hidden bg-slate-50 border-l-4 border-indigo-600 p-4 rounded-r-lg mb-6 text-sm">
+                <p class="font-bold text-indigo-900 mb-1">Explanation / Rationale:</p>
+                <p id="explanation-en" class="text-slate-700 mb-2"></p>
+                <p id="explanation-hi" class="text-slate-800 font-medium"></p>
+            </div>
+
+            <!-- Navigation Controls -->
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-4 pt-4 border-t border-slate-100">
+                <div class="flex items-center gap-2 w-full sm:w-auto">
+                    <button onclick="prevQuestion()" id="prev-btn" class="flex-1 sm:flex-none px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-lg transition-all disabled:opacity-50">
+                        ← Previous
+                    </button>
+                    <button onclick="nextQuestion()" id="next-btn" class="flex-1 sm:flex-none px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition-all">
+                        Next →
+                    </button>
+                </div>
+
+                <!-- Jump to Question -->
+                <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+                    <span class="text-xs text-slate-500 font-medium">Jump to Q:</span>
+                    <input type="number" id="jump-input" min="1" max="80" class="w-16 px-2 py-1 border border-slate-300 rounded-lg text-center text-sm focus:outline-none focus:border-indigo-600">
+                    <button onclick="jumpToQuestion()" class="px-3 py-1 bg-slate-700 hover:bg-slate-800 text-white text-sm font-semibold rounded-lg transition-all">
+                        Go
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-500">
+        Haryana GK Interactive Quiz Application &bull; Built with Tailwind CSS & JavaScript
+    </footer>
+
+    <!-- Quiz Logic Script -->
+    <script>
+        // 80 Complete Unique Questions Dataset (40 from Page 1, 40 from Page 2)
+        const questions = [
+            // ================= PAGE 1 QUESTIONS (1 - 40) =================
+            {
+                page: 1,
+                cat: "Page 1: Monuments & Early Leaders",
+                en: "1. Birbal's Chhata (Chhata) was constructed during the reign of which Mughal emperor?",
+                hi: "1. बीरबल का छाता (छत्ता) का निर्माण किस मुगल सम्राट के समय हुआ था?",
+                optionsEn: ["Akbar", "Shah Jahan", "Aurangzeb", "Jahangir"],
+                optionsHi: ["अकबर", "शाहजहां", "औरंगजेब", "जहांगीर"],
+                correct: 1,
+                hint: "Constructed during Shah Jahan's reign.",
+                expEn: "Birbal's Chhata in Rewari was constructed during the reign of Shah Jahan.",
+                expHi: "रेवाड़ी में स्थित बीरबल का छाता (छत्ता) का निर्माण शाहजहां के समय हुआ था।"
+            },
+            {
+                page: 1,
+                cat: "Page 1: Monuments & Early Leaders",
+                en: "2. Which individual established Ahir rule in Rewari during the reign of Aurangzeb?",
+                hi: "2. औरंगजेब के समय रेवाड़ी में अहीर शासन की स्थापना किस व्यक्ति ने की थी?",
+                optionsEn: ["Rao Tej Singh", "Nandram Ahir", "Raja Surajmal", "Rao Gopal Singh"],
+                optionsHi: ["राव तेज सिंह", "नंदराम अहीर", "राजा सूरजमल", "राव गोपाल सिंह"],
+                correct: 1,
+                hint: "He was born in Garhbronli village.",
+                expEn: "Nandram Ahir established Ahir rule in Rewari during Aurangzeb's period.",
+                expHi: "औरंगजेब के समय रेवाड़ी में अहीर शासन की स्थापना नंदराम अहीर ने की थी।"
+            },
+            {
+                page: 1,
+                cat: "Page 1: Monuments & Early Leaders",
+                en: "3. Nandram Ahir was born in which of the following villages?",
+                hi: "3. नंदराम अहीर का जन्म निम्नलिखित में से किस गांव में हुआ था?",
+                optionsEn: ["Garhbronli village", "Dharuhera village", "Sihri Khandi", "Bahrampur"],
+                optionsHi: ["गढ़ब्रोलनी गांव", "धारूहेड़ा गांव", "सिहरी खांडी", "बहरामपुर"],
+                correct: 0,
+                hint: "Starts with G.",
+                expEn: "Nandram Ahir was born in Garhbronli village.",
+                expHi: "नंदराम अहीर का जन्म गढ़ब्रोलनी गांव में हुआ था।"
+            },
+            {
+                page: 1,
+                cat: "Page 1: Monuments & Early Leaders",
+                en: "4. Which city was founded by Nandram Ahir, alongside constructing Rani ki Dhyodi and Kanot Gate in Rewari?",
+                hi: "4. नंदराम अहीर ने किस शहर को बसाया था, और इसके अलावा रेवाड़ी में रानी की ड्योढ़ी व कानोट दरवाजा का निर्माण करवाया था?",
+                optionsEn: ["Hansi", "Dharuhera", "Jhajjar", "Rania"],
+                optionsHi: ["हांसी", "धारूहेड़ा", "झज्जर", "रानियां"],
+                correct: 1,
+                hint: "An industrial hub today in Rewari district.",
+                expEn: "Nandram Ahir founded Dharuhera city and built Rani ki Dhyodi, Kanot Gate, and Baganwala Talab in Rewari.",
+                expHi: "नंदराम अहीर ने धारूहेड़ा शहर बसाया, इसके अलावा रानी की ड्योढ़ी, कानोट दरवाजा व बागनवाला तालाब रेवाड़ी का निर्माण करवाया।"
+            },
+            {
+                page: 1,
+                cat: "Page 1: Historical Battles",
+                en: "5. In which year did the Battle of Bhagani take place?",
+                hi: "5. भगानी युद्ध किस वर्ष हुआ था?",
+                optionsEn: ["1670", "1688", "1710", "1761"],
+                optionsHi: ["1670", "1688", "1710", "1761"],
+                correct: 1,
+                hint: "Late 17th century (1688).",
+                expEn: "The Battle of Bhagani took place in 1688.",
+                expHi: "भगानी युद्ध 1688 में हुआ था।"
+            },
+            {
+                page: 1,
+                cat: "Page 1: Historical Battles",
+                en: "6. While proceeding for the Battle of Bhagani, Guru Gobind Singh stayed at which place in Panchkula?",
+                hi: "6. गुरु गोविंद सिंह जब युद्ध के लिए जा रहे थे तो रास्ते में गुरुद्वारा नड्डा साहिब, पंचकूला में रुके थे, यह किस युद्ध से संबंधित है?",
+                optionsEn: ["Battle of Karnal", "Battle of Bhagani", "Third Battle of Panipat", "Battle of Beri"],
+                optionsHi: ["करनाल का युद्ध", "भगानी युद्ध", "पानीपत का तीसरा युद्ध", "बेरी का युद्ध"],
+                correct: 1,
+                hint: "Related to the 1688 conflict.",
+                expEn: "Guru Gobind Singh stayed at Nada Sahib, Panchkula on his way to the Battle of Bhagani (1688).",
+                expHi: "गुरु गोविंद सिंह भगानी युद्ध के लिए जाते समय रास्ते में गुरुद्वारा नड्डा साहिब, पंचकूला में रुके थे।"
+            },
+            {
+                page: 1,
+                cat: "Page 1: Jat Revolts & Rulers",
+                en: "7. Rajaram Jat looted the tomb of which Mughal emperor and burnt his bones during the 1688 revolt?",
+                hi: "7. राजाराम जाट ने 1688 के विद्रोह में किस मुगल सम्राट के मकबरे को लूटकर उसकी अस्थियां निकाल कर जला दी थीं?",
+                optionsEn: ["Babur", "Humayun", "Akbar", "Aurangzeb"],
+                optionsHi: ["बाबर", "हुमायूं", "अकबर", "औरंगजेब"],
+                correct: 2,
+                hint: "Tomb located in Sikandra, Agra.",
+                expEn: "Rajaram Jat looted Akbar's tomb and burnt his bones in 1688.",
+                expHi: "राजाराम जाट ने 1688 में अकबर के मकबरे को लूटकर उसकी अस्थियां निकाल कर जला दी थीं।"
+            },
+            {
+                page: 1,
+                cat: "Page 1: Jat Revolts & Rulers",
+                en: "8. Who became the successor of Rajaram Jat, followed by Badan Singh?",
+                hi: "8. राजाराम जाट का उत्तराधिकारी कौन जाट शासक बना व उसके बाद कौन बना?",
+                optionsEn: ["Churaman & Badan Singh", "Surajmal & Gajpat Singh", "Nandram & Jodh Singh", "Jabit Khan & Pratap Singh"],
+                optionsHi: ["चूड़ामन व बदन सिंह", "सूरजमल व गजपत सिंह", "नंदराम व जोध सिंह", "जाबित खान व प्रताप सिंह"],
+                correct: 0,
+                hint: "Churaman was the immediate successor.",
+                expEn: "Rajaram Jat's successor was Jat ruler Churaman, and Churaman's successor was Badan Singh.",
+                expHi: "राजाराम जाट का उत्तराधिकारी जाट शासक चूड़ामन बना व चूड़ामन का उत्तराधिकारी बदन सिंह बना।"
+            },
+            {
+                page: 1,
+                cat: "Page 1: Banda Bahadur",
+                en: "9. Banda Bahadur Bairagi was born in 1670 in which region?",
+                hi: "9. बन्दा बहादुर बैरागी का जन्म 1670 में कहां हुआ था?",
+                optionsEn: ["Haryana", "Kashmir", "Punjab", "Delhi"],
+                optionsHi: ["हरियाणा", "कश्मीर", "पंजाब", "दिल्ली"],
+                correct: 1,
+                hint: "Northern mountainous region.",
+                expEn: "Banda Bahadur Bairagi was born in 1670 in Kashmir.",
+                expHi: "बन्दा बहादुर बैरागी का जन्म 1670 में कश्मीर में हुआ था।"
+            },
+            {
+                page: 1,
+                cat: "Page 1: Banda Bahadur",
+                en: "10. What was the childhood name of Banda Bahadur Bairagi?",
+                hi: "10. बन्दा बहादुर बैरागी का बचपन का नाम क्या था?",
+                optionsEn: ["Laxman Singh", "Pratap Singh", "Jodh Singh", "Gulab Singh"],
+                optionsHi: ["लक्ष्मण सिंह", "प्रताप सिंह", "जोधि सिंह", "गुलाब सिंह"],
+                correct: 0,
+                hint: "Starts with Laxman.",
+                expEn: "The childhood name of Banda Bahadur Bairagi was Laxman Singh.",
+                expHi: "बन्दा बहादुर बैरागी का बचपन का नाम लक्ष्मण सिंह था।"
+            },
+            {
+                page: 1,
+                cat: "Page 1: Banda Bahadur",
+                en: "11. What was the caste/sect of Banda Bahadur Bairagi?",
+                hi: "11. बन्दा बहादुर बैरागी की जाति क्या थी?",
+                optionsEn: ["Jat", "Rajput", "Vaishya, Bairagi", "Ahir"],
+                optionsHi: ["जाट", "राजपूत", "वैश्य, बैरागी", "अहीर"],
+                correct: 2,
+                hint: "Vaishya, Bairagi.",
+                expEn: "Banda Bahadur belonged to the Vaishya, Bairagi caste/sect.",
+                expHi: "बन्दा बहादुर बैरागी की जाति वैश्य, बैरागी थी।"
+            },
+            {
+                page: 1,
+                cat: "Page 1: Banda Bahadur",
+                en: "12. Where was the headquarters (Mukhyalay) of Banda Bahadur located?",
+                hi: "12. बन्दा बहादुर का मुख्यालय कहां स्थित था?",
+                optionsEn: ["Hansi", "Sihri Khandi (Sonipat)", "Rewari", "Jhajjar"],
+                optionsHi: ["हांसी", "सिहरी खांडी (सोनीपत)", "रेवाड़ी", "झज्जर"],
+                correct: 1,
+                hint: "Located in Sonipat district.",
+                expEn: "The headquarters of Banda Bahadur was at Sihri Khandi in Sonipat.",
+                expHi: "बन्दा बहादुर का मुख्यालय सिहरी खांडी (सोनीपत) में था।"
+            },
+            {
+                page: 1,
+                cat: "Page 1: Banda Bahadur",
+                en: "13. In which year did Banda Bahadur start his struggle against the Mughals?",
+                hi: "13. बन्दा बहादुर का संघर्ष किस वर्ष शुरू हुआ था?",
+                optionsEn: ["1688", "1700", "1710", "1761"],
+                optionsHi: ["1688", "1700", "1710", "1761"],
+                correct: 2,
+                hint: "Year 1710.",
+                expEn: "Banda Bahadur's struggle began in 1710 after Guru Gobind Singh's death.",
+                expHi: "बन्दा बहादुर का संघर्ष 1710 में शुरू हुआ था।"
+            },
+            {
+                page: 1,
+                cat: "Page 1: Banda Bahadur",
+                en: "14. During the reign of which Mughal emperor did Banda Bahadur face death in 1716?",
+                hi: "14. 1716 में किस मुगल बादशाह के समय बन्दा बहादुर की मृत्यु हुई थी?",
+                optionsEn: ["Aurangzeb", "Bahadur Shah", "Shah Alam", "Muhammad Shah"],
+                optionsHi: ["औरंगजेब", "बहादुर शाह", "शाह आलम", "मुहम्मद शाह"],
+                correct: 1,
+                hint: "Emperor Bahadur Shah's time.",
+                expEn: "Banda Bahadur died in 1716 during the reign of Mughal Emperor Bahadur Shah.",
+                expHi: "1716 में मुगल बादशाह बहादुर शाह के समय बन्दा बहादुर की मृत्यु हुई थी।"
+            },
+            {
+                page: 1,
+                cat: "Page 1: Culture & Taxes",
+                en: "15. In which year did the tradition of 'Sang' start in Haryana?",
+                hi: "15. हरियाणा में सांग की शुरुआत किस वर्ष हुई थी?",
+                optionsEn: ["1700", "1730", "1761", "1803"],
+                optionsHi: ["1700", "1730", "1761", "1803"],
+                correct: 1,
+                hint: "The year 1730.",
+                expEn: "Sang started in Haryana in 1730, and its golden age was 1730-1739.",
+                expHi: "हरियाणा में सांग की शुरुआत 1730 में हुई थी तथा इसका स्वर्ण काल 1730-1739 रहा।"
+            },
+            {
+                page: 1,
+                cat: "Page 1: Culture & Taxes",
+                en: "16. What was the golden age period of 'Sang' in Haryana?",
+                hi: "16. हरियाणा में सांग का स्वर्ण काल कौन सा अवधि रहा?",
+                optionsEn: ["1700-1710", "1730-1739", "1750-1760", "1799-1802"],
+                optionsHi: ["1700-1710", "1730-1739", "1750-1760", "1799-1802"],
+                correct: 1,
+                hint: "Spans 9 years in the 18th century.",
+                expEn: "The golden age of Sang in Haryana was from 1730 to 1739.",
+                expHi: "हरियाणा में सांग का स्वर्ण काल 1730 से 1739 तक रहा।"
+            },
+            {
+                page: 1,
+                cat: "Page 1: Culture & Taxes",
+                en: "17. What fraction of land tax (bhu-kar) was collected from farmers by the British in the state?",
+                hi: "17. राज्य में अंग्रेजों द्वारा किसानों से भू-कर के रूप में कितना हिस्सा लिया जाता था?",
+                optionsEn: ["1/4 part", "1/6 part", "1/3 part", "1/2 part"],
+                optionsHi: ["1/4 हिस्सा", "1/6 हिस्सा", "1/3 हिस्सा", "1/2 हिस्सा"],
+                correct: 1,
+                hint: "One-sixth (1/6).",
+                expEn: "Farmers paid 1/6 part of land tax to the British, while native states collected 1/4 part.",
+                expHi: "राज्य में अंग्रेजों द्वारा किसानों से भू-कर के रूप में 1/6 हिस्सा लिया जाता था।"
+            },
+            {
+                page: 1,
+                cat: "Page 1: Culture & Taxes",
+                en: "18. What fraction of land tax was collected from farmers by native states (desi riyasaten)?",
+                hi: "18. राज्य में देशी रियासतों के द्वारा किसानों से भू-कर के रूप में कितना हिस्सा लिया जाता था?",
+                optionsEn: ["1/6 part", "1/4 part", "1/2 part", "1/8 part"],
+                optionsHi: ["1/6 हिस्सा", "1/4 हिस्सा", "1/2 हिस्सा", "1/8 हिस्सा"],
+                correct: 1,
+                hint: "One-fourth (1/4).",
+                expEn: "Native states collected 1/4 part as land tax from farmers.",
+                expHi: "राज्य में देशी रियासतों के द्वारा किसानों से भू-कर के रूप में 1/4 हिस्सा लिया जाता था।"
+            },
+            {
+                page: 1,
+                cat: "Page 1: Panipat & Abdali",
+                en: "19. On which exact date did the Third Battle of Panipat take place?",
+                hi: "19. पानीपत का तीसरा युद्ध किस तिथि को हुआ था?",
+                optionsEn: ["14 January 1761", "15 October 1754", "30 December 1803", "25 December 1764"],
+                optionsHi: ["14 जनवरी 1761", "15 अक्टूबर 1754", "30 दिसंबर 1803", "25 दिसंबर 1764"],
+                correct: 0,
+                hint: "Mid-January 1761.",
+                expEn: "The Third Battle of Panipat took place on 14 January 1761 between Ahmad Shah Abdali and Marathas.",
+                expHi: "पानीपत का तीसरा युद्ध 14 जनवरी, 1761 को अहमद शाह अब्दाली व मराठों के बीच हुआ था।"
+            },
+            {
+                page: 1,
+                cat: "Page 1: Panipat & Abdali",
+                en: "20. Who emerged victorious in the Third Battle of Panipat?",
+                hi: "20. पानीपत के तीसरे युद्ध में कौन विजेता रहा था?",
+                optionsEn: ["Marathas", "Ahmad Shah Abdali (Afghanistan)", "Nadir Shah", "George Thomas"],
+                optionsHi: ["मराठे", "अहमदशाह अब्दाली (अफगानिस्तान)", "नादिर शाह", "जर्ज थॉमस"],
+                correct: 1,
+                hint: "Leader from Afghanistan.",
+                expEn: "Ahmad Shah Abdali from Afghanistan won the Third Battle of Panipat.",
+                expHi: "पानीपत के तीसरे युद्ध में अहमदशाह अब्दाली (अफगानिस्तान) विजेता रहा था।"
+            },
+            {
+                page: 1,
+                cat: "Page 1: Panipat & Abdali",
+                en: "21. To whom did Ahmad Shah Abdali hand over the captured territories after winning the battle?",
+                hi: "21. अहमदशाह अब्दाली ने अपने जीते हुए प्रदेश किसे सौंप दिए थे?",
+                optionsEn: ["Najib Khan", "Raja Churaman", "Raja Surajmal", "Rao Tej Singh"],
+                optionsHi: ["नजीब खान", "राजा चूड़ामन", "राजा सूरजमल", "राव तेज सिंह"],
+                correct: 0,
+                hint: "Najib Khan.",
+                expEn: "Ahmad Shah Abdali handed over his conquered territories to Najib Khan.",
+                expHi: "अहमदशाह अब्दाली ने अपने जीते हुए प्रदेश नजीब खान को सौंप दिए थे।"
+            },
+            {
+                page: 1,
+                cat: "Page 1: Jat Rulers",
+                en: "22. Mughal ruler Bahadur Shah accepted the political status of which Jat ruler?",
+                hi: "22. मुगल शासक बहादुरशाह ने किस राजा जाट शासक की राजनैतिक हैसियत को स्वीकार किया था?",
+                optionsEn: ["Raja Surajmal", "Raja Churaman", "Raja Gajpat Singh", "Rao Nandram"],
+                optionsHi: ["राजा सूरजमल", "राजा चूड़ामन", "राजा गजपत सिंह", "राव नंदराम"],
+                correct: 1,
+                hint: "Raja Churaman.",
+                expEn: "Mughal ruler Bahadur Shah accepted the political status of Jat ruler Raja Churaman.",
+                expHi: "मुगल शासक बहादुरशाह ने राजा चूड़ामन नामक राजा जाट शासक की राजनैतिक हैसियत को स्वीकार किया था।"
+            },
+            {
+                page: 1,
+                cat: "Page 1: Kurukshetra & Surajmal",
+                en: "23. On October 15, 1754, which holy place was given to the Marathas by the then Mughal emperor Alamgir?",
+                hi: "23. 15 अक्टूबर, 1754 को तत्कालीन मुगल सम्राट आलमगीर ने मराठों को कौन सा पवित्र स्थान दिया था?",
+                optionsEn: ["Panipat", "Kurukshetra", "Hansi", "Karnal"],
+                optionsHi: ["पानीपत", "कुरुक्षेत्र", "हांसी", "करनाल"],
+                correct: 1,
+                hint: "Famous religious city in Haryana.",
+                expEn: "On October 15, 1754, Mughal Emperor Alamgir gave Kurukshetra to the Marathas.",
+                expHi: "15 अक्टूबर, 1754 को तत्कालीन मुगल सम्राट आलमगीर ने मराठों को कुरुक्षेत्र पवित्र स्थान दिया था।"
+            },
+            {
+                page: 1,
+                cat: "Page 1: Kurukshetra & Surajmal",
+                en: "24. What titles were bestowed upon Raja Surajmal (1755-1764)?",
+                hi: "24. राजा सूरजमल (1755-1764) को किन उपनामों से जाना जाता है?",
+                optionsEn: ["Plato of Jats & Aflatun", "Tiger of Haryana", "Lion of Punjab", "Hero of Rohtak"],
+                optionsHi: ["जाटों का प्लेटो व अफलातून", "हरियाणा का बाघ", "पंजाब का शेर", "रोहतक का हीरो"],
+                correct: 0,
+                hint: "Plato of Jats and Aflatun.",
+                expEn: "Raja Surajmal was also known as the Plato of Jats and Aflatun.",
+                expHi: "राजा सूरजमल को जाटों का प्लेटो व अफलातून भी कहा जाता है।"
+            },
+            {
+                page: 1,
+                cat: "Page 1: Kurukshetra & Surajmal",
+                en: "25. Which qualities were found in Jat ruler Raja Surajmal?",
+                hi: "25. जाट शासक राजा सूरजमल में किन लोगों के गुण विद्यमान थे?",
+                optionsEn: ["Afghan, Rohilla & Maratha", "British & French", "Sikh & Mughal", "Ahir & Rajput"],
+                optionsHi: ["अफगान, रूहेला व मराठे", "ब्रिटिश व फ्रांसीसी", "सिख व मुगल", "अहीर व राजपूत"],
+                correct: 0,
+                hint: "Afghan, Rohilla and Maratha.",
+                expEn: "Qualities of Afghans, Rohillas, and Marathas were present in Jat ruler Raja Surajmal.",
+                expHi: "इस जाट शासक में अफगान, रूहेला व मराठों के सब गुण विद्यमान थे।"
+            },
+            {
+                page: 1,
+                cat: "Page 1: Kurukshetra & Surajmal",
+                en: "26. On which date and riverbank did Jat ruler Raja Surajmal die?",
+                hi: "26. जाट राजा सूरजमल की हत्या 25 दिसंबर, 1764 को किस नदी के किनारे हुई थी?",
+                optionsEn: ["Yamuna river", "Hindon river", "Ghaggar river", "Markanda river"],
+                optionsHi: ["यमुना नदी", "हिडन नदी", "घग्गर नदी", "मार्तंड नदी"],
+                correct: 1,
+                hint: "Hindon river.",
+                expEn: "Jat ruler Raja Surajmal was killed on 25 December 1764 on the banks of the Hindon river.",
+                expHi: "जाट राजा सूरजमल की हत्या 25 दिसंबर, 1764 को हिडन नदी के किनारे हुई थी।"
+            },
+            {
+                page: 1,
+                cat: "Page 1: Nadir Shah & Marathas",
+                en: "27. Nadir Shah invaded India in 1739 and defeated which Mughal emperor in Delhi?",
+                hi: "27. नादिर शाह का आक्रमण 1739 में दिल्ली के किस सम्राट से हुआ था जिसे उसने हराया था?",
+                optionsEn: ["Muhammad Shah", "Shah Alam", "Aurangzeb", "Bahadur Shah"],
+                optionsHi: ["मुहम्मदशाह", "शाह आलम", "औरंगजेब", "बहादुर शाह"],
+                correct: 0,
+                hint: "Muhammad Shah.",
+                expEn: "Nadir Shah invaded in 1739 and defeated Emperor Muhammad Shah, taking the Kohinoor diamond and Peacock Throne.",
+                expHi: "नादिर शाह ने 1739 में दिल्ली के सम्राट मौहम्मदशाह से कोहिनूर हीरा छीन लिया व मयूर सिंहासन ले गया।"
+            },
+            {
+                page: 1,
+                cat: "Page 1: Nadir Shah & Marathas",
+                en: "28. By what name is Nadir Shah's invasion battle in 1739 famously known?",
+                hi: "28. नादिर शाह का 1739 का आक्रमण किस युद्ध के नाम से प्रसिद्ध है?",
+                optionsEn: ["Battle of Karnal", "Battle of Panipat", "Battle of Bhagani", "Battle of Beri"],
+                optionsHi: ["करनाल का युद्ध", "पानीपत का युद्ध", "भगानी युद्ध", "बेरी का युद्ध"],
+                correct: 0,
+                hint: "Battle named after a major Haryana city.",
+                expEn: "Nadir Shah's invasion is famously known as the Battle of Karnal.",
+                expHi: "यह युद्ध करनाल युद्ध के नाम से प्रसिद्ध है।"
+            },
+            {
+                page: 1,
+                cat: "Page 1: Nadir Shah & Marathas",
+                en: "29. During which period did Maratha authority remain continuously over Haryana?",
+                hi: "29. हरियाणा पर मराठों का अधिकार कब तक रहा था?",
+                optionsEn: ["17th Century", "18th Century (1756-1757 completely)", "19th Century", "16th Century"],
+                optionsHi: ["17वीं शताब्दी", "18वीं शताब्दी (1756-1757 पूर्णतया)", "19वीं शताब्दी", "16वीं शताब्दी"],
+                correct: 1,
+                hint: "18th century.",
+                expEn: "Maratha authority over Haryana remained during the 18th century (completely by 1756-1757).",
+                expHi: "हरियाणा पर मराठों का अधिकार रहा - 18वीं शताब्दी (1756-1757 पूर्णतया)।"
+            },
+            {
+                page: 1,
+                cat: "Page 1: Nadir Shah & Marathas",
+                en: "30. The development of painting and Bhakti Kal in Haryana occurred during which century?",
+                hi: "30. हरियाणा में चित्रकला का विकास तथा भक्ति काल किस शताब्दी को कहा जाता है?",
+                optionsEn: ["16th Century", "17th Century", "18th Century", "19th Century"],
+                optionsHi: ["16वीं शताब्दी", "17वीं शताब्दी", "18वीं शताब्दी", "19वीं शताब्दी"],
+                correct: 2,
+                hint: "18th century.",
+                expEn: "Painting development and Bhakti Kal in Haryana both belong to the 18th century.",
+                expHi: "हरियाणा में चित्रकला का विकास व भक्ति काल 18वीं शताब्दी को कहा जाता है।"
+            },
+            {
+                page: 1,
+                cat: "Page 1: Jind State & George Thomas",
+                en: "31. Jind state was established in 1764 by which ruler?",
+                hi: "31. जींद रियासत की स्थापना 1764 में किस राजा द्वारा की गई थी?",
+                optionsEn: ["Raja Gajpat Singh", "Ranbir Singh", "George Thomas", "Raja Surajmal"],
+                optionsHi: ["राजा गजपत सिंह", "रणवीर सिंह", "जर्ज थॉमस", "राजा सूरजमल"],
+                correct: 0,
+                hint: "Raja Gajpat Singh.",
+                expEn: "Jind state was established in 1764 by Raja Gajpat Singh.",
+                expHi: "जींद रियासत की स्थापना - 1764, राजा गजपत सिंह द्वारा की गई।"
+            },
+            {
+                page: 1,
+                cat: "Page 1: Jind State & George Thomas",
+                en: "32. Who was the last ruler of Jind state from 1887 to 1947?",
+                hi: "32. जींद रियासत के अंतिम शासक कौन थे जो 1887 से 1947 तक रहे?",
+                optionsEn: ["Ranbir Singh", "Gajpat Singh", "Surajmal", "Zabit Khan"],
+                optionsHi: ["रणवीर सिंह", "गजपत सिंह", "सूरजमल", "जाबित खान"],
+                correct: 0,
+                hint: "Ranbir Singh.",
+                expEn: "Ranbir Singh was the last ruler of Jind state from 1887 to 1947.",
+                expHi: "अंतिम शासक - रणवीर सिंह 1887 से 1947 तक रहे।"
+            },
+            {
+                page: 1,
+                cat: "Page 1: Jind State & George Thomas",
+                en: "33. What was the active tenure of George Thomas in Haryana?",
+                hi: "33. जार्ज थॉमस का कार्यकाल क्या था?",
+                optionsEn: ["1789-1792", "1799-1802", "1803-1809", "1814-1818"],
+                optionsHi: ["1789-1792", "1799-1802", "1803-1809", "1814-1818"],
+                correct: 1,
+                hint: "1799-1802.",
+                expEn: "George Thomas's tenure in Haryana was 1799-1802.",
+                expHi: "जार्ज थॉमस का कार्यकाल 1799-1802 था।"
+            },
+            {
+                page: 1,
+                cat: "Page 1: Jind State & George Thomas",
+                en: "34. In which year and place did George Thomas die?",
+                hi: "34. जार्ज थॉमस की मृत्यु 1802 में कहां हुई थी?",
+                optionsEn: ["Hansi", "Bahrampur", "Jhajjar", "Hisar"],
+                optionsHi: ["हांसी", "बहरामपुर", "झज्जर", "हिसार"],
+                correct: 1,
+                hint: "Bahrampur.",
+                expEn: "George Thomas died in 1802 in Bahrampur.",
+                expHi: "जर्ज थॉमस की मृत्यु 1802 में बहरामपुर में हुई थी।"
+            },
+            {
+                page: 1,
+                cat: "Page 1: Jind State & George Thomas",
+                en: "35. George Thomas belonged to which country, and in which year did he come to India?",
+                hi: "35. जर्ज थॉमस किस देश के थे और भारत कब आए थे?",
+                optionsEn: ["Ireland, 1782", "England, 1790", "France, 1775", "Portugal, 1785"],
+                optionsHi: ["आयरलैंड, 1782", "इंग्लैंड, 1790", "फ्रांस, 1775", "पुर्तगाल, 1785"],
+                correct: 0,
+                hint: "Ireland, 1782.",
+                expEn: "George Thomas was from Ireland and came to India in 1782.",
+                expHi: "जर्ज थॉमस आयरलैंड के थे और 1782 में भारत आए थे।"
+            },
+            {
+                page: 1,
+                cat: "Page 1: Jind State & George Thomas",
+                en: "36. What was the capital and the fort built by George Thomas?",
+                hi: "36. जार्ज थॉमस की राजधानी क्या थी और उसने किस किले का निर्माण करवाया था?",
+                optionsEn: ["Hansi & Jhajjar", "Hisar & Jind", "Rewari & Karnal", "Rania & Rohtak"],
+                optionsHi: ["हांसी व झज्जर", "हिसार व जींद", "रेवाड़ी व करनाल", "रानियां व रोहतक"],
+                correct: 0,
+                hint: "Capital Hansi, Fort Jhajjar.",
+                expEn: "George Thomas's capital was Hansi, and he built a fort in Jhajjar.",
+                expHi: "जर्ज थॉमस की राजधानी हांसी थी और किलों का निर्माण झज्जर में करवाया था।"
+            },
+            {
+                page: 1,
+                cat: "Page 1: Jind State & George Thomas",
+                en: "37. According to the note, where did George Thomas first arrive in 1782 before becoming a ruler?",
+                hi: "37. नोट के अनुसार जार्ज थॉमस सबसे पहले 1782 में कहां आया था और क्या बनकर लूटपाट की थी?",
+                optionsEn: ["Madras as a robber", "Bombay as a soldier", "Calcutta as a trader", "Surat as a sailor"],
+                optionsHi: ["मद्रास में डाकू बनकर", "बॉम्बे में सिपाही बनकर", "कलकत्ता में व्यापारी बनकर", "सुरत में नाविक बनकर"],
+                correct: 0,
+                hint: "Arrived in Madras as a robber.",
+                expEn: "George Thomas first came to Madras in 1782 and looted as a robber before joining Samru Begum.",
+                expHi: "जर्ज थॉमस सबसे पहले 1782 में मद्रास आया था और डाकू बनकर लूटपाट की तथा बाद में समरू बेगम के पास गया।"
+            },
+            {
+                page: 1,
+                cat: "Page 1: Jind State & George Thomas",
+                en: "38. In the 1789 Rewari war, whose life did George Thomas protect, earning Samru Begum's favor?",
+                hi: "38. 1789 के रेवाड़ी युद्ध में शाहआलम के प्राणों की रक्षा किसने की थी जिससे समरू बेगम ने खुश होकर उसे जागीर दी?",
+                optionsEn: ["George Thomas", "Nandram Ahir", "Raja Surajmal", "Banda Bahadur"],
+                optionsHi: ["जर्ज थॉमस", "नंदराम अहीर", "राजा सूरजमल", "बन्दा बहादुर"],
+                correct: 0,
+                hint: "George Thomas.",
+                expEn: "George Thomas protected Shah Alam's life in the 1789 Rewari war, earning Tappal jagir from Samru Begum.",
+                expHi: "1789 के रेवाड़ी युद्ध में शाहआलम के प्राणों की रक्षा जर्ज थॉमस ने की थी।"
+            },
+            {
+                page: 1,
+                cat: "Page 1: Jind State & George Thomas",
+                en: "39. How many villages were founded by George Thomas?",
+                hi: "39. जार्ज थॉमस द्वारा बसाए गए गांवों की संख्या कितनी थी?",
+                optionsEn: ["150", "200", "253", "300"],
+                optionsHi: ["150", "200", "253", "300"],
+                correct: 2,
+                hint: "253 villages.",
+                expEn: "The number of villages founded by George Thomas was 253.",
+                expHi: "जार्ज थॉमस द्वारा बसाए गए गांवों की संख्या 253 थी।"
+            },
+            {
+                page: 1,
+                cat: "Page 1: Jind State & George Thomas",
+                en: "40. Between whom was the First Battle of Beri fought in 1794?",
+                hi: "40. प्रथम बेरी युद्ध 1794 किसके बीच लड़ा गया था?",
+                optionsEn: ["Jats vs George Thomas", "Sikhs vs Marathas", "British vs Scindia", "Abdali vs Marathas"],
+                optionsHi: ["जाटों VS जर्ज थॉमस", "सिखों VS मराठों", "अंग्रेजों VS सिंधिया", "अब्दाली VS मराठे"],
+                correct: 0,
+                hint: "Jats versus George Thomas.",
+                expEn: "The First Battle of Beri in 1794 was fought between Jats and George Thomas.",
+                expHi: "प्रथम बेरी युद्ध 1794 जाटों VS जर्ज थॉमस के बीच हुआ था।"
+            },
+
+            // ================= PAGE 2 QUESTIONS (41 - 80) =================
+            {
+                page: 2,
+                cat: "Page 2: George Thomas & British Rule",
+                en: "41. What were the coins minted by George Thomas at Hansi in 1797 called?",
+                hi: "41. जर्ज थॉमस के सिक्के क्या कहलाते थे और उसने टकसाल की स्थापना हांसी में कब की थी?",
+                optionsEn: ["Sikka-e-Shahi (1797)", "Sikri Sahib (1795)", "Rupee-e-Hind (1799)", "Shahi Ashrafi (1800)"],
+                optionsHi: ["सिक्का-ए-शाही (1797)", "सिकरी साहिब (1795)", "रुपया-ए-हिंद (1799)", "शाही अशरफी (1800)"],
+                correct: 0,
+                hint: "Sikka-e-Shahi, established mint in Hansi in 1797.",
+                expEn: "George Thomas's coins were called Sikka-e-Shahi, and he established a mint in Hansi in 1797.",
+                expHi: "जर्ज थॉमस के सिक्के - सिक्का-ए-शाही कहलाते हैं और हांसी में टकसाल 1797 में स्थापित की थी।"
+            },
+            {
+                page: 2,
+                cat: "Page 2: George Thomas & British Rule",
+                en: "42. What name did George Thomas give to his coins, and what kind of guns did he manufacture himself?",
+                hi: "42. जर्ज थॉमस ने सिक्कों को क्या संज्ञा दी थी तथा वह कैसी बंदूकें स्वयं बनाता था?",
+                optionsEn: ["Sikri Sahib; Toidar & Topidar guns", "Shahi Sikka; Flintlock guns", "Royalty Coin; Musket guns", "Gold Coin; Cannon guns"],
+                optionsHi: ["सिकरी साहिब; तोड़ीदार व टोपीदार बंदूकें", "शाही सिक्का; फ्लिंटलॉक बंदूकें", "रॉयल्टी सिक्का; मस्कट बंदूकें", "गोल्ड सिक्का; तोप बंदूकें"],
+                correct: 0,
+                hint: "Sikri Sahib; Toidar & Topidar.",
+                expEn: "George Thomas called his coins Sikri Sahib and manufactured Toidar & Topidar guns himself.",
+                expHi: "जर्ज थॉमस ने सिक्कों को सिकरी साहिब की संज्ञा दी थी व तोड़ीदार व टोपीदार बंदूकें स्वयं बनाता था।"
+            },
+            {
+                page: 2,
+                cat: "Page 2: George Thomas & British Rule",
+                en: "43. What is the name of George Thomas's residence in Hisar, which is presently a museum?",
+                hi: "43. जर्ज थॉमस का आवास किस नाम से हिसार में स्थित है जो वर्तमान में जहाज कोठी संग्रहालय है?",
+                optionsEn: ["Jahaz Kothi", "Lal Haveli", "Sheesh Mahal", "Hansi Palace"],
+                optionsHi: ["जहाज कोठी", "लाल हवेली", "शीश महल", "हांसी पैलेस"],
+                correct: 0,
+                hint: "Jahaz Kothi.",
+                expEn: "George Thomas's residence is called Jahaz Kothi, located in Hisar (now a museum).",
+                expHi: "जर्ज थॉमस का आवास जहाज कोठी हिसार में स्थित है (वर्तमान में जहाज कोठी संग्रहालय है)।"
+            },
+            {
+                page: 2,
+                cat: "Page 2: George Thomas & British Rule",
+                en: "44. Who wrote the autobiography of George Thomas?",
+                hi: "44. जर्ज थॉमस की आत्मकथा किसने लिखी थी?",
+                optionsEn: ["William Franklin", "James Skinner", "William Fraser", "Shah Alam"],
+                optionsHi: ["विलियम फ्रैंकलिन", "जेम्स स्किनर", "विलियम फ्रेजर", "शाहआलम"],
+                correct: 0,
+                hint: "William Franklin.",
+                expEn: "The autobiography of George Thomas was written by William Franklin.",
+                expHi: "जर्ज थॉमस की आत्मकथा विलियम फ्रैंकलिन ने लिखी थी।"
+            },
+            {
+                page: 2,
+                cat: "Page 2: British Rule & Treaties",
+                en: "45. British control over Haryana in 1803 occurred during the reign of which Mughal ruler?",
+                hi: "45. हरियाणा पर अंग्रेजों का अधिकार 1803 में किस मुगल शासक के दौरान हुआ था?",
+                optionsEn: ["Shah Alam", "Muhammad Shah", "Aurangzeb", "Akbar II"],
+                optionsHi: ["शाहआलम", "मुहम्मदशाह", "औरंगजेब", "अकबर द्वितीय"],
+                correct: 0,
+                hint: "Shah Alam.",
+                expEn: "British control over Haryana in 1803 happened during the reign of Mughal Emperor Shah Alam.",
+                expHi: "हरियाणा पर अंग्रेजों का अधिकार किस मुगल शासक के दौरान हुआ था - शाहआलम।"
+            },
+            {
+                page: 2,
+                cat: "Page 2: British Rule & Treaties",
+                en: "46. The Treaty of Surji-Anjangaon was signed on December 30, 1803 between the British and whom?",
+                hi: "46. सुर्जीअंजन ग्राम की संधि 30 दिसंबर, 1803 को अंग्रेजों और किसके बीच हुई थी?",
+                optionsEn: ["Daulatrao Scindia", "Ahmad Shah Abdali", "Nandram Ahir", "Raja Surajmal"],
+                optionsHi: ["दौलतराम सिंधिया", "अहमदशाह अब्दाली", "नंदराम अहीर", "राजा सूरजमल"],
+                correct: 0,
+                hint: "Daulatrao Scindia.",
+                expEn: "The Treaty of Surji-Anjangaon was signed on December 30, 1803, between Daulatrao Scindia and the British.",
+                expHi: "सुर्जीअंजन ग्राम की संधि 30 दिसंबर, 1803 को दौलतराम सिंधिया व अंग्रेजों के बीच हुई थी।"
+            },
+            {
+                page: 2,
+                cat: "Page 2: British Rule & Treaties",
+                en: "47. In which year was Karnal established by the British?",
+                hi: "47. अंग्रेजों द्वारा करनाल की स्थापना किस वर्ष की गई थी?",
+                optionsEn: ["1803", "1806", "1809", "1836"],
+                optionsHi: ["1803", "1806", "1809", "1836"],
+                correct: 1,
+                hint: "1806.",
+                expEn: "Karnal was established by the British in 1806.",
+                expHi: "अंग्रेजों द्वारा करनाल की स्थापना - 1806 में की गई।"
+            },
+            {
+                page: 2,
+                cat: "Page 2: British Rule & Treaties",
+                en: "48. East India Company established full control over entire Haryana during which period?",
+                hi: "48. समस्त हरियाणा पर ईस्ट इण्डिया कम्पनी का अधिकार किस वर्ष हुआ?",
+                optionsEn: ["1799-1802", "1803-1804", "1809-1810", "1857-1858"],
+                optionsHi: ["1799-1802", "1803-1804", "1809-1810", "1857-1858"],
+                correct: 2,
+                hint: "1809-1810.",
+                expEn: "East India Company gained control over entire Haryana during 1809-1810.",
+                expHi: "समस्त हरियाणा पर ईस्ट इण्डिया कम्पनी का अधिकार 1809-1810 में हुआ।"
+            },
+            {
+                page: 2,
+                cat: "Page 2: British Rule & Treaties",
+                en: "49. EIC granted 87 villages as a jagir to which person?",
+                hi: "49. ईस्ट इण्डिया कम्पनी ने 87 गांव जागीर के रूप में किसे प्रदान किए थे?",
+                optionsEn: ["Rao Tej Singh", "Nandram Ahir", "Jodh Singh", "Jabit Khan"],
+                optionsHi: ["राव तेज सिंह", "नंदराम अहीर", "जोधि सिंह", "जाबित खान"],
+                correct: 0,
+                hint: "Rao Tej Singh.",
+                expEn: "EIC provided 87 villages as a jagir to Rao Tej Singh.",
+                expHi: "इस्ट इण्डिया कम्पनी ने 87 गांव जागीर के रूप में राव तेज सिंह को प्रदान किए थे।"
+            },
+            {
+                page: 2,
+                cat: "Page 2: Early Revolts",
+                en: "50. Where did the first resistance against the East India Company take place in Haryana?",
+                hi: "50. ईस्ट इण्डिया कम्पनी के खिलाफ सबसे पहले हरियाणा में विरोध कहां के किसानों ने किया था?",
+                optionsEn: ["Rohtak farmers", "Hisar farmers", "Gurugram farmers", "Rewari farmers"],
+                optionsHi: ["रोहतक के किसानों ने", "हिसार के किसानों ने", "गुरुग्राम के किसानों ने", "रेवाड़ी के किसानों ने"],
+                correct: 0,
+                hint: "Rohtak farmers.",
+                expEn: "The first resistance against the East India Company in Haryana was by Rohtak farmers.",
+                expHi: "इस्ट इण्डिया कम्पनी के खिलाफ सबसे पहले हरियाणा में विरोध रोहतक के किसानों ने किया था।"
+            },
+            {
+                page: 2,
+                cat: "Page 2: Early Revolts",
+                en: "51. Into how many divisions was Haryana divided by the East India Company, containing how many villages?",
+                hi: "51. ईस्ट इण्डिया कम्पनी ने हरियाणा को कितने डिवीजन में बांटा था और कितने गांव थे?",
+                optionsEn: ["2 divisions & 2000 villages", "3 divisions & 3000 villages", "4 divisions & 4000 villages", "5 divisions & 5000 villages"],
+                optionsHi: ["2 डिवीजन व 2000 गांव", "3 डिवीजन व 3000 गांव", "4 डिवीजन व 4000 गांव", "5 डिवीजन व 5000 गांव"],
+                correct: 1,
+                hint: "3 divisions and 3000 villages.",
+                expEn: "EIC divided Haryana into 3 divisions and there were 3000 villages during that time.",
+                expHi: "इस्ट इण्डिया कम्पनी ने हरियाणा को तीन डिवीजन में बांटा था और 3000 हजार गांव थे।"
+            },
+            {
+                page: 2,
+                cat: "Page 2: Early Revolts",
+                en: "52. Pataudi state was established in 1806 by whom?",
+                hi: "52. पटौदी रियासत की स्थापना 1806 फैज तलब खां द्वारा हुई थी, यह कथन कैसा है?",
+                optionsEn: ["Faiz Talab Khan", "Jodh Singh", "Ajit Singh", "Shamsher Khan"],
+                optionsHi: ["फैज तलब खां", "जोध सिंह", "अजीत सिंह", "शमशेर खां"],
+                correct: 0,
+                hint: "Faiz Talab Khan.",
+                expEn: "Pataudi state was established in 1806 by Faiz Talab Khan.",
+                expHi: "पटौदी रियासत की स्थापना 1806 फैज तलब खां द्वारा हुई थी।"
+            },
+            {
+                page: 2,
+                cat: "Page 2: Major Uprisings",
+                en: "53. The Chhachhrauli revolt took place in 1818 under the leadership of whom?",
+                hi: "53. छछरौली का विद्रोह 1818 ई. में किसके नेतृत्व में हुआ था?",
+                optionsEn: ["Jodh Singh", "Jabit Khan", "Pratap Singh", "Gulab Singh"],
+                optionsHi: ["जोध सिंह", "जाबित खान", "प्रताप सिंह", "गुलाब सिंह"],
+                correct: 0,
+                hint: "Jodh Singh.",
+                expEn: "The Chhachhrauli revolt occurred in 1818 under Jodh Singh's leadership.",
+                expHi: "छछरौली का विद्रोह - 1818 ई., नेतृत्वकर्ता - जोध सिंह।"
+            },
+            {
+                page: 2,
+                cat: "Page 2: Major Uprisings",
+                en: "54. Chhachhrauli estate was also known by what alternative name, and in which modern district does it fall?",
+                hi: "54. छछरौली रियासत को किस नाम से जाना जाता था और यह वर्तमान में किस जिले में है?",
+                optionsEn: ["Kalsia state; Yamunanagar", "Jind state; Kaithal", "Ladwa state; Kurukshetra", "Loharu state; Bhiwani"],
+                optionsHi: ["कलसिया रियासत; यमुनानगर", "जींद रियासत; कैथल", "लाडवा रियासत; कुरुक्षेत्र", "लोहारू रियासत; भिवानी"],
+                correct: 0,
+                hint: "Kalsia state in Yamunanagar.",
+                expEn: "Chhachhrauli estate was known as Kalsia state, spanning 63 sq. km in present-day Yamunanagar district.",
+                expHi: "छछरौली रियासत को कलसिया रियासत के नाम से जाना जाता था, वर्तमान में यमुनानगर जिले में पड़ता है।"
+            },
+            {
+                page: 2,
+                cat: "Page 2: Major Uprisings",
+                en: "55. Who was the leader of the Rania revolt in 1818?",
+                hi: "55. रानियां का विद्रोह 1818 ई. के नेतृत्वकर्ता कौन थे?",
+                optionsEn: ["Jabit Khan", "Pratap Singh", "Raja Surajmal", "Gulab Singh"],
+                optionsHi: ["जाबित खान", "प्रताप सिंह", "राजा सूरजमल", "गुलाब सिंह"],
+                correct: 0,
+                hint: "Jabit Khan.",
+                expEn: "The leader of the Rania revolt in 1818 was Jabit Khan.",
+                expHi: "रानियां का विद्रोह - 1818 ई., नेतृत्वकर्ता - जाबित खान।"
+            },
+            {
+                page: 2,
+                cat: "Page 2: Major Uprisings",
+                en: "56. The Jind revolt took place in 1814 under the leadership of Pratap Singh. Who was the other ruler mentioned?",
+                hi: "56. जींद का विद्रोह 1814 ई. के नेतृत्वकर्ता प्रताप सिंह थे, अन्य शासक कौन थीं?",
+                optionsEn: ["Rani Saudrahi", "Samru Begum", "Sahib Kaur", "Rani Ramkaur"],
+                optionsHi: ["रानी सौंद्राही", "समरू बेगम", "साहिब कौर", "रानी रामकौर"],
+                correct: 0,
+                hint: "Rani Saudrahi.",
+                expEn: "Jind revolt leader was Pratap Singh, and other ruler was Rani Saudrahi.",
+                expHi: "जींद का विद्रोह - 1814 ई., नेतृत्वकर्ता - प्रताप सिंह, अन्य शासक - रानी सौंद्राही।"
+            },
+            {
+                page: 2,
+                cat: "Page 2: Major Uprisings",
+                en: "57. The Farmers' revolt of 1824 was led by Raja Surajmal because of rumors of British defeat in which war?",
+                hi: "57. किसानों का विद्रोह 1824 ई. में नेतृत्वकर्ता राजा सूरजमल थे, किस युद्ध में अंग्रेजों की हार की चर्चा थी?",
+                optionsEn: ["Burma War", "Carnatic War", "Afghan War", "Maratha War"],
+                optionsHi: ["बर्मा युद्ध", "कर्नाटक युद्ध", "अफगान युद्ध", "मराठा युद्ध"],
+                correct: 0,
+                hint: "Burma War.",
+                expEn: "Farmers of Rohtak, Hisar, Gurugram, and Bhiwani protested under Surajmal in 1824 due to rumors of British defeat in the Burma war.",
+                expHi: "किसानों का विद्रोह - 1824 ई., 1824 ई. में बर्मा युद्ध में अंग्रेजों की हार की चर्चा सुनकर रोहतक, हिसार, गुरुग्राम व भिवानी के किसानों ने सूरजमल के नेतृत्व में विरोध किया।"
+            },
+            {
+                page: 2,
+                cat: "Page 2: Major Uprisings",
+                en: "58. Balawali revolt occurred in which year?",
+                hi: "58. बलावली का विद्रोह किस वर्ष हुआ था?",
+                optionsEn: ["1830", "1835", "1843", "1845"],
+                optionsHi: ["1830", "1835", "1843", "1845"],
+                correct: 1,
+                hint: "1835, led by Gulab Singh.",
+                expEn: "The Balawali revolt took place in 1835 under the leadership of Gulab Singh.",
+                expHi: "बलावली का विद्रोह - 1835, नेतृत्वकर्ता - गुलाब सिंह।"
+            },
+            {
+                page: 2,
+                cat: "Page 2: Major Uprisings",
+                en: "59. Kaithal revolt took place in 1843 under the leadership of Gulab Singh, Sahib Kaur, and whom?",
+                hi: "59. कैथल का विद्रोह 1843 के नेतृत्वकर्ता गुलाब सिंह, साहिब कौर व कौन थे?",
+                optionsEn: ["Suraj", "Ajit Singh", "Jodh Singh", "Jabit Khan"],
+                optionsHi: ["सूरज", "अजीत सिंह", "जोध सिंह", "जाबित खान"],
+                correct: 0,
+                hint: "Suraj.",
+                expEn: "Kaithal revolt in 1843 was led by Gulab Singh, Sahib Kaur, and Suraj.",
+                expHi: "कैथल का विद्रोह - 1843, नेतृत्वकर्ता - गुलाब सिंह, साहिब कौर व सूरज।"
+            },
+            {
+                page: 2,
+                cat: "Page 2: Major Uprisings",
+                en: "60. Ladwa revolt was fought in which year under the leadership of Ajit Singh?",
+                hi: "60. लाडवा का विद्रोह 1845 के नेतृत्वकर्ता कौन थे?",
+                optionsEn: ["Ajit Singh", "Gulab Singh", "Nawab Shamsher Khan", "Pratap Singh"],
+                optionsHi: ["अजीत सिंह", "गुलाब सिंह", "नवाब शमशेर खां", "प्रताप सिंह"],
+                correct: 0,
+                hint: "Ajit Singh.",
+                expEn: "Ladwa revolt took place in 1845 under the leadership of Ajit Singh.",
+                expHi: "लाडवा का विद्रोह - 1845, नेतृत्वकर्ता - अजीत सिंह।"
+            },
+            {
+                page: 2,
+                cat: "Page 2: Major Uprisings",
+                en: "61. Loharu revolt took place in 1830 under the leadership of which Nawab?",
+                hi: "61. लोहारू का विद्रोह 1830 ई. के नेतृत्वकर्ता कौन थे?",
+                optionsEn: ["Nawab Shamsher Khan", "Nawab Faiz Talab Khan", "Nawab Jabit Khan", "Nawab Jodh Singh"],
+                optionsHi: ["नवाब शमशेर खां", "नवाब फैज तलब खां", "नवाब जाबित खान", "नवाब जोध सिंह"],
+                correct: 0,
+                hint: "Nawab Shamsher Khan.",
+                expEn: "Loharu revolt occurred in 1830 under the leadership of Nawab Shamsher Khan.",
+                expHi: "लोहारू का विद्रोह - 1830 ई., नेतृत्वकर्ता - नवाब शमशेर खां।"
+            },
+            {
+                page: 2,
+                cat: "Page 2: Major Uprisings",
+                en: "62. Nawab Shamsher Khan had which British official killed, leading to the Loharu context?",
+                hi: "62. नवाब शमशेर खान ने किस अंग्रेज अधिकारी की हत्या करवाई थी?",
+                optionsEn: ["William Fraser", "George Thomas", "William Franklin", "Lord Lake"],
+                optionsHi: ["विलियम फ्रेजर", "जर्ज थॉमस", "विलियम फ्रैंकलिन", "लॉर्ड लेक"],
+                correct: 0,
+                hint: "William Fraser.",
+                expEn: "Nawab Shamsher Khan got William Fraser killed.",
+                expHi: "नवाब शमशेर खान ने विलियम फ्रेजर की हत्या करवाई थी।"
+            },
+            {
+                page: 2,
+                cat: "Page 2: Press & Administration",
+                en: "63. In which year was the Delhi newspaper (Delhi Akhbar) published?",
+                hi: "63. दिल्ली अखबार का प्रकाशन किस वर्ष हुआ था?",
+                optionsEn: ["1830", "1836", "1857", "1858"],
+                optionsHi: ["1830", "1836", "1857", "1858"],
+                correct: 1,
+                hint: "1836.",
+                expEn: "Delhi newspaper was published in 1836.",
+                expHi: "दिल्ली अखबार का प्रकाशन हुआ - 1836 में।"
+            },
+            {
+                page: 2,
+                cat: "Page 2: Press & Administration",
+                en: "64. Until 1857, Haryana was a part of which provinces?",
+                hi: "64. 1857 तक हरियाणा किस प्रांत का हिस्सा था?",
+                optionsEn: ["North-Western Provinces", "Punjab Province", "Bengal Presidency", "Bombay Presidency"],
+                optionsHi: ["उत्तर प्रदेश (उत्तर-पश्चिमी प्रांत)", "पंजाब प्रांत", "बंगाल प्रेसीडेंसी", "बॉम्बे प्रेसीडेंसी"],
+                correct: 0,
+                hint: "North-Western Provinces.",
+                expEn: "Until 1857, Haryana was a part of the North-Western Provinces.",
+                expHi: "1857 तक हरियाणा उत्तर प्रदेश (उत्तर-पश्चिमी प्रांत) का हिस्सा था।"
+            },
+            {
+                page: 2,
+                cat: "Page 2: Press & Administration",
+                en: "65. In which year did the British merge Haryana into Punjab?",
+                hi: "65. अंग्रेजों ने हरियाणा को पंजाब में किस वर्ष मिला दिया था?",
+                optionsEn: ["1857", "1858", "1860", "1901"],
+                optionsHi: ["1857", "1858", "1860", "1901"],
+                correct: 1,
+                hint: "1858.",
+                expEn: "In 1858, the British merged Haryana into Punjab.",
+                expHi: "1858 में अंग्रेजों ने हरियाणा को पंजाब में मिला दिया था।"
+            },
+            {
+                page: 2,
+                cat: "Page 2: Press & Administration",
+                en: "66. According to the note on EIC period, field agriculture in Haryana was usually done on which day of the week?",
+                hi: "66. ईस्ट इण्डिया कंपनी के काल में हरियाणा में खेतों की बुवाई किस वार को होती थी?",
+                optionsEn: ["Monday", "Wednesday", "Friday", "Sunday"],
+                optionsHi: ["सोमवार", "बुधवार", "शुक्रवार", "रविवार"],
+                correct: 1,
+                hint: "Wednesday.",
+                expEn: "During the EIC period, farming/agriculture in Haryana's fields was done on Wednesdays.",
+                expHi: "इस्ट इण्डिया के काल में हरियाणा में खेतों की बुवाई बुधवार को होती थी।"
+            },
+            {
+                page: 2,
+                cat: "Page 2: Additional History",
+                en: "67. The Second Battle of Beri was fought in which year?",
+                hi: "67. द्वितीय बेरी युद्ध किस वर्ष हुआ था?",
+                optionsEn: ["1794", "1803", "1807", "1818"],
+                optionsHi: ["1794", "1803", "1807", "1818"],
+                correct: 2,
+                hint: "1807, Sikhs vs Marathas.",
+                expEn: "The Second Battle of Beri took place in 1807 (Sikhs vs Marathas).",
+                expHi: "द्वितीय बेरी युद्ध 1807 सिखों VS मराठों के बीच हुआ था।"
+            },
+            {
+                page: 2,
+                cat: "Page 2: Additional History",
+                en: "68. Which mint city was associated with George Thomas's coin production in 1797?",
+                hi: "68. 1797 में जर्ज थॉमस ने सिक्के ढालने की टकसाल की स्थापना कहां की थी?",
+                optionsEn: ["Hansi", "Hisar", "Rewari", "Jhajjar"],
+                optionsHi: ["हांसी", "हिसार", "रेवाड़ी", "झज्जर"],
+                correct: 0,
+                hint: "Hansi.",
+                expEn: "George Thomas established a mint to cast coins in Hansi in 1797.",
+                expHi: "जर्ज थॉमस ने हरियाणा में सिक्के ढालने की टकसाल की स्थापना 1797 हांसी में की थी।"
+            },
+            {
+                page: 2,
+                cat: "Page 2: Additional History",
+                en: "69. Daulatrao Scindia signed the Surji-Anjangaon treaty with the British on which date?",
+                hi: "69. दौलतराम सिंधिया व अंग्रेजों के बीच सुर्जीअंजन ग्राम की संधि कब हुई थी?",
+                optionsEn: ["30 December 1803", "14 January 1761", "15 October 1754", "25 December 1764"],
+                optionsHi: ["30 दिसंबर, 1803", "14 जनवरी, 1761", "15 अक्टूबर, 1754", "25 दिसंबर, 1764"],
+                correct: 0,
+                hint: "December 30, 1803.",
+                expEn: "The treaty was signed on 30 December 1803.",
+                expHi: "सुर्जीअंजन ग्राम की संधि 30 दिसंबर, 1803 को हुई थी।"
+            },
+            {
+                page: 2,
+                cat: "Page 2: Additional History",
+                en: "70. How many divisions was Haryana partitioned into during East India Company rule?",
+                hi: "70. ईस्ट इण्डिया कम्पनी ने हरियाणा को कितने डिवीजनों में विभाजित किया था?",
+                optionsEn: ["2", "3", "4", "5"],
+                optionsHi: ["2", "3", "4", "5"],
+                correct: 1,
+                hint: "3 divisions.",
+                expEn: "Haryana was divided into 3 divisions under EIC rule.",
+                expHi: "ईस्ट इण्डिया कम्पनी ने हरियाणा को तीन डिवीजनों में बांटा था।"
+            },
+            {
+                page: 2,
+                cat: "Page 2: Additional History",
+                en: "71. What was another name for Chhachhrauli estate during the 1818 revolt?",
+                hi: "71. 1818 के विद्रोह के समय छछरौली रियासत का दूसरा नाम क्या था?",
+                optionsEn: ["Kalsia State", "Jind State", "Ladwa State", "Pataudi State"],
+                optionsHi: ["कलसिया रियासत", "जींद रियासत", "लाडवा रियासत", "पटौदी रियासत"],
+                correct: 0,
+                hint: "Kalsia State.",
+                expEn: "Chhachhrauli estate was also known as Kalsia state.",
+                expHi: "छछरौली रियासत को कलसिया रियासत के नाम से जाना जाता था।"
+            },
+            {
+                page: 2,
+                cat: "Page 2: Additional History",
+                en: "72. Farmers from which regions participated in the 1824 revolt under Raja Surajmal?",
+                hi: "72. राजा सूरजमल के नेतृत्व में 1824 के विद्रोह में किन क्षेत्रों के किसानों ने भाग लिया?",
+                optionsEn: ["Rohtak, Hisar, Gurugram & Bhiwani", "Ambala, Karnal & Panipat", "Rewari, Jhajjar & Mahendragarh", "Sirsa, Jind & Kaithal"],
+                optionsHi: ["रोहतक, हिसार, गुरुग्राम व भिवानी", "अंबाला, करनाल व पानीपत", "रेवाड़ी, झज्जर व महेंद्रगढ़", "सिरसा, जींद व कैथल"],
+                correct: 0,
+                hint: "Rohtak, Hisar, Gurugram & Bhiwani.",
+                expEn: "Farmers from Rohtak, Hisar, Gurugram, and Bhiwani participated in the 1824 revolt.",
+                expHi: "रोहतक, हिसार, गुरुग्राम व भिवानी के किसानों ने 1824 में विरोध किया।"
+            },
+            {
+                page: 2,
+                cat: "Page 2: Additional History",
+                en: "73. Who were the co-leaders of the Kaithal revolt in 1843 along with Gulab Singh?",
+                hi: "73. 1843 के कैथल विद्रोह में गुलाब सिंह के साथ अन्य नेता कौन थे?",
+                optionsEn: ["Sahib Kaur & Suraj", "Jodh Singh & Jabit Khan", "Pratap Singh & Rani Saudrahi", "Ajit Singh & Shamsher Khan"],
+                optionsHi: ["साहिब कौर व सूरज", "जोध सिंह व जाबित खान", "प्रताप सिंह व रानी सौंद्राही", "अजीत सिंह व शमशेर खां"],
+                correct: 0,
+                hint: "Sahib Kaur & Suraj.",
+                expEn: "Co-leaders of the Kaithal revolt were Sahib Kaur and Suraj.",
+                expHi: "कैथल विद्रोह में गुलाब सिंह के साथ साहिब कौर व सूरज नेता थे।"
+            },
+            {
+                page: 2,
+                cat: "Page 2: Additional History",
+                en: "74. Nawab Shamsher Khan led the Loharu revolt in 1830. Which political murder was he linked to?",
+                hi: "74. नवाब शमशेर खान ने 1830 के लोहारू विद्रोह का नेतृत्व किया, वह किस हत्या से जुड़े थे?",
+                optionsEn: ["William Fraser's murder", "George Thomas's murder", "Shah Alam's murder", "William Franklin's murder"],
+                optionsHi: ["विलियम फ्रेजर की हत्या", "जर्ज थॉमस की हत्या", "शाहआलम की हत्या", "विलियम फ्रैंकलिन की हत्या"],
+                correct: 0,
+                hint: "William Fraser.",
+                expEn: "Nawab Shamsher Khan was linked to the murder of William Fraser.",
+                expHi: "नवाब शमशेर खान विलियम फ्रेजर की हत्या से जुड़े थे।"
+            },
+            {
+                page: 2,
+                cat: "Page 2: Additional History",
+                en: "75. In what year was Haryana separated from the North-Western Provinces and merged into Punjab?",
+                hi: "75. किस वर्ष हरियाणा को उत्तर-पश्चिमी प्रांत से हटाकर पंजाब में मिलाया गया?",
+                optionsEn: ["1858", "1836", "1803", "1810"],
+                optionsHi: ["1858", "1836", "1803", "1810"],
+                correct: 0,
+                hint: "1858.",
+                expEn: "Haryana was merged into Punjab in 1858.",
+                expHi: "1858 में हरियाणा को पंजाब में मिला दिया गया था।"
+            },
+            {
+                page: 2,
+                cat: "Page 2: Additional History",
+                en: "76. What was the headquarters location of Banda Bahadur Bairagi?",
+                hi: "76. बन्दा बहादुर बैरागी का मुख्यालय कहां स्थित था?",
+                optionsEn: ["Sihri Khandi (Sonipat)", "Hansi", "Rewari", "Karnal"],
+                optionsHi: ["सिहरी खांडी (सोनीपत)", "हांसी", "रेवाड़ी", "करनाल"],
+                correct: 0,
+                hint: "Sihri Khandi in Sonipat.",
+                expEn: "Banda Bahadur's headquarters was Sihri Khandi in Sonipat.",
+                expHi: "बन्दा बहादुर बैरागी का मुख्यालय सिहरी खांडी (सोनीपत) में था।"
+            },
+            {
+                page: 2,
+                cat: "Page 2: Additional History",
+                en: "77. Which Jat ruler was famously referred to as the 'Plato of Jats' and 'Aflatun'?",
+                hi: "77. किस जाट शासक को 'जाटों का प्लेटो' व 'अफलातून' कहा जाता है?",
+                optionsEn: ["Raja Surajmal", "Raja Churaman", "Raja Gajpat Singh", "Nandram Ahir"],
+                optionsHi: ["राजा सूरजमल", "राजा चूड़ामन", "राजा गजपत सिंह", "नंदराम अहीर"],
+                correct: 0,
+                hint: "Raja Surajmal.",
+                expEn: "Raja Surajmal is referred to as the Plato of Jats and Aflatun.",
+                expHi: "राजा सूरजमल को जाटों का प्लेटो व अफलातून कहा जाता है।"
+            },
+            {
+                page: 2,
+                cat: "Page 2: Additional History",
+                en: "78. Who fought against whom in the Third Battle of Panipat on January 14, 1761?",
+                hi: "78. 14 जनवरी, 1761 को पानीपत के तीसरे युद्ध में कौन आमने-सामने थे?",
+                optionsEn: ["Ahmad Shah Abdali vs Marathas", "Nadir Shah vs Muhammad Shah", "George Thomas vs Jats", "British vs Scindia"],
+                optionsHi: ["अहमदशाह अब्दाली VS मराठे", "नादिर शाह VS मुहम्मदशाह", "जर्ज थॉमस VS जाट", "अंग्रेज VS सिंधिया"],
+                correct: 0,
+                hint: "Abdali vs Marathas.",
+                expEn: "Ahmad Shah Abdali fought against the Marathas in the Third Battle of Panipat.",
+                expHi: "पानीपत के तीसरे युद्ध में अहमदशाह अब्दाली व मराठे आमने-सामने थे।"
+            },
+            {
+                page: 2,
+                cat: "Page 2: Additional History",
+                en: "79. Nandram Ahir made significant contributions in establishing Ahir rule and founding which city?",
+                hi: "79. नंदराम अहीर ने अहीर शासन की स्थापना के साथ किस शहर को बसाया था?",
+                optionsEn: ["Dharuhera", "Jhajjar", "Hansi", "Rania"],
+                optionsHi: ["धारूहेड़ा", "झज्जर", "हांसी", "रानियां"],
+                correct: 0,
+                hint: "Dharuhera.",
+                expEn: "Nandram Ahir founded Dharuhera city.",
+                expHi: "नंदराम अहीर ने धारूहेड़ा शहर बसाया था।"
+            },
+            {
+                page: 2,
+                cat: "Page 2: Additional History",
+                en: "80. Guru Gobind Singh stayed at which Panchkula gurdwara on his way to the Battle of Bhagani?",
+                hi: "80. भगानी युद्ध के लिए जाते समय गुरु गोविंद सिंह पंचकूला के किस गुरुद्वारे में रुके थे?",
+                optionsEn: ["Nada Sahib Gurdwara", "Bangla Sahib Gurdwara", "Paonta Sahib Gurdwara", "Manji Sahib Gurdwara"],
+                optionsHi: ["नड्डा साहिब गुरुद्वारा", "बंगला साहिब गुरुद्वारा", "पांवटा साहिब गुरुद्वारा", "मंजी साहिब गुरुद्वारा"],
+                correct: 0,
+                hint: "Nada Sahib.",
+                expEn: "Guru Gobind Singh stayed at Nada Sahib Gurdwara in Panchkula on his way to the Battle of Bhagani.",
+                expHi: "गुरु गोविंद सिंह भगानी युद्ध के लिए जाते समय नड्डा साहिब गुरुद्वारा में रुके थे।"
+            }
+        ];
+
+        let currentIndex = 0;
+        let score = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+
+        // DOM Elements
+        const qCatEl = document.getElementById('question-category');
+        const qTextEnEl = document.getElementById('q-text-en');
+        const qTextHiEl = document.getElementById('q-text-hi');
+        const optionsContainer = document.getElementById('options-container');
+        const scoreDisplay = document.getElementById('score-display');
+        const currentQNum = document.getElementById('current-q-num');
+        const progressBar = document.getElementById('progress-bar');
+        const hintBox = document.getElementById('hint-box');
+        const hintText = document.getElementById('hint-text');
+        const explanationBox = document.getElementById('explanation-box');
+        const explanationEn = document.getElementById('explanation-en');
+        const explanationHi = document.getElementById('explanation-hi');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const jumpInput = document.getElementById('jump-input');
+
+        function loadQuestion() {
+            const q = questions[currentIndex];
+            qCatEl.textContent = q.cat;
+            qTextEnEl.textContent = q.en;
+            qTextHiEl.textContent = q.hi;
+            currentQNum.textContent = currentIndex + 1;
+            progressBar.style.width = `${((currentIndex + 1) / questions.length) * 100}%`;
+
+            // Hint setup
+            hintText.textContent = q.hint;
+            hintBox.classList.add('hidden');
+
+            // Explanation setup
+            explanationEn.textContent = q.expEn;
+            explanationHi.textContent = q.expHi;
+
+            if (userAnswers[currentIndex] !== null) {
+                explanationBox.classList.remove('hidden');
+            } else {
+                explanationBox.classList.add('hidden');
+            }
+
+            // Render Options
+            optionsContainer.innerHTML = '';
+            q.optionsEn.forEach((optEn, idx) => {
+                const optHi = q.optionsHi[idx];
+                const button = document.createElement('button');
+                
+                let btnClass = "w-full text-left p-4 rounded-xl border transition-all flex justify-between items-center font-medium ";
+                
+                const isAnswered = userAnswers[currentIndex] !== null;
+                const selectedOpt = userAnswers[currentIndex];
+
+                if (!isAnswered) {
+                    btnClass += "bg-white border-slate-200 hover:border-indigo-500 hover:bg-indigo-50/50 text-slate-700";
+                } else {
+                    if (idx === q.correct) {
+                        btnClass += "bg-emerald-50 border-emerald-500 text-emerald-900 font-semibold";
+                    } else if (selectedOpt === idx) {
+                        btnClass += "bg-rose-50 border-rose-500 text-rose-900";
+                    } else {
+                        btnClass += "bg-white border-slate-200 text-slate-400 opacity-60";
+                    }
+                }
+
+                button.className = btnClass;
+                button.innerHTML = `
+                    <div>
+                        <span class="font-bold mr-2 text-indigo-600">${String.fromCharCode(65 + idx)}.</span> 
+                        <span>${optEn}</span>
+                        <span class="block text-xs text-indigo-900 mt-0.5 font-normal">${optHi}</span>
+                    </div>
+                `;
+
+                if (!isAnswered) {
+                    button.onclick = () => selectOption(idx);
+                } else {
+                    button.disabled = true;
+                }
+
+                optionsContainer.appendChild(button);
+            });
+
+            prevBtn.disabled = currentIndex === 0;
+            nextBtn.textContent = currentIndex === questions.length - 1 ? "Finish Quiz" : "Next →";
+        }
+
+        function selectOption(selectedIndex) {
+            if (userAnswers[currentIndex] !== null) return;
+
+            userAnswers[currentIndex] = selectedIndex;
+            const q = questions[currentIndex];
+
+            if (selectedIndex === q.correct) {
+                score++;
+                scoreDisplay.textContent = score;
+            }
+
+            explanationBox.classList.remove('hidden');
+            loadQuestion();
+        }
+
+        function nextQuestion() {
+            if (currentIndex < questions.length - 1) {
+                currentIndex++;
+                loadQuestion();
+            } else {
+                alert(`Quiz Completed! Your final score is ${score} / ${questions.length}`);
+            }
+        }
+
+        function prevQuestion() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                loadQuestion();
+            }
+        }
+
+        function toggleHint() {
+            hintBox.classList.toggle('hidden');
+        }
+
+        function jumpToQuestion() {
+            const val = parseInt(jumpInput.value);
+            if (val >= 1 && val <= questions.length) {
+                currentIndex = val - 1;
+                loadQuestion();
+                jumpInput.value = '';
+            } else {
+                alert(`Please enter a valid question number between 1 and ${questions.length}`);
+            }
+        }
+
+        // Initialize Quiz
+        window.onload = loadQuestion;
+    </script>
+<script src="../../quiz-question-controls.js"></script>
+<script src="../../quiz-app-ui-v2.js"></script></body>
+</html>

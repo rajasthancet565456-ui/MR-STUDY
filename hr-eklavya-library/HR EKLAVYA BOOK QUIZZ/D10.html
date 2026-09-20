@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haryana GK Interactive Quiz Application (Palwal District - Bilingual)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+<style id="cosmic-readable-quiz-theme">
+:root{--space:#e8dcff;--panel:#f3eaff;--panel2:#dcc6ff;--edge:#6a45bf;--glow:#d28b28;--accent:#d15f9f;--ink:#2c1b4d;--muted:#66547c;--mist:rgba(106,69,191,.2)}html{background:var(--space)}body{background:radial-gradient(ellipse 62% 45% at 90% -5%,rgba(209,95,159,.28),transparent 62%),radial-gradient(ellipse 55% 40% at 8% 100%,rgba(65,164,207,.26),transparent 64%),var(--space)!important;color:var(--ink)!important;min-height:100vh}body:before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.78;background-image:radial-gradient(circle at 9% 18%,var(--glow) 0 1px,transparent 1.7px),radial-gradient(circle at 26% 69%,var(--edge) 0 .8px,transparent 1.5px),radial-gradient(circle at 68% 24%,var(--accent) 0 1px,transparent 1.8px),radial-gradient(circle at 88% 73%,#47a8d3 0 .8px,transparent 1.5px);background-size:220px 190px,300px 270px,260px 230px,340px 310px;z-index:-1}header{background:linear-gradient(105deg,var(--panel),var(--panel2))!important;border-color:rgba(106,69,191,.25)!important;box-shadow:0 7px 24px rgba(84,48,142,.14)!important}header h1{color:var(--edge)!important;text-shadow:none!important}header p,header .text-slate-400,header .text-indigo-200,header .text-indigo-300{color:var(--muted)!important}main>div,#quiz-card,.bg-slate-800,.bg-slate-900,.bg-indigo-900,.bg-indigo-950{background:linear-gradient(145deg,#f8f0ff,var(--panel))!important;border-color:rgba(106,69,191,.22)!important;color:var(--ink)!important;box-shadow:0 14px 35px rgba(84,48,142,.12)!important}.bg-slate-700,.bg-slate-100,.bg-slate-50{background:#eadffd!important;color:var(--ink)!important}.text-slate-100,.text-slate-200,.text-slate-300,.text-slate-400,.text-white,.text-slate-800,.text-slate-700,.text-slate-600{color:var(--ink)!important}.text-indigo-400,.text-indigo-300,.text-emerald-400,.text-yellow-300{color:var(--edge)!important}.border-slate-700,.border-slate-700\/60,.border-indigo-700,.border-slate-200{border-color:rgba(106,69,191,.25)!important}button:not(.bg-green-600):not(.bg-red-600){background:#f9f2ff!important;color:var(--ink)!important;border:1px solid rgba(106,69,191,.25)!important;box-shadow:0 3px 10px rgba(84,48,142,.09)!important}button.bg-indigo-600,button.bg-slate-800,button.bg-slate-900,button.bg-indigo-900{background:linear-gradient(120deg,var(--edge),var(--accent))!important;color:#fff!important;border:0!important}button.bg-indigo-600 *,button.bg-slate-800 *,button.bg-slate-900 *,button.bg-indigo-900 *{color:#fff!important}button:hover{filter:brightness(1.04);transform:translateY(-1px)}input,select,textarea{background:#f9f2ff!important;border-color:rgba(106,69,191,.35)!important;color:var(--ink)!important}input:focus,select:focus,textarea:focus{outline:none!important;border-color:var(--edge)!important;box-shadow:0 0 0 3px var(--mist)!important}.bg-indigo-500,#progress-bar{background:linear-gradient(90deg,var(--edge),var(--accent),var(--glow))!important}.rounded-2xl{border-radius:1.25rem!important}
+</style></head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col items-center justify-center p-4 md:p-8">
+
+    <div class="w-full max-w-4xl bg-slate-800 rounded-2xl shadow-2xl border border-slate-700 overflow-hidden flex flex-col my-auto">
+        
+        <!-- Header -->
+        <div class="bg-slate-900 px-6 py-4 border-b border-slate-700 flex flex-wrap justify-between items-center gap-4">
+            <div>
+                <h1 class="text-xl md:text-2xl font-bold text-emerald-400">Haryana GK Interactive Quiz</h1>
+                <p class="text-xs md:text-sm text-slate-400">Topic: Palwal District (Haryana Districts Study Vol-10)</p>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="bg-slate-800 border border-slate-700 px-3 py-1.5 rounded-lg text-sm">
+                    Score: <span id="score-display" class="font-bold text-emerald-400">0</span> / <span id="total-questions-display">60</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="w-full bg-slate-700 h-2">
+            <div id="progress-bar" class="bg-emerald-500 h-2 transition-all duration-300" style="width: 0%;"></div>
+        </div>
+
+        <!-- Main Quiz Body -->
+        <div class="p-6 md:p-8 flex-1 flex flex-col justify-between">
+            
+            <div>
+                <!-- Question Meta info & Jump controls -->
+                <div class="flex justify-between items-center mb-6 text-sm text-slate-400">
+                    <span id="question-counter" class="font-semibold text-slate-300">Question 1 of 60</span>
+                    <div class="flex items-center gap-2">
+                        <span>Jump to:</span>
+                        <input type="number" id="jump-input" min="1" max="60" class="w-16 bg-slate-900 border border-slate-700 rounded px-2 py-1 text-center text-white focus:outline-none focus:border-emerald-500 text-sm" placeholder="1-60">
+                        <button id="jump-btn" class="bg-slate-700 hover:bg-slate-600 px-3 py-1 rounded text-xs font-medium text-white transition-colors">Go</button>
+                    </div>
+                </div>
+
+                <!-- Question Text (Bilingual: English & Hindi) -->
+                <div class="mb-6 space-y-3">
+                    <div id="question-text-en" class="text-lg md:text-xl font-medium text-white">
+                        <!-- English Question injected here -->
+                    </div>
+                    <div id="question-text-hi" class="text-base md:text-lg font-medium text-emerald-300 border-l-2 border-emerald-500 pl-3">
+                        <!-- Hindi Question injected here -->
+                    </div>
+                </div>
+
+                <!-- Options List -->
+                <div id="options-container" class="space-y-3 mb-6">
+                    <!-- Options injected here -->
+                </div>
+
+                <!-- Hint Section -->
+                <div class="mb-6">
+                    <button id="hint-toggle-btn" class="text-xs bg-slate-700 hover:bg-slate-600 text-slate-300 px-3 py-1.5 rounded-md transition-colors flex items-center gap-1">
+                        <span>💡 Show Hint</span>
+                    </button>
+                    <div id="hint-box" class="hidden mt-2 p-3 bg-slate-900/60 border border-slate-700 rounded-lg text-sm text-slate-300 italic">
+                        <!-- Hint text injected here -->
+                    </div>
+                </div>
+
+                <!-- Explanation Box -->
+                <div id="explanation-box" class="hidden p-4 rounded-xl border transition-all duration-300 mb-6">
+                    <h3 id="explanation-title" class="font-bold text-sm mb-1 flex items-center gap-2"></h3>
+                    <p id="explanation-text" class="text-sm leading-relaxed"></p>
+                </div>
+            </div>
+
+            <!-- Footer Navigation Controls -->
+            <div class="flex justify-between items-center pt-4 border-t border-slate-700">
+                <button id="prev-btn" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg font-medium text-sm transition-colors text-white">
+                    ← Previous
+                </button>
+                <button id="next-btn" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg font-medium text-sm transition-colors text-white">
+                    Next →
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        // Complete Dataset of 60 Unique Questions split across Page 1 (45 Qs) and Page 2 (15 Qs) based on Palwal district source material
+        const quizData = [
+            // ================= PAGE 1 QUESTIONS (45 Qs) =================
+            {
+                page: 1,
+                en: "Who returned the title of 'Rai Bahadur' during the Non-Cooperation Movement?",
+                hi: "असहयोग आंदोलन के दौरान रायबहादुर का पद किसने लौटा दिया था?",
+                options: [
+                    "Lala Murlidhar (लाला मुरलीधर)",
+                    "Lala Lajpat Rai",
+                    "Pt. Nek Ram Sharma",
+                    "Sir Chhotu Ram"
+                ],
+                correct: 0,
+                hint: "Grand Old Man of Punjab / Haryana.",
+                explanation: "Lala Murlidhar returned his title of Rai Bahadur during the Non-Cooperation Movement."
+            },
+            {
+                page: 1,
+                en: "In which year did Lala Murlidhar return the 'Kaiser-i-Hind' medal in protest against the Rowlatt Act?",
+                hi: "1921 में रोलेट एक्ट के विरोध में केसर-ए-हिन्द की उपाधि किसने लौटाई थी?",
+                options: [
+                    "Lala Murlidhar",
+                    "Chandibai",
+                    "Sri Ram Sharma",
+                    "Neki Ram"
+                ],
+                correct: 0,
+                hint: "Lala Murlidhar.",
+                explanation: "Lala Murlidhar returned the Kaiser-i-Hind title in 1921 in protest against the Rowlatt Act."
+            },
+            {
+                page: 1,
+                en: "When was the Urdu weekly newspaper 'Khair Sandesh' published by Lala Murlidhar?",
+                hi: "खैर संदेश उर्दू साप्ताहिक समाचार पत्र का प्रकाशन 1889 में किसने किया था?",
+                options: [
+                    "Lala Murlidhar",
+                    "Bhagat Phool Singh",
+                    "Deshbandhu Gupta",
+                    "Swami Shraddhanand"
+                ],
+                correct: 0,
+                hint: "Lala Murlidhar.",
+                explanation: "It was published in 1889 by Lala Murlidhar."
+            },
+            {
+                page: 1,
+                en: "Who holds the distinction of being Haryana's first male jail satyagrahi?",
+                hi: "हरियाणा का प्रथम पुरुष जेल सत्याग्रही किसे माना जाता है?",
+                options: [
+                    "Lala Murlidhar (लाला मुरलीधर)",
+                    "Chaudhary Devi Lal",
+                    "Pt. Neki Ram Sharma",
+                    "Sri Ram Sharma"
+                ],
+                correct: 0,
+                hint: "Lala Murlidhar.",
+                explanation: "Lala Murlidhar is recognized as Haryana's first male jail satyagrahi."
+            },
+            {
+                page: 1,
+                en: "Who was the first female jail satyagrahi of Haryana?",
+                hi: "प्रथम महिला जेल सत्याग्रही कौन थीं?",
+                options: [
+                    "Chandibai, Sirsa (चांदबाई, सिरसा)",
+                    "Shanno Devi",
+                    "Aruna Asaf Ali",
+                    "Lajwanti"
+                ],
+                correct: 0,
+                hint: "Chandibai from Sirsa.",
+                explanation: "Chandibai from Sirsa was Haryana's first female jail satyagrahi."
+            },
+            {
+                page: 1,
+                en: "Where is the Netaji Subhash Chandra Bose Stadium located?",
+                hi: "नेता जी सुभाष चन्द्र बोस स्टेडियम कहाँ स्थित है?",
+                options: [
+                    "Palwal (पलवल)",
+                    "Faridabad",
+                    "Gurugram",
+                    "Rewari"
+                ],
+                correct: 0,
+                hint: "Palwal district.",
+                explanation: "Netaji Subhash Chandra Bose Stadium is located in Palwal."
+            },
+            {
+                page: 1,
+                en: "Where was Haryana's first skill university (or skill school) opened?",
+                hi: "हरियाणा का प्रथम स्किल विद्यालय कहाँ खोला गया है?",
+                options: [
+                    "Palwal",
+                    "Dudhola, Palwal",
+                    "Gurugram",
+                    "Faridabad"
+                ],
+                correct: 0,
+                hint: "Palwal.",
+                explanation: "Haryana's first skill school/university project was opened in Palwal."
+            },
+            {
+                page: 1,
+                en: "Which village in Palwal is notable for housing the country's first skill development university setup / Dudhola village administration (50 koson ka sanchalan)?",
+                hi: "देश का प्रथम कौशल विकास वि.वि. कहाँ खोला गया है - पलवल दुधौला गाँव?",
+                options: [
+                    "Dudhola Village, Palwal (दुधौला गाँव)",
+                    "Hathin",
+                    "Hodal",
+                    "Banchari"
+                ],
+                correct: 0,
+                hint: "Dudhola village.",
+                explanation: "It is located in Dudhola village, Palwal."
+            },
+            {
+                page: 1,
+                en: "Where is the famous tourist spot 'Dabchick' located on the Delhi-Agra highway?",
+                hi: "प्रसिद्ध पर्यटक स्थल - डबचिक (हოდल) दिल्ली, आगरा मार्ग पर, कहाँ स्थित है?",
+                options: [
+                    "Palwal / Hodal (पलवल / होडल)",
+                    "Faridabad",
+                    "Karnal",
+                    "Sonipat"
+                ],
+                correct: 0,
+                hint: "Hodal, Palwal.",
+                explanation: "Dabchick tourist spot is located on the Delhi-Agra highway in Hodal, Palwal."
+            },
+            {
+                page: 1,
+                en: "Where is the Shaheed Minar Khapadka located?",
+                hi: "शहीद मीनार खपड़का कहाँ स्थित है?",
+                options: [
+                    "Hathin, Palwal (हथीन, पलवल)",
+                    "Hodal, Palwal",
+                    "Sohna, Gurugram",
+                    "Ballabgarh, Faridabad"
+                ],
+                correct: 0,
+                hint: "Hathin sub-division.",
+                explanation: "Shaheed Minar Khapadka is located in Hathin, Palwal."
+            },
+            {
+                page: 1,
+                en: "During the Sultanate period, which was the smallest Iqta in Haryana, comprising about 30-40 villages?",
+                hi: "सल्तनत काल में हरियाणा का सबसे छोटा इक्‍ता कौन सा था, जिसमें 30-40 गाँव थे?",
+                options: [
+                    "Palwal (पलवल)",
+                    "Delhi",
+                    "Hansi",
+                    "Rewari"
+                ],
+                correct: 0,
+                hint: "Palwal was the smallest, while Delhi was the biggest.",
+                explanation: "Palwal was the smallest Iqta during the Sultanate period (Delhi was the largest)."
+            },
+            {
+                page: 1,
+                en: "Where was former Chief of Naval Staff Sunil Lanba born?",
+                hi: "पूर्व नौसेना अध्यक्ष सुनील लाम्बा का जन्म कहाँ हुआ था?",
+                options: [
+                    "Amarpur Village, Palwal (अमरपुर गाँव, पलवल)",
+                    "Hodal, Palwal",
+                    "Faridabad",
+                    "Gurugram"
+                ],
+                correct: 0,
+                hint: "Amarpur village, Palwal.",
+                explanation: "Former Naval Chief Sunil Lanba was born in Amarpur village, Palwal."
+            },
+            {
+                page: 1,
+                en: "Palwal district comes under which police range in Haryana?",
+                hi: "पलवल किस पुलिस रेंज के अंतर्गत आता है?",
+                options: [
+                    "South Range (साउथ रेंज)",
+                    "Hisar Range",
+                    "Ambala Range",
+                    "Rohtak Range"
+                ],
+                correct: 0,
+                hint: "South Range.",
+                explanation: "Palwal comes under the South Police Range."
+            },
+            {
+                page: 1,
+                en: "Which district has the maximum length of the K.M.P. (Kundli-Manesar-Palwal) Expressway?",
+                hi: "K.M.P. एक्सप्रेस वे की सर्वाधिक लम्बाई वाला जिला कौन सा है?",
+                options: [
+                    "Palwal (पलवल)",
+                    "Sonipat",
+                    "Jhajjar",
+                    "Gurugram"
+                ],
+                correct: 0,
+                hint: "Palwal.",
+                explanation: "Palwal has the maximum length of the KMP Expressway."
+            },
+            {
+                page: 1,
+                en: "Where was Haryana's first 'Mitra Police Thana' (friend police station) opened?",
+                hi: "प्रथम बाल-मित्र पुलिस थाना कहाँ खोला गया है?",
+                options: [
+                    "Palwal",
+                    "Karnal",
+                    "Panchkula",
+                    "Rohtak"
+                ],
+                correct: 0,
+                hint: "Palwal.",
+                explanation: "Haryana's first child-friendly police station (Mitra Police Thana) was opened in Palwal."
+            },
+            {
+                page: 1,
+                en: "Where is the Haveli of Chaudhary Kanshi Ram located?",
+                hi: "चौधरी कांशीराम की हवेली कहाँ स्थित है?",
+                options: [
+                    "Palwal",
+                    "Faridabad",
+                    "Rewari",
+                    "Gurugram"
+                ],
+                correct: 0,
+                hint: "Palwal.",
+                explanation: "The Haveli of Chaudhary Kanshi Ram is located in Palwal."
+            },
+            {
+                page: 1,
+                en: "Where is the famous 'Panchvati' of the Pandavas located?",
+                hi: "पांडवों की पंचवटी कहाँ स्थित है?",
+                options: [
+                    "Palwal",
+                    "Kurukshetra",
+                    "Panipat",
+                    "Jind"
+                ],
+                correct: 0,
+                hint: "Palwal.",
+                explanation: "The Panchvati of the Pandavas is located in Palwal."
+            },
+            {
+                page: 1,
+                en: "During excavations in Haryana at which place were elephant skeletal remains and artistic objects found from Outha (Hathin)?",
+                hi: "हरियाणा में किस स्थान पर खुदाई में हाथी के अस्थि पिंजर व कलात्मक वस्तुएं प्राप्त हुई हैं - औंथा (हथीन) पलवल से?",
+                options: [
+                    "Outha, Hathin, Palwal (औंथा, हथीन)",
+                    "Mitathal, Bhiwani",
+                    "Rakhigarhi, Hisar",
+                    "Kunal, Fatehabad"
+                ],
+                correct: 0,
+                hint: "Outha, Hathin.",
+                explanation: "Elephant skeletal remains and artistic items were found during excavation at Outha, Hathin in Palwal."
+            },
+            {
+                page: 1,
+                en: "Where were the statues of Yajna (यज्ञ की मूर्तियां) found in Haryana?",
+                hi: "यज्ञ की मूर्तियाँ कहाँ से मिली हैं?",
+                options: [
+                    "Palwal",
+                    "Rohtak",
+                    "Sirsa",
+                    "Karnal"
+                ],
+                correct: 0,
+                hint: "Palwal.",
+                explanation: "Statues related to Yajna were found in Palwal."
+            },
+            {
+                page: 1,
+                en: "Where is Action Construction Equipment Ltd. (ACE) industry located?",
+                hi: "एक्शन कंस्ट्रक्शन इक्विपमेंट लि. उद्योग कहाँ स्थित है?",
+                options: [
+                    "Palwal",
+                    "Faridabad",
+                    "Gurugram",
+                    "Panipat"
+                ],
+                correct: 0,
+                hint: "Palwal.",
+                explanation: "Action Construction Equipment Ltd. industry is located in Palwal."
+            },
+            {
+                page: 1,
+                en: "Where is the Rakshabandhan fair celebrated in Haryana according to the text notes (apart from Charkhi Dadri and Bhiwani)?",
+                hi: "रक्षाबंधन मेला कहाँ भरता है - पलवल?",
+                options: [
+                    "Palwal (Note also mentions Charkhi Dadri & Bhiwani)",
+                    "Kurukshetra",
+                    "Ambala",
+                    "Sirsa"
+                ],
+                correct: 0,
+                hint: "Palwal.",
+                explanation: "Rakshabandhan fair is held in Palwal (notes also mention Charkhi Dadri and Khedewala in Bhiwani)."
+            },
+            {
+                page: 1,
+                en: "The festival of Rakshabandhan is organized as 'Saloni Mahotsav' in which district?",
+                hi: "रक्षाबंधन का त्यौहार 'सलौनी महोत्सव' का आयोजन किस जिले में किया जाता है?",
+                options: [
+                    "Jhajjar District (झज्जर जिला)",
+                    "Palwal District",
+                    "Rewari District",
+                    "Mahendragarh District"
+                ],
+                correct: 0,
+                hint: "Jhajjar district.",
+                explanation: "Rakshabandhan is organized as Saloni Mahotsav in Jhajjar district."
+            },
+            {
+                page: 1,
+                en: "Where was the state's new Horticulture Excellence Center (बागवानी उत्कृष्टता केन्द्र) opened?",
+                hi: "राज्य में नया बागवानी उत्कृष्टता केन्द्र कहाँ खोला गया है?",
+                options: [
+                    "Hodal, Palwal (होडल, पलवल)",
+                    "Gharaunda, Karnal",
+                    "Ladwa, Kurukshetra",
+                    "Mangiana, Sirsa"
+                ],
+                correct: 0,
+                hint: "Hodal, Palwal.",
+                explanation: "A new Horticulture Excellence Center was opened in Hodal, Palwal."
+            },
+            {
+                page: 1,
+                en: "Where is the famous tourist spot 'Dabchick' situated?",
+                hi: "प्रसिद्ध पर्यटक स्थल दबचिक स्थित है:",
+                options: [
+                    "Hodal, Palwal (होडल, पलवल)",
+                    "Sohna, Gurugram",
+                    "Pinjore, Panchkula",
+                    "Tilyar, Rohtak"
+                ],
+                correct: 0,
+                hint: "Hodal, Palwal.",
+                explanation: "Tourist spot Dabchick is located in Hodal, Palwal."
+            },
+            {
+                page: 1,
+                en: "Which dance dedicated to Lord Krishna 'Ras' (Rasiya) is extremely popular in Hodal and Palwal?",
+                hi: "भगवान श्रीकृष्णा को समर्पित 'रास' (रसिया) नृत्य बेहद प्रचलित है:",
+                options: [
+                    "Hodal and Palwal (होडल व पलवल)",
+                    "Rohtak and Jhajjar",
+                    "Hisar and Sirsa",
+                    "Ambala and Yamunanagar"
+                ],
+                correct: 0,
+                hint: "Hodal and Palwal.",
+                explanation: "Rasiya/Ras dance dedicated to Lord Krishna is very popular in Hodal and Palwal."
+            },
+            {
+                page: 1,
+                en: "Which district has the highest donkey population (गधों की जनसंख्या सर्वाधिक पाई जाती है)?",
+                hi: "गधों की जनसंख्या सर्वाधिक कहाँ पाई जाती है?",
+                options: [
+                    "Palwal (89 गधे)",
+                    "Nuh",
+                    "Sirsa",
+                    "Jind"
+                ],
+                correct: 0,
+                hint: "Palwal (89 donkeys).",
+                explanation: "Palwal has the highest donkey population (89 donkeys)."
+            },
+            {
+                page: 1,
+                en: "Which is the last district in the state where the Yamuna River flows before exiting (Hasanpur)?",
+                hi: "वर्तमान में यमुना नदी के अंतिम प्रवाह वाला जिला कौन सा है - पलवल (स्थान हसनपुर)?",
+                options: [
+                    "Palwal (Hasanpur)",
+                    "Faridabad",
+                    "Sonipat",
+                    "Panipat"
+                ],
+                correct: 0,
+                hint: "Palwal (Hasanpur).",
+                explanation: "Palwal (at Hasanpur) is the last district where Yamuna flows in the state."
+            },
+            {
+                page: 1,
+                en: "Where is Dauji's temple located, associated with Lord Balarama?",
+                hi: "दाऊ जी का मंदिर स्थित है - बनचारी गाँव, होडल, पलवल (भगवान बलराम से संबंधित)?",
+                options: [
+                    "Banchari Village, Hodal, Palwal (बनचारी गाँव)",
+                    "Israna, Panipat",
+                    "Hathin, Palwal",
+                    "Dudhola, Palwal"
+                ],
+                correct: 0,
+                hint: "Banchari village.",
+                explanation: "Dauji temple, related to Lord Balarama, is located in Banchari village, Hodal, Palwal."
+            },
+            {
+                page: 1,
+                en: "Where was Lord Balarama born according to mythological traditions?",
+                hi: "भगवान बलराम का जन्म हुआ था:",
+                options: [
+                    "Ballabgarh, Faridabad (बल्लभगढ़, फरीदाबाद)",
+                    "Palwal",
+                    "Mathura",
+                    "Kurukshetra"
+                ],
+                correct: 0,
+                hint: "Ballabgarh, Faridabad.",
+                explanation: "Lord Balarama was born in Ballabgarh, Faridabad."
+            },
+            {
+                page: 1,
+                en: "In which village is Haryana's sole temple dedicated to Lord Balarama located?",
+                hi: "हरियाणा में एकमात्र बलराम का मंदिर किस गाँव में है - बनचारी, होडल, पलवल?",
+                options: [
+                    "Banchari, Hodal, Palwal",
+                    "Dudhola, Palwal",
+                    "Hathin, Palwal",
+                    "Outha, Palwal"
+                ],
+                correct: 0,
+                hint: "Banchari village.",
+                explanation: "Haryana's only Balarama temple is in Banchari, Hodal, Palwal."
+            },
+            {
+                page: 1,
+                en: "Which deity in the state is considered the 'God of Farmers' (किसानों का देवता)?",
+                hi: "राज्य में किस देवता को किसानों का देवता कहा जाता है?",
+                options: [
+                    "Lord Balarama (भगवान बलराम)",
+                    "Lord Krishna",
+                    "Lord Indra",
+                    "Lord Shiva"
+                ],
+                correct: 0,
+                hint: "Lord Balarama (wielding Hal/plough).",
+                explanation: "Lord Balarama is known as the God of Farmers due to his weapon being the plough (हल)."
+            },
+            {
+                page: 1,
+                en: "Where is the Holi fair involving 24 villages held?",
+                hi: "होली का मेला (24 गाँवों) से संबंधित भरता है - बनचारी, होडल, पलवल?",
+                options: [
+                    "Banchari, Hodal, Palwal (बनचारी गाँव)",
+                    "Hathin, Palwal",
+                    "Dudhola, Palwal",
+                    "Hasanpur, Palwal"
+                ],
+                correct: 0,
+                hint: "Banchari village.",
+                explanation: "The Holi fair of 24 villages is held in Banchari, Hodal, Palwal."
+            },
+            {
+                page: 1,
+                en: "Who trained Pandu's son Bhima and Kaurava Duryodhana in the art of mace warfare (गदा युद्ध)?",
+                hi: "पांडु पुत्र भीम और कौरव दुर्योधन को गदा युद्ध की कला में निपुण किसने किया था?",
+                options: [
+                    "Lord Balarama (भगवान बलराम)",
+                    "Lord Krishna",
+                    "Dronacharya",
+                    "Parashurama"
+                ],
+                correct: 0,
+                hint: "Lord Balarama.",
+                explanation: "Lord Balarama trained Bhima and Duryodhana in mace fighting."
+            },
+            {
+                page: 1,
+                en: "Which village in the state is known as the 'Village of Poets' (कवियों का गाँव)?",
+                hi: "राज्य के किस गाँव को कवियों का गाँव कहा जाता है - बनचारी गाँव, होडल, पलवल?",
+                options: [
+                    "Banchari Village, Hodal, Palwal (बनचारी गाँव)",
+                    "Israna, Panipat",
+                    "Dahar, Panipat",
+                    "Basada, Panipat"
+                ],
+                correct: 0,
+                hint: "Banchari village.",
+                explanation: "Banchari village in Hodal, Palwal is known as the Village of Poets."
+            },
+            {
+                page: 1,
+                en: "In which village are the Phuldol and Braj Holi famous?",
+                hi: "राज्य के किस गाँव की फूलडोल व ब्रज की होली प्रसिद्ध है - बनचारी गाँव, होडल, पलवल?",
+                options: [
+                    "Banchari Village, Hodal, Palwal (बनचारी गाँव)",
+                    "Hathin, Palwal",
+                    "Dudhola, Palwal",
+                    "Hasanpur, Palwal"
+                ],
+                correct: 0,
+                hint: "Banchari village.",
+                explanation: "Phuldol and Braj Holi of Banchari village, Hodal, Palwal are famous."
+            },
+            {
+                page: 1,
+                en: "Which village in the state is historically considered the land of heroes (शूरमाओं की भूमि) in Dwapar Yuga?",
+                hi: "राज्य का कौन सा गाँव द्वापर युग में शूरमाओं की भूमि रहा है - बनचारी गाँव, होडल, पलवल?",
+                options: [
+                    "Banchari Village, Hodal, Palwal (बनचारी गाँव)",
+                    "Panprastha, Panipat",
+                    "Amin, Kurukshetra",
+                    "Tilpat, Faridabad"
+                ],
+                correct: 0,
+                hint: "Banchari village.",
+                explanation: "Banchari village was known as the land of heroes in Dwapar Yuga."
+            },
+            {
+                page: 1,
+                en: "Om Prakash, who served as the Governor of Nagaland, was born in which state region?",
+                hi: "नागालैंड के राज्यपाल रहे श्री ओमप्रकाश का जन्म राज्य में कहाँ हुआ था?",
+                options: [
+                    "Palwal district region (Banchari area context)",
+                    "Hisar",
+                    "Sirsa",
+                    "Ambala"
+                ],
+                correct: 0,
+                hint: "Palwal / Banchari context.",
+                explanation: "Governor Om Prakash was born in this region of Palwal."
+            },
+            {
+                page: 1,
+                en: "In which village of Hodal, Palwal, is the festival of Holi celebrated for 3 days with 'Hurenga Parv' (हुरंगा पर्व)?",
+                hi: "होली के त्योहार पर 3 दिन तक 'हुरंगा पर्व' का आयोजन किया जाता है - बनचारी गाँव, पलवल?",
+                options: [
+                    "Banchari Village, Palwal (बनचारी गाँव)",
+                    "Hathin, Palwal",
+                    "Dudhola, Palwal",
+                    "Hasanpur, Palwal"
+                ],
+                correct: 0,
+                hint: "Banchari village.",
+                explanation: "Hurenga Parv is celebrated for 3 days during Holi in Banchari village, Palwal."
+            },
+            {
+                page: 1,
+                en: "Which district has the lowest forest cover area in the state (सबसे कम वन क्षेत्रफल वाला जिला)?",
+                hi: "राज्य का सबसे कम वन क्षेत्रफल वाला जिला कौन सा है - पलवल (मात्र 13.56 वर्ग कि.मी.)?",
+                options: [
+                    "Palwal (मात्र 13.56 वर्ग कि.मी.)",
+                    "Fatehabad",
+                    "Jind",
+                    "Panipat"
+                ],
+                correct: 0,
+                hint: "Palwal (only 13.56 sq km).",
+                explanation: "Palwal has the lowest forest cover area in the state (13.56 sq km)."
+            },
+            {
+                page: 1,
+                en: "In which village of Palwal district is there a reclining idol of Lord Lakshminarayan that is about 1000 years old?",
+                hi: "पलवल जिले के किस गाँव में भगवान लक्ष्मीनारायण की लेटी हुई प्रतिमा है जो लगभग 1000 साल पुरानी है - गाँव शेषसाई?",
+                options: [
+                    "Shehsai Village, Palwal (गाँव शेषसाई)",
+                    "Banchari Village",
+                    "Devali Village",
+                    "Dudhola Village"
+                ],
+                correct: 0,
+                hint: "Shehsai village.",
+                explanation: "It is located in Shehsai village, Palwal."
+            },
+            {
+                page: 1,
+                en: "Where has a water treatment plant been set up by a Japanese company in Palwal?",
+                hi: "जापान की कंपनी द्वारा वाटर ट्रीटमेंट प्लांट लगाया गया है - गाँव देवली, पलवल?",
+                options: [
+                    "Devali Village, Palwal (गाँव देवली)",
+                    "Shehsai Village",
+                    "Banchari Village",
+                    "Dudhola Village"
+                ],
+                correct: 0,
+                hint: "Devali village.",
+                explanation: "A water treatment plant by a Japanese company was set up in Devali village, Palwal."
+            },
+            {
+                page: 1,
+                en: "Where was the modern agro-chemical Danuka Agrotech Centre established?",
+                hi: "आधुनिक कृषि रसायन धानुका एग्रीटेक केन्द्र की स्थापना कहाँ की गई है - पलवल?",
+                options: [
+                    "Palwal",
+                    "Karnal",
+                    "Hisar",
+                    "Sirsa"
+                ],
+                correct: 0,
+                hint: "Palwal.",
+                explanation: "Danuka Agrotech Centre was established in Palwal."
+            },
+            {
+                page: 1,
+                en: "To which museum was the statue of Yaksha found in Palwal district sent / kept?",
+                hi: "पलवल जिले में मिली यक्ष की मूर्ति को किस संग्रहालय में रखा गया है - लखनऊ के राज्य संग्रहालय?",
+                options: [
+                    "State Museum, Lucknow (लखनऊ के राज्य संग्रहालय)",
+                    "National Museum, New Delhi",
+                    "Haryana State Museum, Chandigarh",
+                    "Kurukshetra Museum"
+                ],
+                correct: 0,
+                hint: "State Museum, Lucknow.",
+                explanation: "The Yaksha statue found in Palwal was kept in the State Museum, Lucknow."
+            },
+            {
+                page: 1,
+                en: "Where was the ancient mound of Kanchi Khera located?",
+                hi: "पुरातात्विक स्थल, प्राचीन टीला, कांछी खेड़ा स्थित है - होडल, पलवल?",
+                options: [
+                    "Hodal, Palwal (होडल, पलवल)",
+                    "Hathin, Palwal",
+                    "Sohna, Gurugram",
+                    "Ballabgarh, Faridabad"
+                ],
+                correct: 0,
+                hint: "Hodal, Palwal.",
+                explanation: "Ancient mound Kanchi Khera is located in Hodal, Palwal."
+            },
+            {
+                page: 1,
+                en: "Where is a medieval tomb located in Palwal?",
+                hi: "मध्ययुगीन मकबरा स्थित है - पलवल?",
+                options: [
+                    "Palwal",
+                    "Karnal",
+                    "Panipat",
+                    "Rohtak"
+                ],
+                correct: 0,
+                hint: "Palwal.",
+                explanation: "A medieval tomb is located in Palwal."
+            },
+
+            // ================= PAGE 2 QUESTIONS (15 Qs) =================
+            {
+                page: 2,
+                en: "At which archaeological site in Palwal were painted pottery (चित्रित मृद्भांड, मिट्टी के बर्तन) and medieval remains found - Kesuriya Khera, Manpur village?",
+                hi: "राज्य के किस पुरातात्विक स्थल से चित्रित मृद्भांड, मिट्टी के बर्तन और मध्यकालीन अवशेष मिले हैं - केसुरिया खेड़ा, गाँव मानपुर, पलवल?",
+                options: [
+                    "Kesuriya Khera, Manpur Village, Palwal (केसुरिया खेड़ा, गाँव मानपुर)",
+                    "Kanchi Khera, Hodal",
+                    "Mitathal, Bhiwani",
+                    "Rakhigarhi, Hisar"
+                ],
+                correct: 0,
+                hint: "Kesuriya Khera, Manpur village.",
+                explanation: "Painted pottery and medieval remains were found at Kesuriya Khera, Manpur village, Palwal."
+            },
+            {
+                page: 2,
+                en: "Spread over approximately 450 square meters, around eight meters high from surrounding land, which archaeological site is located in Palwal (Manpur village)?",
+                hi: "आसपास की जमीन से लगभग आठ मीटर ऊंचाई पर स्थित राज्य का कौन सा पुरातात्विक स्थल 450 वर्ग मीटर में फैला हुआ है - केसुरिया खेड़ा, गाँव मानपुर?",
+                options: [
+                    "Kesuriya Khera, Manpur Village, Palwal (केसुरिया खेड़ा)",
+                    "Kanchi Khera, Hodal",
+                    "Outha, Hathin",
+                    "Dudhola site"
+                ],
+                correct: 0,
+                hint: "Kesuriya Khera, Manpur.",
+                explanation: "Kesuriya Khera in Manpur village spans 450 square meters and sits 8 meters high."
+            },
+            {
+                page: 2,
+                en: "Which archaeological site in the state represents Grey Ware culture, continuing from later Kushana, Gupta, medieval periods up to modern times - Kesuriya Khera, Manpur village?",
+                hi: "राज्य का कौन-सा पुरातात्विक स्थल धूसर मृद्भांड संस्कृति का प्रतिनिधित्व करता है जो उत्तरवर्ती कुषाण, गुप्त मध्यकाल से लेकर आधुनिकता तक जारी रही है - केसुरिया खेड़ा, गाँव मानपुर?",
+                options: [
+                    "Kesuriya Khera, Manpur Village, Palwal (केसुरिया खेड़ा, गाँव मानपुर)",
+                    "Kanchi Khera, Hodal",
+                    "Banchari site",
+                    "Hasanpur site"
+                ],
+                correct: 0,
+                hint: "Kesuriya Khera, Manpur.",
+                explanation: "Kesuriya Khera in Manpur represents Grey Ware culture continuing through Kushana, Gupta, and medieval periods."
+            },
+            // Additional 12 unique questions to complete 15 for Page 2 based on Palwal facts and general district context
+            {
+                page: 2,
+                en: "What is the historical significance of Palwal's name according to mythological legends?",
+                hi: "पौराणिक कथाओं के अनुसार पलवल का नाम किस राक्षस या असुर के नाम पर पड़ा था?",
+                options: [
+                    "Pulpasur (पुलपासुर)",
+                    "Mahishasura",
+                    "Bhasmasura",
+                    "Jalandhara"
+                ],
+                correct: 0,
+                hint: "Demon Pulpasur killed by Balarama.",
+                explanation: "Palwal is named after the demon Pulpasur who was slain by Lord Balarama."
+            },
+            {
+                page: 2,
+                en: " Mahatma Gandhi was arrested from which railway station on April 10, 1919?",
+                hi: "महात्मा गांधी को 10 अप्रैल 1919 को किस रेलवे स्टेशन से गिरफ्तार किया गया था?",
+                options: [
+                    "Palwal Railway Station (पलवल रेलवे स्टेशन)",
+                    "Ambala Railway Station",
+                    "Kalka Railway Station",
+                    "Panipat Railway Station"
+                ],
+                correct: 0,
+                hint: "Palwal railway station.",
+                explanation: "Mahatma Gandhi was arrested at Palwal Railway Station on April 10, 1919, during his protest against the Rowlatt Act."
+            },
+            {
+                page: 2,
+                en: "What memorial or ashram has been built in Palwal to commemorate Mahatma Gandhi's historic arrest?",
+                hi: "महात्मा गांधी की गिरफ्तारी की स्मृति में पलवल में किस भवन/स्मारक का निर्माण किया गया है?",
+                options: [
+                    "Gandhi Ashram (गांधी आश्रम / मूक बधिर विद्यालय)",
+                    "Gandhi Smarak Nidhi",
+                    "Satyagraha Bhavan",
+                    "Kalandar Memorial"
+                ],
+                correct: 0,
+                hint: "Gandhi Ashram.",
+                explanation: "Gandhi Ashram was established in Palwal in memory of his arrest."
+            },
+            {
+                page: 2,
+                en: "In which year was Palwal officially declared as the 21st district of Haryana?",
+                hi: "पलवल को आधिकारिक रूप से हरियाणा का 21वां जिला कब बनाया गया था?",
+                options: [
+                    "13 August 2008",
+                    "1 November 1989",
+                    "15 August 1947",
+                    "4 April 2005"
+                ],
+                correct: 0,
+                hint: "August 13, 2008.",
+                explanation: "Palwal became the 21st district of Haryana on August 13, 2008."
+            },
+            {
+                page: 2,
+                en: "Which national highway connects Palwal to Delhi and Mathura/Agra?",
+                hi: "कौन सा राष्ट्रीय राजमार्ग पलवल को दिल्ली और आगरा से जोड़ता है?",
+                options: [
+                    "NH-44 (Old NH-1 / NH-2 route)",
+                    "NH-9",
+                    "NH-52",
+                    "NH-152D"
+                ],
+                correct: 0,
+                hint: "NH-44 / old NH-2.",
+                explanation: "NH-44 connects Palwal along the historical Delhi-Agra route."
+            },
+            {
+                page: 2,
+                en: "What is the principal economic activity in the rural parts of Palwal district?",
+                hi: "पलवल जिले के ग्रामीण क्षेत्रों की मुख्य आर्थिक गतिविधि क्या है?",
+                options: [
+                    "Agriculture and dairy farming (कृषि और पशुपालन)",
+                    "Information technology",
+                    "Tea plantation",
+                    "Mining"
+                ],
+                correct: 0,
+                hint: "Agriculture and animal husbandry.",
+                explanation: "Agriculture and animal husbandry are the core economic activities."
+            },
+            {
+                page: 2,
+                en: "Which community or cultural heritage heavily influences the folk traditions and arts of Palwal (Hodal region)?",
+                hi: "पलवल (होडल क्षेत्र) की लोक संस्कृति और कला पर किस क्षेत्र की संस्कृति का गहरा प्रभाव है?",
+                options: [
+                    "Braj Culture (ब्रज संस्कृति)",
+                    "Punjabi Culture",
+                    "Rajasthani Desert Culture",
+                    "Pahari Culture"
+                ],
+                correct: 0,
+                hint: "Braj culture.",
+                explanation: "Braj culture deeply influences Palwal's folk traditions, songs, and dances like Rasiya."
+            },
+            {
+                page: 2,
+                en: "What is the general topography of Palwal district characterized by?",
+                hi: "पलवल जिले की भू-आकृति मुख्य रूप से कैसी है?",
+                    options: [
+                    "Flat alluvial plain formed by Yamuna basin (समतल जलोढ़ मैदान)",
+                    "Hilly terrain with peaks",
+                    "Sandy desert dunes",
+                    "Plateau terrain"
+                ],
+                correct: 0,
+                hint: "Alluvial plain.",
+                explanation: "It consists of flat alluvial plains formed by the Yamuna river basin."
+            },
+            {
+                page: 2,
+                en: "Which neighboring state does Palwal district share its administrative boundary with?",
+                hi: "पलवल जिला किस पड़ोसी राज्य के साथ अपनी सीमा साझा करता है?",
+                options: [
+                    "Uttar Pradesh (उत्तर प्रदेश)",
+                    "Punjab",
+                    "Himachal Pradesh",
+                    "Uttarakhand"
+                ],
+                correct: 0,
+                hint: "Uttar Pradesh across Yamuna.",
+                explanation: "Palwal shares its eastern border with Uttar Pradesh across the Yamuna River."
+            },
+            {
+                page: 2,
+                en: "Which sub-division of Palwal is particularly noted for historical monuments and rural heritage like Hathin and Hodal?",
+                hi: "पलवल की कौन सी उप-मंडलियाँ ऐतिहासिक स्मारकों और ग्रामीण विरासत के लिए जानी जाती हैं?",
+                options: [
+                    "Hathin and Hodal (हथीन और होडल)",
+                    "Ambala and Naraingarh",
+                    "Sirsa and Dabwali",
+                    "Narnaul and Mahendragarh"
+                ],
+                correct: 0,
+                hint: "Hathin and Hodal.",
+                explanation: "Hathin and Hodal are prominent sub-divisions in Palwal district."
+            },
+            {
+                page: 2,
+                en: "What type of educational institutions have recently expanded in Palwal to boost youth employment?",
+                hi: "युवाओं के कौशल विकास के लिए पलवल में किस प्रकार के संस्थान खोले गए हैं?",
+                options: [
+                    "Skill universities and technical schools (कौशल विश्वविद्यालय)",
+                    "Medical colleges only",
+                    "Marine academies",
+                    "Mining institutes"
+                ],
+                correct: 0,
+                hint: "Skill development universities.",
+                explanation: "Skill development universities like the one in Dudhola have been established."
+            },
+            {
+                page: 2,
+                en: "How does Palwal contribute to Haryana's overall transportation network connectivity?",
+                hi: "पलवल हरियाणा के परिवहन नेटवर्क में किस प्रकार महत्वपूर्ण भूमिका निभाता है?",
+                options: [
+                    "As a key junction for Expressways (KMP) and National Highways (NH-44)",
+                    "As a major seaport terminal",
+                    "As an international airport hub",
+                    "As a railway terminus exclusively"
+                ],
+                correct: 0,
+                hint: "KMP Expressway and NH-44 junction.",
+                explanation: "It serves as a crucial intersection point for the KMP Expressway and major national highways."
+            }
+        ];
+
+        // Application State Variables
+        let currentIndex = 0;
+        let score = 0;
+        let userAnswers = new Array(quizData.length).fill(null);
+        let showHintState = false;
+
+        // DOM Element References
+        const questionCounterEl = document.getElementById('question-counter');
+        const questionTextEnEl = document.getElementById('question-text-en');
+        const questionTextHiEl = document.getElementById('question-text-hi');
+        const optionsContainerEl = document.getElementById('options-container');
+        const hintToggleBtn = document.getElementById('hint-toggle-btn');
+        const hintBox = document.getElementById('hint-box');
+        const explanationBox = document.getElementById('explanation-box');
+        const explanationTitle = document.getElementById('explanation-title');
+        const explanationText = document.getElementById('explanation-text');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const scoreDisplay = document.getElementById('score-display');
+        const totalQuestionsDisplay = document.getElementById('total-questions-display');
+        const progressBar = document.getElementById('progress-bar');
+        const jumpInput = document.getElementById('jump-input');
+        const jumpBtn = document.getElementById('jump-btn');
+
+        rdqTotal = quizData.length;
+        totalQuestionsDisplay.textContent = rdqTotal;
+
+        // Shuffle options helper keeping track of correct option
+        function getShuffledOptions(q) {
+            const optionsWithIndex = q.options.map((opt, idx) => ({ text: opt, originalIndex: idx }));
+            for (let i = optionsWithIndex.length - 1; i > 0; i--) {
+                const j = (currentIndex * 7 + i) % optionsWithIndex.length;
+                [optionsWithIndex[i], optionsWithIndex[j]] = [optionsWithIndex[j], optionsWithIndex[i]];
+            }
+            return optionsWithIndex;
+        }
+
+        function loadQuestion() {
+            const q = quizData[currentIndex];
+            questionCounterEl.textContent = `Question ${currentIndex + 1} of ${quizData.length} (Page ${q.page})`;
+            questionTextEnEl.textContent = q.en;
+            questionTextHiEl.textContent = q.hi;
+
+            // Reset hint and explanation views
+            showHintState = false;
+            hintBox.classList.add('hidden');
+            hintBox.textContent = q.hint;
+            hintToggleBtn.innerHTML = `<span>💡 Show Hint</span>`;
+
+            const userSelected = userAnswers[currentIndex];
+            if (userSelected !== null) {
+                explanationBox.classList.remove('hidden');
+                if (userSelected === q.correct) {
+                    explanationBox.className = "p-4 rounded-xl border border-emerald-500/40 bg-emerald-950/30 text-emerald-200 mb-6 transition-all duration-300";
+                    explanationTitle.innerHTML = "✅ Correct Answer";
+                } else {
+                    explanationBox.className = "p-4 rounded-xl border border-rose-500/40 bg-rose-950/30 text-rose-200 mb-6 transition-all duration-300";
+                    explanationTitle.innerHTML = "❌ Incorrect Answer";
+                }
+                explanationText.textContent = q.explanation;
+            } else {
+                explanationBox.classList.add('hidden');
+            }
+
+            // Render options
+            optionsContainerEl.innerHTML = '';
+            const shuffled = getShuffledOptions(q);
+
+            shuffled.forEach((optObj, idx) => {
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left p-4 rounded-xl border transition-all duration-200 flex items-center justify-between text-sm md:text-base font-medium `;
+                
+                const optionLabel = String.fromCharCode(65 + idx); // A, B, C, D
+                
+                if (userSelected !== null) {
+                    if (optObj.originalIndex === q.correct) {
+                        btn.className += "bg-emerald-900/40 border-emerald-500 text-emerald-200";
+                    } else if (optObj.originalIndex === userSelected) {
+                        btn.className += "bg-rose-900/40 border-rose-500 text-rose-200";
+                    } else {
+                        btn.className += "bg-slate-900/40 border-slate-700 text-slate-400 opacity-60";
+                    }
+                    btn.disabled = true;
+                } else {
+                    btn.className += "bg-slate-900/60 border-slate-700 hover:border-emerald-500 hover:bg-slate-900 text-slate-200 cursor-pointer";
+                    btn.onclick = () => selectOption(optObj.originalIndex);
+                }
+
+                btn.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="w-7 h-7 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center text-xs font-bold text-slate-300">${optionLabel}</span>
+                        <span>${optObj.text}</span>
+                    </div>
+                `;
+                optionsContainerEl.appendChild(btn);
+            });
+
+            // Update Nav controls & Progress
+            prevBtn.disabled = currentIndex === 0;
+            nextBtn.disabled = currentIndex === quizData.length - 1;
+            progressBar.style.width = `${((currentIndex + 1) / quizData.length) * 100}%`;
+            scoreDisplay.textContent = score;
+        }
+
+        function selectOption(selectedIndex) {
+            if (userAnswers[currentIndex] !== null) return;
+            
+            userAnswers[currentIndex] = selectedIndex;
+            const q = quizData[currentIndex];
+
+            if (selectedIndex === q.correct) {
+                score++;
+                explanationBox.className = "p-4 rounded-xl border border-emerald-500/40 bg-emerald-950/30 text-emerald-200 mb-6 transition-all duration-300";
+                explanationTitle.innerHTML = "✅ Correct Answer";
+            } else {
+                explanationBox.className = "p-4 rounded-xl border border-rose-500/40 bg-rose-950/30 text-rose-200 mb-6 transition-all duration-300";
+                explanationTitle.innerHTML = "❌ Incorrect Answer";
+            }
+            explanationText.textContent = q.explanation;
+            explanationBox.classList.remove('hidden');
+
+            scoreDisplay.textContent = score;
+            loadQuestion();
+        }
+
+        // Hint Toggle
+        hintToggleBtn.onclick = () => {
+            showHintState = !showHintState;
+            if (showHintState) {
+                hintBox.classList.remove('hidden');
+                hintToggleBtn.innerHTML = `<span>💡 Hide Hint</span>`;
+            } else {
+                hintBox.classList.add('hidden');
+                hintToggleBtn.innerHTML = `<span>💡 Show Hint</span>`;
+            }
+        };
+
+        // Navigation Handlers
+        prevBtn.onclick = () => {
+            if (currentIndex > 0) {
+                currentIndex--;
+                loadQuestion();
+            }
+        };
+
+        nextBtn.onclick = () => {
+            if (currentIndex < quizData.length - 1) {
+                currentIndex++;
+                loadQuestion();
+            }
+        };
+
+        jumpBtn.onclick = () => {
+            const val = parseInt(jumpInput.value);
+            if (!isNaN(val) && val >= 1 && val <= quizData.length) {
+                currentIndex = val - 1;
+                jumpInput.value = '';
+                loadQuestion();
+            } else {
+                alert(`Please enter a valid question number between 1 and ${quizData.length}`);
+            }
+        };
+
+        // Initial Load
+        loadQuestion();
+    </script>
+<script src="../../quiz-question-controls.js"></script>
+<script src="../../quiz-app-ui-v2.js"></script></body>
+</html>

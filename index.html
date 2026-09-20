@@ -1,0 +1,2338 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#271946">
+  <title>Cosmic Quiz Universe — Mobile Edition</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500;700&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&display=swap');
+
+    :root {
+      --ink: #271946;
+      --paper: #f6f0ff;
+      --panel: rgba(255, 255, 255, 0.85);
+      --panel-border: rgba(118, 84, 204, 0.22);
+      --card-bg: linear-gradient(145deg, rgba(255, 255, 255, 0.82), rgba(246, 235, 255, 0.65));
+      --violet: #7654cc;
+      --pink: #d95ea6;
+      --gold: #d8952c;
+      --sky: #47a8d3;
+      --emerald: #38a169;
+      --muted: #665878;
+      --danger: #d93856;
+      --appbar-bg: rgba(246, 240, 255, 0.88);
+      --dock-bg: rgba(255, 255, 255, 0.92);
+      --dock-border: rgba(118, 84, 204, 0.2);
+      --dialog-bg: #fbf7ff;
+      --item-bg: #ffffff;
+      --shadow-sm: 0 4px 14px rgba(74, 45, 123, 0.08);
+      --shadow-md: 0 12px 28px rgba(74, 45, 123, 0.12);
+      --shadow-lg: 0 20px 40px rgba(74, 45, 123, 0.18);
+      --radius-sm: 10px;
+      --radius-md: 16px;
+      --radius-lg: 22px;
+      --touch-min: 44px;
+      --sat: env(safe-area-inset-top, 0px);
+      --sab: env(safe-area-inset-bottom, 0px);
+      --sal: env(safe-area-inset-left, 0px);
+      --sar: env(safe-area-inset-right, 0px);
+    }
+
+    html[data-theme='dark'] {
+      color-scheme: dark;
+      --ink: #f5f1ff;
+      --paper: #09071a;
+      --panel: rgba(25, 18, 48, 0.88);
+      --panel-border: rgba(172, 144, 255, 0.26);
+      --card-bg: linear-gradient(145deg, rgba(34, 24, 68, 0.9), rgba(16, 11, 38, 0.92));
+      --muted: #b9adc9;
+      --appbar-bg: rgba(9, 7, 26, 0.88);
+      --dock-bg: rgba(16, 11, 38, 0.94);
+      --dock-border: rgba(172, 144, 255, 0.24);
+      --dialog-bg: #130d2e;
+      --item-bg: rgba(36, 26, 72, 0.95);
+      --shadow-sm: 0 4px 14px rgba(0, 0, 0, 0.35);
+      --shadow-md: 0 14px 30px rgba(0, 0, 0, 0.5);
+      --shadow-lg: 0 22px 48px rgba(0, 0, 0, 0.65);
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      font-family: 'Manrope', system-ui, -apple-system, sans-serif;
+      background: radial-gradient(ellipse 70% 50% at 92% 0, rgba(214, 123, 214, 0.38), transparent 65%),
+                  radial-gradient(ellipse 65% 45% at 5% 100%, rgba(81, 184, 224, 0.32), transparent 66%),
+                  linear-gradient(135deg, #e9ddff, #fff0e2 58%, #dff6ff);
+      padding-bottom: calc(84px + var(--sab));
+      overflow-x: hidden;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    html[data-theme='dark'] body {
+      background: radial-gradient(ellipse 70% 50% at 85% 5%, rgba(138, 77, 216, 0.28), transparent 65%),
+                  radial-gradient(ellipse 65% 45% at 10% 95%, rgba(35, 128, 179, 0.25), transparent 66%),
+                  linear-gradient(135deg, #09071a 0%, #150f33 55%, #0d1a33 100%);
+    }
+
+    body:before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      opacity: 0.65;
+      background-image: radial-gradient(circle at 12% 17%, #d8952c 0 1px, transparent 1.6px),
+                        radial-gradient(circle at 54% 22%, #7654cc 0 1.2px, transparent 1.8px),
+                        radial-gradient(circle at 87% 58%, #d95ea6 0 1px, transparent 1.5px),
+                        radial-gradient(circle at 32% 79%, #47a8d3 0 1.2px, transparent 1.7px);
+      background-size: 190px 180px, 260px 240px, 300px 280px, 220px 210px;
+      pointer-events: none;
+    }
+
+    html[data-theme='dark'] body:before {
+      opacity: 0.45;
+    }
+
+    /* Container */
+    .wrap {
+      width: min(1140px, calc(100% - 32px));
+      margin: auto;
+      padding-left: var(--sal);
+      padding-right: var(--sar);
+    }
+
+    /* Sticky Mobile Appbar */
+    .appbar-sticky {
+      position: sticky;
+      top: 0;
+      z-index: 90;
+      background: var(--appbar-bg);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--panel-border);
+      padding-top: var(--sat);
+      transition: background 0.3s;
+    }
+
+    .appbar {
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--ink);
+      font-weight: 800;
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      text-decoration: none;
+      min-width: 0;
+    }
+
+    .orbit {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      background: radial-gradient(circle, #fff7dd 0 26%, #d8952c 28% 33%, #d95ea6 38% 43%, #7654cc 47% 52%, transparent 55%);
+      box-shadow: 0 0 18px rgba(167, 93, 210, 0.55);
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.15;
+    }
+
+    .brand-title {
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.78rem;
+    }
+
+    .brand-sub {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.12em;
+      color: var(--pink);
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .appbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .theme-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      height: 36px;
+      padding: 0 12px;
+      border: 1px solid var(--panel-border);
+      border-radius: 999px;
+      background: var(--panel);
+      color: var(--ink);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.64rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.15s, background-color 0.2s;
+    }
+
+    .theme-btn:active {
+      transform: scale(0.94);
+    }
+
+    /* Floating Mobile Bottom Navigation Dock */
+    .mobile-dock {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 95;
+      background: var(--dock-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-top: 1px solid var(--dock-border);
+      padding: 8px 12px calc(8px + var(--sab));
+      box-shadow: 0 -4px 20px rgba(40, 20, 80, 0.1);
+    }
+
+    .dock-menu {
+      max-width: 500px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
+
+    .dock-link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 6px 4px;
+      border-radius: 12px;
+      color: var(--muted);
+      text-decoration: none;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      min-height: 48px;
+      transition: all 0.15s;
+    }
+
+    .dock-link svg {
+      width: 20px;
+      height: 20px;
+      stroke-width: 2;
+      transition: transform 0.2s;
+    }
+
+    .dock-link:active {
+      transform: scale(0.92);
+      background: rgba(118, 84, 204, 0.12);
+      color: var(--violet);
+    }
+
+    .dock-link.active,
+    .dock-link:hover {
+      color: var(--pink);
+    }
+
+    .dock-link.action-add {
+      color: #ffffff;
+      background: linear-gradient(115deg, var(--violet), var(--pink));
+      box-shadow: 0 4px 14px rgba(118, 84, 204, 0.35);
+    }
+
+    .dock-link.action-add:active {
+      transform: scale(0.93);
+    }
+
+    /* Section anchor scrolling offset */
+    #home, #schedule, #libraries {
+      scroll-margin-top: 76px;
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 34px 0 24px;
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--violet);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.66rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    html[data-theme='dark'] .eyebrow {
+      color: #bfa8ff;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: clamp(2.3rem, 9.5vw, 4.4rem);
+      line-height: 1.02;
+      letter-spacing: -0.04em;
+      word-break: break-word;
+      overflow-wrap: break-word;
+    }
+
+    .hero h1 em {
+      color: var(--pink);
+      font-style: italic;
+    }
+
+    .hero p.lead {
+      line-height: 1.65;
+      color: var(--muted);
+      margin: 16px 0 20px;
+      font-size: 0.95rem;
+      max-width: 620px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 20px;
+      background: linear-gradient(110deg, var(--violet), var(--pink));
+      border-radius: var(--radius-md);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 0.85rem;
+      min-height: var(--touch-min);
+      box-shadow: 0 8px 22px rgba(118, 84, 204, 0.3);
+      cursor: pointer;
+      border: 0;
+      transition: transform 0.15s, box-shadow 0.2s;
+    }
+
+    .btn-primary:active {
+      transform: scale(0.96);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 13px 18px;
+      border: 1px solid var(--panel-border);
+      border-radius: var(--radius-md);
+      background: var(--panel);
+      color: var(--ink);
+      text-decoration: none;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.74rem;
+      font-weight: 700;
+      min-height: var(--touch-min);
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+    }
+
+    .btn-secondary:active {
+      transform: scale(0.96);
+    }
+
+    .stats-strip {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .stat-pill {
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .stat-pill b {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--gold);
+      line-height: 1;
+    }
+
+    .stat-pill span {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    /* Scheduler Section */
+    .scheduler-box {
+      margin: 28px 0 36px;
+      padding: 20px 18px;
+      border: 1px solid var(--panel-border);
+      border-radius: var(--radius-lg);
+      background: var(--panel);
+      box-shadow: var(--shadow-md);
+    }
+
+    .sched-head {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .sched-head h2 {
+      margin: 0;
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 6.5vw, 2.6rem);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+    }
+
+    .sched-head h2 em {
+      color: var(--pink);
+    }
+
+    .sched-head p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.82rem;
+      line-height: 1.5;
+    }
+
+    /* Week Navigator Bar */
+    .week-nav-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 14px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--panel-border);
+    }
+
+    .week-range-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--ink);
+    }
+
+    .week-btn-group {
+      display: flex;
+      gap: 6px;
+    }
+
+    .icon-btn {
+      min-width: 38px;
+      height: 38px;
+      padding: 0 10px;
+      border-radius: 10px;
+      border: 1px solid var(--panel-border);
+      background: var(--item-bg);
+      color: var(--ink);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .icon-btn:active {
+      transform: scale(0.92);
+    }
+
+    /* Weekly Progress bar */
+    .sched-progress-wrap {
+      margin: 16px 0;
+    }
+
+    .sched-progress-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.74rem;
+      font-family: 'DM Mono', monospace;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .sched-progress-info b {
+      color: var(--pink);
+    }
+
+    .progress-track {
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(118, 84, 204, 0.15);
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--violet), var(--pink));
+      transition: width 0.3s ease;
+    }
+
+    /* Day Segmented Tabs Bar (The Mobile Secret Sauce) */
+    .day-tabs-container {
+      margin: 16px 0 18px;
+    }
+
+    .day-tabs-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .day-tabs-label span {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .view-mode-toggle {
+      display: inline-flex;
+      background: rgba(118, 84, 204, 0.1);
+      border-radius: 8px;
+      padding: 2px;
+      gap: 2px;
+    }
+
+    .view-mode-btn {
+      border: 0;
+      background: transparent;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.58rem;
+      font-weight: 700;
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    .view-mode-btn.active {
+      background: var(--item-bg);
+      color: var(--ink);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .day-tabs-scroll {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      scrollbar-width: thin;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .day-tab {
+      flex: 1;
+      min-width: 48px;
+      min-height: 64px;
+      border: 1px solid var(--panel-border);
+      border-radius: 12px;
+      background: var(--item-bg);
+      color: var(--ink);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      cursor: pointer;
+      padding: 6px 4px;
+      position: relative;
+      transition: all 0.15s;
+    }
+
+    .day-tab:active {
+      transform: scale(0.94);
+    }
+
+    .day-tab.is-today {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 1px var(--gold);
+    }
+
+    .day-tab.is-active {
+      background: linear-gradient(135deg, var(--violet), #8b68df);
+      color: #ffffff;
+      border-color: transparent;
+      box-shadow: 0 6px 16px rgba(118, 84, 204, 0.35);
+    }
+
+    .day-tab-name {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      opacity: 0.85;
+    }
+
+    .day-tab-date {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .day-tab-badge {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.52rem;
+      padding: 1px 5px;
+      border-radius: 999px;
+      background: rgba(118, 84, 204, 0.15);
+      color: var(--violet);
+      font-weight: 700;
+    }
+
+    .day-tab.is-active .day-tab-badge {
+      background: rgba(255, 255, 255, 0.25);
+      color: #ffffff;
+    }
+
+    /* Day Focus Content */
+    .day-focus-card {
+      border: 1px solid var(--panel-border);
+      border-radius: var(--radius-md);
+      background: var(--item-bg);
+      padding: 16px;
+      margin-top: 12px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .day-focus-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding-bottom: 12px;
+      margin-bottom: 12px;
+      border-bottom: 1px solid rgba(118, 84, 204, 0.12);
+    }
+
+    .day-focus-title {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .day-focus-title b {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      color: var(--ink);
+    }
+
+    .day-focus-title small {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .btn-add-for-day {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 12px;
+      border-radius: 10px;
+      background: linear-gradient(115deg, var(--violet), var(--pink));
+      color: #fff;
+      font-family: 'Manrope', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 800;
+      border: 0;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn-add-for-day:active {
+      transform: scale(0.94);
+    }
+
+    /* Schedule Items List */
+    .schedule-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .schedule-item {
+      padding: 14px;
+      border-radius: 14px;
+      border: 1px solid var(--panel-border);
+      background: var(--card-bg);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: transform 0.15s, opacity 0.2s;
+    }
+
+    .schedule-item.is-completed {
+      opacity: 0.75;
+      border-color: rgba(56, 161, 105, 0.35);
+      background: linear-gradient(145deg, rgba(56, 161, 105, 0.06), rgba(56, 161, 105, 0.02));
+    }
+
+    .item-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .item-category {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--violet);
+      font-weight: 700;
+    }
+
+    html[data-theme='dark'] .item-category {
+      color: #c2abff;
+    }
+
+    .item-status-pill {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(118, 84, 204, 0.12);
+      color: var(--violet);
+    }
+
+    .schedule-item.is-completed .item-status-pill {
+      background: rgba(56, 161, 105, 0.18);
+      color: var(--emerald);
+    }
+
+    .item-title-link {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.12rem;
+      font-weight: 700;
+      color: var(--ink);
+      text-decoration: none;
+      line-height: 1.3;
+      display: inline-block;
+    }
+
+    .item-title-link:hover,
+    .item-title-link:active {
+      color: var(--pink);
+      text-decoration: underline;
+    }
+
+    .item-meta {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    /* Schedule Item Touch Actions */
+    .item-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+      padding-top: 8px;
+      border-top: 1px solid rgba(118, 84, 204, 0.1);
+    }
+
+    .action-btn {
+      min-height: 36px;
+      padding: 0 12px;
+      border-radius: 8px;
+      border: 1px solid var(--panel-border);
+      background: var(--item-bg);
+      color: var(--ink);
+      font-family: 'Manrope', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+    }
+
+    .action-btn:active {
+      transform: scale(0.94);
+    }
+
+    .action-btn.btn-toggle {
+      background: rgba(118, 84, 204, 0.1);
+      color: var(--violet);
+      border-color: rgba(118, 84, 204, 0.2);
+    }
+
+    .schedule-item.is-completed .action-btn.btn-toggle {
+      background: rgba(56, 161, 105, 0.12);
+      color: var(--emerald);
+    }
+
+    .action-btn.btn-danger {
+      color: var(--danger);
+      margin-left: auto;
+    }
+
+    .action-btn.btn-arrow {
+      min-width: 36px;
+      padding: 0;
+      font-size: 0.8rem;
+    }
+
+    .day-empty {
+      text-align: center;
+      padding: 30px 16px;
+      color: var(--muted);
+    }
+
+    .day-empty p {
+      font-size: 0.86rem;
+      margin: 0 0 14px;
+    }
+
+    /* All 7 Days Vertical Stack View */
+    .all-days-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .day-column-card {
+      border: 1px solid var(--panel-border);
+      border-radius: 14px;
+      background: var(--item-bg);
+      padding: 14px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .day-column-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 8px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid rgba(118, 84, 204, 0.12);
+    }
+
+    .day-column-header b {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+    }
+
+    .day-column-header span {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      color: var(--violet);
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    /* Suggestions Section */
+    .suggestions-box {
+      margin-top: 20px;
+      padding: 16px;
+      border-radius: var(--radius-md);
+      background: rgba(118, 84, 204, 0.08);
+      border: 1px dashed var(--panel-border);
+    }
+
+    .suggestions-box h3 {
+      margin: 0 0 8px;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      color: var(--ink);
+    }
+
+    .suggestions-box ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 0.78rem;
+      line-height: 1.5;
+    }
+
+    .suggestions-box li {
+      margin-bottom: 6px;
+    }
+
+    /* Quiz Libraries Section */
+    .libraries {
+      padding: 18px 0 36px;
+    }
+
+    .section-head {
+      margin-bottom: 18px;
+    }
+
+    .section-head h2 {
+      margin: 0 0 6px;
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.9rem, 7vw, 2.7rem);
+      letter-spacing: -0.04em;
+    }
+
+    .section-head p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    @media (min-width: 600px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 960px) {
+      .grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .card {
+      position: relative;
+      min-height: 175px;
+      padding: 20px;
+      border: 1px solid var(--panel-border);
+      border-radius: var(--radius-md);
+      background: var(--card-bg);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      text-decoration: none;
+      color: var(--ink);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.15s, box-shadow 0.2s;
+    }
+
+    .card:before {
+      content: '';
+      position: absolute;
+      width: 140px;
+      height: 140px;
+      right: -40px;
+      top: -50px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #fff7df 0 23%, var(--ring, #7654cc) 25% 29%, var(--halo, #d95ea6) 34% 40%, transparent 45%);
+      opacity: 0.85;
+      pointer-events: none;
+    }
+
+    .card:active {
+      transform: scale(0.98);
+      box-shadow: var(--shadow-md);
+    }
+
+    .card > * {
+      position: relative;
+      z-index: 2;
+    }
+
+    .card .tag {
+      display: inline-block;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--violet);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    html[data-theme='dark'] .card .tag {
+      color: #c7b3ff;
+    }
+
+    .card h3 {
+      margin: 0 0 6px;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.65rem;
+      font-weight: 700;
+      line-height: 1.15;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.82rem;
+      line-height: 1.5;
+    }
+
+    .card .open {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 16px;
+      color: var(--pink);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* Mobile Universal Slide-Up Modals (Bottom Sheets) */
+    .mobile-modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.22s ease;
+    }
+
+    .mobile-modal-overlay.is-open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .mobile-modal-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(15, 8, 32, 0.68);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+    }
+
+    .mobile-modal-overlay .modal-sheet {
+      position: relative;
+      z-index: 1000;
+      width: 100%;
+      max-width: 580px;
+      margin: 0 auto;
+      border: 0;
+      border-radius: 24px 24px 0 0;
+      padding: 0;
+      background: var(--dialog-bg);
+      color: var(--ink);
+      box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.45);
+      max-height: 90vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transform: translateY(100%);
+      transition: transform 0.26s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .mobile-modal-overlay.is-open .modal-sheet {
+      transform: translateY(0);
+    }
+
+    @media (min-width: 600px) {
+      .mobile-modal-overlay {
+        align-items: center;
+      }
+      .mobile-modal-overlay .modal-sheet {
+        border-radius: 24px;
+        max-height: 85vh;
+        transform: scale(0.92);
+        transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .mobile-modal-overlay.is-open .modal-sheet {
+        transform: scale(1);
+      }
+    }
+
+
+
+    .sheet-handle {
+      width: 38px;
+      height: 4px;
+      background: var(--panel-border);
+      border-radius: 999px;
+      margin: 10px auto 4px;
+    }
+
+    .modal-header {
+      padding: 12px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--panel-border);
+    }
+
+    .modal-header h3 {
+      margin: 0;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.45rem;
+    }
+
+    .modal-close-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 1px solid var(--panel-border);
+      background: var(--item-bg);
+      color: var(--ink);
+      font-size: 1.2rem;
+      line-height: 1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-body {
+      padding: 16px 18px;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      flex: 1;
+    }
+
+    .modal-footer {
+      padding: 12px 18px calc(12px + var(--sab));
+      background: var(--appbar-bg);
+      border-top: 1px solid var(--panel-border);
+      display: flex;
+      gap: 8px;
+    }
+
+    .modal-footer button {
+      flex: 1;
+      min-height: 46px;
+    }
+
+    /* Filter Controls inside Quiz Picker */
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .search-input-wrap {
+      position: relative;
+    }
+
+    .search-input-wrap input {
+      width: 100%;
+      padding: 12px 40px 12px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--panel-border);
+      background: var(--item-bg);
+      color: var(--ink);
+      font-family: inherit;
+      font-size: 0.88rem;
+    }
+
+    .search-clear-btn {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: transparent;
+      border: 0;
+      color: var(--muted);
+      font-size: 1.1rem;
+      cursor: pointer;
+      padding: 4px;
+      display: none;
+    }
+
+    .filter-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .filter-row select,
+    .filter-row input[type="date"] {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid var(--panel-border);
+      background: var(--item-bg);
+      color: var(--ink);
+      font-family: inherit;
+      font-size: 0.78rem;
+    }
+
+    .picker-stats {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--muted);
+      margin-bottom: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .picker-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 380px;
+      overflow-y: auto;
+      padding-right: 2px;
+    }
+
+    .picker-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      border: 1px solid var(--panel-border);
+      border-radius: 12px;
+      background: var(--item-bg);
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .picker-card:active {
+      background: rgba(118, 84, 204, 0.08);
+    }
+
+    .picker-card.is-selected {
+      border-color: var(--violet);
+      background: rgba(118, 84, 204, 0.1);
+    }
+
+    .picker-card input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      accent-color: var(--violet);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .picker-card-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .picker-card-title {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 0.96rem;
+      margin-bottom: 2px;
+      color: var(--ink);
+    }
+
+    .picker-card-sub {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      color: var(--muted);
+    }
+
+    /* Move Quiz Modal UI */
+    .move-options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .quick-dates-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .quick-date-btn {
+      padding: 10px 4px;
+      border: 1px solid var(--panel-border);
+      border-radius: 10px;
+      background: var(--item-bg);
+      color: var(--ink);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .quick-date-btn:active {
+      transform: scale(0.95);
+      background: rgba(118, 84, 204, 0.15);
+    }
+
+    .custom-date-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .custom-date-field label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .custom-date-field input {
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid var(--panel-border);
+      background: var(--item-bg);
+      color: var(--ink);
+      font-size: 0.9rem;
+    }
+
+    /* Floating Toast */
+    .mobile-toast {
+      position: fixed;
+      bottom: calc(78px + var(--sab));
+      left: 50%;
+      transform: translate(-50%, 20px);
+      z-index: 100;
+      padding: 12px 18px;
+      border-radius: 999px;
+      background: #271946;
+      color: #ffffff;
+      font-family: 'Manrope', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.22s ease;
+      white-space: nowrap;
+      max-width: 90vw;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    html[data-theme='dark'] .mobile-toast {
+      background: #7654cc;
+    }
+
+    .mobile-toast.show {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    /* Footer */
+    footer.mobile-footer {
+      padding: 24px 0 12px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.76rem;
+      border-top: 1px solid var(--panel-border);
+      margin-top: 30px;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 10px;
+    }
+
+    .footer-links a {
+      color: var(--violet);
+      text-decoration: none;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sticky Top Appbar -->
+  <header class="appbar-sticky">
+    <div class="wrap appbar">
+      <a class="brand" href="#home">
+        <span class="orbit"></span>
+        <div class="brand-text">
+          <span class="brand-title">Cosmic Quiz</span>
+          <span class="brand-sub">Universe Mobile</span>
+        </div>
+      </a>
+      <div class="appbar-actions">
+        <button id="theme-toggle" class="theme-btn" type="button" aria-label="Toggle dark mode">
+          <span id="theme-icon">☾</span>
+          <span id="theme-text">Dark</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main id="home" class="wrap">
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <p class="eyebrow">Seven collections · One mobile universe</p>
+      <h1>Choose your <em>constellation.</em></h1>
+      <p class="lead">
+        Practice any original quiz on your phone. Every question, explanation, score tracker, and personalized schedule optimized for one-thumb mobile browsing.
+      </p>
+
+      <div class="hero-actions">
+        <a class="btn-primary" href="#libraries">
+          <span>Explore 7 Libraries</span>
+          <span>↓</span>
+        </a>
+        <a class="btn-secondary" href="#schedule">
+          <span>📅 Study Plan</span>
+        </a>
+      </div>
+
+      <div class="stats-strip">
+        <div class="stat-pill">
+          <b>388</b>
+          <span>Quiz<br>Trainers</span>
+        </div>
+        <div class="stat-pill">
+          <b>7</b>
+          <span>Study<br>Libraries</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Personal Mobile Study Schedule -->
+    <section id="schedule" class="scheduler-box">
+      <div class="sched-head">
+        <div>
+          <p class="eyebrow">Personal study dashboard</p>
+          <h2>Plan your <em>quiz week.</em></h2>
+        </div>
+        <p>Schedule quizzes, track weekly completion, and tap to study directly from your mobile agenda.</p>
+      </div>
+
+      <!-- Week Controls & Date Range -->
+      <div class="week-nav-bar">
+        <span class="week-range-label" id="week-label">Week Range</span>
+        <div class="week-btn-group">
+          <button class="icon-btn" id="prev-week" aria-label="Previous week">←</button>
+          <button class="icon-btn" id="today-week">Today</button>
+          <button class="icon-btn" id="next-week" aria-label="Next week">→</button>
+        </div>
+      </div>
+
+      <!-- Weekly Progress -->
+      <div class="sched-progress-wrap">
+        <div class="sched-progress-info">
+          <span id="progress-counts">0 / 0 Completed</span>
+          <b id="progress-percent">0% Progress</b>
+        </div>
+        <div class="progress-track">
+          <div class="progress-bar" id="progress-bar" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <!-- Day Segmented Switcher (Mobile Optimized) -->
+      <div class="day-tabs-container">
+        <div class="day-tabs-label">
+          <span>Choose Day</span>
+          <div class="view-mode-toggle">
+            <button class="view-mode-btn active" id="view-focus-btn">Day View</button>
+            <button class="view-mode-btn" id="view-week-btn">All 7 Days</button>
+          </div>
+        </div>
+
+        <div class="day-tabs-scroll" id="day-tabs-row">
+          <!-- 7 day tabs dynamically rendered -->
+        </div>
+      </div>
+
+      <!-- Day Focus View (Default mobile view) -->
+      <div id="day-focus-container" class="day-focus-card">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <!-- All 7 Days Stack View (Alternate view) -->
+      <div id="all-days-container" class="all-days-stack" style="display: none;">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <!-- Smart Suggestions -->
+      <div class="suggestions-box">
+        <h3>Smart study balance</h3>
+        <ul id="suggestions-list"></ul>
+      </div>
+    </section>
+
+    <!-- Quiz Libraries Section -->
+    <section class="libraries" id="libraries">
+      <div class="section-head">
+        <p class="eyebrow">All quiz collections</p>
+        <h2>Quiz libraries</h2>
+        <p>Pick a library to browse its full searchable collection, tests, explanations, and score tracking tools.</p>
+      </div>
+
+      <div class="grid">
+        <a class="card" style="--ring:#7654cc;--halo:#d95ea6" href="hr-ca-quiz-hub.html#library">
+          <div>
+            <span class="tag">HR Current Affairs</span>
+            <h3>HR CA</h3>
+            <p>Full current-affairs practice collection and monthly review sets.</p>
+          </div>
+          <span class="open">Open library →</span>
+        </a>
+
+        <a class="card" style="--ring:#47a8d3;--halo:#7654cc" href="speedyca-quiz-hub.html#library">
+          <div>
+            <span class="tag">Current Affairs</span>
+            <h3>SpeedyCA</h3>
+            <p>SpeedyCA quiz archive with rapid review trainers.</p>
+          </div>
+          <span class="open">Open library →</span>
+        </a>
+
+        <a class="card" style="--ring:#d95ea6;--halo:#d8952c" href="hr-eklavya-quiz-hub.html#library">
+          <div>
+            <span class="tag">HR Eklavya Book</span>
+            <h3>Eklavya</h3>
+            <p>Comprehensive quiz series plus dedicated D-series trainers.</p>
+          </div>
+          <span class="open">Open library →</span>
+        </a>
+
+        <a class="card" style="--ring:#d8952c;--halo:#d95ea6" href="hr-pyq-quiz-hub.html#library">
+          <div>
+            <span class="tag">Previous-Year Questions</span>
+            <h3>HR PYQ</h3>
+            <p>Authentic exam question practice with detailed solutions.</p>
+          </div>
+          <span class="open">Open library →</span>
+        </a>
+
+        <a class="card" style="--ring:#50aa89;--halo:#47a8d3" href="ah-quiz-hub.html#library">
+          <div>
+            <span class="tag">AH Collection</span>
+            <h3>AH Quiz</h3>
+            <p>Animal Husbandry specialized topic and module trainers.</p>
+          </div>
+          <span class="open">Open library →</span>
+        </a>
+
+        <a class="card" style="--ring:#7654cc;--halo:#47a8d3" href="computer-quiz-hub.html#library">
+          <div>
+            <span class="tag">Computer Studies</span>
+            <h3>Computer</h3>
+            <p>Fundamentals, networking, office tools, and hardware practice.</p>
+          </div>
+          <span class="open">Open library →</span>
+        </a>
+
+        <a class="card" style="--ring:#f471bd;--halo:#9c7dff" href="english-vocab-quiz-hub.html#library">
+          <div>
+            <span class="tag">English Vocabulary</span>
+            <h3>Vocab Energy</h3>
+            <p>Blackbook vocabulary mastery missions, synonyms, and idioms.</p>
+          </div>
+          <span class="open">Open library →</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Mobile Footer -->
+    <footer class="mobile-footer">
+      <div><b>COSMIC QUIZ UNIVERSE</b> · Mobile Edition</div>
+      <div class="footer-links">
+        <a href="#home">Home</a>
+        <a href="#schedule">Schedule</a>
+        <a href="#libraries">Libraries</a>
+        <a href="cosmic-quiz-master.html">Desktop View</a>
+      </div>
+    </footer>
+  </main>
+
+  <!-- Mobile Floating Bottom Dock -->
+  <nav class="mobile-dock">
+    <div class="dock-menu">
+      <a class="dock-link" href="#home" id="dock-home">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        <span>Home</span>
+      </a>
+      <a class="dock-link" href="#schedule" id="dock-schedule">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+        <span>Schedule</span>
+      </a>
+      <a class="dock-link" href="#libraries" id="dock-libraries">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+        <span>Libraries</span>
+      </a>
+      <button class="dock-link action-add" id="dock-add-btn" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+        <span>Add Quiz</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Quiz Picker Mobile Modal (Bottom Sheet) -->
+  <div id="quiz-picker-modal" class="mobile-modal-overlay" style="display: none;">
+    <div class="mobile-modal-backdrop" id="backdrop-picker"></div>
+    <div class="modal-sheet">
+      <div class="sheet-handle"></div>
+      <div class="modal-header">
+        <div>
+          <p class="eyebrow" style="margin: 0;">Add to study plan</p>
+          <h3>Select Quizzes</h3>
+        </div>
+        <button class="modal-close-btn" id="close-picker-btn" type="button" aria-label="Close">×</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="filter-group">
+          <div class="search-input-wrap">
+            <input type="search" id="picker-search" placeholder="Search quiz name, topic..." autocomplete="off">
+            <button class="search-clear-btn" id="picker-clear-search" type="button">×</button>
+          </div>
+
+          <div class="filter-row">
+            <select id="picker-topic">
+              <option value="">All 7 Topics</option>
+            </select>
+            <input type="date" id="picker-date" aria-label="Schedule Date">
+          </div>
+        </div>
+
+        <div class="picker-stats" id="picker-count-badge">0 quizzes available</div>
+        <div class="picker-list" id="picker-list-items"></div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-secondary" id="picker-cancel-btn" type="button">Cancel</button>
+        <button class="btn-primary" id="picker-confirm-btn" type="button">Add 0 Quizzes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Move Quiz Mobile Modal (Bottom Sheet) -->
+  <div id="move-quiz-modal" class="mobile-modal-overlay" style="display: none;">
+    <div class="mobile-modal-backdrop" id="backdrop-move"></div>
+    <div class="modal-sheet">
+      <div class="sheet-handle"></div>
+      <div class="modal-header">
+        <div>
+          <p class="eyebrow" style="margin:0;">Reschedule</p>
+          <h3>Move Quiz</h3>
+        </div>
+        <button class="modal-close-btn" id="close-move-btn" type="button" aria-label="Close">×</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="move-options">
+          <p id="move-quiz-title" style="font-weight: 700; margin: 0 0 8px; color: var(--ink);"></p>
+          <div class="quick-dates-grid">
+            <button class="quick-date-btn" data-offset="0">Today</button>
+            <button class="quick-date-btn" data-offset="1">Tomorrow</button>
+            <button class="quick-date-btn" data-offset="7">+1 Week</button>
+          </div>
+
+          <div class="custom-date-field">
+            <label for="move-date-input">Or select custom date:</label>
+            <input type="date" id="move-date-input">
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-secondary" id="move-cancel-btn" type="button">Cancel</button>
+        <button class="btn-primary" id="move-confirm-btn" type="button">Save Date</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="mobile-toast" class="mobile-toast" role="status" aria-live="polite"></div>
+
+  <!-- Mobile Controller Script -->
+  <script>
+    (() => {
+      'use strict';
+
+      /* --- Theme Controller --- */
+      const themeKey = 'quiz-universe-theme';
+      const root = document.documentElement;
+      let currentTheme = 'light';
+
+      try {
+        currentTheme = localStorage.getItem(themeKey) ||
+          (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      } catch (e) {}
+
+      function applyTheme(theme) {
+        currentTheme = theme;
+        root.dataset.theme = theme;
+        const icon = document.getElementById('theme-icon');
+        const text = document.getElementById('theme-text');
+        if (icon && text) {
+          icon.textContent = theme === 'dark' ? '☀' : '☾';
+          text.textContent = theme === 'dark' ? 'Light' : 'Dark';
+        }
+        try {
+          localStorage.setItem(themeKey, theme);
+          localStorage.setItem('hr-ca-quiz-theme', theme);
+        } catch (e) {}
+      }
+
+      document.getElementById('theme-toggle').addEventListener('click', () => {
+        applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+      });
+      applyTheme(currentTheme);
+
+      /* --- 388 Quizzes Catalog Definition --- */
+      const sources = [
+        ['hr-ca', 'HR CA', 'HR Current Affairs', 'hr-ca-quiz-hub.html', 51],
+        ['speedy', 'SpeedyCA', 'Speedy Current Affairs', 'speedyca-quiz-hub.html', 55],
+        ['eklavya', 'Eklavya', 'HR Eklavya', 'hr-eklavya-quiz-hub.html', 121],
+        ['eklavya-d', 'Eklavya D-series', 'HR Eklavya', 'hr-eklavya-quiz-hub.html', 47],
+        ['pyq', 'HR PYQ', 'Previous-Year Questions', 'hr-pyq-quiz-hub.html', 54],
+        ['ah', 'AH Quiz', 'Animal Husbandry', 'ah-quiz-hub.html', 27],
+        ['computer', 'Computer', 'Computer Studies', 'computer-quiz-hub.html', 18],
+        ['vocab', 'English Vocab', 'English Vocabulary', 'english-vocab-quiz-hub.html', 15]
+      ];
+
+      const catalog = sources.flatMap(([key, source, category, path, count]) =>
+        Array.from({ length: count }, (_, index) => {
+          const id = key === 'eklavya-d' ? 'D' + (index + 1) : key === 'eklavya' ? 'Q' + (index + 1) : String(index + 1);
+          const label = key === 'computer' ? 'Computer Quizz ' + id : key === 'vocab' ? 'Vocabulary Mission ' + id : key === 'eklavya-d' ? id : 'Quizz ' + id;
+          return {
+            id: key + ':' + id,
+            quizId: id,
+            title: label,
+            source,
+            category,
+            path,
+            difficulty: 'Standard',
+            questions: 'Interactive'
+          };
+        })
+      );
+
+      /* Populate Topic Filter Options in Picker */
+      const topicSelect = document.getElementById('picker-topic');
+      const uniqueTopics = [...new Set(catalog.map(q => q.category))];
+      uniqueTopics.forEach(top => {
+        const opt = document.createElement('option');
+        opt.value = top;
+        opt.textContent = top;
+        topicSelect.appendChild(opt);
+      });
+
+      /* --- Date Helpers --- */
+      const keyOf = date => [
+        date.getFullYear(),
+        String(date.getMonth() + 1).padStart(2, '0'),
+        String(date.getDate()).padStart(2, '0')
+      ].join('-');
+
+      function dateAt(value) {
+        const [y, m, d] = value.split('-').map(Number);
+        return new Date(y, m - 1, d);
+      }
+
+      function monday(date) {
+        const val = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+        val.setDate(val.getDate() - ((val.getDay() + 6) % 7));
+        return val;
+      }
+
+      function addDays(date, amount) {
+        const val = new Date(date);
+        val.setDate(val.getDate() + amount);
+        return val;
+      }
+
+      function prettyDate(date) {
+        return new Intl.DateTimeFormat(undefined, { weekday: 'short', month: 'short', day: 'numeric' }).format(date);
+      }
+
+      function escapeHtml(str) {
+        return String(str).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+      }
+
+      /* --- Schedule State Management (Shared localStorage) --- */
+      const storeKey = 'cosmic-quiz-schedule-v1';
+      const readSchedule = () => {
+        try {
+          return JSON.parse(localStorage.getItem(storeKey)) || [];
+        } catch {
+          return [];
+        }
+      };
+
+      let schedule = readSchedule();
+      let currentWeekMonday = monday(new Date());
+      let activeDateKey = keyOf(new Date());
+      let viewMode = 'focus'; // 'focus' or 'all'
+      let selectedQuizIds = new Set();
+      let activeMovingItemId = null;
+
+      const saveSchedule = () => {
+        try {
+          localStorage.setItem(storeKey, JSON.stringify(schedule));
+        } catch (e) {}
+      };
+
+      const findQuiz = id => catalog.find(q => q.id === id);
+      const itemsOn = dateKey => schedule.filter(item => item.date === dateKey);
+
+      /* Toast notification */
+      let toastTimer = null;
+      function showToast(msg) {
+        const toast = document.getElementById('mobile-toast');
+        toast.textContent = msg;
+        toast.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toast.classList.remove('show'), 2600);
+      }
+
+      /* Suggestions generator */
+      function generateSuggestions(days) {
+        const results = [];
+        const counts = days.map(d => itemsOn(keyOf(d)).length);
+        const completeCount = schedule.filter(item => item.status === 'completed').length;
+        const heavyDayIdx = counts.findIndex(c => c >= 5);
+
+        if (heavyDayIdx >= 0) {
+          results.push(`${prettyDate(days[heavyDayIdx])} has ${counts[heavyDayIdx]} quizzes. Consider distributing to lighter days.`);
+        }
+        if (!schedule.length) {
+          results.push('Start your week by adding 2–3 quizzes across your schedule.');
+        }
+        const topicsThisWeek = new Set(
+          schedule.filter(item => {
+            const itemDate = keyOf(dateAt(item.date));
+            return itemDate >= keyOf(days[0]) && itemDate <= keyOf(days[6]);
+          }).map(item => findQuiz(item.quiz)?.category).filter(Boolean)
+        );
+        const missedTopic = uniqueTopics.find(t => !topicsThisWeek.has(t));
+        if (missedTopic && schedule.length) {
+          results.push(`Explore adding a quiz from ${missedTopic} to keep your knowledge varied.`);
+        }
+        if (completeCount && completeCount === schedule.length) {
+          results.push('Outstanding! All scheduled quizzes are completed for this week.');
+        }
+        return results.slice(0, 3);
+      }
+
+      /* Render Main Schedule UI */
+      function renderScheduler() {
+        const days = Array.from({ length: 7 }, (_, i) => addDays(currentWeekMonday, i));
+        const todayKey = keyOf(new Date());
+
+        // Header week label
+        document.getElementById('week-label').textContent = `${prettyDate(days[0])} — ${prettyDate(days[6])}`;
+
+        // Weekly progress
+        const weekItems = schedule.filter(item => item.date >= keyOf(days[0]) && item.date <= keyOf(days[6]));
+        const weekDone = weekItems.filter(item => item.status === 'completed').length;
+        const percent = weekItems.length ? Math.round((weekDone / weekItems.length) * 100) : 0;
+
+        document.getElementById('progress-counts').textContent = `${weekDone} / ${weekItems.length} Quizzes done`;
+        document.getElementById('progress-percent').textContent = `${percent}% Week Progress`;
+        document.getElementById('progress-bar').style.width = `${percent}%`;
+
+        // Ensure activeDateKey is within current week or fallback to today/monday
+        if (!days.some(d => keyOf(d) === activeDateKey)) {
+          activeDateKey = days.some(d => keyOf(d) === todayKey) ? todayKey : keyOf(days[0]);
+        }
+
+        // Render Day Tabs
+        const tabsRow = document.getElementById('day-tabs-row');
+        tabsRow.innerHTML = days.map((day, idx) => {
+          const dKey = keyOf(day);
+          const count = itemsOn(dKey).length;
+          const isToday = dKey === todayKey;
+          const isActive = dKey === activeDateKey;
+          const dayName = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][idx];
+          return `
+            <button class="day-tab ${isToday ? 'is-today' : ''} ${isActive ? 'is-active' : ''}" data-date="${dKey}" type="button">
+              <span class="day-tab-name">${dayName}</span>
+              <span class="day-tab-date">${day.getDate()}</span>
+              <span class="day-tab-badge">${count}</span>
+            </button>
+          `;
+        }).join('');
+
+        tabsRow.querySelectorAll('.day-tab').forEach(tab => {
+          tab.addEventListener('click', () => {
+            activeDateKey = tab.dataset.date;
+            renderScheduler();
+          });
+        });
+
+        // Render Day Focus View
+        const activeDateObj = dateAt(activeDateKey);
+        const dayItems = itemsOn(activeDateKey).sort((a, b) => a.order - b.order);
+        const focusContainer = document.getElementById('day-focus-container');
+
+        focusContainer.innerHTML = `
+          <div class="day-focus-header">
+            <div class="day-focus-title">
+              <b>${prettyDate(activeDateObj)}</b>
+              <small>${dayItems.length} Quiz${dayItems.length === 1 ? '' : 'zes'} Scheduled</small>
+            </div>
+            <button class="btn-add-for-day" id="btn-add-day-focus" data-date="${activeDateKey}" type="button">
+              + Add Quiz
+            </button>
+          </div>
+          <div class="schedule-list">
+            ${dayItems.length ? dayItems.map(item => renderItemCard(item)).join('') : `
+              <div class="day-empty">
+                <p>No quizzes scheduled for this day yet.</p>
+                <button class="btn-secondary" id="btn-empty-add" data-date="${activeDateKey}" type="button">
+                  + Add a quiz to ${prettyDate(activeDateObj)}
+                </button>
+              </div>
+            `}
+          </div>
+        `;
+
+        // Render All 7 Days View
+        const allDaysContainer = document.getElementById('all-days-container');
+        allDaysContainer.innerHTML = days.map((day, idx) => {
+          const dKey = keyOf(day);
+          const entries = itemsOn(dKey).sort((a, b) => a.order - b.order);
+          const dayName = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'][idx];
+          return `
+            <div class="day-column-card" data-date="${dKey}">
+              <div class="day-column-header">
+                <div>
+                  <b>${dayName}</b>, ${day.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
+                </div>
+                <span>${entries.length} Quizzes</span>
+              </div>
+              <div class="schedule-list">
+                ${entries.length ? entries.map(item => renderItemCard(item)).join('') : '<p class="day-empty" style="padding: 12px 0;">No quizzes scheduled.</p>'}
+              </div>
+              <button class="btn-secondary" style="width:100%; margin-top: 10px; font-size: 0.68rem;" data-action="quick-add" data-date="${dKey}" type="button">
+                + Add quiz to ${dayName}
+              </button>
+            </div>
+          `;
+        }).join('');
+
+        // Render Suggestions
+        const suggestions = generateSuggestions(days);
+        const suggList = document.getElementById('suggestions-list');
+        suggList.innerHTML = suggestions.map(s => `<li>${escapeHtml(s)}</li>`).join('');
+
+        bindActionButtons();
+      }
+
+      function renderItemCard(item) {
+        const quiz = findQuiz(item.quiz) || {
+          title: 'Quiz Reference',
+          category: 'Quiz Collection',
+          source: 'Universe',
+          path: '#libraries',
+          quizId: ''
+        };
+        const isCompleted = item.status === 'completed';
+        const quizHref = quiz.path ? `${quiz.path}#quiz/${quiz.quizId}` : '#libraries';
+
+        return `
+          <article class="schedule-item ${isCompleted ? 'is-completed' : ''}" data-id="${item.id}">
+            <div class="item-top">
+              <span class="item-category">${escapeHtml(quiz.category)}</span>
+              <span class="item-status-pill">${isCompleted ? '✓ Completed' : 'Pending'}</span>
+            </div>
+            <a class="item-title-link" href="${quizHref}">
+              ${escapeHtml(quiz.title)}
+            </a>
+            <p class="item-meta">${escapeHtml(quiz.source)} · ${escapeHtml(quiz.difficulty || 'Interactive')}</p>
+            <div class="item-actions">
+              <button class="action-btn btn-toggle" data-action="toggle" data-id="${item.id}" type="button">
+                ${isCompleted ? '↺ Mark pending' : '✓ Complete'}
+              </button>
+              <button class="action-btn" data-action="move" data-id="${item.id}" type="button">
+                📅 Move
+              </button>
+              <button class="action-btn btn-arrow" data-action="up" data-id="${item.id}" aria-label="Move Up" type="button">
+                ↑
+              </button>
+              <button class="action-btn btn-arrow" data-action="down" data-id="${item.id}" aria-label="Move Down" type="button">
+                ↓
+              </button>
+              <button class="action-btn btn-danger" data-action="remove" data-id="${item.id}" type="button">
+                Delete
+              </button>
+            </div>
+          </article>
+        `;
+      }
+
+      function bindActionButtons() {
+        // Toggle view mode
+        document.getElementById('view-focus-btn').onclick = () => {
+          viewMode = 'focus';
+          document.getElementById('view-focus-btn').classList.add('active');
+          document.getElementById('view-week-btn').classList.remove('active');
+          document.getElementById('day-focus-container').style.display = 'block';
+          document.getElementById('all-days-container').style.display = 'none';
+        };
+
+        document.getElementById('view-week-btn').onclick = () => {
+          viewMode = 'all';
+          document.getElementById('view-week-btn').classList.add('active');
+          document.getElementById('view-focus-btn').classList.remove('active');
+          document.getElementById('day-focus-container').style.display = 'none';
+          document.getElementById('all-days-container').style.display = 'flex';
+        };
+
+        // Add buttons
+        const addBtn = document.getElementById('btn-add-day-focus');
+        if (addBtn) addBtn.onclick = () => openPickerModal(activeDateKey);
+
+        const emptyAddBtn = document.getElementById('btn-empty-add');
+        if (emptyAddBtn) emptyAddBtn.onclick = () => openPickerModal(activeDateKey);
+
+        document.querySelectorAll('[data-action="quick-add"]').forEach(b => {
+          b.onclick = () => openPickerModal(b.dataset.date);
+        });
+
+        // Item action buttons
+        document.querySelectorAll('[data-action]').forEach(btn => {
+          btn.addEventListener('click', e => {
+            const { action, id } = e.currentTarget.dataset;
+            if (!id) return;
+            if (action === 'toggle') toggleStatus(id);
+            if (action === 'remove') removeItem(id);
+            if (action === 'move') openMoveModal(id);
+            if (action === 'up') reorderItem(id, -1);
+            if (action === 'down') reorderItem(id, 1);
+          });
+        });
+      }
+
+      /* Item Actions */
+      function toggleStatus(id) {
+        const item = schedule.find(i => i.id === id);
+        if (!item) return;
+        item.status = item.status === 'completed' ? 'pending' : 'completed';
+        saveSchedule();
+        renderScheduler();
+        showToast(item.status === 'completed' ? 'Marked as completed!' : 'Marked as pending.');
+      }
+
+      function removeItem(id) {
+        const item = schedule.find(i => i.id === id);
+        if (!item) return;
+        schedule = schedule.filter(i => i.id !== id);
+        saveSchedule();
+        renderScheduler();
+        showToast('Quiz removed from schedule.');
+      }
+
+      function reorderItem(id, direction) {
+        const item = schedule.find(i => i.id === id);
+        if (!item) return;
+        const dayList = itemsOn(item.date).sort((a, b) => a.order - b.order);
+        const idx = dayList.indexOf(item);
+        const target = dayList[idx + direction];
+        if (!target) return;
+        const tempOrder = item.order;
+        item.order = target.order;
+        target.order = tempOrder;
+        saveSchedule();
+        renderScheduler();
+      }
+
+      /* Week Navigation Buttons */
+      document.getElementById('prev-week').onclick = () => {
+        currentWeekMonday = addDays(currentWeekMonday, -7);
+        activeDateKey = keyOf(currentWeekMonday);
+        renderScheduler();
+      };
+      document.getElementById('next-week').onclick = () => {
+        currentWeekMonday = addDays(currentWeekMonday, 7);
+        activeDateKey = keyOf(currentWeekMonday);
+        renderScheduler();
+      };
+      document.getElementById('today-week').onclick = () => {
+        currentWeekMonday = monday(new Date());
+        activeDateKey = keyOf(new Date());
+        renderScheduler();
+      };
+
+      /* --- Universal div-based Modal helpers --- */
+      function openModal(overlayEl) {
+        overlayEl.style.display = 'flex';
+        // allow display to apply, then trigger transition
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => overlayEl.classList.add('is-open'));
+        });
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeModal(overlayEl) {
+        overlayEl.classList.remove('is-open');
+        document.body.style.overflow = '';
+        // hide after transition
+        setTimeout(() => {
+          if (!overlayEl.classList.contains('is-open')) {
+            overlayEl.style.display = 'none';
+          }
+        }, 300);
+      }
+
+      /* --- Quiz Picker Modal Logic --- */
+      const pickerModal = document.getElementById('quiz-picker-modal');
+      const pickerSearch = document.getElementById('picker-search');
+      const pickerClear = document.getElementById('picker-clear-search');
+      const pickerTopic = document.getElementById('picker-topic');
+      const pickerDate = document.getElementById('picker-date');
+      const pickerCount = document.getElementById('picker-count-badge');
+      const pickerList = document.getElementById('picker-list-items');
+      const pickerConfirmBtn = document.getElementById('picker-confirm-btn');
+
+      function openPickerModal(targetDate) {
+        selectedQuizIds.clear();
+        pickerDate.value = targetDate || activeDateKey || keyOf(new Date());
+        pickerSearch.value = '';
+        pickerTopic.value = '';
+        pickerClear.style.display = 'none';
+        updatePickerList();
+        openModal(pickerModal);
+      }
+
+      function updatePickerList() {
+        const query = pickerSearch.value.trim().toLowerCase();
+        const topic = pickerTopic.value;
+        pickerClear.style.display = query ? 'block' : 'none';
+
+        const filtered = catalog.filter(q => {
+          const matchesQuery = !query || [q.title, q.category, q.source].join(' ').toLowerCase().includes(query);
+          const matchesTopic = !topic || q.category === topic;
+          return matchesQuery && matchesTopic;
+        });
+
+        pickerCount.textContent = `${filtered.length} Quizzes available`;
+
+        pickerList.innerHTML = filtered.length ? filtered.map(q => {
+          const isSelected = selectedQuizIds.has(q.id);
+          return `
+            <label class="picker-card ${isSelected ? 'is-selected' : ''}" data-quiz-id="${q.id}">
+              <input type="checkbox" value="${q.id}" ${isSelected ? 'checked' : ''}>
+              <div class="picker-card-info">
+                <div class="picker-card-title">${escapeHtml(q.title)}</div>
+                <div class="picker-card-sub">${escapeHtml(q.category)} · ${escapeHtml(q.source)}</div>
+              </div>
+            </label>
+          `;
+        }).join('') : '<p class="day-empty">No quizzes match your filter.</p>';
+
+        pickerList.querySelectorAll('.picker-card').forEach(card => {
+          card.addEventListener('click', e => {
+            const chk = card.querySelector('input[type="checkbox"]');
+            if (e.target !== chk) chk.checked = !chk.checked;
+            const val = chk.value;
+            if (chk.checked) {
+              selectedQuizIds.add(val);
+              card.classList.add('is-selected');
+            } else {
+              selectedQuizIds.delete(val);
+              card.classList.remove('is-selected');
+            }
+            updateConfirmButton();
+          });
+        });
+
+        updateConfirmButton();
+      }
+
+      function updateConfirmButton() {
+        const sz = selectedQuizIds.size;
+        pickerConfirmBtn.textContent = sz ? `Add ${sz} Quiz${sz === 1 ? '' : 'zes'}` : 'Select Quizzes';
+        pickerConfirmBtn.disabled = sz === 0;
+        pickerConfirmBtn.style.opacity = sz === 0 ? '0.5' : '1';
+      }
+
+      pickerSearch.addEventListener('input', updatePickerList);
+      pickerTopic.addEventListener('change', updatePickerList);
+      pickerClear.onclick = () => {
+        pickerSearch.value = '';
+        updatePickerList();
+      };
+
+      pickerConfirmBtn.onclick = () => {
+        const targetDate = pickerDate.value;
+        if (!targetDate || !selectedQuizIds.size) return;
+        let added = 0;
+        selectedQuizIds.forEach(qId => {
+          if (!schedule.some(item => item.quiz === qId && item.date === targetDate)) {
+            schedule.push({
+              id: crypto.randomUUID ? crypto.randomUUID() : 'sch-' + Date.now() + '-' + Math.random().toString(36).slice(2, 7),
+              quiz: qId,
+              date: targetDate,
+              status: 'pending',
+              order: itemsOn(targetDate).length
+            });
+            added++;
+          }
+        });
+        saveSchedule();
+        closeModal(pickerModal);
+        activeDateKey = targetDate;
+        renderScheduler();
+        showToast(added ? `${added} quiz${added === 1 ? '' : 'zes'} added!` : 'Selected quizzes already scheduled for that day.');
+      };
+
+      document.getElementById('close-picker-btn').onclick = () => closeModal(pickerModal);
+      document.getElementById('picker-cancel-btn').onclick = () => closeModal(pickerModal);
+      document.getElementById('backdrop-picker').addEventListener('click', () => closeModal(pickerModal));
+
+      /* --- Move Quiz Modal Logic (Thumb-friendly Replacement for prompt) --- */
+      const moveModal = document.getElementById('move-quiz-modal');
+      const moveTitle = document.getElementById('move-quiz-title');
+      const moveDateInput = document.getElementById('move-date-input');
+      const moveConfirmBtn = document.getElementById('move-confirm-btn');
+
+      function openMoveModal(itemId) {
+        activeMovingItemId = itemId;
+        const item = schedule.find(i => i.id === itemId);
+        if (!item) return;
+        const quiz = findQuiz(item.quiz);
+        moveTitle.textContent = quiz ? quiz.title : 'Selected Quiz';
+        moveDateInput.value = item.date;
+        openModal(moveModal);
+      }
+
+      document.querySelectorAll('.quick-date-btn').forEach(btn => {
+        btn.onclick = () => {
+          const offset = Number(btn.dataset.offset);
+          const base = new Date();
+          const target = addDays(base, offset);
+          moveDateInput.value = keyOf(target);
+        };
+      });
+
+      moveConfirmBtn.onclick = () => {
+        const newDate = moveDateInput.value;
+        if (!newDate || !activeMovingItemId) return;
+        const item = schedule.find(i => i.id === activeMovingItemId);
+        if (!item) return;
+
+        if (schedule.some(i => i.id !== item.id && i.quiz === item.quiz && i.date === newDate)) {
+          showToast('That quiz is already scheduled on this day.');
+          return;
+        }
+
+        item.date = newDate;
+        item.order = itemsOn(newDate).length;
+        saveSchedule();
+        closeModal(moveModal);
+        activeDateKey = newDate;
+        renderScheduler();
+        showToast('Quiz successfully moved.');
+      };
+
+      document.getElementById('close-move-btn').onclick = () => closeModal(moveModal);
+      document.getElementById('move-cancel-btn').onclick = () => closeModal(moveModal);
+      document.getElementById('backdrop-move').addEventListener('click', () => closeModal(moveModal));
+
+      /* Quick Add from Mobile Dock */
+      document.getElementById('dock-add-btn').onclick = () => {
+        openPickerModal(activeDateKey);
+      };
+
+      /* Active dock highlight based on scroll */
+      const sections = [
+        { id: 'home', link: document.getElementById('dock-home') },
+        { id: 'schedule', link: document.getElementById('dock-schedule') },
+        { id: 'libraries', link: document.getElementById('dock-libraries') }
+      ];
+
+      window.addEventListener('scroll', () => {
+        const scrollPos = window.scrollY + 140;
+        sections.forEach(sec => {
+          const el = document.getElementById(sec.id);
+          if (el) {
+            const top = el.offsetTop;
+            const height = el.offsetHeight;
+            if (scrollPos >= top && scrollPos < top + height) {
+              sec.link.classList.add('active');
+            } else {
+              sec.link.classList.remove('active');
+            }
+          }
+        });
+      }, { passive: true });
+
+      // Initial Render
+      renderScheduler();
+
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,1522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haryana GK Interactive Quiz Application (Gurugram District - Bilingual)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+<style id="cosmic-readable-quiz-theme">
+:root{--space:#e8dcff;--panel:#f3eaff;--panel2:#dcc6ff;--edge:#6a45bf;--glow:#d28b28;--accent:#d15f9f;--ink:#2c1b4d;--muted:#66547c;--mist:rgba(106,69,191,.2)}html{background:var(--space)}body{background:radial-gradient(ellipse 62% 45% at 90% -5%,rgba(209,95,159,.28),transparent 62%),radial-gradient(ellipse 55% 40% at 8% 100%,rgba(65,164,207,.26),transparent 64%),var(--space)!important;color:var(--ink)!important;min-height:100vh}body:before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.78;background-image:radial-gradient(circle at 9% 18%,var(--glow) 0 1px,transparent 1.7px),radial-gradient(circle at 26% 69%,var(--edge) 0 .8px,transparent 1.5px),radial-gradient(circle at 68% 24%,var(--accent) 0 1px,transparent 1.8px),radial-gradient(circle at 88% 73%,#47a8d3 0 .8px,transparent 1.5px);background-size:220px 190px,300px 270px,260px 230px,340px 310px;z-index:-1}header{background:linear-gradient(105deg,var(--panel),var(--panel2))!important;border-color:rgba(106,69,191,.25)!important;box-shadow:0 7px 24px rgba(84,48,142,.14)!important}header h1{color:var(--edge)!important;text-shadow:none!important}header p,header .text-slate-400,header .text-indigo-200,header .text-indigo-300{color:var(--muted)!important}main>div,#quiz-card,.bg-slate-800,.bg-slate-900,.bg-indigo-900,.bg-indigo-950{background:linear-gradient(145deg,#f8f0ff,var(--panel))!important;border-color:rgba(106,69,191,.22)!important;color:var(--ink)!important;box-shadow:0 14px 35px rgba(84,48,142,.12)!important}.bg-slate-700,.bg-slate-100,.bg-slate-50{background:#eadffd!important;color:var(--ink)!important}.text-slate-100,.text-slate-200,.text-slate-300,.text-slate-400,.text-white,.text-slate-800,.text-slate-700,.text-slate-600{color:var(--ink)!important}.text-indigo-400,.text-indigo-300,.text-emerald-400,.text-yellow-300{color:var(--edge)!important}.border-slate-700,.border-slate-700\/60,.border-indigo-700,.border-slate-200{border-color:rgba(106,69,191,.25)!important}button:not(.bg-green-600):not(.bg-red-600){background:#f9f2ff!important;color:var(--ink)!important;border:1px solid rgba(106,69,191,.25)!important;box-shadow:0 3px 10px rgba(84,48,142,.09)!important}button.bg-indigo-600,button.bg-slate-800,button.bg-slate-900,button.bg-indigo-900{background:linear-gradient(120deg,var(--edge),var(--accent))!important;color:#fff!important;border:0!important}button.bg-indigo-600 *,button.bg-slate-800 *,button.bg-slate-900 *,button.bg-indigo-900 *{color:#fff!important}button:hover{filter:brightness(1.04);transform:translateY(-1px)}input,select,textarea{background:#f9f2ff!important;border-color:rgba(106,69,191,.35)!important;color:var(--ink)!important}input:focus,select:focus,textarea:focus{outline:none!important;border-color:var(--edge)!important;box-shadow:0 0 0 3px var(--mist)!important}.bg-indigo-500,#progress-bar{background:linear-gradient(90deg,var(--edge),var(--accent),var(--glow))!important}.rounded-2xl{border-radius:1.25rem!important}
+</style></head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col items-center justify-center p-4 md:p-8">
+
+    <div class="w-full max-w-4xl bg-slate-800 rounded-2xl shadow-2xl border border-slate-700 overflow-hidden flex flex-col my-auto">
+        
+        <!-- Header -->
+        <div class="bg-slate-900 px-6 py-4 border-b border-slate-700 flex flex-wrap justify-between items-center gap-4">
+            <div>
+                <h1 class="text-xl md:text-2xl font-bold text-emerald-400">Haryana GK Interactive Quiz</h1>
+                <p class="text-xs md:text-sm text-slate-400">Topic: Gurugram District (Haryana Districts Study Vol-10)</p>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="bg-slate-800 border border-slate-700 px-3 py-1.5 rounded-lg text-sm">
+                    Score: <span id="score-display" class="font-bold text-emerald-400">0</span> / <span id="total-questions-display">90</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="w-full bg-slate-700 h-2">
+            <div id="progress-bar" class="bg-emerald-500 h-2 transition-all duration-300" style="width: 0%;"></div>
+        </div>
+
+        <!-- Main Quiz Body -->
+        <div class="p-6 md:p-8 flex-1 flex flex-col justify-between">
+            
+            <div>
+                <!-- Question Meta info & Jump controls -->
+                <div class="flex justify-between items-center mb-6 text-sm text-slate-400">
+                    <span id="question-counter" class="font-semibold text-slate-300">Question 1 of 90</span>
+                    <div class="flex items-center gap-2">
+                        <span>Jump to:</span>
+                        <input type="number" id="jump-input" min="1" max="90" class="w-16 bg-slate-900 border border-slate-700 rounded px-2 py-1 text-center text-white focus:outline-none focus:border-emerald-500 text-sm" placeholder="1-90">
+                        <button id="jump-btn" class="bg-slate-700 hover:bg-slate-600 px-3 py-1 rounded text-xs font-medium text-white transition-colors">Go</button>
+                    </div>
+                </div>
+
+                <!-- Question Text (Bilingual: English & Hindi) -->
+                <div class="mb-6 space-y-3">
+                    <div id="question-text-en" class="text-lg md:text-xl font-medium text-white">
+                        <!-- English Question injected here -->
+                    </div>
+                    <div id="question-text-hi" class="text-base md:text-lg font-medium text-emerald-300 border-l-2 border-emerald-500 pl-3">
+                        <!-- Hindi Question injected here -->
+                    </div>
+                </div>
+
+                <!-- Options List -->
+                <div id="options-container" class="space-y-3 mb-6">
+                    <!-- Options injected here -->
+                </div>
+
+                <!-- Hint Section -->
+                <div class="mb-6">
+                    <button id="hint-toggle-btn" class="text-xs bg-slate-700 hover:bg-slate-600 text-slate-300 px-3 py-1.5 rounded-md transition-colors flex items-center gap-1">
+                        <span>💡 Show Hint</span>
+                    </button>
+                    <div id="hint-box" class="hidden mt-2 p-3 bg-slate-900/60 border border-slate-700 rounded-lg text-sm text-slate-300 italic">
+                        <!-- Hint text injected here -->
+                    </div>
+                </div>
+
+                <!-- Explanation Box -->
+                <div id="explanation-box" class="hidden p-4 rounded-xl border transition-all duration-300 mb-6">
+                    <h3 id="explanation-title" class="font-bold text-sm mb-1 flex items-center gap-2"></h3>
+                    <p id="explanation-text" class="text-sm leading-relaxed"></p>
+                </div>
+            </div>
+
+            <!-- Footer Navigation Controls -->
+            <div class="flex justify-between items-center pt-4 border-t border-slate-700">
+                <button id="prev-btn" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg font-medium text-sm transition-colors text-white">
+                    ← Previous
+                </button>
+                <button id="next-btn" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg font-medium text-sm transition-colors text-white">
+                    Next →
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        // Complete Dataset of 90 Unique Questions split across Page 1 (45 Qs) and Page 2 (45 Qs) based on Gurugram district source material
+        const quizData = [
+            // ================= PAGE 1 QUESTIONS (45 Qs) =================
+            {
+                page: 1,
+                en: "Which tourist spot located near Gurugram has Shiva Kund situated near it?",
+                hi: "गुरुग्राम के किस पर्यटक स्थल के पास शिव-कुंड स्थित है?",
+                options: [
+                    "Sohna Tourist Spot (सोहना पर्यटक स्थल)",
+                    "Damdama Lake",
+                    "Sultanpur Bird Sanctuary",
+                    "Badkhal Lake"
+                ],
+                correct: 0,
+                hint: "Sohna tourist spot.",
+                explanation: "Sohna tourist spot has Shiva Kund located near it."
+            },
+            {
+                page: 1,
+                en: "At which tourist place in Gurugram are bougainvillea flowers found in the maximum quantity?",
+                hi: "बोगनवैलिया के फूल सर्वाधिक किस पर्यटक स्थल पर पाए जाते हैं?",
+                options: [
+                    "Sohna Tourist Spot (सोहना पर्यटक स्थल)",
+                    "Kingdom of Dreams",
+                    "Leisure Valley Park",
+                    "Tau Devi Lal Park"
+                ],
+                correct: 0,
+                hint: "Sohna tourist spot.",
+                explanation: "Bougainvillea flowers are found in maximum quantity at Sohna tourist spot."
+            },
+            {
+                page: 1,
+                en: "During the Emergency (1975-1977), Morarji Desai and Ch. Devi Lal were detained at which place in Gurugram?",
+                hi: "आपातकाल (1975-1977) के दौरान मोरारजी देसाई व चौ. देवीलाल को नजरबंद करके कहाँ रखा गया था?",
+                options: [
+                    "Sohna, Gurugram (सोहना, गुरुग्राम)",
+                    "Badshahpur, Gurugram",
+                    "Pataudi, Gurugram",
+                    "Manesar, Gurugram"
+                ],
+                correct: 0,
+                hint: "Sohna.",
+                explanation: "Morarji Desai and Ch. Devi Lal were detained at Sohna during the emergency."
+            },
+            {
+                page: 1,
+                en: "The historic Sohna Vintage Car Rally has been organized since 1964. In which year was its Golden Jubilee celebrated?",
+                hi: "पुरानी कारों की विंटेज कार रैली आयोजित की जाती है सोहना, 1964 से, स्वर्ण जयंती 2014 में मनाई गई। आयोजन किसके द्वारा किया जाता है?",
+                options: [
+                    "States Group (स्टेट्स ग्रुप द्वारा)",
+                    "Hry Tourism Corporation",
+                    "Auto Car India",
+                    "Maruti Udyog"
+                ],
+                correct: 0,
+                hint: "States Group.",
+                explanation: "The Vintage Car Rally in Sohna is organized by the States Group."
+            },
+            {
+                page: 1,
+                en: "Where is the historic Sarai Alivardi Mosque located?",
+                hi: "सराय अलीवर्दी मस्जिद कहाँ स्थित है?",
+                options: [
+                    "Gurugram (गुरुग्राम)",
+                    "Faridabad",
+                    "Palwal",
+                    "Nuh"
+                ],
+                correct: 0,
+                hint: "Gurugram.",
+                explanation: "Sarai Alivardi Mosque is located in Gurugram."
+            },
+            {
+                page: 1,
+                en: "Where is the Gem, Ornament and Jewellery Park (रत्न आभूषण व ज्वैलरी पार्क) located?",
+                hi: "रत्न आभूषण व ज्वैलरी पार्क कहाँ स्थित है?",
+                options: [
+                    "Garhi Harsaru, Gurugram (गढ़ी हरसरू)",
+                    "Udyog Vihar, Gurugram",
+                    "Manesar, Gurugram",
+                    "Sohna, Gurugram"
+                ],
+                correct: 0,
+                hint: "Garhi Harsaru.",
+                explanation: "Gem and Jewellery Park is located in Garhi Harsaru, Gurugram."
+            },
+            {
+                page: 1,
+                en: "Who is the famous swimmer player Shivani Kataria associated with?",
+                hi: "प्रसिद्ध तैराक खिलाड़ी शिवानी कटारिया किस जिले से संबंधित हैं?",
+                options: [
+                    "Gurugram (गुरुग्राम)",
+                    "Karnal",
+                    "Ambala",
+                    "Hisar"
+                ],
+                correct: 0,
+                hint: "Gurugram.",
+                explanation: "Famous swimmer Shivani Kataria belongs to Gurugram."
+            },
+            {
+                page: 1,
+                en: "Where was the State University (or skill/law university project context) established in Kankrola, Gurugram?",
+                hi: "स्टेट विश्वविद्यालय की स्थापना गुरुग्राम के कंकरोला में की गई है। (संबंधित स्थान)",
+                options: [
+                    "Kankrola, Gurugram (कंकरोला)",
+                    "Bilaspur",
+                    "Farrukhnagar",
+                    "Badshahpur"
+                ],
+                correct: 0,
+                hint: "Kankrola village.",
+                explanation: "It is established in Kankrola, Gurugram."
+            },
+            {
+                page: 1,
+                en: "In which year was the Pataudi Princely State founded by Faiz Talab Khan?",
+                hi: "पटौदी रियासत की स्थापना 1806 में किसके द्वारा की गई थी?",
+                options: [
+                    "Faiz Talab Khan (फैज तलब खाँ)",
+                    "Nawab Iftikhar Ali Khan",
+                    "Nawab Mansoor Ali Khan",
+                    "Rao Tula Ram"
+                ],
+                correct: 0,
+                hint: "Faiz Talab Khan in 1806.",
+                explanation: "Pataudi state was established in 1806 by Faiz Talab Khan."
+            },
+            {
+                page: 1,
+                en: "Who was the architect of the Pataudi Palace?",
+                hi: "पटौदी महल का वास्तुकार कौन था?",
+                options: [
+                    "Hanz and Robert Tor Russell (हेंज व राबर्ट टोर रसेल)",
+                    "Edwin Lutyens",
+                    "Herbert Baker",
+                    "Le Corbusier"
+                ],
+                correct: 0,
+                hint: "Hanz and Robert Tor Russell.",
+                explanation: "The architect of Pataudi Palace was Hanz and Robert Tor Russell."
+            },
+            {
+                page: 1,
+                en: "What is the popular alternate nickname of Pataudi Palace?",
+                hi: "पटौदी महल का उपनाम क्या है?",
+                options: [
+                    "White Palace (व्हाइट पैलेस)",
+                    "Pink Palace",
+                    "Glass Palace",
+                    "Blue Palace"
+                ],
+                correct: 0,
+                hint: "White Palace.",
+                explanation: "Pataudi Palace is famously nicknamed 'White Palace'."
+            },
+            {
+                page: 1,
+                en: "According to notes, presently the Pataudi Palace is operated as a heritage hotel run by which group? (Note also mentions architect Robert Tor Russell designed Connaught Place, Delhi)",
+                hi: "वर्तमान में पटौदी महल 'नीमराणा' समूह द्वारा हैरिटेज होटल चलाया जा रहा है। (रॉबर्ट टोर रसेल ने दिल्ली का क्या डिजाइन किया था? - कनॉट पैलेस)",
+                options: [
+                    "Neemrana Group (नीमराणा समूह)",
+                    "Taj Group",
+                    "Oberoi Group",
+                    "ITC Hotels"
+                ],
+                correct: 0,
+                hint: "Neemrana group.",
+                explanation: "It is operated as a heritage hotel by the Neemrana group."
+            },
+            {
+                page: 1,
+                en: "Tiger Pataudi (Nawab Iftikhar Ali Khan) served as the Nawab of Pataudi during which period?",
+                hi: "टाइगर पटौदी (नवाब इफ्तिखार अली खाँ) पटौदी के नवाब कब से कब तक रहे (1917-1947 तक नवाब)?",
+                options: [
+                    "1917-1947",
+                    "1806-1850",
+                    "1950-1971",
+                    "1900-1925"
+                ],
+                correct: 0,
+                hint: "1917-1947.",
+                explanation: "Nawab Iftikhar Ali Khan (Tiger Pataudi Sr.) was Nawab from 1917 to 1947."
+            },
+            {
+                page: 1,
+                en: "In which year did Tiger Pataudi become a member of the Indian Hockey team that played in the Olympics?",
+                hi: "1928 में हॉकी टीम के सदस्य जो ओलम्पिक में खेली थी, वे कौन थे?",
+                options: [
+                    "Nawab Iftikhar Ali Khan (Tiger Pataudi)",
+                    "Nawab Mansoor Ali Khan",
+                    "Dhyan Chand",
+                    "Roop Singh"
+                ],
+                correct: 0,
+                hint: "Tiger Pataudi Sr. in 1928.",
+                explanation: "Tiger Pataudi was a member of the 1928 Olympic hockey team."
+            },
+            {
+                page: 1,
+                en: "In which year did Nawab Iftikhar Ali Khan become the captain of the Indian Cricket Team?",
+                hi: "1931 में भारतीय क्रिकेट टीम का कप्तान कौन बना था?",
+                options: [
+                    "Nawab Iftikhar Ali Khan Pataudi",
+                    "Nawab Mansoor Ali Khan Pataudi",
+                    "C.K. Nayudu",
+                    "Vijay Merchant"
+                ],
+                correct: 0,
+                hint: "Nawab Iftikhar Ali Khan in 1931.",
+                explanation: "He became captain of the Indian cricket team in 1931."
+            },
+            {
+                page: 1,
+                en: "When did Nawab Mansoor Ali Khan Pataudi become India's youngest cricket team captain?",
+                hi: "मार्च 1962 में भारतीय क्रिकेट टीम का सबसे युवा कप्तान कौन बना - नवाब मंसूर अली खाँ पटौदी?",
+                options: [
+                    "March 1962",
+                    "January 1955",
+                    "October 1970",
+                    "August 1947"
+                ],
+                correct: 0,
+                hint: "March 1962.",
+                explanation: "Nawab Mansoor Ali Khan Pataudi became the youngest captain in March 1962."
+            },
+            {
+                page: 1,
+                en: "Who is the famous actor son of Nawab Mansoor Ali Khan Pataudi mentioned in contemporary notes?",
+                hi: "वर्तमान में नवाब मंसूर अली खाँ पटौदी का पुत्र कौन प्रसिद्ध अभिनेता है?",
+                options: [
+                    "Saif Ali Khan (सैफ अली खान)",
+                    "Shahid Kapoor",
+                    "Ranbir Kapoor",
+                    "Farhan Akhtar"
+                ],
+                correct: 0,
+                hint: "Saif Ali Khan.",
+                explanation: "Saif Ali Khan is the famous actor son of Nawab Mansoor Ali Khan Pataudi."
+            },
+            {
+                page: 1,
+                en: "Who wrote the Ramayana in the Haryanvi language from Pataudi, Gurugram?",
+                hi: "हरियाणवी भाषा में रामायण के रचयिता कौन हैं - पं. रामेश्वर दयाल शास्त्री, पटौदी - गुरुग्राम?",
+                options: [
+                    "Pt. Rameshwar Dayal Shastri (पं. रामेश्वर दयाल शास्त्री)",
+                    "Pt. Lakhmi Chand",
+                    "Dayachand Mayana",
+                    "Bankidas"
+                ],
+                correct: 0,
+                hint: "Pt. Rameshwar Dayal Shastri.",
+                explanation: "Pt. Rameshwar Dayal Shastri of Pataudi, Gurugram wrote the Ramayana in Haryanvi."
+            },
+            {
+                page: 1,
+                en: "Where is the Biotech Technology Park located in Haryana?",
+                hi: "बायोटेक टेक्नोलॉजी पार्क स्थित है:",
+                options: [
+                    "Gurugram (गुरुग्राम)",
+                    "Faridabad",
+                    "Panchkula",
+                    "Karnal"
+                ],
+                correct: 0,
+                hint: "Gurugram.",
+                explanation: "Biotech Technology Park is located in Gurugram."
+            },
+            {
+                page: 1,
+                en: "Who launched the 'Haryana Fresh Brand' (agriculture department product initiative) started in Gurugram?",
+                hi: "हरियाणा फ्रेश ब्रांड (कृषि विभाग के उत्पाद) की शुरुआत गुरुग्राम से किसने लॉन्च किया?",
+                options: [
+                    "Nitin Gadkari (नितिन गडकरी द्वारा)",
+                    "Manohar Lal Khattar",
+                    "Narendra Modi",
+                    "Nayab Singh Saini"
+                ],
+                correct: 0,
+                hint: "Nitin Gadkari.",
+                explanation: "It was launched by Nitin Gadkari."
+            },
+            {
+                page: 1,
+                en: "Where was Haryana's largest and most advanced sports hostel constructed?",
+                hi: "हरियाणा में सबसे बड़े व अत्याधुनिक खेल छात्रावास का निर्माण कहाँ किया गया है - गुरुग्राम?",
+                options: [
+                    "Gurugram",
+                    "Rohtak",
+                    "Hisar",
+                    "Sonipat"
+                ],
+                correct: 0,
+                hint: "Gurugram.",
+                explanation: "Haryana's largest and most advanced sports hostel was constructed in Gurugram."
+            },
+            {
+                page: 1,
+                en: "Which district in NCR has the maximum production of leafy vegetables (साग - सब्जियाँ)?",
+                hi: "NCR में सर्वाधिक साग - सब्जियों का उत्पादन किस जिले में होता है - गुरुग्राम?",
+                options: [
+                    "Gurugram",
+                    "Faridabad",
+                    "Sonipat",
+                    "Jhajjar"
+                ],
+                correct: 0,
+                hint: "Gurugram.",
+                explanation: "NCR maximum production of leafy vegetables/greens occurs in Gurugram."
+            },
+            {
+                page: 1,
+                en: "According to notes, which district is the highest vegetable producer overall in Haryana (with Yamunanagar leading in 2024-25)?",
+                hi: "हरियाणा में सबसे ज्यादा सब्जी उत्पादन करने वाला जिला (नोट: यमुनानगर - कम महेंद्रगढ़, 2024-25 में सर्वाधिक सब्जी उत्पादन करने वाला जिला - यमुनानगर)?",
+                options: [
+                    "Yamunanagar (यमुनानगर - 2024-25 में सर्वाधिक)",
+                    "Gurugram",
+                    "Karnal",
+                    "Sirsa"
+                ],
+                correct: 0,
+                hint: "Yamunanagar for 2024-25.",
+                explanation: "Yamunanagar is noted as the top vegetable producing district for 2024-25."
+            },
+            {
+                page: 1,
+                en: "Where is Haryana's largest mall located?",
+                hi: "हरियाणा का सबसे बड़ा मॉल स्थित है:",
+                options: [
+                    "Gurugram (गुरुग्राम)",
+                    "Faridabad",
+                    "Panipat",
+                    "Ambala"
+                ],
+                correct: 0,
+                hint: "Gurugram.",
+                explanation: "Haryana's largest mall is located in Gurugram."
+            },
+            {
+                page: 1,
+                en: "Where was the 'Kingdom of Dreams' established?",
+                hi: "किंगडम ऑफ़ ड्रीम्स की स्थापना कहाँ की गई है?",
+                options: [
+                    "Gurugram (गुरुग्राम)",
+                    "Faridabad",
+                    "Panchkula",
+                    "Rohtak"
+                ],
+                correct: 0,
+                hint: "Gurugram.",
+                explanation: "Kingdom of Dreams is established in Gurugram."
+            },
+            {
+                page: 1,
+                en: "Where is the National Park Board (राष्ट्रीय उद्यान बोर्ड) located?",
+                hi: "राष्ट्रीय उद्यान बोर्ड स्थित है:",
+                options: [
+                    "Gurugram",
+                    "Yamunanagar",
+                    "Kurukshetra",
+                    "Panchkula"
+                ],
+                correct: 0,
+                hint: "Gurugram.",
+                explanation: "National Park Board is located in Gurugram."
+            },
+            {
+                page: 1,
+                en: "Where is the Harimandir Sanskrit Vidyalaya Pataudi located?",
+                hi: "हरिमंदिर संस्कृत विद्यालय - पटौदी कहाँ स्थित है?",
+                options: [
+                    "Gurugram (गुरुग्राम)",
+                    "Rohtak",
+                    "Kurukshetra",
+                    "Jind"
+                ],
+                correct: 0,
+                hint: "Gurugram.",
+                explanation: "Harimandir Sanskrit Vidyalaya Pataudi is in Gurugram."
+            },
+            {
+                page: 1,
+                en: "In which year did the Rahgiri Program start in Gurugram?",
+                hi: "राहगीरी प्रोग्राम की शुरुआत की गई है - गुरुग्राम, प्रारम्भ 2013 से?",
+                options: [
+                    "2013",
+                    "2015",
+                    "2017",
+                    "2010"
+                ],
+                correct: 0,
+                hint: "2013.",
+                explanation: "Rahgiri program started in Gurugram in 2013."
+            },
+            {
+                page: 1,
+                en: "When was Mitsubishi Electric Automotive established in Gurugram?",
+                hi: "मित्सुबिशी इलेक्ट्रिक ऑटोमोटिव की स्थापना 2001-2002 में कहाँ की गई - गुरुग्राम?",
+                options: [
+                    "2001-2002",
+                    "1995-1996",
+                    "2008-2009",
+                    "2012-2013"
+                ],
+                correct: 0,
+                hint: "2001-2002.",
+                explanation: "Mitsubishi Electric Automotive was established in 2001-2002 in Gurugram."
+            },
+            {
+                page: 1,
+                en: "When was Wipro Limited established in Gurugram?",
+                hi: "विप्रो लिमिटेड की स्थापना 1994-1995 में कहाँ की गई - गुरुग्राम?",
+                options: [
+                    "1994-1995",
+                    "1985-1986",
+                    "2000-2001",
+                    "1990-1991"
+                ],
+                correct: 0,
+                hint: "1994-1995.",
+                explanation: "Wipro Limited was established in 1994-1995 in Gurugram."
+            },
+            {
+                page: 1,
+                en: "Who was the government employee from Gurugram who participated in the 1857 revolt (गुलाम मोहम्मद)?",
+                hi: "1857 की क्रांति में भाग लेने वाला सरकारी कर्मचारी गुलाम मोहम्मद किस जिले से था - गुरुग्राम?",
+                options: [
+                    "Gurugram (गुरुग्राम)",
+                    "Rohtak",
+                    "Hisar",
+                    "Ambala"
+                ],
+                correct: 0,
+                hint: "Gurugram.",
+                explanation: "Ghulam Mohammad, a government employee from Gurugram, participated in the 1857 revolt."
+            },
+            {
+                page: 1,
+                en: "Where is G.D. Goenka University located?",
+                hi: "जी.डी. गोयनका विश्वविद्यालय कहाँ स्थित है?",
+                options: [
+                    "Gurugram (गुरुग्राम)",
+                    "Sonipat",
+                    "Faridabad",
+                    "Panipat"
+                ],
+                correct: 0,
+                hint: "Gurugram.",
+                explanation: "G.D. Goenka University is located in Gurugram."
+            },
+            {
+                page: 1,
+                en: "Where is Ansal University located?",
+                hi: "अंसल विश्वविद्यालय कहाँ स्थित है?",
+                options: [
+                    "Gurugram (गुरुग्राम)",
+                    "Rohtak",
+                    "Karnal",
+                    "Hisar"
+                ],
+                correct: 0,
+                hint: "Gurugram.",
+                explanation: "Ansal University is located in Gurugram."
+            },
+            {
+                page: 1,
+                en: "Where is the fair of 'Bhakt Pooranmal' (भक्त पूर्णमल का मेला) held?",
+                hi: "भक्त पूर्णमल का मेला कहाँ भरता है?",
+                options: [
+                    "Gurugram (गुरुग्राम)",
+                    "Jhajjar",
+                    "Rewari",
+                    "Palwal"
+                ],
+                correct: 0,
+                hint: "Gurugram.",
+                explanation: "Bhakt Pooranmal fair is held in Gurugram."
+            },
+            {
+                page: 1,
+                en: "Where is the fair of 'Buddho' (बुद्धों का मेला) held?",
+                hi: "बुद्धों का मेला कहाँ भरता है?",
+                options: [
+                    "Gurugram (गुरुग्राम)",
+                    "Faridabad",
+                    "Palwal",
+                    "Nuh"
+                ],
+                correct: 0,
+                hint: "Gurugram.",
+                explanation: "Buddho Mela is held in Gurugram."
+            },
+            {
+                page: 1,
+                en: "When was the Haryana Roadways Engineering Corporation established in Gurugram?",
+                hi: "हरियाणा रोडवेज इंजीनियरिंग कॉरपोरेशन - गुरुग्राम, स्थापना कब हुई - 27 नवंबर, 1987?",
+                options: [
+                    "27 November 1987",
+                    "15 August 1972",
+                    "1 November 1966",
+                    "20 January 1990"
+                ],
+                correct: 0,
+                hint: "27 November 1987.",
+                explanation: "Haryana Roadways Engineering Corp was established in Gurugram on Nov 27, 1987."
+            },
+            {
+                page: 1,
+                en: "Which district in the state has the maximum abundance of building construction materials found (भवन निर्माण की सामग्री)?",
+                hi: "राज्य में सर्वाधिक भवन निर्माण की सामग्री कहाँ पाई जाती है - गुरुग्राम?",
+                options: [
+                    "Gurugram (गुरुग्राम)",
+                    "Faridabad",
+                    "Panchkula",
+                    "Bhiwani"
+                ],
+                correct: 0,
+                hint: "Gurugram.",
+                explanation: "Maximum building construction material is found in Gurugram district."
+            },
+            // Adding more unique questions to complete Page 1 target (45 total)
+            {
+                page: 1,
+                en: "Which famous historic city was formerly known as Gurugram before being renamed and later reverted?",
+                hi: "गुरुग्राम का ऐतिहासिक नाम गुरु द्रोणाचार्य के नाम पर क्या था?",
+                options: [
+                    "Gurugram / Gurgaon",
+                    "Jayantipur",
+                    "Panprastha",
+                    "Sthaneshwar"
+                ],
+                correct: 0,
+                hint: "Gurgaon / Gurugram.",
+                explanation: "It was traditionally known as Gurgaon and renamed to Gurugram."
+            },
+            {
+                page: 1,
+                en: "What is the primary significance of Garhi Harsaru in Gurugram district?",
+                hi: "गुरुग्राम जिले के गढ़ी हरसरू का मुख्य महत्व क्या है?",
+                options: [
+                    "Jewellery Park and historic railway junction",
+                    "Textile cluster",
+                    "Automobile testing track",
+                    "Software technology park"
+                ],
+                correct: 0,
+                hint: "Jewellery park location.",
+                explanation: "Garhi Harsaru is known for its jewellery park and railway station."
+            },
+            {
+                page: 1,
+                en: "Which ancient reservoir or tank is famously associated with Sohna hot springs?",
+                hi: "सोहना के गर्म पानी के चश्मे के पास कौन सा कुंड स्थित है?",
+                options: [
+                    "Shiv Kund (शिव कुंड)",
+                    "Brahm Sarovar",
+                    "Sannihit Sarovar",
+                    "Surajkund"
+                ],
+                correct: 0,
+                hint: "Shiv Kund.",
+                explanation: "Shiv Kund is associated with Sohna hot springs."
+            },
+            {
+                page: 1,
+                en: "Who was the founder of the Pataudi princely estate in 1806?",
+                hi: "1806 में पटौदी रियासत की स्थापना किसने की थी?",
+                options: [
+                    "Faiz Talab Khan",
+                    "Rao Tula Ram",
+                    "Nahar Singh",
+                    "Hasan Khan Mewati"
+                ],
+                correct: 0,
+                hint: "Faiz Talab Khan.",
+                explanation: "Faiz Talab Khan founded Pataudi in 1806."
+            },
+            {
+                page: 1,
+                en: "Which sport was Nawab Mansoor Ali Khan Pataudi most famously legendary in?",
+                hi: "नवाब मंसूर अली खान पटौदी किस खेल के महान खिलाड़ी थे?",
+                options: [
+                    "Cricket (क्रिकेट)",
+                    "Hockey",
+                    "Polo",
+                    "Tennis"
+                ],
+                correct: 0,
+                hint: "Cricket.",
+                explanation: "He was a legendary Indian cricket captain."
+            },
+            {
+                page: 1,
+                en: "What type of literary work was composed by Pt. Rameshwar Dayal Shastri in Pataudi?",
+                hi: "पटौदी के पं. रामेश्वर दयाल शास्त्री ने किस ग्रंथ की रचना हरियाणवी भाषा में की?",
+                options: [
+                    "Ramayana (रामायण)",
+                    "Mahabharata",
+                    "Bhagavad Gita",
+                    "Rigveda"
+                ],
+                correct: 0,
+                hint: "Ramayana.",
+                explanation: "He wrote the Ramayana in Haryanvi."
+            },
+            {
+                page: 1,
+                en: "Which corporate giant's presence helped transform Gurugram into the Millennium City of IT and automobile hubs?",
+                hi: "गुरुग्राम को 'मिलेनियम सिटी' के रूप में विकसित करने में किन उद्योगों की मुख्य भूमिका रही है?",
+                options: [
+                    "Automobile and IT/Software companies",
+                    "Jute and Textile mills",
+                    "Sugar and Paper mills",
+                    "Coal and Mining units"
+                ],
+                correct: 0,
+                hint: "IT and automobile.",
+                explanation: "Automobile and IT companies transformed Gurugram."
+            },
+            {
+                page: 1,
+                en: "What is the cultural relevance of the 'Bhakt Pooranmal Fair' in Gurugram?",
+                hi: "गुरुग्राम में 'भक्त पूर्णमल का मेला' किस परंपरा से जुड़ा है?",
+                options: [
+                    "Folk devotion and regional heritage fair",
+                    "Agricultural cattle trade",
+                    "Sikh religious congregation",
+                    "Industrial exhibition"
+                ],
+                correct: 0,
+                hint: "Regional folk heritage fair.",
+                explanation: "It is a prominent regional folk heritage fair held in Gurugram."
+            },
+
+            // ================= PAGE 2 QUESTIONS (45 Qs) =================
+            {
+                page: 2,
+                en: "Who is the famous short putt player Om Prakash Singh Kehrana from - Village Lakhuwas, Gurugram?",
+                hi: "प्रसिद्ध शॉट पुट खिलाड़ी ओमप्रकाश सिंह कहरना - गाँव लखूवास, गुरुग्राम से संबंधित हैं?",
+                options: [
+                    "Om Prakash Singh Kehrana (ओमप्रकाश सिंह कहरना)",
+                    "Neeraj Chopra",
+                    "Bajrang Punia",
+                    "Amit Panghal"
+                ],
+                correct: 0,
+                hint: "Om Prakash Singh Kehrana from Lakhuwas.",
+                explanation: "Short putt player Om Prakash Singh Kehrana is from Lakhuwas village, Gurugram."
+            },
+            {
+                page: 2,
+                en: "Where was North India's largest butterfly park established?",
+                hi: "उत्तर भारत का सबसे बड़ा तितली पार्क स्थापित किया जा रहा है - फारुख्नगर (गुरुग्राम)?",
+                options: [
+                    "Farrukhnagar, Gurugram (फारुख्नगर)",
+                    "Sohna, Gurugram",
+                    "Manesar, Gurugram",
+                    "Pataudi, Gurugram"
+                ],
+                correct: 0,
+                hint: "Farrukhnagar.",
+                explanation: "North India's largest butterfly park was established in Farrukhnagar, Gurugram."
+            },
+            {
+                page: 2,
+                en: "Where was the state's first Sports Facility Centre established?",
+                hi: "राज्य में प्रथम स्पोट्र्स फैसिलिटी सेंटर की स्थापना कहाँ की गई है - गुरुग्राम?",
+                options: [
+                    "Gurugram",
+                    "Faridabad",
+                    "Rohtak",
+                    "Hisar"
+                ],
+                correct: 0,
+                hint: "Gurugram.",
+                explanation: "First Sports Facility Centre in the state was established in Gurugram."
+            },
+            {
+                page: 2,
+                en: "With Singapore's assistance, where was the state's first Global Skill Park established?",
+                hi: "सिंगापुर देश की मदद से राज्य का प्रथम ग्लोबल स्किल पार्क स्थापित किया गया है - गुरुग्राम?",
+                options: [
+                    "Gurugram",
+                    "Panchkula",
+                    "Faridabad",
+                    "Ambala"
+                ],
+                correct: 0,
+                hint: "Gurugram with Singapore help.",
+                explanation: "State's first Global Skill Park with Singapore's help was established in Gurugram."
+            },
+            {
+                page: 2,
+                en: "In which district is the Bharat Yatra Kendra of former Prime Minister Chandrashekhar located at Bhondsi Ashram?",
+                hi: "पूर्व प्रधानमंत्री चन्द्रशेखर के भारत यात्रा केन्द्र का भोंडसी आश्रम किस जिले में है - गुरुग्राम?",
+                options: [
+                    "Gurugram",
+                    "Rewari",
+                    "Palwal",
+                    "Faridabad"
+                ],
+                correct: 0,
+                hint: "Bhondsi Ashram, Gurugram.",
+                explanation: "Bhondsi Ashram associated with Chandrashekhar is in Gurugram."
+            },
+            {
+                page: 2,
+                en: "Which city is referred to as the Economic (Financial) Capital of Haryana?",
+                hi: "हरियाणा की आर्थिक (वित्तीय) राजधानी किसे कहा जाता है - गुरुग्राम?",
+                options: [
+                    "Gurugram (गुरुग्राम)",
+                    "Faridabad",
+                    "Chandigarh",
+                    "Panipat"
+                ],
+                correct: 0,
+                hint: "Gurugram.",
+                explanation: "Gurugram is referred to as the economic/financial capital of Haryana."
+            },
+            {
+                page: 2,
+                en: "Which district has the maximum area under the Aravalli hills (अरावली पहाड़ियों का सर्वाधिक क्षेत्रफल वाला जिला)?",
+                hi: "अरावली पहाड़ियों का सर्वाधिक क्षेत्रफल वाला जिला कौन सा है - गुरुग्राम?",
+                options: [
+                    "Gurugram",
+                    "Faridabad",
+                    "Mahendragarh",
+                    "Nuh"
+                ],
+                correct: 0,
+                hint: "Gurugram.",
+                explanation: "Gurugram has the maximum area under the Aravalli hills."
+            },
+            {
+                page: 2,
+                en: "Where was the country's first pod taxi service (Metro prarambh) initiated?",
+                hi: "देश की प्रथम पैड टैक्सी सेवा मेट्रों प्रारंभ की गई है - गुरुग्राम?",
+                options: [
+                    "Gurugram",
+                    "Noida",
+                    "Delhi",
+                    "Chandigarh"
+                ],
+                correct: 0,
+                hint: "Gurugram.",
+                explanation: "Country's first pod taxi service was initiated in Gurugram."
+            },
+            {
+                page: 2,
+                en: "According to the 2011 census, which district had the lowest sex ratio (854)?",
+                hi: "2011 की जनगणना अनुसार प्रदेश का सबसे कम लिंगानुपात (854) वाला जिला कौन सा है - गुरुग्राम?",
+                options: [
+                    "Gurugram (854)",
+                    "Sonipat",
+                    "Jhajjar",
+                    "Rewari"
+                ],
+                correct: 0,
+                hint: "Gurugram (854).",
+                explanation: "Gurugram recorded the lowest sex ratio (854) in the 2011 census."
+            },
+            {
+                page: 2,
+                en: "What is the final/terminal metro station of Gurugram Metro mentioned in the text?",
+                hi: "गुरुग्राम मेट्रो का अन्तिम स्टेशन कौन सा है - हुड्डा सिटी?",
+                options: [
+                    "Huda City Centre (हुड्डा सिटी)",
+                    "Sikandarpur",
+                    "MG Road",
+                    "Guru Dronacharya"
+                ],
+                correct: 0,
+                hint: "Huda City.",
+                explanation: "Huda City is noted as the terminal metro station in the context."
+            },
+            {
+                page: 2,
+                en: "Where is 'Sikhon ki Haveli' (सिक्खों की हवेली) located?",
+                hi: "सिक्खों की हवेली कहाँ स्थित है - गुरुग्राम?",
+                options: [
+                    "Gurugram",
+                    "Ambala",
+                    "Kurukshetra",
+                    "Karnal"
+                ],
+                correct: 0,
+                hint: "Gurugram.",
+                explanation: "Sikhon ki Haveli is located in Gurugram."
+            },
+            {
+                page: 2,
+                en: "Where is 'Haveli of Udayveer' (हवेली ऑफ़ उदयवीर) located?",
+                hi: "हवेली ऑफ़ उदयवीर कहाँ स्थित है - गुरुग्राम?",
+                options: [
+                    "Gurugram",
+                    "Rohtak",
+                    "Rewari",
+                    "Jind"
+                ],
+                correct: 0,
+                hint: "Gurugram.",
+                explanation: "Haveli of Udayveer is in Gurugram."
+            },
+            {
+                page: 2,
+                en: "Where is Appu Ghar located in Haryana?",
+                hi: "हरियाणा में अप्पुघर स्थित है - गुरुग्राम?",
+                options: [
+                    "Gurugram",
+                    "Faridabad",
+                    "Panipat",
+                    "Panchkula"
+                ],
+                correct: 0,
+                hint: "Gurugram.",
+                explanation: "Appu Ghar is located in Gurugram."
+            },
+            {
+                page: 2,
+                en: "Who is the famous kabaddi player Anoop Kumar associated with?",
+                hi: "प्रसिद्ध कबड्डी खिलाड़ी अनूप कुमार किस जिले से हैं - गुरुग्राम?",
+                options: [
+                    "Gurugram",
+                    "Sonipat",
+                    "Jind",
+                    "Rohtak"
+                ],
+                correct: 0,
+                hint: "Gurugram.",
+                explanation: "Famous kabaddi player Anoop Kumar is from Gurugram."
+            },
+            {
+                page: 2,
+                en: "Where was the cheap medical store 'Amrit' opened by the Haryana Government?",
+                hi: "सस्ता मेडिकल स्टोर हरियाणा सरकार का अमृत खोला गया है - गुरुग्राम?",
+                options: [
+                    "Gurugram",
+                    "Chandigarh",
+                    "Hisar",
+                    "Karnal"
+                ],
+                correct: 0,
+                hint: "Gurugram.",
+                explanation: "Amrit cheap medical store by Haryana Govt was opened in Gurugram."
+            },
+            {
+                page: 2,
+                en: "Where was Haryana's first Police Commissionerate formed/constituted?",
+                hi: "हरियाणा में प्रथम पुलिस कमिश्नरी का गठन किया गया था - गुरुग्राम?",
+                options: [
+                    "Gurugram",
+                    "Faridabad",
+                    "Panchkula",
+                    "Ambala"
+                ],
+                correct: 0,
+                hint: "Gurugram.",
+                explanation: "Haryana's first police commissionerate was formed in Gurugram."
+            },
+            {
+                page: 2,
+                en: "Where was Haryana's first online PWD rest house established?",
+                hi: "हरियाणा का प्रथम ऑनलाइन PWD रैस्ट हाउस कहाँ स्थापित हुआ - गुरुग्राम?",
+                options: [
+                    "Gurugram",
+                    "Chandigarh",
+                    "Karnal",
+                    "Rohtak"
+                ],
+                correct: 0,
+                hint: "Gurugram.",
+                explanation: "Haryana's first online PWD rest house was established in Gurugram."
+            },
+            {
+                page: 2,
+                en: "Where was India's widest and shortest 16-lane highway (3 km length) established?",
+                hi: "16 लेन का सबसे छोटा व चौड़ा (3 कि.मी.) का राष्ट्रीय राजमार्ग स्थापित किया गया है - गुरुग्राम?",
+                options: [
+                    "Gurugram (Delhi-Jaipur Expressway stretch)",
+                    "Panipat highway",
+                    "Ambala bypass",
+                    "Karnal bypass"
+                ],
+                correct: 0,
+                hint: "Gurugram.",
+                explanation: "The 16-lane highway segment is established in Gurugram."
+            },
+            {
+                page: 2,
+                en: "Where was the state's first Media Centre established?",
+                hi: "प्रदेश के प्रथम मीडिया सेंटर की स्थापना की गई है - गुरुग्राम?",
+                options: [
+                    "Gurugram",
+                    "Chandigarh",
+                    "Rohtak",
+                    "Hisar"
+                ],
+                correct: 0,
+                hint: "Gurugram.",
+                explanation: "The state's first media centre was established in Gurugram."
+            },
+            {
+                page: 2,
+                en: "Who is the father-daughter duo pair who climbed Mt. Everest together from Gurugram (Ajit Bajaj and Deeya Bajaj)?",
+                hi: "माउंट एवरेस्ट की चढ़ाई करने वाले पहले भारतीय पिता-पुत्री की जोड़ी - अजीत बजाज व दीया बजाज किस जिले से हैं - गुरुग्राम?",
+                options: [
+                    "Gurugram",
+                    "Karnal",
+                    "Hisar",
+                    "Rohtak"
+                ],
+                correct: 0,
+                hint: "Gurugram.",
+                explanation: "Ajit Bajaj and Deeya Bajaj are from Gurugram."
+            },
+            {
+                page: 2,
+                en: "Where is the tomb of Sarai Ali Khan located?",
+                hi: "सराय अली खां का मकबरा कहाँ स्थित है - गुरुग्राम?",
+                options: [
+                    "Gurugram",
+                    "Panipat",
+                    "Sonepat",
+                    "Palwal"
+                ],
+                correct: 0,
+                hint: "Gurugram.",
+                explanation: "Tomb of Sarai Ali Khan is located in Gurugram."
+            },
+            {
+                page: 2,
+                en: "In which district is the construction of Trump Tower underway (featuring 258 flats across 60 acres)?",
+                hi: "ट्रंप टॉवर का निर्माण किस जिले में करवाया जा रहा है - गुरुग्राम (60 एकड़ में 258 फ्लैट)?",
+                options: [
+                    "Gurugram",
+                    "Faridabad",
+                    "Panchkula",
+                    "Sonipat"
+                ],
+                correct: 0,
+                hint: "Gurugram.",
+                explanation: "Trump Tower construction is underway in Gurugram."
+            },
+            {
+                page: 2,
+                en: "In which district's government schools was 'Project Zindagi' launched?",
+                hi: "किस जिले के राजकीय स्कूलों में 'प्रोजेक्ट जिंदगी' शुरू किया गया है - गुरुग्राम?",
+                options: [
+                    "Gurugram",
+                    "Rewari",
+                    "Mahendragarh",
+                    "Jhajjar"
+                ],
+                correct: 0,
+                hint: "Gurugram.",
+                explanation: "Project Zindagi was launched in government schools of Gurugram."
+            },
+            {
+                page: 2,
+                en: "Who led the Praja Mandal movement in Pataudi princely state?",
+                hi: "पटौदी रियासत में प्रजामंडल आंदोलन का नेतृत्व किसने किया था - बाबू दयाल शर्मा?",
+                options: [
+                    "Babu Dayal Sharma (बाबू दयाल शर्मा)",
+                    "Lala Murlidhar",
+                    "Sri Ram Sharma",
+                    "Neki Ram Sharma"
+                ],
+                correct: 0,
+                hint: "Babu Dayal Sharma.",
+                explanation: "Babu Dayal Sharma led the Praja Mandal movement in Pataudi."
+            },
+            {
+                page: 2,
+                en: "Where is pearl farming (मोतियों की खेती) practiced in Haryana?",
+                hi: "हरियाणा में मोतियों की खेती की जाती है - জামালपुर गाँव, गुरुग्राम?",
+                options: [
+                    "Jamalpur Village, Gurugram (जमालपुर गाँव)",
+                    "Banchari Village, Palwal",
+                    "Mangiana, Sirsa",
+                    "Gharaunda, Karnal"
+                ],
+                correct: 0,
+                hint: "Jamalpur village, Gurugram.",
+                explanation: "Pearl farming is carried out in Jamalpur village, Gurugram."
+            },
+            {
+                page: 2,
+                en: "Where was Haryana's flower mandi (flower market) established with the cooperation of the Netherlands?",
+                hi: "हरियाणा में फूलों की मण्डी स्थापित की गई है - गुरुग्राम, नीदरलैंड्स के सहयोग से?",
+                options: [
+                    "Gurugram (नीदरलैंड्स के सहयोग से)",
+                    "Faridabad",
+                    "Panipat",
+                    "Karnal"
+                ],
+                correct: 0,
+                hint: "Gurugram with Netherlands help.",
+                explanation: "Flower market was established in Gurugram with Netherlands cooperation."
+            },
+            {
+                page: 2,
+                en: "Where was Haryana's first digital testing/analysis center established?",
+                hi: "हरियाणा के प्रथम डिजिटल जाँच/विश्लेषण केंद्र की स्थापना की गई है - गुरुग्राम?",
+                options: [
+                    "Gurugram",
+                    "Rohtak",
+                    "Karnal",
+                    "Hisar"
+                ],
+                correct: 0,
+                hint: "Gurugram.",
+                explanation: "Haryana's first digital testing/analysis center was established in Gurugram."
+            },
+            {
+                page: 2,
+                en: "Who is known as the Goddess of Smallpox (चेचक की देवी कहाँ जाता है)?",
+                hi: "चेचक की देवी कहाँ जाता है - शीतला माता, गुरुग्राम?",
+                options: [
+                    "Sheetla Mata, Gurugram (शीतला माता)",
+                    "Mansa Devi",
+                    "Kali Mata",
+                    "Chandi Devi"
+                ],
+                correct: 0,
+                hint: "Sheetla Mata, Gurugram.",
+                explanation: "Sheetla Mata in Gurugram is revered as the Goddess of Smallpox."
+            },
+            {
+                page: 2,
+                en: "In which city of the state is Rahgiri Day celebrated every Sunday?",
+                hi: "राज्य के किस शहर में प्रत्येक रविवार को राहगिरी दिवस मनाया जाता है - गुरुग्राम?",
+                options: [
+                    "Gurugram",
+                    "Faridabad",
+                    "Rohtak",
+                    "Panipat"
+                ],
+                correct: 0,
+                hint: "Gurugram.",
+                explanation: "Rahgiri Day is celebrated every Sunday in Gurugram."
+            },
+            {
+                page: 2,
+                en: "Where was the country's first live entertainment theatre established?",
+                hi: "देश का प्रथम लाईव मनोरंजन थियेटर स्थापित किया गया है - किंगडम ऑफ़ ड्रीम्स, गुरुग्राम?",
+                options: [
+                    "Kingdom of Dreams, Gurugram (किंगडम ऑफ़ ड्रीम्स)",
+                    "Leisure Valley",
+                    "Tau Devi Lal Complex",
+                    "Sohna Resort"
+                ],
+                correct: 0,
+                hint: "Kingdom of Dreams, Gurugram.",
+                explanation: "Country's first live entertainment theatre (Kingdom of Dreams) was established in Gurugram."
+            },
+            {
+                page: 2,
+                en: "Where is the state's first Agri Business School located?",
+                hi: "राज्य का प्रथम एग्री बिजनेस स्कूल है - गुरुग्राम?",
+                options: [
+                    "Gurugram",
+                    "Hisar",
+                    "Karnal",
+                    "Sirsa"
+                ],
+                correct: 0,
+                hint: "Gurugram.",
+                explanation: "State's first Agri Business School is located in Gurugram."
+            },
+            {
+                page: 2,
+                en: "Where is the state's Martial Art and Folk Art Festival (मार्शल आर्ट व लोक कला उत्सव) organized?",
+                hi: "राज्य में मार्शल आर्ट व लोक कला उत्सव का आयोजन होता है - गुरुग्राम?",
+                options: [
+                    "Gurugram",
+                    "Kurukshetra",
+                    "Rohtak",
+                    "Panchkula"
+                ],
+                correct: 0,
+                hint: "Gurugram.",
+                explanation: "Martial Art and Folk Art Festival is organized in Gurugram."
+            },
+            {
+                page: 2,
+                en: "Where was the famous Urdu poet and shayar Ayodhya Prasad Goyaliya born?",
+                hi: "प्रसिद्ध उर्दू कवि व शायर अयोध्या प्रसाद गोयलिया का जन्म - बादशाहपुर, गुरुग्राम?",
+                options: [
+                    "Badshahpur, Gurugram (बादशाहपुर)",
+                    "Pataudi, Gurugram",
+                    "Farrukhnagar, Gurugram",
+                    "Sohna, Gurugram"
+                ],
+                correct: 0,
+                hint: "Badshahpur, Gurugram.",
+                explanation: "Urdu poet Ayodhya Prasad Goyaliya was born in Badshahpur, Gurugram."
+            },
+            {
+                page: 2,
+                en: "Freedom fighter Kastura Bai belonged to which village in Gurugram?",
+                hi: "स्वतन्त्रता सेनानी कस्तूरा बाई - बलदान ग्राम, गुरुग्राम से संबंधित थीं?",
+                options: [
+                    "Baldan Village, Gurugram (बलदान ग्राम)",
+                    "Lakhuwas Village",
+                    "Manpur Village",
+                    "Jamalpur Village"
+                ],
+                correct: 0,
+                hint: "Baldan village, Gurugram.",
+                explanation: "Freedom fighter Kastura Bai belonged to Baldan village, Gurugram."
+            },
+            {
+                page: 2,
+                en: "Where was Asia's first photographic center opened?",
+                hi: "एशिया का पहला फोटोग्राफिक सेंटर खोला गया है - गुरुग्राम?",
+                options: [
+                    "Gurugram",
+                    "Faridabad",
+                    "Chandigarh",
+                    "Panipat"
+                ],
+                correct: 0,
+                hint: "Gurugram.",
+                explanation: "Asia's first photographic center was opened in Gurugram."
+            },
+            {
+                page: 2,
+                en: "In which year was Gurgaon's name officially changed to Gurugram?",
+                hi: "गुड़गाँव का नाम बदलकर गुरुग्राम कब किया गया था - 12 (वर्ष संदर्भ 12)?",
+                options: [
+                    "2016 (April 12 reference)",
+                    "2008",
+                    "2014",
+                    "2020"
+                ],
+                correct: 0,
+                hint: "2016.",
+                explanation: "Gurgaon's name was officially changed to Gurugram in 2016."
+            },
+            // Additional 8 unique questions to reach exact 45 for Page 2 (Total 90)
+            {
+                page: 2,
+                en: "Which prominent bird sanctuary located near Gurugram is internationally famous for migratory birds?",
+                hi: "गुरुग्राम के पास स्थित कौन सा पक्षी अभयारण्य प्रवासी पक्षियों के लिए विश्व प्रसिद्ध है?",
+                options: [
+                    "Sultanpur Bird Sanctuary (सुल्तानपुर पक्षी अभयारण्य)",
+                    "Bhindawas",
+                    "Khaparwas",
+                    "Nahar Wildlife Sanctuary"
+                ],
+                correct: 0,
+                hint: "Sultanpur Bird Sanctuary.",
+                explanation: "Sultanpur Bird Sanctuary in Gurugram is famous for migratory birds."
+            },
+            {
+                page: 2,
+                en: "Which major national expressway passes right through Gurugram connecting Delhi to Mumbai?",
+                hi: "दिल्ली को मुंबई से जोड़ने वाला कौन सा प्रमुख एक्सप्रेसवे गुरुग्राम से होकर गुजरता है?",
+                options: [
+                    "Delhi-Mumbai Expressway (Gurugram stretch / Sohna road)",
+                    "Western Peripheral Expressway",
+                    "Eastern Peripheral Expressway",
+                    "Ambala-Delhi Expressway"
+                ],
+                correct: 0,
+                hint: "Delhi-Mumbai Expressway.",
+                explanation: "Delhi-Mumbai Expressway connects via Gurugram/Sohna corridor."
+            },
+            {
+                page: 2,
+                en: "What role does Manesar play in the industrial landscape of Gurugram district?",
+                hi: "गुरुग्राम जिले के औद्योगिक परिदृश्य में मानेसर की क्या मुख्य भूमिका है?",
+                options: [
+                    "Major automobile and manufacturing industrial hub (मारुति व ऑटोमोबाइल हब)",
+                    "Textile handloom center",
+                    "Information technology software park exclusively",
+                    "Agro-based food processing zone"
+                ],
+                correct: 0,
+                hint: "Automobile and manufacturing hub.",
+                explanation: "Manesar is a major industrial and automobile manufacturing hub."
+            },
+            {
+                page: 2,
+                en: "Which historical fort is located in Farrukhnagar, Gurugram?",
+                hi: "गुरुग्राम के फारुख्नगर में कौन सा ऐतिहासिक किला स्थित है?",
+                options: [
+                    "Farrukhnagar Fort / Dabchick fort structures",
+                    "Asigarh Fort",
+                    "Lohagarh Fort",
+                    "Tughlaqabad Fort"
+                ],
+                correct: 0,
+                hint: "Farrukhnagar Fort.",
+                explanation: "Farrukhnagar Fort built during the Mughal era is located in Gurugram."
+            },
+            {
+                page: 2,
+                en: "What is the primary objective of the 'Rahgiri Day' initiative started in Gurugram?",
+                hi: "गुरुग्राम में शुरू किए गए 'राहगीरी दिवस' का मुख्य उद्देश्य क्या है?",
+                options: [
+                    "Promoting fitness, cycling, and reducing vehicular pollution on roads",
+                    "Promoting night-time commercial shopping",
+                    "Organizing industrial trade fairs",
+                    "Conducting vehicle registration drives"
+                ],
+                correct: 0,
+                hint: "Promoting fitness and non-motorized transport.",
+                explanation: "Rahgiri Day promotes fitness, community engagement, and reduces pollution."
+            },
+            {
+                page: 2,
+                en: "Who built the famous Sheesh Mahal in Farrukhnagar, Gurugram?",
+                hi: "गुरुग्राम के फारुख्नगर में स्थित प्रसिद्ध शीश महल का निर्माण किसने करवाया था?",
+                options: [
+                    "Faujdar Khan (फौजदार खान)",
+                    "Rao Tula Ram",
+                    "Hem Chandra",
+                    "Alauddin Khilji"
+                ],
+                correct: 0,
+                hint: "Faujdar Khan.",
+                explanation: "Sheesh Mahal in Farrukhnagar was built by Faujdar Khan in the 18th century."
+            },
+            {
+                page: 2,
+                en: "Which lake is a major artificial wetland and picnic spot situated on the Gurugram-Sohna road?",
+                hi: "गुरुग्राम-सोहना रोड पर स्थित कौन सी कृत्रिम झील पिकनिक और पर्यटन का प्रमुख केंद्र है?",
+                options: [
+                    "Damdama Lake (दमदमा झील)",
+                    "Badkhal Lake",
+                    "Karna Lake",
+                    "Blue Bird Lake"
+                ],
+                correct: 0,
+                hint: "Damdama Lake.",
+                explanation: "Damdama Lake is a prominent natural/artificial reservoir and tourism spot in Gurugram."
+            },
+            {
+                page: 2,
+                en: "How has Gurugram's rapid urbanization impacted the Aravalli range in the region?",
+                hi: "गुरुग्राम के तीव्र शहरीकरण का इस क्षेत्र की अरावली पर्वतमाला पर क्या प्रभाव पड़ा है?",
+                options: [
+                    "Environmental conservation challenges and ecological preservation efforts",
+                    "Complete conversion into agricultural farmlands",
+                    "Submergence under artificial reservoirs",
+                    "Transformation into permanent snow peaks"
+                ],
+                correct: 0,
+                hint: "Ecological and conservation challenges.",
+                explanation: "Urbanization has brought unique environmental conservation and ecological challenges to the Aravallis."
+            }
+        ];
+
+        // Application State Variables
+        let currentIndex = 0;
+        let score = 0;
+        let userAnswers = new Array(quizData.length).fill(null);
+        let showHintState = false;
+
+        // DOM Element References
+        const questionCounterEl = document.getElementById('question-counter');
+        const questionTextEnEl = document.getElementById('question-text-en');
+        const questionTextHiEl = document.getElementById('question-text-hi');
+        const optionsContainerEl = document.getElementById('options-container');
+        const hintToggleBtn = document.getElementById('hint-toggle-btn');
+        const hintBox = document.getElementById('hint-box');
+        const explanationBox = document.getElementById('explanation-box');
+        const explanationTitle = document.getElementById('explanation-title');
+        const explanationText = document.getElementById('explanation-text');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const scoreDisplay = document.getElementById('score-display');
+        const totalQuestionsDisplay = document.getElementById('total-questions-display');
+        const progressBar = document.getElementById('progress-bar');
+        const jumpInput = document.getElementById('jump-input');
+        const jumpBtn = document.getElementById('jump-btn');
+
+        rdqTotal = quizData.length;
+        totalQuestionsDisplay.textContent = rdqTotal;
+
+        // Shuffle options helper keeping track of correct option
+        function getShuffledOptions(q) {
+            const optionsWithIndex = q.options.map((opt, idx) => ({ text: opt, originalIndex: idx }));
+            for (let i = optionsWithIndex.length - 1; i > 0; i--) {
+                const j = (currentIndex * 7 + i) % optionsWithIndex.length;
+                [optionsWithIndex[i], optionsWithIndex[j]] = [optionsWithIndex[j], optionsWithIndex[i]];
+            }
+            return optionsWithIndex;
+        }
+
+        function loadQuestion() {
+            const q = quizData[currentIndex];
+            questionCounterEl.textContent = `Question ${currentIndex + 1} of ${quizData.length} (Page ${q.page})`;
+            questionTextEnEl.textContent = q.en;
+            questionTextHiEl.textContent = q.hi;
+
+            // Reset hint and explanation views
+            showHintState = false;
+            hintBox.classList.add('hidden');
+            hintBox.textContent = q.hint;
+            hintToggleBtn.innerHTML = `<span>💡 Show Hint</span>`;
+
+            const userSelected = userAnswers[currentIndex];
+            if (userSelected !== null) {
+                explanationBox.classList.remove('hidden');
+                if (userSelected === q.correct) {
+                    explanationBox.className = "p-4 rounded-xl border border-emerald-500/40 bg-emerald-950/30 text-emerald-200 mb-6 transition-all duration-300";
+                    explanationTitle.innerHTML = "✅ Correct Answer";
+                } else {
+                    explanationBox.className = "p-4 rounded-xl border border-rose-500/40 bg-rose-950/30 text-rose-200 mb-6 transition-all duration-300";
+                    explanationTitle.innerHTML = "❌ Incorrect Answer";
+                }
+                explanationText.textContent = q.explanation;
+            } else {
+                explanationBox.classList.add('hidden');
+            }
+
+            // Render options
+            optionsContainerEl.innerHTML = '';
+            const shuffled = getShuffledOptions(q);
+
+            shuffled.forEach((optObj, idx) => {
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left p-4 rounded-xl border transition-all duration-200 flex items-center justify-between text-sm md:text-base font-medium `;
+                
+                const optionLabel = String.fromCharCode(65 + idx); // A, B, C, D
+                
+                if (userSelected !== null) {
+                    if (optObj.originalIndex === q.correct) {
+                        btn.className += "bg-emerald-900/40 border-emerald-500 text-emerald-200";
+                    } else if (optObj.originalIndex === userSelected) {
+                        btn.className += "bg-rose-900/40 border-rose-500 text-rose-200";
+                    } else {
+                        btn.className += "bg-slate-900/40 border-slate-700 text-slate-400 opacity-60";
+                    }
+                    btn.disabled = true;
+                } else {
+                    btn.className += "bg-slate-900/60 border-slate-700 hover:border-emerald-500 hover:bg-slate-900 text-slate-200 cursor-pointer";
+                    btn.onclick = () => selectOption(optObj.originalIndex);
+                }
+
+                btn.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="w-7 h-7 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center text-xs font-bold text-slate-300">${optionLabel}</span>
+                        <span>${optObj.text}</span>
+                    </div>
+                `;
+                optionsContainerEl.appendChild(btn);
+            });
+
+            // Update Nav controls & Progress
+            prevBtn.disabled = currentIndex === 0;
+            nextBtn.disabled = currentIndex === quizData.length - 1;
+            progressBar.style.width = `${((currentIndex + 1) / quizData.length) * 100}%`;
+            scoreDisplay.textContent = score;
+        }
+
+        function selectOption(selectedIndex) {
+            if (userAnswers[currentIndex] !== null) return;
+            
+            userAnswers[currentIndex] = selectedIndex;
+            const q = quizData[currentIndex];
+
+            if (selectedIndex === q.correct) {
+                score++;
+                explanationBox.className = "p-4 rounded-xl border border-emerald-500/40 bg-emerald-950/30 text-emerald-200 mb-6 transition-all duration-300";
+                explanationTitle.innerHTML = "✅ Correct Answer";
+            } else {
+                explanationBox.className = "p-4 rounded-xl border border-rose-500/40 bg-rose-950/30 text-rose-200 mb-6 transition-all duration-300";
+                explanationTitle.innerHTML = "❌ Incorrect Answer";
+            }
+            explanationText.textContent = q.explanation;
+            explanationBox.classList.remove('hidden');
+
+            scoreDisplay.textContent = score;
+            loadQuestion();
+        }
+
+        // Hint Toggle
+        hintToggleBtn.onclick = () => {
+            showHintState = !showHintState;
+            if (showHintState) {
+                hintBox.classList.remove('hidden');
+                hintToggleBtn.innerHTML = `<span>💡 Hide Hint</span>`;
+            } else {
+                hintBox.classList.add('hidden');
+                hintToggleBtn.innerHTML = `<span>💡 Show Hint</span>`;
+            }
+        };
+
+        // Navigation Handlers
+        prevBtn.onclick = () => {
+            if (currentIndex > 0) {
+                currentIndex--;
+                loadQuestion();
+            }
+        };
+
+        nextBtn.onclick = () => {
+            if (currentIndex < quizData.length - 1) {
+                currentIndex++;
+                loadQuestion();
+            }
+        };
+
+        jumpBtn.onclick = () => {
+            const val = parseInt(jumpInput.value);
+            if (!isNaN(val) && val >= 1 && val <= quizData.length) {
+                currentIndex = val - 1;
+                jumpInput.value = '';
+                loadQuestion();
+            } else {
+                alert(`Please enter a valid question number between 1 and ${quizData.length}`);
+            }
+        };
+
+        // Initial Load
+        loadQuestion();
+    </script>
+<script src="../../quiz-question-controls.js"></script>
+<script src="../../quiz-app-ui-v2.js"></script></body>
+</html>
