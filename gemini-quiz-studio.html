@@ -1,0 +1,1924 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cosmic Gemini — AI Chat & Quiz Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0b0a16;
+      --bg-card: rgba(26, 21, 48, 0.7);
+      --border-color: rgba(168, 85, 247, 0.25);
+      --border-glow: rgba(192, 132, 252, 0.45);
+      --text-main: #f5f3ff;
+      --text-muted: #a79fc2;
+      --gemini-purple: #9333ea;
+      --gemini-pink: #ec4899;
+      --gemini-blue: #38bdf8;
+      --gemini-gold: #fbbf24;
+      --gemini-grad: linear-gradient(135deg, #a855f7 0%, #ec4899 50%, #38bdf8 100%);
+      --gemini-btn: linear-gradient(110deg, #7e22ce, #db2777);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      height: 100%;
+      background: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Inter', system-ui, sans-serif;
+      overflow-x: hidden;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      background:
+        radial-gradient(ellipse 60% 45% at 50% -10%, rgba(147, 51, 234, 0.28), transparent 70%),
+        radial-gradient(ellipse 50% 40% at 90% 100%, rgba(236, 72, 153, 0.18), transparent 70%),
+        radial-gradient(ellipse 50% 40% at 10% 90%, rgba(56, 189, 248, 0.16), transparent 70%),
+        #0b0a16;
+      background-attachment: fixed;
+    }
+
+    /* Top Navigation Bar */
+    .topbar {
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      border-bottom: 1px solid rgba(168, 85, 247, 0.18);
+      backdrop-filter: blur(16px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(11, 10, 22, 0.75);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #fff;
+    }
+    .brand-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--gemini-grad);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      box-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+    }
+    .brand-title {
+      font-weight: 800;
+      font-size: 1.15rem;
+      letter-spacing: -0.02em;
+      background: linear-gradient(110deg, #ffffff 40%, #e9d5ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .brand-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      padding: 3px 8px;
+      background: rgba(168, 85, 247, 0.2);
+      border: 1px solid rgba(168, 85, 247, 0.4);
+      border-radius: 999px;
+      color: #d8b4fe;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 16px;
+      border-radius: 10px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      text-decoration: none;
+      color: #e2d9f3;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .nav-btn:hover {
+      background: rgba(168, 85, 247, 0.2);
+      border-color: rgba(168, 85, 247, 0.45);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+    .nav-btn.primary {
+      background: var(--gemini-btn);
+      border: none;
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(168, 85, 247, 0.35);
+    }
+    .nav-btn.primary:hover {
+      box-shadow: 0 6px 22px rgba(168, 85, 247, 0.5);
+    }
+
+    /* Main Container */
+    .app-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      width: min(1060px, 100% - 32px);
+      margin: 0 auto;
+      padding: 24px 0 120px;
+      position: relative;
+    }
+
+    /* Gemini Hero State (Initial Greeting) */
+    .gemini-hero {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      min-height: 60vh;
+      animation: fadeIn 0.4s ease-out;
+    }
+    .gemini-hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 6vw, 4.2rem);
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 28px;
+      background: linear-gradient(180deg, #ffffff 40%, #c4b5fd 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.02em;
+    }
+
+    /* Gemini Prompt Input Box */
+    .input-dock {
+      width: min(840px, 100%);
+      margin: 0 auto;
+      background: rgba(22, 17, 44, 0.85);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(168, 85, 247, 0.35);
+      border-radius: 28px;
+      padding: 14px 18px 12px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4), 0 0 35px rgba(147, 51, 234, 0.18);
+      transition: border-color 0.25s, box-shadow 0.25s;
+    }
+    .input-dock:focus-within {
+      border-color: rgba(192, 132, 252, 0.7);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 45px rgba(168, 85, 247, 0.35);
+    }
+    .input-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .btn-attach {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255, 255, 255, 0.08);
+      color: #d8b4fe;
+      font-size: 22px;
+      font-weight: 300;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: 0.2s;
+      flex-shrink: 0;
+    }
+    .btn-attach:hover {
+      background: rgba(168, 85, 247, 0.3);
+      color: #fff;
+    }
+    .prompt-textarea {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-family: inherit;
+      font-size: 1.05rem;
+      line-height: 1.5;
+      resize: none;
+      max-height: 160px;
+      min-height: 28px;
+      outline: none;
+      padding: 4px 0;
+    }
+    .prompt-textarea::placeholder {
+      color: #7e749c;
+    }
+    .input-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .model-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(168, 85, 247, 0.15);
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      color: #e9d5ff;
+      font-size: 0.75rem;
+      font-family: 'DM Mono', monospace;
+      cursor: pointer;
+      outline: none;
+    }
+    .model-pill select {
+      background: transparent;
+      border: none;
+      color: #e9d5ff;
+      font-family: inherit;
+      font-size: inherit;
+      cursor: pointer;
+      outline: none;
+    }
+    .model-pill select option {
+      background: #1a1333;
+      color: #fff;
+    }
+    .btn-mic {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: transparent;
+      border: none;
+      color: #a79fc2;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .btn-mic:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.08);
+    }
+    .btn-mic.listening {
+      color: #f43f5e;
+      animation: pulse 1.2s infinite;
+    }
+    .btn-send {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: none;
+      background: var(--gemini-btn);
+      color: #fff;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(168, 85, 247, 0.4);
+      transition: 0.2s;
+    }
+    .btn-send:hover:not(:disabled) {
+      transform: scale(1.06);
+      box-shadow: 0 6px 20px rgba(168, 85, 247, 0.6);
+    }
+    .btn-send:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    /* Attachment Preview Badge */
+    .attachment-preview {
+      display: none;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+      padding: 6px 12px;
+      background: rgba(168, 85, 247, 0.15);
+      border: 1px solid rgba(168, 85, 247, 0.35);
+      border-radius: 8px;
+      font-size: 0.78rem;
+      color: #fbbf24;
+      width: fit-content;
+    }
+    .attachment-preview.active { display: flex; }
+    .attachment-preview button {
+      background: transparent;
+      border: none;
+      color: #f87171;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    /* Gemini Suggestion Chips (Under hero) */
+    .chips-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 32px;
+      width: min(720px, 100%);
+    }
+    .chip {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 13px 20px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      color: #d1c8e6;
+      font-size: 0.92rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.2s ease;
+    }
+    .chip:hover {
+      background: rgba(168, 85, 247, 0.16);
+      border-color: rgba(168, 85, 247, 0.4);
+      color: #fff;
+      transform: translateX(4px);
+    }
+    .chip-arrow {
+      color: #c084fc;
+      font-size: 1.1rem;
+      font-family: 'DM Mono', monospace;
+    }
+
+    /* Floating Fixed Dock when Chat is active */
+    .floating-dock-wrap {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(840px, calc(100% - 32px));
+      z-index: 90;
+      display: none;
+    }
+    .floating-dock-wrap.active {
+      display: block;
+      animation: slideUp 0.3s ease-out;
+    }
+
+    /* Chat Messages Stream */
+    .chat-stream {
+      display: none;
+      flex-direction: column;
+      gap: 24px;
+      padding: 16px 0 100px;
+    }
+    .chat-stream.active { display: flex; }
+
+    .msg-row {
+      display: flex;
+      gap: 16px;
+      width: 100%;
+      animation: fadeIn 0.3s ease;
+    }
+    .msg-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+    .msg-row.user {
+      justify-content: flex-end;
+    }
+    .msg-row.user .msg-avatar {
+      order: 2;
+      background: linear-gradient(135deg, #7c3aed, #a855f7);
+      color: #fff;
+    }
+    .msg-row.user .msg-bubble {
+      order: 1;
+      background: linear-gradient(135deg, rgba(126, 34, 206, 0.6), rgba(168, 85, 247, 0.45));
+      border: 1px solid rgba(192, 132, 252, 0.3);
+      color: #fff;
+      border-radius: 20px 6px 20px 20px;
+    }
+    .msg-row.assistant .msg-avatar {
+      background: var(--gemini-grad);
+      color: #fff;
+    }
+    .msg-row.assistant .msg-bubble {
+      background: rgba(26, 20, 50, 0.7);
+      border: 1px solid rgba(168, 85, 247, 0.25);
+      color: #f1edfa;
+      border-radius: 6px 20px 20px 20px;
+    }
+    .msg-bubble {
+      max-width: min(780px, 85%);
+      padding: 18px 22px;
+      font-size: 0.98rem;
+      line-height: 1.65;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    }
+    .msg-bubble p { margin-bottom: 12px; }
+    .msg-bubble p:last-child { margin-bottom: 0; }
+    .msg-bubble ul, .msg-bubble ol { margin: 10px 0 12px 22px; }
+    .msg-bubble li { margin-bottom: 6px; }
+    .msg-bubble code {
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.88em;
+      color: #f472b6;
+    }
+    .msg-bubble pre {
+      background: #090714;
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      padding: 14px;
+      border-radius: 12px;
+      overflow-x: auto;
+      margin: 12px 0;
+    }
+
+    /* Embedded Quiz Card inside Chat */
+    .quiz-card-box {
+      margin-top: 18px;
+      background: linear-gradient(145deg, rgba(35, 24, 66, 0.95), rgba(20, 14, 40, 0.95));
+      border: 2px solid rgba(192, 132, 252, 0.45);
+      border-radius: 20px;
+      padding: 22px 24px;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4), 0 0 28px rgba(168, 85, 247, 0.2);
+    }
+    .quiz-card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .quiz-card-head h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.45rem;
+      color: #ffffff;
+      margin-bottom: 4px;
+    }
+    .quiz-card-badges {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .quiz-badge {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(168, 85, 247, 0.25);
+      border: 1px solid rgba(168, 85, 247, 0.45);
+      color: #e9d5ff;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .quiz-badge.count {
+      background: rgba(251, 191, 36, 0.2);
+      border-color: rgba(251, 191, 36, 0.45);
+      color: #fde047;
+    }
+    .quiz-card-desc {
+      color: #c4b5fd;
+      font-size: 0.9rem;
+      line-height: 1.55;
+      margin-bottom: 20px;
+    }
+    .quiz-card-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .quiz-action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s;
+      border: none;
+    }
+    .quiz-action-btn.play {
+      background: linear-gradient(110deg, #10b981, #059669);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(16, 185, 129, 0.35);
+    }
+    .quiz-action-btn.play:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 22px rgba(16, 185, 129, 0.5);
+    }
+    .quiz-action-btn.save {
+      background: var(--gemini-btn);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(168, 85, 247, 0.35);
+    }
+    .quiz-action-btn.save:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 22px rgba(168, 85, 247, 0.5);
+    }
+    .quiz-action-btn.outline {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #e2d9f3;
+    }
+    .quiz-action-btn.outline:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+    }
+
+    /* Interactive Quiz Runner Modal */
+    .runner-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 500;
+      background: rgba(7, 5, 15, 0.88);
+      backdrop-filter: blur(12px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .runner-modal.active { display: flex; }
+    .runner-box {
+      width: min(860px, 100%);
+      max-height: 90vh;
+      background: linear-gradient(155deg, #181133 0%, #0d081f 100%);
+      border: 2px solid rgba(168, 85, 247, 0.4);
+      border-radius: 26px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.7), 0 0 50px rgba(147, 51, 234, 0.3);
+      animation: scaleUp 0.25s ease-out;
+    }
+    .runner-head {
+      padding: 18px 24px;
+      border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .runner-head h2 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .runner-stats {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.82rem;
+      color: #c4b5fd;
+    }
+    .runner-close {
+      background: transparent;
+      border: none;
+      color: #a79fc2;
+      font-size: 24px;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .runner-close:hover { color: #fff; }
+    .runner-progress-bar {
+      height: 5px;
+      background: rgba(255, 255, 255, 0.08);
+      width: 100%;
+    }
+    .runner-progress-fill {
+      height: 100%;
+      background: var(--gemini-grad);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+    .runner-body {
+      padding: 28px 32px;
+      overflow-y: auto;
+      flex: 1;
+    }
+    .q-number {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.8rem;
+      color: #c084fc;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+    }
+    .q-text {
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: #ffffff;
+      line-height: 1.45;
+      margin-bottom: 24px;
+    }
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .option-btn {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 20px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1.5px solid rgba(168, 85, 247, 0.2);
+      border-radius: 14px;
+      color: #e2d9f3;
+      font-size: 1rem;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .option-btn:hover:not(:disabled) {
+      background: rgba(168, 85, 247, 0.15);
+      border-color: rgba(192, 132, 252, 0.6);
+      color: #fff;
+      transform: translateX(4px);
+    }
+    .option-btn.selected-correct {
+      background: rgba(16, 185, 129, 0.2) !important;
+      border-color: #10b981 !important;
+      color: #6ee7b7 !important;
+    }
+    .option-btn.selected-wrong {
+      background: rgba(239, 68, 68, 0.2) !important;
+      border-color: #ef4444 !important;
+      color: #fca5a5 !important;
+    }
+    .option-btn.reveal-correct {
+      background: rgba(16, 185, 129, 0.12) !important;
+      border-color: #10b981 !important;
+      color: #6ee7b7 !important;
+    }
+    .opt-letter {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .explanation-box {
+      display: none;
+      padding: 18px 20px;
+      background: rgba(30, 20, 56, 0.7);
+      border: 1px solid rgba(168, 85, 247, 0.35);
+      border-radius: 14px;
+      margin-bottom: 24px;
+      animation: fadeIn 0.3s ease;
+    }
+    .explanation-box.active { display: block; }
+    .explanation-title {
+      font-size: 0.85rem;
+      font-family: 'DM Mono', monospace;
+      color: #fbbf24;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .explanation-content {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #e9d5ff;
+    }
+    .runner-foot {
+      padding: 18px 28px;
+      border-top: 1px solid rgba(168, 85, 247, 0.2);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    /* Scorecard View */
+    .scorecard-view {
+      text-align: center;
+      padding: 30px 10px;
+    }
+    .score-circle {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #2e1065 0%, #1e1b4b 100%);
+      border: 4px solid #a855f7;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 0 35px rgba(168, 85, 247, 0.5);
+    }
+    .score-circle .score-num {
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: #fff;
+    }
+    .score-circle .score-total {
+      font-size: 0.82rem;
+      color: #c4b5fd;
+      font-family: 'DM Mono', monospace;
+    }
+
+    /* Modal dialogs (Settings, Saved Quizzes) */
+    .app-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 600;
+      background: rgba(7, 5, 15, 0.85);
+      backdrop-filter: blur(10px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .app-modal.active { display: flex; }
+    .app-modal-card {
+      width: min(650px, 100%);
+      max-height: 85vh;
+      background: #15102a;
+      border: 1.5px solid rgba(168, 85, 247, 0.35);
+      border-radius: 22px;
+      padding: 28px;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+      animation: scaleUp 0.2s ease-out;
+    }
+    .app-modal-card h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.75rem;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+    .app-modal-card p {
+      color: #a79fc2;
+      font-size: 0.9rem;
+      line-height: 1.55;
+      margin-bottom: 20px;
+    }
+    .input-field {
+      width: 100%;
+      padding: 12px 14px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      border-radius: 10px;
+      color: #fff;
+      font-family: inherit;
+      font-size: 0.95rem;
+      outline: none;
+      margin-bottom: 14px;
+    }
+    .input-field:focus {
+      border-color: #c084fc;
+      box-shadow: 0 0 14px rgba(192, 132, 252, 0.25);
+    }
+    .key-hint {
+      font-size: 0.82rem;
+      color: #c4b5fd;
+      background: rgba(168, 85, 247, 0.12);
+      border: 1px solid rgba(168, 85, 247, 0.25);
+      padding: 10px 14px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .key-hint a {
+      color: #38bdf8;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .key-hint a:hover { text-decoration: underline; }
+
+    /* Saved Quizzes Drawer */
+    .saved-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .saved-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 18px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(168, 85, 247, 0.2);
+      border-radius: 12px;
+      transition: 0.2s;
+    }
+    .saved-item:hover {
+      background: rgba(168, 85, 247, 0.1);
+      border-color: rgba(168, 85, 247, 0.4);
+    }
+    .saved-info h4 {
+      font-size: 1.05rem;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .saved-info small {
+      font-size: 0.78rem;
+      color: #a79fc2;
+      font-family: 'DM Mono', monospace;
+    }
+    .saved-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    /* Animations */
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes slideUp { from { opacity: 0; transform: translate(-50%, 20px); } to { opacity: 1; transform: translate(-50%, 0); } }
+    @keyframes scaleUp { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+    @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.6; transform: scale(1.15); } }
+
+    @media (max-width: 680px) {
+      .topbar { padding: 0 16px; }
+      .brand-title { font-size: 1rem; }
+      .gemini-hero h1 { font-size: 2.2rem; }
+      .msg-bubble { max-width: 92%; }
+      .input-dock { border-radius: 20px; padding: 10px 14px; }
+      .floating-dock-wrap { bottom: 12px; width: calc(100% - 20px); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navbar -->
+  <header class="topbar">
+    <a class="brand" href="cosmic-quiz-master.html">
+      <div class="brand-icon">✦</div>
+      <div>
+        <div class="brand-title">Cosmic Gemini</div>
+      </div>
+      <span class="brand-tag">Quiz Studio</span>
+    </a>
+    <div class="nav-actions">
+      <button class="nav-btn" onclick="openSavedQuizzesModal()">📚 My Quizzes (<span id="saved-quiz-count">0</span>)</button>
+      <button class="nav-btn" onclick="openSettingsModal()">⚙️ API Key</button>
+      <a class="nav-btn primary" href="cosmic-quiz-master.html" title="Open Cosmic Quiz Universe Hub">🌌 Universe Hub</a>
+    </div>
+  </header>
+
+  <!-- Main View -->
+  <main class="app-main">
+    
+    <!-- Hero / Welcome State (Shown initially) -->
+    <section id="hero-view" class="gemini-hero">
+      <h1>Where should we start?</h1>
+
+      <!-- The Centered Gemini Prompt Capsule -->
+      <div class="input-dock" id="hero-input-dock">
+        <div class="input-row">
+          <button class="btn-attach" type="button" title="Attach PDF, Image, or Notes" onclick="document.getElementById('file-input').click()">＋</button>
+          <input type="file" id="file-input" style="display: none;" accept=".pdf,image/*,.txt,.md" onchange="handleFileUpload(event)">
+          <textarea id="prompt-input" class="prompt-textarea" placeholder="Ask Gemini anything or type: 'Make a 5-question quiz on...'" rows="1" onkeydown="handleInputKey(event)" oninput="autoExpand(this)"></textarea>
+          
+          <div class="input-controls">
+            <div class="model-pill">
+              <span>✦</span>
+              <select id="model-select" onchange="handleModelChange(this)">
+                <option value="gemini-2.0-flash">Gemini 2.0 Flash</option>
+                <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
+                <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
+                <option value="demo-mode">Smart Demo (No Key)</option>
+              </select>
+            </div>
+            <button class="btn-mic" type="button" title="Voice Input" onclick="toggleVoiceInput(this)">🎙️</button>
+            <button class="btn-send" id="send-btn" type="button" title="Send Prompt" onclick="sendPrompt()">➔</button>
+          </div>
+        </div>
+
+        <div id="file-preview-badge" class="attachment-preview">
+          <span>📎</span>
+          <span id="file-preview-name">file.pdf</span>
+          <button type="button" onclick="clearAttachment()">✕</button>
+        </div>
+      </div>
+
+      <!-- Suggestion Chips matching the user's screenshot -->
+      <div class="chips-grid">
+        <div class="chip" onclick="quickPrompt('Create a 10-question high-yield practice quiz on Current Affairs 2024-2026 with detailed explanations.')">
+          <span class="chip-arrow">↳</span>
+          <span>⚡ Create a 10-question Current Affairs practice quiz</span>
+        </div>
+        <div class="chip" onclick="quickPrompt('Generate a 5-question Indian History PYQ test on Ancient India & Indus Valley with explanations.')">
+          <span class="chip-arrow">↳</span>
+          <span>🏛️ Make Indian History PYQ test with explanations</span>
+        </div>
+        <div class="chip" onclick="quickPrompt('Create a 5-question interactive quiz on Computer Hardware, RAM/ROM and Operating Systems.')">
+          <span class="chip-arrow">↳</span>
+          <span>💻 Build a Computer Hardware & Networking quiz</span>
+        </div>
+        <div class="chip" onclick="quickPrompt('Test my English Vocabulary with 5 challenging Blackbook words with Hindi meanings and Synonyms.')">
+          <span class="chip-arrow">↳</span>
+          <span>📖 Test English Vocabulary with Synonyms & Hindi meaning</span>
+        </div>
+        <div class="chip" onclick="quickPrompt('Explain the difference between GDP and GNP in very simple words with real life examples.')">
+          <span class="chip-arrow">↳</span>
+          <span>💡 Clear doubt / Explain any topic in simple words</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Chat Stream (Shown once a conversation starts) -->
+    <section id="chat-stream" class="chat-stream"></section>
+
+  </main>
+
+  <!-- Floating Dock for active conversation -->
+  <div class="floating-dock-wrap" id="floating-dock">
+    <div class="input-dock">
+      <div class="input-row">
+        <button class="btn-attach" type="button" title="Attach PDF, Image, or Notes" onclick="document.getElementById('file-input-float').click()">＋</button>
+        <input type="file" id="file-input-float" style="display: none;" accept=".pdf,image/*,.txt,.md" onchange="handleFileUpload(event)">
+        <textarea id="prompt-input-float" class="prompt-textarea" placeholder="Ask Gemini anything or type: 'Make a quiz on...'" rows="1" onkeydown="handleInputKey(event)" oninput="autoExpand(this)"></textarea>
+        
+        <div class="input-controls">
+          <div class="model-pill">
+            <span>✦</span>
+            <select id="model-select-float" onchange="handleModelChange(this)">
+              <option value="gemini-2.0-flash">Gemini 2.0 Flash</option>
+              <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
+              <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
+              <option value="demo-mode">Smart Demo (No Key)</option>
+            </select>
+          </div>
+          <button class="btn-mic" type="button" title="Voice Input" onclick="toggleVoiceInput(this)">🎙️</button>
+          <button class="btn-send" id="send-btn-float" type="button" title="Send Prompt" onclick="sendPrompt()">➔</button>
+        </div>
+      </div>
+
+      <div id="file-preview-badge-float" class="attachment-preview">
+        <span>📎</span>
+        <span id="file-preview-name-float">file.pdf</span>
+        <button type="button" onclick="clearAttachment()">✕</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Quiz Runner Modal -->
+  <div id="runner-modal" class="runner-modal">
+    <div class="runner-box">
+      <div class="runner-head">
+        <div>
+          <h2 id="runner-quiz-title">Quiz Title</h2>
+        </div>
+        <div class="runner-stats">
+          <span id="runner-timer">⏱️ 00:00</span>
+          <span id="runner-counter">Question 1 / 5</span>
+          <button class="runner-close" onclick="closeQuizRunner()">✕</button>
+        </div>
+      </div>
+
+      <div class="runner-progress-bar">
+        <div id="runner-progress-fill" class="runner-progress-fill"></div>
+      </div>
+
+      <!-- Question View -->
+      <div id="runner-question-view" class="runner-body">
+        <div class="q-number" id="q-category-tag">General Awareness</div>
+        <div class="q-text" id="q-text">Loading question statement...</div>
+        
+        <div class="options-list" id="q-options-container">
+          <!-- Option buttons injected dynamically -->
+        </div>
+
+        <div id="q-explanation-box" class="explanation-box">
+          <div class="explanation-title">💡 Explanation & Key takeaway</div>
+          <div class="explanation-content" id="q-explanation-text"></div>
+        </div>
+      </div>
+
+      <!-- Scorecard View (Shown at the end) -->
+      <div id="runner-scorecard-view" class="runner-body scorecard-view" style="display: none;">
+        <div class="score-circle">
+          <div class="score-num" id="score-val">5</div>
+          <div class="score-total" id="score-denom">out of 5</div>
+        </div>
+        <h2 style="font-size: 1.8rem; font-family:'Playfair Display', serif; margin-bottom: 8px;">Quiz Completed!</h2>
+        <p id="score-feedback" style="color: #c4b5fd; font-size: 1rem; margin-bottom: 24px;">Outstanding mastery!</p>
+
+        <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 24px;">
+          <button class="quiz-action-btn play" onclick="restartCurrentQuiz()">🔄 Play Again</button>
+          <button class="quiz-action-btn save" onclick="saveCurrentRunnerQuiz()">💾 Save to My Quizzes</button>
+          <button class="quiz-action-btn outline" onclick="closeQuizRunner()">✕ Finish</button>
+        </div>
+      </div>
+
+      <div class="runner-foot" id="runner-footer">
+        <button class="nav-btn" id="prev-btn" onclick="prevQuestion()" disabled>← Previous</button>
+        <button class="nav-btn primary" id="next-btn" onclick="nextQuestion()">Next Question →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- API Key & Settings Modal -->
+  <div id="settings-modal" class="app-modal">
+    <div class="app-modal-card">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+        <h2>Google Gemini API Settings</h2>
+        <button class="runner-close" onclick="closeSettingsModal()">✕</button>
+      </div>
+      <p>Connect your personal Google Gemini API key to unlock unlimited high-speed chatting, multimodal reasoning, and instant quiz generation.</p>
+
+      <div class="key-hint">
+        <span>🔑 Don't have an API key? Get one for free in 30 seconds!</span>
+        <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">Get Free Key ↗</a>
+      </div>
+
+      <label style="display: block; font-size: 0.85rem; color: #c4b5fd; margin-bottom: 6px; font-weight: 600;">Google Gemini API Key</label>
+      <input type="password" id="gemini-api-key-input" class="input-field" placeholder="Paste AI Studio API Key (AIzaSy...)">
+
+      <label style="display: block; font-size: 0.85rem; color: #c4b5fd; margin-bottom: 6px; font-weight: 600;">Preferred Model</label>
+      <select id="settings-model-select" class="input-field" style="cursor: pointer;">
+        <option value="gemini-2.0-flash">Gemini 2.0 Flash (Recommended - Fastest & Smartest)</option>
+        <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
+        <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
+      </select>
+
+      <div id="key-test-status" style="margin-bottom: 16px; font-size: 0.85rem; min-height: 20px;"></div>
+
+      <div style="display: flex; gap: 10px; justify-content: flex-end;">
+        <button class="nav-btn" onclick="testGeminiConnection()">🧪 Test Key</button>
+        <button class="nav-btn primary" onclick="saveSettings()">Save & Connect</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Saved Quizzes Drawer / Modal -->
+  <div id="saved-modal" class="app-modal">
+    <div class="app-modal-card">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+        <h2>📚 My Created Quizzes</h2>
+        <button class="runner-close" onclick="closeSavedQuizzesModal()">✕</button>
+      </div>
+      <p>All quizzes generated in Cosmic Gemini are stored here. You can play, review, or re-test yourself anytime.</p>
+
+      <div id="saved-quizzes-list" class="saved-list">
+        <!-- Injected dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* Cosmic Gemini - AI Chat & Quiz Studio Engine */
+    const STORAGE_SETTINGS = 'cosmic_quiz_api_settings';
+    const STORAGE_SAVED_QUIZZES = 'gemini_saved_quizzes_v1';
+    const STORAGE_CHAT = 'gemini_chat_history_v1';
+
+    let currentSettings = {
+      geminiKey: '',
+      geminiModel: 'gemini-2.0-flash'
+    };
+
+    let chatMessages = [];
+    let currentAttachment = null;
+    let activeRunnerQuiz = null;
+    let activeQuestionIdx = 0;
+    let userAnswers = [];
+    let quizTimerInterval = null;
+    let quizSeconds = 0;
+
+    // Load Initial State
+    function initApp() {
+      try {
+        const savedS = localStorage.getItem(STORAGE_SETTINGS);
+        if (savedS) currentSettings = Object.assign(currentSettings, JSON.parse(savedS));
+      } catch (e) {}
+
+      document.getElementById('model-select').value = currentSettings.geminiModel || 'gemini-2.0-flash';
+      document.getElementById('model-select-float').value = currentSettings.geminiModel || 'gemini-2.0-flash';
+      document.getElementById('settings-model-select').value = currentSettings.geminiModel || 'gemini-2.0-flash';
+      if (currentSettings.geminiKey) {
+        document.getElementById('gemini-api-key-input').value = currentSettings.geminiKey;
+      }
+
+      updateSavedCount();
+    }
+
+    function autoExpand(textarea) {
+      textarea.style.height = 'auto';
+      textarea.style.height = Math.min(textarea.scrollHeight, 160) + 'px';
+    }
+
+    function handleInputKey(event) {
+      if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
+        sendPrompt();
+      }
+    }
+
+    function handleModelChange(el) {
+      currentSettings.geminiModel = el.value;
+      document.getElementById('model-select').value = el.value;
+      document.getElementById('model-select-float').value = el.value;
+      document.getElementById('settings-model-select').value = el.value;
+      localStorage.setItem(STORAGE_SETTINGS, JSON.stringify(currentSettings));
+    }
+
+    function quickPrompt(text) {
+      document.getElementById('prompt-input').value = text;
+      sendPrompt();
+    }
+
+    // Attachment Handling
+    function handleFileUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const base64 = String(e.target.result).split(',')[1];
+        currentAttachment = {
+          name: file.name,
+          type: file.type || 'application/octet-stream',
+          base64: base64,
+          dataUrl: e.target.result,
+          isText: file.type.startsWith('text/')
+        };
+
+        // Show Badges
+        document.getElementById('file-preview-name').textContent = file.name;
+        document.getElementById('file-preview-badge').classList.add('active');
+        document.getElementById('file-preview-name-float').textContent = file.name;
+        document.getElementById('file-preview-badge-float').classList.add('active');
+      };
+
+      if (file.type.startsWith('text/')) {
+        reader.readAsText(file);
+      } else {
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function clearAttachment() {
+      currentAttachment = null;
+      document.getElementById('file-input').value = '';
+      document.getElementById('file-input-float').value = '';
+      document.getElementById('file-preview-badge').classList.remove('active');
+      document.getElementById('file-preview-badge-float').classList.remove('active');
+    }
+
+    // Speech-to-text
+    let speechRecognition = null;
+    function toggleVoiceInput(btn) {
+      const Speech = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!Speech) {
+        alert('Voice input is not supported in this browser. Please use Chrome, Edge, or Safari.');
+        return;
+      }
+      if (!speechRecognition) {
+        speechRecognition = new Speech();
+        speechRecognition.continuous = false;
+        speechRecognition.interimResults = false;
+        speechRecognition.lang = 'en-US';
+
+        speechRecognition.onstart = () => btn.classList.add('listening');
+        speechRecognition.onend = () => btn.classList.remove('listening');
+        speechRecognition.onerror = () => btn.classList.remove('listening');
+        speechRecognition.onresult = (e) => {
+          const transcript = e.results[0][0].transcript;
+          const input = document.getElementById('chat-stream').classList.contains('active')
+            ? document.getElementById('prompt-input-float')
+            : document.getElementById('prompt-input');
+          input.value = (input.value ? input.value + ' ' : '') + transcript;
+          autoExpand(input);
+        };
+      }
+      try {
+        speechRecognition.start();
+      } catch (err) {
+        speechRecognition.stop();
+      }
+    }
+
+    // Main Prompt & Send Function
+    async function sendPrompt() {
+      const isChatActive = document.getElementById('chat-stream').classList.contains('active');
+      const inputEl = isChatActive ? document.getElementById('prompt-input-float') : document.getElementById('prompt-input');
+      const promptText = inputEl.value.trim();
+
+      if (!promptText && !currentAttachment) return;
+
+      // Switch view from hero to chat stream if not active
+      if (!isChatActive) {
+        document.getElementById('hero-view').style.display = 'none';
+        document.getElementById('chat-stream').classList.add('active');
+        document.getElementById('floating-dock').classList.add('active');
+      }
+
+      // Add user message
+      const userMsg = {
+        role: 'user',
+        text: promptText,
+        attachment: currentAttachment ? { name: currentAttachment.name, type: currentAttachment.type } : null
+      };
+      chatMessages.push(userMsg);
+      renderMessage(userMsg);
+
+      inputEl.value = '';
+      inputEl.style.height = 'auto';
+
+      const fileToProcess = currentAttachment;
+      clearAttachment();
+
+      // Show Assistant Loading Message
+      const loadingId = 'loading-' + Date.now();
+      const loadingRow = document.createElement('div');
+      loadingRow.className = 'msg-row assistant';
+      loadingRow.id = loadingId;
+      loadingRow.innerHTML = `
+        <div class="msg-avatar">✦</div>
+        <div class="msg-bubble" style="display:flex; align-items:center; gap:10px; color:#c4b5fd;">
+          <span style="animation: pulse 1s infinite;">✨ Thinking & Generating...</span>
+        </div>
+      `;
+      document.getElementById('chat-stream').appendChild(loadingRow);
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+
+      try {
+        let aiResponse = '';
+        const model = currentSettings.geminiModel;
+
+        if (model === 'demo-mode' || !currentSettings.geminiKey) {
+          // Use smart simulation generator
+          aiResponse = await generateSmartSimulation(promptText, fileToProcess);
+        } else {
+          // Call live Google Gemini API
+          aiResponse = await callGeminiAPI(currentSettings.geminiKey, model, promptText, fileToProcess);
+        }
+
+        // Remove loading row
+        document.getElementById(loadingId)?.remove();
+
+        // Process response for any quizzes
+        const quizData = extractQuizFromResponse(aiResponse);
+        const assistantMsg = {
+          role: 'assistant',
+          text: aiResponse,
+          quiz: quizData
+        };
+        chatMessages.push(assistantMsg);
+        renderMessage(assistantMsg);
+
+      } catch (err) {
+        document.getElementById(loadingId)?.remove();
+        const errorMsg = {
+          role: 'assistant',
+          text: `⚠️ **Connection Note**: ${err.message}\n\n*Tip*: If you have a Gemini API key from Google AI Studio, click **⚙️ API Key** above to connect. Or choose **Smart Demo (No Key)** from the model pill to test without an API key!`
+        };
+        chatMessages.push(errorMsg);
+        renderMessage(errorMsg);
+      }
+
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+
+    // Call Official Google Gemini API
+    async function callGeminiAPI(apiKey, model, text, attachment) {
+      const cleanKey = apiKey.trim().replace(/^["']|["']$/g, '');
+      const candidateModels = [
+        model || 'gemini-2.0-flash',
+        'gemini-2.0-flash',
+        'gemini-1.5-flash',
+        'gemini-1.5-pro'
+      ].filter((v, i, a) => a.indexOf(v) === i && !v.includes('3.6') && !v.includes('3.5'));
+
+      const systemInstruction = `You are Cosmic Gemini, an advanced AI study assistant & interactive quiz generator.
+When asked general study or syllabus questions, explain clearly with bullet points and examples.
+WHEN ASKED TO CREATE A QUIZ (or practice test, MCQs, or questions), ALWAYS generate high-quality MCQs and ALWAYS append a structured JSON block at the very end of your reply inside \`\`\`json ... \`\`\` code fence with this exact format:
+\`\`\`json
+{
+  "title": "Topic Quiz Title",
+  "category": "Subject Category",
+  "difficulty": "Easy|Medium|Hard",
+  "questions": [
+    {
+      "question": "Clear question text?",
+      "options": ["Option A", "Option B", "Option C", "Option D"],
+      "answer": 0,
+      "explanation": "Detailed explanation of why this answer is correct."
+    }
+  ]
+}
+\`\`\`
+The JSON must be valid. "answer" is the 0-based index (0 for A, 1 for B, 2 for C, 3 for D).`;
+
+      const contents = [];
+
+      // Add recent context (last 6 messages)
+      chatMessages.slice(-6).forEach(m => {
+        const cleanM = (m.text || '').trim();
+        if (!cleanM) return;
+        if (m.role === 'user') {
+          contents.push({ role: 'user', parts: [{ text: cleanM }] });
+        } else if (m.role === 'assistant' && !cleanM.startsWith('⚠️') && !cleanM.startsWith('Error:')) {
+          contents.push({ role: 'model', parts: [{ text: cleanM }] });
+        }
+      });
+
+      // Prepare user parts
+      const userParts = [];
+      if (attachment && attachment.base64 && !attachment.isText) {
+        userParts.push({
+          inlineData: {
+            mimeType: attachment.type,
+            data: attachment.base64
+          }
+        });
+      }
+      userParts.push({ text: text || `Please analyze this attached file: ${attachment?.name}` });
+
+      if (contents.length > 0 && contents[contents.length - 1].role === 'user') {
+        contents[contents.length - 1].parts = userParts;
+      } else {
+        contents.push({ role: 'user', parts: userParts });
+      }
+
+      let lastError = null;
+      for (const mName of candidateModels) {
+        try {
+          const url = `https://generativelanguage.googleapis.com/v1beta/models/${mName}:generateContent?key=${encodeURIComponent(cleanKey)}`;
+          const body = {
+            systemInstruction: { parts: [{ text: systemInstruction }] },
+            contents: contents,
+            generationConfig: {
+              temperature: 0.7,
+              maxOutputTokens: 2048
+            }
+          };
+
+          const resp = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+          });
+
+          const data = await resp.json();
+          if (!resp.ok) {
+            throw new Error(data.error?.message || `Gemini API returned error ${resp.status}`);
+          }
+
+          currentSettings.geminiModel = mName;
+          localStorage.setItem(STORAGE_SETTINGS, JSON.stringify(currentSettings));
+          const candidate = data.candidates?.[0];
+          return candidate?.content?.parts?.map(p => p.text || '').join('') || 'No response generated.';
+        } catch (err) {
+          lastError = err;
+          console.warn(`Model ${mName} failed in studio, trying next:`, err.message);
+        }
+      }
+
+      throw lastError || new Error('Could not connect to Gemini API. Please check your API key.');
+    }
+
+    // Smart Demo Simulation Mode (Works instantly without requiring any API key)
+    async function generateSmartSimulation(promptText, attachment) {
+      await new Promise(r => setTimeout(r, 900));
+      const p = (promptText || '').toLowerCase();
+
+      if (p.includes('current affair') || p.includes('ca')) {
+        return `Here is your high-yield **Current Affairs Practice Quiz** prepared for you!
+
+Current affairs are crucial for competitive exams. I have curated questions covering international developments, national initiatives, and science milestones.
+
+\`\`\`json
+{
+  "title": "Current Affairs High-Yield Challenge",
+  "category": "Current Affairs",
+  "difficulty": "Medium",
+  "questions": [
+    {
+      "question": "Which country recently achieved a historic soft-landing near the Lunar South Pole with Chandrayaan-3?",
+      "options": ["Russia", "India", "United States", "Japan"],
+      "answer": 1,
+      "explanation": "India became the first nation to soft-land near the Moon's South Pole on August 23, 2023, now celebrated as National Space Day."
+    },
+    {
+      "question": "The G20 Summit in 2023 under India's presidency saw the permanent inclusion of which major organization?",
+      "options": ["African Union", "ASEAN", "OPEC", "SAARC"],
+      "answer": 0,
+      "explanation": "The African Union (AU) was admitted as a permanent member of the G20 during the New Delhi Summit."
+    },
+    {
+      "question": "Who was honoured with the prestigious Bharat Ratna posthumously for contributions as Bihar's former Chief Minister and socialist pioneer?",
+      "options": ["Lal Bahadur Shastri", "Karpoori Thakur", "Jayaprakash Narayan", "Morarji Desai"],
+      "answer": 1,
+      "explanation": "Karpoori Thakur (Jannayak) was posthumously awarded the Bharat Ratna in recognition of his dedication to the marginalized."
+    },
+    {
+      "question": "Which national mission aims at promoting solar rooftop systems in 1 crore households across India?",
+      "options": ["PM Kusum Scheme", "PM Surya Ghar Muft Bijli Yojana", "National Solar Mission", "UJALA Yojana"],
+      "answer": 1,
+      "explanation": "PM Surya Ghar: Muft Bijli Yojana provides solar power subsidy to 1 crore households, giving up to 300 units of free electricity monthly."
+    },
+    {
+      "question": "Which state's traditional handicraft 'Kachchhi Kharek' (dates) was recently awarded the Geographical Indication (GI) tag?",
+      "options": ["Rajasthan", "Gujarat", "Haryana", "Madhya Pradesh"],
+      "answer": 1,
+      "explanation": "Kachchhi Kharek from Gujarat's Kutch district received the GI tag as the region's indigenous date variety."
+    }
+  ]
+}
+\`\`\``;
+      } else if (p.includes('history') || p.includes('pyq') || p.includes('ancient')) {
+        return `Here is an **Indian History PYQ Practice Quiz** focusing on high-frequency questions:
+
+\`\`\`json
+{
+  "title": "Indian History & Ancient Civilization PYQ",
+  "category": "History",
+  "difficulty": "Medium",
+  "questions": [
+    {
+      "question": "At which Indus Valley Civilization site was the famous 'Great Bath' discovered?",
+      "options": ["Harappa", "Mohenjo-daro", "Lothal", "Kalibangan"],
+      "answer": 1,
+      "explanation": "The Great Bath was discovered at Mohenjo-daro in Sindh (now Pakistan), featuring waterproof bitumen plaster."
+    },
+    {
+      "question": "Which Maurya ruler renounced war and embraced Buddhism following the catastrophic Kalinga War?",
+      "options": ["Chandragupta Maurya", "Bindusara", "Ashoka the Great", "Brihadratha"],
+      "answer": 2,
+      "explanation": "Emperor Ashoka was moved by the devastation of the Kalinga War (261 BCE) and adopted Dhamma and non-violence."
+    },
+    {
+      "question": "The famous iron pillar which has resisted corrosion for over 1,600 years is located at:",
+      "options": ["Qutb Complex, Delhi", "Sarnath, Varanasi", "Ajanta Caves", "Tanjore"],
+      "answer": 0,
+      "explanation": "The Gupta-era rust-resistant Iron Pillar of Chandragupta II stands in the Qutb Complex in Mehrauli, Delhi."
+    },
+    {
+      "question": "Who was the founder of the Nalanda Mahavihara, an ancient global center of higher learning?",
+      "options": ["Samudragupta", "Kumargupta I", "Skandagupta", "Harshavardhana"],
+      "answer": 1,
+      "explanation": "Kumargupta I of the Gupta dynasty founded Nalanda University in the 5th century CE."
+    },
+    {
+      "question": "Which Chinese pilgrim visited India during the reign of King Harshavardhana?",
+      "options": ["Fa-Hien", "Hiuen Tsang (Xuanzang)", "I-Tsing", "Megasthenes"],
+      "answer": 1,
+      "explanation": "Hiuen Tsang visited India during Harshavardhana's reign (606–647 CE) and wrote the record 'Si-Yu-Ki'."
+    }
+  ]
+}
+\`\`\``;
+      } else if (p.includes('computer') || p.includes('network') || p.includes('ram')) {
+        return `Here is your **Computer Awareness & Architecture Practice Quiz**:
+
+\`\`\`json
+{
+  "title": "Computer Awareness & Architecture Master",
+  "category": "Computer Studies",
+  "difficulty": "Medium",
+  "questions": [
+    {
+      "question": "Which type of memory is volatile and loses its contents as soon as power is turned off?",
+      "options": ["ROM", "RAM", "Hard Disk", "Flash Drive"],
+      "answer": 1,
+      "explanation": "RAM (Random Access Memory) is primary volatile memory, meaning its contents vanish when the power source is cut."
+    },
+    {
+      "question": "Which network protocol is primarily responsible for resolving human-readable domain names into machine IP addresses?",
+      "options": ["HTTP", "DNS", "FTP", "DHCP"],
+      "answer": 1,
+      "explanation": "DNS (Domain Name System) functions as the internet's phonebook, translating domain names like google.com into numerical IP addresses."
+    },
+    {
+      "question": "What is the primary function of the ALU (Arithmetic Logic Unit) inside a CPU?",
+      "options": ["Store permanent OS files", "Perform mathematical calculations & logical comparisons", "Control input/output devices", "Power cooling fans"],
+      "answer": 1,
+      "explanation": "The ALU handles arithmetic operations (addition, subtraction) and logical decisions (AND, OR, NOT) inside the processor."
+    },
+    {
+      "question": "In IPv4 networking, how many bits are used to represent an IP address?",
+      "options": ["16 bits", "32 bits", "64 bits", "128 bits"],
+      "answer": 1,
+      "explanation": "An IPv4 address consists of 32 bits divided into four 8-bit octets, whereas IPv6 uses 128 bits."
+    },
+    {
+      "question": "Which shortcut key combination is globally used to open Task Manager directly in modern Windows?",
+      "options": ["Ctrl + Shift + Esc", "Ctrl + Alt + Tab", "Win + R", "Alt + F4"],
+      "answer": 0,
+      "explanation": "Ctrl + Shift + Esc opens Windows Task Manager directly without going through the lock screen."
+    }
+  ]
+}
+\`\`\``;
+      } else if (p.includes('vocab') || p.includes('english') || p.includes('word')) {
+        return `Here is a **Blackbook Vocabulary Practice Quiz** with Hindi meanings and Synonyms:
+
+\`\`\`json
+{
+  "title": "Blackbook Vocabulary Power Quiz",
+  "category": "English Vocabulary",
+  "difficulty": "Hard",
+  "questions": [
+    {
+      "question": "Choose the most appropriate SYNONYM for 'EPHEMERAL':",
+      "options": ["Eternal", "Transient", "Monumental", "Perpetual"],
+      "answer": 1,
+      "explanation": "'Ephemeral' (Hindi: क्षणिक/अल्पकालिक) means lasting for a very short time. Synonym: Transient, Fleeting."
+    },
+    {
+      "question": "What is the ANTONYM of 'METICULOUS'?",
+      "options": ["Scrupulous", "Careless", "Punctilious", "Painstaking"],
+      "answer": 1,
+      "explanation": "'Meticulous' means showing great attention to detail (Hindi: सूक्ष्म/अति सावधान). Its antonym is Careless or Negligent."
+    },
+    {
+      "question": "Select the correct one-word substitute: 'A person who hates or distrusts humankind'",
+      "options": ["Altruist", "Philanthropist", "Misanthrope", "Somnambulist"],
+      "answer": 2,
+      "explanation": "'Misanthrope' (Hindi: मानवद्वेषी) is someone who dislikes human society. Opposite is Philanthropist (humanitarian)."
+    },
+    {
+      "question": "What does the idiom 'BURN THE MIDNIGHT OIL' mean?",
+      "options": ["To waste fuel", "To study or work late into the night", "To create unnecessary conflict", "To sleep early"],
+      "answer": 1,
+      "explanation": "'Burn the midnight oil' means to work or study late hours with dedication."
+    },
+    {
+      "question": "Choose the correct meaning of 'CANDID':",
+      "options": ["Deceptive", "Frank and outspoken", "Mysterious", "Secretive"],
+      "answer": 1,
+      "explanation": "'Candid' (Hindi: स्पष्टवादी/खरा) means truthful, straightforward, and sincere."
+    }
+  ]
+}
+\`\`\``;
+      } else {
+        // General conversational response + optional mini quiz
+        return `Hello! I am **Cosmic Gemini**, your personal study companion.
+
+Regarding your request: **"${promptText}"**
+
+Here is a clear breakdown of the concept:
+1. **Core Principle**: Breaking complex topics down into small, digestible ideas helps retention by over 60%.
+2. **Key Application**: In competitive and academic tests, focus on high-yield patterns, previous year trends, and daily revision.
+3. **Practice**: Testing yourself actively through questions is proven to strengthen long-term memory.
+
+Would you like me to generate an interactive quiz on this exact topic? You can simply ask: *"Make a 5-question quiz on this!"*`;
+      }
+    }
+
+    // Extract Quiz JSON from markdown response
+    function extractQuizFromResponse(text) {
+      const match = text.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
+      if (!match) return null;
+      try {
+        const parsed = JSON.parse(match[1]);
+        if (parsed.questions && Array.isArray(parsed.questions) && parsed.questions.length > 0) {
+          return parsed;
+        }
+      } catch (e) {}
+      return null;
+    }
+
+    // Render Message in Chat Stream
+    function renderMessage(msg) {
+      const stream = document.getElementById('chat-stream');
+      const row = document.createElement('div');
+      row.className = `msg-row ${msg.role}`;
+
+      const avatar = document.createElement('div');
+      avatar.className = 'msg-avatar';
+      avatar.textContent = msg.role === 'user' ? '👤' : '✦';
+
+      const bubble = document.createElement('div');
+      bubble.className = 'msg-bubble';
+
+      // Parse markdown-like text
+      let cleanText = msg.text.replace(/```(?:json)?\s*[\s\S]*?\s*```/g, '').trim();
+      let html = cleanText
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.*?)\*/g, '<em>$1</em>')
+        .replace(/\n\n/g, '</p><p>')
+        .replace(/\n/g, '<br>');
+      bubble.innerHTML = `<p>${html}</p>`;
+
+      if (msg.attachment) {
+        bubble.innerHTML = `<div style="font-size:0.8rem; color:#fde047; margin-bottom:8px; font-family:'DM Mono',monospace;">📎 Attached: ${msg.attachment.name}</div>` + bubble.innerHTML;
+      }
+
+      // If a quiz was generated, render the interactive quiz card!
+      if (msg.quiz) {
+        const qz = msg.quiz;
+        const card = document.createElement('div');
+        card.className = 'quiz-card-box';
+        card.innerHTML = `
+          <div class="quiz-card-head">
+            <div>
+              <h3>🎯 ${escapeHtml(qz.title || 'Interactive Quiz')}</h3>
+              <div class="quiz-card-badges">
+                <span class="quiz-badge">${escapeHtml(qz.category || 'Study Universe')}</span>
+                <span class="quiz-badge count">${qz.questions.length} Questions</span>
+                <span class="quiz-badge">${escapeHtml(qz.difficulty || 'All Levels')}</span>
+              </div>
+            </div>
+          </div>
+          <p class="quiz-card-desc">Interactive quiz generated and ready for instant training. Complete with timer, instant feedback, and detailed explanations.</p>
+          <div class="quiz-card-actions">
+            <button class="quiz-action-btn play" onclick='launchQuizRunner(${JSON.stringify(qz).replace(/'/g, "&apos;")})'>▶ Play Quiz Now</button>
+            <button class="quiz-action-btn save" onclick='saveQuizFromChat(${JSON.stringify(qz).replace(/'/g, "&apos;")})'>💾 Save to My Quizzes</button>
+            <button class="quiz-action-btn outline" onclick='exportQuizJSON(${JSON.stringify(qz).replace(/'/g, "&apos;")})'>📋 Copy JSON</button>
+          </div>
+        `;
+        bubble.appendChild(card);
+      }
+
+      row.appendChild(avatar);
+      row.appendChild(bubble);
+      stream.appendChild(row);
+    }
+
+    // Interactive Quiz Runner Logic
+    function launchQuizRunner(quiz) {
+      activeRunnerQuiz = quiz;
+      activeQuestionIdx = 0;
+      userAnswers = new Array(quiz.questions.length).fill(null);
+      quizSeconds = 0;
+
+      document.getElementById('runner-quiz-title').textContent = quiz.title || 'Interactive Practice Quiz';
+      document.getElementById('runner-question-view').style.display = 'block';
+      document.getElementById('runner-scorecard-view').style.display = 'none';
+      document.getElementById('runner-footer').style.display = 'flex';
+
+      document.getElementById('runner-modal').classList.add('active');
+
+      clearInterval(quizTimerInterval);
+      quizTimerInterval = setInterval(() => {
+        quizSeconds++;
+        const mins = String(Math.floor(quizSeconds / 60)).padStart(2, '0');
+        const secs = String(quizSeconds % 60).padStart(2, '0');
+        document.getElementById('runner-timer').textContent = `⏱️ ${mins}:${secs}`;
+      }, 1000);
+
+      renderCurrentQuestion();
+    }
+
+    function renderCurrentQuestion() {
+      const qz = activeRunnerQuiz;
+      const q = qz.questions[activeQuestionIdx];
+      const total = qz.questions.length;
+
+      document.getElementById('runner-counter').textContent = `Question ${activeQuestionIdx + 1} / ${total}`;
+      document.getElementById('runner-progress-fill').style.width = `${((activeQuestionIdx + 1) / total) * 100}%`;
+      document.getElementById('q-category-tag').textContent = `${qz.category || 'Practice'} • Question ${activeQuestionIdx + 1} of ${total}`;
+      document.getElementById('q-text').textContent = q.question;
+
+      const container = document.getElementById('q-options-container');
+      container.innerHTML = '';
+
+      const letters = ['A', 'B', 'C', 'D', 'E'];
+      const currentAns = userAnswers[activeQuestionIdx];
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.innerHTML = `<span class="opt-letter">${letters[idx]}</span> <span>${escapeHtml(opt)}</span>`;
+
+        if (currentAns !== null) {
+          btn.disabled = true;
+          if (idx === q.answer) {
+            btn.classList.add('reveal-correct');
+          }
+          if (idx === currentAns) {
+            btn.classList.add(currentAns === q.answer ? 'selected-correct' : 'selected-wrong');
+          }
+        } else {
+          btn.onclick = () => selectOption(idx);
+        }
+
+        container.appendChild(btn);
+      });
+
+      const expBox = document.getElementById('q-explanation-box');
+      if (currentAns !== null) {
+        expBox.classList.add('active');
+        document.getElementById('q-explanation-text').textContent = q.explanation || 'No detailed explanation provided for this question.';
+      } else {
+        expBox.classList.remove('active');
+      }
+
+      document.getElementById('prev-btn').disabled = activeQuestionIdx === 0;
+      document.getElementById('next-btn').textContent = activeQuestionIdx === total - 1 ? 'Finish Quiz ➔' : 'Next Question →';
+    }
+
+    function selectOption(idx) {
+      userAnswers[activeQuestionIdx] = idx;
+      renderCurrentQuestion();
+    }
+
+    function nextQuestion() {
+      const total = activeRunnerQuiz.questions.length;
+      if (activeQuestionIdx < total - 1) {
+        activeQuestionIdx++;
+        renderCurrentQuestion();
+      } else {
+        finishQuiz();
+      }
+    }
+
+    function prevQuestion() {
+      if (activeQuestionIdx > 0) {
+        activeQuestionIdx--;
+        renderCurrentQuestion();
+      }
+    }
+
+    function finishQuiz() {
+      clearInterval(quizTimerInterval);
+      document.getElementById('runner-question-view').style.display = 'none';
+      document.getElementById('runner-footer').style.display = 'none';
+      document.getElementById('runner-scorecard-view').style.display = 'block';
+
+      let correct = 0;
+      const total = activeRunnerQuiz.questions.length;
+      activeRunnerQuiz.questions.forEach((q, idx) => {
+        if (userAnswers[idx] === q.answer) correct++;
+      });
+
+      document.getElementById('score-val').textContent = correct;
+      document.getElementById('score-denom').textContent = `out of ${total}`;
+
+      const pct = Math.round((correct / total) * 100);
+      let feedback = `Accuracy: ${pct}% • Time: ${Math.floor(quizSeconds / 60)}m ${quizSeconds % 60}s`;
+      if (pct >= 80) feedback = `🌟 Outstanding Performance! (${pct}%) • Great subject mastery!`;
+      else if (pct >= 50) feedback = `👍 Good Effort! (${pct}%) • A quick revision will make it 100%!`;
+      else feedback = `💪 Keep practicing! (${pct}%) • Review the answers below to master this topic.`;
+
+      document.getElementById('score-feedback').textContent = feedback;
+    }
+
+    function restartCurrentQuiz() {
+      launchQuizRunner(activeRunnerQuiz);
+    }
+
+    function closeQuizRunner() {
+      clearInterval(quizTimerInterval);
+      document.getElementById('runner-modal').classList.remove('active');
+    }
+
+    // Saved Quizzes Management
+    function getSavedQuizzes() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_SAVED_QUIZZES) || '[]');
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveQuizFromChat(quiz) {
+      const list = getSavedQuizzes();
+      quiz.id = 'qz_' + Date.now().toString(36);
+      quiz.savedAt = new Date().toLocaleDateString();
+      list.unshift(quiz);
+      localStorage.setItem(STORAGE_SAVED_QUIZZES, JSON.stringify(list));
+      updateSavedCount();
+      alert(`✅ "${quiz.title}" has been saved to My Quizzes!`);
+    }
+
+    function saveCurrentRunnerQuiz() {
+      if (activeRunnerQuiz) {
+        saveQuizFromChat(activeRunnerQuiz);
+      }
+    }
+
+    function updateSavedCount() {
+      const count = getSavedQuizzes().length;
+      document.getElementById('saved-quiz-count').textContent = count;
+    }
+
+    function openSavedQuizzesModal() {
+      const list = getSavedQuizzes();
+      const container = document.getElementById('saved-quizzes-list');
+
+      if (list.length === 0) {
+        container.innerHTML = `<div style="text-align:center; padding:30px; color:#a79fc2;">No saved quizzes yet. Ask Cosmic Gemini to create one!</div>`;
+      } else {
+        container.innerHTML = list.map((q, idx) => `
+          <div class="saved-item">
+            <div class="saved-info">
+              <h4>${escapeHtml(q.title)}</h4>
+              <small>${escapeHtml(q.category || 'General')} • ${q.questions.length} Questions • Saved: ${q.savedAt || 'Recently'}</small>
+            </div>
+            <div class="saved-actions">
+              <button class="quiz-action-btn play" style="padding:6px 14px;" onclick='playSavedQuiz(${idx})'>Play</button>
+              <button class="nav-btn" style="padding:6px 10px; color:#f87171;" onclick='deleteSavedQuiz(${idx})'>✕</button>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      document.getElementById('saved-modal').classList.add('active');
+    }
+
+    function playSavedQuiz(idx) {
+      const list = getSavedQuizzes();
+      if (list[idx]) {
+        closeSavedQuizzesModal();
+        launchQuizRunner(list[idx]);
+      }
+    }
+
+    function deleteSavedQuiz(idx) {
+      const list = getSavedQuizzes();
+      list.splice(idx, 1);
+      localStorage.setItem(STORAGE_SAVED_QUIZZES, JSON.stringify(list));
+      updateSavedCount();
+      openSavedQuizzesModal();
+    }
+
+    function closeSavedQuizzesModal() {
+      document.getElementById('saved-modal').classList.remove('active');
+    }
+
+    function exportQuizJSON(quiz) {
+      navigator.clipboard.writeText(JSON.stringify(quiz, null, 2));
+      alert('📋 Quiz JSON copied to clipboard!');
+    }
+
+    // Settings Modal
+    function openSettingsModal() {
+      document.getElementById('settings-modal').classList.add('active');
+      document.getElementById('key-test-status').textContent = '';
+    }
+
+    function closeSettingsModal() {
+      document.getElementById('settings-modal').classList.remove('active');
+    }
+
+    function saveSettings() {
+      currentSettings.geminiKey = document.getElementById('gemini-api-key-input').value.trim();
+      currentSettings.geminiModel = document.getElementById('settings-model-select').value;
+      localStorage.setItem(STORAGE_SETTINGS, JSON.stringify(currentSettings));
+      document.getElementById('model-select').value = currentSettings.geminiModel;
+      document.getElementById('model-select-float').value = currentSettings.geminiModel;
+      closeSettingsModal();
+      alert('✅ API Settings Saved!');
+    }
+
+    async function testGeminiConnection() {
+      const key = document.getElementById('gemini-api-key-input').value.trim();
+      const statusEl = document.getElementById('key-test-status');
+
+      if (!key) {
+        statusEl.innerHTML = '<span style="color:#ef4444;">Please paste an API key first.</span>';
+        return;
+      }
+
+      statusEl.innerHTML = '<span style="color:#fbbf24;">Testing Google Gemini connection...</span>';
+      try {
+        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${encodeURIComponent(key)}`);
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          throw new Error(err.error?.message || `HTTP ${res.status}: ${res.statusText}`);
+        }
+        const data = await res.json();
+        statusEl.innerHTML = `<span style="color:#10b981;">✅ Gemini Connected Successfully! (${data.models ? data.models.length : 0} models available)</span>`;
+      } catch (e) {
+        statusEl.innerHTML = `<span style="color:#ef4444;">❌ Error: ${e.message}</span>`;
+      }
+    }
+
+    function escapeHtml(str) {
+      return String(str || '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+    }
+
+    // Initialize on load
+    window.addEventListener('DOMContentLoaded', initApp);
+  </script>
+</body>
+</html>

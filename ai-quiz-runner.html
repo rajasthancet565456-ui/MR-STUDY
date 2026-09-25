@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blackbook Vocabulary A1 - 100 Master Questions</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Google Fonts - Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            lavenderBg: '#F0E6FF',
+            headerBg: '#E5D5FA',
+            cardBg: '#FBF7FF',
+            primaryPurple: '#6542C8',
+            darkPurple: '#30205D',
+            secondaryPurple: '#7352C9',
+            lightPurple: '#E9DDF8',
+            borderPurple: '#DCCBF2',
+            trackPurple: '#DDD9E8',
+            hoverPurple: '#F0E5FF',
+            mutedText: '#716782',
+            accentYellow: '#F3A62A',
+            successGreen: '#10B981',
+            errorRed: '#EF4444'
+          },
+          boxShadow: {
+            'purple-soft': '0 10px 25px -5px rgba(101, 66, 200, 0.12), 0 8px 10px -6px rgba(101, 66, 200, 0.08)',
+            'purple-card': '0 4px 20px 0 rgba(48, 32, 93, 0.06)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #F0E6FF;
+      background-image: radial-gradient(#E5D5FA 1px, transparent 1px);
+      background-size: 24px 24px;
+      font-family: 'Inter', sans-serif;
+      color: #30205D;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #F0E6FF;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #DCCBF2;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #7352C9;
+    }
+
+    /* Smooth Transitions */
+    .transition-all-fast {
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Option Card Custom Styling */
+    .option-card {
+      border: 1.5px solid #DCCBF2;
+      background-color: #FFFFFF;
+      transition: all 0.2s ease-in-out;
+    }
+    .option-card:hover:not(.disabled) {
+      border-color: #6542C8;
+      background-color: #F0E5FF;
+      transform: translateY(-1px);
+    }
+    .option-card.selected-correct {
+      border-color: #10B981 !important;
+      background-color: #ECFDF5 !important;
+      color: #065F46 !important;
+    }
+    .option-card.selected-incorrect {
+      border-color: #EF4444 !important;
+      background-color: #FEF2F2 !important;
+      color: #991B1B !important;
+    }
+    .option-card.reveal-correct {
+      border-color: #10B981 !important;
+      background-color: #F0FDF4 !important;
+    }
+
+    .glass-pill {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(220, 203, 242, 0.8);
+    }
+  </style>
+</head>
+<body class="antialiased selection:bg-lightPurple selection:text-darkPurple">
+
+  <header class="sticky top-0 z-30 bg-headerBg/90 backdrop-blur-md border-b border-borderPurple shadow-sm px-4 py-3">
+    <div class="max-w-5xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      
+      <!-- Brand & Title -->
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-primaryPurple text-white flex items-center justify-center font-extrabold text-xl shadow-md">
+          <i class="fa-solid fa-book-bookmark"></i>
+        </div>
+        <div>
+          <h1 id="aiQuizHeading" class="font-bold text-darkPurple text-base sm:text-lg leading-tight flex items-center gap-2">
+            AI Quiz Mastery
+            <span class="text-xs bg-primaryPurple/10 text-primaryPurple px-2 py-0.5 rounded-full font-semibold border border-primaryPurple/20">AI Mission</span>
+          </h1>
+          <p id="aiQuizSubtitle" class="text-xs text-mutedText hidden sm:block">AI-generated competitive exam practice</p>
+        </div>
+      </div>
+
+      <!-- Stats Header Pills -->
+      <div class="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm font-medium">
+        
+        <!-- Live Score -->
+        <div class="glass-pill px-3 py-1.5 rounded-xl flex items-center gap-2 shadow-sm text-darkPurple">
+          <i class="fa-solid fa-trophy text-accentYellow"></i>
+          <span>Score: <strong id="headerScore" class="text-primaryPurple font-bold">0</strong>/<span id="headerTotal">100</span></span>
+        </div>
+
+        <!-- Timer -->
+        <div class="glass-pill px-3 py-1.5 rounded-xl flex items-center gap-2 shadow-sm text-darkPurple">
+          <i class="fa-regular fa-clock text-primaryPurple"></i>
+          <span id="timerDisplay" class="font-mono font-semibold">00:00</span>
+        </div>
+
+        <!-- Completion Stats -->
+        <div class="glass-pill px-3 py-1.5 rounded-xl flex items-center gap-2 shadow-sm text-darkPurple">
+          <i class="fa-solid fa-chart-pie text-secondaryPurple"></i>
+          <span id="accuracyDisplay" class="font-bold text-darkPurple">0% Acc</span>
+        </div>
+
+      </div>
+    </div>
+  </header>
+  <nav class="bg-darkPurple px-4 py-3 border-b border-primaryPurple/30" aria-label="Quiz tools">
+    <div class="max-w-5xl mx-auto flex flex-wrap items-center justify-end gap-2">
+      <button onclick="enterQuizFullscreen()" class="px-3 py-2 rounded-xl border border-white/25 text-white text-xs font-bold hover:bg-primaryPurple transition">FULL SCREEN</button>
+      <button onclick="promptReset()" class="px-3 py-2 rounded-xl border border-white/25 text-white text-xs font-bold hover:bg-primaryPurple transition">RESET QUIZ</button>
+      <button id="attemptedToggle" onclick="toggleAttemptedStatus()" class="px-3 py-2 rounded-xl border border-white/25 text-white text-xs font-bold hover:bg-primaryPurple transition">MARK ATTEMPTED</button>
+      <button onclick="openSiblingQuiz(-1)" class="px-3 py-2 rounded-xl border border-white/25 text-white text-xs font-bold hover:bg-primaryPurple transition">← PREVIOUS QUIZ</button>
+      <button onclick="openSiblingQuiz(1)" class="px-3 py-2 rounded-xl border border-white/25 text-white text-xs font-bold hover:bg-primaryPurple transition">NEXT QUIZ →</button>
+      <button onclick="closeQuizRunner()" class="px-3 py-2 rounded-xl border border-white/25 text-white text-xs font-bold hover:bg-primaryPurple transition">HOME</button>
+    </div>
+  </nav>
+
+  <main class="flex-grow max-w-5xl w-full mx-auto px-4 py-6 mb-24">
+    
+    <!-- Compact quiz utilities. Vocabulary-specific category filters are deliberately not used for generic AI quizzes. -->
+    <div class="mb-5 flex items-center justify-between gap-2 overflow-x-auto pb-2 border-b border-borderPurple/60">
+      <div class="flex items-center space-x-1 sm:space-x-2 text-xs sm:text-sm font-medium">
+        <button onclick="setFilter('ALL')" id="filterBtn-ALL" class="filter-tab px-3 py-1.5 rounded-lg bg-primaryPurple text-white shadow-sm font-semibold transition">
+          All Questions
+        </button>
+      </div>
+
+      <!-- Quick Stats Filter Menu -->
+      <div class="flex items-center space-x-1 shrink-0">
+        <button onclick="toggleBookmarkCurrent()" id="bookmarkBtn" title="Bookmark Question" class="p-2 rounded-lg border border-borderPurple bg-white text-mutedText hover:text-accentYellow hover:border-accentYellow transition text-sm">
+          <i class="fa-regular fa-bookmark"></i>
+        </button>
+        <button onclick="showAnalyticsModal()" title="View Detailed Report" class="p-2 rounded-lg border border-borderPurple bg-white text-primaryPurple hover:bg-lightPurple transition text-sm">
+          <i class="fa-solid fa-chart-line"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- MAIN QUIZ CARD -->
+    <div class="bg-cardBg rounded-2xl border border-borderPurple p-5 sm:p-8 shadow-purple-card relative overflow-hidden transition-all duration-300">
+      
+      <!-- Card Top Info Bar -->
+      <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+        
+        <div class="flex items-center space-x-2">
+          <span id="questionNumBadge" class="bg-primaryPurple text-white text-xs font-extrabold px-3 py-1 rounded-full shadow-sm">
+            Question 1
+          </span>
+          <span id="categoryBadge" class="bg-lightPurple text-darkPurple text-xs font-semibold px-2.5 py-1 rounded-full border border-borderPurple">
+            Direct OWS
+          </span>
+          <span id="difficultyBadge" class="bg-emerald-100 text-emerald-800 text-xs font-semibold px-2.5 py-1 rounded-full border border-emerald-200">
+            Easy
+          </span>
+        </div>
+
+        <div class="text-xs text-mutedText flex items-center gap-2">
+          <span id="wordFocusTag" class="font-mono bg-white px-2 py-0.5 rounded border border-borderPurple text-primaryPurple font-semibold">
+            Word: Abate
+          </span>
+          <span id="questionStatusTag" class="hidden sm:inline-block px-2 py-0.5 rounded bg-gray-100 font-medium">
+            Unanswered
+          </span>
+        </div>
+
+      </div>
+
+      <!-- Progress Bar Container -->
+      <div class="w-full bg-trackPurple h-2.5 rounded-full overflow-hidden mb-6">
+        <div id="progressBar" class="bg-gradient-to-r from-primaryPurple to-secondaryPurple h-full rounded-full transition-all duration-300 ease-out" style="width: 1%;"></div>
+      </div>
+
+      <!-- QUESTION DISPLAY AREA -->
+      <div class="mb-6">
+        <h2 id="questionText" class="text-lg sm:text-xl md:text-2xl font-bold text-darkPurple leading-relaxed">
+          Loading question text...
+        </h2>
+      </div>
+
+      <!-- HINT COLLAPSIBLE SYSTEM -->
+      <div class="mb-6">
+        <button onclick="toggleHint()" class="inline-flex items-center space-x-2 text-xs font-semibold text-secondaryPurple hover:text-primaryPurple transition-colors bg-lightPurple/40 px-3 py-1.5 rounded-lg border border-borderPurple/50">
+          <i class="fa-solid fa-lightbulb text-accentYellow"></i>
+          <span id="hintToggleLabel">Show Hint</span>
+          <i id="hintChevron" class="fa-solid fa-chevron-down text-2xs transition-transform duration-200"></i>
+        </button>
+        <div id="hintContainer" class="hidden mt-2 p-3.5 bg-amber-50/70 border border-amber-200 rounded-xl text-xs text-amber-900 leading-relaxed shadow-inner">
+          <div class="font-bold mb-1 flex items-center gap-1.5 text-amber-800">
+            <i class="fa-solid fa-circle-info"></i> Clue & Context:
+          </div>
+          <p id="hintText">Hint content goes here...</p>
+        </div>
+      </div>
+
+      <!-- ANSWER OPTIONS DISPLAY GRID -->
+      <div id="optionsGrid" class="space-y-3 mb-6">
+        <!-- Options dynamically injected here via JS -->
+      </div>
+
+      <!-- RATIONALE / EXPLANATION BOX -->
+      <div id="explanationBox" class="hidden rounded-xl bg-white border border-borderPurple p-4 sm:p-5 shadow-sm space-y-3 animate-fade-in">
+        
+        <div class="flex items-center justify-between border-b border-borderPurple/50 pb-2">
+          <span class="font-bold text-sm text-darkPurple flex items-center gap-2">
+            <i class="fa-solid fa-graduation-cap text-primaryPurple"></i> Detailed Exam Rationale & Breakdown
+          </span>
+          <span id="resultBadge" class="text-xs font-bold px-2.5 py-0.5 rounded-md">
+            Correct!
+          </span>
+        </div>
+
+        <div class="text-xs sm:text-sm text-darkPurple leading-relaxed space-y-2">
+          <p id="explanationText" class="font-medium">Rationale detailed text...</p>
+
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- STICKY BOTTOM NAVIGATION BAR -->
+  <footer class="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-borderPurple shadow-lg px-4 py-3">
+    <div class="max-w-5xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      
+      <!-- Prev & Next Buttons -->
+      <div class="flex items-center space-x-2">
+        <button id="prevBtn" onclick="navigateQuestion(-1)" class="px-4 py-2 rounded-xl border border-borderPurple bg-white font-semibold text-darkPurple hover:bg-lightPurple disabled:opacity-40 disabled:cursor-not-allowed text-xs sm:text-sm shadow-sm transition">
+          <i class="fa-solid fa-arrow-left mr-1.5"></i> Previous
+        </button>
+
+        <button id="nextBtn" onclick="navigateQuestion(1)" class="px-5 py-2 rounded-xl bg-primaryPurple text-white font-semibold hover:bg-secondaryPurple text-xs sm:text-sm shadow-sm transition">
+          Next <i class="fa-solid fa-arrow-right ml-1.5"></i>
+        </button>
+      </div>
+
+      <!-- Jump To Question Control -->
+      <div class="flex items-center space-x-2 text-xs sm:text-sm">
+        <span class="text-mutedText font-medium hidden sm:inline">Jump to Q:</span>
+        <div class="flex items-center space-x-1">
+          <input type="number" id="jumpInput" min="1" max="999" placeholder="#" class="w-14 px-2 py-1.5 rounded-lg border border-borderPurple text-center font-bold text-darkPurple focus:outline-none focus:ring-2 focus:ring-primaryPurple text-xs sm:text-sm">
+          <button onclick="executeJump()" class="px-3 py-1.5 rounded-lg bg-lightPurple border border-borderPurple text-darkPurple font-bold hover:bg-primaryPurple hover:text-white transition text-xs">
+            Go
+          </button>
+        </div>
+      </div>
+
+      <!-- Actions: Reset & Summary -->
+      <div class="flex items-center space-x-2">
+        <button onclick="promptReset()" class="px-3 py-2 rounded-xl border border-borderPurple text-errorRed hover:bg-red-50 text-xs font-semibold transition">
+          <i class="fa-solid fa-rotate-right mr-1"></i> Reset
+        </button>
+        <button onclick="showAnalyticsModal()" class="px-3 py-2 rounded-xl bg-darkPurple text-white text-xs font-semibold hover:bg-primaryPurple transition shadow-sm">
+          <i class="fa-solid fa-list-check mr-1"></i> Summary
+        </button>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- MODAL: SUMMARY & ANALYTICS -->
+  <div id="analyticsModal" class="fixed inset-0 z-50 bg-darkPurple/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-cardBg rounded-2xl border border-borderPurple max-w-2xl w-full p-6 shadow-2xl overflow-y-auto max-h-[90vh]">
+      
+      <div class="flex items-center justify-between border-b border-borderPurple pb-3 mb-4">
+        <h3 class="text-lg font-bold text-darkPurple flex items-center gap-2">
+          <i class="fa-solid fa-chart-pie text-primaryPurple"></i> Quiz Progress & Mastery Summary
+        </h3>
+        <button onclick="closeAnalyticsModal()" class="text-mutedText hover:text-darkPurple p-1">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+        <div class="bg-white p-3 rounded-xl border border-borderPurple text-center">
+          <span class="block text-xs text-mutedText">Attempted</span>
+          <strong id="modalAttempted" class="text-xl font-bold text-darkPurple">0/100</strong>
+        </div>
+        <div class="bg-white p-3 rounded-xl border border-borderPurple text-center">
+          <span class="block text-xs text-mutedText">Correct</span>
+          <strong id="modalCorrect" class="text-xl font-bold text-successGreen">0</strong>
+        </div>
+        <div class="bg-white p-3 rounded-xl border border-borderPurple text-center">
+          <span class="block text-xs text-mutedText">Accuracy</span>
+          <strong id="modalAccuracy" class="text-xl font-bold text-primaryPurple">0%</strong>
+        </div>
+        <div class="bg-white p-3 rounded-xl border border-borderPurple text-center">
+          <span class="block text-xs text-mutedText">Time Spent</span>
+          <strong id="modalTime" class="text-xl font-bold text-darkPurple font-mono">00:00</strong>
+        </div>
+      </div>
+
+      <h4 class="font-bold text-xs uppercase tracking-wider text-mutedText mb-3">Question Navigator Grid</h4>
+      <div id="questionGridContainer" class="grid grid-cols-10 gap-1.5 mb-6 max-h-48 overflow-y-auto p-2 bg-white rounded-xl border border-borderPurple">
+        <!-- 100 Question number pills injected via JS -->
+      </div>
+
+      <div class="flex justify-end gap-2 border-t border-borderPurple pt-4">
+        <button onclick="closeAnalyticsModal()" class="px-4 py-2 rounded-xl bg-primaryPurple text-white text-xs font-semibold hover:bg-secondaryPurple transition">
+          Continue Practice
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL: RESET CONFIRMATION -->
+  <div id="resetModal" class="fixed inset-0 z-50 bg-darkPurple/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-cardBg rounded-2xl border border-borderPurple max-w-sm w-full p-6 shadow-2xl text-center">
+      <div class="w-12 h-12 bg-red-100 text-errorRed rounded-full flex items-center justify-center mx-auto mb-3 text-xl">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+      </div>
+      <h3 class="text-lg font-bold text-darkPurple mb-2">Reset All Quiz Data?</h3>
+      <p class="text-xs text-mutedText mb-6">This will clear your score, answer history, bookmarks, and timer progress. You will start fresh from Question 1.</p>
+      <div class="flex gap-3 justify-center">
+        <button onclick="closeResetModal()" class="px-4 py-2 rounded-xl border border-borderPurple text-mutedText text-xs font-semibold hover:bg-gray-100">
+          Cancel
+        </button>
+        <button onclick="confirmReset()" class="px-4 py-2 rounded-xl bg-errorRed text-white text-xs font-semibold hover:bg-red-600 shadow-md">
+          Yes, Reset All
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JS LOGIC AND QUESTION DATASET -->
+  <script>
+    
+    // Total Questions Dataset (100 Unique Exam-Grade Entries)
+    const questions = (function () {
+  const quizId = new URLSearchParams(location.search).get('quiz');
+  try {
+    const data = JSON.parse(localStorage.getItem('cosmicQuizStudioV1') || '{"quizzes":[]}');
+    const quiz = (data.quizzes || []).find(item => item.id === quizId);
+    if (!quiz || !Array.isArray(quiz.questions) || !quiz.questions.length) throw new Error('Quiz not found');
+    document.title = (quiz.title || 'AI Quiz Mission') + ' · Cosmic Quiz Universe'; document.addEventListener('DOMContentLoaded', () => { const h = document.getElementById('aiQuizHeading'); const s = document.getElementById('aiQuizSubtitle'); if (h) h.firstChild.textContent = quiz.title || 'AI Quiz Mastery'; if (s) s.textContent = 'Interactive AI quiz · ' + (quiz.questions || []).length + ' questions'; });
+    return quiz.questions.map((item, index) => ({
+      id: index + 1,
+      word: item.word || item.vocabularyWord || `AI Question ${index + 1}`,
+      category: item.category || 'OWS',
+      categoryName: item.categoryName || 'AI Practice',
+      difficulty: item.difficulty || 'Exam Level',
+      question: item.question || item.q || 'Question',
+      options: Array.isArray(item.options) ? item.options : [],
+      correct: typeof item.answer === 'number' ? item.answer : (typeof item.correctIndex === 'number' ? item.correctIndex : 0),
+      hint: item.hint || 'Use the context and eliminate incorrect options.',
+      explanation: item.explanation || 'Review this vocabulary concept before attempting again.',
+      hindi: item.hindi || item.hindiMeaning || 'AI generated vocabulary practice.',
+      synAnt: item.synAnt || item.synonyms || 'Review the explanation for related words.',
+      examTip: item.examTip || 'Revise bookmarked questions regularly.'
+    }));
+  } catch (error) {
+    return [{id:1,word:'Quiz unavailable',category:'OWS',categoryName:'AI Practice',difficulty:'Exam Level',question:'This AI vocabulary quiz could not be loaded. Return to the library and open it again.',options:['Back to Library','Reload quiz'],correct:0,hint:'The quiz is stored in this browser.',explanation:'Make sure you are using the same browser where the quiz was created.',hindi:'',synAnt:'',examTip:''}];
+  }
+})();
+    let currentFilteredIndex = 0;
+    let activeFilter = 'ALL';
+    let filteredIndices = [];
+    let userAnswers = {}; // { questionId: { selectedOption: number, isCorrect: boolean } }
+    let bookmarks = new Set();
+    let startTime = Date.now();
+    let timerInterval = null;
+
+    function enterQuizFullscreen() {
+      const root = document.documentElement;
+      if (document.fullscreenElement) document.exitFullscreen?.();
+      else root.requestFullscreen?.();
+    }
+
+    function toggleAttemptedStatus() {
+      const button = document.getElementById('attemptedToggle');
+      if (!button) return;
+      const marked = button.dataset.marked === 'true';
+      button.dataset.marked = String(!marked);
+      button.textContent = marked ? 'MARK ATTEMPTED' : '✓ ATTEMPTED';
+    }
+
+    function openSiblingQuiz(direction) {
+      try {
+        const quizId = new URLSearchParams(location.search).get('quiz');
+        const data = JSON.parse(localStorage.getItem('cosmicQuizStudioV1') || '{"quizzes":[]}');
+        const current = (data.quizzes || []).find(quiz => quiz.id === quizId);
+        if (!current) return;
+        const siblings = data.quizzes.filter(quiz => quiz.libraryId === current.libraryId);
+        const target = siblings[siblings.findIndex(quiz => quiz.id === quizId) + direction];
+        if (target) location.href = `ai-quiz-runner.html?quiz=${encodeURIComponent(target.id)}`;
+      } catch (error) { console.warn('Could not switch quiz', error); }
+    }
+
+    function closeQuizRunner() {
+      if (history.length > 1) history.back();
+      else location.href = 'cosmic-quiz-master.html';
+    }
+
+    window.onload = function() {
+      // Initialize indices
+      applyFilter('ALL');
+      startTimer();
+       document.getElementById('headerTotal').textContent = questions.length;
+       document.getElementById('jumpInput').max = questions.length;
+       document.getElementById('filterBtn-ALL').textContent = 'All (' + questions.length + ')';
+       renderQuestion();
+      setupKeyboardNav();
+    };
+
+    function startTimer() {
+      if (timerInterval) clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        const elapsedSec = Math.floor((Date.now() - startTime) / 1000);
+        const mins = String(Math.floor(elapsedSec / 60)).padStart(2, '0');
+        const secs = String(elapsedSec % 60).padStart(2, '0');
+        document.getElementById('timerDisplay').textContent = `${mins}:${secs}`;
+      }, 1000);
+    }
+
+    function applyFilter(filterCategory) {
+      activeFilter = filterCategory;
+      filteredIndices = [];
+
+      questions.forEach((q, idx) => {
+        if (filterCategory === 'ALL') {
+          filteredIndices.push(idx);
+        } else if (filterCategory === 'BOOKMARKED') {
+          if (bookmarks.has(q.id)) filteredIndices.push(idx);
+        } else if (filterCategory === 'INCORRECT') {
+          if (userAnswers[q.id] && !userAnswers[q.id].isCorrect) filteredIndices.push(idx);
+        } else if (q.category === filterCategory) {
+          filteredIndices.push(idx);
+        }
+      });
+
+      if (filteredIndices.length === 0) {
+        alert("No questions match the selected filter category!");
+        applyFilter('ALL');
+        return;
+      }
+
+      currentFilteredIndex = 0;
+      updateFilterButtonsUI();
+    }
+
+    function setFilter(category) {
+      applyFilter(category);
+      renderQuestion();
+    }
+
+    function updateFilterButtonsUI() {
+      document.querySelectorAll('.filter-tab').forEach(btn => {
+        btn.classList.remove('bg-primaryPurple', 'text-white', 'shadow-sm');
+        btn.classList.add('text-mutedText');
+      });
+      const activeBtn = document.getElementById(`filterBtn-${activeFilter}`);
+      if (activeBtn) {
+        activeBtn.classList.remove('text-mutedText');
+        activeBtn.classList.add('bg-primaryPurple', 'text-white', 'shadow-sm');
+      }
+    }
+
+    function getCurrentQuestion() {
+      const qIndex = filteredIndices[currentFilteredIndex];
+      return questions[qIndex];
+    }
+
+    function renderQuestion() {
+      const q = getCurrentQuestion();
+      const qNumInTotal = q.id;
+
+      // Update Header Stats
+      updateHeaderStats();
+
+      // Card Header Information
+      document.getElementById('questionNumBadge').textContent = `Question ${qNumInTotal} of 100 (${currentFilteredIndex + 1}/${filteredIndices.length} filtered)`;
+      document.getElementById('categoryBadge').textContent = q.categoryName;
+      document.getElementById('difficultyBadge').textContent = q.difficulty;
+      document.getElementById('wordFocusTag').textContent = `Word: ${q.word}`;
+
+      // Set difficulty styling
+      const diffBadge = document.getElementById('difficultyBadge');
+      if (q.difficulty === 'Easy') {
+        diffBadge.className = "bg-emerald-100 text-emerald-800 text-xs font-semibold px-2.5 py-1 rounded-full border border-emerald-200";
+      } else if (q.difficulty === 'Moderate') {
+        diffBadge.className = "bg-amber-100 text-amber-800 text-xs font-semibold px-2.5 py-1 rounded-full border border-amber-200";
+      } else {
+        diffBadge.className = "bg-rose-100 text-rose-800 text-xs font-semibold px-2.5 py-1 rounded-full border border-rose-200";
+      }
+
+      // Progress Bar
+      const progressPercent = ((currentFilteredIndex + 1) / filteredIndices.length) * 100;
+      document.getElementById('progressBar').style.width = `${progressPercent}%`;
+
+      // Status Tag & Bookmark
+      const statusTag = document.getElementById('questionStatusTag');
+      const isAnswered = userAnswers[q.id] !== undefined;
+      if (isAnswered) {
+        const isCorr = userAnswers[q.id].isCorrect;
+        statusTag.textContent = isCorr ? "Solved Correctly" : "Solved Incorrectly";
+        statusTag.className = isCorr 
+          ? "px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-semibold"
+          : "px-2 py-0.5 rounded bg-rose-100 text-rose-800 font-semibold";
+      } else {
+        statusTag.textContent = "Unanswered";
+        statusTag.className = "px-2 py-0.5 rounded bg-gray-100 text-mutedText font-medium";
+      }
+
+      // Bookmark Button UI
+      const bkBtn = document.getElementById('bookmarkBtn');
+      if (bookmarks.has(q.id)) {
+        bkBtn.innerHTML = `<i class="fa-solid fa-bookmark text-accentYellow"></i>`;
+        bkBtn.classList.add('border-accentYellow', 'bg-amber-50');
+      } else {
+        bkBtn.innerHTML = `<i class="fa-regular fa-bookmark"></i>`;
+        bkBtn.classList.remove('border-accentYellow', 'bg-amber-50');
+      }
+
+      // Question Text
+      document.getElementById('questionText').innerHTML = q.question.replace(/\n/g, '<br>');
+
+      // Hint reset
+      document.getElementById('hintContainer').classList.add('hidden');
+      document.getElementById('hintToggleLabel').textContent = "Show Hint";
+      document.getElementById('hintChevron').style.transform = "rotate(0deg)";
+      document.getElementById('hintText').textContent = q.hint;
+
+      // Render Options
+      const optionsGrid = document.getElementById('optionsGrid');
+      optionsGrid.innerHTML = '';
+
+      const userAns = userAnswers[q.id];
+
+      q.options.forEach((optText, optIdx) => {
+        const optionBtn = document.createElement('button');
+        optionBtn.className = `option-card w-full text-left p-4 rounded-xl flex items-start space-x-3 text-sm font-semibold transition-all-fast`;
+        
+        let prefixLetter = String.fromCharCode(65 + optIdx); // A, B, C, D
+        let badgeStyle = "bg-lightPurple/60 text-darkPurple border border-borderPurple";
+        let iconMarkup = `<span class="w-6 h-6 rounded-full ${badgeStyle} flex items-center justify-center shrink-0 font-bold text-xs">${prefixLetter}</span>`;
+
+        if (userAns !== undefined) {
+          optionBtn.classList.add('disabled');
+          optionBtn.disabled = true;
+
+          if (optIdx === q.correct) {
+            optionBtn.classList.add('selected-correct');
+            iconMarkup = `<span class="w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0 font-bold text-xs"><i class="fa-solid fa-check"></i></span>`;
+          } else if (userAns.selectedOption === optIdx && !userAns.isCorrect) {
+            optionBtn.classList.add('selected-incorrect');
+            iconMarkup = `<span class="w-6 h-6 rounded-full bg-rose-500 text-white flex items-center justify-center shrink-0 font-bold text-xs"><i class="fa-solid fa-xmark"></i></span>`;
+          }
+        } else {
+          optionBtn.onclick = () => selectOption(optIdx);
+        }
+
+        optionBtn.innerHTML = `
+          ${iconMarkup}
+          <span class="flex-grow pt-0.5 leading-snug">${optText}</span>
+        `;
+
+        optionsGrid.appendChild(optionBtn);
+      });
+
+      // Explanation Box
+      const expBox = document.getElementById('explanationBox');
+      if (userAns !== undefined) {
+        expBox.classList.remove('hidden');
+        document.getElementById('explanationText').innerHTML = q.explanation;
+        const resBadge = document.getElementById('resultBadge');
+        if (userAns.isCorrect) {
+          resBadge.textContent = "Correct Answer! +1 Mark";
+          resBadge.className = "text-xs font-bold px-2.5 py-0.5 rounded-md bg-emerald-100 text-emerald-800 border border-emerald-300";
+        } else {
+          resBadge.textContent = "Incorrect Answer!";
+          resBadge.className = "text-xs font-bold px-2.5 py-0.5 rounded-md bg-rose-100 text-rose-800 border border-rose-300";
+        }
+      } else {
+        expBox.classList.add('hidden');
+      }
+
+      // Update Navigation Controls
+      document.getElementById('prevBtn').disabled = (currentFilteredIndex === 0);
+      const nextBtn = document.getElementById('nextBtn');
+      if (currentFilteredIndex === filteredIndices.length - 1) {
+        nextBtn.innerHTML = `Finish Quiz <i class="fa-solid fa-flag-checkered ml-1.5"></i>`;
+      } else {
+        nextBtn.innerHTML = `Next <i class="fa-solid fa-arrow-right ml-1.5"></i>`;
+      }
+
+      document.getElementById('jumpInput').value = qNumInTotal;
+    }
+
+    function selectOption(selectedOptIdx) {
+      const q = getCurrentQuestion();
+      if (userAnswers[q.id] !== undefined) return; // already answered
+
+      const isCorr = (selectedOptIdx === q.correct);
+      userAnswers[q.id] = {
+        selectedOption: selectedOptIdx,
+        isCorrect: isCorr
+      };
+
+      renderQuestion();
+    }
+
+    function updateHeaderStats() {
+      let correctCount = 0;
+      let totalAttempted = 0;
+
+      Object.keys(userAnswers).forEach(qId => {
+        totalAttempted++;
+        if (userAnswers[qId].isCorrect) correctCount++;
+      });
+
+      document.getElementById('headerScore').textContent = correctCount;
+      document.getElementById('headerTotal').textContent = questions.length;
+
+      const accuracy = totalAttempted > 0 ? Math.round((correctCount / totalAttempted) * 100) : 0;
+      document.getElementById('accuracyDisplay').textContent = `${accuracy}% Acc`;
+    }
+
+    function navigateQuestion(direction) {
+      const newIndex = currentFilteredIndex + direction;
+      if (newIndex >= 0 && newIndex < filteredIndices.length) {
+        currentFilteredIndex = newIndex;
+        renderQuestion();
+      } else if (newIndex >= filteredIndices.length) {
+        showAnalyticsModal();
+      }
+    }
+
+    function executeJump() {
+      const inputVal = parseInt(document.getElementById('jumpInput').value, 10);
+      if (isNaN(inputVal) || inputVal < 1 || inputVal > questions.length) {
+        alert(`Please enter a valid question number between 1 and ${questions.length}.`);
+        return;
+      }
+
+      // Find in questions array
+      const targetQuestionIndex = questions.findIndex(q => q.id === inputVal);
+      if (targetQuestionIndex === -1) return;
+
+      // If active filter doesn't include it, switch to ALL filter
+      let foundInFiltered = filteredIndices.indexOf(targetQuestionIndex);
+      if (foundInFiltered === -1) {
+        applyFilter('ALL');
+        foundInFiltered = filteredIndices.indexOf(targetQuestionIndex);
+      }
+
+      currentFilteredIndex = foundInFiltered;
+      renderQuestion();
+    }
+
+    function toggleHint() {
+      const hintContainer = document.getElementById('hintContainer');
+      const hintToggleLabel = document.getElementById('hintToggleLabel');
+      const hintChevron = document.getElementById('hintChevron');
+
+      if (hintContainer.classList.contains('hidden')) {
+        hintContainer.classList.remove('hidden');
+        hintToggleLabel.textContent = "Hide Hint";
+        hintChevron.style.transform = "rotate(180deg)";
+      } else {
+        hintContainer.classList.add('hidden');
+        hintToggleLabel.textContent = "Show Hint";
+        hintChevron.style.transform = "rotate(0deg)";
+      }
+    }
+
+    function toggleBookmarkCurrent() {
+      const q = getCurrentQuestion();
+      if (bookmarks.has(q.id)) {
+        bookmarks.delete(q.id);
+      } else {
+        bookmarks.add(q.id);
+      }
+      renderQuestion();
+    }
+
+    function setupKeyboardNav() {
+      document.addEventListener('keydown', (e) => {
+        // Prevent navigation when typing in inputs
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+          if (e.key === 'Enter') {
+            executeJump();
+            e.target.blur();
+          }
+          return;
+        }
+
+        if (e.key === 'ArrowLeft') {
+          navigateQuestion(-1);
+        } else if (e.key === 'ArrowRight') {
+          navigateQuestion(1);
+        }
+      });
+    }
+
+    // Modal Control Functions
+    function showAnalyticsModal() {
+      let totalAttempted = Object.keys(userAnswers).length;
+      let correctCount = 0;
+      Object.keys(userAnswers).forEach(qId => {
+        if (userAnswers[qId].isCorrect) correctCount++;
+      });
+
+      const accuracy = totalAttempted > 0 ? Math.round((correctCount / totalAttempted) * 100) : 0;
+
+      document.getElementById('modalAttempted').textContent = `${totalAttempted}/100`;
+      document.getElementById('modalCorrect').textContent = correctCount;
+      document.getElementById('modalAccuracy').textContent = `${accuracy}%`;
+      document.getElementById('modalTime').textContent = document.getElementById('timerDisplay').textContent;
+
+      // Populate Question Navigator Grid
+      const gridContainer = document.getElementById('questionGridContainer');
+      gridContainer.innerHTML = '';
+
+      questions.forEach((q, idx) => {
+        const btn = document.createElement('button');
+        btn.textContent = q.id;
+        btn.className = "w-8 h-8 rounded-lg text-xs font-bold flex items-center justify-center border transition";
+
+        const ans = userAnswers[q.id];
+        if (ans !== undefined) {
+          if (ans.isCorrect) {
+            btn.classList.add('bg-emerald-500', 'text-white', 'border-emerald-600');
+          } else {
+            btn.classList.add('bg-rose-500', 'text-white', 'border-rose-600');
+          }
+        } else {
+          btn.classList.add('bg-gray-100', 'text-mutedText', 'border-borderPurple', 'hover:bg-lightPurple');
+        }
+
+        btn.onclick = () => {
+          closeAnalyticsModal();
+          applyFilter('ALL');
+          currentFilteredIndex = idx;
+          renderQuestion();
+        };
+
+        gridContainer.appendChild(btn);
+      });
+
+      document.getElementById('analyticsModal').classList.remove('hidden');
+    }
+
+    function closeAnalyticsModal() {
+      document.getElementById('analyticsModal').classList.add('hidden');
+    }
+
+    function promptReset() {
+      document.getElementById('resetModal').classList.remove('hidden');
+    }
+
+    function closeResetModal() {
+      document.getElementById('resetModal').classList.add('hidden');
+    }
+
+    function confirmReset() {
+      userAnswers = {};
+      bookmarks.clear();
+      startTime = Date.now();
+      applyFilter('ALL');
+      currentFilteredIndex = 0;
+      closeResetModal();
+      renderQuestion();
+    }
+  </script>
+</body>
+</html>
