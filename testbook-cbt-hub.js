@@ -4,6 +4,13 @@
    ========================================================================== */
 
 (() => {
+    document.querySelectorAll('img[alt="Mohit Yadav"]').forEach(img => { img.alt = 'Mohit'; });
+  const nameWalker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  while (nameWalker.nextNode()) {
+    if (nameWalker.currentNode.nodeValue.trim() === 'Mohit Yadav') {
+      nameWalker.currentNode.nodeValue = nameWalker.currentNode.nodeValue.replace('Mohit Yadav', 'Mohit');
+    }
+  }
   // Check if we are on a hub page with #quiz-view
   const quizView = document.getElementById('quiz-view');
   if (!quizView) return;
@@ -79,7 +86,7 @@
           <div class="tb-palette-header">
             <img src="mohit.png" alt="Candidate" class="tb-palette-avatar">
             <div class="tb-palette-user-info">
-              <b>Mohit Yadav</b>
+              <b>Mohit</b>
               <span>Candidate ID: MY-2026</span>
             </div>
           </div>
