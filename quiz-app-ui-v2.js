@@ -1,167 +1,88 @@
 /* Shared presentation layer for every direct quiz page.
-   Enforces high-contrast Testbook CBT layout and readability. */
+   Preserves the original beautiful dark/cosmic quiz theme.
+   Only adds message bridge + glow enhancements for correct/incorrect. */
 (() => {
-  // Purge broken white-on-white theme styles immediately
+  // 1. Purge broken white-on-white styles
   const purgeBrokenStyles = () => {
-    const broken = document.querySelectorAll('#cosmic-readable-quiz-theme, #lavender-quiz-layer, #lavender-quiz-app-ui, #readability-safeguard');
-    broken.forEach(b => b.remove());
+    document.querySelectorAll(
+      '#cosmic-readable-quiz-theme, #lavender-quiz-layer, #lavender-quiz-app-ui, #readability-safeguard, #light-celestial-readability'
+    ).forEach(el => el.remove());
   };
   purgeBrokenStyles();
   document.addEventListener('DOMContentLoaded', purgeBrokenStyles);
 
-  if (document.getElementById('testbook-quiz-cbt-layer')) return;
+  if (document.getElementById('quiz-ui-v2-layer')) return;
+
+  const isInFrame = (window.self !== window.top);
+
   const style = document.createElement('style');
-  style.id = 'testbook-quiz-cbt-layer';
+  style.id = 'quiz-ui-v2-layer';
   style.textContent = `
-    :root {
-      --tb-text: #0f172a;
-      --tb-body: #1e293b;
-      --tb-surface: #ffffff;
-      --tb-border: #cbd5e1;
-      --tb-primary: #0284c7;
-      --tb-green: #10b981;
-      --tb-red: #ef4444;
-    }
-    html, body {
-      background: #ffffff !important;
-      color: var(--tb-text) !important;
-      font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
-      padding-bottom: 24px !important;
-    }
-    body:before, body:after { display: none !important; }
-    
-    /* Quiz Container */
-    main > div, #quiz-card, #quiz-container {
-      background: #ffffff !important;
-      border: 1.5px solid #e2e8f0 !important;
-      border-radius: 12px !important;
-      color: var(--tb-text) !important;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.04) !important;
-      padding: clamp(16px, 3vw, 28px) !important;
-    }
-    
-    /* 100% Guaranteed Legible Question Text */
-    #question-text, #question-text-en, #question-text-hi, [id*='question' i][class*='text'], h2#question-text, .question-text {
-      color: #0f172a !important;
-      font-size: clamp(1.1rem, 2vw, 1.35rem) !important;
-      font-weight: 600 !important;
-      line-height: 1.55 !important;
-      text-shadow: none !important;
-      margin-bottom: 20px !important;
-    }
 
-    #question-counter, #question-tag {
-      color: #475569 !important;
-      font-weight: 600 !important;
-    }
-    
-    /* Testbook Option Cards */
-    #options-container button, #options button, [id*='option' i] button, button[class*='option'], [role='radio'], .option {
-      width: 100% !important;
-      min-height: 52px !important;
-      margin: 10px 0 !important;
-      padding: 14px 18px !important;
-      border: 1.5px solid #cbd5e1 !important;
-      border-radius: 8px !important;
-      background: #ffffff !important;
-      color: #1e293b !important;
-      font-size: 15px !important;
-      font-weight: 500 !important;
-      text-align: left !important;
-      display: flex !important;
-      align-items: center !important;
-      box-shadow: none !important;
-      text-shadow: none !important;
-      transition: all 0.16s ease !important;
-    }
-
-    #options-container button:hover, #options button:hover, button[class*='option']:hover {
-      background: #f0f7ff !important;
-      border-color: #0284c7 !important;
-      color: #0369a1 !important;
-    }
-
-    .selected, [aria-checked='true'] {
-      border-color: #0284c7 !important;
+    /* ================================================================
+       CORRECT ANSWER — Vivid Green Glow (works on dark & light theme)
+       ================================================================ */
+    #options-container button[class*="bg-emerald"],
+    #options-container button[class*="border-emerald"],
+    #options button[class*="bg-emerald"],
+    #options button[class*="border-emerald"],
+    button[class*="bg-emerald-5"],
+    button[class*="border-emerald-5"],
+    .correct, .is-correct {
+      box-shadow: 0 0 22px rgba(5, 150, 105, 0.65), 0 0 6px rgba(5, 150, 105, 0.35) !important;
       border-width: 2px !important;
-      background: #e0f2fe !important;
-      color: #0369a1 !important;
-      font-weight: 600 !important;
     }
 
-    [class*='correct' i], [class*='emerald' i], [class*='green' i] {
-      background: #ecfdf5 !important;
-      border-color: #10b981 !important;
+    /* ================================================================
+       INCORRECT ANSWER — Vivid Red Glow (works on dark & light theme)
+       ================================================================ */
+    #options-container button[class*="bg-rose"],
+    #options-container button[class*="border-rose"],
+    #options button[class*="bg-rose"],
+    #options button[class*="border-rose"],
+    button[class*="bg-rose-5"],
+    button[class*="border-rose-5"],
+    .wrong, .incorrect, .is-incorrect {
+      box-shadow: 0 0 22px rgba(220, 38, 38, 0.55), 0 0 6px rgba(220, 38, 38, 0.3) !important;
       border-width: 2px !important;
-      color: #065f46 !important;
-      font-weight: 600 !important;
     }
 
-    [class*='incorrect' i], [class*='rose' i], [class*='red' i], .wrong {
-      background: #fef2f2 !important;
-      border-color: #ef4444 !important;
-      border-width: 2px !important;
-      color: #991b1b !important;
-      font-weight: 600 !important;
+    /* ================================================================
+       DOCK — Show only when NOT inside a hub iframe
+       ================================================================ */
+    ${isInFrame
+      ? `#quiz-question-dock, #direct-quiz-dock, #cosmic-quiz-dock { display: none !important; }`
+      : `#quiz-question-dock, #direct-quiz-dock, #cosmic-quiz-dock { display: flex !important; }`
     }
 
-    /* Explanation & Rationale */
-    #rationale-box, .explanation-box, [id*='rationale' i], [id*='explanation' i] {
-      background: #f8fafc !important;
-      border: 1px solid #cbd5e1 !important;
-      border-left: 4px solid #0284c7 !important;
-      border-radius: 8px !important;
-      padding: 16px !important;
-      margin-top: 20px !important;
-      color: #1e293b !important;
+    /* ================================================================
+       RATIONALE / EXPLANATION BOX — always visible after answering
+       ================================================================ */
+    #rationale-box:not(.hidden),
+    #explanation-box:not(.hidden) {
+      opacity: 1 !important;
+      visibility: visible !important;
     }
 
-    #rationale-title, .explanation-title {
-      color: #0f172a !important;
-      font-weight: 700 !important;
-    }
-
-    #rationale-text, .explanation-text {
-      color: #334155 !important;
-      line-height: 1.6 !important;
-    }
-
-    /* Hide redundant internal docked bar when framed */
-    #quiz-question-dock, #direct-dock, #cosmic-quiz-dock {
-      display: none !important;
-    }
+    /* Small cosmetic tweaks — don't override quiz background */
+    .text-emerald-400 { color: #34d399 !important; }
+    .text-rose-400    { color: #fb7185 !important; }
   `;
   document.head.append(style);
 
-  // Auto-enhance options with A, B, C, D badges
-  const addOptionBadges = () => {
-    const letters = ['A', 'B', 'C', 'D', 'E'];
-    const options = document.querySelectorAll('#options-container button, #options button, .option');
-    options.forEach((btn, idx) => {
-      if (btn.querySelector('.tb-opt-badge')) return;
-      const letter = letters[idx % letters.length];
-      const badge = document.createElement('span');
-      badge.className = 'tb-opt-badge';
-      badge.style.cssText = 'display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:#f1f5f9;color:#0f172a;font-weight:700;font-size:12px;margin-right:12px;flex-shrink:0;border:1px solid #cbd5e1;';
-      badge.textContent = letter;
-      btn.prepend(badge);
-    });
-  };
-
-  addOptionBadges();
-  new MutationObserver(addOptionBadges).observe(document.body, { childList: true, subtree: true });
-
-  // Listen for navigation messages from parent Testbook CBT interface
+  // 2. Listen for navigation commands from parent Testbook CBT hub
   window.addEventListener('message', event => {
     const data = event.data;
     if (!data || !data.action) return;
 
     if (data.action === 'NEXT') {
-      const nextBtn = document.querySelector('#next-btn, #next, button[data-action="next"]');
-      if (nextBtn && !nextBtn.disabled) nextBtn.click();
+      const btn = document.querySelector('#next-btn, #next, button[data-action="next"]');
+      if (btn && !btn.disabled) btn.click();
+
     } else if (data.action === 'PREV') {
-      const prevBtn = document.querySelector('#prev-btn, #previous, button[data-action="prev"]');
-      if (prevBtn && !prevBtn.disabled) prevBtn.click();
+      const btn = document.querySelector('#prev-btn, #previous, #prevBtn, button[data-action="prev"]');
+      if (btn && !btn.disabled) btn.click();
+
     } else if (data.action === 'JUMP') {
       const target = Number(data.question);
       const jumpInput = document.querySelector('#jump-input, input[id*="jump" i]');
@@ -171,20 +92,38 @@
         jumpBtn.click();
       } else if (window.loadQuestion) {
         window.loadQuestion(target - 1);
+      } else if (window.jumpToQuestion) {
+        window.jumpToQuestion(target);
       }
+
     } else if (data.action === 'CLEAR') {
-      document.querySelectorAll('.selected, [aria-checked="true"]').forEach(el => el.classList.remove('selected'));
+      document.querySelectorAll('.selected, [aria-checked="true"]').forEach(el => {
+        el.classList.remove('selected');
+        el.removeAttribute('aria-checked');
+      });
     }
   });
 
-  // Report state to parent
-  const sendStateToParent = () => {
+  // 3. Report current quiz state to parent CBT hub
+  const sendState = () => {
+    if (!isInFrame) return;
     try {
-      const counterText = document.querySelector('#question-counter, [data-question-number], .question-number')?.textContent || '';
+      // Detect question counter
+      const counterEl = document.querySelector(
+        '#question-counter, #question-tracker, [data-question-number], .question-number'
+      );
+      const counterText = counterEl?.textContent || '';
       const match = counterText.match(/(\d+)\s*(?:of|\/)\s*(\d+)/i) || counterText.match(/(\d+)/);
       const currentQ = match ? Number(match[1]) : 1;
-      const totalQ = (match && match[2]) ? Number(match[2]) : (window.quizData?.length || 90);
-      const isAnswered = Boolean(document.querySelector('.selected, .correct, .wrong, [aria-checked="true"]'));
+      const totalQ   = (match && match[2]) ? Number(match[2]) : (window.quizData?.length || 90);
+
+      // Detect if current question has been answered
+      const isAnswered = Boolean(
+        document.querySelector(
+          '[class*="bg-emerald"], [class*="bg-rose"], [class*="border-emerald-5"], [class*="border-rose-5"],' +
+          '.correct, .wrong, .selected, [aria-checked="true"]'
+        )
+      );
 
       window.parent.postMessage({
         type: 'TB_QUIZ_STATE',
@@ -195,6 +134,6 @@
     } catch (e) {}
   };
 
-  window.addEventListener('load', sendStateToParent);
-  setInterval(sendStateToParent, 400);
+  window.addEventListener('load', sendState);
+  setInterval(sendState, 500);
 })();

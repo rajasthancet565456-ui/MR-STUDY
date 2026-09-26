@@ -13,9 +13,10 @@
     totalQuestions: 90,
     currentQuestion: 1,
     questionStatus: {}, // 1: 'answered' | 'not-answered' | 'marked' | 'not-visited'
-    timerSeconds: 45 * 60, // 45 minutes standard exam timer
+    timerSeconds: 45 * 60,
     timerInterval: null,
-    examTitle: 'Interactive Practice Test'
+    examTitle: 'Interactive Practice Test',
+    lastIsAnswered: false  // tracks if current question iframe has an answer selected
   };
 
   // Build Testbook CBT Container
@@ -135,10 +136,13 @@
 
     if (btnNext) {
       btnNext.addEventListener('click', () => {
-        // If current wasn't answered, mark as not-answered
-        if (!state.questionStatus[state.currentQuestion] || state.questionStatus[state.currentQuestion] === 'not-visited') {
+        // Check if question was answered by reading isAnswered from last known frame state
+        if (state.lastIsAnswered) {
+          state.questionStatus[state.currentQuestion] = 'answered';
+        } else if (!state.questionStatus[state.currentQuestion] || state.questionStatus[state.currentQuestion] === 'not-visited') {
           state.questionStatus[state.currentQuestion] = 'not-answered';
         }
+        updatePaletteGrid();
         sendToFrame('NEXT');
       });
     }
@@ -151,8 +155,8 @@
 
     if (btnClear) {
       btnClear.addEventListener('click', () => {
-        delete state.questionStatus[state.currentQuestion];
         state.questionStatus[state.currentQuestion] = 'not-answered';
+        state.lastIsAnswered = false;
         sendToFrame('CLEAR');
         updatePaletteGrid();
       });
@@ -161,6 +165,7 @@
     if (btnReview) {
       btnReview.addEventListener('click', () => {
         state.questionStatus[state.currentQuestion] = 'marked';
+        state.lastIsAnswered = false;
         updatePaletteGrid();
         sendToFrame('NEXT');
       });
@@ -363,6 +368,9 @@
       state.currentQuestion = data.currentQuestion;
     }
 
+    // Store answered state for Save & Next button to use
+    state.lastIsAnswered = !!data.isAnswered;
+
     if (data.isAnswered) {
       state.questionStatus[state.currentQuestion] = 'answered';
     }
@@ -375,22 +383,27 @@
     const hash = location.hash.replace('#', '') || 'home';
     if (hash.startsWith('quiz/')) {
       buildTestbookCBTLayout();
+
+      // Reset state for this new quiz
+      state.questionStatus = {};
+      state.currentQuestion = 1;
+      state.lastIsAnswered = false;
+
       startTimer();
+
       const title = document.getElementById('quiz-title')?.textContent || 'Interactive Practice Test';
       const elTitle = document.getElementById('tb-exam-title');
       if (elTitle) elTitle.textContent = title;
-      
-      // Check frame and sanitize immediately
+
+      // Apply CBT engine enhancements to iframe after it loads
       setTimeout(() => {
         const frame = document.querySelector('.quiz-frame');
-        if (frame) {
+        if (frame && window.TestbookCBTEngine) {
           try {
-            if (window.TestbookCBTEngine) {
-              window.TestbookCBTEngine.applyContrastSafeguard(frame.contentDocument);
-            }
+            window.TestbookCBTEngine.applyContrastSafeguard(frame.contentDocument);
           } catch(e) {}
         }
-      }, 300);
+      }, 500);
     }
   }
 
