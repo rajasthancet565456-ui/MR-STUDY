@@ -4,24 +4,18 @@
    ========================================================================== */
 
 (() => {
-  function normalizeMohit(node) {
-    if (!node) return;
-    const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT);
-    const textNodes = [];
-    while (walker.nextNode()) textNodes.push(walker.currentNode);
-    if (node.nodeType === Node.TEXT_NODE) textNodes.push(node);
-    textNodes.forEach(text => { const normalized = text.nodeValue.replace(/\bMohit\s+Yadav\b/g, 'Mohit'); if (normalized !== text.nodeValue) text.nodeValue = normalized; });
-    if (node.nodeType === Node.ELEMENT_NODE) {
-      if (node.matches('img[alt="Mohit Yadav"]')) node.alt = 'Mohit';
-      node.querySelectorAll('img[alt="Mohit Yadav"]').forEach(img => { img.alt = 'Mohit'; });
+  function normalizeMohit() {
+    document.querySelectorAll('img[alt="Mohit Yadav"]').forEach(img => { img.alt = 'Mohit'; });
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    while (walker.nextNode()) {
+      const text = walker.currentNode;
+      const normalized = text.nodeValue.replace(/\bMohit\s+Yadav\b/g, 'Mohit');
+      if (normalized !== text.nodeValue) text.nodeValue = normalized;
     }
   }
-  normalizeMohit(document.body);
-  new MutationObserver(records => records.forEach(record => {
-    if (record.type === 'characterData') normalizeMohit(record.target);
-    if (record.type === 'attributes') normalizeMohit(record.target);
-    record.addedNodes.forEach(normalizeMohit);
-  })).observe(document.body, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ['alt'] });
+  normalizeMohit();
+  document.addEventListener('DOMContentLoaded', normalizeMohit, { once: true });
+  setTimeout(normalizeMohit, 250);
   // Check if we are on a hub page with #quiz-view
   const quizView = document.getElementById('quiz-view');
   if (!quizView) return;
