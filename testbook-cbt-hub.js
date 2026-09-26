@@ -10,7 +10,7 @@
     const textNodes = [];
     while (walker.nextNode()) textNodes.push(walker.currentNode);
     if (node.nodeType === Node.TEXT_NODE) textNodes.push(node);
-    textNodes.forEach(text => { text.nodeValue = text.nodeValue.replace(/\bMohit\s+Yadav\b/g, 'Mohit'); });
+    textNodes.forEach(text => { const normalized = text.nodeValue.replace(/\bMohit\s+Yadav\b/g, 'Mohit'); if (normalized !== text.nodeValue) text.nodeValue = normalized; });
     if (node.nodeType === Node.ELEMENT_NODE) {
       if (node.matches('img[alt="Mohit Yadav"]')) node.alt = 'Mohit';
       node.querySelectorAll('img[alt="Mohit Yadav"]').forEach(img => { img.alt = 'Mohit'; });
