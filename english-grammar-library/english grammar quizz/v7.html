@@ -1,0 +1,1000 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Grammar Quiz - Modals & Advanced Verbs</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 min-h-screen text-slate-800 flex flex-col font-sans">
+
+    <!-- Header -->
+    <header class="bg-indigo-700 text-white shadow-md py-4 px-6 sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
+            <div>
+                <h1 class="text-xl font-bold tracking-wide">English Verb & Auxiliary Quiz</h1>
+                <p class="text-xs text-indigo-200">Syllabus Coverage: Pages 61–70 (Modals, Semi-Modals & Verb Mechanics)</p>
+            </div>
+            <div class="flex items-center gap-4 bg-indigo-800 px-4 py-2 rounded-lg border border-indigo-600">
+                <div class="text-center">
+                    <span class="block text-xs text-indigo-300 uppercase font-semibold">Score</span>
+                    <span id="score-display" class="text-lg font-bold text-yellow-300">0 / 0</span>
+                </div>
+                <div class="h-8 w-px bg-indigo-600"></div>
+                <div class="text-center">
+                    <span class="block text-xs text-indigo-300 uppercase font-semibold">Progress</span>
+                    <span id="progress-text" class="text-lg font-bold text-white">1 / 50</span>
+                </div>
+            </div>
+        </div>
+        <!-- Progress Bar -->
+        <div class="w-full bg-indigo-900 h-2 mt-3 rounded-full overflow-hidden max-w-4xl mx-auto">
+            <div id="progress-bar" class="bg-yellow-400 h-full w-0 transition-all duration-300"></div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-4xl w-full mx-auto p-4 sm:p-6 flex flex-col justify-between">
+        
+        <!-- Quiz Card -->
+        <div id="quiz-card" class="bg-white rounded-xl shadow-md border border-slate-200 p-6 mb-6 flex-grow flex flex-col justify-between">
+            
+            <div>
+                <!-- Question Meta Header -->
+                <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-100">
+                    <span id="question-number" class="text-xs font-bold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-100">
+                        Question 1
+                    </span>
+                    <span id="subtopic-tag" class="text-xs font-medium text-slate-500 bg-slate-100 px-2.5 py-1 rounded">
+                        Topic
+                    </span>
+                </div>
+
+                <!-- Question Text -->
+                <div id="question-text" class="text-base sm:text-lg font-semibold text-slate-800 mb-6 leading-relaxed">
+                    Loading question...
+                </div>
+
+                <!-- Hint Collapsible Button -->
+                <div class="mb-4">
+                    <button id="hint-toggle-btn" onclick="toggleHint()" class="text-xs font-semibold text-amber-600 hover:text-amber-700 bg-amber-50 hover:bg-amber-100 px-3 py-1.5 rounded-md border border-amber-200 transition-colors flex items-center gap-1">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        Need a Hint?
+                    </button>
+                    <div id="hint-box" class="hidden mt-2 p-3 bg-amber-50 border-l-4 border-amber-400 text-xs text-amber-800 rounded">
+                        <span id="hint-text">Hint content...</span>
+                    </div>
+                </div>
+
+                <!-- Options List -->
+                <div id="options-container" class="space-y-3 mb-6">
+                    <!-- Options populated dynamically -->
+                </div>
+            </div>
+
+            <!-- Explanation Box -->
+            <div id="explanation-box" class="hidden mt-4 p-4 bg-slate-50 border-l-4 border-indigo-500 rounded-r-lg">
+                <h4 class="text-xs font-bold text-indigo-900 uppercase tracking-wider mb-1">Detailed Rationale / Explanation:</h4>
+                <p id="explanation-text" class="text-sm text-slate-700 leading-relaxed"></p>
+            </div>
+
+        </div>
+
+        <!-- Navigation & Controls Footer -->
+        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center gap-2">
+                <button id="prev-btn" onclick="prevQuestion()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium text-sm rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                    Previous
+                </button>
+                <button id="next-btn" onclick="nextQuestion()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-sm rounded-lg transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
+                    Next
+                </button>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <label for="jump-input" class="text-xs text-slate-500 font-medium">Jump to:</label>
+                <input type="number" id="jump-input" min="1" max="50" class="w-16 px-2 py-1 text-sm border border-slate-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500 text-center" placeholder="1-50">
+                <button onclick="jumpToQuestion()" class="px-3 py-1 bg-slate-800 hover:bg-slate-900 text-white text-xs font-medium rounded transition-colors">
+                    Go
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Quiz Dataset and Logic Script -->
+    <script>
+        const quizData = [
+            {
+                id: 1,
+                topic: "Modal Auxiliaries - Core Rules",
+                question: "Which of the following sentences violates the fundamental structural rule regarding Modal Auxiliary Verbs?",
+                options: [
+                    "She can solves any difficult puzzle quickly.",
+                    "She can solve any difficult puzzle quickly.",
+                    "She is able to solve any difficult puzzle quickly.",
+                    "She may solve any difficult puzzle quickly."
+                ],
+                answer: 0,
+                hint: "Modal auxiliary verbs must always be followed directly by the base form of the verb (V1) without any s/es/ed suffixes.",
+                explanation: "Modal auxiliaries (can, could, may, might, should, etc.) take the base verb form ($V_1$). Adding 's' or 'es' to the main verb after a modal ('can solves') is grammatically incorrect."
+            },
+            {
+                id: 2,
+                topic: "Modal Auxiliaries - Double Modals",
+                question: "Identify the grammatically INCORRECT sentence regarding modal usage:",
+                options: [
+                    "You should must attend the meeting today.",
+                    "You must attend the meeting today.",
+                    "You should attend the meeting today.",
+                    "You ought to attend the meeting today."
+                ],
+                answer: 0,
+                hint: "Two modal auxiliaries cannot be used together directly to qualify the same main verb.",
+                explanation: "Two modal auxiliaries cannot be used consecutively ('should must'). They can only be connected via conjunctions like 'and' or 'or' if applicable (e.g., 'should and must')."
+            },
+            {
+                id: 3,
+                topic: "Can vs. Could - Ability",
+                question: "Which sentence correctly demonstrates 'Could' expressing past ability?",
+                options: [
+                    "When I was young, I could run ten miles without stopping.",
+                    "When I am young, I could run ten miles without stopping.",
+                    "I can ran ten miles when I was in school.",
+                    "I could running ten miles when I was young."
+                ],
+                answer: 0,
+                hint: "'Can' expresses present ability, whereas 'Could' expresses past ability."
+            ,
+                explanation: "'Could' is used as the past form of 'Can' to denote ability, capacity, or capability in the past. Option A correctly pairs 'was young' with 'could run'."
+            },
+            {
+                id: 4,
+                topic: "Can vs. May - Permission",
+                question: "In formal contexts, which modal auxiliary is preferred to grant or request official permission?",
+                options: [
+                    "May",
+                    "Can",
+                    "Might",
+                    "Would"
+                ],
+                answer: 0,
+                hint: "While 'can' denotes informal permission, this modal denotes formal permission.",
+                explanation: "'May' is used to denote formal permission (e.g., 'May I come in, sir?'). 'Can' denotes informal permission among peers."
+            },
+            {
+                id: 5,
+                topic: "May vs. Might - Possibility",
+                question: "Select the sentence that indicates a weaker/remote possibility:",
+                options: [
+                    "It might rain tonight, though the sky looks mostly clear.",
+                    "It may rain tonight, as clouds are gathering.",
+                    "It will rain tonight for sure.",
+                    "It can rain tonight naturally."
+                ],
+                answer: 0,
+                hint: "'May' expresses strong/moderate possibility, whereas 'Might' denotes remote/faint possibility.",
+                explanation: "'Might' conveys a lower probability or remote possibility compared to 'May'. A clear sky with a slim chance of rain correctly calls for 'might'."
+            },
+            {
+                id: 6,
+                topic: "May - Purpose Clauses",
+                question: "Complete the sentence correctly: 'We eat so that we _____ live.'",
+                options: [
+                    "may",
+                    "might",
+                    "can",
+                    "would"
+                ],
+                answer: 0,
+                hint: "Subordinate clauses expressing purpose introduced by 'so that' in the present tense take 'may'.",
+                explanation: "When the main clause is in the present tense and connected by 'so that' / 'in order that' expressing purpose, 'may' is used in the subordinate clause."
+            },
+            {
+                id: 7,
+                topic: "May - Optative Sentences",
+                question: "Which modal is used to express a wish, prayer, or blessing in optative sentences?",
+                options: [
+                    "May",
+                    "Might",
+                    "Can",
+                    "Shall"
+                ],
+                answer: 0,
+                hint: "Example: '_____ God bless you!'",
+                explanation: "Optative sentences expressing blessings, wishes, or prayers begin with 'May' (e.g., 'May long live the King!')."
+            },
+            {
+                id: 8,
+                topic: "May have / Might have",
+                question: "Choose the correct modal phrase: 'He was absent yesterday; he _____ been sick.'",
+                options: [
+                    "may have",
+                    "can have",
+                    "should to",
+                    "must to"
+                ],
+                answer: 0,
+                hint: "To express possibility about a past event, use Modal + have + V3.",
+                explanation: "'May have + V3' or 'Might have + V3' is used to express possibility or speculation regarding a past action."
+            },
+            {
+                id: 9,
+                topic: "Redundancy Rules - May / Might",
+                question: "Spot the error in the sentence: 'It may possibly rain tomorrow.'",
+                options: [
+                    "The combination of 'may' and 'possibly' creates redundancy.",
+                    "The verb 'rain' should be 'raining'.",
+                    "'Tomorrow' cannot be used with 'may'.",
+                    "'It' should be replaced by 'There'."
+                ],
+                answer: 0,
+                hint: "'May' and 'Might' already express possibility; pairing them with words like 'likely' or 'possibly' is redundant.",
+                explanation: "Using 'may/might' alongside 'possibly' or 'likely' makes the sentence superfluous/redundant. It should be either 'It may rain tomorrow' or 'It will possibly rain tomorrow'."
+            },
+            {
+                id: 10,
+                topic: "Shall vs. Will - First Person",
+                question: "In standard traditional English grammar, 'shall' is used with which subjects in the simple future tense?",
+                options: [
+                    "I and We",
+                    "He and She",
+                    "You and They",
+                    "It and Singular Nouns"
+                ],
+                answer: 0,
+                hint: "First-person pronouns take 'shall' for plain future assertion.",
+                explanation: "Traditionally, 'Shall' is used with First Person subjects ('I' and 'We'), while 'Will' is used with Second and Third Person subjects."
+            },
+            {
+                id: 11,
+                topic: "Shall - Command, Promise, Threat",
+                question: "When 'Shall' is used with Second/Third Person subjects (You, He, She, They), it denotes:",
+                options: [
+                    "Command, Promise, Threat, or Determination",
+                    "Casual request",
+                    "Past habit",
+                    "Remote possibility"
+                ],
+                answer: 0,
+                hint: "Reversing the standard shall/will pattern emphasizes strong intent, legal mandates, or promises.",
+                explanation: "Using 'Shall' with 2nd and 3rd person pronouns changes the tone from plain future to Command, Promise, Threat, Determination, or Legal Obligation (e.g., 'You shall be rewarded')."
+            },
+            {
+                id: 12,
+                topic: "Shall - Interrogative Suggestions",
+                question: "Choose the correct sentence for offering a suggestion in the first person:",
+                options: [
+                    "Shall we begin the meeting now?",
+                    "Will we begin the meeting now?",
+                    "Would we begin the meeting now?",
+                    "May we to begin the meeting now?"
+                ],
+                answer: 0,
+                hint: "'Shall I/We...?' is the standard form for seeking agreement or making a suggestion.",
+                explanation: "In interrogative sentences with 'I' and 'We', 'Shall' is used to make suggestions or ask for the listener's advice/consent."
+            },
+            {
+                id: 13,
+                topic: "Would - Past Habits",
+                question: "Which modal verb can be used to express past habitual actions alongside 'used to'?",
+                options: [
+                    "Would",
+                    "Should",
+                    "May",
+                    "Must"
+                ],
+                answer: 0,
+                hint: "e.g., 'After school, we _____ play cricket every evening.'",
+                explanation: "'Would' expresses past routines or repeated past actions (e.g., 'He would sit for hours listening to music')."
+            },
+            {
+                id: 14,
+                topic: "Would - Polite Requests",
+                question: "Complete the sentence politely: '_____ you mind opening the door for me?'",
+                options: [
+                    "Would",
+                    "Should",
+                    "Must",
+                    "Shall"
+                ],
+                answer: 0,
+                hint: "'Would you mind + V1-ing...?' is a standard polite construction.",
+                explanation: "'Would' is commonly used in polite phrasing and requests, especially with expressions like 'Would you mind...?' or 'Would you like...?'."
+            },
+            {
+                id: 15,
+                topic: "Would rather - Preference",
+                question: "Fill in the blank: 'I would rather die than _____.'",
+                options: [
+                    "beg",
+                    "begged",
+                    "begging",
+                    "to beg"
+                ],
+                answer: 0,
+                hint: "'Would rather' takes a bare infinitive (V1) without 'to'.",
+                explanation: "'Would rather' indicates preference and is followed by a bare infinitive ($V_1$). The construction is: 'Subject + would rather + V1 + than + V1'."
+            },
+            {
+                id: 16,
+                topic: "Should - Moral Duty / Advice",
+                question: "Which modal auxiliary best expresses moral duty or general advice?",
+                options: [
+                    "Should",
+                    "May",
+                    "Could",
+                    "Might"
+                ],
+                answer: 0,
+                hint: "Example: 'We _____ obey traffic rules.'",
+                explanation: "'Should' is primarily used to offer advice, recommendations, or express moral obligation."
+            },
+            {
+                id: 17,
+                topic: "Lest ... Should",
+                question: "Identify the correct conjunction-modal pair: 'Work hard lest you _____ fail.'",
+                options: [
+                    "should",
+                    "will",
+                    "may",
+                    "would"
+                ],
+                answer: 0,
+                hint: "'Lest' is negative by nature and always pairs with one specific modal.",
+                explanation: "'Lest' must always be followed by 'should' (or a bare subjunctive verb). It means 'for fear that' and never takes additional negative words like 'not'."
+            },
+            {
+                id: 18,
+                topic: "Lest - Redundancy",
+                question: "Which of the following sentences is grammatically INCORRECT?",
+                options: [
+                    "Run fast lest you should not miss the train.",
+                    "Run fast lest you should miss the train.",
+                    "Run fast lest you miss the train.",
+                    "Walk carefully lest you should stumble."
+                ],
+                answer: 0,
+                hint: "'Lest' already implies a negative outcome, so adding 'not' creates a double negative error.",
+                explanation: "'Lest' inherently means 'so that... not'. Adding 'not' after 'lest' ('lest you should not miss') is a grammatical error."
+            },
+            {
+                id: 19,
+                topic: "Ought to - Moral Obligation",
+                question: "How does 'Ought' differ structurally from other primary modal auxiliaries?",
+                options: [
+                    "It is always followed by an infinitive with 'to' (Ought + to + V1).",
+                    "It takes -ing forms.",
+                    "It cannot be used in past tense.",
+                    "It requires the auxiliary verb 'do'."
+                ],
+                answer: 0,
+                hint: "Unlike 'should' or 'must', 'ought' requires a particle before the main verb.",
+                explanation: "'Ought' is uniquely followed by the preposition 'to' ($Ought + to + V_1$) to express moral obligation or duty."
+            },
+            {
+                id: 20,
+                topic: "Must - Compulsion / Necessity",
+                question: "Which sentence conveys fixed compulsion or absolute necessity?",
+                options: [
+                    "Candidates must answer all questions in this section.",
+                    "Candidates should answer all questions in this section.",
+                    "Candidates may answer all questions in this section.",
+                    "Candidates could answer all questions in this section."
+                ],
+                answer: 0,
+                hint: "'Must' indicates strict compulsion or mandatory requirement.",
+                explanation: "'Must' denotes firm obligation, compulsion, or mandatory rules, whereas 'should' implies advice."
+            },
+            {
+                id: 21,
+                topic: "Must - Strong Inference",
+                question: "Select the sentence where 'Must' denotes logical deduction or strong inference:",
+                options: [
+                    "He has a massive mansion and three luxury cars; he must be very rich.",
+                    "You must turn off the lights when leaving.",
+                    "We must follow the constitution.",
+                    "You must take this medicine twice daily."
+                ],
+                answer: 0,
+                hint: "Look for a conclusion drawn from circumstantial evidence.",
+                explanation: "'Must' is used for strong logical conclusion/deduction based on available facts."
+            },
+            {
+                id: 22,
+                topic: "Used to - Discontinued Habit",
+                question: "What does 'Subject + used to + V1' express?",
+                options: [
+                    "A past habitual action or state that is no longer continued in the present.",
+                    "A present routine action.",
+                    "A future planned activity.",
+                    "A compulsory current action."
+                ],
+                answer: 0,
+                hint: "e.g., 'He used to smoke' implies he does not smoke now.",
+                explanation: "'Used to + V1' denotes a past habit, custom, or state that no longer exists today."
+            },
+            {
+                id: 23,
+                topic: "Be + used to + V1-ing / Noun",
+                question: "Choose the grammatically correct sentence:",
+                options: [
+                    "She is used to waking up early in the morning.",
+                    "She is used to wake up early in the morning.",
+                    "She used to waking up early in the morning.",
+                    "She was used to wake up early in the morning."
+                ],
+                answer: 0,
+                hint: "When 'used to' is preceded by a form of 'Be' (is/am/are/was/were) or 'Get', it functions as an adjective phrase followed by a Gerund (V1+ing).",
+                explanation: "Structure: 'Subject + Be/Get/Become + used to + V1+ing / Noun'. Here 'used to' means 'accustomed to', requiring a gerund."
+            },
+            {
+                id: 24,
+                topic: "Dare / Need - Dual Nature",
+                question: "Why are 'Dare' and 'Need' classified as Semi-Modals (Marginal Auxiliary Verbs)?",
+                options: [
+                    "Because they can function both as Modal Auxiliaries and as Main Verbs.",
+                    "Because they can only be used in past tense.",
+                    "Because they do not take any subjects.",
+                    "Because they are purely adverbs."
+                ],
+                answer: 0,
+                hint: "Consider how they behave in negative sentences vs. affirmative sentences.",
+                explanation: "'Need' and 'Dare' are semi-modals because they act as modal auxiliaries (in negative/interrogative structures) and as main verbs (taking -s/es, ed, and 'to-infinitive')."
+            },
+            {
+                id: 25,
+                topic: "Need not - Structure",
+                question: "Identify the correct negative modal construction:",
+                options: [
+                    "You need not come tomorrow.",
+                    "You need not to come tomorrow.",
+                    "You do not need come tomorrow.",
+                    "You needs not come tomorrow."
+                ],
+                answer: 0,
+                hint: "When 'need' acts as a modal in negative form ('need not'), it is directly followed by a bare infinitive (V1 without 'to').",
+                explanation: "As a modal auxiliary, 'need not' takes a bare infinitive ($V_1$). Adding 'to' after 'need not' ('need not to come') is incorrect."
+            },
+            {
+                id: 26,
+                topic: "Need as Main Verb",
+                question: "Select the correct sentence where 'Need' acts as a Main Verb:",
+                options: [
+                    "He needs to buy a new book.",
+                    "He need to buy a new book.",
+                    "He needs buy a new book.",
+                    "He need buying a new book."
+                ],
+                answer: 0,
+                hint: "As a main verb with a singular subject (He/She), 'Need' takes 's' and requires a full infinitive (to + V1).",
+                explanation: "When 'Need' functions as a Main Verb in affirmative sentences, it follows standard verb conjugation: 'He needs + to + V1'."
+            },
+            {
+                id: 27,
+                topic: "Dare not - Structure",
+                question: "Which sentence correctly uses 'Dare' as a modal auxiliary?",
+                options: [
+                    "He dare not oppose his father.",
+                    "He dares not oppose his father.",
+                    "He dare not to oppose his father.",
+                    "He dares not to oppose his father."
+                ],
+                answer: 0,
+                hint: "Modals do not take -s/es endings even with singular subjects (He/She).",
+                explanation: "When 'dare' functions as a modal verb, it remains 'dare' (not 'dares') for third-person singular subjects in negative forms, followed by a bare infinitive ('dare not oppose')."
+            },
+            {
+                id: 28,
+                topic: "Dare as Main Verb",
+                question: "Choose the correct sentence where 'Dare' is used as a Main Verb:",
+                options: [
+                    "She does not dare to go there alone.",
+                    "She does not dare go there alone.",
+                    "She dares not to go there alone.",
+                    "She do not dare to go there alone."
+                ],
+                answer: 0,
+                hint: "In main verb usage, do/does/did helps form negatives, followed by the full infinitive (to + V1).",
+                explanation: "Using do/does/did indicates that 'dare' is functioning as a main verb, which then takes a 'to + V1' complement: 'does not dare to go'."
+            },
+            {
+                id: 29,
+                topic: "Primary vs. Modal Auxiliaries - Table Comparison",
+                question: "Assertion (A): Modal auxiliaries do not change according to the person or number of the subject.\nReason (R): Primary auxiliaries (do, be, have) inflect according to subject and tense.",
+                options: [
+                    "Both (A) and (R) are true and (R) correctly explains the distinction.",
+                    "(A) is true, but (R) is false.",
+                    "(A) is false, but (R) is true.",
+                    "Both (A) and (R) are false."
+                ],
+                answer: 0,
+                hint: "Compare 'He can' / 'They can' versus 'He is' / 'They are'.",
+                explanation: "Modals (can, may, should) remain invariant across subjects (I/He/They can). Primary auxiliaries change forms (is/am/are, has/have, do/does) based on subject number and tense."
+            },
+            {
+                id: 30,
+                topic: "Conditional Sentences - Type 1",
+                question: "Complete the open conditional sentence: 'If it _____ tomorrow, we will cancel the picnic.'",
+                options: [
+                    "rains",
+                    "will rain",
+                    "rained",
+                    "would rain"
+                ],
+                answer: 0,
+                hint: "The conditional clause (if-clause) in a real future condition takes the Simple Present tense.",
+                explanation: "In Type 1 future conditionals, the 'if-clause' takes Simple Present ($V_1$/s/es) while the main clause takes 'will/shall + V1'."
+            },
+            {
+                id: 31,
+                topic: "Conditional Sentences - Type 2",
+                question: "Select the correct hypothetical condition: 'If I _____ a king, I would help the poor.'",
+                options: [
+                    "were",
+                    "was",
+                    "am",
+                    "had been"
+                ],
+                answer: 0,
+                hint: "Unreal/imaginary present conditions use subjunctive 'were' for all subjects.",
+                explanation: "For imaginary or hypothetical present situations (Type 2), the subjunctive 'were' is used regardless of whether the subject is singular or plural ('If I were', 'If he were')."
+            },
+            {
+                id: 32,
+                topic: "Conditional Sentences - Type 3",
+                question: "Identify the correct structure for past unfulfilled conditions:",
+                options: [
+                    "If + Had + V3 , Subject + would have + V3",
+                    "If + Simple Past , Subject + would + V1",
+                    "If + Present Perfect , Subject + will have + V3",
+                    "If + Had + V3 , Subject + will + V1"
+                ],
+                answer: 0,
+                hint: "e.g., 'If you had worked hard, you would have passed.'"
+            ,
+                explanation: "Type 3 conditionals (impossible past conditions) follow: 'If + Past Perfect (had + V3), Subject + would have / could have / might have + V3'."
+            },
+            {
+                id: 33,
+                topic: "Inversion in Conditionals",
+                question: "Which of the following is equivalent in meaning to: 'If you had informed me, I would have attended the function.'?",
+                options: [
+                    "Had you informed me, I would have attended the function.",
+                    "Should you informed me, I would have attended the function.",
+                    "Were you informed me, I would have attended the function.",
+                    "Did you inform me, I would have attended the function."
+                ],
+                answer: 0,
+                hint: "Omitting 'If' in Type 3 conditionals places 'Had' at the beginning of the clause.",
+                explanation: "Inverting the 'If-clause' in Type 3 conditionals removes 'If' and brings 'Had' to the front: 'Had + Subject + V3...'"
+            },
+            {
+                id: 34,
+                topic: "Subjunctive Mood - Wish / As if",
+                question: "Choose the correct option: 'He talks as if he _____ everything.'",
+                options: [
+                    "knew",
+                    "knows",
+                    "has known",
+                    "will know"
+                ],
+                answer: 0,
+                hint: "Expressions like 'as if' / 'as though' introducing unreal situations require past subjunctive tense.",
+                explanation: "'As if' / 'As though' introducing imaginary clauses require Simple Past tense (or 'were') to denote unreal present situations."
+            },
+            {
+                id: 35,
+                topic: "It is high time + Past Subjunctive",
+                question: "Complete the sentence correctly: 'It is high time we _____ home.'",
+                options: [
+                    "went",
+                    "go",
+                    "should go",
+                    "have gone"
+                ],
+                answer: 0,
+                hint: "The phrase 'It is time' or 'It is high time' followed by a subject requires a V2 (Simple Past) verb.",
+                explanation: "'It is time / It is high time / It is about time + Subject' takes $V_2$ (Simple Past) to signify that an action is already overdue."
+            },
+            {
+                id: 36,
+                topic: "It is high time + Infinitive",
+                question: "Complete the sentence when no subject follows the key phrase: 'It is high time _____.'",
+                options: [
+                    "to start studying",
+                    "started studying",
+                    "should start studying",
+                    "starting studying"
+                ],
+                answer: 0,
+                hint: "If NO subject is present directly after 'It is high time', use an infinitive (to + V1).",
+                explanation: "Without a subject following 'It is high time', use 'to + V1' (e.g., 'It is high time to start studying'). If a subject is present, use $V_2$ ('It is high time we started studying')."
+            },
+            {
+                id: 37,
+                topic: "Can / Could + Mental State Verbs",
+                question: "Why is the phrase 'I am able to can do it' incorrect?",
+                options: [
+                    "'Can' already denotes ability; pairing it with 'able to' creates redundant expression.",
+                    "'Can' must be replaced by 'may'.",
+                    "'Able to' cannot be used in present tense.",
+                    "The verb 'do' should be 'done'."
+                ],
+                answer: 0,
+                hint: "Both 'can' and 'able to' denote capability/ability.",
+                explanation: "Because 'Can/Could' and 'Be able to' both express ability, combining them in the same clause is redundant."
+            },
+            {
+                id: 38,
+                topic: "Modal Auxiliary + Have + V3 (Past Perfective)",
+                question: "What meaning is conveyed by: 'You should have studied harder for the exam.'?",
+                options: [
+                    "An action that was desirable in the past but was NOT carried out.",
+                    "An action that was successfully completed in the past.",
+                    "An action that is currently compulsory in the present.",
+                    "An action that is guaranteed to happen in the future."
+                ],
+                answer: 0,
+                hint: "Expresses past regret or unfulfilled obligation.",
+                explanation: "'Should have + V3' indicates that a past action was expected or advisable, but did not occur."
+            },
+            {
+                id: 39,
+                topic: "Could have + V3",
+                question: "What does 'He could have won the race' mean?",
+                options: [
+                    "He had the ability/opportunity to win, but he did NOT win.",
+                    "He won the race easily in the past.",
+                    "He will definitely win the race.",
+                    "He was prohibited from running."
+                ],
+                answer: 0,
+                hint: "Indicates past unfulfilled potential.",
+                explanation: "'Could have + V3' signifies that someone had the ability or opportunity to do something in the past, but did not do it."
+            },
+            {
+                id: 40,
+                topic: "Must have + V3",
+                question: "Complete the sentence logically: 'The streets are wet this morning; it _____ rained last night.'",
+                options: [
+                    "must have",
+                    "should have",
+                    "ought have",
+                    "need have"
+                ],
+                answer: 0,
+                hint: "Logical deduction regarding a past event.",
+                explanation: "'Must have + V3' expresses a strong belief or logical conclusion about a past situation."
+            },
+            {
+                id: 41,
+                topic: "Need not have + V3",
+                question: "What is implied by: 'You need not have brought an umbrella.'?",
+                options: [
+                    "You brought an umbrella, but it was unnecessary.",
+                    "You did not bring an umbrella because it was unnecessary.",
+                    "You must bring an umbrella right now.",
+                    "You forgot to bring an umbrella."
+                ],
+                answer: 0,
+                hint: "'Need not have + V3' means an action was performed, even though it was not required.",
+                explanation: "'Need not have + V3' indicates that an action was executed in the past, but turned out to be unnecessary."
+            },
+            {
+                id: 42,
+                topic: "Confusing Pair - Used to vs. Use to",
+                question: "Identify the correct negative form of 'used to' using the auxiliary 'did':",
+                options: [
+                    "He did not use to smoke.",
+                    "He did not used to smoke.",
+                    "He used not to smoking.",
+                    "He does not used to smoke."
+                ],
+                answer: 0,
+                hint: "After 'did/did not', the primary verb reverts to base form ($V_1$).",
+                explanation: "When 'did' is introduced, 'used' changes to base form 'use': 'did not use to + V1'."
+            },
+            {
+                id: 43,
+                topic: "Spotting the Error - Modals & Infinitive",
+                question: "Find the error in the sentence: 'We ought (a) / respect our elders (b) / and follow their advice (c) / No error (d)'",
+                options: [
+                    "(b) respect our elders",
+                    "(a) We ought",
+                    "(c) and follow their advice",
+                    "(d) No error"
+                ],
+                answer: 0,
+                hint: "'Ought' cannot directly take a bare verb; it requires a specific preposition.",
+                explanation: "'Ought' must be followed by 'to'. Section (b) should read 'to respect our elders'."
+            },
+            {
+                id: 44,
+                topic: "Spotting the Error - Conditional Alignment",
+                question: "Identify the incorrect part: 'If he had worked hard (a) / he would pass (b) / the examination with honors (c) / No error (d)'",
+                options: [
+                    "(b) he would pass",
+                    "(a) If he had worked hard",
+                    "(c) the examination with honors",
+                    "(d) No error"
+                ],
+                answer: 0,
+                hint: "Past Perfect in If-clause requires 'would have + V3' in the main clause.",
+                explanation: "The Type 3 conditional requires 'would have passed' instead of 'would pass'."
+            },
+            {
+                id: 45,
+                topic: "Spotting the Error - Dare Structure",
+                question: "Which segment contains a grammatical error: 'He dares not (a) / to go out (b) / in the dark (c) / No error (d)'",
+                options: [
+                    "(a) He dares not",
+                    "(b) to go out",
+                    "(c) in the dark",
+                    "(d) No error"
+                ],
+                answer: 0,
+                hint: "Check both the 's' ending on the modal and the use of 'to' after negative modal dare.",
+                explanation: "When functioning as a negative modal, 'dare' does not take -s/es ('dare not', not 'dares not') and takes a bare infinitive ('go', not 'to go'). Both (a) and (b) contain errors based on standard rules, but 'dares not' breaks the initial modal rule."
+            },
+            {
+                id: 46,
+                topic: "Statement Matching - Modals & Meanings",
+                question: "Match the Modal in List I with its primary function in List II:\n1. May - (i) Strong compulsion / duty\n2. Must - (ii) Permission / Possibility\n3. Would - (iii) Past Habit\n4. Should - (iv) Advice / Recommendation",
+                options: [
+                    "1-(ii), 2-(i), 3-(iii), 4-(iv)",
+                    "1-(i), 2-(ii), 3-(iv), 4-(iii)",
+                    "1-(iii), 2-(iv), 3-(i), 4-(ii)",
+                    "1-(iv), 2-(iii), 3-(ii), 4-(i)"
+                ],
+                answer: 0,
+                hint: "May = Possibility; Must = Compulsion; Would = Past Habit; Should = Advice.",
+                explanation: "Correct pairings: May = Permission/Possibility; Must = Compulsion; Would = Past Habit; Should = Advice."
+            },
+            {
+                id: 47,
+                topic: "Modal Subjunctive - Wish Structures",
+                question: "Complete the sentence: 'I wish I _____ rich enough to buy a sports car.'",
+                options: [
+                    "were",
+                    "am",
+                    "was",
+                    "will be"
+                ],
+                answer: 0,
+                hint: "Wishes about present unreal situations take subjunctive 'were'.",
+                explanation: "Expressions of unfulfilled present desires after 'I wish' take 'were' for all subjects."
+            },
+            {
+                id: 48,
+                topic: "Suppositional Clauses - Verb Forms",
+                question: "Choose the correct verb form: 'If she comes here, I _____ her.'",
+                options: [
+                    "will help",
+                    "would help",
+                    "would have helped",
+                    "helped"
+                ],
+                answer: 0,
+                hint: "Simple Present in the conditional clause main clause alignment.",
+                explanation: "In Type 1 conditional sentences (Real Present/Future condition): 'If + Simple Present ($V_1$), Simple Future (will + $V_1$)'."
+            },
+            {
+                id: 49,
+                topic: "Confusing Modal Pairs - Shall vs. Will in Promises",
+                question: "Select the sentence that expresses an official Promise or Assurance to a second person:",
+                options: [
+                    "You shall get a medal if you stand first in the exam.",
+                    "You will get a medal if you stand first in the exam.",
+                    "You may get a medal if you stand first in the exam.",
+                    "You should get a medal if you stand first in the exam."
+                ],
+                answer: 0,
+                hint: "Using 'Shall' with 'You' conveys a formal promise or commitment from the speaker.",
+                explanation: "'Shall' used with Second Person ('You shall...') expresses a promise, guarantee, or official assurance."
+            },
+            {
+                id: 50,
+                topic: "Comprehensive Review - Modal Correctness",
+                question: "Which of the following sentences is grammatically CORRECT in all aspects?",
+                options: [
+                    "He used to play cricket when he was in college.",
+                    "He is used to play cricket when he was in college.",
+                    "He used to playing cricket when he was in college.",
+                    "He was used to play cricket when he was in college."
+                ],
+                answer: 0,
+                hint: "Past habit without preceding 'be' verb takes 'used to + V1'.",
+                explanation: "'Used to + V1' correctly expresses a past habit without extra auxiliary verbs."
+            }
+        ];
+
+        // State variables
+        let currentQuestionIdx = 0;
+        let userAnswers = new Array(quizData.length).fill(null);
+
+        // Utility: Fisher-Yates Shuffle algorithm
+        function shuffleArray(array) {
+            const arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        // Initialize Option Mappings with Randomization
+        const randomizedData = quizData.map((q) => {
+            const optionsObjs = q.options.map((optText, index) => ({
+                text: optText,
+                isCorrect: index === q.answer
+            }));
+            const shuffled = shuffleArray(optionsObjs);
+            return {
+                ...q,
+                shuffledOptions: shuffled
+            };
+        });
+
+        // DOM Elements
+        const questionNumberEl = document.getElementById("question-number");
+        const subtopicTagEl = document.getElementById("subtopic-tag");
+        const questionTextEl = document.getElementById("question-text");
+        const hintBoxEl = document.getElementById("hint-box");
+        const hintTextEl = document.getElementById("hint-text");
+        const hintToggleBtn = document.getElementById("hint-toggle-btn");
+        const optionsContainerEl = document.getElementById("options-container");
+        const explanationBoxEl = document.getElementById("explanation-box");
+        const explanationTextEl = document.getElementById("explanation-text");
+        const prevBtn = document.getElementById("prev-btn");
+        const nextBtn = document.getElementById("next-btn");
+        const scoreDisplayEl = document.getElementById("score-display");
+        const progressTextEl = document.getElementById("progress-text");
+        const progressBarEl = document.getElementById("progress-bar");
+        const jumpInputEl = document.getElementById("jump-input");
+
+        // Load Question Function
+        function renderQuestion() {
+            const q = randomizedData[currentQuestionIdx];
+
+            // Reset UI states
+            hintBoxEl.classList.add("hidden");
+            explanationBoxEl.classList.add("hidden");
+
+            // Meta Info
+            questionNumberEl.textContent = `Question ${currentQuestionIdx + 1} of ${randomizedData.length}`;
+            subtopicTagEl.textContent = q.topic;
+            questionTextEl.textContent = q.question;
+            hintTextEl.textContent = q.hint;
+            explanationTextEl.textContent = q.explanation;
+
+            // Render Options
+            optionsContainerEl.innerHTML = "";
+            const currentSelected = userAnswers[currentQuestionIdx];
+
+            q.shuffledOptions.forEach((opt, optIdx) => {
+                const btn = document.createElement("button");
+                btn.className = "w-full text-left p-3.5 rounded-lg border transition-all text-sm font-medium flex items-center justify-between ";
+
+                if (currentSelected === null) {
+                    btn.className += "border-slate-200 hover:border-indigo-400 hover:bg-indigo-50/50 bg-white text-slate-700";
+                    btn.onclick = () => selectOption(optIdx);
+                } else {
+                    btn.disabled = true;
+                    if (opt.isCorrect) {
+                        btn.className += "border-emerald-500 bg-emerald-50 text-emerald-900 font-semibold";
+                    } else if (currentSelected === optIdx) {
+                        btn.className += "border-rose-500 bg-rose-50 text-rose-900";
+                    } else {
+                        btn.className += "border-slate-200 bg-slate-50 text-slate-400 opacity-60";
+                    }
+                }
+
+                const prefix = String.fromCharCode(65 + optIdx); // A, B, C, D
+                btn.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="w-6 h-6 rounded-full border border-current flex items-center justify-center text-xs font-bold">${prefix}</span>
+                        <span>${opt.text}</span>
+                    </div>
+                `;
+
+                if (currentSelected !== null) {
+                    if (opt.isCorrect) {
+                        btn.innerHTML += `<svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>`;
+                    } else if (currentSelected === optIdx) {
+                        btn.innerHTML += `<svg class="w-5 h-5 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>`;
+                    }
+                }
+
+                optionsContainerEl.appendChild(btn);
+            });
+
+            // Show explanation if already answered
+            if (currentSelected !== null) {
+                explanationBoxEl.classList.remove("hidden");
+            }
+
+            // Update Navigation state
+            prevBtn.disabled = currentQuestionIdx === 0;
+            nextBtn.disabled = currentQuestionIdx === randomizedData.length - 1;
+
+            updateStats();
+        }
+
+        // Option Selection Handler
+        function selectOption(optIdx) {
+            userAnswers[currentQuestionIdx] = optIdx;
+            renderQuestion();
+        }
+
+        // Toggle Hint Visibility
+        function toggleHint() {
+            hintBoxEl.classList.toggle("hidden");
+        }
+
+        // Update Score and Progress Stats
+        function updateStats() {
+            let score = 0;
+            let answeredCount = 0;
+
+            userAnswers.forEach((ans, idx) => {
+                if (ans !== null) {
+                    answeredCount++;
+                    if (randomizedData[idx].shuffledOptions[ans].isCorrect) {
+                        score++;
+                    }
+                }
+            });
+
+            scoreDisplayEl.textContent = `${score} / ${randomizedData.length}`;
+            progressTextEl.textContent = `${currentQuestionIdx + 1} / ${randomizedData.length}`;
+            
+            const progressPercent = ((currentQuestionIdx + 1) / randomizedData.length) * 100;
+            progressBarEl.style.width = `${progressPercent}%`;
+        }
+
+        // Navigation controls
+        function prevQuestion() {
+            if (currentQuestionIdx > 0) {
+                currentQuestionIdx--;
+                renderQuestion();
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIdx < randomizedData.length - 1) {
+                currentQuestionIdx++;
+                renderQuestion();
+            }
+        }
+
+        function jumpToQuestion() {
+            const val = parseInt(jumpInputEl.value);
+            if (val >= 1 && val <= randomizedData.length) {
+                currentQuestionIdx = val - 1;
+                renderQuestion();
+                jumpInputEl.value = "";
+            } else {
+                alert(`Please enter a question number between 1 and ${randomizedData.length}`);
+            }
+        }
+
+        // Initial Load
+        renderQuestion();
+    </script>
+<script src="../../quiz-app-ui-v2.js"></script>
+</body>
+</html>

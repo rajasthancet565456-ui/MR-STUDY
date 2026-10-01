@@ -1,0 +1,1640 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Narration Quiz - Pages 11 to 20</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+    body {
+        font-family: Inter, Arial, sans-serif;
+        background: #f1f5f9;
+    }
+
+    .option-btn {
+        transition: all 0.2s ease;
+    }
+
+    .option-btn:hover:not(:disabled) {
+        transform: translateY(-1px);
+    }
+
+    .correct {
+        border-color: #16a34a !important;
+        background: #dcfce7 !important;
+    }
+
+    .wrong {
+        border-color: #dc2626 !important;
+        background: #fee2e2 !important;
+    }
+
+    .disabled-option {
+        cursor: default;
+    }
+
+    .explanation {
+        animation: fadeIn 0.25s ease;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(5px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+</head>
+
+<body class="min-h-screen">
+
+<div class="max-w-5xl mx-auto px-4 py-5">
+
+    <!-- HEADER -->
+    <header class="bg-slate-900 text-white rounded-2xl shadow-xl p-5 mb-5">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+                <h1 class="text-2xl md:text-3xl font-bold">
+                    English Narration Master Quiz
+                </h1>
+                <p class="text-slate-300 mt-1">
+                    PDF Pages 11–20 • 50 Unique Questions
+                </p>
+            </div>
+
+            <div class="bg-white/10 rounded-xl px-5 py-3 text-center">
+                <div class="text-xs text-slate-300">LIVE SCORE</div>
+                <div id="score" class="text-2xl font-bold">0 / 0</div>
+            </div>
+        </div>
+
+        <div class="mt-5">
+            <div class="flex justify-between text-sm mb-2">
+                <span id="progressText">Question 1 of 50</span>
+                <span id="percentageText">0%</span>
+            </div>
+
+            <div class="w-full bg-slate-700 rounded-full h-3 overflow-hidden">
+                <div id="progressBar"
+                     class="bg-blue-500 h-3 rounded-full transition-all duration-300"
+                     style="width: 0%">
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+    <!-- CONTROLS -->
+    <section class="bg-white rounded-2xl shadow-md p-4 mb-5">
+        <div class="flex flex-col md:flex-row gap-3 md:items-center md:justify-between">
+
+            <div class="flex gap-2">
+                <button id="prevBtn"
+                        onclick="previousQuestion()"
+                        class="px-5 py-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 font-semibold">
+                    ← Previous
+                </button>
+
+                <button id="nextBtn"
+                        onclick="nextQuestion()"
+                        class="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold">
+                    Next →
+                </button>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <label for="jumpInput" class="font-semibold text-slate-700">
+                    Jump:
+                </label>
+
+                <input id="jumpInput"
+                       type="number"
+                       min="1"
+                       max="50"
+                       placeholder="1-50"
+                       class="w-24 border border-slate-300 rounded-xl px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500">
+
+                <button onclick="jumpToQuestion()"
+                        class="px-4 py-2 rounded-xl bg-slate-900 text-white hover:bg-slate-700 font-semibold">
+                    Go
+                </button>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- QUESTION CARD -->
+    <main id="quizArea">
+
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+
+            <div class="p-5 md:p-7">
+
+                <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
+
+                    <span id="questionNumber"
+                          class="inline-flex items-center px-3 py-1 rounded-full bg-blue-100 text-blue-700 font-bold text-sm">
+                        Question 1
+                    </span>
+
+                    <span id="sourcePage"
+                          class="inline-flex items-center px-3 py-1 rounded-full bg-purple-100 text-purple-700 font-semibold text-sm">
+                        PDF Page 11
+                    </span>
+
+                </div>
+
+                <div class="mb-7">
+                    <h2 id="questionText"
+                        class="text-xl md:text-2xl font-bold text-slate-900 leading-relaxed">
+                    </h2>
+                </div>
+
+                <!-- HINT -->
+                <div class="mb-5">
+                    <button onclick="toggleHint()"
+                            class="text-sm font-bold text-amber-700 bg-amber-50 hover:bg-amber-100 px-4 py-2 rounded-xl">
+                        💡 Show / Hide Hint
+                    </button>
+
+                    <div id="hintBox"
+                         class="hidden mt-3 p-4 bg-amber-50 border border-amber-200 rounded-xl text-amber-900">
+                    </div>
+                </div>
+
+                <!-- OPTIONS -->
+                <div id="optionsContainer"
+                     class="space-y-3">
+                </div>
+
+                <!-- EXPLANATION -->
+                <div id="explanationBox"
+                     class="hidden explanation mt-6">
+
+                    <div id="resultBox"
+                         class="rounded-xl p-4 mb-4">
+                    </div>
+
+                    <div class="border border-blue-200 bg-blue-50 rounded-xl p-5">
+                        <h3 class="font-bold text-blue-900 text-lg mb-2">
+                            📚 Explanation / Rationale
+                        </h3>
+
+                        <p id="explanationText"
+                           class="text-slate-800 leading-relaxed">
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- QUESTION NAVIGATION -->
+    <section class="bg-white rounded-2xl shadow-md p-5 mt-5">
+
+        <h3 class="font-bold text-slate-900 mb-3">
+            Question Navigator
+        </h3>
+
+        <div id="questionGrid"
+             class="grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 gap-2">
+        </div>
+
+    </section>
+
+
+    <!-- FINAL RESULT -->
+    <section id="finalBox"
+             class="hidden bg-white rounded-2xl shadow-lg p-6 mt-5">
+
+        <div class="text-center">
+
+            <div class="text-5xl mb-3">
+                🏆
+            </div>
+
+            <h2 class="text-2xl font-bold text-slate-900">
+                Quiz Completed
+            </h2>
+
+            <p id="finalScore"
+               class="text-xl font-semibold text-blue-700 mt-2">
+            </p>
+
+            <p id="finalMessage"
+               class="text-slate-600 mt-2">
+            </p>
+
+            <button onclick="restartQuiz()"
+                    class="mt-5 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold">
+                Restart Quiz
+            </button>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<script>
+
+/*
+=========================================================
+NARRATION QUIZ DATA
+50 UNIQUE QUESTIONS
+PDF PAGES 11–20
+=========================================================
+*/
+
+const questions = [
+
+/* ========================= PAGE 11 ========================= */
+
+{
+page: 11,
+q: "Which reporting form correctly converts “Virtue is its own reward” into indirect speech?",
+options: [
+"Socrates said that virtue is its own reward.",
+"Socrates said that virtue was its own reward.",
+"Socrates asked whether virtue was its own reward.",
+"Socrates told that virtue had been its own reward."
+],
+answer: "Socrates said that virtue is its own reward.",
+hint: "The statement expresses a general or universal truth.",
+explanation: "The PDF treats “Virtue is its own reward” as a general truth. When the reported statement expresses a universal truth, its present tense can be retained even though the reporting verb is in the past. Therefore, “is” remains “is”."
+},
+
+{
+page: 11,
+q: "In “Virtue is its own reward”, which part is treated as a universal truth?",
+options: [
+"Virtue is its own reward",
+"He said",
+"its",
+"reward"
+],
+answer: "Virtue is its own reward",
+hint: "Look at the proposition being stated.",
+explanation: "The complete proposition “Virtue is its own reward” expresses the general truth. This is the reason the tense is not changed from present to past in the indirect form shown in the PDF."
+},
+
+{
+page: 11,
+q: "Which indirect form best follows the PDF's treatment of a general truth?",
+options: [
+"He said that the sun rises in the east.",
+"He said that the sun rose in the east.",
+"He said that the sun had risen in the east.",
+"He asked whether the sun rose in the east."
+],
+answer: "He said that the sun rises in the east.",
+hint: "General truths normally retain their tense.",
+explanation: "A general or universal truth normally remains in the present tense in indirect speech. Thus, “rises” is retained rather than being changed to “rose” or “had risen”."
+},
+
+{
+page: 11,
+q: "Which change is NOT required when a reporting verb is in the past but the reported statement is a universal truth?",
+options: [
+"Changing “is” to “was”",
+"Keeping the universal statement in the present",
+"Using “that” after said",
+"Retaining the meaning of the proposition"
+],
+answer: "Changing “is” to “was”",
+hint: "The PDF's example keeps the present tense.",
+explanation: "The PDF specifically illustrates that the universal truth “Virtue is its own reward” retains the present tense. Therefore, changing “is” to “was” is not required in this situation."
+},
+
+{
+page: 11,
+q: "Choose the best reported form: He said, “Honesty is the best policy.”",
+options: [
+"He said that honesty is the best policy.",
+"He said that honesty was the best policy.",
+"He asked whether honesty was the best policy.",
+"He said that honesty had been the best policy."
+],
+answer: "He said that honesty is the best policy.",
+hint: "Treat the statement as a general truth.",
+explanation: "The statement expresses a general truth. Following the same principle illustrated by “Virtue is its own reward”, the present tense “is” is retained in indirect speech."
+},
+
+
+/* ========================= PAGE 12 ========================= */
+
+{
+page: 12,
+q: "“He said to me, ‘Are you coming?’” changes into:",
+options: [
+"He asked me whether I was coming.",
+"He told me whether I was coming.",
+"He asked me that I was coming.",
+"He said me if I was coming."
+],
+answer: "He asked me whether I was coming.",
+hint: "It is a yes/no question.",
+explanation: "The PDF shows that “said to” becomes “asked” for an interrogative sentence. Since the question can be answered with yes or no, “whether” or “if” may introduce the reported question. The tense and pronoun also change appropriately."
+},
+
+{
+page: 12,
+q: "For “He said to me, ‘When are you coming?’”, which reporting verb is shown in the PDF?",
+options: [
+"asked",
+"ordered",
+"requested",
+"exclaimed"
+],
+answer: "asked",
+hint: "The sentence is interrogative.",
+explanation: "The PDF gives the indirect form as “He asked me when I was coming.” Thus, “said to” changes to “asked” when reporting the question."
+},
+
+{
+page: 12,
+q: "What type of sentence is “Are you coming?” in the PDF?",
+options: [
+"Interrogative",
+"Imperative",
+"Exclamatory",
+"Assertive"
+],
+answer: "Interrogative",
+hint: "It asks for information.",
+explanation: "The heading of page 12 is “Interrogative Sentences”. “Are you coming?” asks a question and therefore is interrogative."
+},
+
+{
+page: 12,
+q: "What type of question is introduced by “When are you coming?”",
+options: [
+"WH-question",
+"Yes/No question",
+"Command",
+"Exclamation"
+],
+answer: "WH-question",
+hint: "Identify the first word.",
+explanation: "“When” belongs to the WH-family of interrogative words. The PDF distinguishes WH-questions from yes/no questions."
+},
+
+{
+page: 12,
+q: "In indirect speech, the question “Are you coming?” is introduced by:",
+options: [
+"whether/if",
+"that",
+"to",
+"because"
+],
+answer: "whether/if",
+hint: "The answer can be yes or no.",
+explanation: "The PDF states that when the answer to the question can be “yes” or “no”, the conjunction “if” or “whether” is used."
+},
+
+
+/* ========================= PAGE 13 ========================= */
+
+{
+page: 13,
+q: "For interrogative sentences, “said to” is generally changed to:",
+options: [
+"asked/questioned/enquired/interrogated",
+"ordered/commanded",
+"exclaimed",
+"requested only"
+],
+answer: "asked/questioned/enquired/interrogated",
+hint: "These are reporting verbs for questions.",
+explanation: "The PDF lists “asked, questioned, enquired, interrogated” as suitable reporting verbs for interrogative sentences."
+},
+
+{
+page: 13,
+q: "What punctuation change does the PDF prescribe for converting an interrogative sentence?",
+options: [
+"Question mark to full stop",
+"Full stop to question mark",
+"Comma to semicolon",
+"Colon to comma"
+],
+answer: "Question mark to full stop",
+hint: "Indirect speech is no longer written as a direct question.",
+explanation: "In indirect speech, the reported question is grammatically part of a statement. Therefore, the question mark is changed to a full stop."
+},
+
+{
+page: 13,
+q: "What happens to interrogative word order in indirect speech?",
+options: [
+"It becomes assertive order.",
+"It remains interrogative order.",
+"It becomes imperative order.",
+"The helping verb must always precede the subject."
+],
+answer: "It becomes assertive order.",
+hint: "Do not retain direct-question inversion.",
+explanation: "The PDF says that the formation is no longer interrogative. The helping verb comes after the subject. Thus, indirect questions use statement/assertive word order."
+},
+
+{
+page: 13,
+q: "Which element changes according to the normal rules while reporting an interrogative sentence?",
+options: [
+"Tense and pronoun",
+"Only punctuation",
+"Only the reporting verb",
+"Only the object"
+],
+answer: "Tense and pronoun",
+hint: "Narration involves more than punctuation.",
+explanation: "The PDF explicitly states that tense, pronoun, etc. change according to the normal narration rules when converting interrogative sentences."
+},
+
+{
+page: 13,
+q: "If a yes/no question is converted into indirect speech, the conjunction used is:",
+options: [
+"if/whether",
+"what",
+"why",
+"that"
+],
+answer: "if/whether",
+hint: "The answer may be yes or no.",
+explanation: "The PDF states that if the answer to the question is “yes” or “no”, the conjunction “if” or “whether” should be used."
+},
+
+{
+page: 13,
+q: "For a WH-family question, the PDF says:",
+options: [
+"No conjunction is used.",
+"Whether must be used.",
+"That must be used.",
+"If must always be used."
+],
+answer: "No conjunction is used.",
+hint: "The WH-word itself introduces the reported question.",
+explanation: "For WH-family questions, words such as what, why, when, where and how already connect the reported clause. The PDF therefore says no additional conjunction is used."
+},
+
+{
+page: 13,
+q: "Which sentence correctly applies the PDF's interrogative word-order rule?",
+options: [
+"He asked me where I was going.",
+"He asked me where was I going.",
+"He asked me that where I was going.",
+"He asked me where did I go."
+],
+answer: "He asked me where I was going.",
+hint: "Use subject before verb.",
+explanation: "In indirect WH-questions, the question inversion disappears. Therefore, “where I was going” is correct, while “where was I going” incorrectly retains direct-question word order."
+},
+
+
+/* ========================= PAGE 14 ========================= */
+
+{
+page: 14,
+q: "“He said to me, ‘Do you know me?’” becomes:",
+options: [
+"He asked me if I knew him.",
+"He asked me that I knew him.",
+"He told me if I knew him.",
+"He asked me if did I know him."
+],
+answer: "He asked me if I knew him.",
+hint: "It is a yes/no question.",
+explanation: "“Do you know me?” is a yes/no question. “Said to” changes to “asked”, “if” introduces the reported question, “you” becomes “I”, and “me” becomes “him”."
+},
+
+{
+page: 14,
+q: "“She said to him, ‘What are you doing now?’” becomes:",
+options: [
+"She asked him what he was doing then.",
+"She asked him what was he doing now.",
+"She told him what he was doing then.",
+"She asked him that what he was doing then."
+],
+answer: "She asked him what he was doing then.",
+hint: "Keep the WH-word but remove question inversion.",
+explanation: "The PDF gives this pattern directly. “What” remains because it is a WH-word; “are doing” changes to “was doing”; “you” becomes “he”; and “now” becomes “then”."
+},
+
+{
+page: 14,
+q: "In “Did you intend to come with me?”, the PDF gives which indirect form?",
+options: [
+"He asked him if he had intended to come with him.",
+"He asked him whether did he intend to come with me.",
+"He told him that he had intended to come with him.",
+"He asked him if he has intended to come with him."
+],
+answer: "He asked him if he had intended to come with him.",
+hint: "Notice the change from simple past to past perfect.",
+explanation: "The PDF example changes “Did you intend” into “if he had intended”. The pronouns also change appropriately: “you” becomes “he” and “me” becomes “him”."
+},
+
+{
+page: 14,
+q: "Which pronoun change is illustrated by “Do you know me?” → “He asked me if I knew him”?",
+options: [
+"me → him",
+"you → me",
+"I → you",
+"him → me"
+],
+answer: "me → him",
+hint: "The original speaker is referred to from the reporter's viewpoint.",
+explanation: "In the direct question, “me” refers to the original speaker. In the reported version, that person is referred to as “him”, producing “I knew him”."
+},
+
+{
+page: 14,
+q: "Which of the following preserves the WH-word while removing interrogative inversion?",
+options: [
+"She asked him what he was doing.",
+"She asked him what was he doing.",
+"She asked him that what he was doing.",
+"She asked him did what he was doing."
+],
+answer: "She asked him what he was doing.",
+hint: "The WH-word remains, but statement order is required.",
+explanation: "The PDF's rule requires the WH-word to remain while the rest of the reported question follows assertive/statement order. Hence “what he was doing” is correct."
+},
+
+{
+page: 14,
+q: "Which sentence is NOT a correct indirect form according to the page-14 examples?",
+options: [
+"He asked me if I knew him.",
+"She asked him what he was doing then.",
+"He asked him if he had intended to come with him.",
+"She asked him what was he doing then."
+],
+answer: "She asked him what was he doing then.",
+hint: "Look for direct-question inversion.",
+explanation: "“What was he doing?” is direct-question order. In indirect speech, the PDF requires assertive order: “what he was doing”."
+},
+
+
+/* ========================= PAGE 15 ========================= */
+
+{
+page: 15,
+q: "“Haven’t you seen this movie?” becomes:",
+options: [
+"He asked her if she hadn’t seen that movie.",
+"He asked her that she hadn’t seen that movie.",
+"He told her if she hadn’t seen that movie.",
+"He asked her whether hadn’t she seen that movie."
+],
+answer: "He asked her if she hadn’t seen that movie.",
+hint: "It is a negative yes/no question.",
+explanation: "The question requires “asked” plus “if/whether”. The indirect question uses normal word order and appropriate pronoun and demonstrative changes."
+},
+
+{
+page: 15,
+q: "“Madam, can I help you?” is reported as:",
+options: [
+"He asked her respectfully if he could help her.",
+"He asked her that he could help her.",
+"He ordered her if he could help her.",
+"He exclaimed respectfully that he could help her."
+],
+answer: "He asked her respectfully if he could help her.",
+hint: "Pay attention to the respectful form of address.",
+explanation: "The PDF specifically gives this example. “Madam” indicates respect, so “respectfully” is used. “Can” changes to “could”, and the yes/no question is introduced by “if”."
+},
+
+{
+page: 15,
+q: "If the reply to a question is “No”, the PDF recommends:",
+options: [
+"answered in the negative",
+"answered in the affirmative",
+"replied joyfully",
+"answered angrily"
+],
+answer: "answered in the negative",
+hint: "Negative answer = negative reporting phrase.",
+explanation: "The PDF explicitly states that when the answer is “No”, it should be reported as “answered in the negative”."
+},
+
+{
+page: 15,
+q: "If the reply to a question is “Yes”, the PDF recommends:",
+options: [
+"answered in the affirmative",
+"answered in the negative",
+"answered sorrowfully",
+"answered conditionally"
+],
+answer: "answered in the affirmative",
+hint: "Positive answer = affirmative.",
+explanation: "The explanation associated with this section states that “yes” should be reported as “answered in the affirmative”."
+},
+
+{
+page: 15,
+q: "“When will the train arrive?” becomes:",
+options: [
+"He enquired of me when the train would arrive.",
+"He enquired of me when would the train arrive.",
+"He asked me that when the train would arrive.",
+"He ordered me when the train would arrive."
+],
+answer: "He enquired of me when the train would arrive.",
+hint: "WH-question + statement order.",
+explanation: "The PDF gives the exact structure: “He enquired of me when the train would arrive.” The WH-word “when” remains, the word order becomes assertive, and “will” changes to “would”."
+},
+
+
+/* ========================= PAGE 16 ========================= */
+
+{
+page: 16,
+q: "What is prominently displayed on page 16 of the supplied PDF?",
+options: [
+"A Spoken English book cover",
+"Rules for imperative sentences",
+"Interrogative sentence examples",
+"A practice set of narration questions"
+],
+answer: "A Spoken English book cover",
+hint: "Look at the full-page image on page 16.",
+explanation: "The supplied page-16 image prominently displays a “SPOKEN ENGLISH” book cover. It is different from the narration-rule pages surrounding it."
+},
+
+
+/* ========================= PAGE 17 ========================= */
+
+{
+page: 17,
+q: "When the direct speech contains “Sir/Madam/Your Honour”, the PDF recommends adding which word in indirect speech?",
+options: [
+"respectfully",
+"lovingly",
+"joyfully",
+"angrily"
+],
+answer: "respectfully",
+hint: "These are respectful forms of address.",
+explanation: "The PDF explanation says that words such as “Sir”, “Madam” and “Your Honour” are represented using “respectfully” in indirect speech."
+},
+
+{
+page: 17,
+q: "“Dear/Darling/My beloved” are treated as:",
+options: [
+"affectionate forms",
+"respectful forms",
+"commands",
+"questions"
+],
+answer: "affectionate forms",
+hint: "These words express affection.",
+explanation: "The PDF explains that affectionate forms such as “Dear”, “Darling” and “My beloved” are represented through words such as “lovingly” or “affectionately”."
+},
+
+{
+page: 17,
+q: "If “Dear” is used as a form of address, the PDF recommends:",
+options: [
+"lovingly/affectionately",
+"respectfully only",
+"sternly",
+"in the negative"
+],
+answer: "lovingly/affectionately",
+hint: "“Dear” indicates affection here.",
+explanation: "According to the PDF's explanation, affectionate terms are removed from the direct form and their emotional sense is expressed through “lovingly” or “affectionately”."
+},
+
+{
+page: 17,
+q: "A reply of “Yes” should be reported as:",
+options: [
+"answered in the affirmative",
+"answered in the negative",
+"answered respectfully",
+"answered sorrowfully"
+],
+answer: "answered in the affirmative",
+hint: "Yes indicates agreement.",
+explanation: "The PDF specifically gives “answered in the affirmative” as the reporting expression for a positive answer such as “Yes”."
+},
+
+{
+page: 17,
+q: "A reply of “No” should be reported as:",
+options: [
+"answered in the negative",
+"answered in the affirmative",
+"answered lovingly",
+"answered with joy"
+],
+answer: "answered in the negative",
+hint: "No indicates a negative answer.",
+explanation: "The PDF explicitly gives “answered in the negative” for a reply of “No”."
+},
+
+
+/* ========================= PAGE 18 ========================= */
+
+{
+page: 18,
+q: "“He said to me, ‘Go away.’” is converted as:",
+options: [
+"He ordered me to go away.",
+"He asked me whether to go away.",
+"He said me to go away.",
+"He exclaimed me to go away."
+],
+answer: "He ordered me to go away.",
+hint: "It is an imperative command.",
+explanation: "Page 18 introduces imperative sentences and gives this exact pattern: “He said to me, ‘Go away.’” → “He ordered me to go away.”"
+},
+
+{
+page: 18,
+q: "Which reporting verbs can replace “said to” for imperative sentences according to the rule?",
+options: [
+"ordered, requested, forbade, suggested",
+"asked, wondered, enquired, said",
+"exclaimed, cried, shouted, laughed",
+"replied, answered, narrated, remarked"
+],
+answer: "ordered, requested, forbade, suggested",
+hint: "These verbs describe commands, requests, prohibitions and suggestions.",
+explanation: "The PDF lists ordered, requested, forbade and suggested as reporting verbs used according to the sense of an imperative sentence."
+},
+
+{
+page: 18,
+q: "Which conjunction is prescribed for imperative sentences?",
+options: [
+"to",
+"that",
+"if",
+"whether"
+],
+answer: "to",
+hint: "Imperatives are generally reported with an infinitive structure.",
+explanation: "The PDF's imperative rule explicitly says to use the conjunction “to”. The reporting structure becomes reporting verb + object + to + verb."
+},
+
+{
+page: 18,
+q: "After conversion of an imperative sentence, “to” is followed by:",
+options: [
+"the verb’s first form",
+"the verb’s second form",
+"the verb’s -ing form",
+"a past participle"
+],
+answer: "the verb’s first form",
+hint: "Think of the infinitive structure “to + ___”.",
+explanation: "The PDF states that “to” is followed by V1, the base/first form of the verb. For example, “Go away” becomes “to go away”."
+},
+
+{
+page: 18,
+q: "Which sentence correctly reports an imperative command?",
+options: [
+"The captain commanded the soldiers to stand at ease.",
+"The captain commanded the soldiers that they stand at ease.",
+"The captain said the soldiers to stand at ease.",
+"The captain commanded to the soldiers standing at ease."
+],
+answer: "The captain commanded the soldiers to stand at ease.",
+hint: "Use reporting verb + object + to + V1.",
+explanation: "The PDF gives this exact pattern for an imperative: “The captain commanded the soldiers to stand at ease.” The structure is command verb + object + to + base verb."
+},
+
+{
+page: 18,
+q: "Which element also changes according to normal narration rules in an imperative sentence?",
+options: [
+"Tense and pronoun",
+"Only the object",
+"Only punctuation",
+"Only the adverb"
+],
+answer: "Tense and pronoun",
+hint: "The PDF says “tense, pronoun etc.”",
+explanation: "Page 18 states that tense, pronoun and other relevant elements change according to the normal narration rules while converting imperative sentences."
+},
+
+
+/* ========================= PAGE 19 ========================= */
+
+{
+page: 19,
+q: "“She said to me, ‘Do not come here’” is reported as:",
+options: [
+"She forbade me to come there.",
+"She forbade me not to come here.",
+"She ordered me that I did not come there.",
+"She asked me whether I came there."
+],
+answer: "She forbade me to come there.",
+hint: "A negative command can express prohibition.",
+explanation: "The PDF gives “She forbade me to come there” as one correct conversion. “Forbade” itself conveys the negative sense, so the structure is “forbade + object + to + V1”."
+},
+
+{
+page: 19,
+q: "Which alternative does the PDF also give for “Do not come here”?",
+options: [
+"She ordered me not to come there.",
+"She ordered me to not came here.",
+"She asked me not to come here.",
+"She told that I should not come there."
+],
+answer: "She ordered me not to come there.",
+hint: "The PDF provides two forms for this negative imperative.",
+explanation: "The page gives both “She forbade me to come there” and “She ordered me not to come there” as alternatives for the negative imperative."
+},
+
+{
+page: 19,
+q: "In “call the first witness now”, “now” changes to:",
+options: [
+"then",
+"there",
+"today",
+"before"
+],
+answer: "then",
+hint: "Think about a time expression in indirect speech.",
+explanation: "In the page-19 example, “now” is changed to “then”: “He ordered them to call the first witness then.”"
+},
+
+{
+page: 19,
+q: "“Spread the clothes in the sunlight and do not wash anything else” becomes:",
+options: [
+"She ordered him to spread the clothes in the sunlight and not to wash anything else.",
+"She requested him that he spread the clothes and did not wash anything else.",
+"She asked him whether to spread the clothes.",
+"She forbade him to spread the clothes in sunlight."
+],
+answer: "She ordered him to spread the clothes in the sunlight and not to wash anything else.",
+hint: "There are two instructions: one positive and one negative.",
+explanation: "The PDF retains both instructions: “to spread” expresses the positive imperative and “not to wash” expresses the negative imperative. The reporting verb is “ordered”."
+},
+
+{
+page: 19,
+q: "“Stand at ease” is reported with which verb in the captain example?",
+options: [
+"commanded",
+"requested",
+"suggested",
+"wondered"
+],
+answer: "commanded",
+hint: "The speaker is a captain addressing soldiers.",
+explanation: "The PDF gives: “The captain commanded the soldiers to stand at ease.” Because the captain gives a direct command, “commanded” is the appropriate reporting verb."
+},
+
+{
+page: 19,
+q: "“Help others but do not expect anything in return” is reported as advice using:",
+options: [
+"advised",
+"commanded",
+"interrogated",
+"exclaimed"
+],
+answer: "advised",
+hint: "The sentence expresses guidance rather than a strict command.",
+explanation: "The PDF converts the mother's statement as “My mother advised me to help others but not to expect anything in return.” The sense is advice, so “advised” is used."
+},
+
+{
+page: 19,
+q: "Which structure is correct for a negative imperative after “advised”?",
+options: [
+"advised + object + not to + V1",
+"advised + object + that + V2",
+"advised + to + V-ing",
+"advised + if + subject + V1"
+],
+answer: "advised + object + not to + V1",
+hint: "Use the negative infinitive structure.",
+explanation: "The page-19 example contains “advised me ... not to expect”. Thus, a negative imperative is expressed using “not to + V1” after the object."
+},
+
+
+/* ========================= PAGE 20 ========================= */
+
+{
+page: 20,
+q: "“She said, ‘Alas! I am undone.’” is reported as:",
+options: [
+"She exclaimed with sorrow that she was undone.",
+"She exclaimed with joy that she was undone.",
+"She asked whether she was undone.",
+"She ordered that she be undone."
+],
+answer: "She exclaimed with sorrow that she was undone.",
+hint: "“Alas!” expresses grief or sorrow.",
+explanation: "Page 20 gives the example directly. “Alas!” indicates sorrow, so “said” changes to “exclaimed with sorrow”. The pronoun and tense are also adjusted."
+},
+
+{
+page: 20,
+q: "“Hurray!” in an exclamatory sentence is associated with:",
+options: [
+"exclaimed with joy",
+"exclaimed with sorrow",
+"asked respectfully",
+"ordered sternly"
+],
+answer: "exclaimed with joy",
+hint: "Hurray expresses happiness or celebration.",
+explanation: "The PDF explicitly shows the rule: “Said + Hurray!” changes to “exclaimed with joy”."
+},
+
+{
+page: 20,
+q: "Which word signals sorrow in the page-20 example?",
+options: [
+"Alas!",
+"Hurray!",
+"Please",
+"When"
+],
+answer: "Alas!",
+hint: "It is an interjection expressing grief.",
+explanation: "“Alas!” is the interjection used in the example “She said, ‘Alas! I am undone.’” It expresses sorrow, so the indirect form uses “exclaimed with sorrow”."
+}
+
+];
+
+
+/* =========================================================
+APPLICATION STATE
+========================================================= */
+
+let currentQuestion = 0;
+let userAnswers = new Array(questions.length).fill(null);
+let shuffledOptions = [];
+let score = 0;
+
+
+/* =========================================================
+SHUFFLE OPTIONS
+No modulo operator.
+No while loop.
+No question cycling.
+========================================================= */
+
+function shuffleArray(arr) {
+    return [...arr].sort(() => Math.random() - 0.5);
+}
+
+
+/* =========================================================
+PREPARE UNIQUE OPTION ORDER FOR EVERY QUESTION
+========================================================= */
+
+shuffledOptions = questions.map(question => {
+    return shuffleArray(question.options);
+});
+
+
+/* =========================================================
+RENDER QUESTION
+========================================================= */
+
+function renderQuestion() {
+
+    const question = questions[currentQuestion];
+    const options = shuffledOptions[currentQuestion];
+
+    document.getElementById("questionNumber").textContent =
+        "Question " + (currentQuestion + 1);
+
+    document.getElementById("sourcePage").textContent =
+        "PDF Page " + question.page;
+
+    document.getElementById("questionText").textContent =
+        question.q;
+
+    document.getElementById("progressText").textContent =
+        "Question " + (currentQuestion + 1) +
+        " of " + questions.length;
+
+    const percentage =
+        Math.round(((currentQuestion + 1) / questions.length) * 100);
+
+    document.getElementById("percentageText").textContent =
+        percentage + "%";
+
+    document.getElementById("progressBar").style.width =
+        percentage + "%";
+
+    document.getElementById("hintBox").textContent =
+        question.hint;
+
+    document.getElementById("hintBox").classList.add("hidden");
+
+    const optionsContainer =
+        document.getElementById("optionsContainer");
+
+    optionsContainer.innerHTML = "";
+
+    options.forEach((option, index) => {
+
+        const button = document.createElement("button");
+
+        button.type = "button";
+
+        button.className =
+            "option-btn w-full text-left border-2 border-slate-200 " +
+            "bg-white rounded-xl p-4 font-medium text-slate-800 " +
+            "hover:border-blue-400 hover:bg-blue-50";
+
+        const letter =
+            String.fromCharCode(65 + index);
+
+        button.innerHTML =
+            '<span class="font-bold mr-3">' +
+            letter +
+            ".</span>" +
+            escapeHTML(option);
+
+        button.onclick = function() {
+            selectAnswer(option);
+        };
+
+        optionsContainer.appendChild(button);
+    });
+
+    restorePreviousAnswer();
+
+    document.getElementById("explanationBox").classList.add("hidden");
+
+    updateNavigationButtons();
+    updateQuestionGrid();
+}
+
+
+/* =========================================================
+ESCAPE HTML
+========================================================= */
+
+function escapeHTML(text) {
+
+    return text
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}
+
+
+/* =========================================================
+ANSWER SELECTION
+========================================================= */
+
+function selectAnswer(selectedOption) {
+
+    if (userAnswers[currentQuestion] !== null) {
+        return;
+    }
+
+    const question = questions[currentQuestion];
+
+    userAnswers[currentQuestion] = selectedOption;
+
+    if (selectedOption === question.answer) {
+        score++;
+    }
+
+    updateScore();
+
+    const buttons =
+        document.querySelectorAll("#optionsContainer button");
+
+    buttons.forEach(button => {
+
+        button.disabled = true;
+
+        button.classList.add("disabled-option");
+
+        const buttonText =
+            button.textContent
+                .replace(/^[A-D]\.\s*/, "");
+
+        if (buttonText === question.answer) {
+            button.classList.add("correct");
+        }
+
+        if (
+            buttonText === selectedOption &&
+            selectedOption !== question.answer
+        ) {
+            button.classList.add("wrong");
+        }
+    });
+
+    const resultBox =
+        document.getElementById("resultBox");
+
+    if (selectedOption === question.answer) {
+
+        resultBox.className =
+            "rounded-xl p-4 mb-4 bg-green-100 border border-green-300 text-green-900";
+
+        resultBox.innerHTML =
+            "<strong>✓ Correct!</strong> Excellent. Review the explanation below to strengthen the rule.";
+
+    } else {
+
+        resultBox.className =
+            "rounded-xl p-4 mb-4 bg-red-100 border border-red-300 text-red-900";
+
+        resultBox.innerHTML =
+            "<strong>✗ Incorrect.</strong> Correct answer: <strong>" +
+            escapeHTML(question.answer) +
+            "</strong>";
+    }
+
+    document.getElementById("explanationText").textContent =
+        question.explanation;
+
+    document.getElementById("explanationBox")
+        .classList.remove("hidden");
+
+    updateQuestionGrid();
+
+    checkCompletion();
+}
+
+
+/* =========================================================
+RESTORE ANSWER WHEN RETURNING TO A QUESTION
+========================================================= */
+
+function restorePreviousAnswer() {
+
+    const previousAnswer =
+        userAnswers[currentQuestion];
+
+    if (previousAnswer === null) {
+        return;
+    }
+
+    const question =
+        questions[currentQuestion];
+
+    const buttons =
+        document.querySelectorAll("#optionsContainer button");
+
+    buttons.forEach(button => {
+
+        button.disabled = true;
+
+        button.classList.add("disabled-option");
+
+        const buttonText =
+            button.textContent
+                .replace(/^[A-D]\.\s*/, "");
+
+        if (buttonText === question.answer) {
+            button.classList.add("correct");
+        }
+
+        if (
+            buttonText === previousAnswer &&
+            previousAnswer !== question.answer
+        ) {
+            button.classList.add("wrong");
+        }
+    });
+
+    const resultBox =
+        document.getElementById("resultBox");
+
+    if (previousAnswer === question.answer) {
+
+        resultBox.className =
+            "rounded-xl p-4 mb-4 bg-green-100 border border-green-300 text-green-900";
+
+        resultBox.innerHTML =
+            "<strong>✓ Correct!</strong>";
+
+    } else {
+
+        resultBox.className =
+            "rounded-xl p-4 mb-4 bg-red-100 border border-red-300 text-red-900";
+
+        resultBox.innerHTML =
+            "<strong>✗ Incorrect.</strong> Correct answer: <strong>" +
+            escapeHTML(question.answer) +
+            "</strong>";
+    }
+
+    document.getElementById("explanationText").textContent =
+        question.explanation;
+
+    document.getElementById("explanationBox")
+        .classList.remove("hidden");
+}
+
+
+/* =========================================================
+SCORE
+========================================================= */
+
+function updateScore() {
+
+    const attempted =
+        userAnswers.filter(answer => answer !== null).length;
+
+    document.getElementById("score").textContent =
+        score + " / " + attempted;
+}
+
+
+/* =========================================================
+NEXT QUESTION
+========================================================= */
+
+function nextQuestion() {
+
+    if (currentQuestion < questions.length - 1) {
+
+        currentQuestion++;
+
+        renderQuestion();
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    } else {
+
+        showFinalResult();
+    }
+}
+
+
+/* =========================================================
+PREVIOUS QUESTION
+========================================================= */
+
+function previousQuestion() {
+
+    if (currentQuestion > 0) {
+
+        currentQuestion--;
+
+        renderQuestion();
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    }
+}
+
+
+/* =========================================================
+JUMP
+========================================================= */
+
+function jumpToQuestion() {
+
+    const value =
+        Number(document.getElementById("jumpInput").value);
+
+    if (
+        Number.isInteger(value) &&
+        value >= 1 &&
+        value <= questions.length
+    ) {
+
+        currentQuestion = value - 1;
+
+        renderQuestion();
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    } else {
+
+        alert("Please enter a question number from 1 to " + questions.length + ".");
+    }
+}
+
+
+/* =========================================================
+NAVIGATION BUTTONS
+========================================================= */
+
+function updateNavigationButtons() {
+
+    const previous =
+        document.getElementById("prevBtn");
+
+    const next =
+        document.getElementById("nextBtn");
+
+    previous.disabled =
+        currentQuestion === 0;
+
+    previous.classList.toggle(
+        "opacity-50",
+        currentQuestion === 0
+    );
+
+    if (currentQuestion === questions.length - 1) {
+
+        next.textContent = "Finish ✓";
+
+    } else {
+
+        next.textContent = "Next →";
+    }
+}
+
+
+/* =========================================================
+HINT
+========================================================= */
+
+function toggleHint() {
+
+    document.getElementById("hintBox")
+        .classList.toggle("hidden");
+}
+
+
+/* =========================================================
+QUESTION GRID
+========================================================= */
+
+function updateQuestionGrid() {
+
+    const grid =
+        document.getElementById("questionGrid");
+
+    grid.innerHTML = "";
+
+    questions.forEach((question, index) => {
+
+        const button =
+            document.createElement("button");
+
+        button.textContent =
+            index + 1;
+
+        button.className =
+            "h-9 rounded-lg text-sm font-bold border transition";
+
+        if (index === currentQuestion) {
+
+            button.classList.add(
+                "bg-blue-600",
+                "text-white",
+                "border-blue-600"
+            );
+
+        } else if (userAnswers[index] !== null) {
+
+            if (userAnswers[index] === question.answer) {
+
+                button.classList.add(
+                    "bg-green-100",
+                    "text-green-700",
+                    "border-green-300"
+                );
+
+            } else {
+
+                button.classList.add(
+                    "bg-red-100",
+                    "text-red-700",
+                    "border-red-300"
+                );
+            }
+
+        } else {
+
+            button.classList.add(
+                "bg-slate-50",
+                "text-slate-700",
+                "border-slate-200",
+                "hover:bg-slate-100"
+            );
+        }
+
+        button.onclick = function() {
+
+            currentQuestion = index;
+
+            renderQuestion();
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        };
+
+        grid.appendChild(button);
+    });
+}
+
+
+/* =========================================================
+COMPLETION
+========================================================= */
+
+function checkCompletion() {
+
+    const completed =
+        userAnswers.every(answer => answer !== null);
+
+    if (completed) {
+        showFinalResult();
+    }
+}
+
+
+/* =========================================================
+FINAL RESULT
+========================================================= */
+
+function showFinalResult() {
+
+    const attempted =
+        userAnswers.filter(answer => answer !== null).length;
+
+    if (attempted !== questions.length) {
+
+        if (currentQuestion === questions.length - 1) {
+
+            const unanswered =
+                questions.length - attempted;
+
+            const proceed =
+                confirm(
+                    "You still have " +
+                    unanswered +
+                    " unanswered question(s). Finish anyway?"
+                );
+
+            if (!proceed) {
+                return;
+            }
+
+        } else {
+            return;
+        }
+    }
+
+    document.getElementById("finalBox")
+        .classList.remove("hidden");
+
+    document.getElementById("finalScore").textContent =
+        "Your Score: " +
+        score +
+        " / " +
+        questions.length;
+
+    const percentage =
+        Math.round(
+            (score / questions.length) * 100
+        );
+
+    let message = "";
+
+    if (percentage >= 90) {
+
+        message =
+            "Outstanding! Your narration concepts are very strong.";
+
+    } else if (percentage >= 75) {
+
+        message =
+            "Very good! Revise the rules behind your incorrect answers.";
+
+    } else if (percentage >= 60) {
+
+        message =
+            "Good attempt. Focus on tense, pronoun, conjunction and reporting-verb changes.";
+
+    } else {
+
+        message =
+            "Keep practising. Re-read pages 11–20 and attempt the quiz again.";
+    }
+
+    document.getElementById("finalMessage").textContent =
+        message;
+
+    document.getElementById("finalBox")
+        .scrollIntoView({
+            behavior: "smooth"
+        });
+}
+
+
+/* =========================================================
+RESTART
+========================================================= */
+
+function restartQuiz() {
+
+    currentQuestion = 0;
+
+    userAnswers =
+        new Array(questions.length).fill(null);
+
+    score = 0;
+
+    shuffledOptions =
+        questions.map(question => {
+            return shuffleArray(question.options);
+        });
+
+    document.getElementById("finalBox")
+        .classList.add("hidden");
+
+    updateScore();
+
+    renderQuestion();
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+
+/* =========================================================
+KEYBOARD SUPPORT
+========================================================= */
+
+document.addEventListener("keydown", function(event) {
+
+    if (event.key === "ArrowRight") {
+        nextQuestion();
+    }
+
+    if (event.key === "ArrowLeft") {
+        previousQuestion();
+    }
+
+    if (event.key === "Enter") {
+
+        const active =
+            document.activeElement;
+
+        if (active &&
+            active.id === "jumpInput") {
+
+            jumpToQuestion();
+        }
+    }
+});
+
+
+/* =========================================================
+INITIALIZE
+========================================================= */
+
+updateScore();
+renderQuestion();
+
+</script>
+
+<script src="../../quiz-app-ui-v2.js"></script>
+</body>
+</html>

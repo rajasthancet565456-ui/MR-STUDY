@@ -1,0 +1,993 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Grammar Quiz - Pages 71-80</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 min-h-screen text-slate-800 flex flex-col font-sans">
+
+    <!-- Header -->
+    <header class="bg-indigo-700 text-white shadow-md py-4 px-6 sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
+            <div>
+                <h1 class="text-xl font-bold tracking-wide">English Grammar Mastery Quiz</h1>
+                <p class="text-xs text-indigo-200">Syllabus Coverage: Pages 71–80 (Advanced Verbs, Agreement & Conditionals)</p>
+            </div>
+            <div class="flex items-center gap-4 bg-indigo-800 px-4 py-2 rounded-lg border border-indigo-600">
+                <div class="text-center">
+                    <span class="block text-xs text-indigo-300 uppercase font-semibold">Score</span>
+                    <span id="score-display" class="text-lg font-bold text-yellow-300">0 / 0</span>
+                </div>
+                <div class="h-8 w-px bg-indigo-600"></div>
+                <div class="text-center">
+                    <span class="block text-xs text-indigo-300 uppercase font-semibold">Progress</span>
+                    <span id="progress-text" class="text-lg font-bold text-white">1 / 50</span>
+                </div>
+            </div>
+        </div>
+        <!-- Progress Bar -->
+        <div class="w-full bg-indigo-900 h-2 mt-3 rounded-full overflow-hidden max-w-4xl mx-auto">
+            <div id="progress-bar" class="bg-yellow-400 h-full w-0 transition-all duration-300"></div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-4xl w-full mx-auto p-4 sm:p-6 flex flex-col justify-between">
+        
+        <!-- Quiz Card -->
+        <div id="quiz-card" class="bg-white rounded-xl shadow-md border border-slate-200 p-6 mb-6 flex-grow flex flex-col justify-between">
+            
+            <div>
+                <!-- Question Meta Header -->
+                <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-100">
+                    <span id="question-number" class="text-xs font-bold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-100">
+                        Question 1
+                    </span>
+                    <span id="subtopic-tag" class="text-xs font-medium text-slate-500 bg-slate-100 px-2.5 py-1 rounded">
+                        Topic
+                    </span>
+                </div>
+
+                <!-- Question Text -->
+                <div id="question-text" class="text-base sm:text-lg font-semibold text-slate-800 mb-6 leading-relaxed">
+                    Loading question...
+                </div>
+
+                <!-- Hint Collapsible Button -->
+                <div class="mb-4">
+                    <button id="hint-toggle-btn" onclick="toggleHint()" class="text-xs font-semibold text-amber-600 hover:text-amber-700 bg-amber-50 hover:bg-amber-100 px-3 py-1.5 rounded-md border border-amber-200 transition-colors flex items-center gap-1">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        Need a Hint?
+                    </button>
+                    <div id="hint-box" class="hidden mt-2 p-3 bg-amber-50 border-l-4 border-amber-400 text-xs text-amber-800 rounded">
+                        <span id="hint-text">Hint content...</span>
+                    </div>
+                </div>
+
+                <!-- Options List -->
+                <div id="options-container" class="space-y-3 mb-6">
+                    <!-- Options populated dynamically -->
+                </div>
+            </div>
+
+            <!-- Explanation Box -->
+            <div id="explanation-box" class="hidden mt-4 p-4 bg-slate-50 border-l-4 border-indigo-500 rounded-r-lg">
+                <h4 class="text-xs font-bold text-indigo-900 uppercase tracking-wider mb-1">Detailed Rationale / Explanation:</h4>
+                <p id="explanation-text" class="text-sm text-slate-700 leading-relaxed"></p>
+            </div>
+
+        </div>
+
+        <!-- Navigation & Controls Footer -->
+        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center gap-2">
+                <button id="prev-btn" onclick="prevQuestion()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium text-sm rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                    Previous
+                </button>
+                <button id="next-btn" onclick="nextQuestion()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-sm rounded-lg transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
+                    Next
+                </button>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <label for="jump-input" class="text-xs text-slate-500 font-medium">Jump to:</label>
+                <input type="number" id="jump-input" min="1" max="50" class="w-16 px-2 py-1 text-sm border border-slate-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500 text-center" placeholder="1-50">
+                <button onclick="jumpToQuestion()" class="px-3 py-1 bg-slate-800 hover:bg-slate-900 text-white text-xs font-medium rounded transition-colors">
+                    Go
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Quiz Dataset and Logic Script -->
+    <script>
+        const quizData = [
+            {
+                id: 1,
+                topic: "Subject-Verb Agreement - Collective Nouns",
+                question: "Which of the following sentences correctly demonstrates the rule when a collective noun shows internal division among its members?",
+                options: [
+                    "The committee were divided in their opinions regarding the new policy.",
+                    "The committee was divided in their opinions regarding the new policy.",
+                    "The committee are unanimous in its decision.",
+                    "The committee has taken their respective seats."
+                ],
+                answer: 0,
+                hint: "When members of a collective noun act individually or hold differing views, use a plural verb and pronoun.",
+                explanation: "When a collective noun functions as individual members (due to disagreement, separate actions, or division), it takes a plural verb and plural pronoun ('were divided in their opinions'). When unanimous, it takes a singular verb."
+            },
+            {
+                id: 2,
+                topic: "Subject-Verb Agreement - Either/Or",
+                question: "Select the sentence with the correct subject-verb agreement:",
+                options: [
+                    "Neither the manager nor his assistants were present at the meeting.",
+                    "Neither the manager nor his assistants was present at the meeting.",
+                    "Neither the manager or his assistants were present at the meeting.",
+                    "Neither the assistants nor the manager were present at the meeting."
+                ],
+                answer: 0,
+                hint: "When subjects are joined by 'Neither... nor', the verb agrees with the subject closest to it.",
+                explanation: "In 'Neither... nor' constructions, the verb agrees with the nearest subject. Here, 'his assistants' (plural) is closer to the verb than 'the manager' (singular), requiring the plural verb 'were'."
+            },
+            {
+                id: 3,
+                topic: "Conditional Sentences - Type 1",
+                question: "Fill in the blank with the appropriate verb form: 'If he ________ hard, he will clear the examination.'",
+                options: [
+                    "works",
+                    "worked",
+                    "will work",
+                    "would work"
+                ],
+                answer: 0,
+                hint: "In open real conditionals (Type 1), the 'if' clause uses the simple present tense to refer to future possibilities.",
+                explanation: "Type 1 conditionals express real future possibilities. The conditional 'if' clause takes Simple Present ('works'), while the main clause takes Simple Future ('will clear')."
+            },
+            {
+                id: 4,
+                topic: "Conditional Sentences - Type 2",
+                question: "Identify the correct option: 'If I ________ the Prime Minister, I would abolish this unfair tax.'",
+                options: [
+                    "were",
+                    "was",
+                    "am",
+                    "had been"
+                ],
+                answer: 0,
+                hint: "Hypothetical or imaginary situations use the subjunctive mood regardless of the subject's grammatical number.",
+                explanation: "In unfulfilled/imaginary conditions involving 'to be', the subjunctive 'were' is used for all subjects (I, he, she, it) in formal standard English."
+            },
+            {
+                id: 5,
+                topic: "Conditional Sentences - Type 3",
+                question: "Choose the sentence that correctly completes the unreal past condition:",
+                options: [
+                    "If you had informed me in time, I would have helped you.",
+                    "If you informed me in time, I would have helped you.",
+                    "If you had informed me in time, I would help you.",
+                    "If you have informed me in time, I will help you."
+                ],
+                answer: 0,
+                hint: "Past unfulfilled conditions require Past Perfect in the 'if' clause and 'would have + V3' in the main clause.",
+                explanation: "Type 3 conditionals describe hypothetical past events: 'If + Past Perfect (had informed)', main clause 'would have + Past Participle (would have helped)'."
+            },
+            {
+                id: 6,
+                topic: "Conditionals - Inversion",
+                question: "Which sentence accurately rewrites 'If she had studied properly, she would have passed' using inversion without 'if'?",
+                options: [
+                    "Had she studied properly, she would have passed.",
+                    "Did she study properly, she would have passed.",
+                    "Would she have studied properly, she passed.",
+                    "Has she studied properly, she would have passed."
+                ],
+                answer: 0,
+                hint: "Past perfect conditional inversion removes 'if' and begins directly with the auxiliary verb 'Had'.",
+                explanation: "In inverted Type 3 conditional sentences, 'If + Subject + had + V3' is inverted to 'Had + Subject + V3...'. The meaning remains identical."
+            },
+            {
+                id: 7,
+                topic: "Subject-Verb Agreement - As well as",
+                question: "Identify the grammatically correct sentence:",
+                options: [
+                    "The captain, along with his crew members, was praised for bravery.",
+                    "The captain, along with his crew members, were praised for bravery.",
+                    "The captain, as well as his crew members, have been praised for bravery.",
+                    "The captain, together with his crew members, are praised for bravery."
+                ],
+                answer: 0,
+                hint: "Phrases like 'along with', 'as well as', and 'together with' do not change the grammatical number of the primary subject.",
+                explanation: "When two subjects are joined by 'along with', 'as well as', 'together with', or 'in addition to', the verb agrees exclusively with the primary (first) subject ('The captain' - singular)."
+            },
+            {
+                id: 8,
+                topic: "Subject-Verb Agreement - Quantity & Amount",
+                question: "Complete the sentence: 'Ten thousand rupees ________ a large sum of money for a student.'",
+                options: [
+                    "is",
+                    "are",
+                    "were",
+                    "have been"
+                ],
+                answer: 0,
+                hint: "Plural nouns indicating a single whole amount, distance, weight, or period take a singular verb.",
+                explanation: "When a specific plural quantity or amount is considered as a single collective unit, it takes a singular verb ('is')."
+            },
+            {
+                id: 9,
+                topic: "Subject-Verb Agreement - Fraction / Percentage",
+                question: "Which of the following sentences exhibits correct verb usage?",
+                options: [
+                    "Two-thirds of the book has been read.",
+                    "Two-thirds of the book have been read.",
+                    "Two-thirds of the books has been destroyed.",
+                    "Two-thirds of the milk have been spoiled."
+                ],
+                answer: 0,
+                hint: "For fractions and percentages, the verb agrees with the noun following the 'of' phrase.",
+                explanation: "With fractions or percentages (e.g., 'two-thirds of...'), the verb depends on the object of the preposition 'of'. Here, 'the book' is singular countable, so it takes 'has been read'."
+            },
+            {
+                id: 10,
+                topic: "Subject-Verb Agreement - One of the...",
+                question: "Select the sentence with the correct verb form:",
+                options: [
+                    "He is one of those boys who always work hard.",
+                    "He is one of those boys who always works hard.",
+                    "He is one of those boy who always works hard.",
+                    "He is one of those boys who has always worked hard."
+                ],
+                answer: 0,
+                hint: "In relative clauses after 'one of those + plural noun + who/that', the relative pronoun refers to the plural antecedent.",
+                explanation: "In 'one of those [plural noun] + who/that', the relative pronoun 'who' refers to the plural antecedent 'boys', requiring a plural verb ('work')."
+            },
+            {
+                id: 11,
+                topic: "Subject-Verb Agreement - Only one of the...",
+                question: "Identify the correct usage in the following sentence:",
+                options: [
+                    "This is the only one of his books that is worth reading.",
+                    "This is the only one of his books that are worth reading.",
+                    "This is the only one of his books who is worth reading.",
+                    "This is the only one of his book that is worth reading."
+                ],
+                answer: 0,
+                hint: "When 'the only one of' precedes a plural noun, the sentence emphasizes a single item, requiring a singular verb.",
+                explanation: "'The only one' specifies singular uniqueness; hence the relative clause verb must be singular ('is'), agreeing with 'one', not 'books'."
+            },
+            {
+                id: 12,
+                topic: "Conditionals - Suppositional Clauses",
+                question: "Choose the correct phrase: 'I will call you as soon as I ________ at the station.'",
+                options: [
+                    "arrive",
+                    "will arrive",
+                    "arrived",
+                    "would arrive"
+                ],
+                answer: 0,
+                hint: "Time clauses starting with 'as soon as', 'when', 'until', or 'before' do not take future tense auxiliaries.",
+                explanation: "In time and conditional clauses introduced by 'as soon as', 'when', 'until', 'unless', or 'if', simple present tense ('arrive') is used to express future action."
+            },
+            {
+                id: 13,
+                topic: "Subject-Verb Agreement - Compound Nouns",
+                question: "Which sentence correctly applies agreement rules for food/concept pairs?",
+                options: [
+                    "Bread and butter is a wholesome breakfast.",
+                    "Bread and butter are a wholesome breakfast.",
+                    "Bread and butter have been a wholesome breakfast.",
+                    "Bread and butter were a wholesome breakfast."
+                ],
+                answer: 0,
+                hint: "When two singular nouns connected by 'and' express a single combined idea or item, they take a singular verb.",
+                explanation: "When two singular nouns joined by 'and' represent a single compound dish, idea, or unit (e.g., 'bread and butter', 'rice and curry'), they require a singular verb ('is')."
+            },
+            {
+                id: 14,
+                topic: "Subject-Verb Agreement - Each and Every",
+                question: "Identify the correct sentence:",
+                options: [
+                    "Every boy and every girl was given a present.",
+                    "Every boy and every girl were given a present.",
+                    "Every boy and every girl have been given a present.",
+                    "Every boy and girl are given a present."
+                ],
+                answer: 0,
+                hint: "Nouns qualified by 'each' or 'every' connected by 'and' require a singular verb.",
+                explanation: "When singular nouns connected by 'and' are preceded by 'each' or 'every', the subject remains grammatically singular and takes a singular verb ('was')."
+            },
+            {
+                id: 15,
+                topic: "Subject-Verb Agreement - More than one",
+                question: "Complete the sentence correctly: 'More than one candidate ________ selected for the post.'",
+                options: [
+                    "was",
+                    "were",
+                    "are",
+                    "have been"
+                ],
+                answer: 0,
+                hint: "'More than one' is followed by a singular countable noun and a singular verb.",
+                explanation: "The structure 'More than one + singular noun' takes a singular verb ('was'), despite the semantic plural concept."
+            },
+            {
+                id: 16,
+                topic: "Subject-Verb Agreement - More + Plural Noun + than one",
+                question: "Choose the correct verb form: 'More candidates than one ________ selected for the post.'",
+                options: [
+                    "were",
+                    "was",
+                    "is",
+                    "has been"
+                ],
+                answer: 0,
+                hint: "'More + plural noun + than one' takes a plural verb.",
+                explanation: "When structured as 'More + plural noun + than one', the plural noun directly governs the verb, requiring a plural verb ('were')."
+            },
+            {
+                id: 17,
+                topic: "Conditionals - Wish / Subjunctive",
+                question: "Select the sentence that expresses a past regret accurately:",
+                options: [
+                    "I wish I had accepted that job offer last year.",
+                    "I wish I accepted that job offer last year.",
+                    "I wish I have accepted that job offer last year.",
+                    "I wish I would accept that job offer last year."
+                ],
+                answer: 0,
+                hint: "Regrets regarding past actions after 'wish' require Past Perfect tense.",
+                explanation: "To express regret about an unfulfilled action in the past, 'wish + subject + Past Perfect (had accepted)' is used."
+            },
+            {
+                id: 18,
+                topic: "Subject-Verb Agreement - Neither of / Either of",
+                question: "Identify the correct sentence:",
+                options: [
+                    "Neither of the two plans was approved by the board.",
+                    "Neither of the two plans were approved by the board.",
+                    "Neither of the two plans have been approved by the board.",
+                    "Neither of the plans are approved by the board."
+                ],
+                answer: 0,
+                hint: "'Neither of' / 'Either of' refers to one of two choices and takes a singular verb.",
+                explanation: "In formal English, 'Neither of' followed by a plural noun takes a singular verb ('was') because it means 'not one nor the other'."
+            },
+            {
+                id: 19,
+                topic: "Subject-Verb Agreement - Plural in Form, Singular in Meaning",
+                question: "Which of the following sentences is grammatically accurate?",
+                options: [
+                    "Mathematics is considered a challenging subject by many students.",
+                    "Mathematics are considered a challenging subject by many students.",
+                    "Mathematics have been considered a challenging subject by many students.",
+                    "Mathematics were considered a challenging subject by many students."
+                ],
+                answer: 0,
+                hint: "Names of academic disciplines ending in '-ics' are singular in meaning when referring to the subject as a whole.",
+                explanation: "Nouns like Mathematics, Physics, and News are plural in appearance but singular in meaning, requiring a singular verb ('is')."
+            },
+            {
+                id: 20,
+                topic: "Subject-Verb Agreement - Specific Usage of -ics",
+                question: "Select the sentence with correct verb agreement:",
+                options: [
+                    "His mathematics are very weak, so he failed the test.",
+                    "His mathematics is very weak, so he failed the test.",
+                    "His mathematics has been very weak, so he failed the test.",
+                    "His mathematics was very weak, so he failed the test."
+                ],
+                answer: 0,
+                hint: "When '-ics' subjects are preceded by possessive adjectives, they refer to personal calculations or skills and take a plural verb.",
+                explanation: "When words like 'mathematics' or 'statistics' are modified by possessive pronouns ('his mathematics', 'my statistics'), they mean calculation skills or data, requiring a plural verb ('are')."
+            },
+            {
+                id: 21,
+                topic: "Subject-Verb Agreement - A number of vs The number of",
+                question: "Fill in the blanks: '(1) A number of students _____ present. (2) The number of applicants _____ increasing.'",
+                options: [
+                    "(1) are ; (2) is",
+                    "(1) is ; (2) are",
+                    "(1) is ; (2) is",
+                    "(1) are ; (2) are"
+                ],
+                answer: 0,
+                hint: "'A number of' = plural indefinite quantity; 'The number of' = single specific figure.",
+                explanation: "'A number of + plural noun' takes a plural verb ('are'). 'The number of + plural noun' refers to a specific numeric figure and takes a singular verb ('is')."
+            },
+            {
+                id: 22,
+                topic: "Subject-Verb Agreement - Majority",
+                question: "Choose the correct option: 'The majority of the voters ________ in favor of the candidate.'",
+                options: [
+                    "are",
+                    "is",
+                    "has been",
+                    "was"
+                ],
+                answer: 0,
+                hint: "'The majority of' followed by a plural countable noun takes a plural verb.",
+                explanation: "When 'the majority of' is followed by a plural countable noun ('voters'), it acts as a plural quantifier requiring a plural verb ('are')."
+            },
+            {
+                id: 23,
+                topic: "Conditionals - Unless and Until",
+                question: "Spot the error in the conditional sentence: 'Unless you do not work hard, you cannot pass.'",
+                options: [
+                    "The word 'not' should be removed from the unless-clause.",
+                    "Replace 'Unless' with 'If not'.",
+                    "Change 'cannot' to 'will not'.",
+                    "No error."
+                ],
+                answer: 0,
+                hint: "'Unless' inherently means 'if... not' and cannot take an additional negative word in its clause.",
+                explanation: "'Unless' is intrinsically negative. Adding 'not' inside the same clause creates an erroneous double negative. The correct phrasing is: 'Unless you work hard...'"
+            },
+            {
+                id: 24,
+                topic: "Subject-Verb Agreement - Relative Pronouns",
+                question: "Which sentence displays proper verb agreement with a relative pronoun?",
+                options: [
+                    "It is I who am responsible for this mistake.",
+                    "It is I who is responsible for this mistake.",
+                    "It is I who are responsible for this mistake.",
+                    "It is I who be responsible for this mistake."
+                ],
+                answer: 0,
+                hint: "The verb following a relative pronoun ('who/that') must agree in person and number with the antecedent pronoun.",
+                explanation: "In 'It is [antecedent] who [verb]', the verb agrees with the antecedent ('I'). Since 'I' takes 'am', 'who am responsible' is correct."
+            },
+            {
+                id: 25,
+                topic: "Subject-Verb Agreement - Introductory THERE",
+                question: "Identify the sentence with correct subject-verb agreement:",
+                options: [
+                    "There are a book and three pens on the table.",
+                    "There is three pens and a book on the table.",
+                    "There was three pens on the table.",
+                    "There have been a book on the table."
+                ],
+                answer: 0,
+                hint: "In sentences beginning with 'There', the verb agrees with the real subject that follows it.",
+                explanation: "The introductory 'There' takes a verb based on the compound or plural subject following it. 'a book and three pens' is a compound plural subject, taking 'are'."
+            },
+            {
+                id: 26,
+                topic: "Subject-Verb Agreement - Distance and Measurement",
+                question: "Select the sentence with correct verb agreement:",
+                options: [
+                    "Fifty kilometers is a long distance to travel on foot.",
+                    "Fifty kilometers are a long distance to travel on foot.",
+                    "Fifty kilometers have been a long distance to travel on foot.",
+                    "Fifty kilometers were a long distance to travel on foot."
+                ],
+                answer: 0,
+                hint: "Distances, monetary units, and time periods viewed as single quantities require singular verbs.",
+                explanation: "A measurement of distance ('Fifty kilometers') treated as a unified whole takes a singular verb ('is')."
+            },
+            {
+                id: 27,
+                topic: "Conditionals - Zero Conditional",
+                question: "Which of the following represents a Zero Conditional statement (General Truth)?",
+                options: [
+                    "If water reaches 100 degrees Celsius, it boils.",
+                    "If water reached 100 degrees Celsius, it would boil.",
+                    "If water will reach 100 degrees Celsius, it boils.",
+                    "If water had reached 100 degrees Celsius, it would have boiled."
+                ],
+                answer: 0,
+                hint: "Zero conditionals express absolute scientific facts using simple present in both clauses.",
+                explanation: "Zero conditionals express general scientific truths using 'If + Simple Present, Simple Present' ('reaches... boils')."
+            },
+            {
+                id: 28,
+                topic: "Subject-Verb Agreement - Title of Books/Works",
+                question: "Choose the grammatically correct option: ''The Arabian Nights' ________ still an enjoyable book.'",
+                options: [
+                    "is",
+                    "are",
+                    "were",
+                    "have been"
+                ],
+                answer: 0,
+                hint: "Titles of books, movies, or works of art take singular verbs even if the title is plural in form.",
+                explanation: "'The Arabian Nights' is the proper title of a single literary work, thus taking a singular verb ('is')."
+            },
+            {
+                id: 29,
+                topic: "Subject-Verb Agreement - Neither... nor with mixed persons",
+                question: "Select the correct sentence:",
+                options: [
+                    "Neither you nor he is going to attend the function.",
+                    "Neither you nor he are going to attend the function.",
+                    "Neither you nor he am going to attend the function.",
+                    "Neither you nor he were going to attend the function."
+                ],
+                answer: 0,
+                hint: "The verb agrees in person with the nearest subject ('he').",
+                explanation: "When subjects of different grammatical persons are joined by 'neither... nor', the verb agrees with the closer subject. 'He' takes the singular verb 'is'."
+            },
+            {
+                id: 30,
+                topic: "Subject-Verb Agreement - Nouns Singular in form but Plural in use",
+                question: "Which sentence exhibits correct subject-verb agreement?",
+                options: [
+                    "The cattle are grazing in the field.",
+                    "The cattle is grazing in the field.",
+                    "The cattles are grazing in the field.",
+                    "The cattle has been grazing in the field."
+                ],
+                answer: 0,
+                hint: "Nouns like 'cattle', 'poultry', and 'gentry' are singular in form but plural in meaning.",
+                explanation: "'Cattle' is an uninflected plural noun representing livestock; it takes a plural verb ('are') and cannot take an '-s' suffix."
+            },
+            {
+                id: 31,
+                topic: "Subject-Verb Agreement - Pair Nouns",
+                question: "Select the sentence with correct verb agreement:",
+                options: [
+                    "A pair of trousers was lying on the bed.",
+                    "A pair of trousers were lying on the bed.",
+                    "My trousers is lying on the bed.",
+                    "A pair of trousers have been lying on the bed."
+                ],
+                answer: 0,
+                hint: "Garments with two parts ('trousers', 'scissors') take a plural verb unless preceded by 'a pair of'.",
+                explanation: "While 'trousers' alone takes a plural verb, the phrase 'A pair of trousers' shifts the grammatical subject to 'pair' (singular), requiring 'was'."
+            },
+            {
+                id: 32,
+                topic: "Conditionals - Suppositional Clauses with IT IS TIME",
+                question: "Complete the sentence with the correct verb form: 'It is high time we ________ the journey.'",
+                options: [
+                    "started",
+                    "start",
+                    "should start",
+                    "will start"
+                ],
+                answer: 0,
+                hint: "'It is time' / 'It is high time' followed by a personal pronoun subject requires a Simple Past verb.",
+                explanation: "The structure 'It is high time + Subject' takes a verb in the Subjunctive Simple Past tense ('started') to denote an action that is overdue."
+            },
+            {
+                id: 33,
+                topic: "Conditionals - Provided that",
+                question: "Choose the correct sentence using 'provided that':",
+                options: [
+                    "I will lend you the book provided that you return it next week.",
+                    "I will lend you the book provided that you will return it next week.",
+                    "I will lend you the book provided that you returned it next week.",
+                    "I would lend you the book provided that you will return it next week."
+                ],
+                answer: 0,
+                hint: "'Provided that' acts as a conditional conjunction and follows the same rules as 'if'.",
+                explanation: "Like 'if', the clause introduced by 'provided that' uses simple present tense ('return') when referring to future conditions."
+            },
+            {
+                id: 34,
+                topic: "Subject-Verb Agreement - Proportion / Half of",
+                question: "Identify the correct verb choice: 'Half of the apples in the basket ________ rotten.'",
+                options: [
+                    "were",
+                    "was",
+                    "is",
+                    "has been"
+                ],
+                answer: 0,
+                hint: "For 'half of', verb agreement depends on whether the object of the preposition is countable or uncountable.",
+                explanation: "In 'Half of + plural countable noun (apples)', the subject demands a plural verb ('were'). (If it were 'Half of the apple', it would take 'was')."
+            },
+            {
+                id: 35,
+                topic: "Subject-Verb Agreement - Many a",
+                question: "Choose the sentence that correctly applies the 'Many a' rule:",
+                options: [
+                    "Many a man has succumbed to temptation.",
+                    "Many a man have succumbed to temptation.",
+                    "Many a men has succumbed to temptation.",
+                    "Many a men have succumbed to temptation."
+                ],
+                answer: 0,
+                hint: "'Many a' is followed by a singular countable noun and a singular verb.",
+                explanation: "The structure 'Many a + singular noun + singular verb' is idiomatic English. Therefore, 'Many a man has' is correct."
+            },
+            {
+                id: 36,
+                topic: "Subject-Verb Agreement - A Great Many",
+                question: "Select the sentence with correct verb usage for 'A great many':",
+                options: [
+                    "A great many students have registered for the seminar.",
+                    "A great many students has registered for the seminar.",
+                    "A great many student has registered for the seminar.",
+                    "A great many student have registered for the seminar."
+                ],
+                answer: 0,
+                hint: "'A great many' is followed by a plural noun and a plural verb.",
+                explanation: "'A great many' functions as a plural quantifier, taking a plural countable noun ('students') and a plural verb ('have registered')."
+            },
+            {
+                id: 37,
+                topic: "Subject-Verb Agreement - Everything / Nothing",
+                question: "Identify the correct option: 'Nothing but trees ________ visible in the deserted village.'",
+                options: [
+                    "was",
+                    "were",
+                    "are",
+                    "have been"
+                ],
+                answer: 0,
+                hint: "In 'Nothing but + Noun', the true subject is 'Nothing'.",
+                explanation: "When a sentence starts with 'Nothing but', the subject remains 'Nothing' (singular indefinite pronoun), which governs a singular verb ('was'), regardless of the noun following 'but'."
+            },
+            {
+                id: 38,
+                topic: "Conditionals - Had + Subject + V3 Inversion",
+                question: "Spot the grammatical error: 'Had I known about your arrival (a) / I would bring (b) / the necessary documents with me (c) / No error (d)'",
+                options: [
+                    "(b) I would bring",
+                    "(a) Had I known about your arrival",
+                    "(c) the necessary documents with me",
+                    "(d) No error"
+                ],
+                answer: 0,
+                hint: "An inverted past conditional clause requires 'would have + V3' in the main clause.",
+                explanation: "Part (b) is incorrect. The inverted past unreal conditional ('Had I known') requires 'would have brought' instead of 'would bring'."
+            },
+            {
+                id: 39,
+                topic: "Subject-Verb Agreement - Compound Subject with 'And' (Different Entities)",
+                question: "Which of the following sentences is correct?",
+                options: [
+                    "The director and the producer have arrived at the studio.",
+                    "The director and the producer has arrived at the studio.",
+                    "The director and producer have arrived at the studio.",
+                    "A director and producer are arriving together."
+                ],
+                answer: 0,
+                hint: "If articles ('the') appear before both nouns, two distinct individuals are represented.",
+                explanation: "The repetition of the article 'the' before both 'director' and 'producer' indicates two separate individuals, requiring a plural verb ('have arrived'). If 'the' appeared only before 'director', it would signify one person holding both roles."
+            },
+            {
+                id: 40,
+                topic: "Subject-Verb Agreement - Single Entity with One Article",
+                question: "Select the sentence where two nouns refer to a single individual:",
+                options: [
+                    "The novelist and poet is being honored today.",
+                    "The novelist and the poet is being honored today.",
+                    "The novelist and poet are being honored today.",
+                    "A novelist and the poet has arrived."
+                ],
+                answer: 0,
+                hint: "A single article before the first noun indicates that both titles belong to one person.",
+                explanation: "Since the article 'The' precedes only 'novelist' and not 'poet', both nouns refer to one individual, taking the singular verb 'is'."
+            },
+            {
+                id: 41,
+                topic: "Conditionals - As if / As though",
+                question: "Choose the sentence that correctly expresses an unreal comparison:",
+                options: [
+                    "He talks as if he knew everything.",
+                    "He talks as if he knows everything.",
+                    "He talks as if he has known everything.",
+                    "He talks as if he will know everything."
+                ],
+                answer: 0,
+                hint: "'As if' / 'As though' introduce hypothetical clauses using past subjunctive forms.",
+                explanation: "'As if' introduces a hypothetical statement that is contrary to fact, using the past tense form ('knew' or 'were') to reflect imaginary behavior."
+            },
+            {
+                id: 42,
+                topic: "Subject-Verb Agreement - Percentage of Uncountable Noun",
+                question: "Identify the correct verb choice: 'Eighty percent of the land ________ unsuitable for agriculture.'",
+                options: [
+                    "is",
+                    "are",
+                    "were",
+                    "have been"
+                ],
+                answer: 0,
+                hint: "When a percentage modifies an uncountable noun, the verb remains singular.",
+                explanation: "In 'Eighty percent of the land', 'land' is an uncountable singular noun, so the percentage of it takes a singular verb ('is')."
+            },
+            {
+                id: 43,
+                topic: "Subject-Verb Agreement - Plural Noun with Singular Meaning",
+                question: "Which of the following sentences contains CORRECT subject-verb agreement?",
+                options: [
+                    "The news is true beyond any doubt.",
+                    "The news are true beyond any doubt.",
+                    "The news have been true beyond any doubt.",
+                    "The news were true beyond any doubt."
+                ],
+                answer: 0,
+                hint: "'News' is an uncountable noun that takes a singular verb.",
+                explanation: "'News' is grammatically singular and uncountable; it always takes a singular verb ('is')."
+            },
+            {
+                id: 44,
+                topic: "Conditionals - Should in Conditional Clauses",
+                question: "What does 'Should' mean when placed at the beginning of a conditional sentence? (e.g., 'Should you need help, call me.')",
+                options: [
+                    "It replaces 'If' to express a possible, slight condition.",
+                    "It indicates a compulsory duty.",
+                    "It expresses a past unrealized regret.",
+                    "It shows a past habitual action."
+                ],
+                answer: 0,
+                hint: "When 'Should' replaces 'If' at the start of a sentence, it expresses a contingency equivalent to 'If by chance...'.",
+                explanation: "'Should' can substitute for 'If' in formal conditional sentences to mean 'If by chance' ('Should you need help...' = 'If you happen to need help...')."
+            },
+            {
+                id: 45,
+                topic: "Subject-Verb Agreement - One of + Plural Noun + Singular Verb",
+                question: "Select the sentence with correct verb agreement:",
+                options: [
+                    "One of my friends is a professional cricketer.",
+                    "One of my friends are a professional cricketer.",
+                    "One of my friend is a professional cricketer.",
+                    "One of my friends have been a professional cricketer."
+                ],
+                answer: 0,
+                hint: "The structure 'One of + plural noun' takes a singular verb because the subject is 'One'.",
+                explanation: "In 'One of my friends', 'One' is the actual singular subject of the sentence, requiring the singular verb 'is'."
+            },
+            {
+                id: 46,
+                topic: "Subject-Verb Agreement - Collective Nouns (Unanimous)",
+                question: "Complete the sentence correctly: 'The jury ________ reached a unanimous verdict.'",
+                options: [
+                    "has",
+                    "have",
+                    "were",
+                    "are"
+                ],
+                answer: 0,
+                hint: "When a collective noun acts as a single, unified body, use a singular verb.",
+                explanation: "Because the jury acted as a single cohesive unit ('unanimous verdict'), it takes a singular verb ('has')."
+            },
+            {
+                id: 47,
+                topic: "Conditionals - Mix of Tenses in Main Clause",
+                question: "Spot the error: 'If I had saved enough money (a) / I will buy a new car (b) / last month (c) / No error (d)'",
+                options: [
+                    "(b) I will buy a new car",
+                    "(a) If I had saved enough money",
+                    "(c) last month",
+                    "(d) No error"
+                ],
+                answer: 0,
+                hint: "A past unfulfilled condition requires a past conditional verb in the main clause.",
+                explanation: "Part (b) is erroneous. A past unreal condition ('If I had saved...') requires 'I would have bought' instead of 'I will buy'."
+            },
+            {
+                id: 48,
+                topic: "Subject-Verb Agreement - Either of / Neither of",
+                question: "Which of the following sentences is grammatically correct?",
+                options: [
+                    "Either of these two roads leads to the station.",
+                    "Either of these two roads lead to the station.",
+                    "Either of these two roads have led to the station.",
+                    "Either of these two road leads to the station."
+                ],
+                answer: 0,
+                hint: "'Either of' refers to 'one or the other' and takes a singular verb.",
+                explanation: "'Either of + plural noun' means 'one of the two', which acts as a singular subject governing a singular verb ('leads')."
+            },
+            {
+                id: 49,
+                topic: "Subject-Verb Agreement - Not only... but also",
+                question: "Select the correct verb form: 'Not only the teacher but also the students ________ present in the auditorium.'",
+                options: [
+                    "were",
+                    "was",
+                    "is",
+                    "has been"
+                ],
+                answer: 0,
+                hint: "With 'Not only... but also', the verb agrees with the subject closest to it.",
+                explanation: "In 'Not only... but also' constructions, the verb agrees with the second subject ('the students' - plural), requiring the plural verb 'were'."
+            },
+            {
+                id: 50,
+                topic: "Subject-Verb Agreement - The Pronoun 'None'",
+                question: "Choose the most appropriate sentence according to standard formal grammar rules:",
+                options: [
+                    "None of the work was completed on time.",
+                    "None of the work were completed on time.",
+                    "None of the work have been completed on time.",
+                    "None of the work are completed on time."
+                ],
+                answer: 0,
+                hint: "'None of' followed by an uncountable noun takes a singular verb.",
+                explanation: "When 'None of' is followed by an uncountable noun ('work'), it strictly takes a singular verb ('was')."
+            }
+        ];
+
+        // State variables
+        let currentQuestionIdx = 0;
+        let userAnswers = new Array(quizData.length).fill(null);
+
+        // Utility: Fisher-Yates Shuffle algorithm
+        function shuffleArray(array) {
+            const arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        // Initialize Option Mappings with Randomization
+        const randomizedData = quizData.map((q) => {
+            const optionsObjs = q.options.map((optText, index) => ({
+                text: optText,
+                isCorrect: index === q.answer
+            }));
+            const shuffled = shuffleArray(optionsObjs);
+            return {
+                ...q,
+                shuffledOptions: shuffled
+            };
+        });
+
+        // DOM Elements
+        const questionNumberEl = document.getElementById("question-number");
+        const subtopicTagEl = document.getElementById("subtopic-tag");
+        const questionTextEl = document.getElementById("question-text");
+        const hintBoxEl = document.getElementById("hint-box");
+        const hintTextEl = document.getElementById("hint-text");
+        const optionsContainerEl = document.getElementById("options-container");
+        const explanationBoxEl = document.getElementById("explanation-box");
+        const explanationTextEl = document.getElementById("explanation-text");
+        const prevBtn = document.getElementById("prev-btn");
+        const nextBtn = document.getElementById("next-btn");
+        const scoreDisplayEl = document.getElementById("score-display");
+        const progressTextEl = document.getElementById("progress-text");
+        const progressBarEl = document.getElementById("progress-bar");
+        const jumpInputEl = document.getElementById("jump-input");
+
+        // Load Question Function
+        function renderQuestion() {
+            const q = randomizedData[currentQuestionIdx];
+
+            // Reset UI states
+            hintBoxEl.classList.add("hidden");
+            explanationBoxEl.classList.add("hidden");
+
+            // Meta Info
+            questionNumberEl.textContent = `Question ${currentQuestionIdx + 1} of ${randomizedData.length}`;
+            subtopicTagEl.textContent = q.topic;
+            questionTextEl.textContent = q.question;
+            hintTextEl.textContent = q.hint;
+            explanationTextEl.textContent = q.explanation;
+
+            // Render Options
+            optionsContainerEl.innerHTML = "";
+            const currentSelected = userAnswers[currentQuestionIdx];
+
+            q.shuffledOptions.forEach((opt, optIdx) => {
+                const btn = document.createElement("button");
+                btn.className = "w-full text-left p-3.5 rounded-lg border transition-all text-sm font-medium flex items-center justify-between ";
+
+                if (currentSelected === null) {
+                    btn.className += "border-slate-200 hover:border-indigo-400 hover:bg-indigo-50/50 bg-white text-slate-700";
+                    btn.onclick = () => selectOption(optIdx);
+                } else {
+                    btn.disabled = true;
+                    if (opt.isCorrect) {
+                        btn.className += "border-emerald-500 bg-emerald-50 text-emerald-900 font-semibold";
+                    } else if (currentSelected === optIdx) {
+                        btn.className += "border-rose-500 bg-rose-50 text-rose-900";
+                    } else {
+                        btn.className += "border-slate-200 bg-slate-50 text-slate-400 opacity-60";
+                    }
+                }
+
+                const prefix = String.fromCharCode(65 + optIdx); // A, B, C, D
+                btn.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="w-6 h-6 rounded-full border border-current flex items-center justify-center text-xs font-bold">${prefix}</span>
+                        <span>${opt.text}</span>
+                    </div>
+                `;
+
+                if (currentSelected !== null) {
+                    if (opt.isCorrect) {
+                        btn.innerHTML += `<svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>`;
+                    } else if (currentSelected === optIdx) {
+                        btn.innerHTML += `<svg class="w-5 h-5 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>`;
+                    }
+                }
+
+                optionsContainerEl.appendChild(btn);
+            });
+
+            // Show explanation if already answered
+            if (currentSelected !== null) {
+                explanationBoxEl.classList.remove("hidden");
+            }
+
+            // Update Navigation state
+            prevBtn.disabled = currentQuestionIdx === 0;
+            nextBtn.disabled = currentQuestionIdx === randomizedData.length - 1;
+
+            updateStats();
+        }
+
+        // Option Selection Handler
+        function selectOption(optIdx) {
+            userAnswers[currentQuestionIdx] = optIdx;
+            renderQuestion();
+        }
+
+        // Toggle Hint Visibility
+        function toggleHint() {
+            hintBoxEl.classList.toggle("hidden");
+        }
+
+        // Update Score and Progress Stats
+        function updateStats() {
+            let score = 0;
+
+            userAnswers.forEach((ans, idx) => {
+                if (ans !== null && randomizedData[idx].shuffledOptions[ans].isCorrect) {
+                    score++;
+                }
+            });
+
+            scoreDisplayEl.textContent = `${score} / ${randomizedData.length}`;
+            progressTextEl.textContent = `${currentQuestionIdx + 1} / ${randomizedData.length}`;
+            
+            const progressPercent = ((currentQuestionIdx + 1) / randomizedData.length) * 100;
+            progressBarEl.style.width = `${progressPercent}%`;
+        }
+
+        // Navigation controls
+        function prevQuestion() {
+            if (currentQuestionIdx > 0) {
+                currentQuestionIdx--;
+                renderQuestion();
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIdx < randomizedData.length - 1) {
+                currentQuestionIdx++;
+                renderQuestion();
+            }
+        }
+
+        function jumpToQuestion() {
+            const val = parseInt(jumpInputEl.value);
+            if (val >= 1 && val <= randomizedData.length) {
+                currentQuestionIdx = val - 1;
+                renderQuestion();
+                jumpInputEl.value = "";
+            } else {
+                alert(`Please enter a question number between 1 and ${randomizedData.length}`);
+            }
+        }
+
+        // Initial Load
+        renderQuestion();
+    </script>
+<script src="../../quiz-app-ui-v2.js"></script>
+</body>
+</html>

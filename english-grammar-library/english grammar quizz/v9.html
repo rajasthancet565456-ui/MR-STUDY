@@ -1,0 +1,1815 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Grammar Mastery Quiz - Pages 81 to 90</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 min-h-screen text-slate-800 flex flex-col font-sans">
+
+    <!-- Header -->
+    <header class="bg-indigo-700 text-white shadow-md py-4 px-6 sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
+            <div>
+                <h1 class="text-xl font-bold tracking-wide">English Grammar Mastery Quiz</h1>
+                <p class="text-xs text-indigo-200">Coverage: Syllabus Pages 81–90 (100 Unique Exam Questions)</p>
+            </div>
+            <div class="flex items-center gap-4 bg-indigo-800 px-4 py-2 rounded-lg border border-indigo-600">
+                <div class="text-center">
+                    <span class="block text-xs text-indigo-300 uppercase font-semibold">Score</span>
+                    <span id="score-display" class="text-lg font-bold text-yellow-300">0 / 0</span>
+                </div>
+                <div class="h-8 w-px bg-indigo-600"></div>
+                <div class="text-center">
+                    <span class="block text-xs text-indigo-300 uppercase font-semibold">Progress</span>
+                    <span id="progress-text" class="text-lg font-bold text-white">1 / 100</span>
+                </div>
+            </div>
+        </div>
+        <!-- Progress Bar -->
+        <div class="w-full bg-indigo-900 h-2 mt-3 rounded-full overflow-hidden max-w-4xl mx-auto">
+            <div id="progress-bar" class="bg-yellow-400 h-full w-0 transition-all duration-300"></div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-4xl w-full mx-auto p-4 sm:p-6 flex flex-col justify-between">
+        
+        <!-- Quiz Card -->
+        <div id="quiz-card" class="bg-white rounded-xl shadow-md border border-slate-200 p-6 mb-6 flex-grow flex flex-col justify-between">
+            
+            <div>
+                <!-- Question Meta Header -->
+                <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-100">
+                    <span id="question-number" class="text-xs font-bold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-100">
+                        Question 1
+                    </span>
+                    <span id="subtopic-tag" class="text-xs font-medium text-slate-500 bg-slate-100 px-2.5 py-1 rounded">
+                        Topic
+                    </span>
+                </div>
+
+                <!-- Question Text -->
+                <div id="question-text" class="text-base sm:text-lg font-semibold text-slate-800 mb-6 leading-relaxed whitespace-pre-line">
+                    Loading question...
+                </div>
+
+                <!-- Hint Collapsible Button -->
+                <div class="mb-4">
+                    <button id="hint-toggle-btn" onclick="toggleHint()" class="text-xs font-semibold text-amber-600 hover:text-amber-700 bg-amber-50 hover:bg-amber-100 px-3 py-1.5 rounded-md border border-amber-200 transition-colors flex items-center gap-1">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        Need a Hint?
+                    </button>
+                    <div id="hint-box" class="hidden mt-2 p-3 bg-amber-50 border-l-4 border-amber-400 text-xs text-amber-800 rounded">
+                        <span id="hint-text">Hint content...</span>
+                    </div>
+                </div>
+
+                <!-- Options List -->
+                <div id="options-container" class="space-y-3 mb-6">
+                    <!-- Options populated dynamically -->
+                </div>
+            </div>
+
+            <!-- Explanation Box -->
+            <div id="explanation-box" class="hidden mt-4 p-4 bg-slate-50 border-l-4 border-indigo-500 rounded-r-lg">
+                <h4 class="text-xs font-bold text-indigo-900 uppercase tracking-wider mb-1">Detailed Rationale / Explanation:</h4>
+                <p id="explanation-text" class="text-sm text-slate-700 leading-relaxed"></p>
+            </div>
+
+        </div>
+
+        <!-- Navigation & Controls Footer -->
+        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center gap-2">
+                <button id="prev-btn" onclick="prevQuestion()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium text-sm rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                    Previous
+                </button>
+                <button id="next-btn" onclick="nextQuestion()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-sm rounded-lg transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
+                    Next
+                </button>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <label for="jump-input" class="text-xs text-slate-500 font-medium">Jump to:</label>
+                <input type="number" id="jump-input" min="1" max="100" class="w-16 px-2 py-1 text-sm border border-slate-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500 text-center" placeholder="1-100">
+                <button onclick="jumpToQuestion()" class="px-3 py-1 bg-slate-800 hover:bg-slate-900 text-white text-xs font-medium rounded transition-colors">
+                    Go
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Quiz Dataset and Application Logic -->
+    <script>
+        const rawQuizData = [
+            // Page 81 Questions
+            {
+                id: 1,
+                page: 81,
+                topic: "Subject-Verb Agreement - Basic Rules",
+                question: "Which of the following sentences adheres correctly to the basic Subject-Verb Agreement rule when singular subjects are connected by 'and'?",
+                options: [
+                    "Gold and silver are precious metals.",
+                    "Gold and silver is precious metals.",
+                    "Gold and silver has been precious metals.",
+                    "Gold and silver was precious metals."
+                ],
+                answer: 0,
+                hint: "When two distinct singular nouns are joined by 'and', they take a plural verb.",
+                explanation: "When two singular subjects ('Gold' and 'silver') are joined by the conjunction 'and', they form a plural subject and require a plural verb ('are')."
+            },
+            {
+                id: 2,
+                page: 81,
+                topic: "Subject-Verb Agreement - Single Idea Nouns",
+                question: "Identify the grammatically correct sentence where two nouns joined by 'and' express a single idea/item:",
+                options: [
+                    "Bread and butter is a wholesome food.",
+                    "Bread and butter are a wholesome food.",
+                    "Bread and butter have been a wholesome food.",
+                    "Bread and butter were a wholesome food."
+                ],
+                answer: 0,
+                hint: "When two nouns express a unified concept or single combination, a singular verb is required.",
+                explanation: "Phrases like 'Bread and butter', 'Rice and curry', or 'Slow and steady' represent a single collective idea or dish, thus taking a singular verb ('is')."
+            },
+            {
+                id: 3,
+                page: 81,
+                topic: "Subject-Verb Agreement - Article Rule",
+                question: "Select the sentence that correctly indicates TWO distinct individuals are being referenced:",
+                options: [
+                    "The Director and the Producer have arrived at the studio.",
+                    "The Director and Producer have arrived at the studio.",
+                    "The Director and Producer is waiting outside.",
+                    "A Director and Producer has completed the project."
+                ],
+                answer: 0,
+                hint: "If an article (the/a/an) precedes BOTH nouns, it signifies two separate persons.",
+                explanation: "When articles are used before both nouns ('The Director and the Producer'), it refers to two different people, requiring a plural verb ('have arrived'). If the article is used only before the first noun, it refers to one person."
+            },
+            {
+                id: 4,
+                page: 81,
+                topic: "Subject-Verb Agreement - Single Identity Article",
+                question: "Find the sentence that correctly implies ONE person holding dual designations:",
+                options: [
+                    "The Principal and Secretary was present at the annual meeting.",
+                    "The Principal and the Secretary was present at the annual meeting.",
+                    "The Principal and Secretary were present at the annual meeting.",
+                    "The Principal and the Secretary have been present at the annual meeting."
+                ],
+                answer: 0,
+                hint: "An article before only the first noun signifies one individual holding both roles.",
+                explanation: "'The Principal and Secretary' refers to one single individual who is both the Principal and the Secretary, so a singular verb ('was') is required."
+            },
+            {
+                id: 5,
+                page: 81,
+                topic: "Subject-Verb Agreement - 'As well as'",
+                question: "In the sentence 'The captain with all his crew members ___ drowned', choose the correct auxiliary verb:",
+                options: [
+                    "was",
+                    "were",
+                    "have been",
+                    "are"
+                ],
+                answer: 0,
+                hint: "When subjects are joined by 'with', 'together with', or 'as well as', the verb agrees with the FIRST subject.",
+                explanation: "When two subjects are connected using words like 'with', 'along with', 'as well as', or 'together with', the verb agrees strictly with the first subject ('captain', which is singular), making 'was' correct."
+            },
+            {
+                id: 6,
+                page: 81,
+                topic: "Subject-Verb Agreement - Parenthetical Phrases",
+                question: "Which of the following options correctly fills the blank?\n'My father, along with his friends, ___ going to attend the function.'",
+                options: [
+                    "is",
+                    "are",
+                    "were",
+                    "have been"
+                ],
+                answer: 0,
+                hint: "The main subject is 'father'; 'along with his friends' is a parenthetical addition.",
+                explanation: "The principal subject is 'My father' (singular). Modifiers introduced by 'along with' do not change the subject number. Therefore, 'is' is the correct singular verb."
+            },
+            {
+                id: 7,
+                page: 81,
+                topic: "Subject-Verb Agreement - Neither...Nor",
+                question: "Select the sentence with correct verb agreement for disjunctive conjunctions:",
+                options: [
+                    "Neither Shyam nor his brothers are interested in the plan.",
+                    "Neither Shyam nor his brothers is interested in the plan.",
+                    "Neither Shyam nor his brothers was interested in the plan.",
+                    "Neither Shyam nor his brothers has been interested in the plan."
+                ],
+                answer: 0,
+                hint: "With 'neither...nor', the verb agrees with the subject closest to it.",
+                explanation: "In 'Neither...nor' structures, the verb agrees with the nearest subject. Here, 'his brothers' is plural and closest to the verb, requiring 'are'."
+            },
+            {
+                id: 8,
+                page: 81,
+                topic: "Subject-Verb Agreement - Either...Or",
+                question: "Identify the correct verb choice: 'Either the manager or his subordinates ___ responsible for this error.'",
+                options: [
+                    "are",
+                    "is",
+                    "was",
+                    "has been"
+                ],
+                answer: 0,
+                hint: "The verb must agree with the subject immediately preceding it.",
+                explanation: "'His subordinates' is plural and closest to the verb position, so the plural auxiliary verb 'are' is grammatically accurate."
+            },
+            {
+                id: 9,
+                page: 81,
+                topic: "Subject-Verb Agreement - 'Not only...but also'",
+                question: "Choose the correct sentence following the proximity rule of 'not only...but also':",
+                options: [
+                    "Not only the teacher but also the students were praised.",
+                    "Not only the teacher but also the students was praised.",
+                    "Not only the teacher but also the students is praised.",
+                    "Not only the teacher but also the students has been praised."
+                ],
+                answer: 0,
+                hint: "The verb aligns with the noun placed after 'but also'.",
+                explanation: "'The students' follows 'but also' and is plural, so it requires the plural verb 'were'."
+            },
+            {
+                id: 10,
+                page: 81,
+                topic: "Subject-Verb Agreement - Spotting the Error",
+                question: "Spot the error in the given sentence:\n'Slow and steady (A) / win the race (B) / every single time (C) / No error (D)'",
+                options: [
+                    "(B) win the race",
+                    "(A) Slow and steady",
+                    "(C) every single time",
+                    "(D) No error"
+                ],
+                answer: 0,
+                hint: "'Slow and steady' represents a singular proverb concept.",
+                explanation: "The proverb 'Slow and steady' takes a singular verb. 'Win' should be corrected to 'wins'."
+            },
+
+            // Page 82 Questions
+            {
+                id: 11,
+                page: 82,
+                topic: "Subject-Verb Agreement - Each and Every",
+                question: "Fill in the blank: 'Each boy and each girl ___ given a prize yesterday.'",
+                options: [
+                    "was",
+                    "were",
+                    "have been",
+                    "are"
+                ],
+                answer: 0,
+                hint: "Nouns preceded by 'each' or 'every' always take a singular verb regardless of 'and'.",
+                explanation: "Even when two nouns are joined by 'and', if they are preceded by 'each' or 'every', the subject remains singular and takes a singular verb ('was')."
+            },
+            {
+                id: 12,
+                page: 82,
+                topic: "Subject-Verb Agreement - 'Every' Distribution",
+                question: "Which of the following sentences is grammatically correct?",
+                options: [
+                    "Every man, woman, and child was saved from the sinking ship.",
+                    "Every man, woman, and child were saved from the sinking ship.",
+                    "Every man, woman, and child have been saved from the sinking ship.",
+                    "Every man, woman, and child are saved from the sinking ship."
+                ],
+                answer: 0,
+                hint: "'Every' qualifies the entire group distributively as singular.",
+                explanation: "'Every' makes the entire compound subject singular in grammatical agreement, requiring 'was saved'."
+            },
+            {
+                id: 13,
+                page: 82,
+                topic: "Subject-Verb Agreement - 'One of the'",
+                question: "Choose the correct sentence structure for 'One of the + Plural Noun + Singular Verb':",
+                options: [
+                    "One of my friends is a famous singer.",
+                    "One of my friends are a famous singer.",
+                    "One of my friend is a famous singer.",
+                    "One of my friend are a famous singer."
+                ],
+                answer: 0,
+                hint: "'One of' is followed by a plural noun but takes a singular verb.",
+                explanation: "The structure 'One of + plural noun' selects one out of many, so the subject is 'One' (singular), requiring 'is'."
+            },
+            {
+                id: 14,
+                page: 82,
+                topic: "Subject-Verb Agreement - Relative Pronoun Clause",
+                question: "Identify the correct verb choice: 'He is one of those men who ___ always ready to help others.'",
+                options: [
+                    "are",
+                    "is",
+                    "was",
+                    "has been"
+                ],
+                answer: 0,
+                hint: "A relative pronoun ('who') takes a verb agreeing with its antecedent ('men').",
+                explanation: "The antecedent of 'who' is the plural noun 'men'. Therefore, the verb inside the relative clause must be plural ('are')."
+            },
+            {
+                id: 15,
+                page: 82,
+                topic: "Subject-Verb Agreement - 'The only one of'",
+                question: "Select the sentence with correct verb agreement for 'the only one of':",
+                options: [
+                    "This is the only one of his books that is worth reading.",
+                    "This is the only one of his books that are worth reading.",
+                    "This is the only one of his books that have been worth reading.",
+                    "This is the only one of his books that were worth reading."
+                ],
+                answer: 0,
+                hint: "'The only one' restricts the subject strictly to a singular identity.",
+                explanation: "When 'the only one' precedes 'of + plural noun + relative pronoun', the verb is singular ('is') because the antecedent is restricted to 'the only one'."
+            },
+            {
+                id: 16,
+                page: 82,
+                topic: "Subject-Verb Agreement - Many a / Many an",
+                question: "Which of the following options correctly completes the sentence?\n'Many a student ___ failed to pass this rigorous exam.'",
+                options: [
+                    "has",
+                    "have",
+                    "are",
+                    "were"
+                ],
+                answer: 0,
+                hint: "'Many a' is followed by a singular noun and singular verb.",
+                explanation: "The idiom 'Many a + singular noun' takes a singular verb ('has'). Contrast with 'Many students have'."
+            },
+            {
+                id: 17,
+                page: 82,
+                topic: "Subject-Verb Agreement - 'A number of' vs 'The number of'",
+                question: "Fill in the blanks respectively:\n'A number of candidates ___ applied, but the number of vacancies ___ small.'",
+                options: [
+                    "have, is",
+                    "has, are",
+                    "have, are",
+                    "has, is"
+                ],
+                answer: 0,
+                hint: "'A number of' takes a plural verb; 'The number of' takes a singular verb.",
+                explanation: "'A number of' means 'many' (plural -> 'have applied'), whereas 'The number of' denotes a specific count/unit (singular -> 'is small')."
+            },
+            {
+                id: 18,
+                page: 82,
+                topic: "Subject-Verb Agreement - Collective Nouns (Unanimity)",
+                question: "Choose the correct sentence where a collective noun acts as a unified whole:",
+                options: [
+                    "The jury has given its verdict unanimously.",
+                    "The jury have given its verdict unanimously.",
+                    "The jury are divided in their opinions.",
+                    "The jury have been unified in their decision."
+                ],
+                answer: 0,
+                hint: "When a collective noun acts in total agreement, it takes a singular verb and singular pronoun ('its').",
+                explanation: "Unanimous collective nouns act as a single entity, requiring a singular verb ('has') and singular pronoun ('its')."
+            },
+            {
+                id: 19,
+                page: 82,
+                topic: "Subject-Verb Agreement - Collective Nouns (Division)",
+                question: "Choose the correct sentence where a collective noun shows division among members:",
+                options: [
+                    "The committee are divided in their opinions.",
+                    "The committee is divided in their opinions.",
+                    "The committee has been divided in its opinions.",
+                    "The committee was divided in its opinions."
+                ],
+                answer: 0,
+                hint: "When members of a collective noun act individually or disagree, use a plural verb and plural pronoun.",
+                explanation: "When members are divided, the collective noun functions as plural individuals, requiring a plural verb ('are') and plural pronoun ('their')."
+            },
+            {
+                id: 20,
+                page: 82,
+                topic: "Subject-Verb Agreement - Assertion & Reason",
+                question: "Assertion (A): 'More than one person was involved in the crime.' is grammatically correct.\nReason (R): 'More than one' is followed by a singular countable noun and a singular verb.\nChoose the correct evaluation:",
+                options: [
+                    "Both (A) and (R) are true, and (R) is the correct explanation of (A).",
+                    "Both (A) and (R) are true, but (R) is NOT the correct explanation of (A).",
+                    "(A) is true, but (R) is false.",
+                    "(A) is false, but (R) is true."
+                ],
+                answer: 0,
+                hint: "'More than one' follows a strict singular noun/verb agreement rule.",
+                explanation: "'More than one + singular noun + singular verb' is a standard rule. Thus both A and R are correct and R explains A."
+            },
+
+            // Page 83 Questions
+            {
+                id: 21,
+                page: 83,
+                topic: "Subject-Verb Agreement - 'More than two/three'",
+                question: "Fill in the blank: 'More than two persons ___ present at the scene.'",
+                options: [
+                    "were",
+                    "was",
+                    "is",
+                    "has been"
+                ],
+                answer: 0,
+                hint: "'More than two/three/etc.' takes a plural noun and plural verb.",
+                explanation: "When 'More than' is followed by a numeral greater than one (e.g., two, three), it takes a plural noun and plural verb ('were')."
+            },
+            {
+                id: 22,
+                page: 83,
+                topic: "Subject-Verb Agreement - Amount, Distance, Weight",
+                question: "Which of the following sentences correctly expresses a fixed quantity as a single unit?",
+                options: [
+                    "Ten miles is a long distance to walk.",
+                    "Ten miles are a long distance to walk.",
+                    "Ten miles have been a long distance to walk.",
+                    "Ten miles were a long distance to walk."
+                ],
+                answer: 0,
+                hint: "A fixed distance, sum, or weight used as a single unit takes a singular verb.",
+                explanation: "When a specific distance ('Ten miles') is thought of as a single collective measurement/unit, it takes a singular verb ('is')."
+            },
+            {
+                id: 23,
+                page: 83,
+                topic: "Subject-Verb Agreement - Divided Sums",
+                question: "Choose the correct sentence where a sum of money is spent separately or on different items:",
+                options: [
+                    "Fifty thousand rupees were spent on various household items.",
+                    "Fifty thousand rupees was spent on various household items.",
+                    "Fifty thousand rupees has been spent on various household items.",
+                    "Fifty thousand rupees is spent on various household items."
+                ],
+                answer: 0,
+                hint: "When a sum of money is distributed or spent in parts, it takes a plural verb.",
+                explanation: "If the amount is spent on multiple different items (distributed action), it is treated as plural, taking 'were spent'."
+            },
+            {
+                id: 24,
+                page: 83,
+                topic: "Subject-Verb Agreement - Nouns Plural in Form but Singular in Meaning",
+                question: "Which verb correctly completes the sentence?\n'Mathematics ___ an interesting subject for logical minds.'",
+                options: [
+                    "is",
+                    "are",
+                    "were",
+                    "have been"
+                ],
+                answer: 0,
+                hint: "Names of subjects ending in '-ics' take a singular verb when used generally.",
+                explanation: "Academic subjects like Mathematics, Physics, and Ethics take singular verbs ('is') when referred to as branches of study."
+            },
+            {
+                id: 25,
+                page: 83,
+                topic: "Subject-Verb Agreement - Possessed Subject Names",
+                question: "Select the sentence that correctly uses a subject name with a possessive pronoun:",
+                options: [
+                    "His mathematics are very weak.",
+                    "His mathematics is very weak.",
+                    "His mathematics has been very weak.",
+                    "His mathematics was very weak."
+                ],
+                answer: 0,
+                hint: "When a subject name is preceded by a possessive adjective, it refers to calculations/skills and becomes plural.",
+                explanation: "When preceded by a possessive pronoun ('his/my/her'), names of subjects like Mathematics or Statistics mean 'calculation abilities/data' and take a plural verb ('are')."
+            },
+            {
+                id: 26,
+                page: 83,
+                topic: "Subject-Verb Agreement - Diseases & Games",
+                question: "Identify the sentence that violates Subject-Verb Agreement rules:",
+                options: [
+                    "Measles are a dangerous infectious disease.",
+                    "Measles is a dangerous infectious disease.",
+                    "Billiards is played all over the world.",
+                    "The news is true."
+                ],
+                answer: 0,
+                hint: "Diseases (Measles, Mumps) and games (Billiards) taking '-s' are singular in meaning.",
+                explanation: "Option A is wrong because 'Measles' is a singular disease name requiring 'is', not 'are'."
+            },
+            {
+                id: 27,
+                page: 83,
+                topic: "Subject-Verb Agreement - Fractions and Percentages",
+                question: "Fill in the blank: 'Two-thirds of the book ___ been read.'",
+                options: [
+                    "has",
+                    "have",
+                    "are",
+                    "were"
+                ],
+                answer: 0,
+                hint: "Fractions take a singular verb when referring to an uncountable noun or a single object.",
+                explanation: "Here the fraction refers to 'the book' (singular object), so the verb must be singular ('has')."
+            },
+            {
+                id: 28,
+                page: 83,
+                topic: "Subject-Verb Agreement - Fractions with Plural Countable Nouns",
+                question: "Fill in the blank: 'Two-thirds of the students ___ passed the examination.'",
+                options: [
+                    "have",
+                    "has",
+                    "is",
+                    "was"
+                ],
+                answer: 0,
+                hint: "Fractions of plural countable nouns take a plural verb.",
+                explanation: "When a fraction modifies a plural countable noun ('students'), it requires a plural verb ('have')."
+            },
+            {
+                id: 29,
+                page: 83,
+                topic: "Subject-Verb Agreement - Statement Matching",
+                question: "Match List-I (Subject Structure) with List-II (Verb Rule):\nList-I:\n1. Class of Uncountable Nouns (Furniture, Luggage)\n2. Pair Nouns without 'a pair of' (Scissors, Trousers)\n3. 'A pair of trousers'\n\nList-II:\na. Plural Verb\nb. Singular Verb\nc. Singular Verb",
+                options: [
+                    "1-b, 2-a, 3-c",
+                    "1-a, 2-b, 3-c",
+                    "1-c, 2-b, 3-a",
+                    "1-a, 2-c, 3-b"
+                ],
+                answer: 0,
+                hint: "Uncountable nouns are singular; scissors/trousers are plural unless preceded by 'a pair of'.",
+                explanation: "Furniture/Luggage = Singular verb (b); Scissors/Trousers = Plural verb (a); A pair of trousers = Singular verb (c)."
+            },
+            {
+                id: 30,
+                page: 83,
+                topic: "Subject-Verb Agreement - 'Pair of' Construction",
+                question: "Choose the correct sentence:\n'A pair of scissors ___ lying on the table.'",
+                options: [
+                    "is",
+                    "are",
+                    "were",
+                    "have been"
+                ],
+                answer: 0,
+                hint: "The true subject here is the noun phrase starting with 'A pair'.",
+                explanation: "When 'scissors' is preceded by 'A pair of', the subject is 'pair' (singular), requiring 'is'."
+            },
+
+            // Page 84 Questions
+            {
+                id: 31,
+                page: 84,
+                topic: "Nouns & Numbers - Always Plural Form",
+                question: "Which group of nouns ALWAYS takes a plural verb without adding an '-s' suffix?",
+                options: [
+                    "Cattle, People, Poultry, Gentry, Clergy",
+                    "Furniture, Advice, Information, Luggage",
+                    "Physics, Mathematics, News, Politics",
+                    "Team, Jury, Family, Audience"
+                ],
+                answer: 0,
+                hint: "These are collective nouns that are plural in meaning despite lacking an '-s'.",
+                explanation: "'Cattle', 'People', 'Poultry', 'Gentry', and 'Clergy' are inherently plural nouns that take plural verbs."
+            },
+            {
+                id: 32,
+                page: 84,
+                topic: "Nouns & Numbers - Correct Usage of 'Cattle'",
+                question: "Identify the grammatically correct sentence:",
+                options: [
+                    "Cattle are grazing in the field.",
+                    "Cattles are grazing in the field.",
+                    "Cattles is grazing in the field.",
+                    "A cattle is grazing in the field."
+                ],
+                answer: 0,
+                hint: "'Cattle' is already plural; 'cattles' is an invalid form.",
+                explanation: "'Cattle' is a plural noun. Adding '-s' to form 'cattles' is incorrect."
+            },
+            {
+                id: 33,
+                page: 84,
+                topic: "Uncountable Nouns - Incorrect Pluralization",
+                question: "Which of the following sentences correctly avoids pluralizing an uncountable noun?",
+                options: [
+                    "He gave me valuable advice.",
+                    "He gave me valuable advices.",
+                    "He gave me many advices.",
+                    "He gave me an advice."
+                ],
+                answer: 0,
+                hint: "'Advice' is an uncountable noun and cannot be made plural as 'advices'.",
+                explanation: "'Advice' is uncountable. It cannot take 'a/an' directly or be pluralized to 'advices'."
+            },
+            {
+                id: 34,
+                page: 84,
+                topic: "Uncountable Nouns - Counting Units",
+                question: "How should one correctly express a single item of advice or news?",
+                options: [
+                    "A piece of advice / A piece of news",
+                    "An advice / A news",
+                    "One advice / One news",
+                    "An item of advices / A piece of newses"
+                ],
+                answer: 0,
+                hint: "Use unit modifiers like 'a piece of' for uncountable nouns.",
+                explanation: "To make uncountable nouns countable, phrases like 'a piece of advice/news' or 'an article of luggage' are used."
+            },
+            {
+                id: 35,
+                page: 84,
+                topic: "Nouns - Hyphenated Nouns",
+                question: "Select the sentence with the correct hyphenated compound noun usage:",
+                options: [
+                    "He gave me a five-hundred-rupee note.",
+                    "He gave me a five-hundred-rupees note.",
+                    "He gave me a five-hundreds-rupee note.",
+                    "He gave me a five-hundreds-rupees note."
+                ],
+                answer: 0,
+                hint: "Hyphenated compound nouns functioning as adjectives never take a plural '-s'.",
+                explanation: "In 'five-hundred-rupee note', the hyphenated expression acts as an adjective modifying 'note', so it must remain singular ('rupee', not 'rupees')."
+            },
+            {
+                id: 36,
+                page: 84,
+                topic: "Nouns - Numerical Expressions",
+                question: "Which of the following sentences is INCORRECT?",
+                options: [
+                    "Two thousands people were present at the rally.",
+                    "Two thousand people were present at the rally.",
+                    "Thousands of people were present at the rally.",
+                    "Several thousand people were present at the rally."
+                ],
+                answer: 0,
+                hint: "Definite numerals before 'thousand/hundred' prevent the addition of '-s'.",
+                explanation: "When preceded by a definite numeral ('Two'), words like hundred, thousand, or dozen do not take an '-s'. Correct: 'Two thousand people'."
+            },
+            {
+                id: 37,
+                page: 84,
+                topic: "Nouns - Indefinite Numerical Expressions",
+                question: "Which sentence correctly uses the indefinite plural form of numerical nouns?",
+                options: [
+                    "Thousands of rupees were spent.",
+                    "Thousand of rupees were spent.",
+                    "Two thousands of rupees were spent.",
+                    "Two thousand of rupees was spent."
+                ],
+                answer: 0,
+                hint: "Without a preceding definite number, use 'Thousands/Hundreds + of + Plural Noun'.",
+                explanation: "Indefinite count expressions use 'Thousands/Hundreds/Dozens of + plural noun'."
+            },
+            {
+                id: 38,
+                page: 84,
+                topic: "Nouns - Noun + Preposition + Same Noun",
+                question: "Identify the correct structure when a preposition joins two identical nouns:",
+                options: [
+                    "Page after page was read.",
+                    "Pages after pages were read.",
+                    "Pages after page was read.",
+                    "Page after pages were read."
+                ],
+                answer: 0,
+                hint: "When the same noun is repeated on either side of a preposition, both nouns must be singular and take a singular verb.",
+                explanation: "The rule specifies: 'Singular Noun + Preposition + Same Singular Noun + Singular Verb'. Example: 'Page after page was read'."
+            },
+            {
+                id: 39,
+                page: 84,
+                topic: "Nouns - Possessive Case with Living Things",
+                question: "Which of the following options correctly shows possession for a living being?",
+                options: [
+                    "Ram's book",
+                    "The book of Ram's",
+                    "The book's Ram",
+                    "Ram book"
+                ],
+                answer: 0,
+                hint: "Apostrophe with 's' ('s) is used primarily with living beings.",
+                explanation: "Living entities take apostrophe 's' to show possession ('Ram's book'). Non-living objects use 'of'."
+            },
+            {
+                id: 40,
+                page: 84,
+                topic: "Nouns - Possessive Case with Non-Living Things",
+                question: "Identify the INCORRECT possessive form:",
+                options: [
+                    "The table's leg",
+                    "The leg of the table",
+                    "The cover of the book",
+                    "The wall of the house"
+                ],
+                answer: 0,
+                hint: "Do not use apostrophe 's' ('s) with non-living objects.",
+                explanation: "Non-living objects do not take ''s'. Instead of 'the table's leg', use 'the leg of the table'."
+            },
+
+            // Page 85 Questions
+            {
+                id: 41,
+                page: 85,
+                topic: "Nouns - Plural Possessive Apostrophe",
+                question: "What is the correct possessive form for a plural noun ending in '-s'?",
+                options: [
+                    "Boys' school",
+                    "Boy's school",
+                    "Boys's school",
+                    "Boys school's"
+                ],
+                answer: 0,
+                hint: "Plural nouns ending in '-s' take only an apostrophe after the '-s'.",
+                explanation: "For plural nouns ending in 's', add only an apostrophe at the end (e.g., 'Boys' school', 'Girls' hostel')."
+            },
+            {
+                id: 42,
+                page: 85,
+                topic: "Nouns - Plural Possessive Irregular",
+                question: "What is the correct possessive form for plural nouns NOT ending in '-s'?",
+                options: [
+                    "Children's park",
+                    "Childrens' park",
+                    "Childrens's park",
+                    "Children park's"
+                ],
+                answer: 0,
+                hint: "If a plural noun does not end in '-s', add both an apostrophe and 's' ('s).",
+                explanation: "Irregular plurals not ending in 's' (like children, men, women) take ''s' (e.g., 'Children's park')."
+            },
+            {
+                id: 43,
+                page: 85,
+                topic: "Nouns - Joint Possession vs Separate Possession",
+                question: "In the sentence 'Sita and Gita's mother is a teacher', what does the single apostrophe on the second noun signify?",
+                options: [
+                    "Sita and Gita share the same mother.",
+                    "Sita and Gita have different mothers.",
+                    "Sita is the mother of Gita.",
+                    "Gita is the mother of Sita."
+                ],
+                answer: 0,
+                hint: "An apostrophe attached only to the second noun denotes joint ownership or relationship.",
+                explanation: "Joint possession uses ''s' on the second noun only ('Sita and Gita's mother'), meaning one common mother."
+            },
+            {
+                id: 44,
+                page: 85,
+                topic: "Nouns - Separate Possession",
+                question: "Choose the sentence indicating that two distinct individuals have separate fathers:",
+                options: [
+                    "Ram's and Shyam's fathers are meeting today.",
+                    "Ram and Shyam's father is meeting today.",
+                    "Ram and Shyam father are meeting today.",
+                    "Ram's and Shyam father is meeting today."
+                ],
+                answer: 0,
+                hint: "Separate possession requires apostrophe 's' on BOTH nouns.",
+                explanation: "When two subjects have separate possessions/fathers, both nouns take ''s' ('Ram's and Shyam's fathers')."
+            },
+            {
+                id: 45,
+                page: 85,
+                topic: "Pronouns - Order of Personal Pronouns (Normal)",
+                question: "Which of the following sentences follows the correct pronoun order (2nd, 3rd, 1st person) for pleasant/normal statements?",
+                options: [
+                    "You, he and I will study together.",
+                    "I, you and he will study together.",
+                    "He, you and I will study together.",
+                    "You, I and he will study together."
+                ],
+                answer: 0,
+                hint: "Rule 231 applies for good news, general, or positive context.",
+                explanation: "In normal or positive contexts, personal pronouns follow the order: 2nd Person -> 3rd Person -> 1st Person (2-3-1)."
+            },
+            {
+                id: 46,
+                page: 85,
+                topic: "Pronouns - Order of Personal Pronouns (Negative/Confession)",
+                question: "Which sentence uses the correct pronoun order (1st, 2nd, 3rd person) when confessing a mistake or guilt?",
+                options: [
+                    "I, you and he committed the crime.",
+                    "You, he and I committed the crime.",
+                    "He, you and I committed the crime.",
+                    "You, I and he committed the crime."
+                ],
+                answer: 0,
+                hint: "Rule 123 applies when accepting guilt, mistake, or negative responsibility.",
+                explanation: "When admitting a fault, crime, or mistake, the order of personal pronouns is: 1st Person -> 2nd Person -> 3rd Person (1-2-3)."
+            },
+            {
+                id: 47,
+                page: 85,
+                topic: "Pronouns - Order of Plural Personal Pronouns",
+                question: "Select the correct arrangement for PLURAL personal pronouns (We, You, They):",
+                options: [
+                    "We, you and they should start the project.",
+                    "You, we and they should start the project.",
+                    "They, you and we should start the project.",
+                    "You, they and we should start the project."
+                ],
+                answer: 0,
+                hint: "Plural personal pronouns always follow the 1-2-3 sequence.",
+                explanation: "When all pronouns are in their plural forms (We, You, They), they always follow the 1-2-3 sequence regardless of context."
+            },
+            {
+                id: 48,
+                page: 85,
+                topic: "Pronouns - Case after Preposition",
+                question: "Fill in the blank with the correct pronoun form:\n'There is no secret between you and ___.'",
+                options: [
+                    "me",
+                    "I",
+                    "myself",
+                    "mine"
+                ],
+                answer: 0,
+                hint: "Prepositions are followed by pronouns in the Objective Case.",
+                explanation: "Prepositions ('between', 'except', 'for') take pronouns in the objective case. 'You and me' is correct."
+            },
+            {
+                id: 49,
+                page: 85,
+                topic: "Pronouns - Case after 'Let'",
+                question: "Choose the correct sentence involving the verb 'let':",
+                options: [
+                    "Let him and me do the work.",
+                    "Let he and I do the work.",
+                    "Let he and me do the work.",
+                    "Let him and I do the work."
+                ],
+                answer: 0,
+                hint: "'Let' is always followed by pronouns in the Objective Case.",
+                explanation: "The verb 'let' must be followed by objective pronouns ('him', 'me', 'her', 'them')."
+            },
+            {
+                id: 50,
+                page: 85,
+                topic: "Pronouns - Case after 'Than' (Comparison)",
+                question: "Select the sentence with correct pronoun case comparison:\n'He is taller than ___.'",
+                options: [
+                    "I",
+                    "me",
+                    "myself",
+                    "mine"
+                ],
+                answer: 0,
+                hint: "When comparing two nominative/subjective cases using 'than', use the nominative case.",
+                explanation: "When a subject ('He') is compared using 'than', it is compared to another subject in the nominative case ('I am' / 'I')."
+            },
+
+            // Page 86 Questions
+            {
+                id: 51,
+                page: 86,
+                topic: "Pronouns - Relative Pronoun 'Who' vs 'Whom'",
+                question: "Fill in the blank: 'The man ___ met you yesterday is my uncle.'",
+                options: [
+                    "who",
+                    "whom",
+                    "which",
+                    "whose"
+                ],
+                answer: 0,
+                hint: "'Who' functions as the subject of the clause; 'Whom' functions as the object.",
+                explanation: "'Who' acts as the subject for the verb 'met' in the relative clause."
+            },
+            {
+                id: 52,
+                page: 86,
+                topic: "Pronouns - Relative Pronoun 'Whom'",
+                question: "Fill in the blank: 'The girl ___ you recommended has been selected for the post.'",
+                options: [
+                    "whom",
+                    "who",
+                    "which",
+                    "whose"
+                ],
+                answer: 0,
+                hint: "The relative pronoun receives the action of the verb 'recommended'.",
+                explanation: "'Whom' functions as the objective relative pronoun ('you recommended her')."
+            },
+            {
+                id: 53,
+                page: 86,
+                topic: "Pronouns - Relative Pronoun 'Which'",
+                question: "Select the sentence that correctly uses 'which' as a relative pronoun:",
+                options: [
+                    "This is the book which I was looking for.",
+                    "This is the book who I was looking for.",
+                    "This is the book whom I was looking for.",
+                    "This is the book whose I was looking for."
+                ],
+                answer: 0,
+                hint: "'Which' is used for non-living objects and animals.",
+                explanation: "'Which' is used as a relative pronoun for non-living objects ('book') and animals."
+            },
+            {
+                id: 54,
+                page: 86,
+                topic: "Pronouns - 'That' after Superlative Degree",
+                question: "Choose the sentence that correctly uses 'that' after a superlative adjective:",
+                options: [
+                    "He is the best student that has ever studied here.",
+                    "He is the best student who has ever studied here.",
+                    "He is the best student whom has ever studied here.",
+                    "He is the best student which has ever studied here."
+                ],
+                answer: 0,
+                hint: "After superlative adjectives ('the best'), use 'that' as the relative pronoun instead of 'who'.",
+                explanation: "Superlative expressions ('the best', 'the tallest') mandate the relative pronoun 'that'."
+            },
+            {
+                id: 55,
+                page: 86,
+                topic: "Pronouns - 'That' after Specific Words",
+                question: "Which relative pronoun must be used after words like 'All, Same, Any, None, Nothing, Only'?",
+                options: [
+                    "that",
+                    "who",
+                    "which",
+                    "whom"
+                ],
+                answer: 0,
+                hint: "'All that glitters is not gold' is a famous example.",
+                explanation: "Words like 'all', 'same', 'any', 'none', 'nothing', 'only' strictly take the relative pronoun 'that'."
+            },
+            {
+                id: 56,
+                page: 86,
+                topic: "Pronouns - 'That' with Person + Animal/Thing",
+                question: "Fill in the blank: 'The man and his dog ___ entered the house were thoroughly inspected.'",
+                options: [
+                    "that",
+                    "who",
+                    "which",
+                    "whom"
+                ],
+                answer: 0,
+                hint: "When one antecedent is a person and the other is an animal or object, use 'that'.",
+                explanation: "When antecedents consist of a human combined with an animal/thing, 'that' is the required relative pronoun."
+            },
+            {
+                id: 57,
+                page: 86,
+                topic: "Pronouns - Indefinite Pronoun 'One'",
+                question: "Identify the sentence that correctly maintains the subject 'One' throughout:",
+                options: [
+                    "One should do one's duty.",
+                    "One should do his duty.",
+                    "One should do her duty.",
+                    "One should do their duty."
+                ],
+                answer: 0,
+                hint: "When 'One' is used as a subject, its possessive form is 'one's'.",
+                explanation: "The indefinite pronoun 'One' must take 'one's' in the possessive case, not 'his/her/their'."
+            },
+            {
+                id: 58,
+                page: 86,
+                topic: "Pronouns - Reflexive Pronouns Usage",
+                question: "Which of the following verbs strictly requires a reflexive pronoun when no direct object is present?",
+                options: [
+                    "Avail, Enjoy, Absent, Adapt, Resign",
+                    "Keep, Break, Stop, Turn, Qualify",
+                    "Bath, Move, Open, Rest, Hide",
+                    "Read, Write, Speak, Listen, See"
+                ],
+                answer: 0,
+                hint: "Verbs like 'avail', 'absent', and 'enjoy' require reflexive pronouns when they lack a direct object.",
+                explanation: "Verbs such as avail, absent, enjoy, adapt, apply, introduce, and resign require reflexive pronouns (e.g., 'He absented himself from the class')."
+            },
+            {
+                id: 59,
+                page: 86,
+                topic: "Pronouns - Verbs NOT taking Reflexive Pronouns",
+                question: "Identify the sentence that INCORRECTLY includes a reflexive pronoun:",
+                options: [
+                    "He hidden himself behind the door.",
+                    "He hid behind the door.",
+                    "She kept away from bad company.",
+                    "He qualified the examination."
+                ],
+                answer: 0,
+                hint: "Verbs like hide, keep, stop, bath, and qualify should NOT be followed by reflexive pronouns.",
+                explanation: "Verbs like hide, keep, stop, bath, turn, and qualify do not take reflexive pronouns. 'He hid behind the door' is correct."
+            },
+            {
+                id: 60,
+                page: 86,
+                topic: "Pronouns - Each other vs One another",
+                question: "Fill in the blanks respectively:\n'The two sisters loved ___, while the three brothers helped ___.'",
+                options: [
+                    "each other, one another",
+                    "one another, each other",
+                    "each other, each other",
+                    "one another, one another"
+                ],
+                answer: 0,
+                hint: "'Each other' is used for two people; 'one another' for more than two.",
+                explanation: "'Each other' is restricted to two entities; 'one another' applies to three or more entities."
+            },
+
+            // Page 87 Questions
+            {
+                id: 61,
+                page: 87,
+                topic: "Adjectives - Order of Adjectives (OSASCOMP)",
+                question: "Which option arranges adjectives in the correct standard grammatical sequence (Opinion, Size, Age, Shape, Color, Origin, Material, Purpose)?",
+                options: [
+                    "A beautiful small old round black Indian wooden table",
+                    "A small beautiful old round black wooden Indian table",
+                    "An old beautiful small round black Indian wooden table",
+                    "A wooden Indian black round old small beautiful table"
+                ],
+                answer: 0,
+                hint: "Follow OSASCOMP order: Opinion -> Size -> Age -> Shape -> Color -> Origin -> Material.",
+                explanation: "Opinion (beautiful) -> Size (small) -> Age (old) -> Shape (round) -> Color (black) -> Origin (Indian) -> Material (wooden)."
+            },
+            {
+                id: 62,
+                page: 87,
+                topic: "Adjectives - Comparative Degree with 'To'",
+                question: "Which of the following adjectives is followed by 'to' instead of 'than' in comparisons?",
+                options: [
+                    "Superior, Inferior, Senior, Junior, Prior, Preferable",
+                    "Better, Taller, Stronger, Smarter, Faster",
+                    "More, Less, Greater, Higher, Longer",
+                    "Major, Minor, Interior, Exterior, Ultimate"
+                ],
+                answer: 0,
+                hint: "Latin comparative adjectives ending in '-ior' (plus 'preferable') take 'to'.",
+                explanation: "Adjectives like superior, inferior, senior, junior, prior, anterior, posterior, and preferable always take 'to' rather than 'than'."
+            },
+            {
+                id: 63,
+                page: 87,
+                topic: "Adjectives - Incorrect Double Comparatives",
+                question: "Spot the error in the sentence:\n'He is more cleverer (A) / than his brother (B) / in solving puzzles (C) / No error (D)'",
+                options: [
+                    "(A) He is more cleverer",
+                    "(B) than his brother",
+                    "(C) in solving puzzles",
+                    "(D) No error"
+                ],
+                answer: 0,
+                hint: "Avoid using double comparative forms together.",
+                explanation: "Double comparatives ('more cleverer') are incorrect. Use 'cleverer' alone."
+            },
+            {
+                id: 64,
+                page: 87,
+                topic: "Adjectives - Double Superlatives",
+                question: "Identify the grammatically correct sentence:",
+                options: [
+                    "He is the smartest boy in the class.",
+                    "He is the most smartest boy in the class.",
+                    "He is most smartest boy in the class.",
+                    "He is the most smarter boy in the class."
+                ],
+                answer: 0,
+                hint: "'Most' and '-est' should not be used together.",
+                explanation: "'Most smartest' is a double superlative error. The correct form is 'the smartest'."
+            },
+            {
+                id: 65,
+                page: 87,
+                topic: "Adjectives - Absolute Adjectives",
+                question: "Which of the following words represents an absolute state and CANNOT be modified by 'more' or 'most'?",
+                options: [
+                    "Unique, Perfect, Complete, Universal, Dead, Supreme",
+                    "Good, Bad, Far, Old, Near, High",
+                    "Beautiful, Intelligent, Industrious, Courageous",
+                    "Tall, Short, Rich, Poor, Dark, Bright"
+                ],
+                answer: 0,
+                hint: "Absolute adjectives cannot be placed in comparative or superlative degrees.",
+                explanation: "Words like Unique, Perfect, Complete, Universal, Dead, Supreme, Round, and Ideal convey absolute meanings and do not take comparative/superlative modifiers."
+            },
+            {
+                id: 66,
+                page: 87,
+                topic: "Adjectives - 'Preferable'",
+                question: "Select the sentence with correct usage of 'preferable':",
+                options: [
+                    "Milk is preferable to tea.",
+                    "Milk is more preferable than tea.",
+                    "Milk is most preferable to tea.",
+                    "Milk is preferable than tea."
+                ],
+                answer: 0,
+                hint: "'Preferable' takes 'to' and must not be preceded by 'more'.",
+                explanation: "'Preferable' already has a comparative force. It takes 'to' and never takes 'more'."
+            },
+            {
+                id: 67,
+                page: 87,
+                topic: "Adjectives - Comparison of Two Qualities in Same Person",
+                question: "When comparing two qualities in the SAME person, which pattern is grammatically correct?",
+                options: [
+                    "He is more brave than wise.",
+                    "He is braver than wise.",
+                    "He is braver than wiser.",
+                    "He is most brave than wise."
+                ],
+                answer: 0,
+                hint: "When comparing two attributes of a single individual, use 'more + positive degree + than + positive degree'.",
+                explanation: "Comparing two qualities in one person requires 'more + Positive Degree' ('more brave than wise'), not the '-er' form."
+            },
+            {
+                id: 68,
+                page: 87,
+                topic: "Adjectives - Little vs A Little vs The Little",
+                question: "Match List-I (Term) with List-II (Meaning):\nList-I:\n1. Little\n2. A little\n3. The little\n\nList-II:\na. Some quantity (Positive)\nb. Hardly any / Almost none (Negative)\nc. All that is left (Specific whole)",
+                options: [
+                    "1-b, 2-a, 3-c",
+                    "1-a, 2-b, 3-c",
+                    "1-c, 2-a, 3-b",
+                    "1-b, 2-c, 3-a"
+                ],
+                answer: 0,
+                hint: "Little = negative/negligible; A little = positive/small amount; The little = small amount that remains.",
+                explanation: "Little = negative/almost none (b); A little = positive small amount (a); The little = specific remaining quantity (c)."
+            },
+            {
+                id: 69,
+                page: 87,
+                topic: "Adjectives - Few vs A Few vs The Few",
+                question: "Fill in the blank: '___ knowledge is a dangerous thing.'",
+                options: [
+                    "A little",
+                    "Little",
+                    "A few",
+                    "Few"
+                ],
+                answer: 0,
+                hint: "Knowledge is uncountable, and a small positive amount is implied here.",
+                explanation: "The proverb uses 'A little' (small amount) with the uncountable noun 'knowledge'."
+            },
+            {
+                id: 70,
+                page: 87,
+                topic: "Adjectives - Countable vs Uncountable Modifiers",
+                question: "Identify the sentence that incorrectly uses 'few' with an uncountable noun:",
+                options: [
+                    "There is few water left in the glass.",
+                    "There are few students in the classroom.",
+                    "I have a few coins in my pocket.",
+                    "The few books he had were stolen."
+                ],
+                answer: 0,
+                hint: "'Few' modifies countable nouns; 'Little' modifies uncountable nouns.",
+                explanation: "'Water' is uncountable and requires 'little', not 'few'."
+            },
+
+            // Page 88 Questions
+            {
+                id: 71,
+                page: 88,
+                topic: "Adjectives - Elder/Eldest vs Older/Oldest",
+                question: "Choose the sentence that correctly uses 'elder':",
+                options: [
+                    "My elder brother lives in London.",
+                    "My older brother lives in London.",
+                    "My elder than brother lives in London.",
+                    "He is elder than me."
+                ],
+                answer: 0,
+                hint: "'Elder' is used for blood relations and is not followed by 'than'.",
+                explanation: "'Elder' applies to family/blood relations and is not followed by 'than'. Use 'older than' for age comparisons outside blood relations."
+            },
+            {
+                id: 72,
+                page: 88,
+                topic: "Adjectives - Older than",
+                question: "Fill in the blank: 'He is two years ___ than his friend.'",
+                options: [
+                    "older",
+                    "elder",
+                    "eldest",
+                    "more old"
+                ],
+                answer: 0,
+                hint: "'Than' requires 'older', not 'elder'.",
+                explanation: "'Elder' is never followed by 'than'. When 'than' is present in a comparison, 'older' must be used."
+            },
+            {
+                id: 73,
+                page: 88,
+                topic: "Adjectives - Nearest vs Next",
+                question: "Fill in the blanks respectively:\n'Where is the ___ bank? The bank is ___ to the post office.'",
+                options: [
+                    "nearest, next",
+                    "next, nearest",
+                    "nearest, nearest",
+                    "next, next"
+                ],
+                answer: 0,
+                hint: "Nearest denotes shortest physical distance; Next denotes sequence or position immediately following.",
+                explanation: "'Nearest' indicates physical distance; 'next' indicates sequential position."
+            },
+            {
+                id: 74,
+                page: 88,
+                topic: "Adjectives - Later/Latest vs Latter/Last",
+                question: "Match List-I (Adjective Form) with List-II (Context):\nList-I:\n1. Later / Latest\n2. Latter / Last\n\nList-II:\na. Relates to Position / Sequence\nb. Relates to Time",
+                options: [
+                    "1-b, 2-a",
+                    "1-a, 2-b",
+                    "1-both a and b",
+                    "2-both a and b"
+                ],
+                answer: 0,
+                hint: "Single 't' (Later/Latest) refers to time; Double 't' (Latter/Last) refers to position.",
+                explanation: "Later/Latest refers to time. Latter/Last refers to order or spatial position."
+            },
+            {
+                id: 75,
+                page: 88,
+                topic: "Adjectives - Former vs Latter",
+                question: "In the sentence 'Of tea and coffee, I prefer the ___ (meaning the second option)', choose the correct word:",
+                options: [
+                    "latter",
+                    "later",
+                    "last",
+                    "latest"
+                ],
+                answer: 0,
+                hint: "'Former' refers to the first of two; 'Latter' refers to the second of two.",
+                explanation: "When referring to two mentioned items, 'former' is the first and 'latter' is the second."
+            },
+            {
+                id: 76,
+                page: 88,
+                topic: "Adjectives - Parallel Comparison Structure",
+                question: "Select the sentence with correct parallel degree structure:\n'The higher you go, ___.'",
+                options: [
+                    "the cooler it gets",
+                    "it gets cooler",
+                    "cooler it gets",
+                    "the cool it gets"
+                ],
+                answer: 0,
+                hint: "Parallel increase/decrease requires 'The + Comparative..., the + Comparative...'.",
+                explanation: "Proportional comparisons use the structure 'The + comparative..., the + comparative...' ('The higher you go, the cooler it gets')."
+            },
+            {
+                id: 77,
+                page: 88,
+                topic: "Adjectives - Comparison of Similar Things",
+                question: "Identify the error in this comparison: 'The climate of Ranchi is better than Patna.'",
+                options: [
+                    "It compares 'climate' with the city 'Patna' instead of 'Patna's climate'.",
+                    "It uses 'better' instead of 'more good'.",
+                    "It should use 'superior' instead of 'better'.",
+                    "There is no error in this sentence."
+                ],
+                answer: 0,
+                hint: "Comparisons must be made between logically equivalent things.",
+                explanation: "You must compare climate with climate, not climate with a city. Correct: 'better than that of Patna'."
+            },
+            {
+                id: 78,
+                page: 88,
+                topic: "Adjectives - 'That of' / 'Those of' in Comparisons",
+                question: "Choose the correct sentence comparing plural nouns:",
+                options: [
+                    "The roads of Delhi are wider than those of Agra.",
+                    "The roads of Delhi are wider than that of Agra.",
+                    "The roads of Delhi are wider than Agra.",
+                    "The roads of Delhi are more wider than Agra."
+                ],
+                answer: 0,
+                hint: "Use 'that of' for singular noun comparisons and 'those of' for plural noun comparisons.",
+                explanation: "Because 'roads' is plural, the comparison requires 'than those of Agra'."
+            },
+            {
+                id: 79,
+                page: 88,
+                topic: "Adjectives - 'Any other' in Comparative Degree",
+                question: "Choose the correct comparative sentence avoiding self-inclusion:",
+                options: [
+                    "Iron is more useful than any other metal.",
+                    "Iron is more useful than any metal.",
+                    "Iron is the most useful than any metal.",
+                    "Iron is more useful than all metal."
+                ],
+                answer: 0,
+                hint: "When comparing a singular item to others of its class in comparative degree, 'other' must be included.",
+                explanation: "Including 'other' ('any other metal') excludes the subject ('Iron') from the group it is being compared against."
+            },
+            {
+                id: 80,
+                page: 88,
+                topic: "Adjectives - Superlative Degree Inclusion",
+                question: "Select the correct superlative sentence structure:",
+                options: [
+                    "Iron is the most useful of all metals.",
+                    "Iron is the most useful of all other metals.",
+                    "Iron is most useful than any other metal.",
+                    "Iron is the more useful of all metals."
+                ],
+                answer: 0,
+                hint: "In superlative degree, do NOT use the word 'other'.",
+                explanation: "Superlatives include the noun within the whole group, so 'other' is omitted ('of all metals')."
+            },
+
+            // Page 89 Questions
+            {
+                id: 81,
+                page: 89,
+                topic: "Adverbs - Definition and Modification",
+                question: "An Adverb can modify which of the following grammatical units?",
+                options: [
+                    "A Verb, an Adjective, or another Adverb",
+                    "Only a Verb",
+                    "Only a Noun and a Pronoun",
+                    "Only a Preposition and a Conjunction"
+                ],
+                answer: 0,
+                hint: "Adverbs modify actions, qualities, and other adverbial modifiers.",
+                explanation: "By definition, an adverb modifies verbs, adjectives, and other adverbs (and sometimes entire clauses)."
+            },
+            {
+                id: 82,
+                page: 89,
+                topic: "Adverbs - Too...To Structure",
+                question: "What is the implied meaning of 'He is too weak to walk'?",
+                options: [
+                    "He is so weak that he cannot walk.",
+                    "He is weak but he can walk.",
+                    "He is strong enough to walk.",
+                    "He walks because he is weak."
+                ],
+                answer: 0,
+                hint: "'Too + Adjective + To + V1' carries a negative meaning.",
+                explanation: "The structure 'too...to' expresses a negative result: 'so weak that he cannot walk'."
+            },
+            {
+                id: 83,
+                page: 89,
+                topic: "Adverbs - 'Too' without 'To'",
+                question: "When 'too' is used before a positive quality adjective without 'to', what does it mean?",
+                options: [
+                    "It means 'excessively' (undesirable excess).",
+                    "It means 'very' (pleasingly high).",
+                    "It means 'sufficiently'.",
+                    "It means 'not at all'."
+                ],
+                answer: 0,
+                hint: "'Too' conveys an unpleasant excess rather than a simple 'very'.",
+                explanation: "'Too' implies excess beyond a desirable limit. Say 'It is very hot' or 'It is too hot to drink', not 'I am too glad'."
+            },
+            {
+                id: 84,
+                page: 89,
+                topic: "Adverbs - Position of 'Enough'",
+                question: "Select the sentence with the correct placement of the adverb 'Enough':",
+                options: [
+                    "He is smart enough to solve this puzzle.",
+                    "He is enough smart to solve this puzzle.",
+                    "He is enough smarter to solve this puzzle.",
+                    "He is smarter enough to solve this puzzle."
+                ],
+                answer: 0,
+                hint: "'Enough' is placed AFTER the adjective it modifies and requires the positive degree.",
+                explanation: "The adverb 'enough' follows the adjective it modifies and requires a positive degree adjective ('smart enough')."
+            },
+            {
+                id: 85,
+                page: 89,
+                topic: "Adverbs - Degree of Adjective with 'Enough'",
+                question: "Identify the incorrect usage of 'Enough':",
+                options: [
+                    "He is wiser enough to understand the situation.",
+                    "He is wise enough to understand the situation.",
+                    "He has enough money to buy a car.",
+                    "She studied hard enough to pass."
+                ],
+                answer: 0,
+                hint: "Do NOT use comparative degree adjectives with 'enough'.",
+                explanation: "'Wiser enough' is incorrect. 'Enough' must be preceded by a positive degree adjective ('wise enough')."
+            },
+            {
+                id: 86,
+                page: 89,
+                topic: "Adverbs - 'Seldom or never'",
+                question: "Which of the following paired adverbial phrases is grammatically correct?",
+                options: [
+                    "Seldom or never / Seldom if ever",
+                    "Seldom or ever",
+                    "Seldom if never",
+                    "Seldom and never"
+                ],
+                answer: 0,
+                hint: "The correct idioms are 'Seldom or never' OR 'Seldom if ever'.",
+                explanation: "The correct expressions are 'Seldom or never' and 'Seldom if ever'. Mixing them ('Seldom or ever') is wrong."
+            },
+            {
+                id: 87,
+                page: 89,
+                topic: "Adverbs - Inversion Rule with Negative Adverbs",
+                question: "When a sentence starts with a negative adverb like 'Hardly', 'Scarcely', or 'Seldom', what word order must be followed?",
+                options: [
+                    "Inverted Order (Auxiliary Verb + Subject + Main Verb)",
+                    "Normal Order (Subject + Verb + Object)",
+                    "Passive Order (Object + Verb + Subject)",
+                    "Imperative Order (Verb + Object)"
+                ],
+                answer: 0,
+                hint: "Negative adverbs placed at the beginning of a sentence trigger subject-verb inversion.",
+                explanation: "Initial negative adverbs (Hardly, Scarcely, Seldom, Never) require partial inversion: 'Hardly had I reached...'"
+            },
+            {
+                id: 88,
+                page: 89,
+                topic: "Adverbs - Sentence Inversion Example",
+                question: "Choose the sentence that applies the inversion rule correctly:",
+                options: [
+                    "Seldom have I seen such a brave act.",
+                    "Seldom I have seen such a brave act.",
+                    "Seldom I saw such a brave act.",
+                    "Seldom seen have I such a brave act."
+                ],
+                answer: 0,
+                hint: "Auxiliary verb 'have' must come before subject 'I'.",
+                explanation: "Starting with 'Seldom' requires placing the auxiliary verb ('have') before the subject ('I')."
+            },
+            {
+                id: 89,
+                page: 89,
+                topic: "Adverbs - Much vs Very",
+                question: "Fill in the blanks respectively:\n'She is ___ intelligent. She is ___ better today.'",
+                options: [
+                    "very, much",
+                    "much, very",
+                    "very, very",
+                    "much, much"
+                ],
+                answer: 0,
+                hint: "'Very' modifies Positive Degree; 'Much' modifies Comparative Degree.",
+                explanation: "'Very' is used with positive degree adjectives ('very intelligent'); 'much' modifies comparative degree adjectives ('much better')."
+            },
+            {
+                id: 90,
+                page: 89,
+                topic: "Adverbs - Very vs Much with Participles",
+                question: "Which of the following statements is correct regarding Participles?",
+                options: [
+                    "'Very' modifies Present Participles (V1+ing); 'Much' modifies Past Participles (V3).",
+                    "'Very' modifies Past Participles; 'Much' modifies Present Participles.",
+                    "Both modify only Present Participles.",
+                    "Both modify only Past Participles."
+                ],
+                answer: 0,
+                hint: "Very interesting (Present Participle) vs. Much interested (Past Participle).",
+                explanation: "Rule: 'Very' + Present Participle ('very interesting'); 'Much' + Past Participle ('much surprised/interested')."
+            },
+
+            // Page 90 Questions
+            {
+                id: 91,
+                page: 90,
+                topic: "Adverbs - Adverb of Manner Placement",
+                question: "Where should an Adverb of Manner (e.g., quickly, bravely, slowly) be placed in a sentence with an object?",
+                options: [
+                    "After the object or after the main verb if there is no object",
+                    "Between the auxiliary verb and main verb only",
+                    "At the very beginning of the sentence only",
+                    "Before the subject"
+                ],
+                answer: 0,
+                hint: "An adverb of manner describes how an action is done and follows the verb or object.",
+                explanation: "Adverbs of Manner are placed after the main verb or after the direct object (e.g., 'He solved the question easily')."
+            },
+            {
+                id: 92,
+                page: 90,
+                topic: "Adverbs - MPT Rule (Sequence of Adverbs)",
+                question: "When Manner (M), Place (P), and Time (T) adverbs occur together, what is their correct relative order?",
+                options: [
+                    "Manner -> Place -> Time (MPT)",
+                    "Time -> Place -> Manner (TPM)",
+                    "Place -> Manner -> Time (PMT)",
+                    "Manner -> Time -> Place (MTP)"
+                ],
+                answer: 0,
+                hint: "Remember the acronym MPT.",
+                explanation: "The standard order for multiple adverbs modifying the same verb is Manner -> Place -> Time (MPT). Example: 'He sang beautifully (M) at the concert (P) yesterday (T)'."
+            },
+            {
+                id: 93,
+                page: 90,
+                topic: "Adverbs - MPT Sequence Example",
+                question: "Identify the sentence that follows the MPT rule correctly:",
+                options: [
+                    "She spoke eloquently at the conference yesterday.",
+                    "She spoke yesterday eloquently at the conference.",
+                    "She spoke at the conference eloquently yesterday.",
+                    "She spoke yesterday at the conference eloquently."
+                ],
+                answer: 0,
+                hint: "Eloquently (Manner) -> at the conference (Place) -> yesterday (Time).",
+                explanation: "Manner ('eloquently') comes first, Place ('at the conference') second, and Time ('yesterday') third."
+            },
+            {
+                id: 94,
+                page: 90,
+                topic: "Adverbs - 'Hard' vs 'Hardly'",
+                question: "Distinguish the meanings: 'He works hard' vs 'He hardly works':",
+                options: [
+                    "'Works hard' = works with much effort; 'Hardly works' = almost does not work.",
+                    "'Works hard' = almost does not work; 'Hardly works' = works with much effort.",
+                    "Both sentences mean he works very diligently.",
+                    "Both sentences mean he is completely unemployed."
+                ],
+                answer: 0,
+                hint: "'Hard' is an adverb of manner (diligently); 'Hardly' is a negative frequency adverb (scarcely)."
+            },
+            {
+                id: 95,
+                page: 90,
+                topic: "Adverbs - 'Late' vs 'Lately'",
+                question: "Fill in the blanks respectively:\n'He came ___ to the office today. Have you seen him ___?'",
+                options: [
+                    "late, lately",
+                    "lately, late",
+                    "late, late",
+                    "lately, lately"
+                ],
+                answer: 0,
+                hint: "'Late' = after expected time; 'Lately' = recently.",
+                explanation: "'Late' indicates arriving after the appointed time. 'Lately' is an adverb meaning 'recently'."
+            },
+            {
+                id: 96,
+                page: 90,
+                topic: "Adverbs - Verbs of Sensation (Stative Verbs)",
+                question: "Which of the following verbs of sensation should be modified by an ADJECTIVE rather than an Adverb of Manner?",
+                options: [
+                    "Look, Seem, Taste, Smell, Sound, Feel",
+                    "Run, Walk, Sing, Drive, Speak",
+                    "Write, Read, Solve, Build, Paint",
+                    "Eat, Drink, Sleep, Play, Work"
+                ],
+                answer: 0,
+                hint: "Verbs of sensation describe states of being and take predicate adjectives.",
+                explanation: "Linking verbs / verbs of sensation (look, taste, smell, feel, sound, seem) are modified by adjectives (e.g., 'The food smells delicious', NOT 'deliciously')."
+            },
+            {
+                id: 97,
+                page: 90,
+                topic: "Adverbs - Verbs of Sensation Example",
+                question: "Choose the correct sentence:",
+                options: [
+                    "The rose smells sweet.",
+                    "The rose smells sweetly.",
+                    "The rose is smelling sweetly.",
+                    "The rose smells more sweetly."
+                ],
+                answer: 0,
+                hint: "'Smell' is a verb of perception requiring an adjective complement.",
+                explanation: "'Smell' is a linking verb here, requiring the adjective 'sweet' rather than the adverb 'sweetly'."
+            },
+            {
+                id: 98,
+                page: 90,
+                topic: "Adverbs - Fast vs Fastly",
+                question: "Select the sentence with valid English usage:",
+                options: [
+                    "He runs fast.",
+                    "He runs fastly.",
+                    "He is a fastly runner.",
+                    "He runs more fastly."
+                ],
+                answer: 0,
+                hint: "The word 'fastly' does not exist in standard English grammar.",
+                explanation: "'Fast' functions as both an adjective and an adverb. The form 'fastly' is grammatically non-existent."
+            },
+            {
+                id: 99,
+                page: 90,
+                topic: "Adverbs - Spotting the Error (Combined Rules)",
+                question: "Spot the error in the given sentence:\n'Although he was (A) / brave enough to fight (B) / he ran fastly from the battlefield (C) / No error (D)'",
+                options: [
+                    "(C) he ran fastly from the battlefield",
+                    "(A) Although he was",
+                    "(B) brave enough to fight",
+                    "(D) No error"
+                ],
+                answer: 0,
+                hint: "'Fastly' is an incorrect word form.",
+                explanation: "'Fastly' must be replaced by 'fast'."
+            },
+            {
+                id: 100,
+                page: 90,
+                topic: "Adverbs & Inversion - Complete Inversion",
+                question: "In sentences beginning with place adverbs like 'Under a tree' or 'On the hill', full inversion occurs. Which sentence is correct?",
+                options: [
+                    "Under a tree sat the old hermit.",
+                    "Under a tree the old hermit sat.",
+                    "Under a tree did the old hermit sat.",
+                    "Under a tree sitting the old hermit."
+                ],
+                answer: 0,
+                hint: "When an adverbial phrase of place introduces a sentence, the main verb comes directly before the subject.",
+                explanation: "Initial spatial adverbial phrases induce complete inversion where the main verb ('sat') directly precedes the subject ('the old hermit')."
+            }
+        ];
+
+        // State variables
+        let currentQuestionIdx = 0;
+        let userAnswers = new Array(rawQuizData.length).fill(null);
+
+        // Utility: Fisher-Yates Shuffle
+        function shuffleArray(array) {
+            const arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        // Initialize Option Mappings with Pre-shuffled Options
+        const randomizedData = rawQuizData.map((q) => {
+            const optionsObjs = q.options.map((optText, index) => ({
+                text: optText,
+                isCorrect: index === q.answer
+            }));
+            const shuffled = shuffleArray(optionsObjs);
+            return {
+                ...q,
+                shuffledOptions: shuffled
+            };
+        });
+
+        // DOM Elements
+        const questionNumberEl = document.getElementById("question-number");
+        const subtopicTagEl = document.getElementById("subtopic-tag");
+        const questionTextEl = document.getElementById("question-text");
+        const hintBoxEl = document.getElementById("hint-box");
+        const hintTextEl = document.getElementById("hint-text");
+        const optionsContainerEl = document.getElementById("options-container");
+        const explanationBoxEl = document.getElementById("explanation-box");
+        const explanationTextEl = document.getElementById("explanation-text");
+        const prevBtn = document.getElementById("prev-btn");
+        const nextBtn = document.getElementById("next-btn");
+        const scoreDisplayEl = document.getElementById("score-display");
+        const progressTextEl = document.getElementById("progress-text");
+        const progressBarEl = document.getElementById("progress-bar");
+        const jumpInputEl = document.getElementById("jump-input");
+
+        // Load Question Function
+        function renderQuestion() {
+            const q = randomizedData[currentQuestionIdx];
+
+            // Reset UI states
+            hintBoxEl.classList.add("hidden");
+            explanationBoxEl.classList.add("hidden");
+
+            // Meta Info
+            questionNumberEl.textContent = `Question ${currentQuestionIdx + 1} of ${randomizedData.length}`;
+            subtopicTagEl.textContent = `Page ${q.page} | ${q.topic}`;
+            questionTextEl.textContent = q.question;
+            hintTextEl.textContent = q.hint;
+            explanationTextEl.textContent = q.explanation;
+
+            // Render Options
+            optionsContainerEl.innerHTML = "";
+            const currentSelected = userAnswers[currentQuestionIdx];
+
+            q.shuffledOptions.forEach((opt, optIdx) => {
+                const btn = document.createElement("button");
+                btn.className = "w-full text-left p-3.5 rounded-lg border transition-all text-sm font-medium flex items-center justify-between ";
+
+                if (currentSelected === null) {
+                    btn.className += "border-slate-200 hover:border-indigo-400 hover:bg-indigo-50/50 bg-white text-slate-700";
+                    btn.onclick = () => selectOption(optIdx);
+                } else {
+                    btn.disabled = true;
+                    if (opt.isCorrect) {
+                        btn.className += "border-emerald-500 bg-emerald-50 text-emerald-900 font-semibold";
+                    } else if (currentSelected === optIdx) {
+                        btn.className += "border-rose-500 bg-rose-50 text-rose-900";
+                    } else {
+                        btn.className += "border-slate-200 bg-slate-50 text-slate-400 opacity-60";
+                    }
+                }
+
+                const prefix = String.fromCharCode(65 + optIdx); // A, B, C, D
+                btn.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="w-6 h-6 rounded-full border border-current flex items-center justify-center text-xs font-bold">${prefix}</span>
+                        <span>${opt.text}</span>
+                    </div>
+                `;
+
+                if (currentSelected !== null) {
+                    if (opt.isCorrect) {
+                        btn.innerHTML += `<svg class="w-5 h-5 text-emerald-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>`;
+                    } else if (currentSelected === optIdx) {
+                        btn.innerHTML += `<svg class="w-5 h-5 text-rose-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>`;
+                    }
+                }
+
+                optionsContainerEl.appendChild(btn);
+            });
+
+            // Show explanation if already answered
+            if (currentSelected !== null) {
+                explanationBoxEl.classList.remove("hidden");
+            }
+
+            // Update Navigation state
+            prevBtn.disabled = currentQuestionIdx === 0;
+            nextBtn.disabled = currentQuestionIdx === randomizedData.length - 1;
+
+            updateStats();
+        }
+
+        // Option Selection Handler
+        function selectOption(optIdx) {
+            userAnswers[currentQuestionIdx] = optIdx;
+            renderQuestion();
+        }
+
+        // Toggle Hint Visibility
+        function toggleHint() {
+            hintBoxEl.classList.toggle("hidden");
+        }
+
+        // Update Score and Progress Stats
+        function updateStats() {
+            let score = 0;
+            let answeredCount = 0;
+
+            userAnswers.forEach((ans, idx) => {
+                if (ans !== null) {
+                    answeredCount++;
+                    if (randomizedData[idx].shuffledOptions[ans].isCorrect) {
+                        score++;
+                    }
+                }
+            });
+
+            scoreDisplayEl.textContent = `${score} / ${randomizedData.length}`;
+            progressTextEl.textContent = `${currentQuestionIdx + 1} / ${randomizedData.length}`;
+            
+            const progressPercent = ((currentQuestionIdx + 1) / randomizedData.length) * 100;
+            progressBarEl.style.width = `${progressPercent}%`;
+        }
+
+        // Navigation controls
+        function prevQuestion() {
+            if (currentQuestionIdx > 0) {
+                currentQuestionIdx--;
+                renderQuestion();
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIdx < randomizedData.length - 1) {
+                currentQuestionIdx++;
+                renderQuestion();
+            }
+        }
+
+        function jumpToQuestion() {
+            const val = parseInt(jumpInputEl.value);
+            if (val >= 1 && val <= randomizedData.length) {
+                currentQuestionIdx = val - 1;
+                renderQuestion();
+                jumpInputEl.value = "";
+            } else {
+                alert(`Please enter a question number between 1 and ${randomizedData.length}`);
+            }
+        }
+
+        // Initial Load
+        renderQuestion();
+    </script>
+<script src="../../quiz-app-ui-v2.js"></script>
+</body>
+</html>

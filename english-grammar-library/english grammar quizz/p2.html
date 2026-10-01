@@ -1,0 +1,1463 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Passive Voice Mastery - Pages 6 to 10</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+    body {
+        background: linear-gradient(135deg, #eef2ff, #f8fafc, #ecfeff);
+        min-height: 100vh;
+    }
+
+    .option-btn {
+        transition: all 0.2s ease;
+    }
+
+    .option-btn:hover:not(:disabled) {
+        transform: translateY(-1px);
+    }
+
+    .correct {
+        border-color: #16a34a !important;
+        background: #f0fdf4 !important;
+    }
+
+    .wrong {
+        border-color: #dc2626 !important;
+        background: #fef2f2 !important;
+    }
+
+    .disabled-option {
+        cursor: not-allowed;
+    }
+
+    .explanation {
+        animation: slideDown 0.25s ease;
+    }
+
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-8px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .progress-fill {
+        transition: width 0.35s ease;
+    }
+</style>
+</head>
+
+<body class="text-slate-800">
+
+<div class="max-w-5xl mx-auto px-4 py-5">
+
+    <!-- HEADER -->
+    <header class="bg-white rounded-2xl shadow-lg p-5 mb-5 border border-indigo-100">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+
+            <div>
+                <div class="inline-block bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-xs font-bold mb-2">
+                    ENGLISH GRAMMAR • PASSIVE VOICE
+                </div>
+
+                <h1 class="text-2xl md:text-3xl font-extrabold text-slate-900">
+                    Passive Voice Mastery
+                </h1>
+
+                <p class="text-slate-500 mt-1">
+                    50 Unique Questions • Pages 6–10 • Concept Building
+                </p>
+            </div>
+
+            <div class="bg-slate-900 text-white rounded-xl px-5 py-3 text-center">
+                <div class="text-xs text-slate-300">LIVE SCORE</div>
+                <div id="score" class="text-2xl font-extrabold">0 / 50</div>
+            </div>
+        </div>
+
+        <!-- PROGRESS -->
+        <div class="mt-5">
+            <div class="flex justify-between text-xs font-semibold mb-2">
+                <span id="progressText">Question 1 of 50</span>
+                <span id="percentage">0%</span>
+            </div>
+
+            <div class="w-full bg-slate-200 rounded-full h-3 overflow-hidden">
+                <div id="progressBar"
+                     class="progress-fill bg-indigo-600 h-3 rounded-full"
+                     style="width:0%">
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+    <!-- CONTROLS -->
+    <section class="bg-white rounded-2xl shadow-md p-4 mb-5">
+
+        <div class="flex flex-col sm:flex-row gap-3">
+
+            <button onclick="previousQuestion()"
+                class="flex-1 bg-slate-800 hover:bg-slate-900 text-white font-bold py-3 rounded-xl">
+                ← Previous
+            </button>
+
+            <div class="flex items-center gap-2 flex-1">
+                <input
+                    id="jumpInput"
+                    type="number"
+                    min="1"
+                    max="50"
+                    placeholder="Question #"
+                    class="w-full border border-slate-300 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-indigo-500"
+                >
+
+                <button onclick="jumpQuestion()"
+                    class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-5 py-3 rounded-xl">
+                    Jump
+                </button>
+            </div>
+
+            <button onclick="nextQuestion()"
+                class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl">
+                Next →
+            </button>
+
+        </div>
+    </section>
+
+
+    <!-- QUESTION CARD -->
+    <main id="quizCard" class="bg-white rounded-2xl shadow-xl p-5 md:p-7">
+
+        <div class="flex items-center justify-between gap-3 mb-5">
+            <span id="questionNumber"
+                  class="bg-indigo-100 text-indigo-700 font-bold px-3 py-1 rounded-full text-sm">
+                Q1
+            </span>
+
+            <span id="difficulty"
+                  class="bg-emerald-100 text-emerald-700 font-bold px-3 py-1 rounded-full text-xs">
+                SSC / RRB
+            </span>
+        </div>
+
+        <div id="question"
+             class="text-xl md:text-2xl font-bold leading-relaxed text-slate-900">
+        </div>
+
+        <!-- HINT -->
+        <div class="mt-5">
+            <button onclick="toggleHint()"
+                class="text-indigo-600 font-bold hover:text-indigo-800">
+                💡 Show / Hide Hint
+            </button>
+
+            <div id="hintBox"
+                 class="hidden mt-3 bg-amber-50 border-l-4 border-amber-400 p-4 rounded-lg text-sm text-amber-900">
+            </div>
+        </div>
+
+        <!-- OPTIONS -->
+        <div id="options" class="mt-6 space-y-3"></div>
+
+        <!-- RESULT -->
+        <div id="resultBox" class="hidden mt-5 p-4 rounded-xl"></div>
+
+        <!-- EXPLANATION -->
+        <div id="explanationBox"
+             class="hidden explanation mt-5 bg-indigo-50 border border-indigo-200 rounded-xl p-5">
+
+            <div class="font-extrabold text-indigo-900 text-lg mb-2">
+                📚 Explanation / Rationale
+            </div>
+
+            <div id="explanation"
+                 class="text-slate-700 leading-relaxed">
+            </div>
+        </div>
+
+    </main>
+
+
+    <!-- FINAL RESULT -->
+    <section id="finalCard"
+        class="hidden bg-white rounded-2xl shadow-xl p-7 mt-5 text-center">
+
+        <div class="text-5xl mb-4">🏆</div>
+
+        <h2 class="text-3xl font-extrabold text-slate-900">
+            Quiz Completed!
+        </h2>
+
+        <p class="text-slate-500 mt-2">
+            Your Passive Voice mastery score:
+        </p>
+
+        <div id="finalScore"
+             class="text-5xl font-black text-indigo-600 mt-4">
+        </div>
+
+        <div id="finalMessage"
+             class="mt-4 font-bold text-lg">
+        </div>
+
+        <button onclick="restartQuiz()"
+            class="mt-6 bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-7 py-3 rounded-xl">
+            Restart Quiz
+        </button>
+
+    </section>
+
+</div>
+
+
+<script>
+
+/*
+===========================================================
+PASSIVE VOICE MASTER QUIZ
+SOURCE CONCEPTS: PDF PAGES 6–10
+TOTAL: 50 UNIQUE QUESTIONS
+
+IMPORTANT:
+- No while loop
+- No modulo operator
+- No recycling of questions
+- Every question has an independent premise
+- Options are shuffled programmatically
+===========================================================
+*/
+
+
+const questions = [
+
+{
+q:"Choose the correct passive form of: “The police arrested him.”",
+options:[
+" He was arrested by the police.",
+" He is arrested by the police.",
+" He had arrested by the police.",
+" He was being arrested by the police."
+],
+answer:"He was arrested by the police.",
+hint:"Simple Past Active → was/were + V3.",
+explanation:"“Arrested” is Simple Past. In passive voice, the object “him” becomes the subject “he”. The structure is: Object + was/were + V3 + by + subject. Therefore, “He was arrested by the police” is correct."
+},
+
+{
+q:"Choose the correct passive form of: “People speak English all over the world.”",
+options:[
+"English is spoken all over the world.",
+"English was spoken all over the world.",
+"English has spoken all over the world.",
+"English is being spoken all over the world."
+],
+answer:"English is spoken all over the world.",
+hint:"Simple Present Passive = is/am/are + V3.",
+explanation:"The active sentence is Simple Present: “people speak”. The object “English” becomes the passive subject. Therefore: English + is + spoken. “People” is a general/vague subject, so mentioning “by people” is unnecessary."
+},
+
+{
+q:"Choose the correct passive form of: “A teacher teaches English here.”",
+options:[
+"English is taught here.",
+"English was taught here.",
+"English has been taught here.",
+"English is being taught here."
+],
+answer:"English is taught here.",
+hint:"Look at the tense: teaches = Simple Present.",
+explanation:"“Teaches” is Simple Present. Passive structure is Object + is/am/are + V3. Since “teacher” is an indefinite/general subject and the identity is not important, “by a teacher” can be omitted. Hence: “English is taught here.”"
+},
+
+{
+q:"Which sentence cannot normally be changed into passive voice according to the rule on the given pages?",
+options:[
+"I am happy.",
+"He is polite.",
+"They write letters.",
+"She teaches English."
+],
+answer:"I am happy.",
+hint:"Is “am” functioning as a main verb or helping verb?",
+explanation:"When “be” itself functions as the main verb, there is no action verb taking an object. “I am happy” is therefore not converted into passive voice. The same principle applies to “He is polite.”"
+},
+
+{
+q:"Which sentence contains “be” as the main verb rather than as an auxiliary?",
+options:[
+"She is happy.",
+"She is writing a letter.",
+"She is teaching English.",
+"She is being praised."
+],
+answer:"She is happy.",
+hint:"Find whether “is” is followed by an adjective or an action verb.",
+explanation:"In “She is happy”, “is” itself is the main/linking verb. There is no transitive action verb and no object. In the other examples, “is” functions as an auxiliary helping form continuous/passive constructions."
+},
+
+{
+q:"Choose the correct passive form of: “The workers are repairing the road.”",
+options:[
+"The road is being repaired by the workers.",
+"The road is repaired by the workers.",
+"The road was being repaired by the workers.",
+"The road has been repaired by the workers."
+],
+answer:"The road is being repaired by the workers.",
+hint:"Present Continuous Passive contains “being”.",
+explanation:"“Are repairing” is Present Continuous. Its passive structure is Object + is/am/are + being + V3 + by + subject. Thus “The road is being repaired by the workers” is correct. The word “being” must not be omitted."
+},
+
+{
+q:"What is the correct passive structure of Present Continuous according to the source?",
+options:[
+"Object + is/am/are + being + V3 + by + subject",
+"Object + is/am/are + V3 + by + subject",
+"Object + has/have + been + V3 + by + subject",
+"Object + was/were + being + V3 + by + subject"
+],
+answer:"Object + is/am/are + being + V3 + by + subject",
+hint:"Present Continuous = is/am/are + V1-ing.",
+explanation:"The source gives Present Continuous Active as Subject + is/am/are + V1-ing + object. Its passive counterpart is Object + is/am/are + being + V3 + by + subject. “Being” is the key marker of continuous passive."
+},
+
+{
+q:"Which word is essential in Present Continuous Passive Voice?",
+options:[
+"being",
+"been",
+"having",
+"had"
+],
+answer:"being",
+hint:"Continuous passive uses the -ing form of “be”.",
+explanation:"Present Continuous Passive is formed with “is/am/are + being + V3”. Therefore, “being” is the essential word. “Been” belongs to perfect passive constructions."
+},
+
+{
+q:"Choose the correct passive form: “The committee is looking into the matter.”",
+options:[
+"The matter is being looked into by the committee.",
+"The matter is looked into by the committee.",
+"The matter has been looked into by the committee.",
+"The matter was being looked into by the committee."
+],
+answer:"The matter is being looked into by the committee.",
+hint:"Do not remove the preposition after the verb.",
+explanation:"“Is looking into” is Present Continuous. The verb is a phrasal/prepositional construction “look into”. In passive voice, the preposition remains after the verb: “is being looked into”. Thus the correct form is “The matter is being looked into by the committee.”"
+},
+
+{
+q:"In the passive form of “They are laughing at you”, what happens to the preposition “at”?",
+options:[
+"It remains after the verb.",
+"It must be removed.",
+"It changes to “by”.",
+"It changes to “with”."
+],
+answer:"It remains after the verb.",
+hint:"Think of “laugh at” as a complete verb phrase.",
+explanation:"The source specifically warns that the preposition following the verb should not be forgotten in passive voice. “They are laughing at you” becomes “You are being laughed at by them.” The preposition “at” remains."
+},
+
+{
+q:"Choose the correct passive form: “They are laughing at you.”",
+options:[
+"You are being laughed at by them.",
+"You are being laughed by them.",
+"You are laughed at by them.",
+"You were being laughed at by them."
+],
+answer:"You are being laughed at by them.",
+hint:"Present Continuous + preposition.",
+explanation:"“Are laughing” is Present Continuous, so the passive requires “are being + V3”. Because the expression is “laugh at”, the preposition “at” remains. Hence: “You are being laughed at by them.”"
+},
+
+{
+q:"Choose the correct active form of: “The accused is being produced before the court.”",
+options:[
+"The police are producing the accused before the court.",
+"The police produce the accused before the court.",
+"The police produced the accused before the court.",
+"The police have produced the accused before the court."
+],
+answer:"The police are producing the accused before the court.",
+hint:"“is being + V3” signals Present Continuous Passive.",
+explanation:"The passive structure “is being produced” corresponds to Present Continuous Active “are producing”. The receiver “the accused” becomes the object, while “the police” becomes the subject."
+},
+
+{
+q:"Choose the correct active form: “Right to protest peacefully is being demanded by the revolutionaries.”",
+options:[
+"The revolutionaries are demanding the right to protest peacefully.",
+"The revolutionaries demanded the right to protest peacefully.",
+"The revolutionaries demand the right to protest peacefully.",
+"The revolutionaries have demanded the right to protest peacefully."
+],
+answer:"The revolutionaries are demanding the right to protest peacefully.",
+hint:"“is being demanded” → Present Continuous Active.",
+explanation:"Passive “is being demanded” converts to Present Continuous Active “are demanding”. The passive subject “right to protest peacefully” becomes the object, and “the revolutionaries” becomes the active subject."
+},
+
+{
+q:"Choose the correct passive form: “You were not taking the exam seriously.”",
+options:[
+"The exam was not being taken seriously by you.",
+"The exam was not taken seriously by you.",
+"The exam is not being taken seriously by you.",
+"The exam has not been taken seriously by you."
+],
+answer:"The exam was not being taken seriously by you.",
+hint:"“were taking” = Past Continuous.",
+explanation:"Past Continuous Passive is Object + was/were + being + V3 + by + subject. Therefore, “The exam was not being taken seriously by you” is correct. The word “being” must remain because the original is continuous."
+},
+
+{
+q:"Which passive structure is given for Past Continuous?",
+options:[
+"Object + was/were + being + V3 + by + subject",
+"Object + was/were + V3 + by + subject",
+"Object + is/am/are + being + V3 + by + subject",
+"Object + had + been + V3 + by + subject"
+],
+answer:"Object + was/were + being + V3 + by + subject",
+hint:"Past Continuous uses was/were.",
+explanation:"The source gives Past Continuous Active as Subject + was/were + V1-ing + object. Its passive is Object + was/were + being + V3 + by + subject."
+},
+
+{
+q:"Which tense is explicitly stated as not being converted into passive voice in the source?",
+options:[
+"Future Continuous",
+"Present Continuous",
+"Past Continuous",
+"Present Perfect"
+],
+answer:"Future Continuous",
+hint:"Check the Continuous Tense table.",
+explanation:"The source explicitly states that Future Continuous Passive cannot be formed. Present Continuous and Past Continuous do have passive structures, while Future Continuous is marked as not convertible in the supplied material."
+},
+
+{
+q:"Which other tense is explicitly stated as not being converted into passive voice in the source?",
+options:[
+"Modal Continuous",
+"Past Perfect",
+"Present Perfect",
+"Simple Present"
+],
+answer:"Modal Continuous",
+hint:"The source gives a separate note for Modal Continuous.",
+explanation:"The supplied page states that Modal Continuous cannot be made passive. The source gives structures for Present Continuous and Past Continuous but specifically excludes Future Continuous and Modal Continuous."
+},
+
+{
+q:"Which sentence represents Future Continuous Active Voice?",
+options:[
+"They will be writing the report.",
+"They will have written the report.",
+"They are writing the report.",
+"They were writing the report."
+],
+answer:"They will be writing the report.",
+hint:"Future Continuous = will + be + V-ing.",
+explanation:"Future Continuous Active has the structure Subject + will/shall + be + V1-ing + object. The supplied material states that Future Continuous passive is not formed."
+},
+
+{
+q:"According to the source, what is the correct conclusion about Future Continuous Passive?",
+options:[
+"It cannot be formed.",
+"It must contain being.",
+"It must contain been.",
+"It always uses was/were."
+],
+answer:"It cannot be formed.",
+hint:"This is directly stated in the Continuous Tense table.",
+explanation:"The source explicitly marks Future Continuous Passive as not possible. Therefore, an exam question based on these pages should recognize that the standard passive transformation is not formed for this tense."
+},
+
+{
+q:"Which sentence represents Modal Continuous Active Voice?",
+options:[
+"He may be reading the book.",
+"He may have read the book.",
+"He reads the book.",
+"He was reading the book."
+],
+answer:"He may be reading the book.",
+hint:"Modal + be + V-ing.",
+explanation:"Modal Continuous follows the pattern Subject + modal + be + V1-ing + object. The source states that Modal Continuous cannot be changed into passive voice."
+},
+
+{
+q:"Choose the correct passive form of: “They have completed the project.”",
+options:[
+"The project has been completed by them.",
+"The project is being completed by them.",
+"The project had been completed by them.",
+"The project has completed by them."
+],
+answer:"The project has been completed by them.",
+hint:"Present Perfect Passive = has/have + been + V3.",
+explanation:"“Have completed” is Present Perfect. Passive structure is Object + has/have + been + V3 + by + subject. Therefore, “The project has been completed by them” is correct."
+},
+
+{
+q:"What is the passive structure of Present Perfect according to the source?",
+options:[
+"Object + has/have + been + V3 + by + subject",
+"Object + has/have + being + V3 + by + subject",
+"Object + was/were + being + V3 + by + subject",
+"Object + will + have + V3 + by + subject"
+],
+answer:"Object + has/have + been + V3 + by + subject",
+hint:"Perfect passive requires “been”.",
+explanation:"Present Perfect Active is Subject + has/have + V3 + object. Passive changes it to Object + has/have + been + V3 + by + subject."
+},
+
+{
+q:"Which word is essential in Present Perfect Passive according to the source?",
+options:[
+"been",
+"being",
+"be",
+"were"
+],
+answer:"been",
+hint:"Compare Perfect and Continuous passive.",
+explanation:"Perfect Passive requires “been”: has/have + been + V3. Continuous Passive, by contrast, requires “being”. This distinction is one of the most important concepts on pages 8–10."
+},
+
+{
+q:"Choose the correct passive form: “She has written a letter.”",
+options:[
+"A letter has been written by her.",
+"A letter is being written by her.",
+"A letter was written by her.",
+"A letter had been written by her."
+],
+answer:"A letter has been written by her.",
+hint:"has written → has been written.",
+explanation:"The active verb “has written” is Present Perfect. The passive form therefore uses “has been written”. The object “a letter” becomes the subject."
+},
+
+{
+q:"Choose the correct passive form: “They had completed the task.”",
+options:[
+"The task had been completed by them.",
+"The task has been completed by them.",
+"The task was being completed by them.",
+"The task had being completed by them."
+],
+answer:"The task had been completed by them.",
+hint:"Past Perfect Passive = had + been + V3.",
+explanation:"“Had completed” is Past Perfect. Its passive structure is Object + had + been + V3 + by + subject. Therefore, “The task had been completed by them” is correct."
+},
+
+{
+q:"Which formula represents Past Perfect Passive?",
+options:[
+"Object + had + been + V3 + by + subject",
+"Object + has/have + been + V3 + by + subject",
+"Object + was/were + being + V3 + by + subject",
+"Object + will + have + been + V3 + by + subject"
+],
+answer:"Object + had + been + V3 + by + subject",
+hint:"Past Perfect uses “had”.",
+explanation:"Past Perfect Active is Subject + had + V3 + object. Passive changes the object to subject and inserts “been”: Object + had + been + V3 + by + subject."
+},
+
+{
+q:"Which formula represents Future Perfect Passive?",
+options:[
+"Object + shall/will + have + been + V3 + by + subject",
+"Object + shall/will + be + V3 + by + subject",
+"Object + shall/will + being + V3 + by + subject",
+"Object + has/have + been + V3 + by + subject"
+],
+answer:"Object + shall/will + have + been + V3 + by + subject",
+hint:"Future Perfect contains “will have”.",
+explanation:"The source gives Future Perfect Active as Subject + shall/will + have + V3 + object. The passive form becomes Object + shall/will + have + been + V3 + by + subject."
+},
+
+{
+q:"Choose the correct passive form: “They will have finished the work.”",
+options:[
+"The work will have been finished by them.",
+"The work will be finished by them.",
+"The work will have being finished by them.",
+"The work has been finished by them."
+],
+answer:"The work will have been finished by them.",
+hint:"will have + V3 → will have been + V3.",
+explanation:"This is Future Perfect Active. Future Perfect Passive requires “will have been + V3”. Hence “The work will have been finished by them” is correct."
+},
+
+{
+q:"Which sentence is an example of Perfect Passive Voice?",
+options:[
+"The report has been submitted.",
+"The report is being submitted.",
+"The report is submitted.",
+"The report was being submitted."
+],
+answer:"The report has been submitted.",
+hint:"Look for has/have + been + V3.",
+explanation:"“Has been submitted” is Present Perfect Passive. “Is being submitted” is Present Continuous Passive, while “was being submitted” is Past Continuous Passive."
+},
+
+{
+q:"Which sentence correctly demonstrates the difference between Continuous Passive and Perfect Passive?",
+options:[
+"The work is being done / The work has been done.",
+"The work is been done / The work has being done.",
+"The work is done being / The work has done been.",
+"The work was been done / The work is having done."
+],
+answer:"The work is being done / The work has been done.",
+hint:"Continuous → being; Perfect → been.",
+explanation:"This is a key distinction: Continuous Passive uses “being + V3”, while Perfect Passive uses “been + V3”. Therefore, “is being done” is continuous passive and “has been done” is perfect passive."
+},
+
+{
+q:"A student writes: “The letter is been written by her.” What is the correct form?",
+options:[
+"The letter is being written by her.",
+"The letter has been written by her.",
+"The letter is written by her.",
+"The letter was being written by her."
+],
+answer:"The letter is being written by her.",
+hint:"If the intended tense is Present Continuous, use being.",
+explanation:"“is been written” incorrectly mixes the two forms. Present Continuous Passive is “is being written”. Perfect Passive would be “has been written”. Thus the correct continuous form is “The letter is being written by her.”"
+},
+
+{
+q:"A student writes: “The work has being completed.” Which correction is correct for Present Perfect Passive?",
+options:[
+"The work has been completed.",
+"The work has being completing.",
+"The work is being completed.",
+"The work had being completed."
+],
+answer:"The work has been completed.",
+hint:"Perfect Passive = has + been + V3.",
+explanation:"Present Perfect Passive requires “has/have + been + V3”. Therefore, “has being completed” is incorrect. The correct form is “has been completed”."
+},
+
+{
+q:"Which transformation correctly changes “They are building a bridge” into passive?",
+options:[
+"A bridge is being built by them.",
+"A bridge is built by them.",
+"A bridge has been built by them.",
+"A bridge was being built by them."
+],
+answer:"A bridge is being built by them.",
+hint:"are building = Present Continuous.",
+explanation:"The active sentence is Present Continuous. The passive requires “is being + V3”. Therefore, “A bridge is being built by them” is correct."
+},
+
+{
+q:"Which transformation correctly changes “They were repairing the machine” into passive?",
+options:[
+"The machine was being repaired by them.",
+"The machine is being repaired by them.",
+"The machine was repaired by them.",
+"The machine had been repaired by them."
+],
+answer:"The machine was being repaired by them.",
+hint:"were repairing = Past Continuous.",
+explanation:"Past Continuous Passive uses was/were + being + V3. Since “machine” is singular, “was being repaired” is required."
+},
+
+{
+q:"Which transformation correctly changes “They have prepared the documents” into passive?",
+options:[
+"The documents have been prepared by them.",
+"The documents are being prepared by them.",
+"The documents had been prepared by them.",
+"The documents have being prepared by them."
+],
+answer:"The documents have been prepared by them.",
+hint:"have prepared = Present Perfect.",
+explanation:"“Have prepared” is Present Perfect. The passive form is “have been prepared”. Because “documents” is plural, “have” is used."
+},
+
+{
+q:"Which transformation correctly changes “They had prepared the documents” into passive?",
+options:[
+"The documents had been prepared by them.",
+"The documents have been prepared by them.",
+"The documents were being prepared by them.",
+"The documents had being prepared by them."
+],
+answer:"The documents had been prepared by them.",
+hint:"had + V3 → had been + V3.",
+explanation:"“Had prepared” is Past Perfect. Its passive counterpart is “had been prepared”. The word “been” is required because this is a perfect passive construction."
+},
+
+{
+q:"Which transformation correctly changes “They will have prepared the documents” into passive?",
+options:[
+"The documents will have been prepared by them.",
+"The documents will be prepared by them.",
+"The documents will have being prepared by them.",
+"The documents have been prepared by them."
+],
+answer:"The documents will have been prepared by them.",
+hint:"Future Perfect = will have + V3.",
+explanation:"Future Perfect Passive uses “will have been + V3”. Therefore, “The documents will have been prepared by them” is correct."
+},
+
+{
+q:"Which statement about “being” is correct?",
+options:[
+"It is a key marker of Continuous Passive Voice.",
+"It is always required in Perfect Passive Voice.",
+"It replaces V3 in every passive sentence.",
+"It is used only with Simple Present Passive."
+],
+answer:"It is a key marker of Continuous Passive Voice.",
+hint:"Remember pages 8–9.",
+explanation:"The source emphasizes that when passive voice is in Continuous Tense, “being” must not be forgotten. For example: “is being written” and “was being written”."
+},
+
+{
+q:"Which statement about “been” is correct according to the Perfect Tense rules?",
+options:[
+"It is used in Perfect Passive Voice.",
+"It is used only in Continuous Passive Voice.",
+"It replaces “being” in Simple Present.",
+"It is never used with passive voice."
+],
+answer:"It is used in Perfect Passive Voice.",
+hint:"Perfect Passive formulas all contain “been”.",
+explanation:"The Perfect Tense table shows “been” in all the passive structures: has/have been, had been, shall/will have been, and modal + have + been."
+},
+
+{
+q:"Which option correctly distinguishes the following two forms: “is being examined” and “has been examined”?",
+options:[
+"First is Continuous Passive; second is Perfect Passive.",
+"First is Perfect Passive; second is Continuous Passive.",
+"Both are Simple Passive.",
+"Both are Past Perfect Passive."
+],
+answer:"First is Continuous Passive; second is Perfect Passive.",
+hint:"being = continuous; been = perfect.",
+explanation:"“Is being examined” contains “being”, identifying Present Continuous Passive. “Has been examined” contains “has + been”, identifying Present Perfect Passive."
+},
+
+{
+q:"Which of the following is NOT a correct Present Continuous Passive structure?",
+options:[
+"Object + is/am/are + being + V3",
+"Object + is + being + V3",
+"Object + are + being + V3",
+"Object + is/am/are + been + V3"
+],
+answer:"Object + is/am/are + been + V3",
+hint:"Do not confuse been with being.",
+explanation:"Present Continuous Passive requires “is/am/are + being + V3”. “Been” belongs to Perfect Passive, so “is/am/are + been + V3” is not the correct structure."
+},
+
+{
+q:"Which of the following is NOT a correct Present Perfect Passive structure?",
+options:[
+"Object + has + been + V3",
+"Object + have + been + V3",
+"Object + has/have + been + V3 + by + subject",
+"Object + has/have + being + V3"
+],
+answer:"Object + has/have + being + V3",
+hint:"Perfect → been, not being.",
+explanation:"Present Perfect Passive requires has/have + been + V3. “Being” belongs to continuous passive. Therefore, “has/have + being + V3” is incorrect."
+},
+
+{
+q:"In the sentence “English is spoken all over the world”, why may the agent not be mentioned?",
+options:[
+"Because the agent is general/vague and obvious.",
+"Because passive sentences never allow “by”.",
+"Because “spoken” cannot take an agent.",
+"Because English is an uncountable noun."
+],
+answer:"Because the agent is general/vague and obvious.",
+hint:"Recall the rule from page 7.",
+explanation:"The source explains that when an action is performed by an indefinite pronoun or vague noun, the passive voice generally does not need the “by + subject” phrase. “People” is a vague/general subject, so “by people” can be omitted."
+},
+
+{
+q:"Which passive sentence best follows the rule of omitting a vague agent?",
+options:[
+"English is spoken all over the world.",
+"English is spoken by people all over the world.",
+"English is spoken by someone all over the world.",
+"English is spoken by a person all over the world."
+],
+answer:"English is spoken all over the world.",
+hint:"Choose the natural passive when the agent is general.",
+explanation:"When the active subject is a vague/general expression such as “people”, it is normally unnecessary to mention the agent in the passive sentence. The source's example is “People speak English all over the world” → “English is spoken all over the world.”"
+},
+
+{
+q:"Which statement is correct about a sentence whose main verb is “be”?",
+options:[
+"It cannot normally be changed into passive voice.",
+"It always changes into “being”.",
+"It always becomes “been”.",
+"It must use “by” in passive."
+],
+answer:"It cannot normally be changed into passive voice.",
+hint:"Compare “I am happy” with “I am writing”.",
+explanation:"If “be” is itself the main verb, there is no transitive action verb and object to transform. The source gives “I am happy” and “He should be polite” as examples that cannot be made passive."
+},
+
+{
+q:"Which sentence is correctly identified as NOT convertible into passive voice?",
+options:[
+"He should be polite.",
+"He should read the book.",
+"They should complete the work.",
+"She should teach English."
+],
+answer:"He should be polite.",
+hint:"Here “be” itself is the main verb.",
+explanation:"In “He should be polite”, “be” is the main verb followed by an adjective. There is no object receiving an action. The other sentences contain action verbs with objects and therefore can be transformed."
+},
+
+{
+q:"Which option correctly identifies the passive form of Present Continuous?",
+options:[
+"is/am/are + being + V3",
+"is/am/are + been + V3",
+"has/have + being + V3",
+"was/were + been + V3"
+],
+answer:"is/am/are + being + V3",
+hint:"Continuous passive needs “being”.",
+explanation:"The essential formula is Object + is/am/are + being + V3 + by + subject. This is directly based on the Continuous Tense table."
+},
+
+{
+q:"Which option correctly identifies the passive form of Past Continuous?",
+options:[
+"was/were + being + V3",
+"has/have + been + V3",
+"was/were + been + V3",
+"had + being + V3"
+],
+answer:"was/were + being + V3",
+hint:"Past + Continuous + Passive.",
+explanation:"Past Continuous Active uses was/were + V-ing. Passive therefore uses was/were + being + V3. The word “being” is essential."
+},
+
+{
+q:"Which option correctly identifies the passive form of Future Perfect?",
+options:[
+"will have been + V3",
+"will be being + V3",
+"will have being + V3",
+"will be + V3 only"
+],
+answer:"will have been + V3",
+hint:"Future Perfect contains “will have”; passive adds “been”.",
+explanation:"Future Perfect Active: Subject + will/shall + have + V3 + object. Passive: Object + will/shall + have + been + V3 + by + subject."
+},
+
+{
+q:"Which option correctly identifies the passive form of Modal Perfect?",
+options:[
+"Object + modal + have + been + V3 + by + subject",
+"Object + modal + be + being + V3 + by + subject",
+"Object + modal + being + V3 + by + subject",
+"Object + modal + has + been + V3 + by + subject"
+],
+answer:"Object + modal + have + been + V3 + by + subject",
+hint:"Modal Perfect uses modal + have.",
+explanation:"The Perfect Tense table gives Modal Perfect Active as Subject + Modal + have + V3 + object. Passive changes this to Object + Modal + have + been + V3 + by + subject."
+},
+
+{
+q:"Choose the correct passive form of: “They may have completed the work.”",
+options:[
+"The work may have been completed by them.",
+"The work may be being completed by them.",
+"The work may has been completed by them.",
+"The work may have being completed by them."
+],
+answer:"The work may have been completed by them.",
+hint:"Modal Perfect Passive = may + have + been + V3.",
+explanation:"“May have completed” is Modal Perfect. Its passive structure is “may have been + V3”. Therefore, “The work may have been completed by them” is correct."
+},
+
+{
+q:"Which transformation correctly preserves both tense and voice? “She is writing the report.”",
+options:[
+"The report is being written by her.",
+"The report has been written by her.",
+"The report was written by her.",
+"The report is written by her."
+],
+answer:"The report is being written by her.",
+hint:"Do not change Continuous into Simple or Perfect.",
+explanation:"“Is writing” is Present Continuous. To preserve the tense in passive voice, use “is being written”. The other options change the tense."
+},
+
+{
+q:"Which transformation correctly preserves both tense and voice? “She has written the report.”",
+options:[
+"The report has been written by her.",
+"The report is being written by her.",
+"The report was written by her.",
+"The report is written by her."
+],
+answer:"The report has been written by her.",
+hint:"has written = Present Perfect.",
+explanation:"The original uses Present Perfect. Its passive form must be “has been + V3”. Therefore, “The report has been written by her” is correct."
+},
+
+{
+q:"Which pair is correctly matched?",
+options:[
+"Present Continuous → is/am/are + being + V3",
+"Past Continuous → has/have + been + V3",
+"Present Perfect → is/am/are + being + V3",
+"Future Perfect → was/were + being + V3"
+],
+answer:"Present Continuous → is/am/are + being + V3",
+hint:"Only one pair has the correct tense marker.",
+explanation:"Present Continuous Passive uses is/am/are + being + V3. Past Continuous uses was/were + being + V3, Present Perfect uses has/have + been + V3, and Future Perfect uses will/shall + have + been + V3."
+},
+
+{
+q:"Which of the following contains the correct use of “being”?",
+options:[
+"The house is being painted.",
+"The house has being painted.",
+"The house will have being painted.",
+"The house had being painted."
+],
+answer:"The house is being painted.",
+hint:"being is characteristic of Continuous Passive.",
+explanation:"“Is being painted” is Present Continuous Passive. The other options incorrectly use “being” where Perfect Passive requires “been”. Correct Perfect examples would be “has been painted” or “had been painted”."
+},
+
+{
+q:"Which of the following contains the correct use of “been”?",
+options:[
+"The house has been painted.",
+"The house is been painted.",
+"The house was being painted.",
+"The house is being painted."
+],
+answer:"The house has been painted.",
+hint:"Look for a Perfect Passive construction.",
+explanation:"“Has been painted” is Present Perfect Passive. “Is being painted” and “was being painted” are Continuous Passive forms. “Is been painted” is grammatically incorrect."
+},
+
+{
+q:"A candidate sees “was being repaired” in an option. What tense does this signal?",
+options:[
+"Past Continuous Passive",
+"Present Continuous Passive",
+"Past Perfect Passive",
+"Present Perfect Passive"
+],
+answer:"Past Continuous Passive",
+hint:"was/were + being + V3.",
+explanation:"The combination “was/were + being + V3” is the passive form of Past Continuous. Example: “The machine was being repaired by the mechanic.”"
+},
+
+{
+q:"A candidate sees “has been repaired” in an option. What tense does this signal?",
+options:[
+"Present Perfect Passive",
+"Present Continuous Passive",
+"Past Continuous Passive",
+"Simple Present Passive"
+],
+answer:"Present Perfect Passive",
+hint:"has + been + V3.",
+explanation:"“Has been repaired” follows the Present Perfect Passive structure: has/have + been + V3. The presence of “been” with has/have is the key signal."
+}
+
+];
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let currentQuestion = 0;
+
+let score = 0;
+
+let answered = new Array(questions.length).fill(false);
+
+let selectedAnswers = new Array(questions.length).fill(null);
+
+let shuffledOptions = [];
+
+
+/* =========================================================
+   SHUFFLE FUNCTION
+   Fisher-Yates style shuffle.
+   No modulo operator.
+   No array cycling.
+========================================================= */
+
+function shuffleArray(arr) {
+
+    const copy = [...arr];
+
+    for (let i = copy.length - 1; i > 0; i--) {
+
+        const randomIndex =
+            Math.floor(Math.random() * (i + 1));
+
+        const temp = copy[i];
+
+        copy[i] = copy[randomIndex];
+
+        copy[randomIndex] = temp;
+    }
+
+    return copy;
+}
+
+
+/* =========================================================
+   DISPLAY QUESTION
+========================================================= */
+
+function loadQuestion() {
+
+    const q = questions[currentQuestion];
+
+    document.getElementById("questionNumber").textContent =
+        "Q" + (currentQuestion + 1);
+
+    document.getElementById("question").textContent = q.q;
+
+    document.getElementById("hintBox").textContent = q.hint;
+
+    document.getElementById("hintBox").classList.add("hidden");
+
+    document.getElementById("difficulty").textContent =
+        currentQuestion < 40
+        ? "SSC / RRB / HSSC"
+        : "Advanced Exam Practice";
+
+    document.getElementById("progressText").textContent =
+        "Question " + (currentQuestion + 1) + " of " + questions.length;
+
+    const progress =
+        ((currentQuestion + 1) / questions.length) * 100;
+
+    document.getElementById("progressBar").style.width =
+        progress + "%";
+
+    document.getElementById("percentage").textContent =
+        Math.round(progress) + "%";
+
+
+    /* SCORE */
+
+    document.getElementById("score").textContent =
+        score + " / " + questions.length;
+
+
+    /* OPTIONS */
+
+    const optionContainer =
+        document.getElementById("options");
+
+    optionContainer.innerHTML = "";
+
+    shuffledOptions =
+        shuffleArray(q.options);
+
+
+    shuffledOptions.forEach((option, index) => {
+
+        const button = document.createElement("button");
+
+        button.className =
+            "option-btn w-full text-left border-2 border-slate-200 rounded-xl p-4 font-semibold bg-white hover:bg-indigo-50 hover:border-indigo-300";
+
+        button.innerHTML =
+            "<span class='inline-flex items-center justify-center w-8 h-8 rounded-full bg-slate-100 mr-3 text-sm font-bold'>" +
+            String.fromCharCode(65 + index) +
+            "</span>" +
+            option;
+
+        button.onclick = function() {
+
+            selectAnswer(option, button);
+        };
+
+        optionContainer.appendChild(button);
+    });
+
+
+    /* PREVIOUSLY ANSWERED */
+
+    if (answered[currentQuestion]) {
+
+        const buttons =
+            document.querySelectorAll(".option-btn");
+
+        buttons.forEach(btn => {
+
+            const text =
+                btn.textContent.substring(1).trim();
+
+            btn.disabled = true;
+
+            btn.classList.add("disabled-option");
+
+            if (text === q.answer) {
+                btn.classList.add("correct");
+            }
+
+            if (
+                text === selectedAnswers[currentQuestion] &&
+                text !== q.answer
+            ) {
+                btn.classList.add("wrong");
+            }
+        });
+
+        showExplanation();
+    }
+    else {
+
+        document.getElementById("resultBox")
+            .classList.add("hidden");
+
+        document.getElementById("explanationBox")
+            .classList.add("hidden");
+    }
+}
+
+
+/* =========================================================
+   ANSWER SELECTION
+========================================================= */
+
+function selectAnswer(selected, clickedButton) {
+
+    if (answered[currentQuestion]) {
+        return;
+    }
+
+    const q = questions[currentQuestion];
+
+    answered[currentQuestion] = true;
+
+    selectedAnswers[currentQuestion] = selected;
+
+    const isCorrect = selected === q.answer;
+
+
+    if (isCorrect) {
+
+        score++;
+
+        clickedButton.classList.add("correct");
+
+        showResult(
+            true,
+            "✓ Correct! Excellent."
+        );
+
+    }
+    else {
+
+        clickedButton.classList.add("wrong");
+
+        showResult(
+            false,
+            "✗ Incorrect. Correct answer: " + q.answer
+        );
+    }
+
+
+    const buttons =
+        document.querySelectorAll(".option-btn");
+
+    buttons.forEach(btn => {
+
+        btn.disabled = true;
+
+        btn.classList.add("disabled-option");
+
+        const text =
+            btn.textContent.substring(1).trim();
+
+        if (text === q.answer) {
+
+            btn.classList.add("correct");
+        }
+    });
+
+
+    document.getElementById("score").textContent =
+        score + " / " + questions.length;
+
+    showExplanation();
+}
+
+
+/* =========================================================
+   RESULT
+========================================================= */
+
+function showResult(correct, message) {
+
+    const box =
+        document.getElementById("resultBox");
+
+    box.classList.remove("hidden");
+
+    if (correct) {
+
+        box.className =
+            "mt-5 p-4 rounded-xl bg-green-50 border border-green-200 text-green-800 font-bold";
+
+    }
+    else {
+
+        box.className =
+            "mt-5 p-4 rounded-xl bg-red-50 border border-red-200 text-red-800 font-bold";
+    }
+
+    box.textContent = message;
+}
+
+
+/* =========================================================
+   EXPLANATION
+========================================================= */
+
+function showExplanation() {
+
+    const q = questions[currentQuestion];
+
+    document.getElementById("explanation")
+        .textContent = q.explanation;
+
+    document.getElementById("explanationBox")
+        .classList.remove("hidden");
+}
+
+
+/* =========================================================
+   HINT
+========================================================= */
+
+function toggleHint() {
+
+    document.getElementById("hintBox")
+        .classList.toggle("hidden");
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+function nextQuestion() {
+
+    if (currentQuestion < questions.length - 1) {
+
+        currentQuestion++;
+
+        loadQuestion();
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    }
+    else {
+
+        finishQuiz();
+    }
+}
+
+
+function previousQuestion() {
+
+    if (currentQuestion > 0) {
+
+        currentQuestion--;
+
+        loadQuestion();
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    }
+}
+
+
+function jumpQuestion() {
+
+    const input =
+        document.getElementById("jumpInput");
+
+    const number =
+        parseInt(input.value);
+
+    if (
+        Number.isNaN(number) ||
+        number < 1 ||
+        number > questions.length
+    ) {
+
+        alert("Please enter a question number from 1 to 50.");
+
+        return;
+    }
+
+    currentQuestion = number - 1;
+
+    input.value = "";
+
+    loadQuestion();
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+
+/* =========================================================
+   FINISH QUIZ
+========================================================= */
+
+function finishQuiz() {
+
+    document.getElementById("quizCard")
+        .classList.add("hidden");
+
+    document.getElementById("finalCard")
+        .classList.remove("hidden");
+
+    document.getElementById("finalScore")
+        .textContent =
+        score + " / " + questions.length;
+
+    let message = "";
+
+    const percentage =
+        (score / questions.length) * 100;
+
+    if (percentage >= 90) {
+
+        message =
+            "🔥 Excellent! Your Passive Voice concepts are extremely strong.";
+
+    }
+    else if (percentage >= 75) {
+
+        message =
+            "💪 Very good! Your concepts are strong, but revise the tricky structures.";
+
+    }
+    else if (percentage >= 60) {
+
+        message =
+            "📚 Good attempt. Revise Continuous vs Perfect Passive carefully.";
+
+    }
+    else {
+
+        message =
+            "🧠 Re-study pages 6–10 and attempt the quiz again. Focus on the formulas.";
+    }
+
+    document.getElementById("finalMessage")
+        .textContent = message;
+}
+
+
+/* =========================================================
+   RESTART
+========================================================= */
+
+function restartQuiz() {
+
+    currentQuestion = 0;
+
+    score = 0;
+
+    answered =
+        new Array(questions.length).fill(false);
+
+    selectedAnswers =
+        new Array(questions.length).fill(null);
+
+    document.getElementById("finalCard")
+        .classList.add("hidden");
+
+    document.getElementById("quizCard")
+        .classList.remove("hidden");
+
+    loadQuestion();
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+
+/* =========================================================
+   KEYBOARD SUPPORT
+========================================================= */
+
+document.addEventListener("keydown", function(event) {
+
+    if (event.key === "ArrowRight") {
+
+        nextQuestion();
+
+    }
+
+    if (event.key === "ArrowLeft") {
+
+        previousQuestion();
+    }
+});
+
+
+/* =========================================================
+   START
+========================================================= */
+
+loadQuestion();
+
+</script>
+
+<script src="../../quiz-app-ui-v2.js"></script>
+</body>
+</html>

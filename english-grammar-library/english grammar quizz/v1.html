@@ -1,0 +1,1394 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VERB Mastery Test | SSC • Banking • UPSC</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        background: linear-gradient(135deg, #eef2ff, #f8fafc);
+        color: #172033;
+        min-height: 100vh;
+    }
+
+    .container {
+        width: min(1000px, 94%);
+        margin: auto;
+        padding: 25px 0 50px;
+    }
+
+    header {
+        background: linear-gradient(135deg, #1e3a8a, #4338ca);
+        color: white;
+        padding: 30px;
+        border-radius: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 10px 30px rgba(30,58,138,.18);
+    }
+
+    header h1 {
+        font-size: 30px;
+        margin-bottom: 8px;
+    }
+
+    header p {
+        opacity: .9;
+        line-height: 1.6;
+    }
+
+    .badges {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-top: 15px;
+    }
+
+    .badge {
+        background: rgba(255,255,255,.15);
+        border: 1px solid rgba(255,255,255,.25);
+        padding: 7px 12px;
+        border-radius: 20px;
+        font-size: 13px;
+    }
+
+    .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: rgba(255,255,255,.95);
+        backdrop-filter: blur(10px);
+        padding: 14px;
+        border-radius: 15px;
+        margin-bottom: 20px;
+        box-shadow: 0 5px 20px rgba(0,0,0,.08);
+    }
+
+    .stats {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .stat {
+        font-weight: bold;
+    }
+
+    .progress-wrap {
+        height: 9px;
+        background: #e5e7eb;
+        border-radius: 20px;
+        margin-top: 12px;
+        overflow: hidden;
+    }
+
+    .progress {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, #2563eb, #7c3aed);
+        transition: .3s;
+    }
+
+    .question-card {
+        background: white;
+        border-radius: 18px;
+        padding: 25px;
+        margin-bottom: 18px;
+        box-shadow: 0 6px 25px rgba(15,23,42,.07);
+        border: 1px solid #e5e7eb;
+    }
+
+    .q-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        gap: 10px;
+    }
+
+    .q-number {
+        color: #4338ca;
+        font-weight: bold;
+    }
+
+    .difficulty {
+        font-size: 12px;
+        padding: 5px 9px;
+        border-radius: 15px;
+        background: #eef2ff;
+        color: #4338ca;
+        font-weight: bold;
+    }
+
+    .question {
+        font-size: 18px;
+        line-height: 1.65;
+        font-weight: 600;
+        margin-bottom: 18px;
+    }
+
+    .options {
+        display: grid;
+        gap: 10px;
+    }
+
+    .option {
+        border: 2px solid #e5e7eb;
+        background: #fff;
+        padding: 14px 16px;
+        border-radius: 12px;
+        cursor: pointer;
+        text-align: left;
+        font-size: 15px;
+        transition: .2s;
+    }
+
+    .option:hover:not(.disabled) {
+        border-color: #6366f1;
+        background: #f5f3ff;
+        transform: translateX(2px);
+    }
+
+    .option.correct {
+        border-color: #16a34a;
+        background: #dcfce7;
+        color: #166534;
+    }
+
+    .option.wrong {
+        border-color: #dc2626;
+        background: #fee2e2;
+        color: #991b1b;
+    }
+
+    .option.disabled {
+        cursor: default;
+    }
+
+    .explanation {
+        display: none;
+        margin-top: 18px;
+        padding: 18px;
+        border-radius: 13px;
+        background: #f8fafc;
+        border-left: 5px solid #4f46e5;
+        line-height: 1.7;
+    }
+
+    .explanation.show {
+        display: block;
+    }
+
+    .explanation strong {
+        color: #312e81;
+    }
+
+    .result {
+        display: none;
+        background: white;
+        border-radius: 20px;
+        padding: 35px;
+        text-align: center;
+        box-shadow: 0 10px 35px rgba(15,23,42,.1);
+        margin-top: 25px;
+    }
+
+    .result.show {
+        display: block;
+    }
+
+    .score {
+        font-size: 54px;
+        font-weight: 800;
+        color: #4338ca;
+        margin: 15px 0;
+    }
+
+    .percentage {
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+
+    .performance {
+        font-size: 18px;
+        font-weight: bold;
+        padding: 12px;
+        border-radius: 12px;
+        background: #eef2ff;
+        margin-bottom: 20px;
+    }
+
+    .topic-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        text-align: left;
+    }
+
+    .topic-table th,
+    .topic-table td {
+        padding: 11px;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    .topic-table th {
+        background: #f1f5f9;
+    }
+
+    button.restart {
+        border: none;
+        background: linear-gradient(135deg,#2563eb,#7c3aed);
+        color: white;
+        padding: 13px 25px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .finish {
+        width: 100%;
+        padding: 16px;
+        border: none;
+        border-radius: 14px;
+        background: #111827;
+        color: white;
+        font-size: 17px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+    .finish:hover {
+        background: #1f2937;
+    }
+
+    .note {
+        background: #fff7ed;
+        border-left: 5px solid #f97316;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        line-height: 1.6;
+        font-size: 14px;
+    }
+
+    @media(max-width:600px) {
+        header h1 {
+            font-size: 24px;
+        }
+
+        .question {
+            font-size: 16px;
+        }
+
+        .question-card {
+            padding: 18px;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+    <h1>⚡ VERB MASTERY TEST</h1>
+    <p>
+        50 High-Level MCQs based on the Verb concepts covered in the first
+        9 pages of your study material.
+    </p>
+
+    <div class="badges">
+        <span class="badge">SSC Level</span>
+        <span class="badge">Banking Level</span>
+        <span class="badge">UPSC-style Concepts</span>
+        <span class="badge">50 Questions</span>
+        <span class="badge">50 Marks</span>
+    </div>
+</header>
+
+<div class="note">
+    <strong>How to attempt:</strong>
+    Select an option. The answer will immediately be evaluated and the
+    detailed explanation will appear. Try to solve without guessing.
+    <br>
+    <strong>Scoring:</strong> +1 for every correct answer. No negative marking.
+</div>
+
+<div class="topbar">
+    <div class="stats">
+        <div class="stat">Question: <span id="answered">0</span>/50</div>
+        <div class="stat">Score: <span id="liveScore">0</span>/50</div>
+        <div class="stat">Accuracy: <span id="accuracy">0%</span></div>
+    </div>
+
+    <div class="progress-wrap">
+        <div class="progress" id="progress"></div>
+    </div>
+</div>
+
+<div id="quiz"></div>
+
+<button class="finish" onclick="finishQuiz()">
+    🏁 FINISH QUIZ & VIEW FINAL RESULT
+</button>
+
+<div class="result" id="result">
+
+    <h2>🎯 FINAL RESULT</h2>
+
+    <div class="score" id="finalScore">0/50</div>
+
+    <div class="percentage" id="finalPercentage">
+        0%
+    </div>
+
+    <div class="performance" id="performance">
+        -
+    </div>
+
+    <table class="topic-table">
+        <thead>
+            <tr>
+                <th>Topic</th>
+                <th>Correct</th>
+                <th>Total</th>
+                <th>Accuracy</th>
+            </tr>
+        </thead>
+        <tbody id="topicBody"></tbody>
+    </table>
+
+    <button class="restart" onclick="location.reload()">
+        🔄 Restart Quiz
+    </button>
+
+</div>
+
+</div>
+
+<script>
+
+const questions = [
+
+{
+q:"Which statement most accurately describes the primary distinction between a main verb and an auxiliary verb?",
+o:[
+"A main verb always appears before an auxiliary verb.",
+"An auxiliary verb can support another verb, while a main verb carries the principal lexical action or state.",
+"An auxiliary verb always expresses tense and never meaning.",
+"A main verb cannot occur without an auxiliary verb."
+],
+a:1,
+topic:"Verb Classification",
+d:"Moderate",
+e:"The study material divides verbs into helping verbs and main verbs. Auxiliary/helping verbs assist another verb, whereas the main verb occupies the principal verbal position and carries the main meaning. Therefore, option B captures the functional distinction most accurately."
+},
+
+{
+q:"Which sentence contains a modal auxiliary followed by the correct form of the main verb?",
+o:[
+"She can sings beautifully.",
+"She can singing beautifully.",
+"She can sing beautifully.",
+"She can to sing beautifully."
+],
+a:2,
+topic:"Modal + V1",
+d:"Easy",
+e:"A modal auxiliary such as can is followed by the base form (V1) of the main verb. Hence 'can sing' is correct. Forms such as 'can sings', 'can singing' and 'can to sing' violate the modal construction taught in the material."
+},
+
+{
+q:"Identify the grammatically correct sentence.",
+o:[
+"He should works harder.",
+"He should working harder.",
+"He should work harder.",
+"He should to work harder."
+],
+a:2,
+topic:"Modal + V1",
+d:"Easy",
+e:"After a modal auxiliary, the main verb remains in its base form. Therefore 'should work' is correct. The modal does not take an -s, -ing or 'to + V1' construction in this ordinary pattern."
+},
+
+{
+q:"Which one is NOT normally used as a modal auxiliary according to the classification in the study material?",
+o:[
+"Could",
+"May",
+"Need",
+"Should"
+],
+a:2,
+topic:"Auxiliary Classification",
+d:"Moderate",
+e:"The material lists can, could, may, might, shall, will, would, should, must and ought to as modal auxiliaries, while need, dare and used to are treated separately as marginal auxiliaries. Therefore 'need' is the intended answer."
+},
+
+{
+q:"In which sentence is 'need' functioning as a main verb rather than as a helping/modal-type verb?",
+o:[
+"You need not worry.",
+"You need to revise this chapter.",
+"Need I explain the rule?",
+"Need we wait any longer?"
+],
+a:1,
+topic:"Need",
+d:"Hard",
+e:"When 'need' is followed by 'to + V1' and behaves like an ordinary lexical verb, it functions as a main verb: 'You need to revise.' In contrast, constructions such as 'need not' and 'Need I...?' show the auxiliary-like use."
+},
+
+{
+q:"Which sentence correctly uses 'need' as an auxiliary?",
+o:[
+"You need not to worry.",
+"You need not worry.",
+"You needn't to worry.",
+"You do need not worry."
+],
+a:1,
+topic:"Need",
+d:"Moderate",
+e:"When need is used as an auxiliary in the negative construction, it is followed directly by the base verb: 'need not worry'. The unnecessary 'to' is the key error in the other constructions."
+},
+
+{
+q:"Choose the sentence in which 'dare' is functioning as a main verb.",
+o:[
+"I dare not enter the room.",
+"How dare he speak to you?",
+"She does not dare to oppose him.",
+"Dare I question his decision?"
+],
+a:2,
+topic:"Dare",
+d:"Hard",
+e:"In 'She does not dare to oppose him', dare behaves like an ordinary main verb and therefore works with the auxiliary 'does' and the infinitive 'to oppose'. The other examples illustrate auxiliary-like usage."
+},
+
+{
+q:"Which sentence correctly demonstrates auxiliary-like 'dare'?",
+o:[
+"He dares not to speak.",
+"He dare not speak.",
+"He does dare not speak.",
+"He dare not to speak."
+],
+a:1,
+topic:"Dare",
+d:"Hard",
+e:"Auxiliary-like dare can be followed directly by the base verb: 'He dare not speak.' When dare functions as a main verb, a construction such as 'He does not dare to speak' is possible. Mixing the two patterns creates an error."
+},
+
+{
+q:"Which sentence correctly uses 'used to' according to the rule presented in the material?",
+o:[
+"He used to play cricket.",
+"He used play cricket.",
+"He used playing cricket.",
+"He used to played cricket."
+],
+a:0,
+topic:"Used To",
+d:"Easy",
+e:"The material states that 'used to' is followed by the infinitive 'to + V1'. Therefore 'used to play' is correct. The verb after 'to' must remain in its base form."
+},
+
+{
+q:"Select the correct construction.",
+o:[
+"I am used to sleep late.",
+"I am used to sleeping late.",
+"I used to sleeping late.",
+"I am used sleeping to late."
+],
+a:1,
+topic:"Used To",
+d:"Moderate",
+e:"The material distinguishes 'used to' from 'be used to'. In 'I am used to sleeping late', 'used to' functions adjectivally and 'to' is a preposition, so it is followed by a gerund (-ing form). This is different from the habitual-past 'used to + V1'."
+},
+
+{
+q:"Which sentence expresses a person's present ability?",
+o:[
+"When I was young, I could run very fast.",
+"I can solve this problem.",
+"I could solve the problem yesterday.",
+"I could swim when I was ten."
+],
+a:1,
+topic:"Can",
+d:"Easy",
+e:"Can is used for present ability, power or capacity. 'I can solve this problem' directly expresses present ability. 'Could' commonly refers to past ability or remote possibility."
+},
+
+{
+q:"Which sentence most clearly expresses past general ability?",
+o:[
+"I can swim now.",
+"I could swim when I was five.",
+"I may swim tomorrow.",
+"I must swim today."
+],
+a:1,
+topic:"Could",
+d:"Easy",
+e:"Could is used to express past ability, power or capacity. 'I could swim when I was five' refers to an ability possessed in the past."
+},
+
+{
+q:"Which sentence uses 'can' to express permission?",
+o:[
+"Everyone can make mistakes.",
+"You can leave now.",
+"She can solve the puzzle.",
+"He can lift the box."
+],
+a:1,
+topic:"Can - Permission",
+d:"Easy",
+e:"'You can leave now' grants permission. The other sentences use can for ability or theoretical possibility. Context determines the function of the modal."
+},
+
+{
+q:"Which sentence uses 'can' to express theoretical possibility?",
+o:[
+"Can I borrow your pen?",
+"She can speak French.",
+"Anyone can make a mistake.",
+"Can you open the door?"
+],
+a:2,
+topic:"Can - Possibility",
+d:"Moderate",
+e:"'Anyone can make a mistake' expresses general or theoretical possibility. It does not primarily refer to a specific person's present ability or request for permission."
+},
+
+{
+q:"Which sentence expresses remote possibility through 'could'?",
+o:[
+"Could you pass the salt?",
+"He could be at the library.",
+"I could swim when I was young.",
+"I could lift the box yesterday."
+],
+a:1,
+topic:"Could - Remote Possibility",
+d:"Moderate",
+e:"'He could be at the library' expresses a possibility that is uncertain or remote. 'Could' can also express past ability and polite requests, so the surrounding context is essential."
+},
+
+{
+q:"Which is the more formal request?",
+o:[
+"Can I speak to the manager?",
+"Could I speak to the manager?",
+"I can speak to the manager?",
+"I could speak to the manager?"
+],
+a:1,
+topic:"Can vs Could",
+d:"Easy",
+e:"Both can and could may be used for requests, but the material specifically presents can as a friendly request and could as a formal request. Hence 'Could I speak to the manager?' is the best answer."
+},
+
+{
+q:"Which sentence contains an incorrect use of 'can' and 'able to'?",
+o:[
+"I can complete the work.",
+"I will be able to complete the work.",
+"I can be able to complete the work.",
+"I was able to complete the work."
+],
+a:2,
+topic:"Can + Able To",
+d:"Moderate",
+e:"The material warns against combining can with 'be able to' because both express ability and the combination becomes superfluous. Use 'I can complete' or 'I will be able to complete', depending on the intended tense."
+},
+
+{
+q:"Choose the most appropriate correction: 'I cannot be able to attend tomorrow.'",
+o:[
+"I cannot attend tomorrow.",
+"I cannot be able to attend tomorrow.",
+"I cannot to attend tomorrow.",
+"I cannot being able to attend tomorrow."
+],
+a:0,
+topic:"Can + Able To",
+d:"Moderate",
+e:"The material gives the same principle: do not combine 'cannot' with 'be able to'. 'I cannot attend tomorrow' is concise and grammatical. Alternatively, 'I will not be able to attend tomorrow' would also be correct."
+},
+
+{
+q:"Which sentence correctly expresses future ability?",
+o:[
+"I can attend tomorrow.",
+"I could attend tomorrow.",
+"I will be able to attend tomorrow.",
+"I will can attend tomorrow."
+],
+a:2,
+topic:"Able To",
+d:"Moderate",
+e:"For future ability, 'will be able to + V1' is appropriate. English does not normally use 'will can'. Therefore 'I will be able to attend tomorrow' is the correct construction."
+},
+
+{
+q:"Which sentence best illustrates the distinction between past ability and successful performance in a particular past event?",
+o:[
+"I could swim when I was young.",
+"I could sing well when I was young and was able to perform successfully at the concerts.",
+"I could to sing at the concert.",
+"I was able can perform at the concert."
+],
+a:1,
+topic:"Could vs Was Able To",
+d:"Hard",
+e:"The material specifically notes that could expresses past ability, while 'was/were able to' can be used when referring to successful performance in a particular situation. Thus the second sentence captures the distinction."
+},
+
+{
+q:"Which sentence is most appropriate when describing a specific successful action in the past?",
+o:[
+"Although the task was difficult, she was able to finish it.",
+"Although the task was difficult, she could to finish it.",
+"Although the task was difficult, she can finish it yesterday.",
+"Although the task was difficult, she could finished it."
+],
+a:0,
+topic:"Could vs Was Able To",
+d:"Hard",
+e:"For a particular successful event in the past, 'was able to + V1' is the safer construction. 'Was able to finish' indicates that the successful completion actually occurred."
+},
+
+{
+q:"Choose the grammatically correct sentence.",
+o:[
+"The doctor could not save the patient.",
+"The doctor could not to save the patient.",
+"The doctor could not saved the patient.",
+"The doctor could not saving the patient."
+],
+a:0,
+topic:"Modal + V1",
+d:"Easy",
+e:"After the modal 'could', the main verb must be in the base form. Hence 'could not save' is correct. The forms 'to save', 'saved' and 'saving' are incompatible with this modal structure."
+},
+
+{
+q:"Which sentence correctly uses 'could' for a polite request?",
+o:[
+"Could you help me with this file?",
+"Could you helped me with this file?",
+"Could you to help me with this file?",
+"Could you helping me with this file?"
+],
+a:0,
+topic:"Could - Request",
+d:"Easy",
+e:"A modal is followed by V1. Therefore 'Could you help...' is grammatically correct and also functions as a polite/formal request."
+},
+
+{
+q:"Which option correctly completes the sentence: '_____ I take your scooter for an hour?'",
+o:[
+"Could",
+"Could to",
+"Could taking",
+"Could took"
+],
+a:0,
+topic:"Could - Request",
+d:"Easy",
+e:"'Could I take your scooter?' follows the modal + V1 structure and expresses a polite request. The verb after could must be 'take', not 'to take', 'taking' or 'took'."
+},
+
+{
+q:"Which sentence is grammatically incorrect?",
+o:[
+"You can go now.",
+"Can I help you?",
+"Everyone can make a mistake.",
+"Everyone can makes a mistake."
+],
+a:3,
+topic:"Can",
+d:"Easy",
+e:"After can, the verb must remain in the base form. Therefore 'can make' is correct, whereas 'can makes' is wrong because the modal does not permit an -s form on the main verb."
+},
+
+{
+q:"The sentence 'You cannot enter my room' primarily expresses:",
+o:[
+"Past ability",
+"Permission/prohibition",
+"Future ability",
+"Past possibility"
+],
+a:1,
+topic:"Can - Permission",
+d:"Easy",
+e:"The negative form 'cannot' can deny permission. In this sentence, the speaker is prohibiting entry, so the intended meaning is permission/prohibition rather than ability."
+},
+
+{
+q:"Which sentence is the best example of 'can' expressing capacity?",
+o:[
+"Can I enter the hall?",
+"This machine can lift 500 kilograms.",
+"It can rain tonight.",
+"Can you lend me a pen?"
+],
+a:1,
+topic:"Can - Capacity",
+d:"Moderate",
+e:"'This machine can lift 500 kilograms' expresses capacity. 'Can I...' is generally a request for permission, while 'it can rain' represents possibility."
+},
+
+{
+q:"Which statement is correct regarding modal auxiliaries?",
+o:[
+"They change their form according to the number of the subject.",
+"They normally take -s with a third-person singular subject.",
+"They retain the same form with different subjects.",
+"They are always followed by 'to + V1'."
+],
+a:2,
+topic:"Modal Rules",
+d:"Moderate",
+e:"The material states that modal auxiliaries do not change their form according to person or number. For example, 'She can', 'They can' and 'I can' all use the same modal form."
+},
+
+{
+q:"Choose the correct sentence.",
+o:[
+"She cans solve the problem.",
+"She can solves the problem.",
+"She can solve the problem.",
+"She can solving the problem."
+],
+a:2,
+topic:"Modal Rules",
+d:"Easy",
+e:"The modal 'can' remains unchanged even with 'she', and the following main verb must be V1. Hence 'She can solve the problem' is correct."
+},
+
+{
+q:"Which construction is correct after 'ought to'?",
+o:[
+"ought working",
+"ought works",
+"ought to work",
+"ought worked"
+],
+a:2,
+topic:"Ought To",
+d:"Easy",
+e:"The material explicitly states that 'ought' is followed by the infinitive 'to + V1'. Therefore 'ought to work' is the correct structure."
+},
+
+{
+q:"Which sentence is grammatically correct?",
+o:[
+"We ought respect our parents.",
+"We ought to respect our parents.",
+"We ought respecting our parents.",
+"We ought to respected our parents."
+],
+a:1,
+topic:"Ought To",
+d:"Easy",
+e:"The construction is 'ought to + V1'. Thus 'ought to respect' is correct. The verb after 'to' must be in its base form."
+},
+
+{
+q:"Which sentence correctly uses 'used to' followed by the main verb?",
+o:[
+"He used to comes late.",
+"He used to coming late.",
+"He used to come late.",
+"He used come late."
+],
+a:2,
+topic:"Used To",
+d:"Easy",
+e:"Habitual past 'used to' takes 'to + V1'. Therefore 'used to come' is correct. 'Comes' and 'coming' do not fit this structure."
+},
+
+{
+q:"In which sentence does 'used to' function differently from habitual past 'used to'?",
+o:[
+"I used to play football.",
+"She used to visit us.",
+"They are used to working hard.",
+"He used to live here."
+],
+a:2,
+topic:"Used To",
+d:"Hard",
+e:"'They are used to working hard' contains 'be used to', where 'used to' has an adjectival meaning of being accustomed to something. Here 'working' is a gerund because 'to' functions as a preposition. This differs from 'used to + V1' for past habits."
+},
+
+{
+q:"Which sentence is incorrect according to the modal rule?",
+o:[
+"He may arrive soon.",
+"She might come tomorrow.",
+"They should study carefully.",
+"He might comes tomorrow."
+],
+a:3,
+topic:"Modal + V1",
+d:"Easy",
+e:"A modal must be followed by V1. Therefore 'might come' is correct, not 'might comes'. The subject does not cause an -s ending on the verb after a modal."
+},
+
+{
+q:"Which sentence best expresses present uncertainty?",
+o:[
+"It may rain tonight.",
+"It could rained tonight.",
+"It may raining tonight.",
+"It may to rain tonight."
+],
+a:0,
+topic:"May",
+d:"Easy",
+e:"The material states that may expresses possibility or uncertainty. 'It may rain tonight' correctly uses may + V1 and communicates uncertainty about a future event."
+},
+
+{
+q:"Which sentence uses 'may' in an optative sense?",
+o:[
+"May you succeed in life!",
+"You may leave now.",
+"It may rain today.",
+"We may visit Delhi."
+],
+a:0,
+topic:"May - Optative",
+d:"Moderate",
+e:"An optative sentence expresses a wish, blessing or prayer. 'May you succeed in life!' is a wish for someone's success, matching the rule given for may."
+},
+
+{
+q:"Which sentence uses 'may' to express purpose?",
+o:[
+"We eat so that we may live.",
+"We may eat so that we live.",
+"We eat because we may live.",
+"We eat and may living."
+],
+a:0,
+topic:"May - Purpose",
+d:"Moderate",
+e:"The material states that when a principal clause is in the present tense and the subordinate clause beginning with 'that/so that/in order that' expresses purpose, 'may' can be used. 'We eat so that we may live' follows this pattern."
+},
+
+{
+q:"Choose the best completion: 'The students revise regularly so that they _____ perform well in the examination.'",
+o:[
+"may",
+"can to",
+"may to",
+"might to"
+],
+a:0,
+topic:"May - Purpose",
+d:"Moderate",
+e:"The subordinate clause expresses purpose: 'so that they may perform well'. After may, the base verb 'perform' is used. The construction therefore correctly tests both the purpose use of may and the modal + V1 rule."
+},
+
+{
+q:"Which sentence contains an error in modal construction?",
+o:[
+"She may arrive late.",
+"He might be busy.",
+"They must obey the rules.",
+"She may arrives late."
+],
+a:3,
+topic:"Modal + V1",
+d:"Easy",
+e:"The correct form is 'She may arrive late.' A modal does not take a third-person singular -s ending on the following main verb. Hence 'may arrives' is incorrect."
+},
+
+{
+q:"Which sentence best distinguishes permission from possibility?",
+o:[
+"You can leave now. / It may rain tonight.",
+"You can leave now. / You can rain tonight.",
+"You may leave now. / It can be rain tonight.",
+"You could leave now. / It may rains tonight."
+],
+a:0,
+topic:"Modal Meaning",
+d:"Hard",
+e:"'You can leave now' grants permission, whereas 'It may rain tonight' expresses possibility. The question tests whether the learner can identify the semantic function of the modal rather than merely its grammatical form."
+},
+
+{
+q:"Which sentence uses 'can' as a friendly request?",
+o:[
+"Can I take your pen?",
+"Can everyone make mistakes?",
+"She can swim.",
+"The machine can operate continuously."
+],
+a:0,
+topic:"Can - Request",
+d:"Easy",
+e:"The material presents interrogative can as suitable for friendly requests, while could is associated with more formal requests. 'Can I take your pen?' is therefore the intended example."
+},
+
+{
+q:"Which sentence would be preferable for a more formal request?",
+o:[
+"Can I talk to Mr Sharma?",
+"Could I talk to Mr Sharma?",
+"I can talking to Mr Sharma?",
+"I could to talk to Mr Sharma?"
+],
+a:1,
+topic:"Could - Formal Request",
+d:"Easy",
+e:"The material contrasts friendly requests with can and formal requests with could. 'Could I talk...' is grammatically correct because could is followed by the base form 'talk'."
+},
+
+{
+q:"Which option contains the correct pair for present ability and past ability?",
+o:[
+"can / could",
+"could / can",
+"may / must",
+"should / would"
+],
+a:0,
+topic:"Can vs Could",
+d:"Easy",
+e:"Can commonly expresses present ability, while could commonly expresses past ability. Therefore the correct pair is 'can / could'."
+},
+
+{
+q:"Which sentence is NOT acceptable because it unnecessarily combines two expressions of ability?",
+o:[
+"I can finish the work.",
+"I will be able to finish the work.",
+"I can be able to finish the work.",
+"I was able to finish the work."
+],
+a:2,
+topic:"Can + Able To",
+d:"Moderate",
+e:"The study material specifically warns that combining 'can' and 'be able to' makes the expression superfluous because both communicate ability. Therefore 'I can be able to finish' is the intended error."
+},
+
+{
+q:"A candidate says: 'When I was young, I could swim very well.' What does 'could' primarily express?",
+o:[
+"Permission",
+"Past ability",
+"Formal request",
+"Purpose"
+],
+a:1,
+topic:"Could - Past Ability",
+d:"Easy",
+e:"Here could refers to an ability possessed in the past. There is no request or permission context, so past ability is the correct interpretation."
+},
+
+{
+q:"Which sentence is most suitable for a specific successful achievement in the past?",
+o:[
+"After several attempts, he was able to solve the puzzle.",
+"After several attempts, he could to solve the puzzle.",
+"After several attempts, he can solve the puzzle yesterday.",
+"After several attempts, he could solved the puzzle."
+],
+a:0,
+topic:"Could vs Was Able To",
+d:"Hard",
+e:"The material makes an important distinction: could expresses past ability, whereas 'was able to' is useful for a particular successful performance. Since the sentence describes a specific achievement, 'was able to solve' is the best choice."
+},
+
+{
+q:"Which sentence correctly combines 'may' with a purpose clause?",
+o:[
+"She works hard so that she may succeed.",
+"She works hard so that she may to succeed.",
+"She works hard so that she may succeeds.",
+"She works hard so that she might to succeed."
+],
+a:0,
+topic:"May - Purpose",
+d:"Moderate",
+e:"The structure is 'so that + subject + may + V1' when the subordinate clause expresses purpose after a present-tense principal clause. Hence 'so that she may succeed' is correct."
+},
+
+{
+q:"Which statement about 'may' is incorrect?",
+o:[
+"May can express possibility.",
+"May can occur in an optative sentence.",
+"May can be used in a purpose clause in the pattern described.",
+"May must always express permission and nothing else."
+],
+a:3,
+topic:"May",
+d:"Moderate",
+e:"May has several functions in the material: possibility/uncertainty, optative wishes, and purpose clauses. Therefore saying that may always expresses permission is too restrictive and incorrect."
+},
+
+{
+q:"Select the sentence that follows the modal + base-verb rule in every relevant position.",
+o:[
+"She could have completed the task.",
+"She could has completed the task.",
+"She could had completed the task.",
+"She could to have completed the task."
+],
+a:0,
+topic:"Modal Structure",
+d:"Hard",
+e:"The modal 'could' is followed by the base form 'have'. The complete construction 'could have completed' is grammatically valid. The other choices incorrectly inflect or precede the verb after the modal."
+},
+
+{
+q:"Which option best describes the sentence 'There could be a problem with the machine'?",
+o:[
+"Certain present ability",
+"Remote possibility",
+"Past habitual action",
+"Permission"
+],
+a:1,
+topic:"Could - Remote Possibility",
+d:"Moderate",
+e:"The material gives 'could' as a marker of remote possibility. The sentence does not state that the problem definitely exists; it presents a possibility."
+},
+
+{
+q:"Which sentence correctly uses an auxiliary-like 'need'?",
+o:[
+"Need I explain the entire rule?",
+"Need I to explain the entire rule?",
+"Need I explaining the entire rule?",
+"Need I explained the entire rule?"
+],
+a:0,
+topic:"Need",
+d:"Hard",
+e:"Auxiliary-like need can appear in questions followed directly by the base verb: 'Need I explain...?'. The modal-style structure does not take 'to' before the main verb in this construction."
+},
+
+{
+q:"Which sentence correctly uses 'dare' as an auxiliary?",
+o:[
+"Dare he question the officer?",
+"Does dare he question the officer?",
+"Dare he to question the officer?",
+"Does he dare question to the officer?"
+],
+a:0,
+topic:"Dare",
+d:"Hard",
+e:"Auxiliary-like dare can form a question directly: 'Dare he question...?'. The main verb follows in its base form without 'to'. When dare functions as a main verb, a different structure such as 'Does he dare to question...?' is possible."
+},
+
+{
+q:"Which sentence contains the most appropriate modal for a polite/formal request?",
+o:[
+"Can you please explain the rule?",
+"Could you please explain the rule?",
+"Could you please explained the rule?",
+"Could you please to explain the rule?"
+],
+a:1,
+topic:"Could - Formal Request",
+d:"Easy",
+e:"'Could you please explain...' is both grammatically correct and more polite/formal than the corresponding can construction. The verb 'explain' remains in the base form after could."
+},
+
+{
+q:"Which sentence correctly expresses theoretical possibility rather than a specific prediction?",
+o:[
+"Everyone can make mistakes.",
+"Everyone may makes mistakes.",
+"Everyone can making mistakes.",
+"Everyone could to make mistakes."
+],
+a:0,
+topic:"Can - Theoretical Possibility",
+d:"Moderate",
+e:"'Everyone can make mistakes' expresses a general or theoretical possibility. The construction also correctly follows can + V1."
+},
+
+{
+q:"Which sentence contains TWO modal-structure errors?",
+o:[
+"He may come tomorrow.",
+"He may comes tomorrow.",
+"He might to come tomorrow.",
+"He might come tomorrow."
+],
+a:2,
+topic:"Modal Structure",
+d:"Hard",
+e:"'Might to come' contains the modal + to error. The form 'may comes' in option B contains one error. Option C is therefore the intended choice when identifying the option with the faulty modal construction involving 'to' and the base verb."
+},
+
+{
+q:"A teacher says: 'You need not revise this particular example again.' Here 'need' is closest to which grammatical function?",
+o:[
+"Ordinary noun",
+"Auxiliary-like verb",
+"Adjective",
+"Main lexical verb requiring 'to'"
+],
+a:1,
+topic:"Need",
+d:"Hard",
+e:"In 'need not revise', need behaves in an auxiliary-like way and is followed directly by the base verb 'revise'. This differs from the main-verb construction 'You need to revise'."
+},
+
+{
+q:"Which sentence demonstrates the correct contrast between 'used to' and 'be used to'?",
+o:[
+"I used to wake early, but I am used to waking early now.",
+"I used to waking early, but I am used to wake early now.",
+"I used to wake early, but I am used to wake early now.",
+"I used waking early, but I am used to waking early now."
+],
+a:0,
+topic:"Used To",
+d:"Hard",
+e:"The first clause uses habitual-past 'used to + V1': 'used to wake'. The second uses 'be used to + gerund': 'am used to waking'. This is one of the most frequently tested distinctions."
+},
+
+{
+q:"Which sentence is fully correct according to the concepts in the first nine pages?",
+o:[
+"She can solves the problem and may to explain it.",
+"She can solve the problem and may explain it.",
+"She can solving the problem and may explains it.",
+"She can to solve the problem and may explaining it."
+],
+a:1,
+topic:"Mixed Modal Concepts",
+d:"Moderate",
+e:"Both modal constructions require the base form of the main verb: 'can solve' and 'may explain'. The other options introduce -s, -ing or 'to' after the modal, making them incorrect."
+}
+
+];
+
+let score = 0;
+let answered = 0;
+let attempted = new Array(questions.length).fill(false);
+let topicStats = {};
+
+questions.forEach(q => {
+    if (!topicStats[q.topic]) {
+        topicStats[q.topic] = {
+            correct: 0,
+            total: 0
+        };
+    }
+
+    topicStats[q.topic].total++;
+});
+
+function renderQuiz() {
+
+    const quiz = document.getElementById("quiz");
+
+    questions.forEach((item, index) => {
+
+        const card = document.createElement("div");
+        card.className = "question-card";
+        card.id = "question-" + index;
+
+        card.innerHTML = `
+            <div class="q-header">
+                <span class="q-number">Question ${index + 1}</span>
+                <span class="difficulty">${item.d}</span>
+            </div>
+
+            <div class="question">${item.q}</div>
+
+            <div class="options">
+                ${item.o.map((option, i) => `
+                    <button class="option"
+                        onclick="selectAnswer(${index}, ${i}, this)">
+                        <strong>${String.fromCharCode(65+i)}.</strong>
+                        ${option}
+                    </button>
+                `).join("")}
+            </div>
+
+            <div class="explanation" id="exp-${index}">
+                <strong>💡 Expert Explanation:</strong>
+                <p>${item.e}</p>
+                <br>
+                <strong>Correct Answer:</strong>
+                ${String.fromCharCode(65 + item.a)}. ${item.o[item.a]}
+            </div>
+        `;
+
+        quiz.appendChild(card);
+    });
+}
+
+function selectAnswer(qIndex, selected, button) {
+
+    if (attempted[qIndex]) return;
+
+    attempted[qIndex] = true;
+    answered++;
+
+    const question = questions[qIndex];
+    const card = document.getElementById("question-" + qIndex);
+    const options = card.querySelectorAll(".option");
+
+    options.forEach((btn, i) => {
+
+        btn.classList.add("disabled");
+
+        if (i === question.a) {
+            btn.classList.add("correct");
+        }
+
+    });
+
+    if (selected === question.a) {
+
+        score++;
+        topicStats[question.topic].correct++;
+        button.classList.add("correct");
+
+    } else {
+
+        button.classList.add("wrong");
+
+    }
+
+    document.getElementById("exp-" + qIndex)
+        .classList.add("show");
+
+    updateStats();
+
+    if (answered === questions.length) {
+        setTimeout(finishQuiz, 500);
+    }
+}
+
+function updateStats() {
+
+    document.getElementById("answered").textContent = answered;
+    document.getElementById("liveScore").textContent = score;
+
+    let acc = answered === 0
+        ? 0
+        : Math.round((score / answered) * 100);
+
+    document.getElementById("accuracy").textContent = acc + "%";
+
+    document.getElementById("progress").style.width =
+        ((answered / questions.length) * 100) + "%";
+}
+
+function finishQuiz() {
+
+    const result = document.getElementById("result");
+
+    result.classList.add("show");
+
+    const percentage = Math.round(
+        (score / questions.length) * 100
+    );
+
+    document.getElementById("finalScore").textContent =
+        score + " / " + questions.length;
+
+    document.getElementById("finalPercentage").textContent =
+        percentage + "%";
+
+    let performance = "";
+
+    if (percentage >= 90) {
+        performance =
+            "🔥 EXCEPTIONAL — Your modal/verb concepts are extremely strong.";
+    }
+    else if (percentage >= 80) {
+        performance =
+            "🏆 EXCELLENT — You have a strong competitive-exam level command.";
+    }
+    else if (percentage >= 70) {
+        performance =
+            "💪 VERY GOOD — Your foundation is strong, but tricky distinctions need polishing.";
+    }
+    else if (percentage >= 60) {
+        performance =
+            "📚 GOOD — You understand the basics but need more application-based practice.";
+    }
+    else if (percentage >= 40) {
+        performance =
+            "⚠️ NEEDS IMPROVEMENT — Revise the rules and attempt the quiz again.";
+    }
+    else {
+        performance =
+            "🔄 REBUILD THE FOUNDATION — Carefully revise the concepts before another attempt.";
+    }
+
+    document.getElementById("performance").textContent =
+        performance;
+
+    const tbody = document.getElementById("topicBody");
+
+    tbody.innerHTML = "";
+
+    Object.keys(topicStats).forEach(topic => {
+
+        const data = topicStats[topic];
+
+        const accuracy =
+            Math.round((data.correct / data.total) * 100);
+
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+            <td>${topic}</td>
+            <td>${data.correct}</td>
+            <td>${data.total}</td>
+            <td>${accuracy}%</td>
+        `;
+
+        tbody.appendChild(row);
+    });
+
+    result.scrollIntoView({
+        behavior: "smooth"
+    });
+}
+
+renderQuiz();
+
+</script>
+
+<script src="../../quiz-app-ui-v2.js"></script>
+</body>
+</html>

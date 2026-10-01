@@ -1,0 +1,1538 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Passive Voice Mastery Quiz - Pages 11 to 15</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<script>
+tailwind.config = {
+    theme: {
+        extend: {
+            fontFamily: {
+                sans: ['Inter', 'system-ui', 'sans-serif']
+            }
+        }
+    }
+};
+</script>
+
+<style>
+    body {
+        background:
+            radial-gradient(circle at top left, rgba(99,102,241,.14), transparent 30%),
+            radial-gradient(circle at bottom right, rgba(14,165,233,.12), transparent 30%),
+            #020617;
+    }
+
+    .glass {
+        background: rgba(15,23,42,.78);
+        backdrop-filter: blur(14px);
+        border: 1px solid rgba(148,163,184,.16);
+    }
+
+    .option {
+        transition: all .18s ease;
+    }
+
+    .option:hover {
+        transform: translateY(-1px);
+        border-color: rgba(129,140,248,.65);
+        background: rgba(30,41,59,.95);
+    }
+
+    .correct {
+        border-color: #22c55e !important;
+        background: rgba(34,197,94,.13) !important;
+    }
+
+    .wrong {
+        border-color: #ef4444 !important;
+        background: rgba(239,68,68,.13) !important;
+    }
+
+    .disabled-option {
+        pointer-events: none;
+    }
+
+    .explanation {
+        animation: slideDown .25s ease;
+    }
+
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-8px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .progress-fill {
+        transition: width .3s ease;
+    }
+
+    .question-card {
+        animation: fadeIn .25s ease;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(5px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .hint-box {
+        animation: slideDown .2s ease;
+    }
+</style>
+</head>
+
+<body class="min-h-screen text-slate-100 font-sans">
+
+<div class="max-w-5xl mx-auto px-4 py-6 md:py-10">
+
+    <!-- HEADER -->
+    <header class="glass rounded-3xl p-5 md:p-7 mb-5 shadow-2xl">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-5">
+
+            <div>
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/15 text-indigo-300 text-xs font-bold mb-3">
+                    PASSIVE VOICE • PDF PAGES 11–15
+                </div>
+
+                <h1 class="text-2xl md:text-4xl font-black tracking-tight">
+                    Passive Voice Rule Mastery
+                </h1>
+
+                <p class="text-slate-400 mt-2 text-sm md:text-base">
+                    50 unique SSC / Railway / HSSC-style questions
+                    designed for concept building from basic to advanced.
+                </p>
+            </div>
+
+            <div class="text-center md:text-right">
+                <div class="text-xs text-slate-400">LIVE SCORE</div>
+                <div id="scoreDisplay" class="text-3xl font-black text-indigo-300">
+                    0 / 0
+                </div>
+            </div>
+
+        </div>
+
+        <!-- PROGRESS -->
+        <div class="mt-6">
+            <div class="flex justify-between text-xs text-slate-400 mb-2">
+                <span id="progressText">Question 1 of 50</span>
+                <span id="accuracyText">Accuracy: 0%</span>
+            </div>
+
+            <div class="h-3 bg-slate-800 rounded-full overflow-hidden">
+                <div id="progressBar"
+                     class="progress-fill h-full bg-indigo-500 rounded-full"
+                     style="width: 2%;"></div>
+            </div>
+        </div>
+    </header>
+
+
+    <!-- NAVIGATION -->
+    <div class="glass rounded-2xl p-4 mb-5">
+        <div class="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
+
+            <button onclick="previousQuestion()"
+                    class="px-5 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 font-bold transition">
+                ← Previous
+            </button>
+
+            <div class="flex-1 flex gap-2">
+                <input id="jumpInput"
+                       type="number"
+                       min="1"
+                       max="50"
+                       placeholder="Question #"
+                       class="flex-1 min-w-0 bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 outline-none focus:border-indigo-500">
+
+                <button onclick="jumpQuestion()"
+                        class="px-4 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 font-bold transition">
+                    Jump
+                </button>
+            </div>
+
+            <button onclick="nextQuestion()"
+                    class="px-5 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 font-bold transition">
+                Next →
+            </button>
+
+        </div>
+    </div>
+
+
+    <!-- QUESTION -->
+    <main id="quizContainer"></main>
+
+
+    <!-- RESULT -->
+    <section id="resultScreen"
+             class="hidden glass rounded-3xl p-7 md:p-10 text-center">
+
+        <div class="text-5xl mb-4">🏆</div>
+
+        <h2 class="text-3xl font-black mb-3">
+            Quiz Completed!
+        </h2>
+
+        <p class="text-slate-400 mb-7">
+            Your Passive Voice mastery result
+        </p>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-7">
+
+            <div class="bg-slate-900 rounded-2xl p-4">
+                <div class="text-xs text-slate-500">Score</div>
+                <div id="finalScore" class="text-2xl font-black text-indigo-300">0</div>
+            </div>
+
+            <div class="bg-slate-900 rounded-2xl p-4">
+                <div class="text-xs text-slate-500">Correct</div>
+                <div id="finalCorrect" class="text-2xl font-black text-green-400">0</div>
+            </div>
+
+            <div class="bg-slate-900 rounded-2xl p-4">
+                <div class="text-xs text-slate-500">Wrong</div>
+                <div id="finalWrong" class="text-2xl font-black text-red-400">0</div>
+            </div>
+
+            <div class="bg-slate-900 rounded-2xl p-4">
+                <div class="text-xs text-slate-500">Accuracy</div>
+                <div id="finalAccuracy" class="text-2xl font-black text-yellow-300">0%</div>
+            </div>
+
+        </div>
+
+        <div id="performanceMessage"
+             class="bg-indigo-500/10 border border-indigo-500/20 rounded-2xl p-5 mb-6 text-left">
+        </div>
+
+        <button onclick="restartQuiz()"
+                class="px-7 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 font-bold">
+            Restart Quiz
+        </button>
+
+    </section>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   50 UNIQUE QUESTIONS
+   Source focus:
+   PDF pages 11–15
+   ========================================================= */
+
+const questions = [
+
+/* 1 */
+{
+    q: "Choose the correct passive voice: “Who has seen him?”",
+    options: [
+        "By whom has he been seen?",
+        "By whom had he been seen?",
+        "By whom is he being seen?",
+        "By whom was he seen?"
+    ],
+    answer: 0,
+    hint: "Present perfect passive = has/have + been + V3.",
+    explanation:
+        "Correct: “By whom has he been seen?” The active sentence is present perfect: has + V3 (seen). In passive, the object 'him' becomes the subject 'he', and the structure becomes has + been + V3. Since the question begins with Who, the passive form uses 'By whom'."
+},
+
+/* 2 */
+{
+    q: "Select the correct passive form of: “The news has surprised us.”",
+    options: [
+        "We have been surprised at the news.",
+        "We had been surprised by the news.",
+        "We are being surprised at the news.",
+        "We were surprised by the news."
+    ],
+    answer: 0,
+    hint: "The PDF specifically highlights the fixed expression 'surprised at'.",
+    explanation:
+        "Correct: “We have been surprised at the news.” The active verb is present perfect: has surprised. Passive becomes have been + V3. The PDF specifically teaches that 'surprised at' is used when something happens contrary to expectation. Therefore 'at' is retained."
+},
+
+/* 3 */
+{
+    q: "Choose the correct passive form: “He will have understood your ulterior motive by that time.”",
+    options: [
+        "Your ulterior motive will have been understood by him by that time.",
+        "Your ulterior motive would have been understood by him by that time.",
+        "Your ulterior motive will be understood by him by that time.",
+        "Your ulterior motive has been understood by him by that time."
+    ],
+    answer: 0,
+    hint: "Future perfect passive: will have been + V3.",
+    explanation:
+        "Correct: “Your ulterior motive will have been understood by him by that time.” Future perfect active uses will have + V3. Its passive structure is will have been + V3. Therefore 'understood' remains V3 and 'been' is inserted before it."
+},
+
+/* 4 */
+{
+    q: "Identify the correct passive transformation: “The committee had looked into the matter impartially.”",
+    options: [
+        "The matter had been looked into by the committee impartially.",
+        "The matter was being looked into by the committee impartially.",
+        "The matter has been looked into by the committee impartially.",
+        "The matter had looked into by the committee impartially."
+    ],
+    answer: 0,
+    hint: "Past perfect passive = had been + V3.",
+    explanation:
+        "Correct: “The matter had been looked into by the committee impartially.” 'Look into' is a phrasal verb. The complete phrasal verb must remain together: 'looked into'. Past perfect active 'had looked' changes to 'had been looked'."
+},
+
+/* 5 */
+{
+    q: "Which fixed preposition is correct in the passive form of “The students know the teacher” when the intended expression is 'known to'?",
+    options: [
+        "The teacher is known to the students.",
+        "The teacher is known by the students.",
+        "The teacher is known at the students.",
+        "The teacher is known with the students."
+    ],
+    answer: 0,
+    hint: "Memorize the PDF's fixed-preposition group.",
+    explanation:
+        "Correct: “The teacher is known to the students.” The PDF lists 'known to' among verbs/adjectival expressions followed by a fixed preposition. In exam questions, do not automatically replace every preposition with 'by'."
+},
+
+/* 6 */
+{
+    q: "Which sentence correctly uses the fixed expression taught in the PDF?",
+    options: [
+        "She was surprised at his behaviour.",
+        "She was surprised with his behaviour.",
+        "She was surprised on his behaviour.",
+        "She was surprised in his behaviour."
+    ],
+    answer: 0,
+    hint: "Expected/unexpected event → surprised at.",
+    explanation:
+        "Correct: “She was surprised at his behaviour.” The PDF explicitly teaches 'surprised at' when something happens contrary to expectation. 'With', 'on' and 'in' are not the required fixed prepositions here."
+},
+
+/* 7 */
+{
+    q: "He passed the examination, which left me pleasantly surprised. Which expression is appropriate?",
+    options: [
+        "I was pleasantly surprised by his result.",
+        "I was pleasantly surprised at his result.",
+        "I was pleasantly surprised with his result.",
+        "I was pleasantly surprised in his result."
+    ],
+    answer: 0,
+    hint: "The PDF contrasts 'surprised at' and 'surprised by'.",
+    explanation:
+        "Correct: “I was pleasantly surprised by his result.” The PDF explains that 'surprised by' is used when the event/result itself causes the surprise, especially when it was not expected. The given result caused the speaker's surprise."
+},
+
+/* 8 */
+{
+    q: "Which of the following correctly converts the Yes/No question into passive voice?",
+    options: [
+        "Have you broken the plate? → Has the plate been broken by you?",
+        "Have you broken the plate? → Has the plate been broke by you?",
+        "Have you broken the plate? → Was the plate broken by you?",
+        "Have you broken the plate? → Is the plate being broken by you?"
+    ],
+    answer: 0,
+    hint: "First make passive; keep the interrogative structure.",
+    explanation:
+        "Correct: “Has the plate been broken by you?” Active present perfect question: Have you broken the plate? Passive: Has + object + been + V3 + by + subject. 'Broken' is the third form and must not become 'broke'."
+},
+
+/* 9 */
+{
+    q: "According to the rule on page 13, how is a WH-question formed from a Yes/No question in passive voice?",
+    options: [
+        "The interrogative word is placed before the passive Yes/No question.",
+        "The interrogative word is always placed after the object.",
+        "The interrogative word is removed completely.",
+        "The interrogative word is changed into 'by'."
+    ],
+    answer: 0,
+    hint: "Example: Have you broken the plate? → Why have you broken the plate?",
+    explanation:
+        "Correct: The interrogative word is placed before the passive Yes/No question. The PDF gives the pattern: Yes/No question is first converted into passive, then a WH-word such as Why, How, When or Where can be added at the front."
+},
+
+/* 10 */
+{
+    q: "Choose the correct passive form: “Why have you broken the plate?”",
+    options: [
+        "Why has the plate been broken by you?",
+        "Why was the plate broken by you?",
+        "Why had the plate been broken by you?",
+        "Why is the plate being broken by you?"
+    ],
+    answer: 0,
+    hint: "Present perfect must remain present perfect.",
+    explanation:
+        "Correct: “Why has the plate been broken by you?” The active tense is present perfect. Passive present perfect is has/have + been + V3. Since 'plate' is singular, 'has' is used."
+},
+
+/* 11 */
+{
+    q: "Choose the correct passive form of: “Why did Rohan open the window?”",
+    options: [
+        "Why was the window opened by Rohan?",
+        "Why has the window been opened by Rohan?",
+        "Why had the window been opened by Rohan?",
+        "Why is the window being opened by Rohan?"
+    ],
+    answer: 0,
+    hint: "Simple past passive uses was/were + V3.",
+    explanation:
+        "Correct: “Why was the window opened by Rohan?” The active verb 'opened' is simple past. Simple past passive uses was/were + V3. 'Window' is singular, so 'was' is required."
+},
+
+/* 12 */
+{
+    q: "Select the correct passive question: “When did the officer sign the document?”",
+    options: [
+        "When was the document signed by the officer?",
+        "When has the document been signed by the officer?",
+        "When had the document been signed by the officer?",
+        "When is the document being signed by the officer?"
+    ],
+    answer: 0,
+    hint: "When + simple past passive.",
+    explanation:
+        "Correct: “When was the document signed by the officer?” The WH-word 'When' stays at the beginning. Simple past 'signed' becomes was/were + V3. Because 'document' is singular, 'was' is used."
+},
+
+/* 13 */
+{
+    q: "According to the PDF rule, which passive question is preferred for “Who wrote the Ramayana?”",
+    options: [
+        "By whom was the Ramayana written?",
+        "By who was the Ramayana written?",
+        "Whom did write the Ramayana?",
+        "Who did the Ramayana write by?"
+    ],
+    answer: 0,
+    hint: "The PDF specifically demonstrates Who → By whom.",
+    explanation:
+        "Correct: “By whom was the Ramayana written?” When 'Who' is the agent in the active sentence, passive voice commonly uses 'By whom'. The PDF also notes that 'Who was the Ramayana written by?' can be used, while 'Whom was the Ramayana written by?' is marked wrong in its rule."
+},
+
+/* 14 */
+{
+    q: "Choose the correct passive form of: “Who invited you?”",
+    options: [
+        "By whom were you invited?",
+        "By who were you invited?",
+        "Whom were you invited?",
+        "Who you were invited by?"
+    ],
+    answer: 0,
+    hint: "Who as subject/agent → by whom.",
+    explanation:
+        "Correct: “By whom were you invited?” In the active sentence, 'Who' performs the action. After passive transformation, the object 'you' becomes the subject and the agent is introduced by 'by'. Thus 'Who' becomes 'By whom'."
+},
+
+/* 15 */
+{
+    q: "Which is the correct passive transformation of “Whom have you invited?”",
+    options: [
+        "Who has been invited by you?",
+        "By whom have you been invited?",
+        "Whom has been invited by you?",
+        "Who was invited by you?"
+    ],
+    answer: 0,
+    hint: "Here 'whom' is the object in the active sentence.",
+    explanation:
+        "Correct: “Who has been invited by you?” In the active sentence, 'whom' is the object. It becomes the subject in passive. Therefore the passive question is naturally 'Who has been invited by you?'"
+},
+
+/* 16 */
+{
+    q: "Which option correctly changes “What amused you?” into passive voice?",
+    options: [
+        "By what were you amused?",
+        "By what are you being amused?",
+        "By what have you been amused?",
+        "What were you amused by?"
+    ],
+    answer: 0,
+    hint: "This exact structure is illustrated in the PDF.",
+    explanation:
+        "Correct: “By what were you amused?” The active sentence is simple past because 'amused' is V2/V3 with the past construction. The PDF's example gives 'By what were you amused?' as the expected passive form."
+},
+
+/* 17 */
+{
+    q: "Which statement about Who/Whom in passive WH-questions is correct according to the PDF?",
+    options: [
+        "Who may become 'by whom' when it represents the agent.",
+        "Who must always become 'to whom'.",
+        "Whom must always remain 'whom' after passive conversion.",
+        "Who is never used in passive questions."
+    ],
+    answer: 0,
+    hint: "Compare 'Who wrote...' and 'Whom have you invited...'.",
+    explanation:
+        "Correct: Who may become 'by whom' when it represents the agent. The PDF distinguishes between the active subject/agent 'Who' and object 'Whom'. This distinction is especially important in competitive-exam voice questions."
+},
+
+/* 18 */
+{
+    q: "Choose the correct passive form of “Open the door.”",
+    options: [
+        "Let the door be opened.",
+        "Let the door be open.",
+        "The door is opened by you.",
+        "The door was opened."
+    ],
+    answer: 0,
+    hint: "Imperative + object → Let + object + be + V3.",
+    explanation:
+        "Correct: “Let the door be opened.” Page 15 gives the rule for imperative sentences with an object: Let + object + be + V3. Therefore 'open' becomes 'be opened'."
+},
+
+/* 19 */
+{
+    q: "Which formula represents the first passive method for an imperative sentence having an object?",
+    options: [
+        "Let + object + be + V3",
+        "Object + has + V3",
+        "Let + subject + V1",
+        "Object + was + V1"
+    ],
+    answer: 0,
+    hint: "The boxed formula on page 15.",
+    explanation:
+        "Correct: Let + object + be + V3. Example from the PDF: 'Shut the door.' → 'Let the door be shut.' The object of the active imperative becomes the object after 'let', followed by 'be + past participle'."
+},
+
+/* 20 */
+{
+    q: "Select the correct second passive form of “Shut the door.”",
+    options: [
+        "You are ordered to shut the door.",
+        "You are ordering to shut the door.",
+        "You were ordered shut the door.",
+        "You are ordered shutting the door."
+    ],
+    answer: 0,
+    hint: "Second method: You are ordered/requested/forbidden + to + V1.",
+    explanation:
+        "Correct: “You are ordered to shut the door.” The PDF gives a second method for imperative sentences: You are ordered/requested/forbidden etc. + to + V1 + object. The infinitive must remain 'to shut', not 'to shutting' or 'to shutted'."
+},
+
+/* 21 */
+{
+    q: "“Go away.” has no object. Which passive form follows the rule on page 15?",
+    options: [
+        "You are ordered to go away.",
+        "Let away be gone.",
+        "Let you be gone away.",
+        "You are ordered going away."
+    ],
+    answer: 0,
+    hint: "Imperative without object uses the order/request pattern.",
+    explanation:
+        "Correct: “You are ordered to go away.” Because 'Go away' has no object, the 'Let + object + be + V3' pattern cannot be directly applied. The PDF gives the order/request structure: You are ordered to + V1."
+},
+
+/* 22 */
+{
+    q: "Which passive form best expresses “Please help the child.”?",
+    options: [
+        "You are requested to help the child.",
+        "Let the child be helped by you.",
+        "The child is helped by you.",
+        "You are helping the child."
+    ],
+    answer: 0,
+    hint: "Polite imperative → requested to + V1.",
+    explanation:
+        "Correct: “You are requested to help the child.” A polite imperative beginning with 'Please' can be expressed using 'You are requested to + V1'. Although a 'Let' construction may sometimes be grammatically possible, the PDF's imperative rule specifically emphasizes ordered/requested/forbidden structures."
+},
+
+/* 23 */
+{
+    q: "Which passive form is appropriate for “Do not make a noise” when the sense is prohibition?",
+    options: [
+        "You are forbidden to make a noise.",
+        "Let a noise not be made.",
+        "You are making no noise.",
+        "A noise has not been made by you."
+    ],
+    answer: 0,
+    hint: "Negative imperative with prohibition → forbidden to.",
+    explanation:
+        "Correct: “You are forbidden to make a noise.” For a negative imperative expressing prohibition, 'You are forbidden to + V1' clearly expresses the meaning. The PDF's later practice also illustrates this transformation."
+},
+
+/* 24 */
+{
+    q: "Choose the passive form of “Help the poor” according to the moral-suggestion rule.",
+    options: [
+        "The poor should be helped.",
+        "The poor must helped.",
+        "The poor are being helped.",
+        "The poor should helping."
+    ],
+    answer: 0,
+    hint: "Moral suggestion: Object + should + be + V3.",
+    explanation:
+        "Correct: “The poor should be helped.” Page 15 gives the special rule for moral suggestions: Object + should + be + V3. 'Help' becomes 'be helped'."
+},
+
+/* 25 */
+{
+    q: "Which formula correctly represents the passive of a moral suggestion?",
+    options: [
+        "Object + should + be + V3",
+        "Object + should + V1",
+        "Object + is + V3",
+        "Object + has + been + V1"
+    ],
+    answer: 0,
+    hint: "Look at the boxed formula on page 15.",
+    explanation:
+        "Correct: Object + should + be + V3. Example: 'Help the poor.' → 'The poor should be helped.' This construction changes the imperative moral advice into a passive suggestion."
+},
+
+/* 26 */
+{
+    q: "Select the correct passive form of “Respect your elders.”",
+    options: [
+        "Your elders should be respected.",
+        "Your elders should respected.",
+        "Your elders are respecting.",
+        "Your elders should be respect."
+    ],
+    answer: 0,
+    hint: "Moral suggestion.",
+    explanation:
+        "Correct: “Your elders should be respected.” 'Respect' is V1 in the active imperative. Under the moral-suggestion rule, use should + be + V3. The V3 of respect is respected."
+},
+
+/* 27 */
+{
+    q: "Which transformation is grammatically correct?",
+    options: [
+        "Keep your promises. → Your promises should be kept.",
+        "Keep your promises. → Your promises should kept.",
+        "Keep your promises. → Your promises should be keep.",
+        "Keep your promises. → Your promises are kepting."
+    ],
+    answer: 0,
+    hint: "should + be + V3.",
+    explanation:
+        "Correct: “Your promises should be kept.” 'Keep' has V3 'kept'. The moral suggestion formula requires 'should be + V3', giving 'should be kept'."
+},
+
+/* 28 */
+{
+    q: "Assertion (A): “Let the door be shut” is a correct passive form of “Shut the door.” Reason (R): An imperative sentence with an object can use Let + object + be + V3.",
+    options: [
+        "Both A and R are true, and R correctly explains A.",
+        "Both A and R are true, but R does not explain A.",
+        "A is true but R is false.",
+        "A is false but R is true."
+    ],
+    answer: 0,
+    hint: "This is exactly the first imperative rule.",
+    explanation:
+        "Correct: Both A and R are true, and R correctly explains A. 'Door' is the object of the imperative. The PDF's formula is Let + object + be + V3, hence 'Let the door be shut.'"
+},
+
+/* 29 */
+{
+    q: "Assertion (A): “You are ordered to go away” is suitable for “Go away.” Reason (R): “Go away” does not contain a direct object.",
+    options: [
+        "Both A and R are true, and R correctly explains A.",
+        "Both A and R are true, but R does not explain A.",
+        "A is true but R is false.",
+        "Both A and R are false."
+    ],
+    answer: 0,
+    hint: "Compare imperative with object vs without object.",
+    explanation:
+        "Correct: Both A and R are true, and R correctly explains A. Without an object, the Let + object + be + V3 construction cannot be directly formed. The PDF therefore uses the order/request structure."
+},
+
+/* 30 */
+{
+    q: "Assertion (A): “The poor should be helped” is a passive form of “Help the poor.” Reason (R): Moral suggestions can use Object + should + be + V3.",
+    options: [
+        "Both A and R are true, and R correctly explains A.",
+        "Both A and R are true, but R does not explain A.",
+        "A is true but R is false.",
+        "A is false but R is true."
+    ],
+    answer: 0,
+    hint: "Page 15 moral suggestion rule.",
+    explanation:
+        "Correct: Both A and R are true, and R correctly explains A. The sentence 'Help the poor' expresses moral advice. Its passive pattern is Object + should + be + V3 → 'The poor should be helped.'"
+},
+
+/* 31 */
+{
+    q: "Match the following correctly: A. known — B. surprised — C. filled — D. tired. 1. with — 2. to — 3. at — 4. of",
+    options: [
+        "A-2, B-3, C-1, D-4",
+        "A-3, B-2, C-4, D-1",
+        "A-1, B-4, C-2, D-3",
+        "A-4, B-1, C-3, D-2"
+    ],
+    answer: 0,
+    hint: "These fixed prepositions are listed together on page 12.",
+    explanation:
+        "Correct matching: known to, surprised at, filled with, tired of. Therefore A-2, B-3, C-1, D-4. These are fixed-preposition expressions and are important because voice questions often test whether the preposition is preserved."
+},
+
+/* 32 */
+{
+    q: "Which combination contains only fixed-preposition expressions specifically taught on page 12?",
+    options: [
+        "known to, surprised at, filled with, tired of",
+        "known at, surprised on, filled by, tired with",
+        "known with, surprised in, filled at, tired by",
+        "known for, surprised on, filled from, tired at"
+    ],
+    answer: 0,
+    hint: "Memorize the page-12 list as a group.",
+    explanation:
+        "Correct: known to, surprised at, filled with, tired of. The page lists these as expressions followed by fixed prepositions. Such combinations should be learned as complete units rather than translated word by word."
+},
+
+/* 33 */
+{
+    q: "Choose the correct passive sentence: “The fire engulfed the building.”",
+    options: [
+        "The building was engulfed in the fire.",
+        "The building was engulfed by the fire.",
+        "The building was engulfed at the fire.",
+        "The building was engulfed with the fire."
+    ],
+    answer: 0,
+    hint: "The PDF gives this example under fixed prepositions.",
+    explanation:
+        "Correct according to the PDF: “The building was engulfed in the fire.” The page specifically teaches 'engulfed in' as a fixed-preposition expression. This is why 'in' should be retained."
+},
+
+/* 34 */
+{
+    q: "Select the correct passive sentence: “This box contains ten cigars.”",
+    options: [
+        "Ten cigars are contained in this box.",
+        "Ten cigars are contained by this box.",
+        "Ten cigars were contained at this box.",
+        "Ten cigars have contained in this box."
+    ],
+    answer: 0,
+    hint: "The PDF gives 'contained in' as the model.",
+    explanation:
+        "Correct: “Ten cigars are contained in this box.” The active subject 'this box' becomes the phrase 'in this box', while the object 'ten cigars' becomes the passive subject. The fixed preposition is 'in'."
+},
+
+/* 35 */
+{
+    q: "Which sentence correctly demonstrates the 'surprised at' rule?",
+    options: [
+        "I was surprised at his sudden decision.",
+        "I was surprised with his sudden decision.",
+        "I was surprised on his sudden decision.",
+        "I was surprised by his sudden decision because the event was completely expected."
+    ],
+    answer: 0,
+    hint: "The PDF associates surprised at with an unexpected occurrence.",
+    explanation:
+        "Correct: “I was surprised at his sudden decision.” The rule highlighted in the PDF is that 'surprised at' is used for something that happens contrary to expectation. The question is testing the fixed expression, not merely the passive auxiliary."
+},
+
+/* 36 */
+{
+    q: "Which sentence best demonstrates the 'surprised by' distinction taught in the PDF?",
+    options: [
+        "I was surprised by his result.",
+        "I was surprised at by his result.",
+        "I was surprised with his result.",
+        "I was surprised in his result."
+    ],
+    answer: 0,
+    hint: "The PDF's example links the result with 'surprised by'.",
+    explanation:
+        "Correct: “I was surprised by his result.” The PDF contrasts 'surprised at' with 'surprised by'. The latter is appropriate when the result/event itself is the source or cause of surprise."
+},
+
+/* 37 */
+{
+    q: "Which option correctly converts the tense while keeping the agent relationship intact?",
+    options: [
+        "They have completed the task. → The task has been completed by them.",
+        "They have completed the task. → The task was completed by them.",
+        "They have completed the task. → The task is being completed by them.",
+        "They have completed the task. → The task had been completed by them."
+    ],
+    answer: 0,
+    hint: "Present perfect → has/have been + V3.",
+    explanation:
+        "Correct: “The task has been completed by them.” The active is present perfect: have completed. Passive is has/have been completed. The subject 'they' becomes the agent 'by them', while 'task' becomes the grammatical subject."
+},
+
+/* 38 */
+{
+    q: "Which is the correct passive form of “The researchers have examined the evidence”?",
+    options: [
+        "The evidence has been examined by the researchers.",
+        "The evidence had been examined by the researchers.",
+        "The evidence is being examined by the researchers.",
+        "The evidence has examined by the researchers."
+    ],
+    answer: 0,
+    hint: "Present perfect passive.",
+    explanation:
+        "Correct: “The evidence has been examined by the researchers.” 'Evidence' is treated as singular/uncountable here, so 'has been' is used. The past participle 'examined' follows 'been'."
+},
+
+/* 39 */
+{
+    q: "Which is the correct passive form of “The committee had investigated the complaint before the hearing”?",
+    options: [
+        "The complaint had been investigated by the committee before the hearing.",
+        "The complaint has been investigated by the committee before the hearing.",
+        "The complaint was being investigated by the committee before the hearing.",
+        "The complaint had investigated by the committee before the hearing."
+    ],
+    answer: 0,
+    hint: "Past perfect passive.",
+    explanation:
+        "Correct: “The complaint had been investigated by the committee before the hearing.” The active verb is past perfect: had investigated. Passive becomes had been investigated. The sequence of events remains unchanged."
+},
+
+/* 40 */
+{
+    q: "Which is the correct passive form of “The engineer will have completed the bridge by June”?",
+    options: [
+        "The bridge will have been completed by the engineer by June.",
+        "The bridge will be completed by the engineer by June.",
+        "The bridge has been completed by the engineer by June.",
+        "The bridge would have been completed by the engineer by June."
+    ],
+    answer: 0,
+    hint: "Future perfect passive.",
+    explanation:
+        "Correct: “The bridge will have been completed by the engineer by June.” Future perfect active = will have + V3. Passive = will have been + V3. Do not reduce it to simple future 'will be completed'."
+},
+
+/* 41 */
+{
+    q: "Which transformation preserves the fixed preposition correctly?",
+    options: [
+        "The flames engulfed the warehouse. → The warehouse was engulfed in flames.",
+        "The flames engulfed the warehouse. → The warehouse was engulfed at flames.",
+        "The flames engulfed the warehouse. → The warehouse was engulfed to flames.",
+        "The flames engulfed the warehouse. → The warehouse was engulfed by in flames."
+    ],
+    answer: 0,
+    hint: "Use the exact 'engulfed in' pattern.",
+    explanation:
+        "Correct: “The warehouse was engulfed in flames.” The PDF specifically provides 'engulfed in' as a fixed-preposition expression. Competitive exams may include incorrect prepositions as distractors."
+},
+
+/* 42 */
+{
+    q: "Which option contains an incorrect passive construction?",
+    options: [
+        "The matter had been looked into by the committee.",
+        "The box is contained in ten cigars.",
+        "The teacher is known to the students.",
+        "I was surprised at his behaviour."
+    ],
+    answer: 1,
+    hint: "Check which noun is the container and which noun is contained.",
+    explanation:
+        "Correct answer: “The box is contained in ten cigars” is incorrect. The correct transformation is “Ten cigars are contained in the box.” The things contained become the passive subject, while the container remains after 'in'."
+},
+
+/* 43 */
+{
+    q: "Which WH-word remains at the beginning when converting “Where did the manager store the files?” into passive voice?",
+    options: [
+        "Where",
+        "By",
+        "Whom",
+        "What"
+    ],
+    answer: 0,
+    hint: "Why, How, When, Where and What remain interrogative words.",
+    explanation:
+        "Correct: 'Where'. The PDF explains that WH-words such as Why, How, When, Where and What are used with the passive question. The interrogative word remains at the front while the remaining clause changes to passive."
+},
+
+/* 44 */
+{
+    q: "Choose the correct passive form of “How did the technician repair the machine?”",
+    options: [
+        "How was the machine repaired by the technician?",
+        "How has the machine been repaired by the technician?",
+        "How had the machine been repaired by the technician?",
+        "How is the machine being repaired by the technician?"
+    ],
+    answer: 0,
+    hint: "How + simple past passive.",
+    explanation:
+        "Correct: “How was the machine repaired by the technician?” The active uses simple past 'did repair'. Passive simple past uses was/were + V3. 'Machine' is singular, so 'was repaired' is correct."
+},
+
+/* 45 */
+{
+    q: "Choose the correct passive form of “What did the committee discuss?”",
+    options: [
+        "What was discussed by the committee?",
+        "By what was discussed the committee?",
+        "What has been discussed by the committee?",
+        "What had been discussed by the committee?"
+    ],
+    answer: 0,
+    hint: "What is the object of 'discuss'.",
+    explanation:
+        "Correct: “What was discussed by the committee?” 'What' is the object in the active question, so it becomes the subject of the passive question. The simple past is retained through 'was discussed'."
+},
+
+/* 46 */
+{
+    q: "Which is the correct passive form of “When will the company announce the results?”",
+    options: [
+        "When will the results be announced by the company?",
+        "When will the results have been announced by the company?",
+        "When would the results be announced by the company?",
+        "When are the results being announced by the company?"
+    ],
+    answer: 0,
+    hint: "Simple future passive = will + be + V3.",
+    explanation:
+        "Correct: “When will the results be announced by the company?” The active is simple future: will announce. Passive is will be announced. The WH-word 'When' remains at the beginning."
+},
+
+/* 47 */
+{
+    q: "Which passive form correctly retains the meaning of the Yes/No question “Has the manager approved the proposal?”?",
+    options: [
+        "Has the proposal been approved by the manager?",
+        "Had the proposal been approved by the manager?",
+        "Is the proposal being approved by the manager?",
+        "Was the proposal approved by the manager?"
+    ],
+    answer: 0,
+    hint: "Present perfect question → has/have + subject + been + V3.",
+    explanation:
+        "Correct: “Has the proposal been approved by the manager?” The active uses present perfect 'has approved'. The passive therefore requires 'has been approved'. The Yes/No nature of the question is retained."
+},
+
+/* 48 */
+{
+    q: "Which transformation is NOT correct according to the page-15 imperative rules?",
+    options: [
+        "Shut the gate. → Let the gate be shut.",
+        "Go away. → You are ordered to go away.",
+        "Help the poor. → The poor should be helped.",
+        "Open the box. → Let the box be openeded."
+    ],
+    answer: 3,
+    hint: "Check the V3 form of 'open'.",
+    explanation:
+        "Correct answer: “Let the box be openeded” is wrong. The past participle of 'open' is 'opened', not 'openeded'. The correct sentence is 'Let the box be opened.' This tests the complete imperative formula rather than only the auxiliary."
+},
+
+/* 49 */
+{
+    q: "An exam asks: “Which passive construction is structurally impossible for an imperative with NO object such as 'Sit down'?”",
+    options: [
+        "Let + object + be + V3",
+        "You are ordered to sit down.",
+        "You are requested to sit down.",
+        "You are told to sit down."
+    ],
+    answer: 0,
+    hint: "There is no object in 'Sit down'.",
+    explanation:
+        "Correct: 'Let + object + be + V3' is impossible here because 'Sit down' has no direct object. The PDF's objectless-imperative rule uses expressions such as 'You are ordered to...' instead."
+},
+
+/* 50 */
+{
+    q: "A student writes: “Who wrote the book?” → “Whom was the book written by?” Which correction best follows the PDF?",
+    options: [
+        "By whom was the book written?",
+        "By who was the book written?",
+        "Who was the book written?",
+        "Whose was the book written by?"
+    ],
+    answer: 0,
+    hint: "The PDF explicitly comments on this distinction.",
+    explanation:
+        "Correct: “By whom was the book written?” The PDF gives this as the preferred passive pattern for an active question beginning with 'Who'. It also notes that 'Who was the Ramayana written by?' can be used, whereas 'Whom was the Ramayana written by?' is considered incorrect in the teaching material."
+}
+
+];
+
+
+/* =========================================================
+   QUIZ STATE
+   ========================================================= */
+
+let currentQuestion = 0;
+
+let userAnswers = new Array(questions.length).fill(null);
+
+let answered = new Array(questions.length).fill(false);
+
+let score = 0;
+
+
+/* =========================================================
+   SHUFFLE OPTIONS
+   No modulo operator.
+   No while loop.
+   ========================================================= */
+
+function shuffledOptions(question) {
+
+    const arr = question.options.map(function(text, index) {
+        return {
+            text: text,
+            correct: index === question.answer
+        };
+    });
+
+    for (let i = arr.length - 1; i > 0; i--) {
+
+        const j = Math.floor(Math.random() * (i + 1));
+
+        const temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+
+    return arr;
+}
+
+
+/* =========================================================
+   STORE RANDOMIZED OPTIONS
+   ========================================================= */
+
+const randomizedQuestions = questions.map(function(question) {
+
+    return {
+        q: question.q,
+        hint: question.hint,
+        explanation: question.explanation,
+        options: shuffledOptions(question)
+    };
+
+});
+
+
+/* =========================================================
+   RENDER QUESTION
+   ========================================================= */
+
+function renderQuestion() {
+
+    const data = randomizedQuestions[currentQuestion];
+
+    const previousAnswer = userAnswers[currentQuestion];
+
+    let optionsHTML = "";
+
+    data.options.forEach(function(option, index) {
+
+        let extraClass = "";
+
+        if (answered[currentQuestion]) {
+
+            if (option.correct) {
+                extraClass = "correct";
+            }
+
+            if (previousAnswer === index && !option.correct) {
+                extraClass = "wrong";
+            }
+        }
+
+        optionsHTML += `
+            <button
+                class="option ${extraClass} w-full text-left p-4 rounded-2xl border border-slate-700 bg-slate-900/80 mb-3 ${answered[currentQuestion] ? 'disabled-option' : ''}"
+                onclick="selectAnswer(${index})">
+
+                <div class="flex items-start gap-3">
+
+                    <div class="flex-shrink-0 w-9 h-9 rounded-xl bg-slate-800 flex items-center justify-center font-black text-sm">
+                        ${String.fromCharCode(65 + index)}
+                    </div>
+
+                    <div class="pt-1 leading-relaxed">
+                        ${escapeHTML(option.text)}
+                    </div>
+
+                </div>
+
+            </button>
+        `;
+    });
+
+
+    let statusHTML = "";
+
+    if (answered[currentQuestion]) {
+
+        const selected = data.options[previousAnswer];
+
+        const isCorrect = selected && selected.correct;
+
+        statusHTML = `
+            <div class="mt-4 p-4 rounded-2xl ${isCorrect ? 'bg-green-500/10 border border-green-500/25' : 'bg-red-500/10 border border-red-500/25'}">
+
+                <div class="font-black ${isCorrect ? 'text-green-400' : 'text-red-400'} mb-1">
+                    ${isCorrect ? '✓ Correct Answer' : '✗ Incorrect Answer'}
+                </div>
+
+                <div class="text-sm text-slate-300">
+                    ${isCorrect
+                        ? 'Excellent. Now read the explanation carefully.'
+                        : 'Do not memorize only the answer. Understand the rule below.'}
+                </div>
+
+            </div>
+        `;
+    }
+
+
+    const hintHTML = `
+        <div id="hintBox"
+             class="hidden hint-box mt-4 p-4 rounded-2xl bg-yellow-500/10 border border-yellow-500/20">
+
+            <div class="font-bold text-yellow-300 mb-1">
+                💡 Hint
+            </div>
+
+            <div class="text-sm text-slate-300">
+                ${escapeHTML(data.hint)}
+            </div>
+
+        </div>
+    `;
+
+
+    const explanationHTML = answered[currentQuestion]
+        ? `
+            <div class="explanation mt-5 p-5 rounded-2xl bg-indigo-500/10 border border-indigo-500/25">
+
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="text-xl">🧠</span>
+                    <h3 class="font-black text-indigo-300">
+                        Explanation / Rationale
+                    </h3>
+                </div>
+
+                <p class="text-sm md:text-base leading-7 text-slate-300">
+                    ${escapeHTML(data.explanation)}
+                </p>
+
+            </div>
+        `
+        : "";
+
+
+    document.getElementById("quizContainer").innerHTML = `
+
+        <section class="question-card glass rounded-3xl p-5 md:p-8 shadow-2xl">
+
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+
+                <div class="flex items-center gap-2">
+
+                    <span class="px-3 py-1 rounded-full bg-indigo-500/15 text-indigo-300 text-xs font-bold">
+                        Q${currentQuestion + 1}
+                    </span>
+
+                    <span class="px-3 py-1 rounded-full bg-slate-800 text-slate-400 text-xs font-bold">
+                        Passive Voice
+                    </span>
+
+                </div>
+
+                <span class="text-xs text-slate-500">
+                    ${answered[currentQuestion] ? "Answered" : "Not answered"}
+                </span>
+
+            </div>
+
+
+            <h2 class="text-lg md:text-2xl font-bold leading-relaxed mb-6">
+                ${escapeHTML(data.q)}
+            </h2>
+
+
+            <div>
+                ${optionsHTML}
+            </div>
+
+
+            <button
+                onclick="toggleHint()"
+                class="mt-2 px-4 py-2 rounded-xl bg-yellow-500/10 hover:bg-yellow-500/20 border border-yellow-500/20 text-yellow-300 text-sm font-bold">
+
+                💡 Show Hint
+            </button>
+
+            ${hintHTML}
+
+            ${statusHTML}
+
+            ${explanationHTML}
+
+
+            <div class="mt-7 pt-5 border-t border-slate-800 flex justify-between items-center gap-3">
+
+                <button
+                    onclick="previousQuestion()"
+                    class="px-5 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 font-bold transition">
+
+                    ← Previous
+                </button>
+
+                <button
+                    onclick="nextQuestion()"
+                    class="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 font-bold transition">
+
+                    ${currentQuestion === questions.length - 1 ? "Finish Quiz" : "Next →"}
+
+                </button>
+
+            </div>
+
+        </section>
+    `;
+
+    updateStats();
+}
+
+
+/* =========================================================
+   ESCAPE HTML
+   ========================================================= */
+
+function escapeHTML(text) {
+
+    return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+/* =========================================================
+   SELECT ANSWER
+   ========================================================= */
+
+function selectAnswer(index) {
+
+    if (answered[currentQuestion]) {
+        return;
+    }
+
+    userAnswers[currentQuestion] = index;
+    answered[currentQuestion] = true;
+
+    const data = randomizedQuestions[currentQuestion];
+
+    if (data.options[index].correct) {
+        score++;
+    }
+
+    renderQuestion();
+}
+
+
+/* =========================================================
+   NEXT
+   ========================================================= */
+
+function nextQuestion() {
+
+    if (currentQuestion < questions.length - 1) {
+
+        currentQuestion++;
+
+        renderQuestion();
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    } else {
+
+        showResults();
+    }
+}
+
+
+/* =========================================================
+   PREVIOUS
+   ========================================================= */
+
+function previousQuestion() {
+
+    if (currentQuestion > 0) {
+
+        currentQuestion--;
+
+        renderQuestion();
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    }
+}
+
+
+/* =========================================================
+   JUMP
+   ========================================================= */
+
+function jumpQuestion() {
+
+    const input = document.getElementById("jumpInput");
+
+    const number = Number(input.value);
+
+    if (
+        Number.isInteger(number) &&
+        number >= 1 &&
+        number <= questions.length
+    ) {
+
+        currentQuestion = number - 1;
+
+        renderQuestion();
+
+        input.value = "";
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    } else {
+
+        alert("Please enter a question number from 1 to 50.");
+    }
+}
+
+
+/* =========================================================
+   HINT
+   ========================================================= */
+
+function toggleHint() {
+
+    const box = document.getElementById("hintBox");
+
+    if (box) {
+        box.classList.toggle("hidden");
+    }
+}
+
+
+/* =========================================================
+   STATS
+   ========================================================= */
+
+function updateStats() {
+
+    const attempted = answered.filter(Boolean).length;
+
+    const accuracy = attempted === 0
+        ? 0
+        : Math.round((score / attempted) * 100);
+
+    document.getElementById("scoreDisplay").textContent =
+        score + " / " + attempted;
+
+    document.getElementById("progressText").textContent =
+        "Question " + (currentQuestion + 1) + " of " + questions.length;
+
+    document.getElementById("accuracyText").textContent =
+        "Accuracy: " + accuracy + "%";
+
+    const progress =
+        ((currentQuestion + 1) / questions.length) * 100;
+
+    document.getElementById("progressBar").style.width =
+        progress + "%";
+}
+
+
+/* =========================================================
+   RESULTS
+   ========================================================= */
+
+function showResults() {
+
+    document.getElementById("quizContainer").classList.add("hidden");
+
+    document.querySelector(".glass").scrollIntoView({
+        behavior: "smooth"
+    });
+
+    const attempted = answered.filter(Boolean).length;
+
+    const wrong = attempted - score;
+
+    const accuracy = attempted === 0
+        ? 0
+        : Math.round((score / attempted) * 100);
+
+    document.getElementById("resultScreen").classList.remove("hidden");
+
+    document.getElementById("finalScore").textContent =
+        score + " / " + questions.length;
+
+    document.getElementById("finalCorrect").textContent =
+        score;
+
+    document.getElementById("finalWrong").textContent =
+        wrong;
+
+    document.getElementById("finalAccuracy").textContent =
+        accuracy + "%";
+
+
+    let message = "";
+
+    if (accuracy >= 90) {
+
+        message = `
+            <strong class="text-green-400">Excellent mastery!</strong>
+            <p class="mt-2 text-slate-300">
+                Your fundamentals are very strong. You should now concentrate
+                on mixed SSC/HSSC PYQs and difficult WH-question and imperative
+                voice problems.
+            </p>
+        `;
+
+    } else if (accuracy >= 75) {
+
+        message = `
+            <strong class="text-yellow-300">Very good performance.</strong>
+            <p class="mt-2 text-slate-300">
+                Your basic voice rules are developing well. Revise fixed
+                prepositions, Who/Whom questions and imperative structures once
+                more before moving to harder PYQs.
+            </p>
+        `;
+
+    } else if (accuracy >= 50) {
+
+        message = `
+            <strong class="text-orange-300">Concepts are developing.</strong>
+            <p class="mt-2 text-slate-300">
+                Do not rush into advanced questions. Re-study the formulas:
+                present perfect passive, past perfect passive, future perfect
+                passive, WH-question transformation and imperative conversion.
+            </p>
+        `;
+
+    } else {
+
+        message = `
+            <strong class="text-red-400">Revise the rules before attempting another test.</strong>
+            <p class="mt-2 text-slate-300">
+                Focus especially on:
+                <br>• Fixed prepositions
+                <br>• surprised at vs surprised by
+                <br>• Who → By whom
+                <br>• WH + passive question structure
+                <br>• Let + object + be + V3
+                <br>• You are ordered/requested/forbidden + to + V1
+                <br>• Object + should + be + V3
+            </p>
+        `;
+    }
+
+    document.getElementById("performanceMessage").innerHTML =
+        message;
+}
+
+
+/* =========================================================
+   RESTART
+   ========================================================= */
+
+function restartQuiz() {
+
+    location.reload();
+}
+
+
+/* =========================================================
+   KEYBOARD SUPPORT
+   ========================================================= */
+
+document.addEventListener("keydown", function(event) {
+
+    if (event.key === "ArrowRight") {
+        nextQuestion();
+    }
+
+    if (event.key === "ArrowLeft") {
+        previousQuestion();
+    }
+
+    if (event.key === "Enter") {
+
+        const active = document.activeElement;
+
+        if (active && active.id === "jumpInput") {
+            jumpQuestion();
+        }
+    }
+});
+
+
+/* =========================================================
+   INITIALIZE
+   ========================================================= */
+
+renderQuestion();
+
+</script>
+
+<script src="../../quiz-app-ui-v2.js"></script>
+</body>
+</html>

@@ -1,0 +1,998 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Grammar Quiz - Pages 31-40</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 min-h-screen text-slate-800 flex flex-col font-sans">
+
+    <!-- Header -->
+    <header class="bg-indigo-700 text-white shadow-md py-4 px-6 sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
+            <div>
+                <h1 class="text-xl font-bold tracking-wide">English Verb & Grammar Mastery Quiz</h1>
+                <p class="text-xs text-indigo-200">Syllabus Coverage: Pages 31–40 (Modals, Subjunctive Mood, Causative & Non-Finite Verbs)</p>
+            </div>
+            <div class="flex items-center gap-4 bg-indigo-800 px-4 py-2 rounded-lg border border-indigo-600">
+                <div class="text-center">
+                    <span class="block text-xs text-indigo-300 uppercase font-semibold">Score</span>
+                    <span id="score-display" class="text-lg font-bold text-yellow-300">0 / 0</span>
+                </div>
+                <div class="h-8 w-px bg-indigo-600"></div>
+                <div class="text-center">
+                    <span class="block text-xs text-indigo-300 uppercase font-semibold">Progress</span>
+                    <span id="progress-text" class="text-lg font-bold text-white">1 / 50</span>
+                </div>
+            </div>
+        </div>
+        <!-- Progress Bar -->
+        <div class="w-full bg-indigo-900 h-2 mt-3 rounded-full overflow-hidden max-w-4xl mx-auto">
+            <div id="progress-bar" class="bg-yellow-400 h-full w-0 transition-all duration-300"></div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-4xl w-full mx-auto p-4 sm:p-6 flex flex-col justify-between">
+        
+        <!-- Quiz Card -->
+        <div id="quiz-card" class="bg-white rounded-xl shadow-md border border-slate-200 p-6 mb-6 flex-grow flex flex-col justify-between">
+            
+            <div>
+                <!-- Question Meta Header -->
+                <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-100">
+                    <span id="question-number" class="text-xs font-bold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-100">
+                        Question 1
+                    </span>
+                    <span id="subtopic-tag" class="text-xs font-medium text-slate-500 bg-slate-100 px-2.5 py-1 rounded">
+                        Topic
+                    </span>
+                </div>
+
+                <!-- Question Text -->
+                <div id="question-text" class="text-base sm:text-lg font-semibold text-slate-800 mb-6 leading-relaxed">
+                    Loading question...
+                </div>
+
+                <!-- Hint Collapsible Button -->
+                <div class="mb-4">
+                    <button id="hint-toggle-btn" onclick="toggleHint()" class="text-xs font-semibold text-amber-600 hover:text-amber-700 bg-amber-50 hover:bg-amber-100 px-3 py-1.5 rounded-md border border-amber-200 transition-colors flex items-center gap-1">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        Need a Hint?
+                    </button>
+                    <div id="hint-box" class="hidden mt-2 p-3 bg-amber-50 border-l-4 border-amber-400 text-xs text-amber-800 rounded">
+                        <span id="hint-text">Hint content...</span>
+                    </div>
+                </div>
+
+                <!-- Options List -->
+                <div id="options-container" class="space-y-3 mb-6">
+                    <!-- Options populated dynamically -->
+                </div>
+            </div>
+
+            <!-- Explanation Box -->
+            <div id="explanation-box" class="hidden mt-4 p-4 bg-slate-50 border-l-4 border-indigo-500 rounded-r-lg">
+                <h4 class="text-xs font-bold text-indigo-900 uppercase tracking-wider mb-1">Detailed Rationale / Explanation:</h4>
+                <p id="explanation-text" class="text-sm text-slate-700 leading-relaxed"></p>
+            </div>
+
+        </div>
+
+        <!-- Navigation & Controls Footer -->
+        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center gap-2">
+                <button id="prev-btn" onclick="prevQuestion()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium text-sm rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                    Previous
+                </button>
+                <button id="next-btn" onclick="nextQuestion()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-sm rounded-lg transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
+                    Next
+                </button>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <label for="jump-input" class="text-xs text-slate-500 font-medium">Jump to:</label>
+                <input type="number" id="jump-input" min="1" max="50" class="w-16 px-2 py-1 text-sm border border-slate-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500 text-center" placeholder="1-50">
+                <button onclick="jumpToQuestion()" class="px-3 py-1 bg-slate-800 hover:bg-slate-900 text-white text-xs font-medium rounded transition-colors">
+                    Go
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Quiz Dataset and Logic Script -->
+    <script>
+        const quizData = [
+            {
+                id: 1,
+                topic: "Modals - Can vs. Could",
+                question: "Which of the following statements correctly differentiates 'Can' and 'Could' regarding past physical ability?",
+                options: [
+                    "'Could' denotes general past ability, whereas 'was/were able to' is preferred for a specific single past occasion.",
+                    "'Can' expresses past ability, while 'Could' expresses future necessity.",
+                    "'Could' can never be used in conditional sentences to represent present possibilities.",
+                    "'Can' and 'Could' are completely interchangeable in past tense narrative contexts."
+                ],
+                answer: 0,
+                hint: "Think about general ability in the past vs. managing to do something on one specific occasion.",
+                explanation: "'Could' expresses general ability in the past (e.g., 'I could swim when I was young'). However, to denote ability on a specific past occasion, 'was/were able to' or 'managed to' is used."
+            },
+            {
+                id: 2,
+                topic: "Modals - May vs. Might",
+                question: "Identify the option where 'Might' is used strictly to express a very low degree of possibility in the present/future:",
+                options: [
+                    "It might rain today, though there are barely any clouds in the sky.",
+                    "May I come in, Sir?",
+                    "He said that he may join the meeting tomorrow.",
+                    "Might you help me lift this heavy box right now?"
+                ],
+                answer: 0,
+                hint: "'Might' indicates weaker probability compared to 'May'.",
+                explanation: "'Might' indicates a lower possibility than 'may'. Clear skies indicate weak possibility, making 'It might rain today' grammatically appropriate."
+            },
+            {
+                id: 3,
+                topic: "Modals - May for Permission",
+                question: "Statement I: 'May' is used to seek or give formal permission.\nStatement II: 'Can' is used to express informal permission among friends.\nChoose the correct evaluation:",
+                options: [
+                    "Both Statement I and Statement II are correct.",
+                    "Statement I is correct, but Statement II is incorrect.",
+                    "Statement I is incorrect, but Statement II is correct.",
+                    "Both Statement I and Statement II are incorrect."
+                ],
+                answer: 0,
+                hint: "Consider formal etiquette (teachers/bosses) vs informal speech (peers).",
+                explanation: "'May' is reserved for formal permission (e.g., 'May I come in, Sir?'), whereas 'Can' is used for informal contexts among peers (e.g., 'Can I use your pen, Rahul?')."
+            },
+            {
+                id: 4,
+                topic: "Modals - Expressing Wishes",
+                question: "Which auxiliary modal verb is grammatically mandated at the beginning of an optative sentence expressing a wish or prayer?",
+                options: [
+                    "May",
+                    "Can",
+                    "Must",
+                    "Would"
+                ],
+                answer: 0,
+                hint: "Optative sentences usually take forms like '... you live long!'",
+                explanation: "Optative sentences expressing a blessing, prayer, or wish begin with 'May' (e.g., 'May God bless you!', 'May you live long!')."
+            },
+            {
+                id: 5,
+                topic: "Modals - Must vs. Should",
+                question: "Choose the sentence that correctly uses 'Must' to express a legal obligation or compulsion:",
+                options: [
+                    "Candidates must answer all questions before leaving the hall.",
+                    "You should cross the road whenever you feel like it.",
+                    "One must respect one's elders out of affection.",
+                    "It must rain tomorrow because it is hot today."
+                ],
+                answer: 0,
+                hint: "Compulsion or rule enforcement demands 'Must'.",
+                explanation: "'Must' denotes strict obligation, rule, or compulsion ('Candidates must answer...'), whereas 'should' implies moral advice/suggestion."
+            },
+            {
+                id: 6,
+                topic: "Modals - Must Have + V3",
+                question: "What does the modal structure 'Must + have + Past Participle (V3)' express?",
+                options: [
+                    "A strong deduction or logical conclusion about a past event.",
+                    "An unfulfilled future desire.",
+                    "A polite permission granted in the past.",
+                    "An optional suggestion for an ongoing activity."
+                ],
+                answer: 0,
+                hint: "Example: 'The ground is wet; it must have rained last night.'",
+                explanation: "'Must + have + V3' indicates a strong logical inference or conclusion regarding a past action."
+            },
+            {
+                id: 7,
+                topic: "Modals - Shall with Second/Third Person",
+                question: "In standard exam usage, when 'Shall' is used with 2nd (You) or 3rd person subjects (He, She, They), it expresses:",
+                options: [
+                    "Command, Threat, Promise, or Determination",
+                    "Simple future prediction without emotion",
+                    "A habitual past action",
+                    "A weak possibility in the present"
+                ],
+                answer: 0,
+                hint: "Normally 'Shall' goes with I/We. Reversing this rule changes its pragmatic tone.",
+                explanation: "Using 'Shall' with 2nd and 3rd person subjects shifts the meaning from simple futurity to command, promise, threat, or determination."
+            },
+            {
+                id: 8,
+                topic: "Modals - Should after Lest",
+                question: "Which modal verb MUST follow the conjunction 'Lest' in formal English clause construction?",
+                options: [
+                    "Should",
+                    "Would",
+                    "May",
+                    "Can"
+                ],
+                answer: 0,
+                hint: "The pattern is: 'Run fast lest you _____ miss the train.'",
+                explanation: "'Lest' is always followed by 'Should' (or a subjunctive bare verb). It carries a negative connotation ('so that... not')."
+            },
+            {
+                id: 9,
+                topic: "Modals - Ought to",
+                question: "Select the sentence that accurately uses 'Ought to':",
+                options: [
+                    "We ought to respect the national flag.",
+                    "We ought respect the national flag.",
+                    "We ought to respecting the national flag.",
+                    "We oughted to respect the national flag."
+                ],
+                answer: 0,
+                hint: "'Ought' takes a full infinitive (to + V1).",
+                explanation: "'Ought' requires 'to + V1' (Infinitive) to express moral duty or obligation."
+            },
+            {
+                id: 10,
+                topic: "Modals - Used to",
+                question: "What is the primary grammatical function of 'Used to' when functioning as a modal auxiliary?",
+                options: [
+                    "To express a discontinued past habit or past state.",
+                    "To denote an action happening right now continuously.",
+                    "To mandate an absolute legal requirement.",
+                    "To express future probability with certainty."
+                ],
+                answer: 0,
+                hint: "Think about things you did in childhood but no longer do.",
+                explanation: "'Used to' expresses a past habit or routine that no longer exists in the present."
+            },
+            {
+                id: 11,
+                topic: "Modals - Be + used to + V1-ing",
+                question: "Identify the correct sentence structure when 'used to' is preceded by a form of 'be' (is/am/are/was/were):",
+                options: [
+                    "He is used to getting up early in the morning.",
+                    "He is used to get up early in the morning.",
+                    "He was used to got up early in the morning.",
+                    "He used to getting up early in the morning."
+                ],
+                answer: 0,
+                hint: "When 'used to' acts as an adjective after 'Be', it is followed by a Gerund.",
+                explanation: "The structure 'Be / get / become + used to' is followed by a Gerund (V1 + ing) or Noun, meaning 'to be accustomed to'."
+            },
+            {
+                id: 12,
+                topic: "Modals - Dare and Need as Marginal Auxiliaries",
+                question: "Why are 'Dare' and 'Need' categorized as Marginal Auxiliary Verbs?",
+                options: [
+                    "Because they can function both as Auxiliary/Helping Verbs and as Main Verbs.",
+                    "Because they cannot be used in negative sentences.",
+                    "Because they require 'to + V3' in all sentence structures.",
+                    "Because they are only used with plural subjects."
+                ],
+                answer: 0,
+                hint: "They cross over between helping verbs and main action verbs.",
+                explanation: "'Need' and 'Dare' are called semi-modals or marginal auxiliaries because they act as helping verbs in negative/interrogative structures and as main verbs elsewhere."
+            },
+            {
+                id: 13,
+                topic: "Modals - Need not / Dare not",
+                question: "Identify the sentence with an ERROR in modal usage:",
+                options: [
+                    "He needs not go there again.",
+                    "He need not go there again.",
+                    "He does not need to go there again.",
+                    "She dare not oppose her father."
+                ],
+                answer: 0,
+                hint: "When 'need' acts as a modal auxiliary in negative contexts, it does not take an 's'.",
+                explanation: "When 'need' is a modal auxiliary (followed by 'not'), it does not take 's/es' even with 3rd-person singular subjects. 'He need not' is correct; 'He needs not' is incorrect."
+            },
+            {
+                id: 14,
+                topic: "Modals - Dare with Infinitives",
+                question: "Select the sentence that correctly shows 'Dare' functioning as a Main Verb requiring a full Infinitive:",
+                options: [
+                    "She does not dare to go out in the dark.",
+                    "She dares not to go out in the dark.",
+                    "She dare not to go out in the dark.",
+                    "Does she dare go out in the dark with to?"
+                ],
+                answer: 0,
+                hint: "Main verb form uses 'do/does/did' + 'dare' + 'to + V1'.",
+                explanation: "When 'dare' is supported by auxiliary 'does not', it is functioning as a Main Verb and requires a full infinitive ('to go')."
+            },
+            {
+                id: 15,
+                topic: "Modals - Would for Past Habits",
+                question: "Besides 'Used to', which modal verb can express repeated past habitual actions?",
+                options: [
+                    "Would",
+                    "Might",
+                    "Shall",
+                    "Can"
+                ],
+                answer: 0,
+                hint: "Example: 'After dinner, he _____ often go for a walk.'",
+                explanation: "'Would' is frequently used to describe characteristic or repeated routine actions in the past."
+            },
+            {
+                id: 16,
+                topic: "Modals - Would rather",
+                question: "Complete the sentence correctly: 'I would rather die than _____.'",
+                options: [
+                    "beg",
+                    "begging",
+                    "to beg",
+                    "begged"
+                ],
+                answer: 0,
+                hint: "'Would rather' takes a bare infinitive.",
+                explanation: "'Would rather' takes a bare infinitive ($V_1$) both after the phrase and after the conjunction 'than'."
+            },
+            {
+                id: 17,
+                topic: "Subjunctive Mood - Present Subjunctive",
+                question: "What form of the verb is used in the Present Subjunctive Mood after verbs of command, demand, or suggestion (e.g., insist, propose, recommend)?",
+                options: [
+                    "Base form of the verb (V1) without -s/es regardless of subject",
+                    "Past form of the verb (V2)",
+                    "Present Continuous form (V1 + ing)",
+                    "Past Perfect form (had + V3)"
+                ],
+                answer: 0,
+                hint: "Example: 'The doctor recommended that he [be/is] on bed rest.'",
+                explanation: "The Present Subjunctive uses the base form ($V_1$) for all subjects (e.g., 'I propose that he **be** appointed', 'She demanded that he **leave**')."
+            },
+            {
+                id: 18,
+                topic: "Subjunctive Mood - Unreal Past",
+                question: "In hypothetical or unreal condition statements beginning with 'I wish', 'If', or 'As if', which verb form accompanies singular/plural subjects?",
+                options: [
+                    "Were",
+                    "Was",
+                    "Is",
+                    "Am"
+                ],
+                answer: 0,
+                hint: "Example: 'If I _____ a bird, I would fly.'",
+                explanation: "In subjunctive unreal state/condition constructions, 'Were' is used for all subjects regardless of person or number."
+            },
+            {
+                id: 19,
+                topic: "Subjunctive Mood - It is time",
+                question: "Which structure correctly follows 'It is high time' when followed directly by a subject noun/pronoun?",
+                options: [
+                    "Subject + V2 (Past Simple)",
+                    "Subject + V1 (Present Simple)",
+                    "Subject + had + V3",
+                    "Subject + should + V1"
+                ],
+                answer: 0,
+                hint: "Example: 'It is high time we _____ (start) studying.'",
+                explanation: "'It is time / It is high time / It is about time' followed by a subject requires a verb in the Simple Past ($V_2$) form."
+            },
+            {
+                id: 20,
+                topic: "Subjunctive Mood - It is time without subject",
+                question: "How should 'It is time' be completed if NO subject noun/pronoun immediately follows it?",
+                options: [
+                    "to + V1 (Infinitive)",
+                    "V2 (Past Form)",
+                    "V1 + ing (Gerund)",
+                    "had + V3"
+                ],
+                answer: 0,
+                hint: "'It is time _____ (play) the game.'",
+                explanation: "If no subject pronoun/noun follows 'It is time', it is directly completed using an Infinitive ('to + V1')."
+            },
+            {
+                id: 21,
+                topic: "Causative Verbs - Make",
+                question: "When 'Make' is used as a Causative Verb in an ACTIVE voice sentence, what verb pattern follows the object?",
+                options: [
+                    "Bare Infinitive (V1 without 'to')",
+                    "Full Infinitive (to + V1)",
+                    "Past Participle (V3)",
+                    "Gerund (V1 + ing)"
+                ],
+                answer: 0,
+                hint: "Example: 'He made me _____ (cry).'",
+                explanation: "In Active Voice, causative 'Make' takes a Bare Infinitive ($V_1$ without 'to'). E.g., 'He made me cry'."
+            },
+            {
+                id: 22,
+                topic: "Causative Verbs - Make in Passive Voice",
+                question: "Choose the correct Passive Voice conversion for: 'The teacher made him clean the board.'",
+                options: [
+                    "He was made to clean the board by the teacher.",
+                    "He was made clean the board by the teacher.",
+                    "He was make to clean the board by the teacher.",
+                    "He had been made clean the board by the teacher."
+                ],
+                answer: 0,
+                hint: "When 'Make' goes into passive voice, the bare infinitive converts into a full infinitive.",
+                explanation: "In Passive Voice, causative 'Make' requires a Full Infinitive ('to + V1'). E.g., 'He was made to clean...'"
+            },
+            {
+                id: 23,
+                topic: "Causative Verbs - Get vs. Have",
+                question: "Which of the following represents the correct active causative structure using 'Get'?",
+                options: [
+                    "Subject + Get + Person + to + V1",
+                    "Subject + Get + Person + V1 without 'to'",
+                    "Subject + Get + Person + V3",
+                    "Subject + Get + Person + Being + V3"
+                ],
+                answer: 0,
+                hint: "'Get' persuades someone to do something.",
+                explanation: "Active causative 'Get' follows the pattern: Subject + Get + Person + to + V1 (e.g., 'I got him to repair my car')."
+            },
+            {
+                id: 24,
+                topic: "Causative Verbs - Passive Causative (Have/Get)",
+                question: "Identify the correct structure when 'Have' or 'Get' is used causatively for a non-living object upon which an action is performed:",
+                options: [
+                    "Subject + Have/Get + Object (thing) + V3",
+                    "Subject + Have/Get + Object (thing) + to + V1",
+                    "Subject + Have/Get + Object (thing) + V1 + ing",
+                    "Subject + Have/Get + Object (thing) + V1"
+                ],
+                answer: 0,
+                hint: "Example: 'I had/got my car _____ (repair).'",
+                explanation: "When an action is done to a non-living object by someone else, 'Have/Get + Object + V3' is used (e.g., 'I got my roof repaired')."
+            },
+            {
+                id: 25,
+                topic: "Non-Finite Verbs - Infinitives vs. Gerunds",
+                question: "Which category of verbs is directly modified by tense and subject number/person?",
+                options: [
+                    "Finite Verbs",
+                    "Infinitives",
+                    "Gerunds",
+                    "Participles"
+                ],
+                answer: 0,
+                hint: "Contrast finite verbs with non-finite verbs.",
+                explanation: "Finite verbs change their form based on the tense and the person/number of the subject, whereas non-finite verbs (infinitives, gerunds, participles) do not."
+            },
+            {
+                id: 26,
+                topic: "Non-Finite Verbs - Bare Infinitive triggers",
+                question: "After which group of verbs is a Bare Infinitive (V1 without 'to') mandatory?",
+                options: [
+                    "Bid, let, make, see, hear, watch",
+                    "Want, decide, hope, refuse, promise",
+                    "Enjoy, avoid, mind, admit, deny",
+                    "Aspirations, requests, expectations, demands"
+                ],
+                answer: 0,
+                hint: "Think: 'Let him _____ (go)', 'I saw him _____ (leave)'",
+                explanation: "Verbs like bid, let, make, see, hear, and watch are followed by bare infinitives in active voice structures."
+            },
+            {
+                id: 27,
+                topic: "Non-Finite Verbs - Gerund Triggers",
+                question: "Which of the following expressions MUST be followed by a Gerund (V1 + ing)?",
+                options: [
+                    "With a view to / Looking forward to",
+                    "In order to / So as to",
+                    "Would like to / Want to",
+                    "Be about to / Be bound to"
+                ],
+                answer: 0,
+                hint: "These phrases end in 'to', but here 'to' is a preposition, not an infinitive marker.",
+                explanation: "In phrases like 'with a view to' and 'look forward to', 'to' acts as a preposition and must be followed by a noun or Gerund ($V_1 + ing$)."
+            },
+            {
+                id: 28,
+                topic: "Gerunds - Possessive Pronoun before Gerund",
+                question: "Choose the correct pronoun form preceding a Gerund: 'I did not like _____ coming late.'",
+                options: [
+                    "his",
+                    "him",
+                    "he",
+                    "himself"
+                ],
+                answer: 0,
+                hint: "A Gerund acts as a noun, so it requires a possessive modifier.",
+                explanation: "A Noun or Pronoun preceding a Gerund must be in the Possessive Case (e.g., 'his coming', 'my leaving')."
+            },
+            {
+                id: 29,
+                topic: "Participles - Present vs. Past Participle",
+                question: "Match the participle function correctly:\n1. Present Participle\n2. Past Participle\n\n(A) V1 + ing expressing ongoing or active action\n(B) V3 expressing completed or passive state",
+                options: [
+                    "1 - A, 2 - B",
+                    "1 - B, 2 - A",
+                    "1 - A, 2 - A",
+                    "1 - B, 2 - B"
+                ],
+                answer: 0,
+                hint: "'A burning train' vs 'A burnt train'.",
+                explanation: "Present Participle ($V_1 + ing$) denotes an active/ongoing action; Past Participle ($V_3$) denotes a completed or passive state."
+            },
+            {
+                id: 30,
+                topic: "Participles - Dangling / Unattached Participles",
+                question: "Identify the grammatically CORRECT sentence that avoids a misplaced/dangling participle:",
+                options: [
+                    "While I was walking in the park, a snake bit me.",
+                    "Walking in the park, a snake bit me.",
+                    "Being a rainy day, I decided to stay home.",
+                    "Being a cold night, the traveler lost his way."
+                ],
+                answer: 0,
+                hint: "Ensure the subject performing the participle action is explicitly stated.",
+                explanation: "'Walking in the park, a snake bit me' falsely implies the snake was walking. Adding 'While I was...' provides the correct subject of reference."
+            },
+            {
+                id: 31,
+                topic: "Participles - Subject of Reference",
+                question: "Correct the sentence: 'Being a rainy day, we stayed inside.'",
+                options: [
+                    "It being a rainy day, we stayed inside.",
+                    "We being a rainy day, stayed inside.",
+                    "As we were a rainy day, we stayed inside.",
+                    "Being rainy, we stayed inside."
+                ],
+                answer: 0,
+                hint: "'Day' needs a dummy subject 'It' as its reference.",
+                explanation: "'Rainy day' cannot have 'we' as its subject of reference. Supplying the dummy subject 'It' ('It being a rainy day...') resolves the dangling participle."
+            },
+            {
+                id: 32,
+                topic: "Verb Usage - Need + Gerund (Passive meaning)",
+                question: "What does the sentence 'Your car needs washing' logically mean?",
+                options: [
+                    "Your car needs to be washed.",
+                    "Your car is washing something.",
+                    "You need to wash car right now actively.",
+                    "Your car must wash itself."
+                ],
+                answer: 0,
+                hint: "'Need + V1-ing' carries a passive infinitive sense.",
+                explanation: "When 'need' or 'require' is followed by a Gerund, it expresses a passive meaning equivalent to 'needs to be + V3'."
+            },
+            {
+                id: 33,
+                topic: "Confusing Verbs - Lie / Lay / Lied",
+                question: "Which of the following represents the correct sequence for Lie (to tell an untruth)?",
+                options: [
+                    "Lie - Lied - Lied",
+                    "Lie - Lay - Lain",
+                    "Lay - Laid - Laid",
+                    "Lie - Lay - Lied"
+                ],
+                answer: 0,
+                hint: "Differentiate telling a lie from lying down on a bed.",
+                explanation: "Lie (to speak untruth): $V_1$ Lie, $V_2$ lied, $V_3$ lied. Lie (recline): $V_1$ Lie, $V_2$ lay, $V_3$ lain."
+            },
+            {
+                id: 34,
+                topic: "Confusing Verbs - Find vs. Found",
+                question: "Complete the sentence correctly: 'The organization was _____ in 1995 to promote literacy.'",
+                options: [
+                    "founded",
+                    "found",
+                    "finded",
+                    "founding"
+                ],
+                answer: 0,
+                hint: "Establishment of an institution uses Found -> Founded.",
+                explanation: "Found (to establish) has $V_2/V_3$ forms 'founded'. Find (to discover) has $V_2/V_3$ forms 'found'."
+            },
+            {
+                id: 35,
+                topic: "Confusing Verbs - Fly vs. Flow",
+                question: "Spot the correct sentence:",
+                options: [
+                    "The river overflowed its banks during the monsoon.",
+                    "The river overflew its banks during the monsoon.",
+                    "The river overflown its banks during the monsoon.",
+                    "The river overflowed its banks and flew into the sea."
+                ],
+                answer: 0,
+                hint: "Flow -> Flowed -> Flowed.",
+                explanation: "Rivers 'flow' ($V_2$ flowed). The past form of 'overflow' is 'overflowed', not 'overflew' (which comes from fly)."
+            },
+            {
+                id: 36,
+                topic: "Confusing Verbs - Hang (Suspension vs. Execution)",
+                question: "Select the correct verb choice: 'The murderer was _____ while the painting was _____ in the gallery.'",
+                options: [
+                    "hanged; hung",
+                    "hung; hanged",
+                    "hanged; hanged",
+                    "hung; hung"
+                ],
+                answer: 0,
+                hint: "Execution = hanged; Object suspension = hung.",
+                explanation: "Hang (execution by hanging): hanged, hanged. Hang (suspending objects): hung, hung."
+            },
+            {
+                id: 37,
+                topic: "Confusing Verbs - Saw vs. Sow vs. Sew",
+                question: "Match the verb to its meaning:\n1. Saw\n2. Sow\n3. Sew\n\n(A) To plant seeds\n(B) To cut with a tool\n(C) To join with needle and thread",
+                options: [
+                    "1 - B, 2 - A, 3 - C",
+                    "1 - A, 2 - B, 3 - C",
+                    "1 - C, 2 - A, 3 - B",
+                    "1 - B, 2 - C, 3 - A"
+                ],
+                answer: 0,
+                hint: "Sawing wood, sowing seeds, sewing clothes.",
+                explanation: "Saw = to cut with a saw; Sow = to plant seeds; Sew = to stitch with needle/thread."
+            },
+            {
+                id: 38,
+                topic: "Modals - Can for Theoretical Possibility",
+                question: "Which modal verb is primarily used to express general 'theoretical possibility'?",
+                options: [
+                    "Can",
+                    "May",
+                    "Might",
+                    "Shall"
+                ],
+                answer: 0,
+                hint: "'Everyone _____ make a mistake.'",
+                explanation: "'Can' is used to express theoretical possibility (e.g., 'Anyone can make mistakes'), while 'May' expresses factual possibility."
+            },
+            {
+                id: 39,
+                topic: "Modals - Habitual Past Comparison",
+                question: "Which of the following sentences correctly expresses a past state (rather than a habit)?",
+                options: [
+                    "He used to be a famous actor.",
+                    "He would be a famous actor.",
+                    "He used to being a famous actor.",
+                    "He would have be a famous actor."
+                ],
+                answer: 0,
+                hint: "'Would' expresses past routines, but NOT past states. 'Used to' can express both.",
+                explanation: "'Used to' can express both past habits and past states (e.g., 'there used to be a house here'). 'Would' cannot express past states."
+            },
+            {
+                id: 40,
+                topic: "Modals - Negative Imperative with Dare/Need",
+                question: "Identify the grammatically correct sentence:",
+                options: [
+                    "You need not ask for permission.",
+                    "You need not to ask for permission.",
+                    "You do not need ask for permission.",
+                    "You does not need to ask for permission."
+                ],
+                answer: 0,
+                hint: "'Need not' takes a bare infinitive.",
+                explanation: "'Need not' is an auxiliary modal and must be directly followed by a Bare Infinitive ($V_1$), not 'to + V1'."
+            },
+            {
+                id: 41,
+                topic: "Spotting Error - Subjunctive Mood",
+                question: "Identify the part with the error:\n(a) It is high time / (b) we leave this place / (c) for our hometown. / (d) No Error",
+                options: [
+                    "(b) we leave this place",
+                    "(a) It is high time",
+                    "(c) for our hometown",
+                    "(d) No Error"
+                ],
+                answer: 0,
+                hint: "'It is high time + subject' takes V2.",
+                explanation: "After 'It is high time' + subject, the verb must be in Simple Past ($V_2$). Replace 'leave' with 'left'."
+            },
+            {
+                id: 42,
+                topic: "Spotting Error - Conjunction + Modal",
+                question: "Identify the part with the error:\n(a) Work hard / (b) lest you / (c) may fail in the exam. / (d) No Error",
+                options: [
+                    "(c) may fail in the exam",
+                    "(a) Work hard",
+                    "(b) lest you",
+                    "(d) No Error"
+                ],
+                answer: 0,
+                hint: "'Lest' pairs with 'should'.",
+                explanation: "'Lest' must be followed by 'should'. Replace 'may' with 'should'."
+            },
+            {
+                id: 43,
+                topic: "Spotting Error - Preposition + Gerund",
+                question: "Identify the part with the error:\n(a) She is accustomed to / (b) work late / (c) at the office. / (d) No Error",
+                options: [
+                    "(b) work late",
+                    "(a) She is accustomed to",
+                    "(c) at the office",
+                    "(d) No Error"
+                ],
+                answer: 0,
+                hint: "'Accustomed to' takes a Gerund.",
+                explanation: "'Be accustomed to' requires a Gerund ($V_1 + ing$). Replace 'work' with 'working'."
+            },
+            {
+                id: 44,
+                topic: "Spotting Error - Causative Verbs",
+                question: "Identify the part with the error:\n(a) The teacher made / (b) all the students / (c) to rewrite the assignment. / (d) No Error",
+                options: [
+                    "(c) to rewrite the assignment",
+                    "(a) The teacher made",
+                    "(b) all the students",
+                    "(d) No Error"
+                ],
+                answer: 0,
+                hint: "Active causative 'Make' takes a bare infinitive.",
+                explanation: "In Active Voice, causative 'Make' takes a Bare Infinitive. Omit 'to' before 'rewrite'."
+            },
+            {
+                id: 45,
+                topic: "Spotting Error - Dangling Participle",
+                question: "Identify the part with the error:\n(a) Being a hot day, / (b) the driver / (c) stopped under a tree. / (d) No Error",
+                options: [
+                    "(a) Being a hot day",
+                    "(b) the driver",
+                    "(c) stopped under a tree",
+                    "(d) No Error"
+                ],
+                answer: 0,
+                hint: "'Day' needs 'It' as subject of reference.",
+                explanation: "Add 'It' before 'Being' to avoid dangling participle. Correct: 'It being a hot day...'."
+            },
+            {
+                id: 46,
+                topic: "Perfect Participle Usage",
+                question: "Select the sentence that correctly utilizes a Perfect Participle structure:",
+                options: [
+                    "Having completed his work, he left the office.",
+                    "Having complete his work, he left the office.",
+                    "After completed his work, he left the office.",
+                    "Having been complete his work, he left the office."
+                ],
+                answer: 0,
+                hint: "Perfect Participle active formula: Having + V3.",
+                explanation: "Active Perfect Participle = 'Having + V3'. E.g., 'Having completed his work, he left'."
+            },
+            {
+                id: 47,
+                topic: "Infinitive - Split Infinitive Rule",
+                question: "According to traditional grammar rules in competitive exams, why is 'He decided to quickly run' considered faulty?",
+                options: [
+                    "It contains a Split Infinitive (an adverb inserted between 'to' and 'V1').",
+                    "It uses an incorrect past participle.",
+                    "It lacks a modal verb.",
+                    "It improperly uses a gerund as an object."
+                ],
+                answer: 0,
+                hint: "Avoid placing adverbs between 'to' and the verb.",
+                explanation: "Placing an adverb between 'to' and the base verb splits the infinitive. Standard form: 'to run quickly'."
+            },
+            {
+                id: 48,
+                topic: "Modals - May vs. Can for Possibility",
+                question: "Statement I: 'May' expresses factual probability based on circumstances.\nStatement II: 'Can' expresses general or theoretical possibility.\nChoose the correct option:",
+                options: [
+                    "Both Statement I and Statement II are correct.",
+                    "Statement I is correct, but Statement II is incorrect.",
+                    "Statement I is incorrect, but Statement II is correct.",
+                    "Both Statement I and Statement II are incorrect."
+                ],
+                answer: 0,
+                hint: "'It may rain' (factual) vs 'Electricity can be dangerous' (theoretical).",
+                explanation: "Both statements are correct. 'May' handles real/factual possibility, while 'Can' covers general/theoretical possibility."
+            },
+            {
+                id: 49,
+                topic: "Infinitive vs. Preposition 'To'",
+                question: "In which of the following sentences does 'to' act as a Preposition rather than an Infinitive marker?",
+                options: [
+                    "He is devoted to helping the poor.",
+                    "He wants to help the poor.",
+                    "He decided to study hard.",
+                    "He was forced to leave the hall."
+                ],
+                answer: 0,
+                hint: "Look for phrases where 'to' is followed by a gerund ($V_1+ing$).",
+                explanation: "In 'devoted to', 'to' is a preposition, which is why it is followed by the gerund 'helping'."
+            },
+            {
+                id: 50,
+                topic: "Comprehensive Review - Modal Auxiliaries",
+                question: "Which of the following modal verbs CANNOT be used as a Main Verb under any circumstances?",
+                options: [
+                    "Must",
+                    "Need",
+                    "Dare",
+                    "Used to"
+                ],
+                answer: 0,
+                hint: "'Must' is a pure modal auxiliary.",
+                explanation: "'Must' functions strictly as a modal auxiliary verb and can never be used as a main verb (unlike Need, Dare, or Used to which have main verb/adjectival functions)."
+            }
+        ];
+
+        // State variables
+        let currentQuestionIdx = 0;
+        let userAnswers = new Array(quizData.length).fill(null);
+
+        // Utility: Fisher-Yates Shuffle algorithm
+        function shuffleArray(array) {
+            const arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        // Initialize Option Mappings with Randomization
+        const randomizedData = quizData.map((q) => {
+            const optionsObjs = q.options.map((optText, index) => ({
+                text: optText,
+                isCorrect: index === q.answer
+            }));
+            const shuffled = shuffleArray(optionsObjs);
+            return {
+                ...q,
+                shuffledOptions: shuffled
+            };
+        });
+
+        // DOM Elements
+        const questionNumberEl = document.getElementById("question-number");
+        const subtopicTagEl = document.getElementById("subtopic-tag");
+        const questionTextEl = document.getElementById("question-text");
+        const hintBoxEl = document.getElementById("hint-box");
+        const hintTextEl = document.getElementById("hint-text");
+        const hintToggleBtn = document.getElementById("hint-toggle-btn");
+        const optionsContainerEl = document.getElementById("options-container");
+        const explanationBoxEl = document.getElementById("explanation-box");
+        const explanationTextEl = document.getElementById("explanation-text");
+        const prevBtn = document.getElementById("prev-btn");
+        const nextBtn = document.getElementById("next-btn");
+        const scoreDisplayEl = document.getElementById("score-display");
+        const progressTextEl = document.getElementById("progress-text");
+        const progressBarEl = document.getElementById("progress-bar");
+        const jumpInputEl = document.getElementById("jump-input");
+
+        // Load Question Function
+        function renderQuestion() {
+            const q = randomizedData[currentQuestionIdx];
+
+            // Reset UI states
+            hintBoxEl.classList.add("hidden");
+            explanationBoxEl.classList.add("hidden");
+
+            // Meta Info
+            questionNumberEl.textContent = `Question ${currentQuestionIdx + 1} of ${randomizedData.length}`;
+            subtopicTagEl.textContent = q.topic;
+            questionTextEl.textContent = q.question;
+            hintTextEl.textContent = q.hint;
+            explanationTextEl.textContent = q.explanation;
+
+            // Render Options
+            optionsContainerEl.innerHTML = "";
+            const currentSelected = userAnswers[currentQuestionIdx];
+
+            q.shuffledOptions.forEach((opt, optIdx) => {
+                const btn = document.createElement("button");
+                btn.className = "w-full text-left p-3.5 rounded-lg border transition-all text-sm font-medium flex items-center justify-between ";
+
+                if (currentSelected === null) {
+                    btn.className += "border-slate-200 hover:border-indigo-400 hover:bg-indigo-50/50 bg-white text-slate-700";
+                    btn.onclick = () => selectOption(optIdx);
+                } else {
+                    btn.disabled = true;
+                    if (opt.isCorrect) {
+                        btn.className += "border-emerald-500 bg-emerald-50 text-emerald-900 font-semibold";
+                    } else if (currentSelected === optIdx) {
+                        btn.className += "border-rose-500 bg-rose-50 text-rose-900";
+                    } else {
+                        btn.className += "border-slate-200 bg-slate-50 text-slate-400 opacity-60";
+                    }
+                }
+
+                const prefix = String.fromCharCode(65 + optIdx); // A, B, C, D
+                btn.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="w-6 h-6 rounded-full border border-current flex items-center justify-center text-xs font-bold">${prefix}</span>
+                        <span>${opt.text}</span>
+                    </div>
+                `;
+
+                if (currentSelected !== null) {
+                    if (opt.isCorrect) {
+                        btn.innerHTML += `<svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>`;
+                    } else if (currentSelected === optIdx) {
+                        btn.innerHTML += `<svg class="w-5 h-5 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>`;
+                    }
+                }
+
+                optionsContainerEl.appendChild(btn);
+            });
+
+            // Show explanation if already answered
+            if (currentSelected !== null) {
+                explanationBoxEl.classList.remove("hidden");
+            }
+
+            // Update Navigation state
+            prevBtn.disabled = currentQuestionIdx === 0;
+            nextBtn.disabled = currentQuestionIdx === randomizedData.length - 1;
+
+            updateStats();
+        }
+
+        // Option Selection Handler
+        function selectOption(optIdx) {
+            userAnswers[currentQuestionIdx] = optIdx;
+            renderQuestion();
+        }
+
+        // Toggle Hint Visibility
+        function toggleHint() {
+            hintBoxEl.classList.toggle("hidden");
+        }
+
+        // Update Score and Progress Stats
+        function updateStats() {
+            let score = 0;
+            let answeredCount = 0;
+
+            userAnswers.forEach((ans, idx) => {
+                if (ans !== null) {
+                    answeredCount++;
+                    if (randomizedData[idx].shuffledOptions[ans].isCorrect) {
+                        score++;
+                    }
+                }
+            });
+
+            scoreDisplayEl.textContent = `${score} / ${randomizedData.length}`;
+            progressTextEl.textContent = `${currentQuestionIdx + 1} / ${randomizedData.length}`;
+            
+            const progressPercent = ((currentQuestionIdx + 1) / randomizedData.length) * 100;
+            progressBarEl.style.width = `${progressPercent}%`;
+        }
+
+        // Navigation controls
+        function prevQuestion() {
+            if (currentQuestionIdx > 0) {
+                currentQuestionIdx--;
+                renderQuestion();
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIdx < randomizedData.length - 1) {
+                currentQuestionIdx++;
+                renderQuestion();
+            }
+        }
+
+        function jumpToQuestion() {
+            const val = parseInt(jumpInputEl.value);
+            if (val >= 1 && val <= randomizedData.length) {
+                currentQuestionIdx = val - 1;
+                renderQuestion();
+                jumpInputEl.value = "";
+            } else {
+                alert(`Please enter a question number between 1 and ${randomizedData.length}`);
+            }
+        }
+
+        // Initial Load
+        renderQuestion();
+    </script>
+<script src="../../quiz-app-ui-v2.js"></script>
+</body>
+</html>

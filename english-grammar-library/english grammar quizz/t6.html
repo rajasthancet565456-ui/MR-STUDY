@@ -1,0 +1,936 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive English Tense Quiz - Competitions Practice</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col justify-between">
+
+    <!-- Header Section -->
+    <header class="bg-slate-800 border-b border-slate-700 shadow-md">
+        <div class="max-w-4xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div>
+                <h1 class="text-xl font-bold text-indigo-400">English Tense Master Quiz</h1>
+                <p class="text-xs text-slate-400">Based on Competitive Exams Syllabus (Pages 51-60)</p>
+            </div>
+            <div class="flex items-center gap-4 bg-slate-900/50 px-4 py-2 rounded-lg border border-slate-700">
+                <div class="text-xs text-slate-300">Score: <span id="score-display" class="font-bold text-emerald-400 text-sm">0</span> / 50</div>
+                <div class="text-xs text-slate-300">Progress: <span id="progress-text" class="font-bold text-indigo-400 text-sm">1</span>/50</div>
+            </div>
+        </div>
+        <!-- Progress Bar -->
+        <div class="w-full bg-slate-700 h-1.5">
+            <div id="progress-bar" class="bg-indigo-500 h-1.5 transition-all duration-300" style="width: 2%;"></div>
+        </div>
+    </header>
+
+    <!-- Main Quiz Container -->
+    <main class="max-w-3xl w-full mx-auto px-4 py-8 flex-grow">
+        <div id="quiz-card" class="bg-slate-800 border border-slate-700 rounded-2xl p-6 sm:p-8 shadow-xl relative">
+            
+            <!-- Question Meta Header -->
+            <div class="flex justify-between items-center mb-4">
+                <span id="question-tag" class="text-xs font-semibold px-2.5 py-1 rounded bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">Direct Factual MCQ</span>
+                <span id="question-number-badge" class="text-xs font-medium text-slate-400">Question 1 of 50</span>
+            </div>
+
+            <!-- Question Title / Statement -->
+            <h2 id="question-title" class="text-lg sm:text-xl font-medium text-slate-200 mb-6 leading-relaxed">
+                Loading question...
+            </h2>
+
+            <!-- Options Grid -->
+            <div id="options-container" class="space-y-3 mb-6">
+                <!-- Dynamically injected option buttons -->
+            </div>
+
+            <!-- Action Toolbar (Hint & Jump Controls) -->
+            <div class="flex flex-wrap justify-between items-center gap-4 pt-4 border-t border-slate-700/60 mb-6">
+                <button id="hint-btn" onclick="toggleHint()" class="text-xs font-medium text-amber-400 hover:text-amber-300 bg-amber-500/10 border border-amber-500/20 px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5">
+                    <span>💡 Show Hint</span>
+                </button>
+                <div class="flex items-center gap-2">
+                    <label for="jump-input" class="text-xs text-slate-400">Jump to:</label>
+                    <input type="number" id="jump-input" min="1" max="50" class="w-16 bg-slate-900 border border-slate-700 text-slate-200 text-xs rounded px-2 py-1 focus:outline-none focus:border-indigo-500 text-center" onchange="jumpToQuestion(this.value)">
+                </div>
+            </div>
+
+            <!-- Hint Box (Hidden by default) -->
+            <div id="hint-box" class="hidden bg-amber-500/10 border border-amber-500/30 rounded-xl p-4 mb-6 text-sm text-amber-200/90">
+                <span class="font-bold block mb-1 text-amber-400">Hint:</span>
+                <p id="hint-text"></p>
+            </div>
+
+            <!-- Explanation Box (Hidden until answered) -->
+            <div id="explanation-box" class="hidden bg-slate-900/90 border border-slate-700 rounded-xl p-5 mb-6 text-sm transition-all">
+                <div class="flex items-center gap-2 mb-2">
+                    <span id="result-indicator" class="font-bold text-base"></span>
+                </div>
+                <p class="text-slate-300 leading-relaxed" id="explanation-text"></p>
+            </div>
+
+            <!-- Navigation Footers -->
+            <div class="flex justify-between items-center pt-2">
+                <button id="prev-btn" onclick="previousQuestion()" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 text-sm font-medium rounded-xl transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
+                    ← Previous
+                </button>
+                <button id="next-btn" onclick="nextQuestion()" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium rounded-xl transition-colors shadow-lg shadow-indigo-600/20">
+                    Next →
+                </button>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-800 border-t border-slate-700 py-3 text-center text-xs text-slate-500">
+        Interactive Tense Mastery Application &bull; Exam Prep Series
+    </footer>
+
+    <!-- Quiz Engine Script -->
+    <script>
+        const quizData = [
+            {
+                id: 1,
+                tag: "Spotting Error",
+                question: "Identify the segment containing a grammatical error in the following sentence:\n(a) I have not seen him since twenty years/ (b) and so I cannot say with certainty/ (c) whether he is alive or dead./ (d) No error",
+                options: [
+                    "(a) I have not seen him since twenty years",
+                    "(b) and so I cannot say with certainty",
+                    "(c) whether he is alive or dead",
+                    "(d) No error"
+                ],
+                correct: 0,
+                hint: "Check the preposition used with a point of time versus a period of time.",
+                explanation: "Replace 'since' with 'for' in part (a). 'Twenty years' represents a period of time (duration), whereas 'since' is used for a point of starting time."
+            },
+            {
+                id: 2,
+                tag: "Interrogative Structure",
+                question: "Choose the correct indirect question conversion or error identification:\n(a) When he did not find his cook in the kitchen/ (b) he asked his wife/ (c) where had he gone./ (d) No error",
+                options: [
+                    "(a) When he did not find his cook in the kitchen",
+                    "(b) he asked his wife",
+                    "(c) where had he gone",
+                    "(d) No error"
+                ],
+                correct: 2,
+                hint: "In indirect questions or subordinate clauses introduced by question words, the structure changes from interrogative to assertive.",
+                explanation: "In part (c), change 'where had he gone' to 'where he had gone'. When a question word acts as a connector between clauses, the subject comes before the helping verb."
+            },
+            {
+                id: 3,
+                tag: "Tense Form Correction",
+                question: "Find the error in the given sentence:\n(a) Although I am playing cricket/ (b) for more than three years/ (c) I have not been able to score a century/ (d) No error",
+                options: [
+                    "(a) Although I am playing cricket",
+                    "(b) for more than three years",
+                    "(c) I have not been able to score a century",
+                    "(d) No error"
+                ],
+                correct: 0,
+                hint: "An action starting in the past and continuing into the present with 'for/since' requires a specific continuous tense.",
+                explanation: "In part (a), change 'am playing' to 'have been playing'. Present Continuous cannot be used with 'for/since' + time when expressing continuing duration; it demands Present Perfect Continuous."
+            },
+            {
+                id: 4,
+                tag: "Subordinate Clause Word Order",
+                question: "Spot the error:\n(a) I do not know where could he have gone/ (b) so early/ (c) in the morning./ (d) No error",
+                options: [
+                    "(a) I do not know where could he have gone",
+                    "(b) so early",
+                    "(c) in the morning",
+                    "(d) No error"
+                ],
+                correct: 0,
+                hint: "Look at the clause structure following 'where' when it joins two clauses.",
+                explanation: "In part (a), replace 'where could he have gone' with 'where he could have gone'. The auxiliary verb must follow the subject in dependent clauses."
+            },
+            {
+                id: 5,
+                tag: "Sequence of Past Actions",
+                question: "Identify the error:\n(a) By the time/ (b) we got our tickets and entered the cinema theatre,/ (c) the show was already begun./ (d) No error",
+                options: [
+                    "(a) By the time",
+                    "(b) we got our tickets and entered the cinema theatre",
+                    "(c) the show was already begun",
+                    "(d) No error"
+                ],
+                correct: 2,
+                hint: "When two actions happened in the past one after another, the earlier action takes a past perfect form.",
+                explanation: "In part (c), replace 'was already begun' with 'had already begun'. The show starting prior to the arrival requires Past Perfect tense."
+            },
+            {
+                id: 6,
+                tag: "Future Sequence Rule",
+                question: "Find the grammatical mistake:\n(a) By the time/ (b) we will get our tickets and enter the cinema theatre,/ (c) the show will have already begun./ (d) No error",
+                options: [
+                    "(a) By the time",
+                    "(b) we will get our tickets and enter the cinema theatre",
+                    "(c) the show will have already begun",
+                    "(d) No error"
+                ],
+                correct: 1,
+                hint: "In time clauses referring to the future introduced by 'by the time', future tense is not used in the clause itself.",
+                explanation: "In part (b), remove 'will'. Change 'we will get' to 'we get'. The clause following 'by the time' takes Simple Present tense while the main clause takes Future Perfect."
+            },
+            {
+                id: 7,
+                tag: "Past Sequence Rule",
+                question: "Spot the error:\n(a) Gowri told me/ (b) his name after/ (c) he left./ (d) No error",
+                options: [
+                    "(a) Gowri told me",
+                    "(b) his name after",
+                    "(c) he left",
+                    "(d) No error"
+                ],
+                correct: 2,
+                hint: "Examine the order of past actions with 'after'. The prior action uses past perfect.",
+                explanation: "In part (c), change 'he left' to 'he had left'. The action of leaving occurred before telling his name, so it must be in Past Perfect tense."
+            },
+            {
+                id: 8,
+                tag: "Preposition with Time",
+                question: "Identify the error in the sentence:\n(a) we have been/ (b) celebrating many festivals/ (c) since centuries./ (d) No error",
+                options: [
+                    "(a) we have been",
+                    "(b) celebrating many festivals",
+                    "(c) since centuries",
+                    "(d) No error"
+                ],
+                correct: 2,
+                hint: "Distinguish between a specific starting point ('since') and a length of duration ('for').",
+                explanation: "In part (c), replace 'since' with 'for'. 'Centuries' denotes an unspecific duration of time rather than a definitive starting point."
+            },
+            {
+                id: 9,
+                tag: "Past Perfect Verb Form",
+                question: "Spot the error:\n(a) Old age and infirmity/ (b) had began to/ (c) catch up with him./ (d) No error",
+                options: [
+                    "(a) Old age and infirmity",
+                    "(b) had began to",
+                    "(c) catch up with him",
+                    "(d) No error"
+                ],
+                correct: 1,
+                hint: "Check the form of the main verb that follows 'had'.",
+                explanation: "In part (b), replace 'began' ($V_2$) with 'begun' ($V_3$). Past perfect tense requires 'had' + third form of the verb ($V_3$)."
+            },
+            {
+                id: 10,
+                tag: "Indirect Question Order",
+                question: "Find the error:\n(a) The passer-by told us/ (b) where was the marriage hall/ (c) and even led us to it./ (d) No error",
+                options: [
+                    "(a) The passer-by told us",
+                    "(b) where was the marriage hall",
+                    "(c) and even led us to it",
+                    "(d) No error"
+                ],
+                correct: 1,
+                hint: "Direct versus indirect question inversion rules inside a sentence statement.",
+                explanation: "In part (b), change 'where was the marriage hall' to 'where the marriage hall was'. The verb must follow the subject in embedded clauses."
+            },
+            {
+                id: 11,
+                tag: "Simple Past vs Present Perfect",
+                question: "Identify the error:\n(a) I have passed / (b) the examination/ (c) two years ago/ (d) No error",
+                options: [
+                    "(a) I have passed",
+                    "(b) the examination",
+                    "(c) two years ago",
+                    "(d) No error"
+                ],
+                correct: 0,
+                hint: "A specific past time indicator like 'two years ago' dictates a specific tense.",
+                explanation: "In part (a), replace 'have passed' with 'passed'. Definite past time markers ('ago', 'yesterday', in 1990) require Simple Past tense, not Present Perfect."
+            },
+            {
+                id: 12,
+                tag: "Since Clause Tense Agreement",
+                question: "Spot the error:\n(a) Since he joined/ (b) this post, he did not take/ (c) any bribe./ (d) No error",
+                options: [
+                    "(a) Since he joined",
+                    "(b) this post, he did not take",
+                    "(c) any bribe",
+                    "(d) No error"
+                ],
+                correct: 1,
+                hint: "Match the tense in the main clause when 'since' clause is in Simple Past.",
+                explanation: "In part (b), change 'did not take' to 'has not taken'. When 'since' introduces a clause in Simple Past, the main clause takes Present Perfect tense."
+            },
+            {
+                id: 13,
+                tag: "Definite Past Year Marker",
+                question: "Find the grammatical mistake:\n(a) Perhaps you know/ (b) that I have passed/ (c) the examination in 1990./ (d) No error",
+                options: [
+                    "(a) Perhaps you know",
+                    "(b) that I have passed",
+                    "(c) the examination in 1990",
+                    "(d) No error"
+                ],
+                correct: 1,
+                hint: "Notice the year '1990' specifying past time.",
+                explanation: "In part (b), change 'have passed' to 'passed'. A specific past calendar year requires Simple Past tense rather than Present Perfect."
+            },
+            {
+                id: 14,
+                tag: "Future Perfect Deadline",
+                question: "Identify the error:\n(a) He has read four plays/ (b) written by Shakespeare/ (c) by the end of his vacation./ (d) No error",
+                options: [
+                    "(a) He has read four plays",
+                    "(b) written by Shakespeare",
+                    "(c) by the end of his vacation",
+                    "(d) No error"
+                ],
+                correct: 0,
+                hint: "Examine the phrase 'by the end of his vacation' referring to a future completion deadline.",
+                explanation: "In part (a), change 'has read' to 'will have read'. An action completed by a specific point in the future requires Future Perfect tense."
+            },
+            {
+                id: 15,
+                tag: "Direct Question Inversion",
+                question: "Spot the error:\n(a) When they stole / (b) the money/ (c) and where did they hide it?./ (d) No error",
+                options: [
+                    "(a) When they stole",
+                    "(b) the money",
+                    "(c) and where did they hide it?",
+                    "(d) No error"
+                ],
+                correct: 0,
+                hint: "Check if the sentence is structured as an interrogative sentence requiring auxiliary inversion.",
+                explanation: "In part (a), change 'When they stole' to 'When did they steal'. Since the sentence ends with a question mark and asks a direct question, both clauses must use interrogative form."
+            },
+            {
+                id: 16,
+                tag: "Verb Form after Has/Have",
+                question: "Find the error:\n(a) The teacher/ (b) has took/ (c) the responsibility/ (d) No error.",
+                options: [
+                    "(a) The teacher",
+                    "(b) has took",
+                    "(c) the responsibility",
+                    "(d) No error"
+                ],
+                correct: 1,
+                hint: "Check the verb form following 'has'.",
+                explanation: "In part (b), change 'took' ($V_2$) to 'taken' ($V_3$). Perfect tenses require the third form of the verb."
+            },
+            {
+                id: 17,
+                tag: "Point of Time vs Duration",
+                question: "Identify the error:\n(a) For time immemorial/ (b) sea shells have been used by man/ (c) in many ways./ (d) No error",
+                options: [
+                    "(a) For time immemorial",
+                    "(b) sea shells have been used by man",
+                    "(c) in many ways",
+                    "(d) No error"
+                ],
+                correct: 0,
+                hint: "'Time immemorial' represents a starting point of time, not a measurable duration.",
+                explanation: "In part (a), replace 'For' with 'Since'. 'Time immemorial' signifies a starting point in antiquity, hence taking 'since'."
+            },
+            {
+                id: 18,
+                tag: "Verb Conjugation (Overflow)",
+                question: "Spot the error:\n(a) The river is in spate/ (b) and it has overflown/ (c) its banks./ (d) No error",
+                options: [
+                    "(a) The river is in spate",
+                    "(b) and it has overflown",
+                    "(c) its banks",
+                    "(d) No error"
+                ],
+                correct: 1,
+                hint: "Look at the past participle form of the verb 'overflow'.",
+                explanation: "In part (b), change 'overflown' to 'overflowed'. The past participle and past tense of 'overflow' is 'overflowed' (overflown is from 'fly')."
+            },
+            {
+                id: 19,
+                tag: "For vs Since with Duration",
+                question: "Find the error:\n(a) The little boy/ (b) had been waiting for his turn/ (c) since a long time./ (d) No error",
+                options: [
+                    "(a) The little boy",
+                    "(b) had been waiting for his turn",
+                    "(c) since a long time",
+                    "(d) No error"
+                ],
+                correct: 2,
+                hint: "'A long time' is a length of time, not an exact starting point.",
+                explanation: "In part (c), replace 'since' with 'for'. 'A long time' is a duration, which requires 'for' instead of 'since'."
+            },
+            {
+                id: 20,
+                tag: "Duration with Present Continuous",
+                question: "Identify the error:\n(a) This T.V. serial/ (b) is going on/ (c) for 3 years./ (d) No error",
+                options: [
+                    "(a) This T.V. serial",
+                    "(b) is going on",
+                    "(c) for 3 years",
+                    "(d) No error"
+                ],
+                correct: 1,
+                hint: "Check the tense used with 'for 3 years'.",
+                explanation: "In part (b), replace 'is going on' with 'has been going on'. Actions continuing over a duration indicated by 'for/since' require perfect continuous tense."
+            },
+            {
+                id: 21,
+                tag: "Historical Context Tense Alignment",
+                question: "Spot the error:\n(a) In the early years of the renaissance of Bharatanatyam, hereditary dancers have their own set of accompanists/ (b) who lived with the dancers and travelled with them from place to place/ (c) when they gave performances./ (d) No error",
+                options: [
+                    "(a) In the early years of the renaissance of Bharatanatyam, hereditary dancers have their own set of accompanists",
+                    "(b) who lived with the dancers and travelled with them from place to place",
+                    "(c) when they gave performances",
+                    "(d) No error"
+                ],
+                correct: 0,
+                hint: "Notice the contextual setting in the past ('early years of renaissance', 'lived', 'travelled').",
+                explanation: "In part (a), change 'have' to 'had'. The historical context of the sentence requires past tense consistency throughout."
+            },
+            {
+                id: 22,
+                tag: "Present Perfect Voice/Result",
+                question: "Find the error:\n(a) This is turned out to be/ (b) one of our most successful projects/ (c) and we have made quite/ (d) a large profit from it./ (e) No error",
+                options: [
+                    "(a) This is turned out to be",
+                    "(b) one of our most successful projects",
+                    "(c) and we have made quite",
+                    "(d) a large profit from it",
+                    "(e) No error"
+                ],
+                correct: 0,
+                hint: "Check whether 'turn out' takes an active or passive form in this context.",
+                explanation: "In part (a), change 'is turned out' to 'has turned out'. The verb 'turn out' takes active voice in present perfect tense here."
+            },
+            {
+                id: 23,
+                tag: "Present Perfect Possession/Action",
+                question: "Identify the error:\n(a) He is given me/ (b) a lot of documents/ (c) to read before/ (d) the presentation tomorrow./ (e) No error",
+                options: [
+                    "(a) He is given me",
+                    "(b) a lot of documents",
+                    "(c) to read before",
+                    "(d) the presentation tomorrow",
+                    "(e) No error"
+                ],
+                correct: 0,
+                hint: "Look at the auxiliary verb used with 'given' ($V_3$).",
+                explanation: "In part (a), replace 'is given' with 'has given'. Completed actions with present relevance use 'has'/'have' + $V_3$."
+            },
+            {
+                id: 24,
+                tag: "Did with V1 Form",
+                question: "Spot the error:\n(a) Since the trip home/ (b) was expensive I/ (c) did not went home/ (d) during the holidays./ (e) No error",
+                options: [
+                    "(a) Since the trip home",
+                    "(b) was expensive I",
+                    "(c) did not went home",
+                    "(d) during the holidays",
+                    "(e) No error"
+                ],
+                correct: 2,
+                hint: "Check the verb form that must follow 'did not'.",
+                explanation: "In part (c), change 'went' to 'go'. 'Did', 'does', and 'do' must always be followed by the base form of the verb ($V_1$)."
+            },
+            {
+                id: 25,
+                tag: "Past Time Context Consistency",
+                question: "Find the error:\n(a) As she is late/ (b) for work yesterday she decided/ (c) to skip breakfast and/ (d) leave for office./ (e) No error",
+                options: [
+                    "(a) As she is late",
+                    "(b) for work yesterday she decided",
+                    "(c) to skip breakfast and",
+                    "(d) leave for office",
+                    "(e) No error"
+                ],
+                correct: 0,
+                hint: "Check the time marker 'yesterday' and align the verb tense.",
+                explanation: "In part (a), change 'is' to 'was'. The presence of 'yesterday' indicates that the entire state must be in the past tense."
+            },
+            {
+                id: 26,
+                tag: "Tense Parallelism in Narration",
+                question: "Identify the error:\n(a) As soon as the CEO entered the office, the/ (b) union leaders approached him/ (c) and report the matter to him./ (d) No error",
+                options: [
+                    "(a) As soon as the CEO entered the office, the",
+                    "(b) union leaders approached him",
+                    "(c) and report the matter to him",
+                    "(d) No error"
+                ],
+                correct: 2,
+                hint: "Check verb tense consistency across coordinated clauses in the past.",
+                explanation: "In part (c), change 'report' to 'reported'. All verbs describing past narrative events ('entered', 'approached') must maintain past tense uniformity."
+            },
+            {
+                id: 27,
+                tag: "Ongoing Action with Since",
+                question: "Spot the error:\n(a) The college/ (b) is running a computer course/ (c) since 2007./ (d) No error",
+                options: [
+                    "(a) The college",
+                    "(b) is running a computer course",
+                    "(c) since 2007",
+                    "(d) No error"
+                ],
+                correct: 1,
+                hint: "Examine the combination of 'is running' with 'since 2007'.",
+                explanation: "In part (b), change 'is running' to 'has been running'. Continuous actions spanning from a point in the past require Present Perfect Continuous."
+            },
+            {
+                id: 28,
+                tag: "Past Interrogative Tense Match",
+                question: "Find the error:\n(a) Did he tell you/ (b) why he hasn't/ (c) come yesterday?/ (d) No error",
+                options: [
+                    "(a) Did he tell you",
+                    "(b) why he hasn't",
+                    "(c) come yesterday",
+                    "(d) No error"
+                ],
+                correct: 1,
+                hint: "Look at the specific past time indicator 'yesterday' in the sub-clause.",
+                explanation: "In part (b), change 'hasn't' to 'hadn't'. With 'yesterday' indicating a specific past time relative to another past action, Simple Past or Past Perfect is required."
+            },
+            {
+                id: 29,
+                tag: "Past Habit/Event Verb Form",
+                question: "Identify the error:\n(a) Last night I dream/ (b) I was a Sheikh on the 169th floor/ (c) of Burj Khalifa./ (d) No error",
+                options: [
+                    "(a) Last night I dream",
+                    "(b) I was a Sheikh on the 169th floor",
+                    "(c) of Burj Khalifa",
+                    "(d) No error"
+                ],
+                correct: 0,
+                hint: "'Last night' dictates the use of the past tense form.",
+                explanation: "In part (a), replace 'dream' with 'dreamed' or 'dreamt'. 'Last night' denotes a completed past action requiring $V_2$."
+            },
+            {
+                id: 30,
+                tag: "Past Continuous vs Perfect Continuous",
+                question: "Spot the error:\n(a) She and her sister/ (b) were working here/ (c) since 1983./ (d) No error",
+                options: [
+                    "(a) She and her sister",
+                    "(b) were working here",
+                    "(c) since 1983",
+                    "(d) No error"
+                ],
+                correct: 1,
+                hint: "Check the tense required when 'since + time' is used in the past.",
+                explanation: "In part (b), change 'were working' to 'had been working'. 'Since 1983' requires Past Perfect Continuous tense instead of Past Continuous."
+            },
+            {
+                id: 31,
+                tag: "Since Clause Tense Pair",
+                question: "Find the error:\n(a) Nobody saw him/ (b) since the fire broke/ (c) in his locality./ (d) No error",
+                options: [
+                    "(a) Nobody saw him",
+                    "(b) since the fire broke",
+                    "(c) in his locality",
+                    "(d) No error"
+                ],
+                correct: 0,
+                hint: "When 'since' clause is in Simple Past, the main clause takes Present Perfect.",
+                explanation: "In part (a), change 'saw' to 'has seen'. The rule dictates: Present Perfect + since + Simple Past."
+            },
+            {
+                id: 32,
+                tag: "Future Event Completion",
+                question: "Identify the error:\n(a) By this time next year/ (b) Ramesh will take/ (c) his degree./ (d) No error",
+                options: [
+                    "(a) By this time next year",
+                    "(b) Ramesh will take",
+                    "(c) his degree",
+                    "(d) No error"
+                ],
+                correct: 1,
+                hint: "'By this time next year' points to an action completed by a future deadline.",
+                explanation: "In part (b), change 'will take' to 'will have taken'. Future deadlines ('by this time next year') require Future Perfect tense."
+            },
+            {
+                id: 33,
+                tag: "Duration with Present Tense",
+                question: "Spot the error:\n(a) The families/ (b) are living in Gulmohar Park/ (c) for the last two decades./ (d) No error",
+                options: [
+                    "(a) The families",
+                    "(b) are living in Gulmohar Park",
+                    "(c) for the last two decades",
+                    "(d) No error"
+                ],
+                correct: 1,
+                hint: "Examine 'are living' combined with 'for the last two decades'.",
+                explanation: "In part (b), change 'are living' to 'have been living'. Duration expressed by 'for' requires Present Perfect Continuous."
+            },
+            {
+                id: 34,
+                tag: "Past Time Indicator Rule",
+                question: "Find the error:\n(a) My uncle/ (b) has left/ (c) for Bombay last Saturday./ (d) No error",
+                options: [
+                    "(a) My uncle",
+                    "(b) has left",
+                    "(c) for Bombay last Saturday",
+                    "(d) No error"
+                ],
+                correct: 1,
+                hint: "'Last Saturday' specifies a definite point in the past.",
+                explanation: "In part (b), change 'has left' to 'left'. Specific past time expressions require Simple Past tense."
+            },
+            {
+                id: 35,
+                tag: "Exclamatory Sentence Structure",
+                question: "Identify the error:\n(a) Good heavens !/ (b) How has she/ (c) grown !/ (d) No error",
+                options: [
+                    "(a) Good heavens !",
+                    "(b) How has she",
+                    "(c) grown !",
+                    "(d) No error"
+                ],
+                correct: 1,
+                hint: "Check word order in exclamatory sentences starting with 'How'.",
+                explanation: "In part (b), change 'has she' to 'she has'. In exclamations, the subject precedes the verb ('How she has grown!')."
+            },
+            {
+                id: 36,
+                tag: "Since/For with Perfect Tense",
+                question: "Spot the error:\n(a) I ate/ (b) nothing/ (c) since morning/ (d) No error",
+                options: [
+                    "(a) I ate",
+                    "(b) nothing",
+                    "(c) since morning",
+                    "(d) No error"
+                ],
+                correct: 0,
+                hint: "Check the tense used alongside 'since morning'.",
+                explanation: "In part (a), replace 'I ate' with 'I have eaten'. 'Since + time' mandates either Perfect or Perfect Continuous tense."
+            },
+            {
+                id: 37,
+                tag: "Stative Verb Non-Continuous Rule",
+                question: "Find the error:\n(a) He/ (b) is having/ (c) many friends here/ (d) No error",
+                options: [
+                    "(a) He",
+                    "(b) is having",
+                    "(c) many friends here",
+                    "(d) No error"
+                ],
+                correct: 1,
+                hint: "Verbs of possession like 'have' cannot take an '-ing' form.",
+                explanation: "In part (b), change 'is having' to 'has'. When 'have' implies possession or state, it is not used in continuous forms."
+            },
+            {
+                id: 38,
+                tag: "Past Narrative Consistency",
+                question: "Identify the error:\n(a) When I went there/ (b) Charles is playing/ (c) a game of chess/ (d) No error",
+                options: [
+                    "(a) When I went there",
+                    "(b) Charles is playing",
+                    "(c) a game of chess",
+                    "(d) No error"
+                ],
+                correct: 1,
+                hint: "Match the tense of the main clause with the past clause 'When I went there'.",
+                explanation: "In part (b), change 'is' to 'was'. Since the starting clause is in Simple Past ('went'), the subsequent clause must be in Past Continuous ('was playing')."
+            },
+            {
+                id: 39,
+                tag: "Past Action Event Marker",
+                question: "Spot the error:\n(a) The vaccine/ (b) when hit the market/ (c) is dogged by controversy/ (d) No error",
+                options: [
+                    "(a) The vaccine",
+                    "(b) when hit the market",
+                    "(c) is dogged by controversy",
+                    "(d) No error"
+                ],
+                correct: 2,
+                hint: "Examine the narrative tense sequence for historical events.",
+                explanation: "In part (c), change 'is' to 'was'. The event described occurred in the past ('when hit the market'), requiring past tense agreement."
+            },
+            {
+                id: 40,
+                tag: "Past Narrative Prior Action",
+                question: "Find the error:\n(a) The victim tried to tell us/ (b) what has happened but/ (c) his voice was not audible./ (d) No error",
+                options: [
+                    "(a) The victim tried to tell us",
+                    "(b) what has happened but",
+                    "(c) his voice was not audible",
+                    "(d) No error"
+                ],
+                correct: 1,
+                hint: "An action happening before another past action takes past perfect.",
+                explanation: "In part (b), change 'has happened' to 'had happened'. The incident happened prior to the victim trying to speak, requiring Past Perfect tense."
+            },
+            {
+                id: 41,
+                tag: "Subject-Verb Agreement in Perfect",
+                question: "Identify the error:\n(a) Our history can be seen as a long evolutionary dialectical development/(b) in which there have been/ (c) a painstaking forging of rational and moral self./(d) No error",
+                options: [
+                    "(a) Our history can be seen as a long evolutionary dialectical development",
+                    "(b) in which there have been",
+                    "(c) a painstaking forging of rational and moral self",
+                    "(d) No error"
+                ],
+                correct: 1,
+                hint: "Identify the true grammatical subject following 'there'.",
+                explanation: "In part (b), change 'have been' to 'has been'. The real subject is singular ('a painstaking forging'), which requires a singular verb."
+            },
+            {
+                id: 42,
+                tag: "Simple Past Verb Form",
+                question: "Spot the error:\n(a) Last year two Italian prisoners of war/ (b) escapes from a prison camp/ (c) in Kenya during the war./ (d) No error",
+                options: [
+                    "(a) Last year two Italian prisoners of war",
+                    "(b) escapes from a prison camp",
+                    "(c) in Kenya during the war",
+                    "(d) No error"
+                ],
+                correct: 1,
+                hint: "'Last year' indicates a past action.",
+                explanation: "In part (b), change 'escapes' to 'escaped'. 'Last year' requires Simple Past tense ($V_2$)."
+            },
+            {
+                id: 43,
+                tag: "Stative Verb Possession",
+                question: "Find the error:\n(a) Madhuri Dixit/ (b) is having/ (c) a large fan following./ (d) No error",
+                options: [
+                    "(a) Madhuri Dixit",
+                    "(b) is having",
+                    "(c) a large fan following",
+                    "(d) No error"
+                ],
+                correct: 1,
+                hint: "Verbs indicating possession or state cannot take continuous forms.",
+                explanation: "In part (b), change 'is having' to 'has'. 'Have' denoting possession must be in Simple Present."
+            },
+            {
+                id: 44,
+                tag: "Since Clause Present Perfect Rule",
+                question: "Identify the error:\n(a) No one heard anything/ (b) about him since/ (c) he left India for good./ (d) No error",
+                options: [
+                    "(a) No one heard anything",
+                    "(b) about him since",
+                    "(c) he left India for good",
+                    "(d) No error"
+                ],
+                correct: 0,
+                hint: "Check the main clause tense when 'since' + Simple Past is used.",
+                explanation: "In part (a), change 'heard' to 'has heard'. The clause structure requires Present Perfect before 'since' and Simple Past after it."
+            },
+            {
+                id: 45,
+                tag: "Past Sequence with Before",
+                question: "Spot the error:\n(a) Before the teacher/ (b) could finish the question/ (c) the students gave the correct answer./ (d) No error",
+                options: [
+                    "(a) Before the teacher",
+                    "(b) could finish the question",
+                    "(c) the students gave the correct answer",
+                    "(d) No error"
+                ],
+                correct: 2,
+                hint: "Examine the prior action in past events involving 'before'.",
+                explanation: "In part (c), change 'gave' to 'had given'. The students giving the answer occurred before the teacher finished, requiring Past Perfect tense."
+            },
+            {
+                id: 46,
+                tag: "Yet in Negative Perfect Sentences",
+                question: "Find the error:\n(a) She did not prepare/ (b) her/ (c) breakfast yet./ (d) No error",
+                options: [
+                    "(a) She did not prepare",
+                    "(b) her",
+                    "(c) breakfast yet",
+                    "(d) No error"
+                ],
+                correct: 0,
+                hint: "'Yet' is typically used with a specific tense structure in negatives.",
+                explanation: "In part (a), change 'did not prepare' to 'has not prepared'. 'Yet' is a marker for Present Perfect negative sentences."
+            },
+            {
+                id: 47,
+                tag: "Stative Verb Own",
+                question: "Identify the error:\n(a) Perhaps you do not know/ (b) I am owning/ (c) a farm house besides two bungalows./ (d) No error",
+                options: [
+                    "(a) Perhaps you do not know",
+                    "(b) I am owning",
+                    "(c) a farm house besides two bungalows",
+                    "(d) No error"
+                ],
+                correct: 1,
+                hint: "'Own' is a verb of possession and cannot be used in continuous tense.",
+                explanation: "In part (b), change 'am owning' to 'own'. Verbs of possession ('own', 'belong') are restricted to simple tenses."
+            },
+            {
+                id: 48,
+                tag: "Past Perfect Precedence Rule",
+                question: "Spot the error:\n(a) When Anand reached his village/ (b) he found that / (c) the news about him preceded him./ (d) No error",
+                options: [
+                    "(a) When Anand reached his village",
+                    "(b) he found that",
+                    "(c) the news about him preceded him",
+                    "(d) No error"
+                ],
+                correct: 2,
+                hint: "The news arriving before his arrival represents an action prior to another past action.",
+                explanation: "In part (c), change 'preceded' to 'had preceded'. The prior action must be in Past Perfect tense."
+            },
+            {
+                id: 49,
+                tag: "Future Action Sequence",
+                question: "Find the error:\n(a) She will already return/ (b) home/ (c) when he arrives./ (d) No error",
+                options: [
+                    "(a) She will already return",
+                    "(b) home",
+                    "(c) when he arrives",
+                    "(d) No error"
+                ],
+                correct: 0,
+                hint: "An action completed prior to another future action uses Future Perfect.",
+                explanation: "In part (a), change 'will already return' to 'will have already returned'. Future completion requires Future Perfect tense."
+            },
+            {
+                id: 50,
+                tag: "Double Verb Form in Perfect",
+                question: "Identify the error:\n(a) Each one of them/ (b) has have his share/ (c) of joy and sorrow./ (d) No error",
+                options: [
+                    "(a) Each one of them",
+                    "(b) has have his share",
+                    "(c) of joy and sorrow",
+                    "(d) No error"
+                ],
+                correct: 1,
+                hint: "Check the main verb form that follows auxiliary 'has'.",
+                explanation: "In part (b), change 'have' to 'had'. The structure for Present Perfect requires auxiliary 'has/have' followed by the third form ($V_3$) of 'have', which is 'had'."
+            }
+        ];
+
+        let currentIndex = 0;
+        let score = 0;
+        let userAnswers = new Array(quizData.length).fill(null);
+
+        const questionTitle = document.getElementById('question-title');
+        const optionsContainer = document.getElementById('options-container');
+        const questionTag = document.getElementById('question-tag');
+        const questionNumberBadge = document.getElementById('question-number-badge');
+        const scoreDisplay = document.getElementById('score-display');
+        const progressText = document.getElementById('progress-text');
+        const progressBar = document.getElementById('progress-bar');
+        const hintBox = document.getElementById('hint-box');
+        const hintText = document.getElementById('hint-text');
+        const explanationBox = document.getElementById('explanation-box');
+        const resultIndicator = document.getElementById('result-indicator');
+        const explanationText = document.getElementById('explanation-text');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const jumpInput = document.getElementById('jump-input');
+
+        function loadQuestion(index) {
+            const q = quizData[index];
+            questionNumberBadge.innerText = `Question ${index + 1} of 50`;
+            questionTag.innerText = q.tag;
+            questionTitle.innerText = q.question;
+            hintText.innerText = q.hint;
+            
+            // Reset hint and explanation boxes
+            hintBox.classList.add('hidden');
+            explanationBox.classList.add('hidden');
+
+            // Render options
+            optionsContainer.innerHTML = '';
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left p-3.5 rounded-xl border transition-all text-sm font-medium flex items-center justify-between ${
+                    userAnswers[index] !== null
+                        ? idx === q.correct
+                            ? 'bg-emerald-500/20 border-emerald-500 text-emerald-200'
+                            : userAnswers[index] === idx
+                                ? 'bg-rose-500/20 border-rose-500 text-rose-200'
+                                : 'bg-slate-900/40 border-slate-700/60 text-slate-400 opacity-60'
+                        : 'bg-slate-900/60 border-slate-700 hover:border-indigo-500 hover:bg-slate-900 text-slate-200'
+                }`;
+                btn.innerHTML = `<span>${opt}</span>`;
+                if (userAnswers[index] === null) {
+                    btn.onclick = () => selectOption(idx);
+                } else {
+                    btn.disabled = true;
+                }
+                optionsContainer.appendChild(btn);
+            });
+
+            // If already answered, show explanation
+            if (userAnswers[index] !== null) {
+                showExplanationState(userAnswers[index] === q.correct, q.explanation);
+            }
+
+            // Update navigation controls
+            prevBtn.disabled = index === 0;
+            nextBtn.innerText = index === quizData.length - 1 ? 'Finish' : 'Next →';
+            jumpInput.value = index + 1;
+            progressText.innerText = index + 1;
+            progressBar.style.width = `${((index + 1) / quizData.length) * 100}%`;
+        }
+
+        function selectOption(selectedIndex) {
+            const q = quizData[currentIndex];
+            userAnswers[currentIndex] = selectedIndex;
+            
+            const isCorrect = selectedIndex === q.correct;
+            if (isCorrect) {
+                score++;
+                scoreDisplay.innerText = score;
+            }
+
+            loadQuestion(currentIndex);
+        }
+
+        function showExplanationState(isCorrect, explanationStr) {
+            explanationBox.classList.remove('hidden');
+            if (isCorrect) {
+                resultIndicator.innerHTML = '<span class="text-emerald-400">✅ Correct Answer!</span>';
+                explanationBox.className = 'bg-emerald-950/30 border border-emerald-500/40 rounded-xl p-5 mb-6 text-sm transition-all';
+            } else {
+                resultIndicator.innerHTML = '<span class="text-rose-400">❌ Incorrect Answer!</span>';
+                explanationBox.className = 'bg-rose-950/30 border border-rose-500/40 rounded-xl p-5 mb-6 text-sm transition-all';
+            }
+            explanationText.innerText = explanationStr;
+        }
+
+        function toggleHint() {
+            hintBox.classList.toggle('hidden');
+        }
+
+        function nextQuestion() {
+            if (currentIndex < quizData.length - 1) {
+                currentIndex++;
+                loadQuestion(currentIndex);
+            } else {
+                alert(`Quiz Completed! Your final score is ${score} / 50.`);
+            }
+        }
+
+        function previousQuestion() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                loadQuestion(currentIndex);
+            }
+        }
+
+        function jumpToQuestion(val) {
+            const qNum = parseInt(val);
+            if (qNum >= 1 && qNum <= quizData.length) {
+                currentIndex = qNum - 1;
+                loadQuestion(currentIndex);
+            } else {
+                jumpInput.value = currentIndex + 1;
+            }
+        }
+
+        // Initialize first question on load
+        window.onload = () => {
+            loadQuestion(currentIndex);
+        };
+    </script>
+<script src="../../quiz-app-ui-v2.js"></script>
+</body>
+</html>

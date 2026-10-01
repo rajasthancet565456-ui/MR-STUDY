@@ -1,0 +1,727 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mastery Quiz: Modal Auxiliaries (SSC, Railway, HPSC, UPSC)</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            background: var(--light);
+            padding: 15px;
+            border-radius: 8px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        select {
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .score-board {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: var(--primary);
+        }
+
+        .card {
+            background: #fff;
+            border: 1px solid #e1e8ed;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .q-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .q-tag {
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .q-text {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 15px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .opt-btn {
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            padding: 10px 15px;
+            border-radius: 6px;
+            text-align: left;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+
+        .opt-btn:hover:not([disabled]) {
+            background: #e2e8f0;
+        }
+
+        .opt-btn.correct {
+            background: #dcfce7 !important;
+            border-color: var(--success) !important;
+            color: #15803d;
+            font-weight: bold;
+        }
+
+        .opt-btn.incorrect {
+            background: #fee2e2 !important;
+            border-color: var(--danger) !important;
+            color: #b91c1c;
+        }
+
+        .explanation {
+            margin-top: 12px;
+            padding: 12px;
+            background: #f1f5f9;
+            border-left: 4px solid var(--secondary);
+            border-radius: 4px;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .explanation.show {
+            display: block;
+        }
+
+        .btn-submit {
+            display: block;
+            width: 100%;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 1.1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .btn-submit:hover {
+            background: #2980b9;
+        }
+
+        @media (max-width: 600px) {
+            body { padding: 10px; }
+            .container { padding: 15px; }
+            .controls { flex-direction: column; align-items: stretch; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Modal Auxiliaries Mastery Quiz</h1>
+    <div class="subtitle">Based on KD Publication Verbs Chapter (Pages 9–19) | SSC, Railway, HSSC, HPSC & UPSC Level</div>
+
+    <div class="controls">
+        <div>
+            <label for="module-select"><b>Select Level / Module:</b> </label>
+            <select id="module-select" onchange="loadModule()">
+                <option value="0">Module 1: Basic Rules (May, Might, Must)</option>
+                <option value="1">Module 2: Intermediate (Shall, Will Rules)</option>
+                <option value="3">Module 3: Advanced (Would, Used to & Past Habits)</option>
+                <option value="3">Module 4: Special Rules (Lest, Suggestion, Ought to)</option>
+                <option value="4">Module 5: Exam PYQs & Spotting Errors (UPSC/SSC)</option>
+            </select>
+        </div>
+        <div class="score-board">Score: <span id="score">0</span> / <span id="total-q">10</span></div>
+    </div>
+
+    <div id="quiz-container"></div>
+
+    <button class="btn-submit" onclick="calculateFinalScore()">Submit Current Module</button>
+</div>
+
+<script>
+const quizData = [
+    // MODULE 1
+    [
+        {
+            q: "Select the correct option: 'It _______ rain tonight, but the sky is quite clear.'",
+            options: ["A) must", "B) might", "C) will definitely", "D) shall"],
+            answer: 1,
+            tag: "May vs Might",
+            exp: "Rule 4 (P. 10): 'Might' is used to express 'less possibility' (कम संभावना), whereas 'May' is used for higher possibility."
+        },
+        {
+            q: "Identify the error: 'We eat (A) / so that we (B) / might live. (C) / No error (D)'",
+            options: ["A) We eat", "B) so that we", "C) might live", "D) No error"],
+            answer: 2,
+            tag: "Subordinate Clause",
+            exp: "Rule 3 (P. 9): If the Principal Clause is in Present Tense and subordinate clause starts with 'so that' expressing purpose, use 'may' instead of 'might'."
+        },
+        {
+            q: "Find the incorrect part: 'We may (A) / possibly come (B) / tomorrow for the meeting. (C) / No error (D)'",
+            options: ["A) We may", "B) possibly come", "C) tomorrow for the meeting", "D) No error"],
+            answer: 1,
+            tag: "Superfluous Usage",
+            exp: "Note (P. 11): Do not use 'possibly' or 'likely' with 'may' or 'might' because both indicate possibility, making the sentence superfluous."
+        },
+        {
+            q: "Choose the correct sentence for strong deduction/high probability:",
+            options: [
+                "He stays in five-star hotels and travels by flight; he might be poor.",
+                "He stays in five-star hotels and travels by flight; he must be very rich.",
+                "He stays in five-star hotels and travels by flight; he can be rich.",
+                "He stays in five-star hotels and travels by flight; he shall be rich."
+            ],
+            answer: 1,
+            tag: "Must Probability",
+            exp: "Rule 5 (P. 10): If the possibility is very high (strong certainty/deduction), use 'Must'."
+        },
+        {
+            q: "In an optative sentence expressing a wish, which modal is appropriate?",
+            options: ["A) Would", "B) Might", "C) May", "D) Must"],
+            answer: 2,
+            tag: "Optative Sentences",
+            exp: "Rule 2 (P. 9): 'May' is used in Optative sentences to express a wish/blessing (e.g., 'May you live long!')."
+        },
+        {
+            q: "Spotting Error: 'He worked hard (A) / so that he (B) / may pass the examination. (C) / No error (D)'",
+            options: ["A) He worked hard", "B) so that he", "C) may pass the examination", "D) No error"],
+            answer: 2,
+            tag: "Tense Agreement",
+            exp: "Rule 3 (P. 9): Since the principal clause 'He worked hard' is in Past Tense, the subordinate clause purpose takes 'might', not 'may'."
+        },
+        {
+            q: "Which sentence correctly requests permission with respect?",
+            options: ["A) Can I come in, sir?", "B) May I come in, sir?", "C) Would I come in, sir?", "D) Shall I come in, sir?"],
+            answer: 1,
+            tag: "Requests",
+            exp: "Rule 6 (P. 11): 'May' is used in interrogative sentences to ask permission or make requests with respect."
+        },
+        {
+            q: "Correct the sentence: 'We will possibly reach on time.'",
+            options: [
+                "A) Correct as written",
+                "B) We may possibly reach on time",
+                "C) We might possibly reach on time",
+                "D) We shall possibly reaching on time"
+            ],
+            answer: 0,
+            tag: "Superfluous Rules",
+            exp: "Note (P. 11): 'Will' can be combined with 'possibly' (e.g., 'We will possibly come tomorrow'). Only 'May/Might' cannot be combined with 'possibly'."
+        },
+        {
+            q: "Complete the sentence: 'He has not eaten anything for two days; he _____ be very hungry.'",
+            options: ["A) might", "B) must", "C) shall", "D) can"],
+            answer: 1,
+            tag: "Strong Deduction",
+            exp: "Rule 5 (P. 10): High probability or factual deduction requires 'must'."
+        },
+        {
+            q: "Choose the sentence that correctly avoids redundancy:",
+            options: [
+                "A) She may likely win the trophy.",
+                "B) She is likely to win the trophy.",
+                "C) She might possibly win the trophy.",
+                "D) She may possibly win the trophy."
+            ],
+            answer: 1,
+            tag: "Redundancy",
+            exp: "Note (P. 11): Do not use 'may/might' with 'likely'. Option B correctly uses 'is likely to'."
+        }
+    ],
+    // MODULE 2
+    [
+        {
+            q: "Standard rule for Future Tense: Which subject pair takes 'Shall' for general future actions?",
+            options: ["A) You, He", "B) I, We", "C) They, It", "D) She, You"],
+            answer: 1,
+            tag: "Shall/Will Standard",
+            exp: "Rule 1 (P. 11): 'Shall' is used with 1st person subjects (I/We) in simple future tense."
+        },
+        {
+            q: "When 'Shall' is used with 2nd (You) and 3rd Person (He, She, They) subjects, it expresses:",
+            options: ["A) Simple future only", "B) Past habits", "C) Command, Promise, Threat, Determination, or Compulsion", "D) Remote possibility"],
+            answer: 2,
+            tag: "Inverted Modals",
+            exp: "Note (P. 11): 'Shall' with 2nd/3rd person subjects expresses Command, Promise, Threat, Determination, Compulsion, or Advice."
+        },
+        {
+            q: "Identify the meaning of 'Shall' in: 'You shall leave the room at once.'",
+            options: ["A) Promise", "B) Command", "C) Suggestion", "D) Request"],
+            answer: 1,
+            tag: "Context Analysis",
+            exp: "Rule 1(a) (P. 11): 'You shall leave...' expresses a direct Command."
+        },
+        {
+            q: "Which interrogative question tag is grammatically correct for imperative sentences starting with 'Let us'?",
+            options: [
+                "Let us dance together, will we?",
+                "Let us dance together, shall we?",
+                "Let us dance together, don't we?",
+                "Let us dance together, can we?"
+            ],
+            answer: 1,
+            tag: "Question Tag",
+            exp: "Rule 2 (P. 12): Imperative sentences starting with 'Let us / let's' take 'shall we?' in question tags."
+        },
+        {
+            q: "Spot the Error: 'Will I go (A) / to the market (B) / with you? (C) / No error (D)'",
+            options: ["A) Will I go", "B) to the market", "C) with you?", "D) No error"],
+            answer: 0,
+            tag: "Modern English Exception",
+            exp: "Rule 1 (P. 11): Although modern English accepts 'Will' with I/We in affirmative sentences, in interrogative sentences 'Shall' must still be used with 'I/We'."
+        },
+        {
+            q: "Identify the nature of Modal in: 'Trespassers shall be prosecuted.'",
+            options: ["A) Threat / Warning", "B) Wish", "C) Habit", "D) Theoretical Possibility"],
+            answer: 0,
+            tag: "Threat Concept",
+            exp: "Rule 1(c) (P. 11): 'Shall' with 3rd person (Trespassers) expresses a legal Threat/Warning."
+        },
+        {
+            q: "Spot the Error: 'He hoped that (A) / he will pass (B) / the test with good marks. (C) / No error (D)'",
+            options: ["A) He hoped that", "B) he will pass", "C) the test with good marks", "D) No error"],
+            answer: 1,
+            tag: "Past Tense Sequence",
+            exp: "Note 1 (P. 14): If a sentence starts in the Past Tense ('hoped'), change 'will/shall' to 'would/should'."
+        },
+        {
+            q: "Find the error: 'He said that (A) / the sun was (B) / a star. (C) / No error (D)'",
+            options: ["A) He said that", "B) the sun was", "C) a star", "D) No error"],
+            answer: 1,
+            tag: "Universal Truth",
+            exp: "Note Exception (P. 14): Universal truths remain in Simple Present Tense even if the starting clause is in Past Tense ('the sun is a star')."
+        },
+        {
+            q: "Conditionals Rule: 'If I will come, I will meet you.' Correct version is:",
+            options: [
+                "A) If I will come, I meet you.",
+                "B) If I come, I will meet you.",
+                "C) If I coming, I will meet you.",
+                "D) If I shall come, I will meet you."
+            ],
+            answer: 1,
+            tag: "Conditional Clause",
+            exp: "Rule 2 (P. 15): In conditional sentences with two future events, the conditional clause takes Simple Present Tense, not simple future."
+        },
+        {
+            q: "Which word strictly prohibits immediate simple future tense following it?",
+            options: ["A) Unless", "B) Provided", "C) As soon as", "D) All of the above"],
+            answer: 3,
+            tag: "Conditional Conjunctions",
+            exp: "Rule 2 Bullet (P. 15): Words like If, as soon as, in case, provided, unless, until, before, after, when do not take Simple Future directly after them."
+        }
+    ],
+    // MODULE 3
+    [
+        {
+            q: "What does 'Would' express in: 'He would rather die than beg.'",
+            options: ["A) Past routine", "B) Preference / Choice", "C) Threat", "D) Moral obligation"],
+            answer: 1,
+            tag: "Would Preference",
+            exp: "Rule 2 (P. 16): 'Would' is used to express 'preference' or 'choice', usually paired with 'rather...than'."
+        },
+        {
+            q: "Choose the correct sentence expressing pure imaginary condition (Present/Past unreal):",
+            options: [
+                "A) If I was a bird, I would fly in the sky.",
+                "B) If I were a bird, I would fly in the sky.",
+                "C) If I am a bird, I would fly in the sky.",
+                "D) If I be a bird, I will fly in the sky."
+            ],
+            answer: 1,
+            tag: "Imaginary Conditional",
+            exp: "Rule 5 & Note (P. 17): In imaginary present conditions, all subjects take 'were' in the conditional clause and 'would' in the main clause."
+        },
+        {
+            q: "Find the error: 'If I had been a doctor, (A) / I would help (B) / the poor patients. (C) / No error (D)'",
+            options: ["A) If I had been a doctor,", "B) I would help", "C) the poor patients.", "D) No error"],
+            answer: 1,
+            tag: "Past Unfulfilled Condition",
+            exp: "Rule 5 Note (P. 17): If the conditional clause relates to past ('had been'), the principal clause structure requires 'would have + V3' (would have helped)."
+        },
+        {
+            q: "Which verb pattern correctly describes past routine actions in series?",
+            options: [
+                "I used to go to school by bus. I would return on foot. We played for hours.",
+                "I used to go to school by bus. I used to return on foot. We used to play for hours.",
+                "I would go to school by bus. I used to return on foot. We play for hours.",
+                "I play to school by bus. I would return on foot. We played for hours."
+            ],
+            answer: 0,
+            tag: "Past Routine Combination",
+            exp: "Rule 4 (P. 16-17): 'Used to', 'Would', and 'Simple Past Tense (V2)' are all combined to express continuous past routines without repetitive phrasing."
+        },
+        {
+            q: "Which word forces the sentence to be imaginary and avoids 'was'?",
+            options: ["A) I wish", "B) As if", "C) Would that", "D) All of the above"],
+            answer: 3,
+            tag: "Imaginary Markers",
+            exp: "Rule 5 List (P. 18): Words like 'I wish', 'as though', 'if', 'as if', 'would that', and 'suppose' indicate imagination and use 'were' instead of 'was'."
+        },
+        {
+            q: "Convert Direct to Indirect: He said, 'He will go there.'",
+            options: [
+                "A) He said that he will go there.",
+                "B) He said that he would go there.",
+                "C) He said that he shall go there.",
+                "D) He said that he should go there."
+            ],
+            answer: 1,
+            tag: "Indirect Speech",
+            exp: "Rule 6 (P. 18): 'Would' acts as the past form of 'will' in Indirect speech."
+        },
+        {
+            q: "What modal expresses polite request in interrogative form?",
+            options: ["A) Would you help me?", "B) Must you help me?", "C) Shall you help me?", "D) Should you help me?"],
+            answer: 0,
+            tag: "Polite Request",
+            exp: "Rule 7 (P. 18): 'Would' is used in interrogative sentences for polite requests."
+        },
+        {
+            q: "Identify the incorrect usage: 'He uses to study till 10 p.m. daily.'",
+            options: [
+                "A) Correct as written",
+                "B) Replace 'uses to study' with 'studies'",
+                "C) Replace 'uses to study' with 'used to study'",
+                "D) Replace 'uses to study' with 'would study'"
+            ],
+            answer: 1,
+            tag: "Present Routine Error",
+            exp: "USED TO Rule (P. 21): 'Use to' or 'uses to' is NOT used for present routine actions. Use Simple Present Tense ('He studies...')."
+        },
+        {
+            q: "Identify the role of 'used to' in: 'I am used to sleeping late at night.'",
+            options: ["A) Modal Auxiliary", "B) Adjective", "C) Main Verb", "D) Noun"],
+            answer: 1,
+            tag: "Marginal Auxiliary",
+            exp: "Marginal Auxiliary Rule (P. 4): When preceded by 'be' verb (is/am/are/was), 'used to' acts as an Adjective followed by a Gerund (V1+ing)."
+        },
+        {
+            q: "Spot the Error: 'I would rather (A) / die (B) / then accept defeat. (C) / No error (D)'",
+            options: ["A) I would rather", "B) die", "C) then accept defeat", "D) No error"],
+            answer: 2,
+            tag: "Comparative Conjunction",
+            exp: "Rule 2 (P. 16): 'Would rather' takes comparative conjunction 'than', not adverb 'then'."
+        }
+    ],
+    // MODULE 4
+    [
+        {
+            q: "Rule for 'LEST': 'Run fast lest you _______ miss the train.'",
+            options: ["A) will", "B) shall", "C) should", "D) may"],
+            answer: 2,
+            tag: "Lest Conjunction",
+            exp: "Rule 3 (P. 18): 'Lest' is followed by 'Should' to express negative purpose."
+        },
+        {
+            q: "Alternate rule for 'Lest': If 'should' is absent after 'lest', which form of verb must be used?",
+            options: ["A) V1 with s/es", "B) Bare V1 without s/es", "C) V2", "D) V3"],
+            answer: 1,
+            tag: "Lest Subjunctive",
+            exp: "Rule 3 Note (P. 18): 'Lest' can also take 'V1' without 's/es' (e.g., 'Take care lest you fall', 'Help him lest he fail')."
+        },
+        {
+            q: "Which modal expresses Moral Duty or Ethical Obligation?",
+            options: ["A) Must", "B) Should", "C) Ought to", "D) Could"],
+            answer: 2,
+            tag: "Moral Obligation",
+            exp: "Rule 1 (P. 19): 'Ought to' expresses moral obligation or social duty (e.g., 'We ought to love our country')."
+        },
+        {
+            q: "Correct structure check: Which modals MUST be followed by infinitive 'to + V1'?",
+            options: ["A) Can, Could", "B) Ought, Used", "C) May, Might", "D) Shall, Will"],
+            answer: 1,
+            tag: "Infinitive Rules",
+            exp: "Rule 3 (P. 6 / P. 19): 'Ought' and 'Used' are followed by 'to + V1'."
+        },
+        {
+            q: "Find the error: 'He ran fast (A) / lest he (B) / should not miss the train. (C) / No error (D)'",
+            options: ["A) He ran fast", "B) lest he", "C) should not miss the train", "D) No error"],
+            answer: 2,
+            tag: "Negative Redundancy",
+            exp: "Rule 3 (P. 18): 'Lest' itself has a negative meaning. Adding 'not' after 'lest' makes it an error."
+        },
+        {
+            q: "Complete sentence: 'You _______ study English to qualify for competitive exams.' (General advice)",
+            options: ["A) ought", "B) should", "C) might", "D) would"],
+            answer: 1,
+            tag: "Advice/Suggestion",
+            exp: "Rule 1 & 2 (P. 18): 'Should' is used to give general advice or suggestions."
+        },
+        {
+            q: "Choose the grammatically correct sentence:",
+            options: [
+                "A) We ought respect our elders.",
+                "B) We ought to respect our elders.",
+                "C) We ought to respecting our elders.",
+                "D) We ought to respected our elders."
+            ],
+            answer: 1,
+            tag: "Ought to Usage",
+            exp: "Rule 1 (P. 19) & Rule 3 (P. 6): 'Ought' requires 'to + V1' base form."
+        },
+        {
+            q: "What does 'Should' indicate in advice contexts?",
+            options: ["A) Physical ability", "B) Opinion on ideal actions / Advice", "C) Compulsory punishment", "D) Absolute certainty"],
+            answer: 1,
+            tag: "Should Concept",
+            exp: "Rule 2 (P. 18): 'Should' expresses advice or opinion on what is right/desirable."
+        },
+        {
+            q: "Identify the mistake: 'Help him (A) / lest he (B) / fails in the exam. (C) / No error (D)'",
+            options: ["A) Help him", "B) lest he", "C) fails in the exam", "D) No error"],
+            answer: 2,
+            tag: "Subjunctive Form",
+            exp: "Rule 3 Note (P. 18): When using V1 after 'lest', do not attach 's/es'. It must be 'lest he fail'."
+        },
+        {
+            q: "Select the sentence showing formal/polite obligation:",
+            options: [
+                "A) You must go now.",
+                "B) You ought to love your nation.",
+                "C) You can bring books.",
+                "D) You will run fast."
+            ],
+            answer: 1,
+            tag: "Moral Duty",
+            exp: "Rule 1 (P. 19): Loving one's nation is a moral obligation expressed via 'ought to'."
+        }
+    ],
+    // MODULE 5
+    [
+        {
+            q: "Spot the Error (SSC PYQ): 'When I was young, (A) / I can run (B) / faster than Mohan. (C) / No error (D)'",
+            options: ["A) When I was young,", "B) I can run", "C) faster than Mohan.", "D) No error"],
+            answer: 1,
+            tag: "SSC Spotting Error",
+            exp: "Past ability requires 'could' instead of 'can' because the context is past ('When I was young')."
+        },
+        {
+            q: "Spot the Error (SSC PYQ): 'Harish needs not (A) / come here (B) / as it is getting dark. (C) / No error (D)'",
+            options: ["A) Harish needs not", "B) come here", "C) as it is getting dark.", "D) No error"],
+            answer: 0,
+            tag: "Marginal Need",
+            exp: "When 'need' acts as a helper modal in negative sentences ('need not'), it does NOT take 's/es'. Change 'needs not' to 'need not'."
+        },
+        {
+            q: "Spot the Error (SSC PYQ): 'He dare (A) / not to (B) / go there. (C) / No error (D)'",
+            options: ["A) He dare", "B) not to", "C) go there.", "D) No error"],
+            answer: 1,
+            tag: "Bare Infinitive",
+            exp: "'Dare not' and 'Need not' take bare infinitive (V1 without 'to'). Remove 'to'."
+        },
+        {
+            q: "Spot the Error (Railway PYQ): 'Run fast (A) / lest you (B) / will miss the train. (C) / No error (D)'",
+            options: ["A) Run fast", "B) lest you", "C) will miss the train.", "D) No error"],
+            answer: 2,
+            tag: "Lest Rule PYQ",
+            exp: "Replace 'will' with 'should'. 'Lest' always pairs with 'should'."
+        },
+        {
+            q: "Spot the Error (HSSC PYQ): 'The old lady (A) / prayed that he (B) / may live long. (C) / No error (D)'",
+            options: ["A) The old lady", "B) prayed that he", "C) may live long.", "D) No error"],
+            answer: 2,
+            tag: "Tense Sequence",
+            exp: "Since 'prayed' is in past tense, 'may' must be converted to 'might'."
+        },
+        {
+            q: "Spot the Error (HPSC PYQ): 'Rama must not to (A) / have treated his mistress (B) / like that. (C) / No error (D)'",
+            options: ["A) Rama must not to", "B) have treated his mistress", "C) like that.", "D) No error"],
+            answer: 0,
+            tag: "Modal + Infinitive",
+            exp: "Modals do not take 'to' before 'have'. Remove 'to'. Structure: Must + not + have + V3."
+        },
+        {
+            q: "Spot the Error (SSC PYQ): 'The Government cannot (A) / be able to contain (B) / Encephalitis by spending 1% GDP. (C) / No error (D)'",
+            options: ["A) The Government cannot", "B) be able to contain", "C) Encephalitis by spending 1% GDP.", "D) No error"],
+            answer: 1,
+            tag: "Superfluous Ability",
+            exp: "'Can/Cannot' already denotes ability. Adding 'be able to' is superfluous. Remove 'be able to'."
+        },
+        {
+            q: "Spot the Error (UPSC CSAT Pattern): 'He returned the purse (A) / though he could keep (B) / it very easily. (C) / No error (D)'",
+            options: ["A) He returned the purse", "B) though he could keep", "C) it very easily.", "D) No error"],
+            answer: 1,
+            tag: "Past Unfulfilled Action",
+            exp: "To express an action that was possible in the past but didn't happen, use 'could have + V3' ('could have kept')."
+        },
+        {
+            q: "Spot the Error: 'If you get good marks (A) / I shall happy (B) / as much as you. (C) / No error (D)'",
+            options: ["A) If you get good marks", "B) I shall happy", "C) as much as you.", "D) No error"],
+            answer: 1,
+            tag: "Missing Main Verb",
+            exp: "Modals require a principal verb. Add 'be' after 'shall' -> 'I shall be happy'."
+        },
+        {
+            q: "Spot the Error: 'It is very cold here (A) / I should bring (B) / my woolen clothes but I didn't. (C) / No error (D)'",
+            options: ["A) It is very cold here", "B) I should bring", "C) my woolen clothes but I didn't.", "D) No error"],
+            answer: 1,
+            tag: "Past Regret",
+            exp: "To express past regret/unfulfilled obligation, use 'should have + V3' ('I should have brought')."
+        }
+    ]
+];
+
+let currentModule = 0;
+let userAnswers = {};
+
+function loadModule() {
+    currentModule = parseInt(document.getElementById('module-select').value);
+    userAnswers = {};
+    const container = document.getElementById('quiz-container');
+    container.innerHTML = '';
+
+    const questions = quizData[currentModule];
+    document.getElementById('total-q').innerText = questions.length;
+    document.getElementById('score').innerText = '0';
+
+    questions.forEach((q, qIndex) => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        
+        let optionsHTML = '';
+        q.options.forEach((opt, optIndex) => {
+            optionsHTML += `<button class="opt-btn" id="opt-${qIndex}-${optIndex}" onclick="selectOption(${qIndex}, ${optIndex})">${opt}</button>`;
+        });
+
+        card.innerHTML = `
+            <div class="q-header">
+                <span class="q-tag">${q.tag}</span>
+                <span style="font-size:0.85rem; color:#666;">Q${qIndex + 1} of ${questions.length}</span>
+            </div>
+            <div class="q-text">${q.q}</div>
+            <div class="options">${optionsHTML}</div>
+            <div class="explanation" id="exp-${qIndex}">
+                <b>Explanation:</b> ${q.exp}
+            </div>
+        `;
+        container.appendChild(card);
+    });
+}
+
+function selectOption(qIndex, optIndex) {
+    if (userAnswers[qIndex] !== undefined) return; // Prevent changing answer
+
+    userAnswers[qIndex] = optIndex;
+    const qData = quizData[currentModule][qIndex];
+    const isCorrect = optIndex === qData.answer;
+
+    const selectedBtn = document.getElementById(`opt-${qIndex}-${optIndex}`);
+    const correctBtn = document.getElementById(`opt-${qIndex}-${qData.answer}`);
+
+    if (isCorrect) {
+        selectedBtn.classList.add('correct');
+    } else {
+        selectedBtn.classList.add('incorrect');
+        correctBtn.classList.add('correct');
+    }
+
+    // Disable all options for this question
+    qData.options.forEach((_, idx) => {
+        document.getElementById(`opt-${qIndex}-${idx}`).disabled = true;
+    });
+
+    // Show explanation
+    document.getElementById(`exp-${qIndex}`).classList.add('show');
+
+    updateScore();
+}
+
+function updateScore() {
+    let score = 0;
+    const questions = quizData[currentModule];
+    Object.keys(userAnswers).forEach(qIdx => {
+        if (userAnswers[qIdx] === questions[qIdx].answer) {
+            score++;
+        }
+    });
+    document.getElementById('score').innerText = score;
+}
+
+function calculateFinalScore() {
+    const questions = quizData[currentModule];
+    const total = questions.length;
+    const answered = Object.keys(userAnswers).length;
+    let score = document.getElementById('score').innerText;
+
+    if (answered < total) {
+        alert(`You have answered ${answered} out of ${total} questions. Please answer all questions before final submission.`);
+    } else {
+        alert(`Module Completed!\nYour Final Score: ${score} / ${total}`);
+    }
+}
+
+// Initial Load
+window.onload = loadModule;
+</script>
+
+<script src="../../quiz-app-ui-v2.js"></script>
+</body>
+</html>

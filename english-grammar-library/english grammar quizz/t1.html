@@ -1,0 +1,866 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Grammar Tenses - Exam Mastery Quiz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+        body { font-family: 'Plus Jakarta+ Sans', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col justify-between">
+
+    <!-- Header -->
+    <header class="bg-slate-800 border-b border-slate-700 shadow-lg sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-3">
+            <div>
+                <h1 class="text-xl font-bold text-indigo-400">English Tenses: Ultimate 50 Exam Quiz</h1>
+                <p class="text-xs text-slate-400">Targeting SSC, RRB, HSSC, & State PCS Exam Patterns</p>
+            </div>
+            <div class="flex items-center gap-4 bg-slate-900/60 px-4 py-2 rounded-xl border border-slate-700">
+                <div class="text-sm">Score: <span id="score" class="font-bold text-emerald-400">0</span> / <span id="total-questions">50</span></div>
+                <div class="h-4 w-[1px] bg-slate-700"></div>
+                <div class="text-sm">Q: <span id="current-q" class="font-bold text-indigo-400">1</span>/50</div>
+            </div>
+        </div>
+        <!-- Progress Bar -->
+        <div class="w-full bg-slate-700 h-1.5">
+            <div id="progress-bar" class="bg-indigo-500 h-1.5 transition-all duration-300" style="width: 2%;"></div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-3xl w-full mx-auto p-4 sm:p-6 my-auto">
+        <div id="quiz-card" class="bg-slate-800 border border-slate-700 rounded-2xl shadow-2xl p-6 sm:p-8 relative overflow-hidden transition-all duration-300">
+            
+            <!-- Question Meta / Jump Bar -->
+            <div class="flex justify-between items-center mb-4 text-xs font-semibold text-slate-400">
+                <span id="question-tag" class="bg-indigo-950 text-indigo-300 border border-indigo-800 px-3 py-1 rounded-full uppercase tracking-wider">Present Indefinite</span>
+                <div class="flex items-center gap-2">
+                    <label for="jump-input" class="cursor-pointer hover:text-slate-200">Jump to Q:</label>
+                    <input type="number" id="jump-input" min="1" max="50" class="w-14 bg-slate-900 border border-slate-700 rounded px-2 py-1 text-center text-slate-200 font-bold focus:outline-none focus:border-indigo-500">
+                </div>
+            </div>
+
+            <!-- Question Text -->
+            <h2 id="question-text" class="text-lg sm:text-xl font-semibold text-slate-100 mb-6 leading-relaxed">
+                Loading question...
+            </h2>
+
+            <!-- Options Container -->
+            <div id="options-container" class="space-y-3 mb-6">
+                <!-- Dynamically populated options -->
+            </div>
+
+            <!-- Hint Section -->
+            <div class="mb-6">
+                <button id="hint-btn" onclick="toggleHint()" class="text-xs text-amber-400 hover:text-amber-300 flex items-center gap-1.5 font-medium transition-colors">
+                    <span>💡 Need a hint?</span>
+                </button>
+                <div id="hint-box" class="hidden mt-2 p-3 bg-amber-950/30 border border-amber-800/50 rounded-xl text-amber-200/90 text-sm">
+                    <!-- Hint text -->
+                </div>
+            </div>
+
+            <!-- Rationale / Explanation Box -->
+            <div id="explanation-box" class="hidden mb-6 p-4 bg-slate-900/80 border border-slate-700 rounded-xl text-slate-300 text-sm leading-relaxed">
+                <h3 class="font-bold text-indigo-400 mb-1 flex items-center gap-2"><span>📖</span> Detailed Rationale & Rule Explanation:</h3>
+                <p id="explanation-text"></p>
+            </div>
+
+            <!-- Navigation Controls -->
+            <div class="flex justify-between items-center pt-4 border-t border-slate-700">
+                <button id="prev-btn" onclick="prevQuestion()" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-xl font-medium transition disabled:opacity-40 disabled:cursor-not-allowed">
+                    Previous
+                </button>
+                <button id="next-btn" onclick="nextQuestion()" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-medium transition shadow-lg shadow-indigo-600/20">
+                    Next Question
+                </button>
+            </div>
+
+        </div>
+
+        <!-- Completion Modal / Summary View -->
+        <div id="completion-view" class="hidden bg-slate-800 border border-slate-700 rounded-2xl p-8 text-center shadow-2xl">
+            <div class="text-5xl mb-4">🏆</div>
+            <h2 class="text-2xl font-bold text-slate-100 mb-2">Quiz Completed!</h2>
+            <p class="text-slate-400 mb-6">You have mastered all 50 competitive exam tense rules from your syllabus.</p>
+            <div class="inline-block bg-slate-900 border border-slate-700 px-6 py-4 rounded-xl mb-6">
+                <span class="text-sm text-slate-400 block">Final Score</span>
+                <span id="final-score" class="text-3xl font-extrabold text-emerald-400">0 / 50</span>
+            </div>
+            <div>
+                <button onclick="restartQuiz()" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-semibold transition">
+                    Restart Practice Quiz
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-4 text-xs text-slate-500 border-t border-slate-800">
+        Interactive Exam Preparation Tool • Based on KD Publication English Tenses Study Material
+    </footer>
+
+    <!-- JavaScript Data & Logic -->
+    <script>
+        const quizData = [
+            {
+                id: 1,
+                tag: "Present Indefinite - Universal Truth",
+                question: "Identify the correct sentence structure expressing a universal truth or permanent scientific phenomenon:",
+                options: [
+                    { text: "Earthquakes comes in Japan frequently.", isCorrect: false, rationale: "Plural subject requires singular verb without 's', but here 'Earthquakes' is plural so it should be 'come'." },
+                    { text: "The sun rises in the east every morning.", isCorrect: true, rationale: "Universal truths and permanent facts take Simple Present tense (Subject + V1 + s/es + object)." },
+                    { text: "The sun is rising in the east daily.", isCorrect: false, rationale: "Universal truths cannot be stated in Present Continuous tense as they are permanent, not temporary ongoing actions." },
+                    { text: "The sun has risen in the east yesterday.", isCorrect: false, rationale: "Past time marker 'yesterday' cannot be paired with Present Perfect tense." }
+                ],
+                hint: "Universal truths and permanent facts always use the simple present tense."
+            },
+            {
+                id: 2,
+                tag: "Newspaper Headlines & Commentary",
+                question: "Choose the sentence that correctly employs the simple present tense for a newspaper headline:",
+                options: [
+                    { text: "PM has signed a major trade deal yesterday.", isCorrect: false, rationale: "Newspaper headlines avoid helping verbs and use simple present tense for recent events even if past." },
+                    { text: "Prime Minister signed the bilateral agreement.", isCorrect: false, rationale: "While past tense is grammatically acceptable, newspaper headline style specifically favors simple present." },
+                    { text: "PM signs defense deal with neighboring nation.", isCorrect: true, rationale: "Newspaper headlines and live sports commentaries use simple present tense with minimum articles/helping verbs." },
+                    { text: "PM is signing defense pact currently.", isCorrect: false, rationale: "Continuous tense is avoided in concise newspaper headline styles." }
+                ],
+                hint: "Newspaper headlines drop articles/helping verbs and use simple present."
+            },
+            {
+                id: 3,
+                tag: "Planned Near Future Action",
+                question: "Which of the following sentences correctly expresses a scheduled/planned action in the near future using simple present tense?",
+                options: [
+                    { text: "The Prime Minister leaves for China next week.", isCorrect: true, rationale: "Simple present tense can express a definite planned future schedule or official itinerary." },
+                    { text: "The Prime Minister left for China next week.", isCorrect: false, rationale: "Past tense cannot be combined with future time marker 'next week'." },
+                    { text: "The Prime Minister will leaving for China next week.", isCorrect: false, rationale: "'will' must be followed by V1 ('leave'), not V1+ing." },
+                    { text: "The Prime Minister has left for China next week.", isCorrect: false, rationale: "Present perfect tense is incompatible with explicit future time markers." }
+                ],
+                hint: "Official timetables or planned near-future events use simple present."
+            },
+            {
+                id: 4,
+                tag: "Adverbial Inversion & Subject-Verb Agreement",
+                question: "Identify the correct sentence structure when an active voice sentence begins with an adverb ('off', 'here', 'there'):",
+                options: [
+                    { text: "Off the plane goes into the sky.", isCorrect: false, rationale: "When sentence starts with an adverb, the verb/helping verb must precede the subject." },
+                    { text: "Off goes the plane.", isCorrect: true, rationale: "When a sentence starts with adverbs like 'off', 'here', 'there', the verb precedes the subject in active voice." },
+                    { text: "Off is going the plane right now.", isCorrect: false, rationale: "Action emphasis with directional adverbs takes simple present, not continuous tense." },
+                    { text: "Off the plane is going.", isCorrect: false, rationale: "Subject precedes verb incorrectly after initial adverb." }
+                ],
+                hint: "When a sentence starts with adverbs like 'here' or 'off', the verb comes before the subject."
+            },
+            {
+                id: 5,
+                tag: "Interrogative vs Assertive Forms",
+                question: "Choose the correct sentence from the options below regarding 'what' clauses:",
+                options: [
+                    { text: "I don't know what does he know about you.", isCorrect: false, rationale: "When 'what' connects two clauses, the second clause must be in assertive form (Subject + Verb), not interrogative." },
+                    { text: "What does he know about you?", isCorrect: true, rationale: "When 'what' asks a direct question, it correctly requires the interrogative form (Does + Sub + V1)." },
+                    { text: "What he knows about you does not matters.", isCorrect: false, rationale: "Subject clause 'What he knows' is singular and takes 'matter', but 'does not matters' has double verb markers." },
+                    { text: "I don't know what does she wants.", isCorrect: false, rationale: "'does' is followed by V1 ('want'), not V5 ('wants')." }
+                ],
+                hint: "Direct questions use question form, but connecting clauses use assertive form."
+            },
+            {
+                id: 6,
+                tag: "Subject-Verb Distance Rule",
+                question: "Spot the error or identify the correct statement for: 'The appeal of the victims to transfer the cases related to riots to some other states do not affect the merit of the case.'",
+                options: [
+                    { text: "Replace 'do not' with 'does not' because the main subject is 'appeal' (singular).", isCorrect: true, rationale: "Verbs must agree with the main subject ('The appeal' - singular), ignoring intervening prepositional phrases." },
+                    { text: "Replace 'cases' with 'case' to match the plural verb.", isCorrect: false, rationale: "The subject of the sentence is 'The appeal', not 'cases'." },
+                    { text: "Replace 'transfer' with 'transferring' for gerund consistency.", isCorrect: false, rationale: "Infinitive 'to transfer' is grammatically correct after noun 'appeal'." },
+                    { text: "No error exists in the original sentence.", isCorrect: false, rationale: "Proximity error occurred where 'do' was matched with plural 'states' or 'cases'." }
+                ],
+                hint: "Always match the verb with the actual main subject, not the noun closest to the verb."
+            },
+            {
+                id: 7,
+                tag: "It's High Time Construction",
+                question: "Which of the following sentences correctly follows the grammar rule for expressions like 'It is time' or 'It is high time' followed by a subject?",
+                options: [
+                    { text: "It is high time you should study for exams.", isCorrect: false, rationale: "'It's time' followed by a subject takes V2 directly, without modal auxiliary 'should'." },
+                    { text: "It is high time you studied for exams.", isCorrect: true, rationale: "When 'It's time' or 'It's high time' is followed by a subject, the verb must be in the 2nd form (V2)." },
+                    { text: "It is high time you study for exams.", isCorrect: false, rationale: "Present tense V1 is incorrect after 'It's high time + subject'; it requires V2 past form." },
+                    { text: "It is high time you have studied for exams.", isCorrect: false, rationale: "Present perfect is invalid here; simple past V2 is mandatory." }
+                ],
+                hint: "After 'It's high time + Subject', use the second form of the verb (V2)."
+            },
+            {
+                id: 8,
+                tag: "It's Time with Infinitive",
+                question: "Choose the correct sentence when 'It's time' is followed directly by an infinitive marker 'to':",
+                options: [
+                    { text: "It is time to studied hard.", isCorrect: false, rationale: "'to' must be followed by the base form of the verb (V1), not V2." },
+                    { text: "It is time to studying hard.", isCorrect: false, rationale: "Gerund V+ing cannot follow 'to' in this standard infinitive structure." },
+                    { text: "It is time to study hard.", isCorrect: true, rationale: "When 'It's time' is followed directly by 'to', it takes the first form of the verb (V1)." },
+                    { text: "It is time for study hard.", isCorrect: false, rationale: "Prepositional particle 'for' requires a noun or gerund, not bare V1." }
+                ],
+                hint: "When 'It's time' is followed by 'to', use V1."
+            },
+            {
+                id: 9,
+                tag: "Emphatic Do/Does/Did",
+                question: "Which sentence correctly demonstrates the emphatic use of auxiliary verbs in affirmative sentences?",
+                options: [
+                    { text: "He did made a huge mistake in calculation.", isCorrect: false, rationale: "Emphatic 'did' must be followed by the base form V1 ('make'), not V2 ('made')." },
+                    { text: "You do come here everyday.", isCorrect: true, rationale: "Auxiliary 'do/does/did' can be used in positive sentences for emphasis before main verb V1." },
+                    { text: "She does knows the entire truth.", isCorrect: false, rationale: "'does' takes V1 ('know'), not V5 ('knows')." },
+                    { text: "I did saw the accident.", isCorrect: false, rationale: "'did' requires V1 ('see'), not V2 ('saw')." }
+                ],
+                hint: "In affirmative sentences, 'do/does/did' can emphasize the main verb, which must be in V1 form."
+            },
+            {
+                id: 10,
+                tag: "Past Time Reference & Simple Past",
+                question: "Identify the correct sentence containing a specific past time reference:",
+                options: [
+                    { text: "I have come to Delhi yesterday.", isCorrect: false, rationale: "Explicit past time marker 'yesterday' requires Simple Past, not Present Perfect." },
+                    { text: "I came to Delhi yesterday.", isCorrect: true, rationale: "When an explicit past time marker is present, Simple Past (V2) must be used instead of Present Perfect." },
+                    { text: "I had come to Delhi yesterday.", isCorrect: false, rationale: "Past perfect requires a reference to another past action, not just a simple past adverbial." },
+                    { text: "I am coming to Delhi yesterday.", isCorrect: false, rationale: "Present continuous tense cannot pair with past time adverbial 'yesterday'." }
+                ],
+                hint: "Specific past time markers like 'yesterday' or 'in 1990' demand Simple Past tense."
+            },
+            {
+                id: 11,
+                tag: "Simple Future & Planned Action",
+                question: "Choose the correct option regarding future actions:",
+                options: [
+                    { text: "The train departs at 8 p.m. tonight.", isCorrect: true, rationale: "Future actions that are officially scheduled or planned can be expressed using Simple Present tense." },
+                    { text: "The train will departing at 8 p.m. tonight.", isCorrect: false, rationale: "'will' cannot take V+ing form directly." },
+                    { text: "The train departing at 8 p.m. tonight.", isCorrect: false, rationale: "Standalone participle without helping verb is ungrammatical." },
+                    { text: "The train has departed at 8 p.m. tonight.", isCorrect: false, rationale: "Future time marker 'tonight' conflicts with completed present perfect." }
+                ],
+                hint: "Planned future schedules can be expressed in Simple Present."
+            },
+            {
+                id: 12,
+                tag: "Present Continuous & Temporary Routine",
+                question: "Which of the following sentences correctly applies Present Continuous tense for a temporary routine action?",
+                options: [
+                    { text: "I prepare for competitive exams now-a-days.", isCorrect: false, rationale: "Temporary ongoing routines of the current period take Present Continuous ('am preparing')." },
+                    { text: "I am preparing for competitive exams now-a-days.", isCorrect: true, rationale: "Present Continuous is used for temporary routine actions happening around the present time." },
+                    { text: "I have prepared for competitive exams now-a-days.", isCorrect: false, rationale: "'now-a-days' denotes ongoing duration best suited for continuous tense." },
+                    { text: "I prepared for competitive exams now-a-days.", isCorrect: false, rationale: "Simple past is incorrect for ongoing temporary present habits." }
+                ],
+                hint: "Temporary ongoing habits or routines use Present Continuous."
+            },
+            {
+                id: 13,
+                tag: "Question Tags & Am Not",
+                question: "What is the correct contracted form used in question tags for the statement 'I am fine'?",
+                options: [
+                    { text: "I am fine, amn't I?", isCorrect: false, rationale: "'amn't' is ungrammatical and not accepted in standard English question tags." },
+                    { text: "I am fine, am not I?", isCorrect: false, rationale: "Uncontracted forms are avoided in standard question tag formation." },
+                    { text: "I am fine, aren't I?", isCorrect: true, rationale: "'am not' has no standard contracted form, so 'aren't I?' is universally used in question tags." },
+                    { text: "I am fine, don't I?", isCorrect: false, rationale: "Auxiliary verb must match the 'be' verb of the main statement." }
+                ],
+                hint: "'Am not' has no direct contraction, so 'aren't I?' is used in question tags."
+            },
+            {
+                id: 14,
+                tag: "Subjunctive Mood (Past Continuous / Were)",
+                question: "Identify the grammatically correct subjunctive conditional sentence:",
+                options: [
+                    { text: "I wish I was a bird.", isCorrect: false, rationale: "In unreal subjunctive/imaginary wishes, 'were' is used for all subjects, not 'was'." },
+                    { text: "I wish I were a bird.", isCorrect: true, rationale: "In subjunctive mood (imaginary wishes), 'were' is used with all subjects regardless of singular or plural." },
+                    { text: "I wish I am a bird.", isCorrect: false, rationale: "Present tense cannot express contrary-to-fact past/unreal wishes." },
+                    { text: "I wish I will be a bird.", isCorrect: false, rationale: "Future auxiliary 'will' is incorrect for hypothetical present/past wishes." }
+                ],
+                hint: "Imaginary wishes or hypothetical statements always use 'were' for all subjects."
+            },
+            {
+                id: 15,
+                tag: "Stative Verbs - Perception & Possession",
+                question: "Why is the sentence 'He is owing a car' incorrect, and what is its correct form?",
+                options: [
+                    { text: "Verbs of possession like 'own' cannot take '-ing' form; correct is 'He owns a car.'", isCorrect: true, rationale: "Stative verbs showing possession (own, have, belong) are not used in continuous '-ing' forms." },
+                    { text: "It should be 'He is owned a car' in passive voice.", isCorrect: false, rationale: "Active possession does not require passive voice here." },
+                    { text: "It should be 'He has owed a car.'", isCorrect: false, rationale: "Present perfect changes the meaning; simple present 'owns' represents permanent state." },
+                    { text: "Continuous form is acceptable if owned temporarily.", isCorrect: false, rationale: "Possession verbs never take continuous form in standard grammar." }
+                ],
+                hint: "Verbs of possession (own, belong, contain) are stative and cannot be used in continuous tense."
+            },
+            {
+                id: 16,
+                tag: "Dual Usage of 'Have' (Possession vs Action)",
+                question: "Identify the correct usage of 'have' in the given options:",
+                options: [
+                    { text: "I am having a car.", isCorrect: false, rationale: "When 'have' means possession, it cannot take '-ing'." },
+                    { text: "I am having a piece of cake.", isCorrect: true, rationale: "When 'have' means eating or enjoying, it can take '-ing' form in continuous tense." },
+                    { text: "I have a piece of cake right now as eating.", isCorrect: false, rationale: "Awkward construction; 'having' is standard for consuming/enjoying." },
+                    { text: "I having a car.", isCorrect: false, rationale: "Missing auxiliary verb." }
+                ],
+                hint: "'Have' can take '-ing' when it means eating or enjoying, but not when it means possession."
+            },
+            {
+                id: 17,
+                tag: "Dual Usage of 'Think' / Mental State",
+                question: "Choose the correct sentence regarding mental process verbs:",
+                options: [
+                    { text: "I am thinking you are right.", isCorrect: false, rationale: "When 'think' expresses opinion/belief, it is stative and takes simple present ('I think')." },
+                    { id: 2, text: "I think you are right.", isCorrect: true, rationale: "When 'think' denotes opinion or belief, continuous form is incorrect; simple present must be used." },
+                    { text: "I am thinking of you means I possess you.", isCorrect: false, rationale: "'thinking of' indicates mental process/consideration which can take '-ing'." },
+                    { text: "I am known the truth.", isCorrect: false, rationale: "'know' is a stative verb and cannot take passive or continuous auxiliary like 'am known'." }
+                ],
+                hint: "When 'think' means opinion or belief, use simple present, not continuous."
+            },
+            {
+                id: 18,
+                tag: "Prepositional Rule for Gerunds",
+                question: "Which of the following sentences correctly follows the rule that prepositions take gerunds (V1 + ing)?",
+                options: [
+                    { text: "Bats are capable of hear ultrasonic waves.", isCorrect: false, rationale: "Preposition 'of' must be followed by a gerund (V+ing), i.e., 'hearing'." },
+                    { text: "Bats are capable of hearing ultrasonic waves.", isCorrect: true, rationale: "All prepositions (like 'of', 'from', 'in', 'on') must be followed by V1+ing when followed by a verb." },
+                    { text: "Bats are capable to hear ultrasonic waves.", isCorrect: false, rationale: "'capable' is followed by preposition 'of', not infinitive 'to'." },
+                    { text: "Bats are capable for hearing ultrasonic waves.", isCorrect: false, rationale: "Adjective 'capable' takes preposition 'of', not 'for'." }
+                ],
+                hint: "All prepositions must be followed by a verb in the '-ing' form (gerund)."
+            },
+            {
+                id: 19,
+                tag: "Present Perfect & Past Time Conflict",
+                question: "Spot the error: 'Science has given us many life saving drugs in the 19th century.'",
+                options: [
+                    { text: "Change 'has given' to 'gave' because 'in the 19th century' is a specific past time reference.", isCorrect: true, rationale: "Explicit past time indicators require Simple Past tense instead of Present Perfect." },
+                    { text: "Change 'in the 19th century' to 'since the 19th century'.", isCorrect: false, rationale: "Historical events specific to a century take simple past." },
+                    { text: "Change 'has given' to 'had given'.", isCorrect: false, rationale: "Past perfect requires a secondary past reference action." },
+                    { text: "No error; present perfect is correct for historical facts.", isCorrect: false, rationale: "Specific past time expressions rule out present perfect." }
+                ],
+                hint: "Specific past time markers like centuries or dates require Simple Past (V2)."
+            },
+            {
+                id: 20,
+                tag: "Since Clause & Tense Combination",
+                question: "Choose the correct sentence combining 'since' with past and present tenses:",
+                options: [
+                    { text: "I haven't seen him since he leaves India.", isCorrect: false, rationale: "The clause following 'since' must be in Simple Past tense (left), not Simple Present." },
+                    { text: "I haven't seen him since he left India.", isCorrect: true, rationale: "Standard rule: Present Perfect (main clause) + Since + Simple Past (subordinate clause)." },
+                    { text: "I didn't see him since he has left India.", isCorrect: false, rationale: "Tense positions are reversed incorrectly." },
+                    { text: "I hadn't seen him since he left India.", isCorrect: false, rationale: "Main clause must be in Present Perfect, not Past Perfect, unless preceded by past timeframe." }
+                ],
+                hint: "Structure: Present Perfect + 'since' + Simple Past."
+            },
+            {
+                id: 21,
+                tag: "Past Perfect - Sequential Past Actions",
+                question: "When two actions happen in the past one after another, which tense represents the first completed action?",
+                options: [
+                    { text: "Simple Present tense", isCorrect: false, rationale: "Present tense is restricted to present time contexts." },
+                    { text: "Simple Past tense", isCorrect: false, rationale: "Simple past represents the second (subsequent) action." },
+                    { text: "Past Perfect tense (had + V3)", isCorrect: true, rationale: "When two past actions occur sequentially, the earlier action takes Past Perfect and the later takes Simple Past." },
+                    { text: "Present Perfect tense", isCorrect: false, rationale: "Present perfect connects past actions to the present moment." }
+                ],
+                hint: "The earlier of two past actions uses Past Perfect (had + V3)."
+            },
+            {
+                id: 22,
+                tag: "Before & After Clause Patterns",
+                question: "Choose the grammatically correct sentence using 'before':",
+                options: [
+                    { text: "I saw him before he stopped his car.", isCorrect: false, rationale: "The earlier action 'seeing' must be in Past Perfect ('had seen') before the second past action." },
+                    { text: "I had seen him before he stopped his car.", isCorrect: true, rationale: "First action takes Past Perfect ('had seen') and second action takes Simple Past ('stopped')." },
+                    { text: "I saw him before he had stopped his car.", isCorrect: false, rationale: "The action happening first must take Past Perfect." },
+                    { text: "I have seen him before he stopped his car.", isCorrect: false, rationale: "Mixed past context requires past perfect, not present perfect." }
+                ],
+                hint: "Action 1 (Past Perfect) + 'before' + Action 2 (Simple Past)."
+            },
+            {
+                id: 23,
+                tag: "By the Time Clause Structure",
+                question: "Identify the correct sentence structure with 'By the time':",
+                options: [
+                    { text: "By the time I reached the theatre, the show started.", isCorrect: false, rationale: "The show starting before arrival must be in Past Perfect ('had started')." },
+                    { text: "By the time I reached the theatre, the show had started.", isCorrect: true, rationale: "'By the time + Simple Past, Past Perfect' structure correctly denotes an earlier past action." },
+                    { text: "By the time I reach the theatre, the show started.", isCorrect: false, rationale: "Mismatched tenses between present and past." },
+                    { text: "By the time I had reached, the show had started.", isCorrect: false, rationale: "Both clauses cannot be in past perfect when one precedes the other." }
+                ],
+                hint: "'By the time' + Simple Past, Past Perfect (for past events)."
+            },
+            {
+                id: 24,
+                tag: "Future Perfect & Simple Present Combination",
+                question: "Choose the correct future time clause combination:",
+                options: [
+                    { text: "By the time I will reach the station, the train will have left.", isCorrect: false, rationale: "Time clauses with 'by the time', 'if', 'when' take Simple Present, not Future tense." },
+                    { text: "By the time I reach the station, the train will have left.", isCorrect: true, rationale: "Structure: 'By the time + Simple Present, Future Perfect (will have + V3)'." },
+                    { text: "By the time I reach the station, the train has left.", isCorrect: false, rationale: "Future completion requires Future Perfect, not Present Perfect." },
+                    { text: "By the time I reached, the train will have left.", isCorrect: false, rationale: "Mixed past and future time frames are ungrammatical." }
+                ],
+                hint: "'By the time' + Simple Present takes Future Perfect in the main clause."
+            },
+            {
+                id: 25,
+                tag: "For vs Since in Perfect Continuous",
+                question: "Why is 'I am teaching you since an hour' incorrect, and what is the correct replacement?",
+                options: [
+                    { text: "Replace 'am teaching' with 'have been teaching' and 'since' with 'for' because 'an hour' is a duration.", isCorrect: true, rationale: "'Since' denotes point of time, 'for' denotes duration of time; continuous with time requires Present Perfect Continuous." },
+                    { text: "Replace 'since' with 'from'.", isCorrect: false, rationale: "Duration of time requires 'for'." },
+                    { text: "Replace 'teaching' with 'taught'.", isCorrect: false, rationale: "Action is ongoing, requiring continuous participle." },
+                    { text: "Sentence is completely correct.", isCorrect: false, rationale: "'Since' cannot be used with a duration like an hour." }
+                ],
+                hint: "Durations use 'for' (e.g., for two hours), while specific starting points use 'since'."
+            },
+            {
+                id: 26,
+                tag: "Since Point of Time Markers",
+                question: "Which of the following time expressions correctly takes 'since' rather than 'for'?",
+                options: [
+                    { text: "two years", isCorrect: false, rationale: "A period of 2 years is a duration, taking 'for'." },
+                    { text: "last night", isCorrect: true, rationale: "'last night', specific dates, years, and clock times represent starting points taking 'since'." },
+                    { text: "five months", isCorrect: false, rationale: "Duration takes 'for'." },
+                    { text: "a long time", isCorrect: false, rationale: "Indefinite duration takes 'for'." }
+                ],
+                hint: "'Since' is used for starting points like days, dates, years, and parts of the day."
+            },
+            {
+                id: 27,
+                tag: "Stative Verbs in Perfect Continuous",
+                question: "Spot the error: 'I have been knowing him for five years.'",
+                options: [
+                    { text: "Change 'have been knowing' to 'have known' because 'know' is a stative verb.", isCorrect: true, rationale: "Stative verbs (know, love, own) cannot be used in continuous or perfect continuous tenses; they revert to simple perfect." },
+                    { text: "Change 'for' to 'since'.", isCorrect: false, rationale: "'five years' is a duration taking 'for'." },
+                    { text: "Change 'have' to 'had'.", isCorrect: false, rationale: "Present perfect matches duration up to the present." },
+                    { text: "No error in sentence.", isCorrect: false, rationale: "Stative verbs violate continuous rules." }
+                ],
+                hint: "Stative verbs cannot be used in perfect continuous tenses; use simple perfect instead."
+            },
+            {
+                id: 28,
+                tag: "Spotting Error - Since + Time Clause",
+                question: "Identify the correct correction for: 'I ate nothing since morning.'",
+                options: [
+                    { text: "Change 'I ate' to 'I have eaten' because 'since morning' requires Present Perfect tense.", isCorrect: true, rationale: "When 'since + time' is used in a sentence, the tense must be Perfect or Perfect Continuous." },
+                    { text: "Change 'since' to 'for'.", isCorrect: false, rationale: "'morning' is a starting point taking 'since'." },
+                    { text: "Change 'ate' to 'had ate'.", isCorrect: false, rationale: "Past perfect requires a past reference point." },
+                    { text: "Sentence is correct.", isCorrect: false, rationale: "Simple past cannot pair directly with 'since morning'." }
+                ],
+                hint: "Sentences containing 'since + time' must be in Perfect or Perfect Continuous tense."
+            },
+            {
+                id: 29,
+                tag: "Spotting Error - For with Century",
+                question: "Spot the error: 'We have been celebrating many festivals since centuries.'",
+                options: [
+                    { text: "Replace 'since' with 'for' because 'centuries' represents a duration of time.", isCorrect: true, rationale: "'centuries' is a period/duration, so it requires 'for' instead of 'since'." },
+                    { text: "Replace 'have been celebrating' with 'celebrated'.", isCorrect: false, rationale: "Ongoing historical tradition takes present perfect continuous." },
+                    { text: "Replace 'centuries' with 'century'.", isCorrect: false, rationale: "Plural centuries is grammatically valid with duration." },
+                    { text: "No error.", isCorrect: false, rationale: "'Since' cannot precede an unanchored duration like centuries." }
+                ],
+                hint: "'Centuries' is a duration, so it takes 'for' instead of 'since'."
+            },
+            {
+                id: 30,
+                tag: "Spotting Error - Indirect Interrogative Form",
+                question: "Spot the error: 'The passer-by told us where was the marriage hall and even led us to it.'",
+                options: [
+                    { text: "Replace 'where was the marriage hall' with 'where the marriage hall was'.", isCorrect: true, rationale: "Indirect questions require assertive word order (Subject + Verb), not interrogative (Verb + Subject)." },
+                    { text: "Replace 'told' with 'tell'.", isCorrect: false, rationale: "Past tense narration is consistent." },
+                    { text: "Replace 'led' with 'lead'.", isCorrect: false, rationale: "Past tense 'led' correctly matches 'told'." },
+                    { text: "No error.", isCorrect: false, rationale: "Interrogative inversion after 'where' in a statement is incorrect." }
+                ],
+                hint: "In indirect questions/statements, use assertive order (Subject + Verb)."
+            },
+            {
+                id: 31,
+                tag: "Spotting Error - Simple Past with 'Ago'",
+                question: "Identify the error in: 'I have passed the examination two years ago.'",
+                options: [
+                    { text: "Replace 'I have passed' with 'I passed' because 'ago' denotes Simple Past.", isCorrect: true, rationale: "Time expressions like 'ago', 'yesterday', 'last year' demand Simple Past (V2), not Present Perfect." },
+                    { text: "Replace 'ago' with 'since'.", isCorrect: false, rationale: "'ago' is a standard past time anchor." },
+                    { text: "Replace 'two years' with 'for two years'.", isCorrect: false, rationale: "'two years ago' is an adverbial point in past time." },
+                    { text: "No error.", isCorrect: false, rationale: "Present perfect cannot be used with explicit past marker 'ago'." }
+                ],
+                hint: "The word 'ago' indicates a completed past action, requiring Simple Past tense."
+            },
+            {
+                id: 32,
+                tag: "Spotting Error - Overflow Verb Forms",
+                question: "Spot the error: 'The river is in spate and it has overflown its banks.'",
+                options: [
+                    { text: "Replace 'overflown' with 'overflowed' because the V3/V2 of overflow is overflowed.", isCorrect: true, rationale: "'Over-fly' (fly-flew-flown) means to fly over, whereas 'overflow' (overflow-overflowed-overflowed) means spill over banks." },
+                    { text: "Replace 'has' with 'had'.", isCorrect: false, rationale: "Present state 'is in spate' matches present perfect." },
+                    { text: "Replace 'its' with 'their'.", isCorrect: false, rationale: "River is singular, so 'its' is correct." },
+                    { text: "No error.", isCorrect: false, rationale: "Confusing 'flown' with 'overflowed' is a common exam trap." }
+                ],
+                hint: "The past participle of 'overflow' (spill over) is 'overflowed', not 'overflown'."
+            },
+            {
+                id: 33,
+                tag: "Spotting Error - Renaissance Past Time Context",
+                question: "Spot the error: 'In the early years of the renaissance of Bharatanatyam, hereditary dancers have their own set of accompanists...'",
+                options: [
+                    { text: "Replace 'have' with 'had' because 'early years of renaissance' establishes a past time frame.", isCorrect: true, rationale: "Historical contexts in the past require past tense verbs ('had'), not present ('have')." },
+                    { text: "Replace 'lived' with 'live'.", isCorrect: false, rationale: "Past tense 'lived' matches the historical context." },
+                    { text: "Replace 'travelled' with 'travel'.", isCorrect: false, rationale: "Past tense is consistent throughout." },
+                    { text: "No error.", isCorrect: false, rationale: "Present tense 'have' clashes with the historical past setting." }
+                ],
+                hint: "Historical periods ('early years of renaissance') require past tense verbs."
+            },
+            {
+                id: 34,
+                tag: "Spotting Error - Did + V1 Rule",
+                question: "Spot the error: 'Since the trip home was expensive I did not went home during the holidays.'",
+                options: [
+                    { text: "Replace 'did not went' with 'did not go' because 'did' must be followed by V1.", isCorrect: true, rationale: "Auxiliary 'did/did not' must always be followed by the base form of the verb (V1), never V2 ('went')." },
+                    { text: "Replace 'was' with 'is'.", isCorrect: false, rationale: "Past tense is consistent across the sentence." },
+                    { text: "Replace 'during' with 'for'.", isCorrect: false, rationale: "'during the holidays' is grammatically correct." },
+                    { text: "No error.", isCorrect: false, rationale: "Double past marker 'did went' is a glaring grammatical error." }
+                ],
+                hint: "Auxiliary verbs like 'did' must always be followed by the first form of the verb (V1)."
+            },
+            {
+                id: 35,
+                tag: "Spotting Error - Yesterday with Past Tense",
+                question: "Spot the error: 'As she is late for work yesterday she decided to skip breakfast...'",
+                options: [
+                    { text: "Replace 'is late' with 'was late' to match the past time marker 'yesterday'.", isCorrect: true, rationale: "'yesterday' requires past tense ('was'), not present ('is')." },
+                    { text: "Replace 'decided' with 'decides'.", isCorrect: false, rationale: "Decided is correct past tense." },
+                    { text: "Replace 'skip' with 'skipping'.", isCorrect: false, rationale: "Infinitive 'to skip' is correct." },
+                    { text: "No error.", isCorrect: false, rationale: "Present tense 'is' conflicts with 'yesterday'." }
+                ],
+                hint: "'Yesterday' requires past tense verbs like 'was' instead of 'is'."
+            },
+            {
+                id: 36,
+                tag: "Spotting Error - Parallel Past Tense in Reporting",
+                question: "Spot the error: 'As soon as the CEO entered the office, the union leaders approached him and report the matter to him.'",
+                options: [
+                    { text: "Replace 'report' with 'reported' to maintain parallel past tense with 'entered' and 'approached'.", isCorrect: true, rationale: "Verbs in a compound past predicate must match in tense ('entered', 'approached', 'reported')." },
+                    { text: "Replace 'entered' with 'enter'.", isCorrect: false, rationale: "Past tense is standard for narrative events." },
+                    { text: "Replace 'approached' with 'approach'.", isCorrect: false, rationale: "Approached is past tense." },
+                    { text: "No error.", isCorrect: false, rationale: "Mismatched present tense 'report' disrupts past narrative sequence." }
+                ],
+                hint: "All verbs in a past narrative sequence must remain in the past tense."
+            },
+            {
+                id: 37,
+                tag: "Spotting Error - Dream Past Form",
+                question: "Spot the error: 'Last night I dream I was a Sheikh on the 169th floor of Burj Khalifa.'",
+                options: [
+                    { text: "Replace 'dream' with 'dreamed' or 'dreamt' because 'last night' requires Simple Past V2.", isCorrect: true, rationale: "'last night' indicates past time, requiring the V2 form 'dreamed' or 'dreamt'." },
+                    { text: "Replace 'was' with 'were'.", isCorrect: false, rationale: "First person singular pronoun 'I' takes 'was' in descriptive narrative, unlike subjunctive counterfactuals." },
+                    { text: "Replace 'on' with 'at'.", isCorrect: false, rationale: "'on the 169th floor' is correct prepositional usage." },
+                    { text: "No error.", isCorrect: false, rationale: "Base verb 'dream' cannot serve as V2 past tense." }
+                ],
+                hint: "'Last night' requires the past form of dream ('dreamed' or 'dreamt')."
+            },
+            {
+                id: 38,
+                tag: "Spotting Error - Past Perfect Continuous with Since",
+                question: "Spot the error: 'She and her sister were working here since 1983.'",
+                options: [
+                    { text: "Replace 'were working' with 'had been working' because 'since 1983' with past context requires Past Perfect Continuous.", isCorrect: true, rationale: "When a sentence refers to an action continuing from a past point up to another past point, Past Perfect Continuous ('had been working') is required." },
+                    { text: "Replace 'since' with 'for'.", isCorrect: false, rationale: "'1983' is a specific starting point taking 'since'." },
+                    { text: "Replace 'here' with 'there'.", isCorrect: false, rationale: "Adverb of place does not affect tense." },
+                    { text: "No error.", isCorrect: false, rationale: "Simple continuous 'were working' is incomplete without past duration anchoring." }
+                ],
+                hint: "Sentences with past duration ('since 1983') require Past Perfect Continuous ('had been...')."
+            },
+            {
+                id: 39,
+                tag: "Spotting Error - Future Action by Point in Time",
+                question: "Spot the error: 'By this time next year Ramesh will take his degree.'",
+                options: [
+                    { text: "Replace 'will take' with 'will have taken' because an action completed by a specific future point takes Future Perfect.", isCorrect: true, rationale: "Expressions like 'By this time next year' indicate completion before a future deadline, requiring Future Perfect ('will have + V3')." },
+                    { text: "Replace 'next year' with 'last year'.", isCorrect: false, rationale: "Future marker aligns with future tense." },
+                    { text: "Replace 'degree' with 'degrees'.", isCorrect: false, rationale: "Singular degree is standard." },
+                    { text: "No error.", isCorrect: false, rationale: "Simple future fails to express completion by a future deadline." }
+                ],
+                hint: "Actions completed by a specific future point require Future Perfect ('will have + V3')."
+            },
+            {
+                id: 40,
+                tag: "Spotting Error - Past Perfect for Earlier Event",
+                question: "Spot the error: 'The victim tried to tell us what has happened but his voice was not audible.'",
+                options: [
+                    { text: "Replace 'has happened' with 'had happened' because the main narrative is in the past tense.", isCorrect: true, rationale: "When the primary narrative is in past tense ('tried', 'was'), prior events must be in Past Perfect ('had happened')." },
+                    { text: "Replace 'tried' with 'tries'.", isCorrect: false, rationale: "Narrative is consistently past." },
+                    { text: "Replace 'audible' with 'audio'.", isCorrect: false, rationale: "Audible is the correct adjective." },
+                    { text: "No error.", isCorrect: false, rationale: "Present perfect 'has happened' creates a tense clash with past narrative." }
+                ],
+                hint: "In a past tense narrative, events that occurred even earlier must use Past Perfect ('had')."
+            },
+            {
+                id: 41,
+                tag: "Spotting Error - Subject-Verb Agreement in Complex Subject",
+                question: "Spot the error: 'Our history can be seen as a long evolutionary dialectical development in which there have been a painstaking forging of rational and moral self.'",
+                options: [
+                    { text: "Replace 'have been' with 'has been' because the true subject 'a painstaking forging' is singular.", isCorrect: true, rationale: "In 'there is/are' or 'there has/have' structures, the verb agrees with the following real subject ('a painstaking forging' - singular)." },
+                    { text: "Replace 'evolutionary' with 'evolution'.", isCorrect: false, rationale: "Adjective modifying development is correct." },
+                    { text: "Replace 'seen' with 'saw'.", isCorrect: false, rationale: "Passive infinitive 'can be seen' is correct." },
+                    { text: "No error.", isCorrect: false, rationale: "Plural auxiliary 'have' incorrectly matched singular subject 'forging'." }
+                ],
+                hint: "The verb in 'there is/are' clauses agrees with the real subject that follows it."
+            },
+            {
+                id: 42,
+                tag: "Spotting Error - Escape Past Tense",
+                question: "Spot the error: 'Last year two Italian prisoners of war escapes from a prison camp in Kenya during the war.'",
+                options: [
+                    { text: "Replace 'escapes' with 'escaped' because 'Last year' indicates past tense.", isCorrect: true, rationale: "'Last year' is an explicit past time marker, requiring Simple Past V2 ('escaped')." },
+                    { text: "Replace 'were' with 'are'.", isCorrect: false, rationale: "Past tense 'were' is correct." },
+                    { text: "Replace 'during' with 'in'.", isCorrect: false, rationale: "During is correct preposition." },
+                    { text: "No error.", isCorrect: false, rationale: "Present tense 'escapes' clashes with 'Last year'." }
+                ],
+                hint: "'Last year' requires Simple Past V2 ('escaped')."
+            },
+            {
+                id: 43,
+                tag: "Spotting Error - Stative Fan Following",
+                question: "Spot the error: 'Madhuri Dixit is having a large fan following.'",
+                options: [
+                    { text: "Replace 'is having' with 'has' because possession/having attributes is stative.", isCorrect: true, rationale: "Possession and attributes do not take continuous '-ing' form; use simple present 'has'." },
+                    { text: "Replace 'large' with 'largely'.", isCorrect: false, rationale: "Adjective modifying fan following is correct." },
+                    { text: "Replace 'fan' with 'fans'.", isCorrect: false, rationale: "Fan following is standard compound noun." },
+                    { text: "No error.", isCorrect: false, rationale: "Continuous form for attributes is grammatically incorrect." }
+                ],
+                hint: "Possession and permanent attributes cannot be used in continuous tense ('is having' -> 'has')."
+            },
+            {
+                id: 44,
+                tag: "Spotting Error - Since Departure Present Perfect",
+                question: "Spot the error: 'No one heard anything about him since he left India for good.'",
+                options: [
+                    { text: "Replace 'No one heard' with 'No one has heard' because 'since + simple past' requires Present Perfect in the main clause.", isCorrect: true, rationale: "Standard rule: Present Perfect in main clause + since + Simple Past in subordinate clause." },
+                    { text: "Replace 'left' with 'leave'.", isCorrect: false, rationale: "Simple past 'left' is correct in the since-clause." },
+                    { text: "Replace 'for good' with 'forever good'.", isCorrect: false, rationale: "'for good' is an accepted idiom meaning permanently." },
+                    { text: "No error.", isCorrect: false, rationale: "Simple past in main clause violates the since-rule." }
+                ],
+                hint: "Main clause before 'since' must be in Present Perfect ('has heard')."
+            },
+            {
+                id: 45,
+                tag: "Spotting Error - Before Clause Past Perfect",
+                question: "Spot the error: 'Before the teacher could finish the question the students gave the correct answer.'",
+                options: [
+                    { text: "Replace 'gave' with 'had given' because the action completed before another past action takes Past Perfect.", isCorrect: true, rationale: "Students giving the answer happened before teacher finishing; earlier past action takes Past Perfect ('had given')." },
+                    { text: "Replace 'finish' with 'finished'.", isCorrect: false, rationale: "Infinitive 'could finish' is correct." },
+                    { text: "Replace 'could' with 'can'.", isCorrect: false, rationale: "Past narrative requires modal 'could'." },
+                    { text: "No error.", isCorrect: false, rationale: "Simple past fails to show that answering occurred before the teacher finished." }
+                ],
+                hint: "The action that occurred first in the past must use Past Perfect ('had given')."
+            },
+            {
+                id: 46,
+                tag: "Spotting Error - Yet in Negative Present Perfect",
+                question: "Spot the error: 'She did not prepare her breakfast yet.'",
+                options: [
+                    { text: "Replace 'She did not prepare' with 'She has not prepared' because 'yet' is used in Present Perfect negative sentences.", isCorrect: true, rationale: "Adverb 'yet' is standardly used with Present Perfect negative sentences, not Simple Past." },
+                    { text: "Replace 'yet' with 'already'.", isCorrect: false, rationale: "Already is used in affirmative sentences." },
+                    { text: "Replace 'breakfast' with 'lunch'.", isCorrect: false, rationale: "Noun choice does not affect grammar." },
+                    { text: "No error.", isCorrect: false, rationale: "'yet' requires Present Perfect tense in standard English." }
+                ],
+                hint: "The adverb 'yet' is used with Present Perfect negative sentences ('has not prepared')."
+            },
+            {
+                id: 47,
+                tag: "Spotting Error - Stative Ownership Verb",
+                question: "Spot the error: 'Perhaps you do not know I am owning a farm house besides two bungalows.'",
+                options: [
+                    { text: "Replace 'am owning' with 'own' because 'own' is a stative verb of possession.", isCorrect: true, rationale: "Stative verbs indicating ownership cannot take '-ing' forms." },
+                    { text: "Replace 'besides' with 'beside'.", isCorrect: false, rationale: "'besides' means in addition to, which is correct here." },
+                    { text: "Replace 'know' with 'knowing'.", isCorrect: false, rationale: "Know is correctly in simple present." },
+                    { text: "No error.", isCorrect: false, rationale: "Ownership verb cannot be continuous." }
+                ],
+                hint: "Verbs of ownership cannot take continuous '-ing' ('am owning' -> 'own')."
+            },
+            {
+                id: 48,
+                tag: "Spotting Error - Preceded Past Perfect",
+                question: "Spot the error: 'When Anand reached his village he found that the news about him preceded him.'",
+                options: [
+                    { text: "Replace 'preceded' with 'had preceded' because news arriving before arrival is an earlier past action.", isCorrect: true, rationale: "Since the news arriving happened before Anand reached, it requires Past Perfect ('had preceded')." },
+                    { text: "Replace 'reached' with 'reach'.", isCorrect: false, rationale: "Simple past is correct." },
+                    { text: "Replace 'found' with 'finds'.", isCorrect: false, rationale: "Past tense is consistent." },
+                    { text: "No error.", isCorrect: false, rationale: "Simple past fails to indicate the prior sequence." }
+                ],
+                hint: "An action occurring before another past action takes Past Perfect ('had preceded')."
+            },
+            {
+                id: 49,
+                tag: "Spotting Error - Future Time Clause Future Perfect",
+                question: "Spot the error: 'She will already return home when he arrives.'",
+                options: [
+                    { text: "Replace 'will already return' with 'will have already returned' because completion before a future event requires Future Perfect.", isCorrect: true, rationale: "When an action will be completed before another future action ('when he arrives'), Future Perfect ('will have + V3') is required." },
+                    { text: "Replace 'arrives' with 'arrive'.", isCorrect: false, rationale: "Singular subject 'he' takes 'arrives' in present time clause." },
+                    { text: "Replace 'when' with 'while'.", isCorrect: false, rationale: "When correctly introduces the time point." },
+                    { text: "No error.", isCorrect: false, rationale: "Simple future fails to indicate completion before arrival." }
+                ],
+                hint: "An action completed before another future action requires Future Perfect ('will have returned')."
+            },
+            {
+                id: 50,
+                tag: "Spotting Error - Each One & Has Have Structure",
+                question: "Spot the error: 'Each one of them has have his share of joy and sorrow.'",
+                options: [
+                    { text: "Replace 'has have' with 'has had' because 'has' (helping verb) must be followed by V3 ('had').", isCorrect: true, rationale: "Present perfect formula requires 'has/have + V3'. Here 'has' is auxiliary and main verb 'have' must become V3 'had'." },
+                    { text: "Replace 'Each one' with 'All'.", isCorrect: false, rationale: "Each one is singular and correct." },
+                    { text: "Replace 'his' with 'their'.", isCorrect: false, rationale: "Each one takes singular pronoun 'his'." },
+                    { text: "No error.", isCorrect: false, rationale: "'has have' violates perfect tense V3 rules." }
+                ],
+                hint: "In Present Perfect, auxiliary 'has' must be followed by the 3rd form of have, which is 'had'."
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let userAnswers = new Array(quizData.length).fill(null);
+
+        const scoreEl = document.getElementById('score');
+        const currentQEl = document.getElementById('current-q');
+        const totalQuestionsEl = document.getElementById('total-questions');
+        const progressBar = document.getElementById('progress-bar');
+        const questionCard = document.getElementById('quiz-card');
+        const completionView = document.getElementById('completion-view');
+        const questionTag = document.getElementById('question-tag');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const hintBtn = document.getElementById('hint-btn');
+        const hintBox = document.getElementById('hint-box');
+        const explanationBox = document.getElementById('explanation-box');
+        const explanationText = document.getElementById('explanation-text');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const jumpInput = document.getElementById('jump-input');
+
+        totalQuestionsEl.textContent = quizData.length;
+
+        function loadQuestion() {
+            const q = quizData[currentQuestionIndex];
+            currentQEl.textContent = currentQuestionIndex + 1;
+            jumpInput.value = currentQuestionIndex + 1;
+            progressBar.style.width = `${((currentQuestionIndex + 1) / quizData.length) * 100}%`;
+
+            questionTag.textContent = q.tag;
+            questionText.textContent = `${currentQuestionIndex + 1}. ${q.question}`;
+
+            // Reset hint & explanation
+            hintBox.classList.add('hidden');
+            hintBox.textContent = q.hint || "No hint available for this question.";
+            if(!q.hint) hintBtn.style.display = 'none';
+            else hintBtn.style.display = 'flex';
+
+            explanationBox.classList.add('hidden');
+            explanationText.textContent = '';
+
+            // Render options
+            optionsContainer.innerHTML = '';
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left p-4 rounded-xl border border-slate-700 bg-slate-900/50 hover:bg-slate-700/50 transition flex items-center justify-between text-slate-200 text-sm sm:text-base font-medium`;
+                
+                const optionLetter = String.fromCharCode(65 + idx);
+                btn.innerHTML = `<span><strong class="text-indigo-400 mr-2">${optionLetter}.</strong> ${opt.text}</span>`;
+                
+                // Check if already answered
+                if (userAnswers[currentQuestionIndex] !== null) {
+                    btn.disabled = true;
+                    if (opt.isCorrect) {
+                        btn.classList.add('bg-emerald-950/60', 'border-emerald-600', 'text-emerald-200');
+                    } else if (userAnswers[currentQuestionIndex] === idx) {
+                        btn.classList.add('bg-rose-950/60', 'border-rose-600', 'text-rose-200');
+                    }
+                } else {
+                    btn.onclick = () => selectOption(idx);
+                }
+
+                optionsContainer.appendChild(btn);
+            });
+
+            if (userAnswers[currentQuestionIndex] !== null) {
+                showExplanation(userAnswers[currentQuestionIndex]);
+            }
+
+            prevBtn.disabled = currentQuestionIndex === 0;
+            nextBtn.textContent = currentQuestionIndex === quizData.length - 1 ? "Finish Quiz" : "Next Question";
+        }
+
+        function selectOption(selectedIndex) {
+            if (userAnswers[currentQuestionIndex] !== null) return;
+
+            userAnswers[currentQuestionIndex] = selectedIndex;
+            const q = quizData[currentQuestionIndex];
+            const isCorrect = q.options[selectedIndex].isCorrect;
+
+            if (isCorrect) {
+                score++;
+                scoreEl.textContent = score;
+            }
+
+            // Disable all option buttons and highlight
+            const buttons = optionsContainer.children;
+            for (let i = 0; i < buttons.length; i++) {
+                buttons[i].disabled = true;
+                if (q.options[i].isCorrect) {
+                    buttons[i].classList.add('bg-emerald-950/60', 'border-emerald-600', 'text-emerald-200');
+                } else if (i === selectedIndex) {
+                    buttons[i].classList.add('bg-rose-950/60', 'border-rose-600', 'text-rose-200');
+                }
+            }
+
+            showExplanation(selectedIndex);
+        }
+
+        function showExplanation(selectedIndex) {
+            const q = quizData[currentQuestionIndex];
+            const opt = q.options[selectedIndex];
+            explanationText.textContent = opt.rationale;
+            explanationBox.classList.remove('hidden');
+        }
+
+        function toggleHint() {
+            hintBox.classList.toggle('hidden');
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < quizData.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion();
+            } else {
+                questionCard.classList.add('hidden');
+                completionView.classList.remove('hidden');
+                document.getElementById('final-score').textContent = `${score} / ${quizData.length}`;
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion();
+            }
+        }
+
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            userAnswers = new Array(quizData.length).fill(null);
+            scoreEl.textContent = score;
+            completionView.classList.add('hidden');
+            questionCard.classList.remove('hidden');
+            loadQuestion();
+        }
+
+        jumpInput.addEventListener('change', (e) => {
+            const val = parseInt(e.target.value);
+            if (val >= 1 && val <= quizData.length) {
+                currentQuestionIndex = val - 1;
+                loadQuestion();
+            } else {
+                jumpInput.value = currentQuestionIndex + 1;
+            }
+        });
+
+        // Initialize first question
+        loadQuestion();
+    </script>
+<script src="../../quiz-app-ui-v2.js"></script>
+</body>
+</html>
+```eof

@@ -1,0 +1,994 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Grammar Mastery Quiz - Pages 51 to 60</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 min-h-screen text-slate-800 flex flex-col font-sans">
+
+    <!-- Header -->
+    <header class="bg-indigo-700 text-white shadow-md py-4 px-6 sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
+            <div>
+                <h1 class="text-xl font-bold tracking-wide">English Grammar Mastery Quiz</h1>
+                <p class="text-xs text-indigo-200">Syllabus Coverage: Pages 51–60 (Non-Finite Verbs, Causatives, Mood & Subject-Verb Agreement)</p>
+            </div>
+            <div class="flex items-center gap-4 bg-indigo-800 px-4 py-2 rounded-lg border border-indigo-600">
+                <div class="text-center">
+                    <span class="block text-xs text-indigo-300 uppercase font-semibold">Score</span>
+                    <span id="score-display" class="text-lg font-bold text-yellow-300">0 / 0</span>
+                </div>
+                <div class="h-8 w-px bg-indigo-600"></div>
+                <div class="text-center">
+                    <span class="block text-xs text-indigo-300 uppercase font-semibold">Progress</span>
+                    <span id="progress-text" class="text-lg font-bold text-white">1 / 50</span>
+                </div>
+            </div>
+        </div>
+        <!-- Progress Bar -->
+        <div class="w-full bg-indigo-900 h-2 mt-3 rounded-full overflow-hidden max-w-4xl mx-auto">
+            <div id="progress-bar" class="bg-yellow-400 h-full w-0 transition-all duration-300"></div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-4xl w-full mx-auto p-4 sm:p-6 flex flex-col justify-between">
+        
+        <!-- Quiz Card -->
+        <div id="quiz-card" class="bg-white rounded-xl shadow-md border border-slate-200 p-6 mb-6 flex-grow flex flex-col justify-between">
+            
+            <div>
+                <!-- Question Meta Header -->
+                <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-100">
+                    <span id="question-number" class="text-xs font-bold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-100">
+                        Question 1
+                    </span>
+                    <span id="subtopic-tag" class="text-xs font-medium text-slate-500 bg-slate-100 px-2.5 py-1 rounded">
+                        Topic
+                    </span>
+                </div>
+
+                <!-- Question Text -->
+                <div id="question-text" class="text-base sm:text-lg font-semibold text-slate-800 mb-6 leading-relaxed">
+                    Loading question...
+                </div>
+
+                <!-- Hint Collapsible Button -->
+                <div class="mb-4">
+                    <button id="hint-toggle-btn" onclick="toggleHint()" class="text-xs font-semibold text-amber-600 hover:text-amber-700 bg-amber-50 hover:bg-amber-100 px-3 py-1.5 rounded-md border border-amber-200 transition-colors flex items-center gap-1">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        Need a Hint?
+                    </button>
+                    <div id="hint-box" class="hidden mt-2 p-3 bg-amber-50 border-l-4 border-amber-400 text-xs text-amber-800 rounded">
+                        <span id="hint-text">Hint content...</span>
+                    </div>
+                </div>
+
+                <!-- Options List -->
+                <div id="options-container" class="space-y-3 mb-6">
+                    <!-- Options populated dynamically -->
+                </div>
+            </div>
+
+            <!-- Explanation Box -->
+            <div id="explanation-box" class="hidden mt-4 p-4 bg-slate-50 border-l-4 border-indigo-500 rounded-r-lg">
+                <h4 class="text-xs font-bold text-indigo-900 uppercase tracking-wider mb-1">Detailed Rationale / Explanation:</h4>
+                <p id="explanation-text" class="text-sm text-slate-700 leading-relaxed"></p>
+            </div>
+
+        </div>
+
+        <!-- Navigation & Controls Footer -->
+        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center gap-2">
+                <button id="prev-btn" onclick="prevQuestion()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium text-sm rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                    Previous
+                </button>
+                <button id="next-btn" onclick="nextQuestion()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-sm rounded-lg transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
+                    Next
+                </button>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <label for="jump-input" class="text-xs text-slate-500 font-medium">Jump to:</label>
+                <input type="number" id="jump-input" min="1" max="50" class="w-16 px-2 py-1 text-sm border border-slate-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500 text-center" placeholder="1-50">
+                <button onclick="jumpToQuestion()" class="px-3 py-1 bg-slate-800 hover:bg-slate-900 text-white text-xs font-medium rounded transition-colors">
+                    Go
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Quiz Dataset and Logic Script -->
+    <script>
+        const quizData = [
+            {
+                id: 1,
+                topic: "Gerunds vs. Infinitives",
+                question: "Which of the following verbs MUST be followed immediately by a Gerund (V1 + ing) rather than an Infinitive?",
+                options: [
+                    "Enjoy",
+                    "Decide",
+                    "Hope",
+                    "Refuse"
+                ],
+                answer: 0,
+                hint: "Think about verbs of feeling or continuing an action versus intention verbs like decide or hope.",
+                explanation: "Verbs like 'enjoy', 'avoid', 'mind', 'admit', 'deny', and 'postpone' take a Gerund ($V_1 + ing$) directly after them. Decisions, hopes, and refusals take 'to + $V_1$'."
+            },
+            {
+                id: 2,
+                topic: "Possessive Case with Gerund",
+                question: "Select the sentence that follows the correct grammatical rule regarding nouns/pronouns preceding a Gerund:",
+                options: [
+                    "I disliked his coming late to the office every day.",
+                    "I disliked him coming late to the office every day.",
+                    "I disliked he coming late to the office every day.",
+                    "I disliked himself coming late to the office every day."
+                ],
+                answer: 0,
+                hint: "A Gerund acts as a Noun, so any modifying noun or pronoun must be in the Possessive Case.",
+                explanation: "A Noun or Pronoun standing before a Gerund must be in the Possessive case ('his', 'my', 'Rohan's'). Thus, 'his coming' is grammatically correct."
+            },
+            {
+                id: 3,
+                topic: "Bare Infinitive Rules",
+                question: "Identify the sentence where the Bare Infinitive (Infinitive without 'to') is correctly applied:",
+                options: [
+                    "She made me clean the entire house.",
+                    "She made me to clean the entire house.",
+                    "She made me cleaning the entire house.",
+                    "She made me cleaned the entire house."
+                ],
+                answer: 0,
+                hint: "Active voice causative 'Make' requires a bare infinitive.",
+                explanation: "When 'make' is used in active voice as a causative or transitive verb, it takes a Bare Infinitive ($V_1$ without 'to')."
+            },
+            {
+                id: 4,
+                topic: "Bare Infinitive with Modals",
+                question: "Which of the following expressions takes a Bare Infinitive ($V_1$) directly after it?",
+                options: [
+                    "Had better",
+                    "Is about",
+                    "Used",
+                    "Be bound"
+                ],
+                answer: 0,
+                hint: "Think of idiomatic modal structures expressing advisability like 'had better' or 'would rather'.",
+                explanation: "Phrases like 'had better', 'had rather', 'would rather', and 'sooner than' are followed by a Bare Infinitive ($V_1$ without 'to')."
+            },
+            {
+                id: 5,
+                topic: "Causative Verbs - Have / Get",
+                question: "Complete the sentence with the correct verb form: 'I got my car _______ by the mechanic yesterday.'",
+                options: [
+                    "repaired",
+                    "to repair",
+                    "repairing",
+                    "repair"
+                ],
+                answer: 0,
+                hint: "When 'Get' is used in a passive causative structure (Get + Object + Verb), use $V_3$.",
+                explanation: "In passive causative structures: 'Get/Have + Object (thing) + $V_3$ (Past Participle)'. Thus, 'got my car repaired' is correct."
+            },
+            {
+                id: 6,
+                topic: "Causative Verbs - Active vs Passive",
+                question: "Which sentence accurately uses the active causative construction for 'Get'?",
+                options: [
+                    "She got her brother to complete her homework.",
+                    "She got her brother complete her homework.",
+                    "She got her brother completed her homework.",
+                    "She got her brother completing her homework."
+                ],
+                answer: 0,
+                hint: "Unlike 'Make' or 'Have', active 'Get' requires 'to + $V_1$' when persuading someone.",
+                explanation: "'Get + Person + to + $V_1$' is the standard active causative pattern meaning to persuade someone to do something."
+            },
+            {
+                id: 7,
+                topic: "Participles - Misattached Participle",
+                question: "Identify the error in the sentence: 'Being a rainy day, we decided to stay indoors.'",
+                options: [
+                    "The participle 'Being' lacks an explicit subject of reference (it needs 'It being').",
+                    "'Decided' should be replaced by 'had decided'.",
+                    "'Indoors' is an adjective and cannot modify 'stay'.",
+                    "No error; the sentence is perfectly correct."
+                ],
+                answer: 0,
+                hint: "Who or what was a rainy day? Check if the participle clause attaches to 'we'.",
+                explanation: "Unattached or misplaced participle: Without a subject, 'Being a rainy day' implies 'we' were a rainy day. It must be corrected to 'It being a rainy day'."
+            },
+            {
+                id: 8,
+                topic: "Participles - Dangling Modifiers",
+                question: "Choose the sentence that correctly resolves the dangling participle error:",
+                options: [
+                    "Walking in the park, a snake bit him.",
+                    "While he was walking in the park, a snake bit him.",
+                    "Walking in the park, he was bit by a snake's bite.",
+                    "A snake bit him while walking in the park."
+                ],
+                answer: 1,
+                hint: "Ensure the subject performing the action of 'walking' is clearly identified right after the clause.",
+                explanation: "Option B clarifies who was walking ('he'), removing the absurd implication that the 'snake' was walking."
+            },
+            {
+                id: 9,
+                topic: "Subjunctive Mood",
+                question: "Select the sentence that correctly expresses a hypothetical condition / unreal present condition:",
+                options: [
+                    "If I were the Prime Minister, I would abolish this tax.",
+                    "If I was the Prime Minister, I will abolish this tax.",
+                    "If I am the Prime Minister, I would abolish this tax.",
+                    "If I have been the Prime Minister, I would abolish this tax."
+                ],
+                answer: 0,
+                hint: "Hypothetical/unreal conditions use 'were' regardless of whether the subject is singular or plural.",
+                explanation: "In Subjunctive Mood for hypothetical wishes/conditions, 'were' is used with all subjects ($I, he, she, it$)."
+            },
+            {
+                id: 10,
+                topic: "Subjunctive Mood with Mandate Verbs",
+                question: "Which option correctly fills the blank? 'The committee recommended that the proposal _______ approved immediately.'",
+                options: [
+                    "be",
+                    "is",
+                    "was",
+                    "should to be"
+                ],
+                answer: 0,
+                hint: "Verbs of suggestion/demand (insist, demand, recommend) take the base form of the verb in the 'that' clause.",
+                explanation: "Subjunctive Mood following verbs like 'recommend/insist/demand' requires the base form of the verb ($be, go, do$). Hence, 'be approved'."
+            },
+            {
+                id: 11,
+                topic: "Subject-Verb Agreement - Collective Nouns",
+                question: "Choose the correct verb form: 'The jury _______ divided in their opinions regarding the verdict.'",
+                options: [
+                    "were",
+                    "was",
+                    "is",
+                    "has been"
+                ],
+                answer: 0,
+                hint: "When members of a collective noun act individually or disagree, use a plural verb.",
+                explanation: "When a collective noun ('jury', 'committee') shows division among members or individual action, it takes a Plural Verb and plural pronoun ('their')."
+            },
+            {
+                id: 12,
+                topic: "Subject-Verb Agreement - Collective Nouns",
+                question: "Select the correct sentence:",
+                options: [
+                    "The committee has submitted its final report unanimously.",
+                    "The committee have submitted its final report unanimously.",
+                    "The committee are submitted their final report unanimously.",
+                    "The committee have submitted their final report unanimously."
+                ],
+                answer: 0,
+                hint: "When a collective noun acts as a single unified unit, use a singular verb and singular pronoun.",
+                explanation: "Since the action is unanimous (acting as one body), the singular verb 'has' and singular pronoun 'its' are required."
+            },
+            {
+                id: 13,
+                topic: "Subject-Verb Agreement - Either/Or",
+                question: "Fill in the blank: 'Either the teacher or the students _______ responsible for organizing the event.'",
+                options: [
+                    "are",
+                    "is",
+                    "was",
+                    "has"
+                ],
+                answer: 0,
+                hint: "When subjects are joined by 'Either... or', the verb agrees with the nearest subject.",
+                explanation: "In 'Either... or' / 'Neither... nor' structures, the verb agrees with the subject closest to it. 'Students' is plural, so 'are' is correct."
+            },
+            {
+                id: 14,
+                topic: "Subject-Verb Agreement - Neither/Nor",
+                question: "Which sentence is grammatically correct?",
+                options: [
+                    "Neither the manager nor his assistant was present at the meeting.",
+                    "Neither the manager nor his assistant were present at the meeting.",
+                    "Neither the manager nor his assistant have been present at the meeting.",
+                    "Neither the manager nor his assistant are present at the meeting."
+                ],
+                answer: 0,
+                hint: "Check the subject closest to the verb: 'assistant' is singular.",
+                explanation: "The closest subject 'assistant' is singular; hence, the singular verb 'was' must be used."
+            },
+            {
+                id: 15,
+                topic: "Subject-Verb Agreement - As well as",
+                question: "Complete the sentence: 'The Captain, along with his crew members, _______ drowned in the storm.'",
+                options: [
+                    "was",
+                    "were",
+                    "have been",
+                    "are"
+                ],
+                answer: 0,
+                hint: "Connectors like 'along with', 'as well as', 'together with' do not change the subject of the sentence.",
+                explanation: "When subjects are connected by 'along with', 'as well as', 'with', 'together with', the verb agrees strictly with the FIRST subject ('The Captain', singular)."
+            },
+            {
+                id: 16,
+                topic: "Subject-Verb Agreement - Quantitative Nouns",
+                question: "Fill in the blank: 'A number of students _______ absent today due to the strike.'",
+                options: [
+                    "are",
+                    "is",
+                    "was",
+                    "has been"
+                ],
+                answer: 0,
+                hint: "'A number of' takes a plural verb, whereas 'The number of' takes a singular verb.",
+                explanation: "'A number of + Plural Noun' takes a Plural Verb. ('The number of + Plural Noun' takes a Singular Verb)."
+            },
+            {
+                id: 17,
+                topic: "Subject-Verb Agreement - 'The number of'",
+                question: "Fill in the blank: 'The number of applications received _______ surprisingly high this year.'",
+                options: [
+                    "is",
+                    "are",
+                    "were",
+                    "have been"
+                ],
+                answer: 0,
+                hint: "'The number of' denotes a specific count/figure, which is singular.",
+                explanation: "'The number of + Plural Noun' specifies a single count and always agrees with a Singular Verb ('is')."
+            },
+            {
+                id: 18,
+                topic: "Prepositional Phrases with Infinitive",
+                question: "Which of the following phrases is followed by a Gerund ($V_1 + ing$) instead of a Bare Infinitive or Base Verb?",
+                options: [
+                    "With a view to",
+                    "In order to",
+                    "So as to",
+                    "Would rather"
+                ],
+                answer: 0,
+                hint: "Phrases where 'to' acts as a preposition (not an infinitive marker) take gerunds.",
+                explanation: "Phrases like 'with a view to', 'look forward to', 'accustomed to', and 'given to' end in a preposition 'to', so they are followed by a Gerund ($V_1 + ing$)."
+            },
+            {
+                id: 19,
+                topic: "Gerunds after Prepositions",
+                question: "Identify the correct choice: 'He is looking forward to _______ you next week.'",
+                options: [
+                    "meeting",
+                    "meet",
+                    "met",
+                    "have met"
+                ],
+                answer: 0,
+                hint: "'Look forward to' must take a Gerund.",
+                explanation: "The phrase 'look forward to' requires a Gerund ($V_1+ing$), so 'meeting' is correct."
+            },
+            {
+                id: 20,
+                topic: "Infinitive vs. Gerund - Stop / Remember",
+                question: "Choose the correct meaning of: 'He stopped smoking.'",
+                options: [
+                    "He quit the habit of smoking permanently or temporarily.",
+                    "He paused another activity in order to smoke a cigarette.",
+                    "He stopped moving while he was smoking.",
+                    "He was prevented by someone from smoking."
+                ],
+                answer: 0,
+                hint: "'Stop + Gerund' means ending an action; 'Stop + Infinitive' means stopping to perform an action.",
+                explanation: "'Stop + Gerund' indicates terminating the action mentioned. 'Stop + Infinitive' indicates pausing to start the action."
+            },
+            {
+                id: 21,
+                topic: "Infinitive vs. Gerund - Stop / Remember",
+                question: "What does the sentence 'He stopped to smoke' mean?",
+                options: [
+                    "He paused his previous activity in order to smoke.",
+                    "He completely gave up smoking.",
+                    "He prevented someone else from smoking.",
+                    "He failed to smoke."
+                ],
+                answer: 0,
+                hint: "The infinitive shows purpose/intent of stopping.",
+                explanation: "'Stop + to + $V_1$' denotes stopping an ongoing task in order to carry out the infinitive action."
+            },
+            {
+                id: 22,
+                topic: "Participles as Adjectives",
+                question: "Select the option that correctly fills the blanks: 'It was an _______ movie, and the whole audience felt _______.'",
+                options: [
+                    "interesting; interested",
+                    "interested; interesting",
+                    "interesting; interesting",
+                    "interested; interested"
+                ],
+                answer: 0,
+                hint: "Present participle (-ing) describes the cause/thing; Past participle (-ed) describes the receiver's state/feeling.",
+                explanation: "The movie causes interest ($V_1+ing$ = interesting); the audience receives/feels the emotion ($V_3$ = interested)."
+            },
+            {
+                id: 23,
+                topic: "Perfect Participle Usage",
+                question: "Choose the grammatically sound sentence using a Perfect Participle:",
+                options: [
+                    "Having completed his assignment, Rohan went out to play.",
+                    "Completing his assignment, Rohan went out to play.",
+                    "Completed his assignment, Rohan went out to play.",
+                    "Having complete his assignment, Rohan went out to play."
+                ],
+                answer: 0,
+                hint: "Perfect Participle structure is 'Having + $V_3$' for sequential actions where one completely finishes before another begins.",
+                explanation: "'Having + $V_3$' (Having completed) shows that the first action was fully finished before the second action ('went out') started."
+            },
+            {
+                id: 24,
+                topic: "Passive Perfect Participle",
+                question: "Identify the correct passive perfect participle structure:",
+                options: [
+                    "Having been defeated by his rival, the former champion retired.",
+                    "Having defeated by his rival, the former champion retired.",
+                    "Being defeated by his rival, the former champion had retired.",
+                    "Having been defeat by his rival, the former champion retired."
+                ],
+                answer: 0,
+                hint: "Passive perfect participle formula is 'Having been + $V_3$'.",
+                explanation: "When an action expressed by a perfect participle is in the passive voice, use 'Having been + $V_3$'."
+            },
+            {
+                id: 25,
+                topic: "Verbs Followed by Bare Infinitives",
+                question: "Which of the following sentences contains a syntax error?",
+                options: [
+                    "I heard him to lock the door behind him.",
+                    "I heard him lock the door behind him.",
+                    "I saw her cross the road safely.",
+                    "Let him do whatever he wishes."
+                ],
+                answer: 0,
+                hint: "Verbs of perception (see, hear, watch, notice) take a bare infinitive in active voice.",
+                explanation: "Verbs of perception like 'hear', 'see', 'watch' take a Bare Infinitive ($V_1$ without 'to') in active voice. 'To lock' should be 'lock'."
+            },
+            {
+                id: 26,
+                topic: "Passive Infinitive Structure",
+                question: "Fill in the blank: 'There is a lot of work _______ before sunset.'",
+                options: [
+                    "to be done",
+                    "to do",
+                    "doing",
+                    "to have done"
+                ],
+                answer: 0,
+                hint: "The work is receiving the action, requiring a passive infinitive.",
+                explanation: "The passive infinitive structure is 'to be + $V_3$' ('to be done')."
+            },
+            {
+                id: 27,
+                topic: "Subject-Verb Agreement - Uncountable Nouns",
+                question: "Choose the sentence with the correct subject-verb agreement:",
+                options: [
+                    "All the information provided in the report was accurate.",
+                    "All the information provided in the report were accurate.",
+                    "All the informations provided in the report was accurate.",
+                    "All the informations provided in the report were accurate."
+                ],
+                answer: 0,
+                hint: "'Information' is an uncountable noun and has no plural form; it takes a singular verb.",
+                explanation: "'Information' is uncountable (no 's') and agrees with a singular verb ('was')."
+            },
+            {
+                id: 28,
+                topic: "Subject-Verb Agreement - Fractions and Percentages",
+                question: "Fill in the blank: 'Two-thirds of the book _______ been completed.'",
+                options: [
+                    "has",
+                    "have",
+                    "were",
+                    "are"
+                ],
+                answer: 0,
+                hint: "Fractions take a verb dependent on the noun following 'of'. 'Book' is singular.",
+                explanation: "With fractions/percentages, if the noun following 'of' is uncountable/singular ('the book'), the verb is singular ('has')."
+            },
+            {
+                id: 29,
+                topic: "Subject-Verb Agreement - Fractions and Percentages",
+                question: "Fill in the blank: 'Two-thirds of the students _______ passed the entrance examination.'",
+                options: [
+                    "have",
+                    "has",
+                    "is",
+                    "was"
+                ],
+                answer: 0,
+                hint: "The noun following 'of' is 'students' (plural).",
+                explanation: "When a fraction refers to a plural countable noun ('students'), the verb must be plural ('have')."
+            },
+            {
+                id: 30,
+                topic: "Subject-Verb Agreement - Many a / Many",
+                question: "Which of the following options correctly completes the sentence? 'Many a student _______ failed to clear this competitive test.'",
+                options: [
+                    "has",
+                    "have",
+                    "are",
+                    "were"
+                ],
+                answer: 0,
+                hint: "'Many a' is followed by a Singular Noun and a Singular Verb.",
+                explanation: "Rule: 'Many a + Singular Noun + Singular Verb'. Thus, 'Many a student has' is grammatically correct."
+            },
+            {
+                id: 31,
+                topic: "Subject-Verb Agreement - A great many",
+                question: "Select the option that correctly completes: 'A great many soldiers _______ wounded in the battle.'",
+                options: [
+                    "were",
+                    "was",
+                    "is",
+                    "has been"
+                ],
+                answer: 0,
+                hint: "'A great many' takes a Plural Noun and a Plural Verb.",
+                explanation: "Rule: 'A great many + Plural Noun + Plural Verb'. Therefore, 'were wounded' is correct."
+            },
+            {
+                id: 32,
+                topic: "Subject-Verb Agreement - More than one",
+                question: "Fill in the blank: 'More than one man _______ involved in the conspiracy.'",
+                options: [
+                    "was",
+                    "were",
+                    "are",
+                    "have been"
+                ],
+                answer: 0,
+                hint: "Notice the singular noun 'man' right after 'more than one'.",
+                explanation: "Rule: 'More than one + Singular Noun + Singular Verb'. Hence, 'was involved' is correct."
+            },
+            {
+                id: 33,
+                topic: "Subject-Verb Agreement - More + Plural Noun + than one",
+                question: "Fill in the blank: 'More candidates than one _______ selected for the interview.'",
+                options: [
+                    "were",
+                    "was",
+                    "is",
+                    "has been"
+                ],
+                answer: 0,
+                hint: "When 'More' is directly followed by a plural noun, use a plural verb.",
+                explanation: "Rule: 'More + Plural Noun + than one + Plural Verb'. Therefore, 'were selected' is required."
+            },
+            {
+                id: 34,
+                topic: "Subject-Verb Agreement - Either/Neither as Pronouns",
+                question: "Choose the correct verb: 'Neither of the two candidates _______ suitable for the job.'",
+                options: [
+                    "is",
+                    "are",
+                    "were",
+                    "have been"
+                ],
+                answer: 0,
+                hint: "'Neither of' used for two items takes a singular verb.",
+                explanation: "'Neither of' / 'Either of' / 'Each of' + Plural Noun takes a Singular Verb ('is')."
+            },
+            {
+                id: 35,
+                topic: "Subject-Verb Agreement - None of",
+                question: "Select the correct sentence regarding 'None of' with uncountable nouns:",
+                options: [
+                    "None of the milk was wasted.",
+                    "None of the milk were wasted.",
+                    "None of the milk have been wasted.",
+                    "None of the milk are wasted."
+                ],
+                answer: 0,
+                hint: "'Milk' is an uncountable noun.",
+                explanation: "'None of + Uncountable Noun' always takes a Singular Verb ('was')."
+            },
+            {
+                id: 36,
+                topic: "Subject-Verb Agreement - Plural Title/Name",
+                question: "Fill in the blank: 'The Arabian Nights _______ a world-famous collection of folk tales.'",
+                options: [
+                    "is",
+                    "are",
+                    "were",
+                    "have been"
+                ],
+                answer: 0,
+                hint: "Titles of books, movies, or countries ending in '-s' take a singular verb.",
+                explanation: "Proper nouns representing a single book title take a singular verb ('is') even if they sound plural."
+            },
+            {
+                id: 37,
+                topic: "Subject-Verb Agreement - Distance / Amount / Weight",
+                question: "Fill in the blank: 'Ten miles _______ a long distance to walk on foot.'",
+                options: [
+                    "is",
+                    "are",
+                    "were",
+                    "have been"
+                ],
+                answer: 0,
+                hint: "A specific quantity, distance, or amount treated as a single collective unit takes a singular verb.",
+                explanation: "When a plural number denotes a single unified amount, distance, or time duration, it takes a Singular Verb ('is')."
+            },
+            {
+                id: 38,
+                topic: "Subject-Verb Agreement - Plural Nouns with Divided Amounts",
+                question: "Choose the correct option: 'Ten thousand rupees _______ spent on various small items.'",
+                options: [
+                    "were",
+                    "was",
+                    "is",
+                    "has been"
+                ],
+                answer: 0,
+                hint: "The sum of money was spent separately on multiple items.",
+                explanation: "When a sum of money or measurement is considered in parts/separated transactions rather than a single lump sum, use a Plural Verb ('were')."
+            },
+            {
+                id: 39,
+                topic: "Infinitive - Too... to structure",
+                question: "Transform or identify the correct meaning of: 'He is too weak to walk.'",
+                options: [
+                    "He is so weak that he cannot walk.",
+                    "He is very weak so he can walk.",
+                    "He is weak enough to walk easily.",
+                    "He is so weak that he can walk."
+                ],
+                answer: 0,
+                hint: "'Too + Adjective + to-infinitive' conveys a negative result.",
+                explanation: "'Too... to' translates structurally to 'so... that + subject + cannot'."
+            },
+            {
+                id: 40,
+                topic: "Adjective + Enough + Infinitive",
+                question: "Identify the correct position of 'enough' relative to adjectives:",
+                options: [
+                    "He is smart enough to solve this puzzle.",
+                    "He is enough smart to solve this puzzle.",
+                    "He is enough smarter to solve this puzzle.",
+                    "He is smartest enough to solve this puzzle."
+                ],
+                answer: 0,
+                hint: "'Enough' comes AFTER the positive degree adjective it modifies.",
+                explanation: "Rule: 'Positive Degree Adjective + Enough + to + $V_1$'. Therefore, 'smart enough' is correct."
+            },
+            {
+                id: 41,
+                topic: "Verb Forms & Confusing Pairs - Bid",
+                question: "What are the correct past and past participle forms of 'Bid' when it means 'to greet or command'?",
+                options: [
+                    "Bade, Bidden",
+                    "Bid, Bid",
+                    "Bided, Bided",
+                    "Bad, Bidden"
+                ],
+                answer: 0,
+                hint: "Differentiate between bidding in an auction vs. bidding farewell.",
+                explanation: "Bid (command/greet) -> $V_2$: bade, $V_3$: bidden. Bid (auction/offer money) -> $V_2$: bid, $V_3$: bid."
+            },
+            {
+                id: 42,
+                topic: "Confusing Pairs - Lie vs Lay",
+                question: "Which of the following sentences uses 'Lay' or 'Lie' INCORRECTLY?",
+                options: [
+                    "He layed on the bed to rest after work.",
+                    "Please lay the carpet on the floor.",
+                    "He has lain in the sun for two hours.",
+                    "Hens lay eggs in the morning."
+                ],
+                answer: 0,
+                hint: "'Layed' is a misspelling. The past tense of Lie (recline) is 'lay'."
+            },
+            {
+                id: 43,
+                topic: "Subject-Verb Agreement - Compound Subject with 'And'",
+                question: "Select the sentence with correct verb agreement:",
+                options: [
+                    "Bread and butter is a wholesome breakfast.",
+                    "Bread and butter are a wholesome breakfast.",
+                    "Bread and butter have been a wholesome breakfast.",
+                    "Bread and butter were a wholesome breakfast."
+                ],
+                answer: 0,
+                hint: "When two nouns connected by 'and' express a single unified idea or item, use a singular verb.",
+                explanation: "'Bread and butter' forms a single combined meal unit, requiring a singular verb ('is')."
+            },
+            {
+                id: 44,
+                topic: "Subject-Verb Agreement - Compound Subject with 'And'",
+                question: "Fill in the blank: 'Slow and steady _______ the race.'",
+                options: [
+                    "wins",
+                    "win",
+                    "are winning",
+                    "have won"
+                ],
+                answer: 0,
+                hint: "Two singular concepts expressing one single thought take a singular verb.",
+                explanation: "The phrase represents a single conceptual maxim, taking the singular verb 'wins'."
+            },
+            {
+                id: 45,
+                topic: "Subject-Verb Agreement - Articles and Nouns",
+                question: "Select the correct option: 'The Director and Producer of the film _______ arrived at the venue.'",
+                options: [
+                    "has",
+                    "have",
+                    "are",
+                    "were"
+                ],
+                answer: 0,
+                hint: "Notice that the article 'The' is used only ONCE before the first noun.",
+                explanation: "When an article precedes only the first noun ('The Director and Producer'), it indicates a single person holding both titles, requiring a singular verb ('has')."
+            },
+            {
+                id: 46,
+                topic: "Subject-Verb Agreement - Articles and Nouns",
+                question: "Select the correct option: 'The Director and the Producer _______ present at the conference.'",
+                options: [
+                    "were",
+                    "was",
+                    "is",
+                    "has been"
+                ],
+                answer: 0,
+                hint: "The article 'The' is repeated before both nouns.",
+                explanation: "When the article is used before both nouns ('The Director and the Producer'), it refers to two distinct individuals, requiring a plural verb ('were')."
+            },
+            {
+                id: 47,
+                topic: "Gerund as Subject of Sentence",
+                question: "Identify the functional role of 'Swimming' in: 'Swimming is an excellent full-body exercise.'",
+                options: [
+                    "Gerund acting as the Subject",
+                    "Present Participle modifying exercise",
+                    "Main Verb in Continuous Tense",
+                    "Infinitive phrase"
+                ],
+                answer: 0,
+                hint: "It is a $V_1 + ing$ word functioning as a noun in the subject position.",
+                explanation: "'Swimming' is a Gerund ($V_1+ing$) performing the function of a Noun as the Subject of the sentence."
+            },
+            {
+                id: 48,
+                topic: "Subject-Verb Agreement - Relative Pronouns",
+                question: "Choose the correct verb form: 'It is I who _______ responsible for this error.'",
+                options: [
+                    "am",
+                    "is",
+                    "are",
+                    "be"
+                ],
+                answer: 0,
+                hint: "The relative pronoun 'who' agrees with its antecedent pronoun 'I'.",
+                explanation: "A verb following a relative pronoun ('who/which/that') must agree in person and number with its antecedent ('I'). Hence, 'who am responsible'."
+            },
+            {
+                id: 49,
+                topic: "Subject-Verb Agreement - One of those who",
+                question: "Select the correct verb form: 'He is one of those men who _______ always ready to help others.'",
+                options: [
+                    "are",
+                    "is",
+                    "was",
+                    "has been"
+                ],
+                answer: 0,
+                hint: "The antecedent of 'who' is the plural noun 'men'.",
+                explanation: "In 'one of those [plural noun] who...', the antecedent of 'who' is 'men' (plural), so the verb must be plural ('are')."
+            },
+            {
+                id: 50,
+                topic: "Subject-Verb Agreement - The only one of those who",
+                question: "Select the correct verb form: 'He is the only one of those men who _______ caught red-handed.'",
+                options: [
+                    "was",
+                    "were",
+                    "are",
+                    "have been"
+                ],
+                answer: 0,
+                hint: "Notice the modifier 'the only one'.",
+                explanation: "When preceded by 'the only one of...', the subject is strictly 'the only one' (singular), requiring a singular verb ('was')."
+            }
+        ];
+
+        // State variables
+        let currentQuestionIdx = 0;
+        let userAnswers = new Array(quizData.length).fill(null);
+
+        // Utility: Fisher-Yates Shuffle algorithm
+        function shuffleArray(array) {
+            const arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        // Initialize Option Mappings with Randomization
+        const randomizedData = quizData.map((q) => {
+            const optionsObjs = q.options.map((optText, index) => ({
+                text: optText,
+                isCorrect: index === q.answer
+            }));
+            const shuffled = shuffleArray(optionsObjs);
+            return {
+                ...q,
+                shuffledOptions: shuffled
+            };
+        });
+
+        // DOM Elements
+        const questionNumberEl = document.getElementById("question-number");
+        const subtopicTagEl = document.getElementById("subtopic-tag");
+        const questionTextEl = document.getElementById("question-text");
+        const hintBoxEl = document.getElementById("hint-box");
+        const hintTextEl = document.getElementById("hint-text");
+        const optionsContainerEl = document.getElementById("options-container");
+        const explanationBoxEl = document.getElementById("explanation-box");
+        const explanationTextEl = document.getElementById("explanation-text");
+        const prevBtn = document.getElementById("prev-btn");
+        const nextBtn = document.getElementById("next-btn");
+        const scoreDisplayEl = document.getElementById("score-display");
+        const progressTextEl = document.getElementById("progress-text");
+        const progressBarEl = document.getElementById("progress-bar");
+        const jumpInputEl = document.getElementById("jump-input");
+
+        // Load Question Function
+        function renderQuestion() {
+            const q = randomizedData[currentQuestionIdx];
+
+            // Reset UI states
+            hintBoxEl.classList.add("hidden");
+            explanationBoxEl.classList.add("hidden");
+
+            // Meta Info
+            questionNumberEl.textContent = `Question ${currentQuestionIdx + 1} of ${randomizedData.length}`;
+            subtopicTagEl.textContent = q.topic;
+            questionTextEl.textContent = q.question;
+            hintTextEl.textContent = q.hint;
+            explanationTextEl.textContent = q.explanation;
+
+            // Render Options
+            optionsContainerEl.innerHTML = "";
+            const currentSelected = userAnswers[currentQuestionIdx];
+
+            q.shuffledOptions.forEach((opt, optIdx) => {
+                const btn = document.createElement("button");
+                btn.className = "w-full text-left p-3.5 rounded-lg border transition-all text-sm font-medium flex items-center justify-between ";
+
+                if (currentSelected === null) {
+                    btn.className += "border-slate-200 hover:border-indigo-400 hover:bg-indigo-50/50 bg-white text-slate-700";
+                    btn.onclick = () => selectOption(optIdx);
+                } else {
+                    btn.disabled = true;
+                    if (opt.isCorrect) {
+                        btn.className += "border-emerald-500 bg-emerald-50 text-emerald-900 font-semibold";
+                    } else if (currentSelected === optIdx) {
+                        btn.className += "border-rose-500 bg-rose-50 text-rose-900";
+                    } else {
+                        btn.className += "border-slate-200 bg-slate-50 text-slate-400 opacity-60";
+                    }
+                }
+
+                const prefix = String.fromCharCode(65 + optIdx); // A, B, C, D
+                btn.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="w-6 h-6 rounded-full border border-current flex items-center justify-center text-xs font-bold">${prefix}</span>
+                        <span>${opt.text}</span>
+                    </div>
+                `;
+
+                if (currentSelected !== null) {
+                    if (opt.isCorrect) {
+                        btn.innerHTML += `<svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>`;
+                    } else if (currentSelected === optIdx) {
+                        btn.innerHTML += `<svg class="w-5 h-5 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>`;
+                    }
+                }
+
+                optionsContainerEl.appendChild(btn);
+            });
+
+            // Show explanation if already answered
+            if (currentSelected !== null) {
+                explanationBoxEl.classList.remove("hidden");
+            }
+
+            // Update Navigation state
+            prevBtn.disabled = currentQuestionIdx === 0;
+            nextBtn.disabled = currentQuestionIdx === randomizedData.length - 1;
+
+            updateStats();
+        }
+
+        // Option Selection Handler
+        function selectOption(optIdx) {
+            userAnswers[currentQuestionIdx] = optIdx;
+            renderQuestion();
+        }
+
+        // Toggle Hint Visibility
+        function toggleHint() {
+            hintBoxEl.classList.toggle("hidden");
+        }
+
+        // Update Score and Progress Stats
+        function updateStats() {
+            let score = 0;
+
+            userAnswers.forEach((ans, idx) => {
+                if (ans !== null) {
+                    if (randomizedData[idx].shuffledOptions[ans].isCorrect) {
+                        score++;
+                    }
+                }
+            });
+
+            scoreDisplayEl.textContent = `${score} / ${randomizedData.length}`;
+            progressTextEl.textContent = `${currentQuestionIdx + 1} / ${randomizedData.length}`;
+            
+            const progressPercent = ((currentQuestionIdx + 1) / randomizedData.length) * 100;
+            progressBarEl.style.width = `${progressPercent}%`;
+        }
+
+        // Navigation controls
+        function prevQuestion() {
+            if (currentQuestionIdx > 0) {
+                currentQuestionIdx--;
+                renderQuestion();
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIdx < randomizedData.length - 1) {
+                currentQuestionIdx++;
+                renderQuestion();
+            }
+        }
+
+        function jumpToQuestion() {
+            const val = parseInt(jumpInputEl.value);
+            if (val >= 1 && val <= randomizedData.length) {
+                currentQuestionIdx = val - 1;
+                renderQuestion();
+                jumpInputEl.value = "";
+            } else {
+                alert(`Please enter a question number between 1 and ${randomizedData.length}`);
+            }
+        }
+
+        // Initial Load
+        renderQuestion();
+    </script>
+<script src="../../quiz-app-ui-v2.js"></script>
+</body>
+</html>

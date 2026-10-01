@@ -1,0 +1,1624 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Narration - Pages 1 to 10 | 50 Question Master Quiz</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        background: #f1f5f9;
+    }
+
+    .option-btn {
+        transition: all 0.2s ease;
+    }
+
+    .option-btn:hover:not(:disabled) {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
+
+    .correct {
+        border-color: #16a34a !important;
+        background: #dcfce7 !important;
+        color: #166534 !important;
+    }
+
+    .wrong {
+        border-color: #dc2626 !important;
+        background: #fee2e2 !important;
+        color: #991b1b !important;
+    }
+
+    .disabled-option {
+        cursor: default !important;
+    }
+
+    .progress-fill {
+        transition: width 0.3s ease;
+    }
+
+    .fade {
+        animation: fadeIn 0.25s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(4px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .explanation-box {
+        animation: fadeIn 0.25s ease;
+    }
+
+    .page-tag {
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    @media(max-width:640px) {
+        .question-text {
+            font-size: 18px;
+        }
+    }
+</style>
+</head>
+
+<body class="min-h-screen">
+
+<div class="max-w-5xl mx-auto px-3 sm:px-5 py-4 sm:py-8">
+
+    <!-- HEADER -->
+    <header class="bg-white rounded-2xl shadow-md p-5 sm:p-7 mb-5">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+                <div class="inline-block bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-xs font-bold mb-2">
+                    ENGLISH • NARRATION
+                </div>
+
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-800">
+                    Direct & Indirect Speech
+                </h1>
+
+                <p class="text-slate-500 mt-2">
+                    Pages 1–10 • 50 Unique Questions • Exam-Oriented Master Quiz
+                </p>
+            </div>
+
+            <div class="bg-slate-100 rounded-xl px-5 py-3 text-center">
+                <div class="text-xs text-slate-500">SCORE</div>
+                <div id="score" class="text-2xl font-extrabold text-indigo-600">0 / 50</div>
+            </div>
+        </div>
+
+        <!-- Progress -->
+        <div class="mt-5">
+            <div class="flex justify-between text-xs font-semibold text-slate-500 mb-2">
+                <span id="progressText">Question 1 of 50</span>
+                <span id="percentage">2%</span>
+            </div>
+
+            <div class="w-full bg-slate-200 rounded-full h-3 overflow-hidden">
+                <div id="progressBar"
+                     class="progress-fill bg-indigo-600 h-3 rounded-full"
+                     style="width:2%">
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+    <!-- CONTROLS -->
+    <section class="bg-white rounded-2xl shadow-md p-4 mb-5">
+        <div class="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
+
+            <button onclick="previousQuestion()"
+                    class="bg-slate-700 hover:bg-slate-800 text-white font-bold px-5 py-3 rounded-xl">
+                ← Previous
+            </button>
+
+            <button onclick="nextQuestion()"
+                    class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-5 py-3 rounded-xl">
+                Next →
+            </button>
+
+            <div class="flex gap-2 flex-1">
+                <input
+                    id="jumpInput"
+                    type="number"
+                    min="1"
+                    max="50"
+                    placeholder="Question #"
+                    class="w-full border-2 border-slate-200 rounded-xl px-4 py-3 outline-none focus:border-indigo-500"
+                >
+
+                <button onclick="jumpQuestion()"
+                        class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold px-5 rounded-xl">
+                    Jump
+                </button>
+            </div>
+
+            <button onclick="restartQuiz()"
+                    class="bg-red-100 hover:bg-red-200 text-red-700 font-bold px-5 py-3 rounded-xl">
+                Restart
+            </button>
+        </div>
+    </section>
+
+
+    <!-- QUIZ CARD -->
+    <main id="quizCard" class="bg-white rounded-2xl shadow-md p-5 sm:p-8">
+
+        <div class="flex flex-wrap items-center gap-2 mb-4">
+            <span id="questionNumber"
+                  class="bg-indigo-600 text-white px-3 py-1 rounded-full page-tag">
+                Q1
+            </span>
+
+            <span id="sourcePage"
+                  class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full page-tag">
+                Source: Page 1
+            </span>
+
+            <span id="difficulty"
+                  class="bg-amber-100 text-amber-700 px-3 py-1 rounded-full page-tag">
+                SSC Level
+            </span>
+        </div>
+
+        <h2 id="question"
+            class="question-text text-xl sm:text-2xl font-bold text-slate-800 leading-relaxed mb-6">
+        </h2>
+
+
+        <!-- HINT -->
+        <div class="mb-5">
+            <button onclick="toggleHint()"
+                    class="text-indigo-600 font-bold hover:text-indigo-800">
+                💡 Show / Hide Hint
+            </button>
+
+            <div id="hint"
+                 class="hidden mt-3 bg-indigo-50 border-l-4 border-indigo-500 p-4 rounded-r-xl text-indigo-900">
+            </div>
+        </div>
+
+
+        <!-- OPTIONS -->
+        <div id="options" class="space-y-3"></div>
+
+
+        <!-- EXPLANATION -->
+        <div id="explanation"
+             class="hidden explanation-box mt-7 rounded-xl border-2 p-5">
+        </div>
+
+
+        <!-- NAVIGATION BOTTOM -->
+        <div class="mt-8 pt-5 border-t border-slate-200 flex justify-between gap-3">
+            <button onclick="previousQuestion()"
+                    class="bg-slate-700 hover:bg-slate-800 text-white font-bold px-5 py-3 rounded-xl">
+                ← Previous
+            </button>
+
+            <button onclick="nextQuestion()"
+                    class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-5 py-3 rounded-xl">
+                Next →
+            </button>
+        </div>
+
+    </main>
+
+
+    <!-- RESULT -->
+    <section id="resultCard"
+             class="hidden bg-white rounded-2xl shadow-md p-6 sm:p-10 mt-5 text-center">
+
+        <div class="text-6xl mb-4">🎯</div>
+
+        <h2 class="text-3xl font-extrabold text-slate-800">
+            Quiz Completed!
+        </h2>
+
+        <p class="text-slate-500 mt-2">
+            Your final performance
+        </p>
+
+        <div id="finalScore"
+             class="text-5xl font-extrabold text-indigo-600 mt-6">
+        </div>
+
+        <div id="performance"
+             class="mt-4 text-lg font-semibold">
+        </div>
+
+        <button onclick="restartQuiz()"
+                class="mt-7 bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-8 py-3 rounded-xl">
+            Take Quiz Again
+        </button>
+    </section>
+
+</div>
+
+
+<script>
+
+/*
+=========================================================
+NARRATION MASTER QUIZ
+50 UNIQUE QUESTIONS
+SOURCE: UPLOADED PDF PAGES 1–10
+=========================================================
+
+IMPORTANT:
+- No while loop.
+- No modulo (%) operator.
+- No question recycling.
+- Every question is individually written.
+- Options are shuffled using Fisher-Yates.
+=========================================================
+*/
+
+
+const questions = [
+
+/* =========================
+PAGE 1
+========================= */
+
+{
+page: 1,
+level: "SSC Level",
+q: "The opening page of the supplied chapter introduces which English grammar topic?",
+options: [
+"Subject–Verb Agreement",
+"Direct and Indirect Speech (Narration)",
+"Active and Passive Voice",
+"Articles and Determiners"
+],
+answer: "Direct and Indirect Speech (Narration)",
+hint: "The chapter is about converting one form of speech into another.",
+explanation: "The opening page introduces the chapter on Narration, specifically Direct and Indirect Speech. The following pages explain rules for converting direct speech into indirect speech and vice versa."
+},
+
+{
+page: 2,
+level: "SSC Level",
+q: "In the sentence 'Ram says, \"I work hard,\"' which part represents the exact words spoken by Ram?",
+options: [
+"Ram",
+"says",
+"I work hard",
+"Ram says"
+],
+answer: "I work hard",
+hint: "Look for the words enclosed in quotation marks.",
+explanation: "The words inside inverted commas represent the exact words spoken by the speaker. Therefore, 'I work hard' is the Reported Speech, while 'Ram says' is the Reporting Speech."
+},
+
+{
+page: 2,
+level: "SSC Level",
+q: "In 'Ram says, \"I work hard,\"' what is 'Ram says' called?",
+options: [
+"Reported Speech",
+"Reporting Speech",
+"Object",
+"Conjunction"
+],
+answer: "Reporting Speech",
+hint: "It identifies the speaker and the reporting verb.",
+explanation: "'Ram says' tells us who is speaking and contains the reporting verb 'says'. Therefore, it is called the Reporting Speech. 'I work hard' is the Reported Speech."
+},
+
+{
+page: 2,
+level: "SSC Level",
+q: "Which punctuation device is used to enclose the words of the speaker in direct speech according to the supplied material?",
+options: [
+"Brackets",
+"Inverted commas",
+"Semicolon",
+"Colon only"
+],
+answer: "Inverted commas",
+hint: "Think of the marks around the speaker's exact words.",
+explanation: "Direct Speech presents the speaker's exact words inside inverted commas. The supplied material illustrates this with: Ram says, \"I work hard.\""
+},
+
+{
+page: 3,
+level: "SSC Level",
+q: "Choose the correct indirect form of: He says, \"I work hard.\"",
+options: [
+"He says that he works hard.",
+"He said that he worked hard.",
+"He says that I work hard.",
+"He tells that he works hard."
+],
+answer: "He says that he works hard.",
+hint: "The reporting verb is in the present tense.",
+explanation: "The PDF gives this as the basic example of assertive narration. Since the reporting verb 'says' is in the present tense, the tense of the reported speech does not undergo the past-tense change. 'I' changes to 'he', and 'that' is used."
+},
+
+{
+page: 3,
+level: "SSC Level",
+q: "Which conjunction is normally introduced in the indirect form of the assertive sentence shown in the PDF?",
+options: [
+"if",
+"that",
+"whether",
+"because"
+],
+answer: "that",
+hint: "It connects the reporting clause with an assertive statement.",
+explanation: "For assertive sentences, the supplied material demonstrates the use of 'that': He says, \"I work hard\" → He says that he works hard."
+},
+
+{
+page: 4,
+level: "SSC Level",
+q: "In changing 'He says, \"I work hard\"' into indirect speech, the pronoun 'I' changes according to which principle?",
+options: [
+"Always according to the object",
+"According to the subject of the reporting verb",
+"Always according to the third person",
+"According to the conjunction"
+],
+answer: "According to the subject of the reporting verb",
+hint: "Who is 'I' referring to in the original sentence?",
+explanation: "The PDF explains that pronouns are changed according to person. In the example, 'I' is first person and refers to the subject 'He'; therefore 'I' changes to 'he'."
+},
+
+{
+page: 4,
+level: "SSC Level",
+q: "According to the pronoun rule given in the PDF, second-person pronouns are changed according to the ______ of the reporting verb.",
+options: [
+"Subject",
+"Object",
+"Verb tense only",
+"Conjunction"
+],
+answer: "Object",
+hint: "Second-person 'you' refers to the person being addressed.",
+explanation: "The supplied rule states that first person changes according to the subject, second person according to the object, and third person generally remains unchanged."
+},
+
+{
+page: 4,
+level: "HSSC/State Level",
+q: "Which statement correctly represents the pronoun-change principle given in the chapter?",
+options: [
+"First person → subject; second person → object; third person → no change",
+"First person → object; second person → subject; third person → object",
+"All pronouns change according to the subject",
+"All pronouns remain unchanged"
+],
+answer: "First person → subject; second person → object; third person → no change",
+hint: "Remember the three-person sequence: Subject–Object–No change.",
+explanation: "The PDF presents the rule in a compact form: first-person pronouns are changed according to the subject, second-person pronouns according to the object, while third-person pronouns normally do not change."
+},
+
+{
+page: 5,
+level: "SSC Level",
+q: "Choose the correct indirect form of: He says to me, \"You work hard.\"",
+options: [
+"He tells me that I work hard.",
+"He tells me that he works hard.",
+"He says me that I work hard.",
+"He told me that you worked hard."
+],
+answer: "He tells me that I work hard.",
+hint: "'You' refers to 'me'.",
+explanation: "The reporting expression 'says to' changes to 'tells'. The second-person pronoun 'you' changes according to the object 'me', becoming 'I'. Because 'says' is present tense, 'work' remains in the present tense."
+},
+
+{
+page: 5,
+level: "SSC Level",
+q: "Choose the correct indirect form of: He says to me, \"She works hard.\"",
+options: [
+"He tells me that she works hard.",
+"He tells me that I work hard.",
+"He says me that she worked hard.",
+"He told me that she had worked hard."
+],
+answer: "He tells me that she works hard.",
+hint: "The third-person pronoun 'she' remains unchanged.",
+explanation: "The chapter gives this example directly. 'Says to' becomes 'tells', while the third-person pronoun 'she' remains unchanged. Since the reporting verb is present ('says'), the present tense remains present."
+},
+
+{
+page: 6,
+level: "SSC Level",
+q: "In indirect speech, 'say to' changes into which form when the reporting verb is in the present tense?",
+options: [
+"told",
+"tell",
+"asked",
+"ordered"
+],
+answer: "tell",
+hint: "Compare 'He says to me' with the indirect example in the PDF.",
+explanation: "The supplied material states that 'say to' changes to 'tell' in indirect speech. Thus, 'He says to me' becomes 'He tells me'. When the reporting verb is past, 'said to' becomes 'told'."
+},
+
+{
+page: 6,
+level: "SSC Level",
+q: "Which of the following is the correct conversion of 'said to' in indirect speech?",
+options: [
+"told",
+"says",
+"tell",
+"telling"
+],
+answer: "told",
+hint: "Use the past form of 'tell'.",
+explanation: "The PDF specifically states that 'said to' changes into 'told'. For example, a reporting structure such as 'He said to me...' becomes 'He told me...'."
+},
+
+{
+page: 6,
+level: "SSC Level",
+q: "According to the supplied rule, which type of reporting verb allows the tense of the reported speech to remain unchanged?",
+options: [
+"Present reporting verb",
+"Past reporting verb in every situation",
+"Only future reporting verb",
+"Imperative reporting verb only"
+],
+answer: "Present reporting verb",
+hint: "Look at the example beginning 'He says...'",
+explanation: "The PDF states that when the reporting verb is in the present or future tense, the tense of the reported speech does not change. Example: He says, 'I come here' → He says that he comes here."
+},
+
+{
+page: 6,
+level: "HSSC/State Level",
+q: "Which conversion is consistent with the rule for a present reporting verb?",
+options: [
+"He says, \"I come here.\" → He says that he comes here.",
+"He says, \"I come here.\" → He said that he came here.",
+"He says, \"I come here.\" → He says that he had come there.",
+"He says, \"I come here.\" → He told that he came here."
+],
+answer: "He says, \"I come here.\" → He says that he comes here.",
+hint: "A present reporting verb does not cause the tense change shown in the other choices.",
+explanation: "The PDF explicitly illustrates: He says, 'I come here' → He says that he comes here. The reporting verb is present, so the reported speech remains in the same tense."
+},
+
+{
+page: 7,
+level: "SSC Level",
+q: "If the reporting verb is in the past tense but the reported statement expresses a universal truth, what happens to its tense?",
+options: [
+"It changes to past perfect",
+"It changes to past continuous",
+"It remains unchanged",
+"It changes to future tense"
+],
+answer: "It remains unchanged",
+hint: "Universal truths are treated specially.",
+explanation: "The PDF states that when the reporting verb is in the past tense, the tense of the reported speech does not change when the statement expresses a universal truth. Example: He said, 'The Sun is a star' → He said that the Sun is a star."
+},
+
+{
+page: 7,
+level: "SSC Level",
+q: "Which sentence demonstrates the universal-truth exception?",
+options: [
+"He said that the Sun is a star.",
+"He said that the Sun was a star.",
+"He said that the Sun had been a star.",
+"He said that the Sun would be a star."
+],
+answer: "He said that the Sun is a star.",
+hint: "The PDF uses the Sun as its example.",
+explanation: "The chapter gives 'He said, \"The Sun is a star\"' and converts it to 'He said that the Sun is a star.' The present tense is retained because the statement is a universal truth."
+},
+
+{
+page: 7,
+level: "SSC Level",
+q: "Besides universal truths, which of the following is specifically mentioned as an exception to normal tense change?",
+options: [
+"Idiom or phrase",
+"Personal opinion only",
+"Question tag",
+"Proper noun"
+],
+answer: "Idiom or phrase",
+hint: "The PDF lists several categories together.",
+explanation: "The supplied material says that when the reporting verb is past, tense may remain unchanged for a universal truth, idiom/phrase, habitual action, or historical fact."
+},
+
+{
+page: 7,
+level: "HSSC/State Level",
+q: "Which of the following is NOT listed in the PDF as a situation in which the reported tense may remain unchanged despite a past reporting verb?",
+options: [
+"Universal truth",
+"Idiom or phrase",
+"Historical fact",
+"An ordinary future plan"
+],
+answer: "An ordinary future plan",
+hint: "Three choices are explicitly listed in the rule.",
+explanation: "The chapter lists universal truth, idiom/phrase, habitual action and historical fact as special cases. An ordinary future plan is not included in that list."
+},
+
+{
+page: 7,
+level: "SSC Level",
+q: "Convert according to the example in the PDF: He said, \"I came here yesterday.\"",
+options: [
+"He said that he had come there the previous day.",
+"He said that he came here yesterday.",
+"He said that he has come there today.",
+"He said that he would come there the next day."
+],
+answer: "He said that he had come there the previous day.",
+hint: "Notice both the tense and time/place changes.",
+explanation: "The supplied example changes 'came' to 'had come', 'here' to 'there', and 'yesterday' to 'the previous day'. Therefore the complete conversion is: He said that he had come there the previous day."
+},
+
+{
+page: 8,
+level: "SSC Level",
+q: "According to the tense-change table, Simple Present changes into:",
+options: [
+"Simple Past",
+"Past Continuous",
+"Past Perfect",
+"Present Perfect"
+],
+answer: "Simple Past",
+hint: "V1 changes to its past form.",
+explanation: "The PDF's tense table gives Simple Present → Simple Past. It represents the standard backshift when the reporting verb is in the past and no exception applies."
+},
+
+{
+page: 8,
+level: "SSC Level",
+q: "Which tense pair is correctly matched according to the supplied rules?",
+options: [
+"Present Continuous → Past Continuous",
+"Present Continuous → Past Perfect",
+"Present Perfect → Simple Past",
+"Past Continuous → Present Continuous"
+],
+answer: "Present Continuous → Past Continuous",
+hint: "is/am/are + verb-ing changes to was/were + verb-ing.",
+explanation: "The PDF states: Present Continuous changes into Past Continuous. For example, 'is/am/are' changes to 'was/were' while the -ing form remains."
+},
+
+{
+page: 8,
+level: "SSC Level",
+q: "Present Perfect changes into which tense under the normal backshift rule?",
+options: [
+"Past Perfect",
+"Simple Past",
+"Past Continuous",
+"Future Perfect"
+],
+answer: "Past Perfect",
+hint: "has/have changes to had.",
+explanation: "The supplied tense table states Present Perfect → Past Perfect. Thus 'has/have + V3' changes to 'had + V3'."
+},
+
+{
+page: 8,
+level: "HSSC/State Level",
+q: "Which pair correctly represents the change of Present Perfect Continuous?",
+options: [
+"Present Perfect Continuous → Past Perfect Continuous",
+"Present Perfect Continuous → Past Continuous",
+"Present Perfect Continuous → Simple Past",
+"Present Perfect Continuous → Future Continuous"
+],
+answer: "Present Perfect Continuous → Past Perfect Continuous",
+hint: "The PDF groups Present Perfect and Present Perfect Continuous with their corresponding past forms.",
+explanation: "The chapter states that Present Perfect / Present Perfect Continuous changes respectively into Past Perfect / Past Perfect Continuous."
+},
+
+{
+page: 8,
+level: "SSC Level",
+q: "What happens to a tense when the reported speech is already in a form for which the supplied table indicates 'no change'?",
+options: [
+"It must always become past perfect.",
+"It is retained according to the rule.",
+"It must become future tense.",
+"It must become present continuous."
+],
+answer: "It is retained according to the rule.",
+hint: "The table explicitly contains a 'No change' instruction.",
+explanation: "The supplied material shows that certain tense forms are not shifted further. The important point is that tense conversion follows the table rather than mechanically changing every verb into a past form."
+},
+
+{
+page: 9,
+level: "SSC Level",
+q: "Which modal change is correctly given in the PDF?",
+options: [
+"can → could",
+"can → would",
+"may → should",
+"shall → might"
+],
+answer: "can → could",
+hint: "Look at the three modal pairs in the rule.",
+explanation: "The modal-change table states: shall/will → should/would, may → might, and can → could. Therefore 'can → could' is correct."
+},
+
+{
+page: 9,
+level: "SSC Level",
+q: "When 'may' undergoes the modal change shown in the PDF, it becomes:",
+options: [
+"might",
+"could",
+"would",
+"should"
+],
+answer: "might",
+hint: "It is one of the three explicit modal conversions.",
+explanation: "According to the supplied rule, 'may' changes to 'might' in indirect speech when the normal modal backshift applies."
+},
+
+{
+page: 9,
+level: "SSC Level",
+q: "Which conversion of 'shall/will' is correctly represented?",
+options: [
+"shall/will → should/would",
+"shall/will → might/could",
+"shall/will → had",
+"shall/will → was/were"
+],
+answer: "shall/will → should/would",
+hint: "There are two corresponding forms.",
+explanation: "The PDF gives the modal rule: shall/will change into should/would. The exact choice depends on the original modal and context."
+},
+
+{
+page: 9,
+level: "SSC Level",
+q: "Which time expression changes into 'that day' in indirect speech?",
+options: [
+"today",
+"tomorrow",
+"yesterday",
+"tonight"
+],
+answer: "today",
+hint: "It is the first time-expression conversion in the table.",
+explanation: "The PDF lists: today → that day. Other conversions include tomorrow → the next day and yesterday → the previous day/the day before."
+},
+
+{
+page: 9,
+level: "SSC Level",
+q: "According to the supplied table, 'tomorrow' changes into:",
+options: [
+"the next day",
+"the previous day",
+"that day",
+"the day before"
+],
+answer: "the next day",
+hint: "It refers to the following day from the reporting point.",
+explanation: "The time-and-place table explicitly gives tomorrow → the next day."
+},
+
+{
+page: 9,
+level: "SSC Level",
+q: "Which conversion is correct for 'yesterday'?",
+options: [
+"the previous day / the day before",
+"the next day",
+"that night",
+"before today only"
+],
+answer: "the previous day / the day before",
+hint: "Both forms are supplied in the PDF.",
+explanation: "The PDF gives two accepted equivalents: yesterday → the previous day / the day before."
+},
+
+{
+page: 9,
+level: "SSC Level",
+q: "Which of the following time/place transformations is INCORRECT according to the supplied table?",
+options: [
+"tonight → that night",
+"here → there",
+"this → that",
+"these → them"
+],
+answer: "these → them",
+hint: "The PDF gives the demonstrative transformation for 'these'.",
+explanation: "The supplied table states: tonight → that night, here → there, this → that, and these → those. Therefore 'these → them' is incorrect."
+},
+
+{
+page: 9,
+level: "HSSC/State Level",
+q: "Match the following transformations: A. now, B. here, C. ago, D. last. Which option gives the correct sequence?",
+options: [
+"then, there, before, the previous",
+"that day, there, yesterday, next",
+"then, here, after, current",
+"now, there, before, tomorrow"
+],
+answer: "then, there, before, the previous",
+hint: "Use the exact time/place table.",
+explanation: "The PDF gives now → then, here → there, ago → before, and last → the previous. Thus the correct sequence is then, there, before, the previous."
+},
+
+{
+page: 10,
+level: "SSC Level",
+q: "Choose the correct indirect form from the first example on page 10: She said, \"I cannot help you at this time.\"",
+options: [
+"She said that she couldn't help me at that time.",
+"She said that I cannot help her at this time.",
+"She told that she could not help you then.",
+"She said that she cannot helped me at that time."
+],
+answer: "She said that she couldn't help me at that time.",
+hint: "Apply the modal, pronoun and time changes.",
+explanation: "The PDF gives this example directly. 'cannot' changes to 'couldn't', 'you' changes to 'me', and 'this time' changes to 'that time'."
+},
+
+{
+page: 10,
+level: "SSC Level",
+q: "In the sentence 'He said to me, \"I shall come to meet you tomorrow,\"' which form of 'shall' is used in the indirect version given in the PDF?",
+options: [
+"would",
+"should",
+"might",
+"could"
+],
+answer: "would",
+hint: "The example on page 10 provides the complete transformation.",
+explanation: "The supplied example is: He said to me, 'I shall come to meet you tomorrow' → He told me that he would come to meet me the next day. Thus 'shall' becomes 'would' in this context."
+},
+
+{
+page: 10,
+level: "SSC Level",
+q: "In the page 10 example involving 'tomorrow', what does 'tomorrow' become?",
+options: [
+"the next day",
+"that day",
+"the previous day",
+"the same day"
+],
+answer: "the next day",
+hint: "It is a future day relative to the original statement.",
+explanation: "The example states: 'I shall come to meet you tomorrow' → 'He told me that he would come to meet me the next day.' Thus tomorrow becomes the next day."
+},
+
+{
+page: 10,
+level: "SSC Level",
+q: "In the example 'He said to me, \"I shall come to meet you tomorrow,\"' which pronoun change is correct?",
+options: [
+"you → me",
+"I → he",
+"me → you",
+"I → they"
+],
+answer: "you → me",
+hint: "The reporting verb is followed by 'me'.",
+explanation: "The original listener is 'me'. Therefore the second-person pronoun 'you' changes according to the object of the reporting verb and becomes 'me' in the indirect sentence: He told me that he would come to meet me the next day."
+},
+
+{
+page: 10,
+level: "HSSC/State Level",
+q: "Consider the example: 'Ram said, \"I haven't taken any exam this year but I intend to take two exams the next year.\"' Which is the correct indirect form?",
+options: [
+"Ram said that he hadn't taken any exam that year but he intended to take two exams the next year.",
+"Ram said that I hadn't taken any exam this year but I intend to take two exams next year.",
+"Ram told that he hasn't taken any exam that year but he intended to take two exams.",
+"Ram said that he didn't take any exam that year but he will take two exams next year."
+],
+answer: "Ram said that he hadn't taken any exam that year but he intended to take two exams the next year.",
+hint: "The PDF gives this complete example.",
+explanation: "The supplied example demonstrates several changes together: 'I' → 'he', 'haven't taken' → 'hadn't taken', 'this year' → 'that year', and 'intend' → 'intended'. The future reference 'the next year' is retained in the given conversion."
+},
+
+{
+page: 4,
+level: "SSC Level",
+q: "Assertion (A): In indirect speech, a first-person pronoun is changed according to the subject of the reporting verb. Reason (R): The first-person pronoun generally refers to the speaker represented by the reporting subject.",
+options: [
+"Both A and R are correct, and R correctly explains A.",
+"Both A and R are correct, but R does not explain A.",
+"A is correct but R is incorrect.",
+"Both A and R are incorrect."
+],
+answer: "Both A and R are correct, and R correctly explains A.",
+hint: "Relate 'I' to the person who is speaking.",
+explanation: "The PDF states that first-person pronouns change according to the subject. This works because 'I/we' refer to the speaker. Therefore the reporting subject identifies the appropriate pronoun in indirect speech."
+},
+
+{
+page: 5,
+level: "SSC Level",
+q: "Which sentence correctly applies both the 'say to → tell' rule and the second-person pronoun rule?",
+options: [
+"He says to me, \"You work hard.\" → He tells me that I work hard.",
+"He says to me, \"You work hard.\" → He tells me that he works hard.",
+"He says to me, \"You work hard.\" → He said that I worked hard.",
+"He says to me, \"You work hard.\" → He says me that you work hard."
+],
+answer: "He says to me, \"You work hard.\" → He tells me that I work hard.",
+hint: "Apply two rules simultaneously.",
+explanation: "The supplied examples show both rules: 'says to' becomes 'tells', and second-person 'you' changes according to the object 'me', becoming 'I'. Since the reporting verb is present, 'work' remains present."
+},
+
+{
+page: 6,
+level: "SSC Level",
+q: "Which reporting-verb pair is correctly matched with its indirect-speech form?",
+options: [
+"said to → told",
+"says to → told",
+"said → tells",
+"says → told"
+],
+answer: "said to → told",
+hint: "The PDF explicitly gives both present and past forms.",
+explanation: "The chapter states that 'say to' becomes 'tell' and 'said to' becomes 'told'. Hence said to → told is the correct pair."
+},
+
+{
+page: 7,
+level: "HSSC/State Level",
+q: "A teacher says, \"The Earth moves around the Sun.\" Later, the statement is reported. Based on the supplied rule for universal truths, which form is appropriate?",
+options: [
+"The teacher said that the Earth moves around the Sun.",
+"The teacher said that the Earth moved around the Sun.",
+"The teacher said that the Earth had moved around the Sun.",
+"The teacher said that the Earth would move around the Sun."
+],
+answer: "The teacher said that the Earth moves around the Sun.",
+hint: "The sentence expresses a universal truth.",
+explanation: "The PDF specifically says that universal truths retain their tense even when the reporting verb is in the past. Therefore the present tense 'moves' remains unchanged."
+},
+
+{
+page: 8,
+level: "SSC Level",
+q: "Which of the following shows the correct sequence for normal tense backshift?",
+options: [
+"Simple Present → Simple Past → Past Perfect",
+"Simple Present → Future → Past Perfect",
+"Simple Present → Past Continuous → Present Perfect",
+"Simple Present → Present Perfect → Future"
+],
+answer: "Simple Present → Simple Past → Past Perfect",
+hint: "The first two stages correspond to the table's tense movement.",
+explanation: "The supplied table shows Simple Present → Simple Past and Simple Past → Past Perfect. Thus the sequence Simple Present → Simple Past → Past Perfect is consistent with the given backshift pattern."
+},
+
+{
+page: 8,
+level: "SSC Level",
+q: "Which auxiliary transformation is associated with Present Continuous → Past Continuous?",
+options: [
+"is/am/are → was/were",
+"has/have → had",
+"do/does → did",
+"will → would"
+],
+answer: "is/am/are → was/were",
+hint: "Focus on the auxiliary verbs of continuous tense.",
+explanation: "The PDF's tense table gives Present Continuous → Past Continuous and shows the auxiliary change is/am/are → was/were."
+},
+
+{
+page: 8,
+level: "HSSC/State Level",
+q: "Which option correctly distinguishes the Present Perfect and Present Perfect Continuous changes shown in the PDF?",
+options: [
+"Present Perfect → Past Perfect; Present Perfect Continuous → Past Perfect Continuous",
+"Both → Simple Past",
+"Present Perfect → Past Continuous; Present Perfect Continuous → Past Perfect",
+"Both → Past Perfect"
+],
+answer: "Present Perfect → Past Perfect; Present Perfect Continuous → Past Perfect Continuous",
+hint: "The PDF lists both forms separately.",
+explanation: "The chapter explicitly pairs Present Perfect with Past Perfect and Present Perfect Continuous with Past Perfect Continuous. They are not converted into the same tense."
+},
+
+{
+page: 9,
+level: "SSC Level",
+q: "Which pair contains only correct time-expression changes from the supplied table?",
+options: [
+"today → that day; tonight → that night",
+"today → the next day; tonight → yesterday",
+"tomorrow → that day; yesterday → tonight",
+"now → today; ago → after"
+],
+answer: "today → that day; tonight → that night",
+hint: "Both transformations appear exactly in the table.",
+explanation: "The supplied table gives today → that day and tonight → that night. The other choices contain incorrect substitutions."
+},
+
+{
+page: 9,
+level: "SSC Level",
+q: "Which demonstrative transformation is correct according to the PDF?",
+options: [
+"this → that",
+"this → these",
+"these → this",
+"that → those"
+],
+answer: "this → that",
+hint: "The table contains both 'this' and 'these'.",
+explanation: "The time-and-place transformation table states this → that and these → those. Therefore this → that is correct."
+},
+
+{
+page: 9,
+level: "SSC Level",
+q: "Which place-related transformation is explicitly provided in the supplied material?",
+options: [
+"here → there",
+"there → here",
+"near → far",
+"home → house"
+],
+answer: "here → there",
+hint: "It is listed between 'last' and 'this' in the table.",
+explanation: "The PDF explicitly gives here → there. This is a standard change in perspective when the reported speech is narrated from another place."
+},
+
+{
+page: 10,
+level: "SSC Level",
+q: "In 'She said, \"I cannot help you at this time,\"' which THREE changes are demonstrated together in the supplied example?",
+options: [
+"cannot → couldn't, you → me, this time → that time",
+"cannot → should, you → him, this time → tomorrow",
+"cannot → can, you → I, this time → yesterday",
+"cannot → would, you → them, this time → there"
+],
+answer: "cannot → couldn't, you → me, this time → that time",
+hint: "Look at modal + pronoun + expression of time.",
+explanation: "The PDF's first example demonstrates three simultaneous changes: 'cannot' becomes 'couldn't'; 'you' becomes 'me'; and 'this time' becomes 'that time'."
+},
+
+{
+page: 10,
+level: "HSSC/State Level",
+q: "Which statement best summarizes the purpose of the page 10 examples?",
+options: [
+"They demonstrate several narration rules working together in complete sentences.",
+"They introduce only punctuation marks.",
+"They explain only active and passive voice.",
+"They contain unrelated vocabulary exercises."
+],
+answer: "They demonstrate several narration rules working together in complete sentences.",
+hint: "Look at how tense, pronouns, modals and time expressions change together.",
+explanation: "Page 10 applies the rules taught on earlier pages through complete examples. The examples combine modal changes, pronoun changes, tense changes and time-expression changes, making them useful for practical application."
+},
+
+{
+page: 4,
+level: "HSSC/State Level",
+q: "A student changes 'He says to me, \"You work hard.\"' into 'He tells me that I work hard.' Which two rules has the student applied correctly?",
+options: [
+"Reporting-verb conversion and second-person pronoun conversion",
+"Universal-truth exception and modal conversion",
+"Time-expression conversion and place conversion",
+"Past-perfect conversion and historical-fact exception"
+],
+answer: "Reporting-verb conversion and second-person pronoun conversion",
+hint: "Compare 'says to' and 'you'.",
+explanation: "Two rules are operating. First, 'says to' changes to 'tells'. Second, 'you' is second person and changes according to the object 'me', becoming 'I'."
+},
+
+{
+page: 7,
+level: "HSSC/State Level",
+q: "Which of the following sets contains ONLY the special categories named in the PDF for retaining the tense after a past reporting verb?",
+options: [
+"Universal truth, idiom/phrase, habitual action, historical fact",
+"Question, command, request, exclamation",
+"Future plan, promise, threat, suggestion",
+"Pronoun, conjunction, object, subject"
+],
+answer: "Universal truth, idiom/phrase, habitual action, historical fact",
+hint: "The PDF lists four categories in one rule.",
+explanation: "The supplied rule specifically names universal truth, idiom/phrase, habitual action and historical fact as categories where the reported tense may remain unchanged even though the reporting verb is past."
+},
+
+{
+page: 9,
+level: "SSC Level",
+q: "Which option correctly completes all four transformations: now → ?, ago → ?, last → ?, these → ?",
+options: [
+"then, before, the previous, those",
+"there, after, the next, that",
+"today, before, tomorrow, them",
+"then, yesterday, the next, this"
+],
+answer: "then, before, the previous, those",
+hint: "All four are directly listed in the time/place table.",
+explanation: "The supplied table gives now → then, ago → before, last → the previous, and these → those. Hence the first option is completely correct."
+},
+
+{
+page: 8,
+level: "SSC Level",
+q: "Which of the following is the correct conversion of 'do/does' shown in the tense table?",
+options: [
+"did",
+"had",
+"was",
+"would"
+],
+answer: "did",
+hint: "It is paired with Simple Present → Simple Past.",
+explanation: "The supplied table shows the auxiliary change do/does → did as part of the Simple Present to Simple Past transformation."
+},
+
+{
+page: 10,
+level: "SSC Level",
+q: "The phrase 'the next year' in the Ram example is used to refer to which time relative to the original statement?",
+options: [
+"The year following the year being discussed",
+"The previous year",
+"The same year",
+"The current day"
+],
+answer: "The year following the year being discussed",
+hint: "It is connected with Ram's intention to take exams in a future year.",
+explanation: "In the supplied example, Ram says that he intends to take two exams 'the next year'. The indirect version retains 'the next year', referring to the year following the relevant reference year."
+}
+
+];
+
+
+/* =====================================================
+STATE
+===================================================== */
+
+let currentQuestion = 0;
+let score = 0;
+let answered = new Array(questions.length).fill(false);
+let selectedAnswers = new Array(questions.length).fill(null);
+
+
+/* =====================================================
+RANDOMIZE OPTIONS
+No modulo operator.
+No while loop.
+No array cycling.
+Fisher-Yates shuffle.
+===================================================== */
+
+function shuffleOptions(options) {
+
+    const arr = options.map(function(option) {
+        return option;
+    });
+
+    for (let i = arr.length - 1; i > 0; i--) {
+
+        const randomIndex = Math.floor(Math.random() * (i + 1));
+
+        const temp = arr[i];
+        arr[i] = arr[randomIndex];
+        arr[randomIndex] = temp;
+    }
+
+    return arr;
+}
+
+
+/* =====================================================
+INITIALIZE RANDOMIZED OPTIONS ONCE
+===================================================== */
+
+const randomizedOptions = questions.map(function(q) {
+    return shuffleOptions(q.options);
+});
+
+
+/* =====================================================
+LOAD QUESTION
+===================================================== */
+
+function loadQuestion() {
+
+    const q = questions[currentQuestion];
+
+    document.getElementById("questionNumber").textContent =
+        "Q" + (currentQuestion + 1);
+
+    document.getElementById("sourcePage").textContent =
+        "Source: Page " + q.page;
+
+    document.getElementById("difficulty").textContent =
+        q.level;
+
+    document.getElementById("question").textContent =
+        q.q;
+
+    document.getElementById("hint").textContent =
+        q.hint;
+
+    document.getElementById("hint").classList.add("hidden");
+
+    const optionsContainer =
+        document.getElementById("options");
+
+    optionsContainer.innerHTML = "";
+
+    randomizedOptions[currentQuestion].forEach(function(option, index) {
+
+        const button = document.createElement("button");
+
+        button.className =
+            "option-btn w-full text-left border-2 border-slate-200 bg-white hover:bg-slate-50 rounded-xl p-4 font-semibold text-slate-700 flex gap-3 items-start";
+
+        const letter = String.fromCharCode(65 + index);
+
+        button.innerHTML =
+            '<span class="min-w-[32px] h-8 rounded-lg bg-slate-100 flex items-center justify-center font-extrabold">' +
+            letter +
+            '</span>' +
+            '<span class="leading-relaxed">' +
+            escapeHTML(option) +
+            '</span>';
+
+        button.onclick = function() {
+            selectAnswer(option, button);
+        };
+
+        optionsContainer.appendChild(button);
+    });
+
+    const explanation =
+        document.getElementById("explanation");
+
+    explanation.classList.add("hidden");
+    explanation.innerHTML = "";
+
+    if (answered[currentQuestion]) {
+
+        showPreviousAnswer();
+
+    }
+
+    updateProgress();
+    updateScore();
+
+    document.getElementById("quizCard").classList.remove("fade");
+
+    void document.getElementById("quizCard").offsetWidth;
+
+    document.getElementById("quizCard").classList.add("fade");
+}
+
+
+/* =====================================================
+ESCAPE HTML
+===================================================== */
+
+function escapeHTML(text) {
+
+    return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+/* =====================================================
+SELECT ANSWER
+===================================================== */
+
+function selectAnswer(option, clickedButton) {
+
+    if (answered[currentQuestion]) {
+        return;
+    }
+
+    const q = questions[currentQuestion];
+
+    answered[currentQuestion] = true;
+    selectedAnswers[currentQuestion] = option;
+
+    const allButtons =
+        document.querySelectorAll("#options button");
+
+    allButtons.forEach(function(button) {
+
+        button.disabled = true;
+        button.classList.add("disabled-option");
+
+        const optionText =
+            button.querySelector("span:last-child").textContent;
+
+        if (optionText === q.answer) {
+            button.classList.add("correct");
+        }
+    });
+
+    if (option === q.answer) {
+
+        score++;
+
+        clickedButton.classList.add("correct");
+
+    } else {
+
+        clickedButton.classList.add("wrong");
+    }
+
+    showExplanation(option);
+    updateScore();
+
+    if (currentQuestion === questions.length - 1) {
+        setTimeout(function() {
+            showResult();
+        }, 600);
+    }
+}
+
+
+/* =====================================================
+SHOW EXPLANATION
+===================================================== */
+
+function showExplanation(selected) {
+
+    const q = questions[currentQuestion];
+
+    const explanation =
+        document.getElementById("explanation");
+
+    const correct =
+        selected === q.answer;
+
+    explanation.className =
+        "explanation-box mt-7 rounded-xl border-2 p-5 " +
+        (correct
+            ? "bg-green-50 border-green-300"
+            : "bg-red-50 border-red-300");
+
+    explanation.innerHTML =
+        '<div class="font-extrabold text-lg mb-3 ' +
+        (correct ? "text-green-700" : "text-red-700") +
+        '">' +
+        (correct ? "✓ Correct Answer" : "✗ Incorrect Answer") +
+        '</div>' +
+
+        '<div class="mb-3">' +
+        '<strong>Correct Answer:</strong> ' +
+        escapeHTML(q.answer) +
+        '</div>' +
+
+        '<div class="text-slate-700 leading-relaxed">' +
+        '<strong>Expert Explanation:</strong><br>' +
+        escapeHTML(q.explanation) +
+        '</div>' +
+
+        '<div class="mt-4 pt-3 border-t border-slate-300 text-sm text-slate-500">' +
+        '<strong>Source:</strong> Uploaded PDF, Page ' +
+        q.page +
+        '</div>';
+
+    explanation.classList.remove("hidden");
+}
+
+
+/* =====================================================
+SHOW PREVIOUS ANSWER
+===================================================== */
+
+function showPreviousAnswer() {
+
+    const q = questions[currentQuestion];
+
+    const allButtons =
+        document.querySelectorAll("#options button");
+
+    allButtons.forEach(function(button) {
+
+        button.disabled = true;
+
+        const optionText =
+            button.querySelector("span:last-child").textContent;
+
+        if (optionText === q.answer) {
+            button.classList.add("correct");
+        }
+
+        if (
+            selectedAnswers[currentQuestion] !== null &&
+            optionText === selectedAnswers[currentQuestion] &&
+            optionText !== q.answer
+        ) {
+            button.classList.add("wrong");
+        }
+    });
+
+    showExplanation(selectedAnswers[currentQuestion]);
+}
+
+
+/* =====================================================
+HINT
+===================================================== */
+
+function toggleHint() {
+
+    const hint =
+        document.getElementById("hint");
+
+    hint.classList.toggle("hidden");
+}
+
+
+/* =====================================================
+NEXT
+===================================================== */
+
+function nextQuestion() {
+
+    if (currentQuestion < questions.length - 1) {
+
+        currentQuestion++;
+
+        loadQuestion();
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    } else {
+
+        showResult();
+    }
+}
+
+
+/* =====================================================
+PREVIOUS
+===================================================== */
+
+function previousQuestion() {
+
+    if (currentQuestion > 0) {
+
+        currentQuestion--;
+
+        loadQuestion();
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    }
+}
+
+
+/* =====================================================
+JUMP
+===================================================== */
+
+function jumpQuestion() {
+
+    const input =
+        document.getElementById("jumpInput");
+
+    const number =
+        parseInt(input.value, 10);
+
+    if (
+        Number.isNaN(number) ||
+        number < 1 ||
+        number > questions.length
+    ) {
+
+        alert("Please enter a question number from 1 to 50.");
+
+        return;
+    }
+
+    currentQuestion = number - 1;
+
+    input.value = "";
+
+    loadQuestion();
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+
+/* =====================================================
+PROGRESS
+===================================================== */
+
+function updateProgress() {
+
+    const total = questions.length;
+
+    const current = currentQuestion + 1;
+
+    const percentage =
+        Math.round((current / total) * 100);
+
+    document.getElementById("progressText").textContent =
+        "Question " + current + " of " + total;
+
+    document.getElementById("percentage").textContent =
+        percentage + "%";
+
+    document.getElementById("progressBar").style.width =
+        percentage + "%";
+}
+
+
+/* =====================================================
+SCORE
+===================================================== */
+
+function updateScore() {
+
+    document.getElementById("score").textContent =
+        score + " / " + questions.length;
+}
+
+
+/* =====================================================
+RESULT
+===================================================== */
+
+function showResult() {
+
+    const resultCard =
+        document.getElementById("resultCard");
+
+    const finalScore =
+        document.getElementById("finalScore");
+
+    const performance =
+        document.getElementById("performance");
+
+    const percentage =
+        Math.round((score / questions.length) * 100);
+
+    finalScore.textContent =
+        score + " / " + questions.length +
+        " (" + percentage + "%)";
+
+    let message = "";
+
+    if (percentage >= 90) {
+
+        message =
+            "🏆 Excellent! Your Narration concepts are very strong.";
+
+    } else if (percentage >= 75) {
+
+        message =
+            "🔥 Very Good! Revise the questions you missed and attempt again.";
+
+    } else if (percentage >= 60) {
+
+        message =
+            "👍 Good attempt. Strengthen tense, pronoun and time-expression rules.";
+
+    } else if (percentage >= 40) {
+
+        message =
+            "📚 Keep practicing. Revisit pages 4–10 before another attempt.";
+
+    } else {
+
+        message =
+            "💪 Start again after revising the basic narration rules carefully.";
+    }
+
+    performance.textContent = message;
+
+    resultCard.classList.remove("hidden");
+
+    resultCard.scrollIntoView({
+        behavior: "smooth"
+    });
+}
+
+
+/* =====================================================
+RESTART
+===================================================== */
+
+function restartQuiz() {
+
+    currentQuestion = 0;
+    score = 0;
+
+    answered =
+        new Array(questions.length).fill(false);
+
+    selectedAnswers =
+        new Array(questions.length).fill(null);
+
+    randomizedOptions.length = 0;
+
+    questions.forEach(function(q) {
+
+        randomizedOptions.push(
+            shuffleOptions(q.options)
+        );
+    });
+
+    document.getElementById("resultCard")
+        .classList.add("hidden");
+
+    loadQuestion();
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+
+/* =====================================================
+KEYBOARD SHORTCUTS
+===================================================== */
+
+document.addEventListener("keydown", function(event) {
+
+    if (event.key === "ArrowRight") {
+        nextQuestion();
+    }
+
+    if (event.key === "ArrowLeft") {
+        previousQuestion();
+    }
+});
+
+
+/* =====================================================
+START
+===================================================== */
+
+loadQuestion();
+updateScore();
+
+</script>
+
+<script src="../../quiz-app-ui-v2.js"></script>
+</body>
+</html>

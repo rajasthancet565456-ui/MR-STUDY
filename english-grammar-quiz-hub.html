@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>English Grammar · Cosmic Mastery Library</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500;700&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
+    :root {
+      --ink: #f3efff;
+      --cream: #09061d;
+      --panel: #16103a;
+      --violet: #8b5cf6;
+      --pink: #ec4899;
+      --gold: #f59e0b;
+      --mint: #10b981;
+      --muted: #c4b5fd;
+      --faint: #241a4a;
+      --line: rgba(167, 139, 250, 0.25);
+      --shadow: 0 22px 60px rgba(0, 0, 0, 0.65);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      font: 400 16px Manrope, system-ui, sans-serif;
+      background: radial-gradient(circle at 90% 4%, rgba(236, 72, 153, 0.24), transparent 30%),
+                  radial-gradient(circle at 6% 88%, rgba(139, 92, 246, 0.22), transparent 34%),
+                  var(--cream);
+      overflow-x: hidden;
+    }
+    body:before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      opacity: 0.75;
+      pointer-events: none;
+      background-image: radial-gradient(circle at 12% 17%, #f59e0b 0 1px, transparent 1.7px),
+                        radial-gradient(circle at 54% 22%, #8b5cf6 0 1px, transparent 1.7px),
+                        radial-gradient(circle at 87% 58%, #ec4899 0 0.8px, transparent 1.5px),
+                        radial-gradient(circle at 35% 82%, #10b981 0 1px, transparent 1.6px);
+      background-size: 220px 200px, 290px 260px, 330px 310px, 240px 230px;
+    }
+    .wrap { width: min(1180px, calc(100% - 40px)); margin: auto; }
+    .appbar { height: 76px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); }
+    .brand { display: flex; align-items: center; gap: 11px; color: #fff; font-weight: 800; letter-spacing: 0.09em; text-decoration: none; font-size: 0.8rem; }
+    .orbit {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: radial-gradient(circle at 43% 48%, #04020c 0 33%, #8b5cf6 35% 39%, #ec4899 43% 47%, #f59e0b 50% 52%, transparent 56%);
+      box-shadow: 0 0 22px rgba(236, 72, 153, 0.7);
+    }
+    .navlinks { display: flex; align-items: center; gap: 8px; }
+    .navlinks a, .button {
+      font: 700 0.67rem 'DM Mono', monospace; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none;
+      color: var(--muted); padding: 10px 12px; border-radius: 9px; border: 1px solid transparent; background: transparent; cursor: pointer;
+    }
+    .navlinks a.active, .navlinks a:hover {
+      background: rgba(139, 92, 246, 0.16); box-shadow: 0 0 20px rgba(139, 92, 246, 0.25); color: #fff;
+    }
+    .master-home {
+      font: 500 0.67rem 'DM Mono', monospace; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none;
+      padding: 9px 10px; border: 1px solid currentColor; opacity: 0.85; border-radius: 6px; color: inherit;
+    }
+    .master-home:hover { opacity: 1; }
+    .collection-switcher { position: relative; font: 500 0.67rem 'DM Mono', monospace; letter-spacing: 0.08em; text-transform: uppercase; z-index: 20; }
+    .collection-switcher summary { cursor: pointer; list-style: none; padding: 10px; color: inherit; border: 1px solid currentColor; border-radius: 6px; opacity: 0.85; }
+    .collection-switcher summary::-webkit-details-marker { display: none; }
+    .collection-switcher summary:after { content: ' ▾'; }
+    .collection-switcher[open] summary:after { content: ' ▴'; }
+    .collection-menu {
+      position: absolute; right: 0; top: calc(100% + 7px); display: grid; min-width: 170px; padding: 7px;
+      background: #1e1346; border: 1px solid rgba(139, 92, 246, 0.35); box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5); border-radius: 8px;
+    }
+    .collection-menu a { padding: 9px 10px !important; color: #e9ddff !important; text-decoration: none; font-size: 0.72rem; }
+    .collection-menu a:hover { background: rgba(139, 92, 246, 0.25) !important; color: #fff !important; }
+
+    .view { display: none; }
+    .view.active { display: block; }
+    
+    .hero { min-height: calc(100vh - 76px); display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 48px; align-items: center; padding: 55px 0 85px; }
+    .eyebrow { font: 700 0.68rem 'DM Mono', monospace; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin: 0 0 19px; }
+    .hero h1, .library-heading { margin: 0; font: 700 clamp(3rem, 6.5vw, 5.8rem) / 0.95 'Playfair Display', serif; letter-spacing: -0.05em; color: #fff; text-shadow: 0 0 34px rgba(139, 92, 246, 0.25); }
+    .hero h1 em { color: var(--pink); font-style: italic; }
+    .hero-copy { color: var(--muted); max-width: 560px; line-height: 1.75; margin: 25px 0 29px; font-size: 1.06rem; }
+    .primary {
+      display: inline-flex; align-items: center; gap: 13px; padding: 15px 22px; border-radius: 11px;
+      background: linear-gradient(110deg, var(--violet), var(--pink)); color: #fff; text-decoration: none; font-weight: 800;
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2), 0 10px 30px rgba(139, 92, 246, 0.4); font-size: 0.85rem;
+    }
+    .primary:after { content: '→'; font-size: 1.2rem; }
+    .primary:hover { transform: translate(-2px, -2px); box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.3), 0 15px 38px rgba(236, 72, 153, 0.55); }
+    .stats { display: flex; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); margin-top: 48px; max-width: 650px; }
+    .stat { padding: 16px 28px 16px 0; margin-right: 24px; border-right: 1px solid var(--line); }
+    .stat:last-child { border: 0; }
+    .stat b { display: block; font: 700 1.45rem 'Playfair Display', serif; color: var(--gold); }
+    .stat span { font: 600 0.62rem 'DM Mono', monospace; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; }
+
+    .library-page { padding: 58px 0 80px; }
+    .library-heading { font-size: clamp(2.3rem, 5vw, 4.4rem); }
+    .library-intro { color: var(--muted); line-height: 1.7; max-width: 600px; margin: 15px 0 25px; }
+
+    /* Category Filter Pills */
+    .filter-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+    .filter-tab {
+      padding: 8px 14px; border-radius: 20px; border: 1px solid var(--line); background: rgba(22, 16, 58, 0.7);
+      color: var(--muted); font: 700 0.65rem 'DM Mono', monospace; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; transition: all 0.2s;
+    }
+    .filter-tab:hover, .filter-tab.active {
+      background: var(--violet); color: #fff; border-color: var(--violet); box-shadow: 0 0 16px rgba(139, 92, 246, 0.4);
+    }
+
+    .search { position: relative; max-width: 585px; display: block; }
+    .search:before { content: '⌕'; position: absolute; left: 16px; top: 7px; font-size: 1.45rem; color: var(--gold); }
+    .search input {
+      width: 100%; padding: 14px 15px 14px 44px; border-radius: 11px; border: 2px solid var(--faint); outline: 0;
+      background: rgba(18, 12, 46, 0.85); font: 600 0.9rem Manrope, sans-serif; color: #fff; box-shadow: 0 0 24px rgba(139, 92, 246, 0.15);
+    }
+    .search input::placeholder { color: #9a8eb6; }
+    .search input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15); }
+    .result-row { display: flex; justify-content: space-between; margin: 21px 0 13px; font: 700 0.66rem 'DM Mono', monospace; color: var(--gold); letter-spacing: 0.1em; text-transform: uppercase; }
+    
+    .quiz-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+    .quiz-card {
+      position: relative; border: 1px solid rgba(167, 139, 250, 0.25); border-radius: 18px; min-height: 140px; text-align: left; padding: 18px;
+      background: linear-gradient(145deg, rgba(34, 22, 74, 0.96), rgba(13, 8, 34, 0.98)); color: #fff; font: inherit; cursor: pointer;
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.35); transition: 0.2s; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between;
+    }
+    .quiz-card:hover { transform: translateY(-4px); border-color: var(--violet); box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.5), 0 16px 36px rgba(97, 63, 201, 0.4); }
+    .quiz-card-top { display: flex; justify-content: space-between; align-items: flex-start; }
+    .quiz-cat-pill { font: 700 0.6rem 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.08em; padding: 3px 8px; border-radius: 4px; background: rgba(139, 92, 246, 0.25); color: #c4b5fd; border: 1px solid rgba(139, 92, 246, 0.3); }
+    .quiz-number { display: block; font: 700 1.05rem 'Playfair Display', serif; color: #ffffff; margin-top: 8px; line-height: 1.35; }
+    .quiz-card small { display: block; margin-top: 8px; font: 700 0.65rem 'DM Mono', monospace; letter-spacing: 0.07em; color: var(--gold); }
+    .empty { grid-column: 1 / -1; padding: 35px; color: var(--muted); }
+
+    .quiz-page { min-height: 100vh; }
+    .quiz-toolbar { background: rgba(11, 7, 34, 0.96); border-bottom: 1px solid var(--line); padding: 12px 0; }
+    .quiz-toolbar .wrap { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 14px; }
+    .back { color: #fff; text-decoration: none; font: 700 0.66rem 'DM Mono', monospace; letter-spacing: 0.08em; text-transform: uppercase; }
+    .back:before { content: '← '; color: var(--gold); }
+    .quiz-context { text-align: center; min-width: 0; }
+    .quiz-context span { display: block; color: var(--gold); font: 700 0.61rem 'DM Mono', monospace; letter-spacing: 0.1em; text-transform: uppercase; }
+    .quiz-context b { display: block; color: #fff; margin-top: 4px; font: 700 1rem 'Playfair Display', serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .quiz-frame { width: 100%; height: calc(100vh - 77px); display: block; border: 0; background: #09061d; }
+
+    footer { border-top: 1px solid var(--line); padding: 28px 0; color: var(--muted); font-size: 0.8rem; }
+    .footer-brand { color: #fff; font-weight: 700; letter-spacing: 0.08em; }
+
+    @media (max-width: 850px) {
+      .hero { grid-template-columns: 1fr; padding: 60px 0; min-height: auto; }
+      .quiz-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 560px) {
+      .wrap { width: min(100% - 24px, 1180px); }
+      .navlinks a { padding: 8px 6px; font-size: 0.6rem; }
+      .hero h1 { font-size: 2.8rem; }
+      .quiz-grid { grid-template-columns: 1fr; }
+      .stats { flex-wrap: wrap; gap: 12px; }
+    }
+  </style>
+  <link rel="stylesheet" href="testbook-theme.css">
+</head>
+<body>
+  <div class="wrap appbar">
+    <a class="brand" href="#home"><span class="orbit"></span>ENGLISH GRAMMAR · COSMIC MASTERY</a>
+    <nav class="navlinks">
+      <a href="#home" data-nav="home">Home</a>
+      <a href="#library" data-nav="library">Quiz library</a>
+      <a class="master-home" href="cosmic-quiz-master.html">Master home</a>
+      <details class="collection-switcher">
+        <summary>Collections</summary>
+        <div class="collection-menu">
+          <a href="hr-ca-quiz-hub.html#library">HR CA</a>
+          <a href="speedyca-quiz-hub.html#library">SpeedyCA</a>
+          <a href="hr-eklavya-quiz-hub.html#library">Eklavya</a>
+          <a href="hr-pyq-quiz-hub.html#library">HR PYQ</a>
+          <a href="ah-quiz-hub.html#library">AH</a>
+          <a href="computer-quiz-hub.html#library">Computer</a>
+          <a href="english-vocab-quiz-hub.html#library">English Vocab</a>
+          <a href="english-grammar-quiz-hub.html#library">English Grammar</a>
+        </div>
+      </details>
+    </nav>
+  </div>
+
+  <main>
+    <!-- HOME VIEW -->
+    <section id="home-view" class="view">
+      <div class="wrap hero">
+        <div>
+          <p class="eyebrow">Cosmic Examination Room • Complete Grammar Collection</p>
+          <h1>Master English Grammar.<br><em>Rules, Voice & Tenses.</em></h1>
+          <p class="hero-copy">
+            Welcome to the English Grammar Mastery Suite. Practice 23 exam-tailored trainers covering Direct/Indirect Narration, Active & Passive Voice, Comprehensive Tenses, and Modal Verbs for SSC, Banking, and PCS exams.
+          </p>
+          <a class="primary" href="#library">Browse All 23 Grammar Quizzes</a>
+          <div class="stats">
+            <div class="stat"><b>23</b><span>Master Tests</span></div>
+            <div class="stat"><b>4</b><span>Core Modules</span></div>
+            <div class="stat"><b>1,150+</b><span>Exam Questions</span></div>
+            <div class="stat"><b>100%</b><span>CBT Simulator</span></div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px;background:rgba(22,16,58,0.7);padding:24px;border-radius:20px;border:1px solid var(--line);">
+          <div style="font:700 0.72rem 'DM Mono',monospace;color:var(--gold);text-transform:uppercase;letter-spacing:0.1em;">Modules Breakdown</div>
+          <div style="padding:12px;background:rgba(139,92,246,0.12);border-radius:10px;border:1px solid rgba(139,92,246,0.25);">
+            <b style="color:#fff;font-size:0.92rem;display:block;">🗣 Narration (Direct / Indirect)</b>
+            <span style="color:var(--muted);font-size:0.75rem;">3 Full Modules (150 Exam Questions)</span>
+          </div>
+          <div style="padding:12px;background:rgba(236,72,153,0.12);border-radius:10px;border:1px solid rgba(236,72,153,0.25);">
+            <b style="color:#fff;font-size:0.92rem;display:block;">🔄 Active & Passive Voice</b>
+            <span style="color:var(--muted);font-size:0.75rem;">5 Mastery Quizzes (Pages 1 to 99)</span>
+          </div>
+          <div style="padding:12px;background:rgba(16,185,129,0.12);border-radius:10px;border:1px solid rgba(16,185,129,0.25);">
+            <b style="color:#fff;font-size:0.92rem;display:block;">⏳ Tenses Masterclass</b>
+            <span style="color:var(--muted);font-size:0.75rem;">6 Progressive Practice Sets</span>
+          </div>
+          <div style="padding:12px;background:rgba(245,158,11,0.12);border-radius:10px;border:1px solid rgba(245,158,11,0.25);">
+            <b style="color:#fff;font-size:0.92rem;display:block;">⚡ Verbs, Modals & Agreement</b>
+            <span style="color:var(--muted);font-size:0.75rem;">9 Extensive Modules (SSC/Banking/PCS)</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LIBRARY VIEW -->
+    <section id="library-view" class="view">
+      <div class="wrap library-page">
+        <p class="eyebrow">Exam Aligned Quiz Library</p>
+        <h2 class="library-heading">Select Grammar Mission.</h2>
+        <p class="library-intro">Filter by topic, search by grammar rule, or attempt sequentially. Each quiz runs inside our authentic full-screen CBT simulator.</p>
+        
+        <div class="filter-tabs">
+          <button type="button" class="filter-tab active" onclick="setCategoryFilter('all', this)">All Quizzes (23)</button>
+          <button type="button" class="filter-tab" onclick="setCategoryFilter('narration', this)">Narration (3)</button>
+          <button type="button" class="filter-tab" onclick="setCategoryFilter('voice', this)">Passive Voice (5)</button>
+          <button type="button" class="filter-tab" onclick="setCategoryFilter('tenses', this)">Tenses (6)</button>
+          <button type="button" class="filter-tab" onclick="setCategoryFilter('verbs', this)">Verbs & Modals (9)</button>
+        </div>
+
+        <label class="search">
+          <input id="search" type="search" autocomplete="off" placeholder="Search: narration, voice, tense, verb, or quiz number..." aria-label="Search English Grammar library">
+        </label>
+        
+        <div class="result-row">
+          <span id="counter">23 quizzes available</span>
+          <span>Open CBT Exam</span>
+        </div>
+        
+        <div id="quiz-grid" class="quiz-grid"></div>
+      </div>
+    </section>
+
+    <!-- QUIZ CBT VIEW -->
+    <section id="quiz-view" class="view quiz-page">
+      <div class="quiz-toolbar">
+        <div class="wrap">
+          <a href="#library" class="back">All Quizzes</a>
+          <div class="quiz-context">
+            <span>English Grammar · Cosmic Mastery</span>
+            <b id="quiz-title">English Grammar Quiz</b>
+          </div>
+          <div class="quiz-actions">
+            <button class="button" id="previous" type="button">← Previous</button>
+            <button class="button" id="next" type="button">Next →</button>
+            <a class="button" href="#home">Home</a>
+          </div>
+        </div>
+      </div>
+      <div id="frame-host"></div>
+    </section>
+  </main>
+
+  <footer id="footer">
+    <div class="wrap">
+      <span class="footer-brand">ENGLISH GRAMMAR · COSMIC MASTERY</span> · All 23 interactive grammar trainers ready for practice.
+    </div>
+  </footer>
+
+  <script>
+    const grammarQuizzes = [
+      // Narration
+      { id: 1, file: 'n1.html', category: 'narration', label: 'Narration Master Quiz 1 (Pages 1-10)', desc: 'Direct to indirect transformations & reporting rules' },
+      { id: 2, file: 'n2.html', category: 'narration', label: 'Narration Master Quiz 2 (Pages 11-20)', desc: 'Interrogative & imperative sentence reporting' },
+      { id: 3, file: 'n3.html', category: 'narration', label: 'Narration Master Quiz 3 (Pages 21-30)', desc: 'Exclamatory, optative & special reporting exceptions' },
+      // Passive Voice
+      { id: 4, file: 'p1.html', category: 'voice', label: 'Passive Voice Mastery 1 (Pages 1-5)', desc: 'Foundational active-to-passive tense shifts' },
+      { id: 5, file: 'p2.html', category: 'voice', label: 'Passive Voice Mastery 2 (Pages 6-10)', desc: 'Continuous & perfect passive structures' },
+      { id: 6, file: 'p3.html', category: 'voice', label: 'Passive Voice Mastery 3 (Pages 11-15)', desc: 'Modal auxiliaries & infinitive voice changes' },
+      { id: 7, file: 'p4.html', category: 'voice', label: 'Passive Voice Mastery 4 (Pages 15-20)', desc: 'Imperative orders, requests & advice conversions' },
+      { id: 8, file: 'p5.html', category: 'voice', label: 'Passive Voice Mastery 5 (Pages 21-99)', desc: 'Advanced prepositional & complex sentence passive' },
+      // Tenses
+      { id: 9, file: 't1.html', category: 'tenses', label: 'English Tenses Masterclass 1', desc: 'Indefinite & continuous tense exam identification' },
+      { id: 10, file: 't2.html', category: 'tenses', label: 'English Tenses Advanced Quiz 2', desc: 'Perfect & perfect continuous time markers' },
+      { id: 11, file: 't3.html', category: 'tenses', label: 'English Tenses Exam Masterclass 3', desc: 'Conditional clauses & sequence of tenses' },
+      { id: 12, file: 't4.html', category: 'tenses', label: 'English Tenses Practice Quiz 4', desc: 'Time expression error spotting & corrections' },
+      { id: 13, file: 't5.html', category: 'tenses', label: 'English Tenses Mastery 5 (Pages 41-50)', desc: 'Subjunctive mood & habitual action rules' },
+      { id: 14, file: 't6.html', category: 'tenses', label: 'English Tenses Competition Practice 6', desc: 'High-frequency SSC & Bank PO tense questions' },
+      // Verbs & Modals
+      { id: 15, file: 'v1.html', category: 'verbs', label: 'Verb Mastery Test 1 (SSC/Banking)', desc: 'Transitive, intransitive & finite vs non-finite verbs' },
+      { id: 16, file: 'v2.html', category: 'verbs', label: 'Modal Auxiliaries Mastery Quiz 2', desc: 'Can, could, may, might, should, ought to applications' },
+      { id: 17, file: 'v3.html', category: 'verbs', label: 'Verbs & Auxiliaries Grammar 3', desc: 'Primary auxiliaries (be, do, have) exam drill' },
+      { id: 18, file: 'v4.html', category: 'verbs', label: 'English Grammar Quiz 4 (Pages 31-40)', desc: 'Participles, gerunds & infinitive usage rules' },
+      { id: 19, file: 'v5.html', category: 'verbs', label: 'Modals & Subject-Verb Agreement 5', desc: 'Rule of singular/plural subject-verb concord' },
+      { id: 20, file: 'v6.html', category: 'verbs', label: 'English Grammar Mastery 6 (Pages 51-60)', desc: 'Compound subjects, collective nouns & verbs' },
+      { id: 21, file: 'v7.html', category: 'verbs', label: 'Modals & Advanced Verbs 7', desc: 'Inversion rules & emphatic verb placement' },
+      { id: 22, file: 'v8.html', category: 'verbs', label: 'English Grammar Quiz 8 (Pages 71-80)', desc: 'Phrasal verbs & dependent preposition combos' },
+      { id: 23, file: 'v9.html', category: 'verbs', label: 'English Grammar Mastery 9 (Pages 81-90)', desc: 'Complete comprehensive verb revision test' }
+    ];
+
+    let currentCategory = 'all';
+    const grid = document.getElementById('quiz-grid');
+    const search = document.getElementById('search');
+    const counter = document.getElementById('counter');
+    const host = document.getElementById('frame-host');
+    const footer = document.getElementById('footer');
+
+    function show(viewName) {
+      ['home', 'library', 'quiz'].forEach(v => {
+        document.getElementById(`${v}-view`).classList.toggle('active', v === viewName);
+      });
+      footer.style.display = viewName === 'quiz' ? 'none' : '';
+      document.querySelectorAll('[data-nav]').forEach(a => {
+        a.classList.toggle('active', a.dataset.nav === viewName);
+      });
+    }
+
+    function setCategoryFilter(cat, btn) {
+      currentCategory = cat;
+      document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      renderGrid();
+    }
+
+    function renderGrid() {
+      const term = (search.value || '').trim().toLowerCase();
+      const matches = grammarQuizzes.filter(q => {
+        const matchesCat = (currentCategory === 'all' || q.category === currentCategory);
+        const matchesTerm = (!term || q.label.toLowerCase().includes(term) || q.desc.toLowerCase().includes(term) || String(q.id).includes(term));
+        return matchesCat && matchesTerm;
+      });
+
+      counter.textContent = `${matches.length} test${matches.length === 1 ? '' : 's'} available`;
+      grid.replaceChildren();
+
+      if (!matches.length) {
+        grid.innerHTML = '<p class="empty">No Grammar Quiz found matching your filter. Try a different topic.</p>';
+        return;
+      }
+
+      matches.forEach(item => {
+        const b = document.createElement('button');
+        b.className = 'quiz-card';
+        b.dataset.quizId = String(item.id);
+        const catLabel = item.category === 'narration' ? 'Narration' :
+                         item.category === 'voice' ? 'Passive Voice' :
+                         item.category === 'tenses' ? 'Tenses' : 'Verbs & Modals';
+
+        b.innerHTML = `
+          <div>
+            <div class="quiz-card-top">
+              <span class="quiz-cat-pill">${catLabel}</span>
+              <span style="font-family:'DM Mono',monospace;font-size:0.68rem;color:var(--gold);">TEST #${item.id}</span>
+            </div>
+            <span class="quiz-number">${item.label}</span>
+          </div>
+          <small>${item.desc} · Open CBT →</small>
+        `;
+        b.addEventListener('click', () => { location.hash = `quiz/${item.id}`; });
+        grid.append(b);
+      });
+    }
+
+    function loadQuiz(id) {
+      const item = grammarQuizzes[id - 1];
+      if (!item) { location.hash = 'library'; return; }
+      show('quiz');
+
+      document.getElementById('quiz-title').textContent = item.label;
+      const prevBtn = document.getElementById('previous');
+      const nextBtn = document.getElementById('next');
+      if (prevBtn) {
+        prevBtn.disabled = id === 1;
+        prevBtn.onclick = () => location.hash = `quiz/${id - 1}`;
+      }
+      if (nextBtn) {
+        nextBtn.disabled = id === grammarQuizzes.length;
+        nextBtn.onclick = () => location.hash = `quiz/${id + 1}`;
+      }
+
+      const frame = document.createElement('iframe');
+      frame.className = 'quiz-frame';
+      frame.title = `English Grammar ${item.label}`;
+      frame.src = encodeURI(`english-grammar-library/english grammar quizz/${item.file}`);
+      host.replaceChildren(frame);
+      window.scrollTo(0, 0);
+    }
+
+    function route() {
+      const h = location.hash.replace('#', '') || 'home';
+      if (h === 'library') {
+        show('library');
+        window.scrollTo(0, 0);
+      } else if (h.startsWith('quiz/')) {
+        loadQuiz(Number(h.slice(5)));
+      } else {
+        show('home');
+        window.scrollTo(0, 0);
+      }
+    }
+
+    search.addEventListener('input', renderGrid);
+    window.addEventListener('hashchange', route);
+    renderGrid();
+    route();
+  </script>
+
+  <!-- Progress & CBT Controller -->
+  <script src="testbook-cbt-engine.js"></script>
+  <script src="testbook-cbt-hub.js"></script>
+  <script src="quiz-progress-enhancer.js"></script>
+</body>
+<!-- FLOATING BADGE FOR CONNECTED PAGES -->
+<a href="cosmic-quiz-master.html" style="position: fixed; bottom: 20px; right: 20px; display: flex; align-items: center; gap: 10px; padding: 8px 16px; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(8px); border: 1.5px solid rgba(168, 85, 247, 0.6); border-radius: 50px; color: #ffffff; font-family: system-ui, sans-serif; font-size: 13px; text-decoration: none; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); z-index: 9999;">
+  <img src="mohit.png" alt="Mohit" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid #a855f7;">
+  <span>Created by <strong style="color: #c084fc;">Mohit</strong></span>
+</a>
+<script>window.CQ_LIBRARY_ID='english-grammar-quiz-hub';</script>
+<script src="unified-library-bridge.js"></script>
+</html>

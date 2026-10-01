@@ -1,0 +1,998 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Grammar Quiz - Modals & Subject-Verb Agreement</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 min-h-screen text-slate-800 flex flex-col font-sans">
+
+    <!-- Header -->
+    <header class="bg-indigo-700 text-white shadow-md py-4 px-6 sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
+            <div>
+                <h1 class="text-xl font-bold tracking-wide">English Grammar Master Quiz</h1>
+                <p class="text-xs text-indigo-200">Syllabus Coverage: Pages 41–50 (Modals, Subject-Verb Agreement & Advanced Verbs)</p>
+            </div>
+            <div class="flex items-center gap-4 bg-indigo-800 px-4 py-2 rounded-lg border border-indigo-600">
+                <div class="text-center">
+                    <span class="block text-xs text-indigo-300 uppercase font-semibold">Score</span>
+                    <span id="score-display" class="text-lg font-bold text-yellow-300">0 / 0</span>
+                </div>
+                <div class="h-8 w-px bg-indigo-600"></div>
+                <div class="text-center">
+                    <span class="block text-xs text-indigo-300 uppercase font-semibold">Progress</span>
+                    <span id="progress-text" class="text-lg font-bold text-white">1 / 50</span>
+                </div>
+            </div>
+        </div>
+        <!-- Progress Bar -->
+        <div class="w-full bg-indigo-900 h-2 mt-3 rounded-full overflow-hidden max-w-4xl mx-auto">
+            <div id="progress-bar" class="bg-yellow-400 h-full w-0 transition-all duration-300"></div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-4xl w-full mx-auto p-4 sm:p-6 flex flex-col justify-between">
+        
+        <!-- Quiz Card -->
+        <div id="quiz-card" class="bg-white rounded-xl shadow-md border border-slate-200 p-6 mb-6 flex-grow flex flex-col justify-between">
+            
+            <div>
+                <!-- Question Meta Header -->
+                <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-100">
+                    <span id="question-number" class="text-xs font-bold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-100">
+                        Question 1
+                    </span>
+                    <span id="subtopic-tag" class="text-xs font-medium text-slate-500 bg-slate-100 px-2.5 py-1 rounded">
+                        Topic
+                    </span>
+                </div>
+
+                <!-- Question Text -->
+                <div id="question-text" class="text-base sm:text-lg font-semibold text-slate-800 mb-6 leading-relaxed">
+                    Loading question...
+                </div>
+
+                <!-- Hint Collapsible Button -->
+                <div class="mb-4">
+                    <button id="hint-toggle-btn" onclick="toggleHint()" class="text-xs font-semibold text-amber-600 hover:text-amber-700 bg-amber-50 hover:bg-amber-100 px-3 py-1.5 rounded-md border border-amber-200 transition-colors flex items-center gap-1">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        Need a Hint?
+                    </button>
+                    <div id="hint-box" class="hidden mt-2 p-3 bg-amber-50 border-l-4 border-amber-400 text-xs text-amber-800 rounded">
+                        <span id="hint-text">Hint content...</span>
+                    </div>
+                </div>
+
+                <!-- Options List -->
+                <div id="options-container" class="space-y-3 mb-6">
+                    <!-- Options populated dynamically -->
+                </div>
+            </div>
+
+            <!-- Explanation Box -->
+            <div id="explanation-box" class="hidden mt-4 p-4 bg-slate-50 border-l-4 border-indigo-500 rounded-r-lg">
+                <h4 class="text-xs font-bold text-indigo-900 uppercase tracking-wider mb-1">Detailed Rationale / Explanation:</h4>
+                <p id="explanation-text" class="text-sm text-slate-700 leading-relaxed"></p>
+            </div>
+
+        </div>
+
+        <!-- Navigation & Controls Footer -->
+        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center gap-2">
+                <button id="prev-btn" onclick="prevQuestion()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium text-sm rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                    Previous
+                </button>
+                <button id="next-btn" onclick="nextQuestion()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-sm rounded-lg transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
+                    Next
+                </button>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <label for="jump-input" class="text-xs text-slate-500 font-medium">Jump to:</label>
+                <input type="number" id="jump-input" min="1" max="50" class="w-16 px-2 py-1 text-sm border border-slate-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500 text-center" placeholder="1-50">
+                <button onclick="jumpToQuestion()" class="px-3 py-1 bg-slate-800 hover:bg-slate-900 text-white text-xs font-medium rounded transition-colors">
+                    Go
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Quiz Dataset and Logic Script -->
+    <script>
+        const quizData = [
+            {
+                id: 1,
+                topic: "Modal Auxiliaries - Can vs. Could",
+                question: "Which of the following sentences correctly utilizes 'Can' to express theoretical possibility (सैद्धांतिक संभावना)?",
+                options: [
+                    "Everyone can make a mistake.",
+                    "It can rain tonight.",
+                    "She can speak six languages fluently.",
+                    "Can I borrow your pen for a minute?"
+                ],
+                answer: 0,
+                hint: "Theoretical possibilities apply universally to human nature or general facts.",
+                explanation: "'Everyone can make a mistake' denotes a theoretical possibility. 'May' is used for factual or specific possibilities (e.g., 'It may rain tonight'), and ability is shown via 'can speak'."
+            },
+            {
+                id: 2,
+                topic: "Modal Auxiliaries - Could",
+                question: "Identify the sentence where 'Could' correctly functions to make a polite request (विनम्र निवेदन):",
+                options: [
+                    "Could I talk to Mr. Sharma, please?",
+                    "I could not attend the meeting yesterday.",
+                    "If I had money, I could buy a car.",
+                    "She could run fast when she was young."
+                ],
+                answer: 0,
+                hint: "Look for an interrogative structure used in formal or polite conversation.",
+                explanation: "'Could I talk to Mr. Sharma, please?' expresses a polite request in the present moment. Other options denote past ability, past unfulfilled condition, or past inability."
+            },
+            {
+                id: 3,
+                topic: "Modal Auxiliaries - May",
+                question: "Select the sentence where 'May' is used to express a purpose (उद्देश्य) in a subordinate clause:",
+                options: [
+                    "We eat so that we may live.",
+                    "May you live long and prosper!",
+                    "It may rain heavily this afternoon.",
+                    "May I come in, Sir?"
+                ],
+                answer: 0,
+                hint: "Purpose clauses are frequently introduced by 'so that' or 'in order that'.",
+                explanation: "In subordinate clauses starting with 'so that' / 'in order that', 'may' is used to express purpose (e.g., 'We eat so that we may live')."
+            },
+            {
+                id: 4,
+                topic: "Modal Auxiliaries - Might",
+                question: "Choose the option that correctly demonstrates 'Might' denoting a very bleak/remote possibility (क्षीण संभावना):",
+                options: [
+                    "The sky is clear, but it might rain.",
+                    "He might be at home right now.",
+                    "He said that he might join the army.",
+                    "Might I ask a personal question?"
+                ],
+                answer: 0,
+                hint: "When the condition is unfavorable (e.g., clear sky), possibility becomes remote.",
+                explanation: "When there is very little likelihood (e.g., a clear sky makes rain unlikely), 'Might' is used to denote remote possibility."
+            },
+            {
+                id: 5,
+                topic: "Modal Auxiliaries - May Have / Might Have",
+                question: "What does the modal structure 'May / Might + Have + V3' express in a past context?",
+                options: [
+                    "Possibility or speculation regarding an action in the past.",
+                    "Compulsory requirement in the past.",
+                    "Direct prohibition in the past.",
+                    "Past habitual action that is discontinued."
+                ],
+                answer: 0,
+                hint: "Think of speculating about what could have happened earlier.",
+                explanation: "'May/Might + Have + V3' expresses a possibility or assumption about a past event (e.g., 'He may have reached by now')."
+            },
+            {
+                id: 6,
+                topic: "Modal Auxiliaries - Shall vs. Will",
+                question: "In standard formal grammar, 'Shall' is used with second and third-person subjects (You, He, She, They) to express which set of concepts?",
+                options: [
+                    "Command, Promise, Threat, Determination, Compulsion",
+                    "Simple future prediction, Request, Habitual action",
+                    "Permission, Theoretical possibility, Past ability",
+                    "Unreal condition, Wish, Moral duty"
+                ],
+                answer: 0,
+                hint: "Reversing standard pronoun usage converts simple future into strong intent.",
+                explanation: "When 'Shall' is used with 2nd/3rd person subjects, it shifts from simple futurity to express Command, Promise, Threat, Determination, or Compulsion."
+            },
+            {
+                id: 7,
+                topic: "Modal Auxiliaries - Expressing Threat",
+                question: "Which of the following sentences correctly uses 'Shall' to express a Threat (धमकी)?",
+                options: [
+                    "You shall be punished if you break the rules.",
+                    "I shall go to London next week.",
+                    "Shall I open the window for you?",
+                    "We shall fight for our rights."
+                ],
+                answer: 0,
+                hint: "Threats with 'You' use 'shall'.",
+                explanation: "'You shall be punished if you break the rules' uses 'Shall' with a 2nd person subject to issue an official threat or warning."
+            },
+            {
+                id: 8,
+                topic: "Modal Auxiliaries - Determination",
+                question: "Identify the sentence that correctly expresses Determination (दृढ़ संकल्प):",
+                options: [
+                    "I will pass the exam at any cost.",
+                    "I shall buy some groceries today.",
+                    "Will you lend me your book?",
+                    "It will rain tomorrow."
+                ],
+                answer: 0,
+                hint: "1st person subject paired with 'Will' yields determination.",
+                explanation: "Using 'Will' with 1st person pronouns ('I / We') expresses determination or strong intent ('at any cost')."
+            },
+            {
+                id: 9,
+                topic: "Modal Auxiliaries - Must",
+                question: "Which modal verb strictly represents 'Compulsion' (बाध्यता) or 'Fixation of Duty' without exception?",
+                options: [
+                    "Must",
+                    "Should",
+                    "Can",
+                    "May"
+                ],
+                answer: 0,
+                hint: "It denotes an absolute obligation stronger than 'should'.",
+                explanation: "'Must' is used to denote strict obligation, compulsion, or absolute necessity (e.g., 'Candidates must answer all questions')."
+            },
+            {
+                id: 10,
+                topic: "Modal Auxiliaries - Should / Lest",
+                question: "What is the correct grammatical rule regarding the conjunction 'Lest'?",
+                options: [
+                    "It must always be followed by 'Should' (or V1) and takes no negative word after it.",
+                    "It is followed by 'Would' and requires 'not'.",
+                    "It is followed by 'May' and takes a singular noun.",
+                    "It is followed by 'Will' in conditional structures."
+                ],
+                answer: 0,
+                hint: "Lest means 'so that... not' and inherently carries negative meaning.",
+                explanation: "'Lest' means 'otherwise / for fear that'. It takes 'Should' as its auxiliary (or base verb V1) and cannot be followed by 'not'."
+            },
+            {
+                id: 11,
+                topic: "Modal Auxiliaries - Error Spotting (Lest)",
+                question: "Spot the error in the sentence: 'Run fast lest you will miss the train.'",
+                options: [
+                    "Replace 'will' with 'should'.",
+                    "Replace 'fast' with 'fastly'.",
+                    "Insert 'not' before 'miss'.",
+                    "Replace 'lest' with 'unless'."
+                ],
+                answer: 0,
+                hint: "'Lest' pairs exclusively with one specific modal verb.",
+                explanation: "'Lest' must always pair with 'should'. The corrected sentence is: 'Run fast lest you should miss the train.'"
+            },
+            {
+                id: 12,
+                topic: "Modal Auxiliaries - Ought to",
+                question: "Which modal auxiliary specifically expresses moral obligation or duty (नैतिक कर्तव्य)?",
+                options: [
+                    "Ought to",
+                    "Could",
+                    "Might",
+                    "Would"
+                ],
+                answer: 0,
+                hint: "It is always followed by the preposition 'to'.",
+                explanation: "'Ought to' expresses moral duty, ethical obligation, or desirable advice (e.g., 'We ought to respect our elders')."
+            },
+            {
+                id: 13,
+                topic: "Marginal Auxiliaries - Used to",
+                question: "In the structure 'Subject + Be (is/am/are/was/were) + used to', what form must the subsequent verb take?",
+                options: [
+                    "V1 + ing (Gerund)",
+                    "Base Form (V1)",
+                    "Past Participle (V3)",
+                    "Infinitive with 'to' (to + V1)"
+                ],
+                answer: 0,
+                hint: "When preceded by 'be', 'used to' functions as an adjective meaning 'accustomed to'.",
+                explanation: "When 'used to' is preceded by a Be-verb, it acts as an adjective meaning 'accustomed to', requiring a Gerund ($V_1 + ing$) or Noun after it."
+            },
+            {
+                id: 14,
+                topic: "Marginal Auxiliaries - Used to vs. Be Used to",
+                question: "Select the grammatically correct sentence:",
+                options: [
+                    "He is used to driving on the left side of the road.",
+                    "He is used to drive on the left side of the road.",
+                    "He used to driving on the left side of the road.",
+                    "He was used to drive on the left side of the road."
+                ],
+                answer: 0,
+                hint: "'Be used to' demands a gerund ($V_1 + ing$).",
+                explanation: "Because 'is' precedes 'used to', the principal verb must be in gerund form: 'is used to driving'."
+            },
+            {
+                id: 15,
+                topic: "Marginal Auxiliaries - Dare / Need",
+                question: "When 'Need' or 'Dare' is used as a Modal Auxiliary in negative sentences, how is it constructed?",
+                options: [
+                    "Need/Dare + NOT + V1 (without 'to')",
+                    "Need/Dare + NOT + to + V1",
+                    "Do not + Need/Dare + NOT + V1",
+                    "Need/Dare + NOT + V1 + ing"
+                ],
+                answer: 0,
+                hint: "Modal auxiliaries take a bare infinitive directly.",
+                explanation: "As auxiliary modals in negative forms, 'need' and 'dare' take 'not' followed directly by a bare infinitive ($V_1$), e.g., 'He need not go'."
+            },
+            {
+                id: 16,
+                topic: "Marginal Auxiliaries - Dare Error Spotting",
+                question: "Identify the incorrect part of the sentence: 'He dares not to oppose his father.'",
+                options: [
+                    "dares not to oppose",
+                    "He",
+                    "his father",
+                    "No error"
+                ],
+                answer: 0,
+                hint: "Modal auxiliaries do not take 's/es' or full infinitives ('to + V1') when used with 'not'.",
+                explanation: "In negative modal usage, drop 's/es' and 'to'. It should read: 'He dare not oppose his father'."
+            },
+            {
+                id: 17,
+                topic: "Subject-Verb Agreement - Rule 1",
+                question: "Choose the sentence that correctly follows basic Subject-Verb Agreement rules:",
+                options: [
+                    "The quality of these mangoes is not good.",
+                    "The quality of these mangoes are not good.",
+                    "The quality of these mangoes were not good.",
+                    "The quality of these mangoes have not been good."
+                ],
+                answer: 0,
+                hint: "The verb agrees with the main noun subject, not the object of the preposition.",
+                explanation: "The real subject is 'quality' (singular), not 'mangoes' (plural). Therefore, the singular verb 'is' is correct."
+            },
+            {
+                id: 18,
+                topic: "Subject-Verb Agreement - Compound Subject (And)",
+                question: "When two singular nouns joined by 'and' refer to the same person or thing (or form a single idea), what verb is required?",
+                options: [
+                    "Singular Verb",
+                    "Plural Verb",
+                    "Dual Verb",
+                    "Infinitive Verb"
+                ],
+                answer: 0,
+                hint: "Think of pairing concepts like 'Bread and butter'.",
+                explanation: "If two nouns convey a single combined idea/item (e.g., 'Bread and butter is my favorite breakfast'), a singular verb is required."
+            },
+            {
+                id: 19,
+                topic: "Subject-Verb Agreement - Single Idea Nouns",
+                question: "Which of the following sentences is grammatically CORRECT?",
+                options: [
+                    "Slow and steady wins the race.",
+                    "Slow and steady win the race.",
+                    "Slow and steady have won the race.",
+                    "Slow and steady are winning the race."
+                ],
+                answer: 0,
+                hint: "The combination represents a single trait/idea.",
+                explanation: "'Slow and steady' expresses a unified concept/method for victory, requiring the singular verb 'wins'."
+            },
+            {
+                id: 20,
+                topic: "Subject-Verb Agreement - Single Person (Article Rule)",
+                question: "Determine the correct verb for: 'The Director and Producer of the film _____ arrived.'",
+                options: [
+                    "has",
+                    "have",
+                    "are",
+                    "were"
+                ],
+                answer: 0,
+                hint: "Only one article ('The') is used before the first title.",
+                explanation: "When an article appears before only the first noun, both titles refer to the same individual. Thus, singular verb 'has' is required."
+            },
+            {
+                id: 21,
+                topic: "Subject-Verb Agreement - Two Persons (Article Rule)",
+                question: "Determine the correct verb for: 'The Director and the Producer _____ arrived.'",
+                options: [
+                    "have",
+                    "has",
+                    "is",
+                    "was"
+                ],
+                answer: 0,
+                hint: "The article 'the' is repeated before both nouns.",
+                explanation: "Repeating articles before each noun indicates two distinct persons, requiring a plural verb ('have')."
+            },
+            {
+                id: 22,
+                topic: "Subject-Verb Agreement - As well as / Along with",
+                question: "When subjects are joined by 'as well as', 'with', 'along with', or 'together with', the verb agrees with:",
+                options: [
+                    "The First Subject",
+                    "The Second Subject",
+                    "Always Plural",
+                    "The nearest Noun"
+                ],
+                answer: 0,
+                hint: "Connectives like 'as well as' leave the primary focus on the initial subject.",
+                explanation: "Parenthetical connectors ('as well as', 'along with', 'in addition to') align verb agreement with the first subject."
+            },
+            {
+                id: 23,
+                topic: "Subject-Verb Agreement - Applied Rule",
+                question: "Select the sentence that is grammatically CORRECT:",
+                options: [
+                    "The Captain, along with his crew members, was drowned.",
+                    "The Captain, along with his crew members, were drowned.",
+                    "The Captain, along with his crew members, have drowned.",
+                    "The Captain, along with his crew members, are drowned."
+                ],
+                answer: 0,
+                hint: "Agree the verb with 'The Captain' (singular).",
+                explanation: "The verb must agree with 'The Captain' (1st subject), which is singular ('was')."
+            },
+            {
+                id: 24,
+                topic: "Subject-Verb Agreement - Either...or / Neither...nor",
+                question: "When two subjects are joined by 'Either...or' or 'Neither...nor', the verb agrees with:",
+                options: [
+                    "The Subject nearest to the verb",
+                    "The First Subject",
+                    "Always Plural Subject",
+                    "Always Singular Subject"
+                ],
+                answer: 0,
+                hint: "The verb aligns with its closest neighbor.",
+                explanation: "In disjunctive structures ('Either...or', 'Neither...nor', 'Not only...but also'), agreement shifts to the nearest subject."
+            },
+            {
+                id: 25,
+                topic: "Subject-Verb Agreement - Applied Either/Or",
+                question: "Fill in the blank: 'Neither Shyam nor his friends _____ present at the party.'",
+                options: [
+                    "were",
+                    "was",
+                    "is",
+                    "has been"
+                ],
+                answer: 0,
+                hint: "The nearest subject to the verb is 'his friends' (plural).",
+                explanation: "Since 'his friends' is plural and closest to the verb position, the plural verb 'were' is used."
+            },
+            {
+                id: 26,
+                topic: "Subject-Verb Agreement - Neither of / Either of",
+                question: "What is the subject-verb rule for phrases like 'Neither of / Either of / Each of' followed by a plural noun?",
+                options: [
+                    "Plural Noun + Singular Verb",
+                    "Plural Noun + Plural Verb",
+                    "Singular Noun + Plural Verb",
+                    "Singular Noun + Singular Verb"
+                ],
+                answer: 0,
+                hint: "You select from a group (plural), but evaluate individually (singular).",
+                explanation: "'Neither of / Either of / Each of' is followed by a Plural Noun/Pronoun, but takes a Singular Verb."
+            },
+            {
+                id: 27,
+                topic: "Subject-Verb Agreement - Applied Neither of",
+                question: "Which of the following options completes the sentence correctly: 'Neither of the two candidates _____ suitable.'",
+                options: [
+                    "is",
+                    "are",
+                    "were",
+                    "have been"
+                ],
+                answer: 0,
+                hint: "'Neither of' signifies 'not one out of two'.",
+                explanation: "'Neither of' takes a singular verb ('is')."
+            },
+            {
+                id: 28,
+                topic: "Subject-Verb Agreement - Collective Nouns",
+                question: "When a Collective Noun acts as a unified single body, it takes a ____ verb; when its members act individually or divide, it takes a ____ verb.",
+                options: [
+                    "Singular, Plural",
+                    "Plural, Singular",
+                    "Singular, Singular",
+                    "Plural, Plural"
+                ],
+                answer: 0,
+                hint: "Unanimity = singular; Division = plural.",
+                explanation: "Unanimous collective nouns take singular verbs/pronouns. Division or individual action demands plural verbs/pronouns."
+            },
+            {
+                id: 29,
+                topic: "Subject-Verb Agreement - Collective Noun Application",
+                question: "Choose the correct sentence regarding a divided jury:",
+                options: [
+                    "The jury were divided in their opinions.",
+                    "The jury was divided in their opinions.",
+                    "The jury was divided in its opinion.",
+                    "The jury have unanimity in its decision."
+                ],
+                answer: 0,
+                hint: "Division implies plural verbs and plural pronouns ('their').",
+                explanation: "When members of a collective noun express disagreement or division, both the verb ('were') and pronoun ('their') must be plural."
+            },
+            {
+                id: 30,
+                topic: "Subject-Verb Agreement - Quantity / Distance / Sum",
+                question: "When a specific amount, distance, weight, or time is thought of as a single whole quantity, it takes a:",
+                options: [
+                    "Singular Verb",
+                    "Plural Verb",
+                    "Bare Infinitive",
+                    "Participle Verb"
+                ],
+                answer: 0,
+                hint: "Treat the total numerical amount as one lump sum.",
+                explanation: "Numerical expressions of distance, money, or measurement treated as a collective unit take a singular verb."
+            },
+            {
+                id: 31,
+                topic: "Subject-Verb Agreement - Applied Sum",
+                question: "Select the sentence with CORRECT verb agreement:",
+                options: [
+                    "Ten miles is a long distance to walk.",
+                    "Ten miles are a long distance to walk.",
+                    "Ten miles were a long distance to walk.",
+                    "Ten miles have been a long distance to walk."
+                ],
+                answer: 0,
+                hint: "'Ten miles' represents a single unified distance.",
+                explanation: "'Ten miles' is treated as a single unit of distance, taking the singular verb 'is'."
+            },
+            {
+                id: 32,
+                topic: "Subject-Verb Agreement - Relatives (Who / Which / That)",
+                question: "When a relative pronoun ('Who / Which / That') connects a subject to a verb, the verb must agree with:",
+                options: [
+                    "The Antecedent (the noun/pronoun before the relative pronoun)",
+                    "The Relative Pronoun itself",
+                    "Always Singular",
+                    "Always Plural"
+                ],
+                answer: 0,
+                hint: "Look directly left of 'who' or 'which'.",
+                explanation: "The verb following a relative pronoun agrees strictly with the antecedent preceding that relative pronoun."
+            },
+            {
+                id: 33,
+                topic: "Subject-Verb Agreement - Relative Pronoun Error",
+                question: "Identify the correct version of this sentence: 'One of the boys who _____ played well was awarded.'",
+                options: [
+                    "have",
+                    "has",
+                    "is",
+                    "was"
+                ],
+                answer: 0,
+                hint: "The antecedent of 'who' is 'boys' (plural).",
+                explanation: "In 'One of the boys who...', 'boys' is the plural antecedent of 'who', requiring the plural verb 'have'."
+            },
+            {
+                id: 34,
+                topic: "Subject-Verb Agreement - 'One of the...' Exception",
+                question: "In the sentence structure 'This is ONLY ONE of the books that _____ worth reading', which verb should fill the blank?",
+                options: [
+                    "is",
+                    "are",
+                    "were",
+                    "have"
+                ],
+                answer: 0,
+                hint: "The presence of 'ONLY' modifies the agreement to focus on a singular subject.",
+                explanation: "When 'only' precedes 'one of the [plural noun] that...', it isolates a single item, overriding general relative agreement to require the singular verb 'is'."
+            },
+            {
+                id: 35,
+                topic: "Subject-Verb Agreement - Many / Many a",
+                question: "Complete the statement with correct grammatical structure: 'Many a student _____ failed in the examination.'",
+                options: [
+                    "has",
+                    "have",
+                    "are",
+                    "were"
+                ],
+                answer: 0,
+                hint: "'Many a' is followed by Singular Noun + Singular Verb.",
+                explanation: "'Many a' takes a singular noun ('student') and a singular verb ('has'). Contrast with 'Many students have'."
+            },
+            {
+                id: 36,
+                topic: "Subject-Verb Agreement - A number of vs. The number of",
+                question: "Fill in the blanks respectively: 'A number of students _____ absent today, but the number of absent students _____ decreasing.'",
+                options: [
+                    "are, is",
+                    "is, are",
+                    "are, are",
+                    "is, is"
+                ],
+                answer: 0,
+                hint: "'A number of' = Plural verb; 'The number of' = Singular verb.",
+                explanation: "'A number of' means 'many' (takes plural verb 'are'). 'The number of' denotes a specific count (takes singular verb 'is')."
+            },
+            {
+                id: 37,
+                topic: "Subject-Verb Agreement - Nouns plural in form, singular in meaning",
+                question: "Which verb correctly completes: 'Mathematics _____ an interesting subject.'?",
+                options: [
+                    "is",
+                    "are",
+                    "were",
+                    "have been"
+                ],
+                answer: 0,
+                hint: "Academic subjects ending in '-s' are singular in meaning.",
+                explanation: "Names of subjects/diseases ending in '-s' (Mathematics, Physics, Measles) are singular and take singular verbs ('is')."
+            },
+            {
+                id: 38,
+                topic: "Subject-Verb Agreement - Possessive Academic Subjects",
+                question: "When an academic subject ending in '-s' (e.g., Mathematics, Statistics) is preceded by a possessive pronoun (e.g., 'His mathematics...'), its meaning changes to 'calculations/data' and takes a:",
+                options: [
+                    "Plural Verb",
+                    "Singular Verb",
+                    "Bare Infinitive",
+                    "Past Participle"
+                ],
+                answer: 0,
+                hint: "It no longer refers to the subject as a discipline, but to individual skills/data.",
+                explanation: "When preceded by a possessive adjective or article, words like 'Mathematics' mean 'mathematical abilities/calculations' and take a plural verb (e.g., 'His mathematics are weak')."
+            },
+            {
+                id: 39,
+                topic: "Subject-Verb Agreement - More than one",
+                question: "Which of the following constructions is grammatically correct?",
+                options: [
+                    "More than one man was present.",
+                    "More than one man were present.",
+                    "More than one men was present.",
+                    "More than one men were present."
+                ],
+                answer: 0,
+                hint: "'More than one' + Singular Noun + Singular Verb.",
+                explanation: "The structure 'More than one' is followed by a singular noun ('man') and a singular verb ('was')."
+            },
+            {
+                id: 40,
+                topic: "Subject-Verb Agreement - More + Plural Noun + than one",
+                question: "Complete the sentence correctly: 'More plans than one _____ made.'",
+                options: [
+                    "were",
+                    "was",
+                    "is",
+                    "has been"
+                ],
+                answer: 0,
+                hint: "'More + Plural Noun + than one' takes a plural verb.",
+                explanation: "When 'More' is directly followed by a plural noun ('More plans than one...'), it takes a plural verb ('were')."
+            },
+            {
+                id: 41,
+                topic: "Advanced Verbs - Gerund vs. Infinitive",
+                question: "Certain verbs like 'avoid', 'enjoy', 'mind', 'admit', 'deny', and 'postpone' are directly followed by:",
+                options: [
+                    "A Gerund (V1 + ing)",
+                    "A Full Infinitive (to + V1)",
+                    "A Bare Infinitive (V1)",
+                    "A Past Participle (V3)"
+                ],
+                answer: 0,
+                hint: "These verbs express ongoing or completed activities rather than future intentions.",
+                explanation: "Verbs like enjoy, avoid, mind, admit, deny, postpone, stop, avoid require a Gerund ($V_1 + ing$) as their direct object."
+            },
+            {
+                id: 42,
+                topic: "Advanced Verbs - Spotting Error with Gerunds",
+                question: "Find the incorrect segment in this sentence: 'She avoided to answer (a) / my questions (b) / in front of everyone (c) / No error (d)'",
+                options: [
+                    "(a) She avoided to answer",
+                    "(b) my questions",
+                    "(c) in front of everyone",
+                    "(d) No error"
+                ],
+                answer: 0,
+                hint: "'Avoid' must be followed by $V_1 + ing$.",
+                explanation: "The verb 'avoid' requires a gerund. Replace 'to answer' with 'answering'."
+            },
+            {
+                id: 43,
+                topic: "Advanced Verbs - Possessive before Gerund",
+                question: "Which case of Noun/Pronoun must be placed directly BEFORE a Gerund?",
+                options: [
+                    "Possessive Case (my, his, her, Ram's)",
+                    "Objective Case (me, him, her, Ram)",
+                    "Nominative Case (I, he, she)",
+                    "Reflexive Case (myself, himself)"
+                ],
+                answer: 0,
+                hint: "Think of ownership over an action.",
+                explanation: "A gerund acts as a noun, so any preceding noun or pronoun modifying it must be in the Possessive case (e.g., 'I did not like his coming late')."
+            },
+            {
+                id: 44,
+                topic: "Advanced Verbs - Applied Possessive Gerund",
+                question: "Select the sentence that is grammatically CORRECT:",
+                options: [
+                    "My father objected to my going abroad alone.",
+                    "My father objected to me going abroad alone.",
+                    "My father objected to I going abroad alone.",
+                    "My father objected to myself going abroad alone."
+                ],
+                answer: 0,
+                hint: "The pronoun modifying the gerund 'going' must be possessive.",
+                explanation: "'Going' is a gerund, so it requires the possessive pronoun 'my' instead of the objective 'me'."
+            },
+            {
+                id: 45,
+                topic: "Advanced Verbs - Bare Infinitive",
+                question: "Verbs like 'make', 'let', 'bid', 'watch', and 'hear' take a Bare Infinitive ($V_1$ without 'to') in Active Voice. Which sentence exemplifies this correctly?",
+                options: [
+                    "The teacher made the students rewrite the assignment.",
+                    "The teacher made the students to rewrite the assignment.",
+                    "The teacher made the students rewriting the assignment.",
+                    "The teacher made the students to rewriting the assignment."
+                ],
+                answer: 0,
+                hint: "Do not use 'to' after 'make' in active voice.",
+                explanation: "In active voice, 'make' is followed by a bare infinitive ('rewrite' without 'to')."
+            },
+            {
+                id: 46,
+                topic: "Advanced Verbs - Passive Voice Infinitive Exception",
+                question: "When 'make' is used in the Passive Voice, what form does the following verb take?",
+                options: [
+                    "Full Infinitive (to + V1)",
+                    "Bare Infinitive (V1)",
+                    "Gerund (V1 + ing)",
+                    "Past Participle (V3)"
+                ],
+                answer: 0,
+                hint: "Passive transformations restore the preposition 'to'.",
+                explanation: "While active 'make' takes a bare infinitive, passive 'make' takes a full infinitive (e.g., 'He was made to work'). Note: 'Let' remains bare even in passive."
+            },
+            {
+                id: 47,
+                topic: "Advanced Verbs - Participles",
+                question: "Identify the sentence that contains an 'Unattached / Dangling Participle' error:",
+                options: [
+                    "Walking in the park, a snake bit him.",
+                    "Walking in the park, he was bitten by a snake.",
+                    "While he was walking in the park, a snake bit him.",
+                    "Being ill, he could not come to school."
+                ],
+                answer: 0,
+                hint: "Ensure the participle's subject aligns logically with the main clause subject.",
+                explanation: "In 'Walking in the park, a snake bit him', the participle improperly modifies 'a snake' (making it sound like the snake was walking in the park)."
+            },
+            {
+                id: 48,
+                topic: "Advanced Verbs - Correction of Dangling Participle",
+                question: "How should the dangling participle sentence 'Being a rainy day, I could not go out' be corrected?",
+                options: [
+                    "By adding 'It' before 'Being' -> 'It being a rainy day, I could not go out.'",
+                    "By replacing 'Being' with 'Having' -> 'Having a rainy day, I could not go out.'",
+                    "By removing 'Being' -> 'A rainy day, I could not go out.'",
+                    "No correction needed."
+                ],
+                answer: 0,
+                hint: "'Day' requires a dummy subject 'It' so it doesn't default to 'I'.",
+                explanation: "Without 'It', the subject defaults to 'I' ('Being a rainy day, I...'), implying 'I was a rainy day'. Adding 'It' corrects the modifier."
+            },
+            {
+                id: 49,
+                topic: "Advanced Verbs - Perfect Participle",
+                question: "What is the structure and meaning of a 'Perfect Participle'?",
+                options: [
+                    "Having + V3; expresses an action completed before another action started.",
+                    "Having + V1 + ing; expresses continuous past action.",
+                    "To + have + V3; expresses future probability.",
+                    "Being + V3; expresses simultaneous passive action."
+                ],
+                answer: 0,
+                hint: "Used when one action finishes completely before the next begins.",
+                explanation: "A Perfect Participle ($Having + V_3$) indicates that one action was completed prior to the initiation of another (e.g., 'Having finished his homework, he went to play')."
+            },
+            {
+                id: 50,
+                topic: "Advanced Verbs - Hyphenated Adjective Rule",
+                question: "Choose the correct sentence involving a numeral-noun combination acting as a hyphenated compound adjective:",
+                options: [
+                    "He gave me a ten-rupee note.",
+                    "He gave me a ten-rupees note.",
+                    "He gave me a ten-rupees notes.",
+                    "He gave me ten-rupees note."
+                ],
+                answer: 0,
+                hint: "Hyphenated compound adjectives modifying nouns are singular.",
+                explanation: "When a measurement/noun functions as an adjective modifying another noun, it cannot be pluralized (use 'ten-rupee', not 'ten-rupees')."
+            }
+        ];
+
+        // State variables
+        let currentQuestionIdx = 0;
+        let userAnswers = new Array(quizData.length).fill(null);
+
+        // Utility: Fisher-Yates Shuffle algorithm
+        function shuffleArray(array) {
+            const arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        // Initialize Option Mappings with Randomization
+        const randomizedData = quizData.map((q) => {
+            const optionsObjs = q.options.map((optText, index) => ({
+                text: optText,
+                isCorrect: index === q.answer
+            }));
+            const shuffled = shuffleArray(optionsObjs);
+            return {
+                ...q,
+                shuffledOptions: shuffled
+            };
+        });
+
+        // DOM Elements
+        const questionNumberEl = document.getElementById("question-number");
+        const subtopicTagEl = document.getElementById("subtopic-tag");
+        const questionTextEl = document.getElementById("question-text");
+        const hintBoxEl = document.getElementById("hint-box");
+        const hintTextEl = document.getElementById("hint-text");
+        const hintToggleBtn = document.getElementById("hint-toggle-btn");
+        const optionsContainerEl = document.getElementById("options-container");
+        const explanationBoxEl = document.getElementById("explanation-box");
+        const explanationTextEl = document.getElementById("explanation-text");
+        const prevBtn = document.getElementById("prev-btn");
+        const nextBtn = document.getElementById("next-btn");
+        const scoreDisplayEl = document.getElementById("score-display");
+        const progressTextEl = document.getElementById("progress-text");
+        const progressBarEl = document.getElementById("progress-bar");
+        const jumpInputEl = document.getElementById("jump-input");
+
+        // Load Question Function
+        function renderQuestion() {
+            const q = randomizedData[currentQuestionIdx];
+
+            // Reset UI states
+            hintBoxEl.classList.add("hidden");
+            explanationBoxEl.classList.add("hidden");
+
+            // Meta Info
+            questionNumberEl.textContent = `Question ${currentQuestionIdx + 1} of ${randomizedData.length}`;
+            subtopicTagEl.textContent = q.topic;
+            questionTextEl.textContent = q.question;
+            hintTextEl.textContent = q.hint;
+            explanationTextEl.textContent = q.explanation;
+
+            // Render Options
+            optionsContainerEl.innerHTML = "";
+            const currentSelected = userAnswers[currentQuestionIdx];
+
+            q.shuffledOptions.forEach((opt, optIdx) => {
+                const btn = document.createElement("button");
+                btn.className = "w-full text-left p-3.5 rounded-lg border transition-all text-sm font-medium flex items-center justify-between ";
+
+                if (currentSelected === null) {
+                    btn.className += "border-slate-200 hover:border-indigo-400 hover:bg-indigo-50/50 bg-white text-slate-700";
+                    btn.onclick = () => selectOption(optIdx);
+                } else {
+                    btn.disabled = true;
+                    if (opt.isCorrect) {
+                        btn.className += "border-emerald-500 bg-emerald-50 text-emerald-900 font-semibold";
+                    } else if (currentSelected === optIdx) {
+                        btn.className += "border-rose-500 bg-rose-50 text-rose-900";
+                    } else {
+                        btn.className += "border-slate-200 bg-slate-50 text-slate-400 opacity-60";
+                    }
+                }
+
+                const prefix = String.fromCharCode(65 + optIdx); // A, B, C, D
+                btn.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="w-6 h-6 rounded-full border border-current flex items-center justify-center text-xs font-bold">${prefix}</span>
+                        <span>${opt.text}</span>
+                    </div>
+                `;
+
+                if (currentSelected !== null) {
+                    if (opt.isCorrect) {
+                        btn.innerHTML += `<svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>`;
+                    } else if (currentSelected === optIdx) {
+                        btn.innerHTML += `<svg class="w-5 h-5 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>`;
+                    }
+                }
+
+                optionsContainerEl.appendChild(btn);
+            });
+
+            // Show explanation if already answered
+            if (currentSelected !== null) {
+                explanationBoxEl.classList.remove("hidden");
+            }
+
+            // Update Navigation state
+            prevBtn.disabled = currentQuestionIdx === 0;
+            nextBtn.disabled = currentQuestionIdx === randomizedData.length - 1;
+
+            updateStats();
+        }
+
+        // Option Selection Handler
+        function selectOption(optIdx) {
+            userAnswers[currentQuestionIdx] = optIdx;
+            renderQuestion();
+        }
+
+        // Toggle Hint Visibility
+        function toggleHint() {
+            hintBoxEl.classList.toggle("hidden");
+        }
+
+        // Update Score and Progress Stats
+        function updateStats() {
+            let score = 0;
+            let answeredCount = 0;
+
+            userAnswers.forEach((ans, idx) => {
+                if (ans !== null) {
+                    answeredCount++;
+                    if (randomizedData[idx].shuffledOptions[ans].isCorrect) {
+                        score++;
+                    }
+                }
+            });
+
+            scoreDisplayEl.textContent = `${score} / ${randomizedData.length}`;
+            progressTextEl.textContent = `${currentQuestionIdx + 1} / ${randomizedData.length}`;
+            
+            const progressPercent = ((currentQuestionIdx + 1) / randomizedData.length) * 100;
+            progressBarEl.style.width = `${progressPercent}%`;
+        }
+
+        // Navigation controls
+        function prevQuestion() {
+            if (currentQuestionIdx > 0) {
+                currentQuestionIdx--;
+                renderQuestion();
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIdx < randomizedData.length - 1) {
+                currentQuestionIdx++;
+                renderQuestion();
+            }
+        }
+
+        function jumpToQuestion() {
+            const val = parseInt(jumpInputEl.value);
+            if (val >= 1 && val <= randomizedData.length) {
+                currentQuestionIdx = val - 1;
+                renderQuestion();
+                jumpInputEl.value = "";
+            } else {
+                alert(`Please enter a question number between 1 and ${randomizedData.length}`);
+            }
+        }
+
+        // Initial Load
+        renderQuestion();
+    </script>
+<script src="../../quiz-app-ui-v2.js"></script>
+</body>
+</html>
