@@ -1,6 +1,7 @@
 /* ==========================================================================
-   TESTBOOK CBT HUB & QUESTION PALETTE CONTROLLER
-   Delivers authentic Testbook Web CBT & Mobile App Experience to All Hubs
+   COSMIC CBT HUB & QUESTION PALETTE CONTROLLER
+   Delivers authentic Cosmic Web CBT & Mobile App Experience to All Hubs
+   Includes Quiz Navigation (Prev/Next Quiz) & Dark/Light Theme Switching
    ========================================================================== */
 
 (() => {
@@ -16,7 +17,7 @@
   normalizeMohit();
   document.addEventListener('DOMContentLoaded', normalizeMohit, { once: true });
   setTimeout(normalizeMohit, 250);
-  // Check if we are on a hub page with #quiz-view
+
   const quizView = document.getElementById('quiz-view');
   if (!quizView) return;
 
@@ -28,14 +29,72 @@
     timerSeconds: 45 * 60,
     timerInterval: null,
     examTitle: 'Interactive Practice Test',
-    lastIsAnswered: false  // tracks if current question iframe has an answer selected
+    lastIsAnswered: false
   };
 
-  // Build Testbook CBT Container
-  function buildTestbookCBTLayout() {
-    if (document.getElementById('tb-cbt-wrapper')) return;
+  // Helper to get current Quiz ID from URL hash
+  function getQuizId() {
+    const match = location.hash.match(/quiz\/(\d+)/i);
+    return match ? Number(match[1]) : 1;
+  }
 
-    // Create container
+  // Helper to get total number of quizzes available in the current hub
+  function getTotalQuizzes() {
+    return document.querySelectorAll('#quiz-grid .quiz-card').length ||
+           window.items?.length ||
+           window.quizzes?.length ||
+           55;
+  }
+
+  // Theme Sync Function
+  function applyTheme(themeName) {
+    document.documentElement.dataset.theme = themeName;
+    try {
+      localStorage.setItem('quiz-universe-theme', themeName);
+      localStorage.setItem('hr-ca-quiz-theme', themeName);
+    } catch(e) {}
+
+    const themeBtn = document.getElementById('tb-theme-toggle');
+    if (themeBtn) {
+      themeBtn.innerHTML = themeName === 'dark' ? '☀ Light Mode' : '☾ Dark Mode';
+    }
+
+    // Sync with iframe document
+    const frame = document.querySelector('.quiz-frame');
+    if (frame && frame.contentDocument) {
+      try {
+        let s = frame.contentDocument.getElementById('universe-frame-theme');
+        if (!s) {
+          s = frame.contentDocument.createElement('style');
+          s.id = 'universe-frame-theme';
+          frame.contentDocument.head.append(s);
+        }
+        if (themeName === 'dark') {
+          s.textContent = `
+            html, body { background: #09071a !important; color: #f7f3ff !important; }
+            main > div, #quiz-card, #quiz-container { background: #171033 !important; border-color: #635192 !important; color: #f7f3ff !important; }
+            #question-text { color: #f7f3ff !important; }
+          `;
+        } else {
+          s.textContent = `
+            html, body { background: #ffffff !important; color: #1e293b !important; }
+            main > div, #quiz-card, #quiz-container { background: #f8fafc !important; border-color: #e2e8f0 !important; color: #0f172a !important; }
+            #question-text { color: #0f172a !important; }
+          `;
+        }
+      } catch(e) {}
+    }
+  }
+
+  // Build CBT Layout
+  function buildTestbookCBTLayout() {
+    if (document.getElementById('tb-cbt-wrapper')) {
+      updateQuizNavButtons();
+      return;
+    }
+
+    const currentTheme = localStorage.getItem('quiz-universe-theme') || 'dark';
+
     const wrapper = document.createElement('div');
     wrapper.id = 'tb-cbt-wrapper';
     wrapper.className = 'tb-cbt-container';
@@ -44,10 +103,15 @@
       <div class="tb-cbt-header">
         <div class="tb-cbt-test-info">
           <a href="#library" class="tb-btn tb-btn-outline" style="padding:6px 12px;font-size:12px;">← All Tests</a>
+          <button type="button" class="tb-btn tb-btn-outline" id="tb-prev-quiz" title="Previous Quiz in Library" style="padding:6px 11px;font-size:12px;cursor:pointer;">⏮ Prev Quiz</button>
+          <button type="button" class="tb-btn tb-btn-outline" id="tb-next-quiz" title="Next Quiz in Library" style="padding:6px 11px;font-size:12px;cursor:pointer;">Next Quiz ⏭</button>
           <span class="tb-cbt-title" id="tb-exam-title">Interactive Practice Test</span>
-          <span class="tb-section-pill">Section 1: General Exam</span>
+          <span class="tb-section-pill">Cosmic Exam Room</span>
         </div>
         <div class="tb-cbt-tools">
+          <button type="button" class="tb-btn tb-btn-outline" id="tb-theme-toggle" title="Switch Light/Dark Theme" style="padding:6px 11px;font-size:12px;cursor:pointer;">
+            ${currentTheme === 'dark' ? '☀ Light Mode' : '☾ Dark Mode'}
+          </button>
           <div class="tb-timer-badge" id="tb-timer">
             <span class="tb-timer-icon">⏳</span>
             <span id="tb-timer-val">45:00</span>
@@ -73,7 +137,7 @@
             <!-- Iframe will be mounted here -->
           </div>
 
-          <!-- Bottom Action Bar (Testbook standard) -->
+          <!-- Bottom Action Bar -->
           <div class="tb-cbt-footer">
             <div class="tb-btn-group-left">
               <button type="button" class="tb-btn tb-btn-purple" id="tb-btn-review">★ Mark for Review & Next</button>
@@ -86,7 +150,7 @@
           </div>
         </div>
 
-        <!-- Right: Testbook Question Palette -->
+        <!-- Right: Question Palette -->
         <div class="tb-cbt-palette" id="tb-palette-pane">
           <div class="tb-palette-header">
             <img src="mohit.png" alt="Candidate" class="tb-palette-avatar">
@@ -125,8 +189,33 @@
       document.getElementById('tb-cbt-frame-wrap').replaceChildren(frameHost);
     }
 
-    // Attach Action Listeners
     attachActionListeners();
+    updateQuizNavButtons();
+  }
+
+  // Update Prev/Next Quiz buttons state based on current quiz ID
+  function updateQuizNavButtons() {
+    const qId = getQuizId();
+    const total = getTotalQuizzes();
+
+    const btnPrev = document.getElementById('tb-prev-quiz');
+    const btnNext = document.getElementById('tb-next-quiz');
+
+    if (btnPrev) {
+      btnPrev.disabled = qId <= 1;
+      btnPrev.style.opacity = qId <= 1 ? '0.4' : '1';
+      btnPrev.onclick = () => {
+        if (qId > 1) location.hash = `quiz/${qId - 1}`;
+      };
+    }
+
+    if (btnNext) {
+      btnNext.disabled = qId >= total;
+      btnNext.style.opacity = qId >= total ? '0.4' : '1';
+      btnNext.onclick = () => {
+        if (qId < total) location.hash = `quiz/${qId + 1}`;
+      };
+    }
   }
 
   // Attach CBT Action Listeners
@@ -138,6 +227,7 @@
     const btnSubmit = document.getElementById('tb-btn-submit-test');
     const btnFullscreen = document.getElementById('tb-fullscreen-btn');
     const btnTogglePalette = document.getElementById('tb-toggle-palette');
+    const btnThemeToggle = document.getElementById('tb-theme-toggle');
 
     const sendToFrame = action => {
       const frame = document.querySelector('.quiz-frame');
@@ -146,9 +236,16 @@
       }
     };
 
+    if (btnThemeToggle) {
+      btnThemeToggle.addEventListener('click', () => {
+        const cur = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
+        const next = cur === 'dark' ? 'light' : 'dark';
+        applyTheme(next);
+      });
+    }
+
     if (btnNext) {
       btnNext.addEventListener('click', () => {
-        // Check if question was answered by reading isAnswered from last known frame state
         if (state.lastIsAnswered) {
           state.questionStatus[state.currentQuestion] = 'answered';
         } else if (!state.questionStatus[state.currentQuestion] || state.questionStatus[state.currentQuestion] === 'not-visited') {
@@ -227,7 +324,8 @@
       grid.appendChild(b);
     }
 
-    document.getElementById('tb-total-q-badge').textContent = state.totalQuestions;
+    const badge = document.getElementById('tb-total-q-badge');
+    if (badge) badge.textContent = state.totalQuestions;
     updatePaletteGrid();
   }
 
@@ -242,13 +340,12 @@
       frame.contentWindow.postMessage({ action: 'JUMP', question: qNum }, '*');
     }
     updatePaletteGrid();
-    
-    // Close mobile palette drawer if open
+
     const palette = document.getElementById('tb-palette-pane');
     if (palette && window.innerWidth <= 820) palette.classList.remove('open');
   }
 
-  // Update palette grid button colors and summary counts
+  // Update palette button colors and summary counts
   function updatePaletteGrid() {
     let countAnswered = 0;
     let countNotAnswered = 0;
@@ -258,7 +355,7 @@
     for (let i = 1; i <= state.totalQuestions; i++) {
       const btn = document.getElementById(`tb-q-btn-${i}`);
       const status = state.questionStatus[i] || 'not-visited';
-      
+
       if (btn) {
         btn.className = `tb-palette-btn ${status} ${i === state.currentQuestion ? 'active' : ''}`;
       }
@@ -285,7 +382,7 @@
   // Timer Countdown
   function startTimer() {
     if (state.timerInterval) clearInterval(state.timerInterval);
-    state.timerSeconds = 45 * 60; // 45 minutes
+    state.timerSeconds = 45 * 60;
 
     const timerVal = document.getElementById('tb-timer-val');
     const timerBadge = document.getElementById('tb-timer');
@@ -308,7 +405,7 @@
     }, 1000);
   }
 
-  // Testbook Scorecard / Submission Modal
+  // Cosmic CBT Scorecard / Submission Modal
   function showScorecardModal() {
     let countAnswered = 0;
     for (let i = 1; i <= state.totalQuestions; i++) {
@@ -318,7 +415,7 @@
     const frame = document.querySelector('.quiz-frame');
     let frameScore = 0;
     try {
-      const scoreText = frame?.contentDocument?.querySelector('#score-display, [data-score], #headerScore')?.textContent || '0';
+      const scoreText = frame?.contentDocument?.querySelector('#score-display, [data-score], #headerScore, #score-counter')?.textContent || '0';
       frameScore = Number(scoreText.match(/\d+/)?.[0]) || countAnswered;
     } catch (e) {
       frameScore = countAnswered;
@@ -336,7 +433,7 @@
     modal.innerHTML = `
       <div class="tb-modal-card">
         <div class="tb-modal-header">
-          <h3>Test Performance Summary</h3>
+          <h3>Cosmic CBT Performance Summary</h3>
           <button type="button" style="background:none;border:0;color:#fff;font-size:20px;cursor:pointer;" id="tb-close-modal">✕</button>
         </div>
         <div class="tb-modal-body">
@@ -380,7 +477,6 @@
       state.currentQuestion = data.currentQuestion;
     }
 
-    // Store answered state for Save & Next button to use
     state.lastIsAnswered = !!data.isAnswered;
 
     if (data.isAnswered) {
@@ -396,18 +492,17 @@
     if (hash.startsWith('quiz/')) {
       buildTestbookCBTLayout();
 
-      // Reset state for this new quiz
       state.questionStatus = {};
       state.currentQuestion = 1;
       state.lastIsAnswered = false;
 
       startTimer();
+      updateQuizNavButtons();
 
       const title = document.getElementById('quiz-title')?.textContent || 'Interactive Practice Test';
       const elTitle = document.getElementById('tb-exam-title');
       if (elTitle) elTitle.textContent = title;
 
-      // Apply CBT engine enhancements to iframe after it loads
       setTimeout(() => {
         const frame = document.querySelector('.quiz-frame');
         if (frame && window.TestbookCBTEngine) {

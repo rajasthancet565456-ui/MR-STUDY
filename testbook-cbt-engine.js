@@ -1,28 +1,23 @@
 /* ==========================================================================
-   TESTBOOK CBT ENGINE — Contrast Enhancement & Message Bridge
-   Does NOT override the quiz's original dark/cosmic theme.
-   Only removes broken white-on-white styles & adds glow to correct/incorrect.
+   COSMIC CBT ENGINE — Contrast Enhancement & Message Bridge
+   Guarantees 100% High-Contrast Readability & Answer Feedback Across All Libraries
    ========================================================================== */
 
 (() => {
   const isInsideFrame = window.self !== window.top;
 
-  // Enhancement CSS — does NOT set body background or text color globally
   const enhancementCSS = `
-    /* ================================================================
-       Remove any broken legacy theme styles
-       ================================================================ */
+    /* Remove any broken legacy theme styles */
     #cosmic-readable-quiz-theme,
     #lavender-quiz-layer,
     #lavender-quiz-app-ui,
     #readability-safeguard,
-    #light-celestial-readability {
+    #light-celestial-readability,
+    #light-vocab-readability {
       display: none !important;
     }
 
-    /* ================================================================
-       HIDE internal dock when inside hub iframe (hub handles navigation)
-       ================================================================ */
+    /* Hide internal dock when inside hub iframe (hub handles navigation) */
     #quiz-question-dock,
     #direct-quiz-dock,
     #cosmic-quiz-dock {
@@ -30,39 +25,78 @@
     }
 
     /* ================================================================
-       CORRECT ANSWER — vivid emerald glow
+       CORRECT ANSWER — Vivid Emerald Green (All libraries & themes)
        ================================================================ */
-    button[class*="bg-emerald"],
-    button[class*="border-emerald-5"],
-    button[class*="border-emerald-6"],
-    .correct, .is-correct {
-      box-shadow: 0 0 22px rgba(5, 150, 105, 0.65), 0 0 6px rgba(5, 150, 105, 0.3) !important;
-      border-width: 2px !important;
+    .option-card.selected-correct,
+    .option-card.reveal-correct,
+    button.selected-correct,
+    button.reveal-correct,
+    button[class*="emerald"],
+    button[class*="green"],
+    button.correct,
+    button.is-correct,
+    .correct,
+    .is-correct {
+      background-color: #059669 !important;
+      background-image: none !important;
+      border: 2px solid #10b981 !important;
+      color: #ffffff !important;
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.15) !important;
+      opacity: 1 !important;
+    }
+    .option-card.selected-correct *,
+    .option-card.reveal-correct *,
+    button.selected-correct *,
+    button.reveal-correct *,
+    button[class*="emerald"] *,
+    button[class*="green"] *,
+    button.correct *,
+    button.is-correct * {
+      color: #ffffff !important;
+      text-shadow: none !important;
     }
 
     /* ================================================================
-       INCORRECT ANSWER — vivid red glow
+       INCORRECT ANSWER — Vivid Crimson Red (All libraries & themes)
        ================================================================ */
-    button[class*="bg-rose"],
-    button[class*="border-rose-5"],
-    button[class*="border-rose-6"],
-    .wrong, .incorrect, .is-incorrect {
-      box-shadow: 0 0 22px rgba(220, 38, 38, 0.55), 0 0 6px rgba(220, 38, 38, 0.25) !important;
-      border-width: 2px !important;
+    .option-card.selected-incorrect,
+    button.selected-incorrect,
+    button[class*="rose"],
+    button[class*="red"],
+    button.wrong,
+    button.incorrect,
+    button.is-incorrect,
+    .wrong,
+    .incorrect,
+    .is-incorrect {
+      background-color: #dc2626 !important;
+      background-image: none !important;
+      border: 2px solid #ef4444 !important;
+      color: #ffffff !important;
+      box-shadow: 0 0 20px rgba(239, 68, 68, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.15) !important;
+      opacity: 1 !important;
+    }
+    .option-card.selected-incorrect *,
+    button.selected-incorrect *,
+    button[class*="rose"] *,
+    button[class*="red"] *,
+    button.wrong *,
+    button.incorrect *,
+    button.is-incorrect * {
+      color: #ffffff !important;
+      text-shadow: none !important;
     }
 
-    /* ================================================================
-       RATIONALE BOX — always visible after answer
-       ================================================================ */
+    /* RATIONALE BOX — always visible after answer */
     #rationale-box:not(.hidden),
-    #explanation-box:not(.hidden) {
+    #explanation-box:not(.hidden),
+    #explanationBox:not(.hidden) {
       opacity: 1 !important;
       visibility: visible !important;
+      display: block !important;
     }
 
-    /* ================================================================
-       OPTION A/B/C/D BADGE STYLES
-       ================================================================ */
+    /* OPTION A/B/C/D BADGE STYLES */
     .tb-opt-badge {
       display: inline-flex !important;
       align-items: center !important;
@@ -82,7 +116,7 @@
 
     // Purge broken themes
     doc.querySelectorAll(
-      '#cosmic-readable-quiz-theme, #lavender-quiz-layer, #readability-safeguard, #light-celestial-readability'
+      '#cosmic-readable-quiz-theme, #lavender-quiz-layer, #readability-safeguard, #light-celestial-readability, #light-vocab-readability'
     ).forEach(el => el.remove());
 
     // Inject enhancement layer
@@ -100,7 +134,7 @@
 
   function addOptionBadges(doc) {
     const letters = ['A', 'B', 'C', 'D', 'E'];
-    const options = doc.querySelectorAll('#options-container button, #options button, .option');
+    const options = doc.querySelectorAll('#options-container button, #options button, #optionsGrid button, .option, .option-card');
     options.forEach((btn, idx) => {
       if (btn.querySelector('.tb-opt-badge')) return;
       const letter = letters[idx % letters.length];
@@ -125,23 +159,25 @@
 
     window.addEventListener('load', () => {
       applyEnhancements(document);
-      const target = document.querySelector('#quiz-container, #options-container, main');
+      const target = document.querySelector('#quiz-container, #options-container, #optionsGrid, main');
       if (target) observer.observe(target, { childList: true, subtree: true });
       notifyParentState();
     });
 
-    // Notify parent of current question state
     function notifyParentState() {
       try {
-        const counterText = document.querySelector(
-          '#question-counter, #question-tracker, [data-question-number]'
-        )?.textContent || '';
+        const counterEl = document.querySelector(
+          '#questionNumBadge, #question-counter, #question-tracker, #current-q-num, [data-question-number]'
+        );
+        const counterText = counterEl?.textContent || '';
         const match = counterText.match(/(\d+)\s*(?:of|\/)\s*(\d+)/i) || counterText.match(/(\d+)/);
         const currentQ = match ? Number(match[1]) : 1;
-        const totalQ = (match && match[2]) ? Number(match[2]) : (window.quizData?.length || 90);
+        const totalQ = (match && match[2]) ? Number(match[2]) : (window.quizData?.length || window.rawQuestions?.length || window.questions?.length || 90);
         const isAnswered = Boolean(
           document.querySelector(
-            '[class*="bg-emerald"],[class*="bg-rose"],[class*="border-emerald-5"],[class*="border-rose-5"],' +
+            '[class*="emerald"],[class*="green"],[class*="rose"],[class*="red"],' +
+            '.option-card.selected-correct, .option-card.selected-incorrect, .option-card.reveal-correct,' +
+            '.selected-correct, .selected-incorrect, .reveal-correct,' +
             '.selected,.correct,.wrong,[aria-checked="true"]'
           )
         );
@@ -154,7 +190,7 @@
       } catch (e) {}
     }
 
-    setInterval(notifyParentState, 500);
+    setInterval(notifyParentState, 400);
 
     // Listen to parent CBT hub commands
     window.addEventListener('message', event => {
@@ -162,19 +198,29 @@
       if (!data || !data.action) return;
 
       if (data.action === 'NEXT') {
-        const btn = document.querySelector('#next-btn, #next, button[data-action="next"]');
-        if (btn && !btn.disabled) btn.click();
+        const btn = document.querySelector('#nextBtn, #next-btn, #next, button[data-action="next"]');
+        if (btn && !btn.disabled) {
+          btn.click();
+        } else if (window.navigateQuestion) {
+          window.navigateQuestion(1);
+        }
 
       } else if (data.action === 'PREV') {
-        const btn = document.querySelector('#prev-btn, #previous, #prevBtn, button[data-action="prev"]');
-        if (btn && !btn.disabled) btn.click();
+        const btn = document.querySelector('#prevBtn, #prev-btn, #previous, button[data-action="prev"]');
+        if (btn && !btn.disabled) {
+          btn.click();
+        } else if (window.navigateQuestion) {
+          window.navigateQuestion(-1);
+        }
 
       } else if (data.action === 'JUMP') {
         const targetQ = Number(data.question);
-        const jumpInput = document.querySelector('#jump-input, input[id*="jump" i]');
+        const jumpInput = document.querySelector('#jumpInput, #jump-input, input[id*="jump" i]');
         const jumpBtn = document.querySelector('#jump-btn, button[id*="jump" i]');
-        if (jumpInput && jumpBtn) {
-          jumpInput.value = targetQ;
+        if (jumpInput) jumpInput.value = targetQ;
+        if (window.executeJump) {
+          window.executeJump();
+        } else if (jumpBtn) {
           jumpBtn.click();
         } else if (window.loadQuestion) {
           window.loadQuestion(targetQ - 1);
@@ -193,7 +239,6 @@
     });
   }
 
-  // Export for use by hub pages (applies to frames from outside)
   window.TestbookCBTEngine = {
     applyContrastSafeguard: applyEnhancements
   };

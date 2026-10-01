@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -345,69 +345,6 @@
     route();
   </script>
 
-  <!-- High contrast & light readability safeguards -->
-  <script>
-    const lightVocabCSS = `:root{color-scheme:light!important}html,body{background:radial-gradient(circle at 92% 0,#e5dcff 0,transparent 30%),radial-gradient(circle at 4% 100%,#d5f5ff 0,transparent 38%),#fbfaff!important;color:#211a42!important}body *{text-shadow:none!important}header,.bg-slate-800,.bg-slate-900,main>div,#quiz-card,.bg-white,.bg-slate-50,.bg-slate-100,.bg-gray-50{background:linear-gradient(145deg,#fff,#f3efff)!important;color:#211a42!important;border-color:rgba(100,70,178,.28)!important;box-shadow:0 10px 26px rgba(87,59,156,.12)!important}#questionText,h1,h2,h3,p,span,strong,label{color:#211a42!important}input,select,textarea{background:#fff!important;color:#211a42!important;border-color:#9d87df!important}button.option-card,#optionsGrid button{background:#fff!important;color:#211a42!important;border-color:rgba(100,70,178,.28)!important}`;
-    function applyLightQuiz(frame) {
-      const apply = () => {
-        try {
-          const doc = frame.contentDocument;
-          if (!doc || doc.getElementById('light-vocab-readability')) return;
-          const style = doc.createElement('style');
-          style.id = 'light-vocab-readability';
-          style.textContent = lightVocabCSS;
-          doc.head.append(style);
-        } catch (e) {}
-      };
-      frame.addEventListener('load', apply);
-      apply();
-    }
-    document.querySelectorAll('iframe.quiz-frame').forEach(applyLightQuiz);
-    new MutationObserver(records => records.forEach(record => record.addedNodes.forEach(node => {
-      if (node.nodeType === 1 && node.matches('iframe.quiz-frame')) applyLightQuiz(node);
-    }))).observe(document.getElementById('frame-host'), { childList: true });
-  </script>
-
-  <!-- Theme toggle synchronization -->
-  <script>
-    (() => {
-      const key = 'quiz-universe-theme', root = document.documentElement;
-      let theme = 'dark';
-      try { theme = localStorage.getItem(key) || theme; } catch (e) {}
-      const nav = document.querySelector('.navlinks'), toggle = document.createElement('button');
-      toggle.className = 'theme-toggle';
-      toggle.type = 'button';
-      toggle.id = 'theme-toggle';
-      nav.insertBefore(toggle, nav.querySelector('.collection-switcher'));
-      function syncFrames() {
-        document.querySelectorAll('iframe.quiz-frame').forEach(frame => {
-          try {
-            const doc = frame.contentDocument, light = doc && doc.getElementById('light-vocab-readability');
-            if (theme === 'dark') light?.remove();
-            else if (doc && !light) {
-              const style = doc.createElement('style');
-              style.id = 'light-vocab-readability';
-              style.textContent = lightVocabCSS;
-              doc.head.append(style);
-            }
-          } catch (e) {}
-        });
-      }
-      function setTheme(next) {
-        theme = next;
-        root.dataset.theme = theme;
-        toggle.textContent = theme === 'dark' ? '☀ Light mode' : '☾ Dark mode';
-        toggle.setAttribute('aria-pressed', String(theme === 'dark'));
-        try { localStorage.setItem(key, theme); localStorage.setItem('hr-ca-quiz-theme', theme); } catch (e) {}
-        syncFrames();
-      }
-      toggle.addEventListener('click', () => setTheme(theme === 'dark' ? 'light' : 'dark'));
-      document.addEventListener('DOMContentLoaded', syncFrames);
-      new MutationObserver(syncFrames).observe(document.getElementById('frame-host'), { childList: true });
-      setTheme(theme);
-    })();
-  </script>
-
   <!-- Progress & Toolset Enhancer -->
   <script src="testbook-cbt-engine.js"></script>
   <script src="testbook-cbt-hub.js"></script>
@@ -415,6 +352,6 @@
 </body>
 <!-- FLOATING BADGE FOR CONNECTED PAGES -->
 <a href="cosmic-quiz-master.html" style="position: fixed; bottom: 20px; right: 20px; display: flex; align-items: center; gap: 10px; padding: 8px 16px; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(8px); border: 1.5px solid rgba(168, 85, 247, 0.6); border-radius: 50px; color: #ffffff; font-family: system-ui, sans-serif; font-size: 13px; text-decoration: none; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); z-index: 9999;">
-  <img src="mohit.png" alt="Mohit Yadav" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid #a855f7;">
-  <span>Created by <strong style="color: #c084fc;">Mohit Yadav</strong></span>
+  <img src="mohit.png" alt="Mohit" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid #a855f7;">
+  <span>Created by <strong style="color: #c084fc;">Mohit</strong></span>
 </a><script>window.CQ_LIBRARY_ID='english-vocab-quiz-hub';</script><script src="unified-library-bridge.js"></script></html>

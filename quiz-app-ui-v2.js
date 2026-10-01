@@ -1,11 +1,11 @@
-/* Shared presentation layer for every direct quiz page.
-   Preserves the original beautiful dark/cosmic quiz theme.
-   Only adds message bridge + glow enhancements for correct/incorrect. */
+/* Shared presentation layer for every quiz page across all libraries.
+   Preserves the original library themes while guaranteeing 100% legible text
+   and authentic Testbook-style vibrant correct (emerald) and incorrect (crimson) indicators. */
 (() => {
-  // 1. Purge broken white-on-white styles
+  // 1. Purge broken white-on-white conflicting stylesheets
   const purgeBrokenStyles = () => {
     document.querySelectorAll(
-      '#cosmic-readable-quiz-theme, #lavender-quiz-layer, #lavender-quiz-app-ui, #readability-safeguard, #light-celestial-readability'
+      '#cosmic-readable-quiz-theme, #lavender-quiz-layer, #lavender-quiz-app-ui, #readability-safeguard, #light-celestial-readability, #light-vocab-readability'
     ).forEach(el => el.remove());
   };
   purgeBrokenStyles();
@@ -18,33 +18,78 @@
   const style = document.createElement('style');
   style.id = 'quiz-ui-v2-layer';
   style.textContent = `
-
     /* ================================================================
-       CORRECT ANSWER — Vivid Green Glow (works on dark & light theme)
+       CORRECT ANSWER — Vivid Emerald Green (Works on ALL libraries & themes)
        ================================================================ */
-    #options-container button[class*="bg-emerald"],
-    #options-container button[class*="border-emerald"],
-    #options button[class*="bg-emerald"],
-    #options button[class*="border-emerald"],
-    button[class*="bg-emerald-5"],
-    button[class*="border-emerald-5"],
-    .correct, .is-correct {
-      box-shadow: 0 0 22px rgba(5, 150, 105, 0.65), 0 0 6px rgba(5, 150, 105, 0.35) !important;
-      border-width: 2px !important;
+    .option-card.selected-correct,
+    .option-card.reveal-correct,
+    button.selected-correct,
+    button.reveal-correct,
+    button[class*="emerald"],
+    button[class*="green"],
+    button.correct,
+    button.is-correct,
+    .correct,
+    .is-correct {
+      background-color: #059669 !important;
+      background-image: none !important;
+      border: 2px solid #10b981 !important;
+      color: #ffffff !important;
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.15) !important;
+      opacity: 1 !important;
+    }
+    .option-card.selected-correct *,
+    .option-card.reveal-correct *,
+    button.selected-correct *,
+    button.reveal-correct *,
+    button[class*="emerald"] *,
+    button[class*="green"] *,
+    button.correct *,
+    button.is-correct * {
+      color: #ffffff !important;
+      text-shadow: none !important;
     }
 
     /* ================================================================
-       INCORRECT ANSWER — Vivid Red Glow (works on dark & light theme)
+       INCORRECT ANSWER — Vivid Crimson Red (Works on ALL libraries & themes)
        ================================================================ */
-    #options-container button[class*="bg-rose"],
-    #options-container button[class*="border-rose"],
-    #options button[class*="bg-rose"],
-    #options button[class*="border-rose"],
-    button[class*="bg-rose-5"],
-    button[class*="border-rose-5"],
-    .wrong, .incorrect, .is-incorrect {
-      box-shadow: 0 0 22px rgba(220, 38, 38, 0.55), 0 0 6px rgba(220, 38, 38, 0.3) !important;
-      border-width: 2px !important;
+    .option-card.selected-incorrect,
+    button.selected-incorrect,
+    button[class*="rose"],
+    button[class*="red"],
+    button.wrong,
+    button.incorrect,
+    button.is-incorrect,
+    .wrong,
+    .incorrect,
+    .is-incorrect {
+      background-color: #dc2626 !important;
+      background-image: none !important;
+      border: 2px solid #ef4444 !important;
+      color: #ffffff !important;
+      box-shadow: 0 0 20px rgba(239, 68, 68, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.15) !important;
+      opacity: 1 !important;
+    }
+    .option-card.selected-incorrect *,
+    button.selected-incorrect *,
+    button[class*="rose"] *,
+    button[class*="red"] *,
+    button.wrong *,
+    button.incorrect *,
+    button.is-incorrect * {
+      color: #ffffff !important;
+      text-shadow: none !important;
+    }
+
+    /* ================================================================
+       RATIONALE / EXPLANATION BOX — always visible after answering
+       ================================================================ */
+    #rationale-box:not(.hidden),
+    #explanation-box:not(.hidden),
+    #explanationBox:not(.hidden) {
+      opacity: 1 !important;
+      visibility: visible !important;
+      display: block !important;
     }
 
     /* ================================================================
@@ -55,40 +100,43 @@
       : `#quiz-question-dock, #direct-quiz-dock, #cosmic-quiz-dock { display: flex !important; }`
     }
 
-    /* ================================================================
-       RATIONALE / EXPLANATION BOX — always visible after answering
-       ================================================================ */
-    #rationale-box:not(.hidden),
-    #explanation-box:not(.hidden) {
-      opacity: 1 !important;
-      visibility: visible !important;
+    /* Question text legibility safeguard */
+    #questionText, #question-text, #question-text-en, #question-text-hi, .question-text, h2#question-text {
+      line-height: 1.55 !important;
+      text-shadow: none !important;
     }
-
-    /* Small cosmetic tweaks — don't override quiz background */
-    .text-emerald-400 { color: #34d399 !important; }
-    .text-rose-400    { color: #fb7185 !important; }
   `;
   document.head.append(style);
 
-  // 2. Listen for navigation commands from parent Testbook CBT hub
+  // 2. Listen for navigation commands from parent CBT hub
   window.addEventListener('message', event => {
     const data = event.data;
     if (!data || !data.action) return;
 
     if (data.action === 'NEXT') {
-      const btn = document.querySelector('#next-btn, #next, button[data-action="next"]');
-      if (btn && !btn.disabled) btn.click();
+      const btn = document.querySelector('#nextBtn, #next-btn, #next, button[data-action="next"]');
+      if (btn && !btn.disabled) {
+        btn.click();
+      } else if (window.navigateQuestion) {
+        window.navigateQuestion(1);
+      }
 
     } else if (data.action === 'PREV') {
-      const btn = document.querySelector('#prev-btn, #previous, #prevBtn, button[data-action="prev"]');
-      if (btn && !btn.disabled) btn.click();
+      const btn = document.querySelector('#prevBtn, #prev-btn, #previous, button[data-action="prev"]');
+      if (btn && !btn.disabled) {
+        btn.click();
+      } else if (window.navigateQuestion) {
+        window.navigateQuestion(-1);
+      }
 
     } else if (data.action === 'JUMP') {
       const target = Number(data.question);
-      const jumpInput = document.querySelector('#jump-input, input[id*="jump" i]');
+      const jumpInput = document.querySelector('#jumpInput, #jump-input, input[id*="jump" i]');
       const jumpBtn = document.querySelector('#jump-btn, button[id*="jump" i]');
-      if (jumpInput && jumpBtn) {
-        jumpInput.value = target;
+      if (jumpInput) jumpInput.value = target;
+      if (window.executeJump) {
+        window.executeJump();
+      } else if (jumpBtn) {
         jumpBtn.click();
       } else if (window.loadQuestion) {
         window.loadQuestion(target - 1);
@@ -110,17 +158,19 @@
     try {
       // Detect question counter
       const counterEl = document.querySelector(
-        '#question-counter, #question-tracker, [data-question-number], .question-number'
+        '#questionNumBadge, #question-counter, #question-tracker, #current-q-num, [data-question-number], .question-number'
       );
       const counterText = counterEl?.textContent || '';
       const match = counterText.match(/(\d+)\s*(?:of|\/)\s*(\d+)/i) || counterText.match(/(\d+)/);
       const currentQ = match ? Number(match[1]) : 1;
-      const totalQ   = (match && match[2]) ? Number(match[2]) : (window.quizData?.length || 90);
+      const totalQ   = (match && match[2]) ? Number(match[2]) : (window.quizData?.length || window.rawQuestions?.length || window.questions?.length || 90);
 
       // Detect if current question has been answered
       const isAnswered = Boolean(
         document.querySelector(
-          '[class*="bg-emerald"], [class*="bg-rose"], [class*="border-emerald-5"], [class*="border-rose-5"],' +
+          '[class*="emerald"], [class*="green"], [class*="rose"], [class*="red"],' +
+          '.option-card.selected-correct, .option-card.selected-incorrect, .option-card.reveal-correct,' +
+          '.selected-correct, .selected-incorrect, .reveal-correct,' +
           '.correct, .wrong, .selected, [aria-checked="true"]'
         )
       );
@@ -135,5 +185,5 @@
   };
 
   window.addEventListener('load', sendState);
-  setInterval(sendState, 500);
+  setInterval(sendState, 400);
 })();
