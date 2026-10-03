@@ -310,6 +310,9 @@
       { id: 23, file: 'v9.html', category: 'verbs', label: 'English Grammar Mastery 9 (Pages 81-90)', desc: 'Complete comprehensive verb revision test' }
     ];
 
+    window.grammarQuizzes = grammarQuizzes;
+    window.quizzes = grammarQuizzes;
+
     let currentCategory = 'all';
     const grid = document.getElementById('quiz-grid');
     const search = document.getElementById('search');
@@ -338,7 +341,7 @@
       const term = (search.value || '').trim().toLowerCase();
       const matches = grammarQuizzes.filter(q => {
         const matchesCat = (currentCategory === 'all' || q.category === currentCategory);
-        const matchesTerm = (!term || q.label.toLowerCase().includes(term) || q.desc.toLowerCase().includes(term) || String(q.id).includes(term));
+        const matchesTerm = (!term || q.label.toLowerCase().includes(term) || q.desc.toLowerCase().includes(term) || String(q.id).includes(term) || `quizz ${q.id}`.includes(term));
         return matchesCat && matchesTerm;
       });
 
@@ -362,14 +365,35 @@
           <div>
             <div class="quiz-card-top">
               <span class="quiz-cat-pill">${catLabel}</span>
-              <span style="font-family:'DM Mono',monospace;font-size:0.68rem;color:var(--gold);">TEST #${item.id}</span>
+              <span style="font-family:'DM Mono',monospace;font-size:0.68rem;color:var(--gold);">QUIZ ${String(item.id).padStart(2, '0')}</span>
             </div>
-            <span class="quiz-number">${item.label}</span>
+            <span class="quiz-number">Quizz ${item.id}</span>
+            <div style="font-size:0.85rem;color:#e9ddff;margin-top:4px;font-weight:600;">${item.label}</div>
           </div>
-          <small>${item.desc} · Open CBT →</small>
+          <small>${item.desc} · Open CBT Exam →</small>
         `;
         b.addEventListener('click', () => { location.hash = `quiz/${item.id}`; });
         grid.append(b);
+      });
+    }
+
+    function dressQuiz(frame, id) {
+      frame.addEventListener('load', () => {
+        try {
+          const palettes = [
+            ['#8e65ff', '#ffc766', '#ee75de'],
+            ['#37d9f2', '#a7fbff', '#7a8dff'],
+            ['#ff76ba', '#ffd0e7', '#bc82ff'],
+            ['#6bf1bb', '#d6ffe2', '#72b8ff'],
+            ['#ff7a5c', '#ffe0a1', '#ff4fa7'],
+            ['#728bff', '#d5dfff', '#63e4df']
+          ];
+          const p = palettes[(id - 1) % palettes.length];
+          const style = frame.contentDocument.createElement('style');
+          style.id = 'black-hole-orbit';
+          style.textContent = `:root{--orbit:${p[0]};--orbit-light:${p[1]};--orbit-tail:${p[2]}}header{position:sticky!important;overflow:hidden!important}header:after{content:'';position:absolute;width:150px;height:150px;right:-40px;top:-60px;border-radius:50%;background:radial-gradient(circle at 47% 50%,#fff9ed 0 27%,var(--orbit) 29% 33%,var(--orbit-tail) 36% 40%,var(--orbit-light) 43% 45%,transparent 49%);filter:drop-shadow(0 0 18px var(--orbit));opacity:.9;transform:rotate(-18deg);pointer-events:none}header>div{position:relative;z-index:1}#quiz-card{position:relative;overflow:hidden}#quiz-card:before{content:'✦  ✧  ✯  ✦';position:absolute;right:20px;top:14px;color:var(--orbit-light);font-size:12px;letter-spacing:9px;opacity:.72;pointer-events:none}`;
+          frame.contentDocument.head.append(style);
+        } catch(e) {}
       });
     }
 
@@ -378,7 +402,7 @@
       if (!item) { location.hash = 'library'; return; }
       show('quiz');
 
-      document.getElementById('quiz-title').textContent = item.label;
+      document.getElementById('quiz-title').textContent = `Quizz ${item.id} · ${item.label}`;
       const prevBtn = document.getElementById('previous');
       const nextBtn = document.getElementById('next');
       if (prevBtn) {
@@ -393,6 +417,7 @@
       const frame = document.createElement('iframe');
       frame.className = 'quiz-frame';
       frame.title = `English Grammar ${item.label}`;
+      dressQuiz(frame, id);
       frame.src = encodeURI(`english-grammar-library/english grammar quizz/${item.file}`);
       host.replaceChildren(frame);
       window.scrollTo(0, 0);

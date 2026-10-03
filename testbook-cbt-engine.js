@@ -90,7 +90,8 @@
     /* RATIONALE BOX — always visible after answer */
     #rationale-box:not(.hidden),
     #explanation-box:not(.hidden),
-    #explanationBox:not(.hidden) {
+    #explanationBox:not(.hidden),
+    #explanation:not(.hidden) {
       opacity: 1 !important;
       visibility: visible !important;
       display: block !important;
@@ -98,55 +99,54 @@
 
     /* OPTION A/B/C/D BADGE STYLES */
     .tb-opt-badge {
-      display: inline-flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      width: 26px !important;
-      height: 26px !important;
-      border-radius: 50% !important;
-      font-weight: 700 !important;
-      font-size: 12px !important;
-      margin-right: 10px !important;
-      flex-shrink: 0 !important;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 1.5px solid currentColor;
+      font-weight: 700;
+      font-size: 11px;
+      margin-right: 8px;
+      flex-shrink: 0;
+    }
+
+    /* QUESTION TEXT READABILITY */
+    #question-text, #questionText, #question-text-en, #question-text-hi, .question-text, h2#question {
+      line-height: 1.6 !important;
+      letter-spacing: 0.01em !important;
     }
   `;
 
   function applyEnhancements(doc) {
     if (!doc || !doc.head) return;
+    if (doc.getElementById('cosmic-cbt-enhancements')) return;
 
-    // Purge broken themes
-    doc.querySelectorAll(
-      '#cosmic-readable-quiz-theme, #lavender-quiz-layer, #readability-safeguard, #light-celestial-readability, #light-vocab-readability'
-    ).forEach(el => el.remove());
+    const styleEl = doc.createElement('style');
+    styleEl.id = 'cosmic-cbt-enhancements';
+    styleEl.textContent = enhancementCSS;
+    doc.head.append(styleEl);
 
-    // Inject enhancement layer
-    let sheet = doc.getElementById('tb-cbt-enhance-layer');
-    if (!sheet) {
-      sheet = doc.createElement('style');
-      sheet.id = 'tb-cbt-enhance-layer';
-      doc.head.append(sheet);
-    }
-    sheet.textContent = enhancementCSS;
-
-    // Add A/B/C/D badges to options
     addOptionBadges(doc);
   }
 
   function addOptionBadges(doc) {
-    const letters = ['A', 'B', 'C', 'D', 'E'];
-    const options = doc.querySelectorAll('#options-container button, #options button, #optionsGrid button, .option, .option-card');
+    const options = doc.querySelectorAll(
+      '#options-container button, #optionsContainer button, #options button, #optionsGrid .option-card, .options-container button'
+    );
+    const letters = ['A', 'B', 'C', 'D', 'E', 'F'];
     options.forEach((btn, idx) => {
       if (btn.querySelector('.tb-opt-badge')) return;
       const letter = letters[idx % letters.length];
       const badge = doc.createElement('span');
       badge.className = 'tb-opt-badge';
-      badge.style.cssText =
-        'display:inline-flex;align-items:center;justify-content:center;' +
-        'width:26px;height:26px;border-radius:50%;' +
-        'background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.3);' +
-        'color:inherit;font-weight:700;font-size:12px;margin-right:10px;flex-shrink:0;';
       badge.textContent = letter;
-      btn.prepend(badge);
+      const firstChild = btn.firstElementChild;
+      if (firstChild && firstChild.classList.contains('tb-opt-badge')) return;
+      if (!btn.textContent.trim().match(/^[A-F]\b/)) {
+        btn.prepend(badge);
+      }
     });
   }
 
@@ -159,7 +159,7 @@
 
     window.addEventListener('load', () => {
       applyEnhancements(document);
-      const target = document.querySelector('#quiz-container, #options-container, #optionsGrid, main');
+      const target = document.querySelector('#quiz-container, #options-container, #optionsContainer, #options, #optionsGrid, main');
       if (target) observer.observe(target, { childList: true, subtree: true });
       notifyParentState();
     });
@@ -167,12 +167,17 @@
     function notifyParentState() {
       try {
         const counterEl = document.querySelector(
-          '#questionNumBadge, #question-counter, #question-tracker, #current-q-num, [data-question-number]'
+          '#questionNumBadge, #question-counter, #question-tracker, #current-q-num, [data-question-number], #questionNumber, #question-number, #progressText, #progress-text'
         );
         const counterText = counterEl?.textContent || '';
         const match = counterText.match(/(\d+)\s*(?:of|\/)\s*(\d+)/i) || counterText.match(/(\d+)/);
         const currentQ = match ? Number(match[1]) : 1;
-        const totalQ = (match && match[2]) ? Number(match[2]) : (window.quizData?.length || window.rawQuestions?.length || window.questions?.length || 90);
+        const totalQ = (match && match[2]) ? Number(match[2]) : (
+          window.quizData?.length ||
+          window.rawQuestions?.length ||
+          window.questions?.length ||
+          50
+        );
         const isAnswered = Boolean(
           document.querySelector(
             '[class*="emerald"],[class*="green"],[class*="rose"],[class*="red"],' +
@@ -198,17 +203,23 @@
       if (!data || !data.action) return;
 
       if (data.action === 'NEXT') {
-        const btn = document.querySelector('#nextBtn, #next-btn, #next, button[data-action="next"]');
+        const btn = document.querySelector('#nextBtn, #next-btn, #next, #nextButton, button[data-action="next"], button[onclick*="next" i]');
         if (btn && !btn.disabled) {
           btn.click();
+        } else if (window.nextQuestion) {
+          window.nextQuestion();
         } else if (window.navigateQuestion) {
           window.navigateQuestion(1);
         }
 
       } else if (data.action === 'PREV') {
-        const btn = document.querySelector('#prevBtn, #prev-btn, #previous, button[data-action="prev"]');
+        const btn = document.querySelector('#prevBtn, #prev-btn, #previous, #previousButton, button[data-action="prev"], button[onclick*="prev" i]');
         if (btn && !btn.disabled) {
           btn.click();
+        } else if (window.previousQuestion) {
+          window.previousQuestion();
+        } else if (window.prevQuestion) {
+          window.prevQuestion();
         } else if (window.navigateQuestion) {
           window.navigateQuestion(-1);
         }
@@ -216,16 +227,18 @@
       } else if (data.action === 'JUMP') {
         const targetQ = Number(data.question);
         const jumpInput = document.querySelector('#jumpInput, #jump-input, input[id*="jump" i]');
-        const jumpBtn = document.querySelector('#jump-btn, button[id*="jump" i]');
+        const jumpBtn = document.querySelector('#jump-btn, #jumpBtn, button[id*="jump" i], button[onclick*="jump" i]');
         if (jumpInput) jumpInput.value = targetQ;
-        if (window.executeJump) {
+        if (window.jumpQuestion) {
+          window.jumpQuestion(targetQ);
+        } else if (window.jumpToQuestion) {
+          window.jumpToQuestion(targetQ);
+        } else if (window.executeJump) {
           window.executeJump();
         } else if (jumpBtn) {
           jumpBtn.click();
         } else if (window.loadQuestion) {
           window.loadQuestion(targetQ - 1);
-        } else if (window.jumpToQuestion) {
-          window.jumpToQuestion(targetQ);
         }
 
       } else if (data.action === 'CLEAR') {
