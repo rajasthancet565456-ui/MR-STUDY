@@ -145,7 +145,7 @@
 
         <div class="flex flex-col md:flex-row gap-3">
 
-            <button id="prevBtn"
+            <button id="prev-btn"
                 onclick="previousQuestion()"
                 class="flex-1 px-5 py-3 rounded-2xl bg-slate-800 hover:bg-slate-700 font-bold disabled:opacity-40 disabled:cursor-not-allowed">
                 ← Previous
@@ -168,7 +168,7 @@
                 </button>
             </div>
 
-            <button id="nextBtn"
+            <button id="next-btn"
                 onclick="nextQuestion()"
                 class="flex-1 px-5 py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-500 font-bold">
                 Next →
@@ -2027,7 +2027,7 @@ function renderQuestion() {
             userAnswers[current] === q.correctShuffledIndex;
 
         explanationHTML = `
-            <div class="explanation mt-5 rounded-2xl border ${
+            <div id="explanation-box" class="explanation mt-5 rounded-2xl border ${
                 isCorrect
                 ? "border-emerald-500/40 bg-emerald-950/30"
                 : "border-red-500/40 bg-red-950/30"
@@ -2108,16 +2108,14 @@ function renderQuestion() {
 
         <div class="mb-6">
 
-            <h2 class="text-xl sm:text-2xl lg:text-3xl font-black leading-relaxed">
+            <h2 id="question-text" class="text-xl sm:text-2xl lg:text-3xl font-black leading-relaxed">
                 ${q.q}
             </h2>
 
         </div>
 
 
-        <div>
-            ${optionsHTML}
-        </div>
+        <div id="options-container">${optionsHTML}</div>
 
         ${explanationHTML}
 
@@ -2266,10 +2264,10 @@ function updateStats() {
     document.getElementById("progressBar").style.width =
         positionPercent + "%";
 
-    document.getElementById("prevBtn").disabled =
+    document.getElementById("prev-btn").disabled =
         current === 0;
 
-    document.getElementById("nextBtn").textContent =
+    document.getElementById("next-btn").textContent =
         current === questions.length - 1
         ? "Finish Quiz ✓"
         : "Next →";
@@ -2414,6 +2412,7 @@ renderQuestion();
 
 </script>
 
+<script src="../../quiz-question-controls.js"></script>
 <script src="../../quiz-app-ui-v2.js"></script>
 </body>
 </html>

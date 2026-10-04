@@ -40,9 +40,10 @@
 
   // Helper to get total number of quizzes available in the current hub
   function getTotalQuizzes() {
-    return document.querySelectorAll('#quiz-grid .quiz-card').length ||
+    return window.grammarQuizzes?.length ||
            window.items?.length ||
            window.quizzes?.length ||
+           document.querySelectorAll('#quiz-grid .quiz-card').length ||
            55;
   }
 

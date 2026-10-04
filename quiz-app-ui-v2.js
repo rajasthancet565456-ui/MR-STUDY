@@ -86,7 +86,8 @@
        ================================================================ */
     #rationale-box:not(.hidden),
     #explanation-box:not(.hidden),
-    #explanationBox:not(.hidden) {
+    #explanationBox:not(.hidden),
+    #explanation:not(.hidden) {
       opacity: 1 !important;
       visibility: visible !important;
       display: block !important;
@@ -101,7 +102,7 @@
     }
 
     /* Question text legibility safeguard */
-    #questionText, #question-text, #question-text-en, #question-text-hi, .question-text, h2#question-text {
+    #questionText, #question-text, #question-text-en, #question-text-hi, .question-text, h2#question-text, h2#question {
       line-height: 1.55 !important;
       text-shadow: none !important;
     }
@@ -114,17 +115,23 @@
     if (!data || !data.action) return;
 
     if (data.action === 'NEXT') {
-      const btn = document.querySelector('#nextBtn, #next-btn, #next, button[data-action="next"]');
+      const btn = document.querySelector('#nextBtn, #next-btn, #next, #nextButton, button[data-action="next"], button[onclick*="next" i]');
       if (btn && !btn.disabled) {
         btn.click();
+      } else if (window.nextQuestion) {
+        window.nextQuestion();
       } else if (window.navigateQuestion) {
         window.navigateQuestion(1);
       }
 
     } else if (data.action === 'PREV') {
-      const btn = document.querySelector('#prevBtn, #prev-btn, #previous, button[data-action="prev"]');
+      const btn = document.querySelector('#prevBtn, #prev-btn, #previous, #previousButton, button[data-action="prev"], button[onclick*="prev" i]');
       if (btn && !btn.disabled) {
         btn.click();
+      } else if (window.previousQuestion) {
+        window.previousQuestion();
+      } else if (window.prevQuestion) {
+        window.prevQuestion();
       } else if (window.navigateQuestion) {
         window.navigateQuestion(-1);
       }
@@ -132,16 +139,18 @@
     } else if (data.action === 'JUMP') {
       const target = Number(data.question);
       const jumpInput = document.querySelector('#jumpInput, #jump-input, input[id*="jump" i]');
-      const jumpBtn = document.querySelector('#jump-btn, button[id*="jump" i]');
+      const jumpBtn = document.querySelector('#jump-btn, #jumpBtn, button[id*="jump" i], button[onclick*="jump" i]');
       if (jumpInput) jumpInput.value = target;
-      if (window.executeJump) {
+      if (window.jumpQuestion) {
+        window.jumpQuestion(target);
+      } else if (window.jumpToQuestion) {
+        window.jumpToQuestion(target);
+      } else if (window.executeJump) {
         window.executeJump();
       } else if (jumpBtn) {
         jumpBtn.click();
       } else if (window.loadQuestion) {
         window.loadQuestion(target - 1);
-      } else if (window.jumpToQuestion) {
-        window.jumpToQuestion(target);
       }
 
     } else if (data.action === 'CLEAR') {
@@ -158,12 +167,12 @@
     try {
       // Detect question counter
       const counterEl = document.querySelector(
-        '#questionNumBadge, #question-counter, #question-tracker, #current-q-num, [data-question-number], .question-number'
+        '#questionNumBadge, #question-counter, #question-tracker, #current-q-num, [data-question-number], .question-number, #questionNumber, #question-number, #progressText, #progress-text'
       );
       const counterText = counterEl?.textContent || '';
       const match = counterText.match(/(\d+)\s*(?:of|\/)\s*(\d+)/i) || counterText.match(/(\d+)/);
       const currentQ = match ? Number(match[1]) : 1;
-      const totalQ   = (match && match[2]) ? Number(match[2]) : (window.quizData?.length || window.rawQuestions?.length || window.questions?.length || 90);
+      const totalQ   = (match && match[2]) ? Number(match[2]) : (window.quizData?.length || window.rawQuestions?.length || window.questions?.length || 50);
 
       // Detect if current question has been answered
       const isAnswered = Boolean(
