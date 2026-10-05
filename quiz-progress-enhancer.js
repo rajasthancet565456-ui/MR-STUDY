@@ -1,9 +1,10 @@
 /* ==========================================================================
-   COSMIC QUIZ MASTER — Individual Quiz Mark / Unmark Progress Tracker
-   - Har quiz card ke NEECHE ek alag Mark / Unmark button
-   - Filter: All | Attempted | Not Attempted
-   - Progress bar showing completion stats
-   - Data saves in localStorage per hub page
+   COSMIC QUIZ MASTER — Quiz Mark / Unmark Tool
+   Har quiz card ke neeche ek button:
+     ❌ Not Attempted  →  click karo  →  ✅ Attempted
+     ✅ Attempted      →  click karo  →  ❌ Not Attempted
+   Filter: All | ✅ Attempted | ❌ Not Attempted
+   Data localStorage mein save hota hai (browser band karo/kholo — rahega)
    ========================================================================== */
 
 // Load CBT engine scripts if not already loaded
@@ -21,242 +22,254 @@ if (!document.getElementById('testbook-hub-script')) {
 }
 
 (() => {
-  // ── Storage ──────────────────────────────────────────────────────────────
-  const storageKey = `cq-mark:${location.pathname}`;
-  function readMarks() {
-    try { return JSON.parse(localStorage.getItem(storageKey)) || {}; }
-    catch { return {}; }
-  }
-  function saveMarks(data) {
-    try { localStorage.setItem(storageKey, JSON.stringify(data)); } catch(e) {}
-  }
+  /* ── Storage ── */
+  const STORE_KEY = 'cq-marks:' + location.pathname;
+  const getMarks  = () => { try { return JSON.parse(localStorage.getItem(STORE_KEY) || '{}'); } catch { return {}; } };
+  const saveMarks = (m) => { try { localStorage.setItem(STORE_KEY, JSON.stringify(m)); } catch (_) {} };
 
-  let marks = readMarks();
   let activeFilter = 'all'; // 'all' | 'attempted' | 'not-attempted'
 
-  // ── Toggle mark for one quiz ─────────────────────────────────────────────
-  function toggleMark(quizId) {
-    marks = readMarks();
-    if (marks[quizId]) {
-      delete marks[quizId];
-    } else {
-      marks[quizId] = true;
-    }
-    saveMarks(marks);
-    refreshAll();
+  /* ── Toggle one quiz ── */
+  function toggle(id) {
+    const m = getMarks();
+    if (m[id]) delete m[id];
+    else m[id] = 1;
+    saveMarks(m);
+    refresh();
   }
 
-  // ── Inject CSS once ──────────────────────────────────────────────────────
-  function injectStyles() {
-    if (document.getElementById('cq-mark-style')) return;
-    const st = document.createElement('style');
-    st.id = 'cq-mark-style';
-    st.textContent = `
-      /* Wrapper that groups card + mark button */
-      .cq-card-wrap {
-        display: flex;
-        flex-direction: column;
-        gap: 0;
+  /* ── Inject one-time CSS (inline styles as fallback for theme conflicts) ── */
+  function injectCSS() {
+    if (document.getElementById('cq-style')) return;
+    const s = document.createElement('style');
+    s.id = 'cq-style';
+    s.textContent = `
+      #quiz-grid { display: grid; }
+
+      /* Wrapper — becomes the grid cell */
+      .cq-wrap {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0 !important;
       }
 
-      /* Make the original quiz card fill wrapper */
-      .cq-card-wrap > .quiz-card {
-        flex: 1 1 auto;
-        margin: 0 !important;
-        border-bottom-left-radius: 0 !important;
-        border-bottom-right-radius: 0 !important;
-      }
-
-      /* Attempted card highlight */
-      .cq-card-wrap.cq-done > .quiz-card {
-        border-top-color: #10b981 !important;
-        border-left-color: #10b981 !important;
-        border-right-color: #10b981 !important;
-        box-shadow: 0 0 0 2px #10b981 !important;
-        border-bottom-left-radius: 0 !important;
-        border-bottom-right-radius: 0 !important;
-      }
-
-      /* Status badge on top-right of card */
-      .cq-card-wrap > .quiz-card {
+      /* Quiz card top-right badge */
+      .cq-wrap .quiz-card {
         position: relative !important;
-      }
-      .cq-status-badge {
-        position: absolute;
-        top: 7px;
-        right: 9px;
-        font-size: 15px;
-        line-height: 1;
-        pointer-events: none;
-        z-index: 2;
+        border-bottom-left-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+        flex: 1 !important;
       }
 
-      /* Mark / Unmark Button — sits directly below the quiz card */
-      .cq-mark-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-        width: 100%;
-        padding: 9px 12px;
-        border: 2px solid #10b981;
-        border-top: none;
-        border-bottom-left-radius: 10px;
-        border-bottom-right-radius: 10px;
-        background: rgba(16,185,129,0.08);
-        color: #10b981;
-        font-size: 11.5px;
-        font-weight: 700;
-        letter-spacing: 0.04em;
-        text-transform: uppercase;
-        cursor: pointer;
-        transition: background 0.18s, color 0.18s, border-color 0.18s;
-        font-family: inherit;
-      }
-      .cq-mark-btn:hover {
-        background: rgba(16,185,129,0.22);
-      }
-      /* Not-attempted state */
-      .cq-card-wrap:not(.cq-done) .cq-mark-btn {
-        border-color: rgba(148,163,184,0.4);
-        background: rgba(148,163,184,0.06);
-        color: rgba(148,163,184,0.8);
-      }
-      .cq-card-wrap:not(.cq-done) .cq-mark-btn:hover {
-        border-color: #10b981;
-        background: rgba(16,185,129,0.1);
-        color: #10b981;
+      .cq-badge {
+        position: absolute !important;
+        top: 6px !important;
+        right: 8px !important;
+        font-size: 15px !important;
+        line-height: 1 !important;
+        pointer-events: none !important;
+        z-index: 3 !important;
       }
 
-      /* Filter bar */
-      .cq-filter-bar {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 8px;
-        margin: 14px 0 16px;
-        padding: 10px 14px;
-        border-radius: 10px;
-        background: rgba(255,255,255,0.07);
-        border: 1px solid rgba(255,255,255,0.1);
+      /* ✅ Attempted card border */
+      .cq-wrap.cq-done .quiz-card {
+        border-color: #10b981 !important;
+        box-shadow: 0 0 0 2px #10b981, 0 4px 14px rgba(16,185,129,0.18) !important;
       }
-      .cq-filter-label {
-        font-size: 11px;
-        font-weight: 700;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-        opacity: 0.55;
-        flex-shrink: 0;
+
+      /* Mark / Unmark button — BELOW the card */
+      .cq-btn {
+        width: 100% !important;
+        padding: 9px 12px !important;
+        border: 2px solid !important;
+        border-top: none !important;
+        border-bottom-left-radius: 10px !important;
+        border-bottom-right-radius: 10px !important;
+        font-size: 12px !important;
+        font-weight: 700 !important;
+        cursor: pointer !important;
+        font-family: inherit !important;
+        text-align: center !important;
+        letter-spacing: 0.04em !important;
+        transition: opacity 0.15s, transform 0.1s !important;
+        flex-shrink: 0 !important;
       }
-      .cq-filter-btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-        padding: 6px 13px;
-        border-radius: 999px;
-        border: 1.5px solid rgba(255,255,255,0.18);
-        background: transparent;
-        color: inherit;
-        font-size: 12px;
-        font-weight: 700;
-        cursor: pointer;
-        transition: all 0.18s;
-        font-family: inherit;
-        white-space: nowrap;
+      .cq-btn:active {
+        transform: scale(0.97) !important;
+        opacity: 0.85 !important;
       }
-      .cq-filter-btn:hover {
-        border-color: rgba(56,189,248,0.5);
-        background: rgba(56,189,248,0.08);
+
+      /* Not-attempted style */
+      .cq-wrap:not(.cq-done) .cq-btn {
+        border-color: rgba(239,68,68,0.5) !important;
+        background: rgba(239,68,68,0.08) !important;
+        color: #ef4444 !important;
       }
-      .cq-filter-btn.cq-active {
-        background: #0284c7;
-        color: #fff;
-        border-color: #0284c7;
+      .cq-wrap:not(.cq-done) .cq-btn:hover {
+        background: rgba(239,68,68,0.18) !important;
       }
-      .cq-filter-btn .cq-cnt {
-        display: inline-block;
-        min-width: 18px;
-        padding: 1px 4px;
-        border-radius: 8px;
-        background: rgba(255,255,255,0.18);
-        font-size: 10px;
-        font-weight: 800;
-        text-align: center;
+
+      /* Attempted style */
+      .cq-wrap.cq-done .cq-btn {
+        border-color: #10b981 !important;
+        background: rgba(16,185,129,0.15) !important;
+        color: #10b981 !important;
       }
-      .cq-filter-btn.cq-active .cq-cnt {
-        background: rgba(255,255,255,0.3);
+      .cq-wrap.cq-done .cq-btn:hover {
+        background: rgba(239,68,68,0.12) !important;
+        border-color: #ef4444 !important;
+        color: #ef4444 !important;
       }
 
       /* Progress bar */
-      .cq-progress-wrap {
-        margin: 0 0 14px;
-        padding: 14px 16px;
-        border-radius: 12px;
-        background: rgba(255,255,255,0.06);
-        border: 1px solid rgba(255,255,255,0.12);
-        backdrop-filter: blur(6px);
+      .cq-progress {
+        margin-bottom: 14px !important;
+        padding: 13px 16px !important;
+        border-radius: 12px !important;
+        border: 1px solid rgba(255,255,255,0.14) !important;
+        background: rgba(255,255,255,0.06) !important;
+        backdrop-filter: blur(6px) !important;
       }
       .cq-progress-top {
-        display: flex;
-        justify-content: space-between;
-        align-items: baseline;
-        font-size: 13px;
-        font-weight: 600;
-        opacity: 0.9;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        font-size: 13px !important;
+        font-weight: 700 !important;
       }
-      .cq-progress-top strong { color: #38bdf8; }
+      .cq-progress-num { color: #38bdf8 !important; }
       .cq-progress-track {
-        height: 7px;
-        margin-top: 9px;
-        overflow: hidden;
-        border-radius: 999px;
-        background: rgba(255,255,255,0.12);
+        height: 8px !important;
+        margin-top: 8px !important;
+        border-radius: 999px !important;
+        background: rgba(255,255,255,0.14) !important;
+        overflow: hidden !important;
       }
       .cq-progress-fill {
-        height: 100%;
-        border-radius: inherit;
-        background: linear-gradient(90deg, #0284c7, #10b981);
-        transition: width 0.35s ease;
+        height: 100% !important;
+        border-radius: inherit !important;
+        background: linear-gradient(90deg, #0284c7, #10b981) !important;
+        transition: width 0.35s ease !important;
       }
       .cq-progress-stats {
-        display: flex;
-        gap: 14px;
-        flex-wrap: wrap;
-        margin-top: 8px;
-        font-size: 11.5px;
-        font-weight: 600;
-        opacity: 0.7;
+        display: flex !important;
+        gap: 14px !important;
+        flex-wrap: wrap !important;
+        margin-top: 7px !important;
+        font-size: 11.5px !important;
+        font-weight: 600 !important;
+        opacity: 0.7 !important;
       }
 
-      /* Hidden cards when filtered */
-      .cq-card-wrap.cq-hidden {
-        display: none !important;
+      /* Filter bar */
+      .cq-filters {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        align-items: center !important;
+        gap: 7px !important;
+        margin-bottom: 16px !important;
+        padding: 9px 13px !important;
+        border-radius: 10px !important;
+        border: 1px solid rgba(255,255,255,0.1) !important;
+        background: rgba(255,255,255,0.05) !important;
+      }
+      .cq-filter-lbl {
+        font-size: 11px !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.1em !important;
+        text-transform: uppercase !important;
+        opacity: 0.5 !important;
+      }
+      .cq-fbtn {
+        padding: 5px 12px !important;
+        border-radius: 999px !important;
+        border: 1.5px solid rgba(255,255,255,0.2) !important;
+        background: transparent !important;
+        color: inherit !important;
+        font-size: 12px !important;
+        font-weight: 700 !important;
+        cursor: pointer !important;
+        font-family: inherit !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 5px !important;
+        transition: all 0.18s !important;
+      }
+      .cq-fbtn:hover { background: rgba(56,189,248,0.12) !important; border-color: #38bdf8 !important; }
+      .cq-fbtn.cq-factive { background: #0284c7 !important; color: #fff !important; border-color: #0284c7 !important; }
+      .cq-fbtn .cq-fc {
+        display: inline-block !important;
+        min-width: 16px !important;
+        padding: 0 4px !important;
+        border-radius: 8px !important;
+        background: rgba(255,255,255,0.2) !important;
+        font-size: 10px !important;
+        font-weight: 800 !important;
+        text-align: center !important;
       }
 
-      /* Responsive: keep grid working with wrapper as grid item */
-      #quiz-grid {
-        /* grid is already set by each hub's CSS; wrappers become the grid items */
-      }
+      /* Hidden by filter */
+      .cq-wrap.cq-hidden { display: none !important; }
     `;
-    document.head.append(st);
+    document.head.append(s);
   }
 
-  // ── Build / refresh progress bar ─────────────────────────────────────────
-  function upsertProgressBar(total, done) {
-    const pct = total ? Math.round(done / total * 100) : 0;
-    let wrap = document.querySelector('.cq-progress-wrap');
-    if (!wrap) {
-      wrap = document.createElement('div');
-      wrap.className = 'cq-progress-wrap';
-      const grid = document.querySelector('#quiz-grid');
-      if (grid) grid.before(wrap);
+  /* ── Refresh all card states ── */
+  function refresh() {
+    const m      = getMarks();
+    const wraps  = Array.from(document.querySelectorAll('#quiz-grid .cq-wrap'));
+    const total  = wraps.length;
+    let   done   = 0;
+
+    wraps.forEach(wrap => {
+      const id       = wrap.dataset.cqId;
+      const isMarked = !!m[id];
+      if (isMarked) done++;
+
+      wrap.classList.toggle('cq-done', isMarked);
+
+      // Badge
+      const badge = wrap.querySelector('.cq-badge');
+      if (badge) badge.textContent = isMarked ? '✅' : '☐';
+
+      // Button text & colour handled by CSS classes above
+      const btn = wrap.querySelector('.cq-btn');
+      if (btn) {
+        btn.textContent = isMarked
+          ? '✅ Attempted  —  Unmark karne ke liye click karo'
+          : '❌ Not Attempted  —  Mark karne ke liye click karo';
+      }
+    });
+
+    updateProgress(total, done);
+    updateFilterCounts(total, done);
+    applyFilter();
+  }
+
+  /* ── Progress bar ── */
+  function updateProgress(total, done) {
+    const pct  = total ? Math.round(done / total * 100) : 0;
+    let   prog = document.querySelector('.cq-progress');
+
+    if (!prog) {
+      prog = document.createElement('div');
+      prog.className = 'cq-progress';
+      const grid = document.getElementById('quiz-grid');
+      if (grid) {
+        const filterBar = document.querySelector('.cq-filters');
+        if (filterBar) filterBar.before(prog);
+        else grid.before(prog);
+      }
     }
-    wrap.innerHTML = `
+
+    prog.innerHTML = `
       <div class="cq-progress-top">
         <span>📊 Progress</span>
-        <strong>${done} / ${total} Attempted (${pct}%)</strong>
+        <span class="cq-progress-num">${done} / ${total} Attempted (${pct}%)</span>
       </div>
-      <div class="cq-progress-track"><div class="cq-progress-fill" style="width:${pct}%"></div></div>
+      <div class="cq-progress-track">
+        <div class="cq-progress-fill" style="width:${pct}%"></div>
+      </div>
       <div class="cq-progress-stats">
         <span>✅ ${done} Attempted</span>
         <span>❌ ${total - done} Not Attempted</span>
@@ -265,189 +278,145 @@ if (!document.getElementById('testbook-hub-script')) {
     `;
   }
 
-  // ── Build / refresh filter bar ───────────────────────────────────────────
-  function upsertFilterBar(total, done) {
-    const notDone = total - done;
-    let bar = document.querySelector('.cq-filter-bar');
-    if (!bar) {
-      bar = document.createElement('div');
-      bar.className = 'cq-filter-bar';
-      const grid = document.querySelector('#quiz-grid');
-      if (grid) grid.before(bar);
+  /* ── Filter bar ── */
+  function buildFilterBar() {
+    if (document.querySelector('.cq-filters')) return;
 
-      const makeBtn = (filter, icon, label) => {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'cq-filter-btn' + (filter === 'all' ? ' cq-active' : '');
-        btn.dataset.filter = filter;
-        btn.innerHTML = `${icon} ${label} <span class="cq-cnt">0</span>`;
-        btn.addEventListener('click', () => {
-          activeFilter = filter;
-          document.querySelectorAll('.cq-filter-btn').forEach(b => {
-            b.classList.toggle('cq-active', b.dataset.filter === filter);
-          });
-          applyFilter();
-        });
-        bar.append(btn);
-      };
+    const bar = document.createElement('div');
+    bar.className = 'cq-filters';
 
-      const lbl = document.createElement('span');
-      lbl.className = 'cq-filter-label';
-      lbl.textContent = 'Show:';
-      bar.append(lbl);
+    const lbl = document.createElement('span');
+    lbl.className = 'cq-filter-lbl';
+    lbl.textContent = 'Show:';
+    bar.append(lbl);
 
-      makeBtn('all', '📋', 'All');
-      makeBtn('attempted', '✅', 'Attempted');
-      makeBtn('not-attempted', '❌', 'Not Attempted');
-    }
+    [
+      ['all',          '📋 All',              ''],
+      ['attempted',    '✅ Attempted',         ''],
+      ['not-attempted','❌ Not Attempted',     ''],
+    ].forEach(([filter, label]) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'cq-fbtn' + (filter === 'all' ? ' cq-factive' : '');
+      btn.dataset.filter = filter;
+      btn.innerHTML = `${label} <span class="cq-fc">0</span>`;
+      btn.addEventListener('click', () => {
+        activeFilter = filter;
+        bar.querySelectorAll('.cq-fbtn').forEach(b =>
+          b.classList.toggle('cq-factive', b.dataset.filter === filter));
+        applyFilter();
+      });
+      bar.append(btn);
+    });
 
-    // Update counts
-    const btns = bar.querySelectorAll('.cq-filter-btn .cq-cnt');
-    if (btns[0]) btns[0].textContent = total;
-    if (btns[1]) btns[1].textContent = done;
-    if (btns[2]) btns[2].textContent = notDone;
+    const grid = document.getElementById('quiz-grid');
+    if (grid) grid.before(bar);
   }
 
-  // ── Apply filter visibility ──────────────────────────────────────────────
+  function updateFilterCounts(total, done) {
+    const bar = document.querySelector('.cq-filters');
+    if (!bar) return;
+    const btns = bar.querySelectorAll('.cq-fbtn');
+    btns.forEach(btn => {
+      const fc = btn.querySelector('.cq-fc');
+      if (!fc) return;
+      if (btn.dataset.filter === 'all')          fc.textContent = total;
+      if (btn.dataset.filter === 'attempted')    fc.textContent = done;
+      if (btn.dataset.filter === 'not-attempted') fc.textContent = total - done;
+    });
+  }
+
   function applyFilter() {
-    document.querySelectorAll('#quiz-grid .cq-card-wrap').forEach(wrap => {
-      const isDone = wrap.classList.contains('cq-done');
+    document.querySelectorAll('#quiz-grid .cq-wrap').forEach(wrap => {
+      const isMarked = wrap.classList.contains('cq-done');
       let show = true;
-      if (activeFilter === 'attempted') show = isDone;
-      if (activeFilter === 'not-attempted') show = !isDone;
+      if (activeFilter === 'attempted')     show = isMarked;
+      if (activeFilter === 'not-attempted') show = !isMarked;
       wrap.classList.toggle('cq-hidden', !show);
     });
   }
 
-  // ── Wrap each quiz card & add mark button below it ───────────────────────
+  /* ── Wrap quiz cards ── */
   function wrapCards() {
-    const grid = document.querySelector('#quiz-grid');
+    const grid = document.getElementById('quiz-grid');
     if (!grid) return;
 
-    // Get all direct quiz-card children that are NOT yet wrapped
-    const rawCards = Array.from(grid.querySelectorAll(':scope > .quiz-card'));
-    rawCards.forEach((card, idx) => {
-      const quizId = card.dataset.quizId || String(idx + 1);
-      card.dataset.quizId = quizId;
+    // Only unwrapped direct-child quiz cards
+    const raw = Array.from(grid.querySelectorAll(':scope > .quiz-card'));
+    if (!raw.length) return;
+
+    raw.forEach((card, idx) => {
+      const id = String(idx + 1);
+      card.dataset.quizId = id;
 
       // Create wrapper
       const wrap = document.createElement('div');
-      wrap.className = 'cq-card-wrap';
-      wrap.dataset.quizId = quizId;
+      wrap.className = 'cq-wrap';
+      wrap.dataset.cqId = id;
+
+      // Insert wrapper before card, move card inside
       grid.insertBefore(wrap, card);
       wrap.appendChild(card);
 
-      // Add status badge inside card
-      if (!card.querySelector('.cq-status-badge')) {
+      // Status badge (non-interactive, inside the card)
+      if (!card.querySelector('.cq-badge')) {
         const badge = document.createElement('span');
-        badge.className = 'cq-status-badge';
+        badge.className = 'cq-badge';
         card.appendChild(badge);
       }
 
-      // Add mark/unmark button BELOW card (sibling inside wrapper, not inside button)
-      const markBtn = document.createElement('button');
-      markBtn.type = 'button';
-      markBtn.className = 'cq-mark-btn';
-      markBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        toggleMark(quizId);
+      // Mark / Unmark button — BELOW the card, OUTSIDE the card button
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'cq-btn';
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation(); // don't open quiz
+        toggle(id);
       });
-      wrap.appendChild(markBtn);
+      wrap.appendChild(btn);
     });
+
+    refresh();
   }
 
-  // ── Refresh all card states ──────────────────────────────────────────────
-  function refreshAll() {
-    marks = readMarks();
+  /* ── Init ── */
+  function init() {
+    injectCSS();
+    buildFilterBar();
+    wrapCards();
+    refresh();
+  }
 
-    const allWraps = document.querySelectorAll('#quiz-grid .cq-card-wrap');
-    const total = allWraps.length;
-    let done = 0;
+  // Run immediately if DOM ready, else wait
+  if (document.readyState !== 'loading') {
+    setTimeout(init, 50);
+  } else {
+    document.addEventListener('DOMContentLoaded', () => setTimeout(init, 50));
+  }
 
-    allWraps.forEach(wrap => {
-      const quizId = wrap.dataset.quizId;
-      const isAttempted = Boolean(marks[quizId]);
-      if (isAttempted) done++;
+  // Re-run on hash change (switching library → quiz → library)
+  window.addEventListener('hashchange', () => setTimeout(init, 150));
 
-      wrap.classList.toggle('cq-done', isAttempted);
-
-      // Update badge
-      const badge = wrap.querySelector('.cq-status-badge');
-      if (badge) badge.textContent = isAttempted ? '✅' : '☐';
-
-      // Update mark button text
-      const btn = wrap.querySelector('.cq-mark-btn');
-      if (btn) {
-        btn.textContent = isAttempted
-          ? '✅ Attempted — Click to Unmark'
-          : '☐ Not Attempted — Click to Mark';
-        btn.title = isAttempted
-          ? 'Is quiz attempt kiya hai. Unmark karne ke liye click karo.'
-          : 'Yeh quiz abhi attempt nahi ki. Mark karne ke liye click karo.';
+  // Watch grid for re-renders (search filter uses replaceChildren)
+  const gridEl = document.getElementById('quiz-grid');
+  if (gridEl) {
+    new MutationObserver(() => setTimeout(init, 80)).observe(gridEl, { childList: true });
+  } else {
+    // Grid might not exist yet — wait for it
+    const bodyObserver = new MutationObserver(() => {
+      const g = document.getElementById('quiz-grid');
+      if (g) {
+        bodyObserver.disconnect();
+        new MutationObserver(() => setTimeout(init, 80)).observe(g, { childList: true });
+        init();
       }
     });
-
-    upsertProgressBar(total, done);
-    upsertFilterBar(total, done);
-    applyFilter();
+    bodyObserver.observe(document.body, { childList: true, subtree: true });
   }
 
-  // ── Watch iframe for auto-mark on finish ────────────────────────────────
-  function watchFrame() {
-    const frame = document.querySelector('.quiz-frame');
-    if (!frame || frame.dataset.cqWatch) return;
-    frame.dataset.cqWatch = '1';
-
-    frame.addEventListener('load', () => {
-      try {
-        const doc = frame.contentDocument;
-        if (!doc) return;
-
-        if (window.TestbookCBTEngine) {
-          window.TestbookCBTEngine.applyContrastSafeguard(doc);
-        }
-
-        doc.addEventListener('click', ev => {
-          const btn = ev.target.closest('button');
-          if (!btn || !/finish|submit|complete|result|summary/i.test(btn.textContent)) return;
-          setTimeout(() => {
-            const qId = decodeURIComponent(location.hash.replace(/^#quiz\//, ''));
-            if (qId) {
-              marks[qId] = true;
-              saveMarks(marks);
-              refreshAll();
-            }
-          }, 0);
-        }, true);
-      } catch(e) {}
-    });
-  }
-
-  // ── Main init ────────────────────────────────────────────────────────────
-  injectStyles();
-
-  function tick() {
-    const grid = document.querySelector('#quiz-grid');
-    if (!grid) return;
-
-    // Check if new raw cards appeared (from search re-render)
-    const rawCards = grid.querySelectorAll(':scope > .quiz-card');
-    if (rawCards.length > 0) {
-      wrapCards();
-    }
-
-    refreshAll();
-    watchFrame();
-  }
-
-  tick();
-  window.addEventListener('hashchange', () => setTimeout(tick, 80));
-
-  // Re-run when grid re-renders (search filter, etc.)
-  const grid = document.querySelector('#quiz-grid');
-  if (grid) {
-    new MutationObserver(() => setTimeout(tick, 80)).observe(grid, { childList: true });
-  }
-
-  setInterval(tick, 1500);
+  // Interval as backup safety net
+  setInterval(() => {
+    const raw = document.querySelectorAll('#quiz-grid > .quiz-card');
+    if (raw.length) init();
+  }, 1500);
 })();
